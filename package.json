@@ -1,0 +1,24 @@
+{
+  "name": "@cerebralvalley/defcon-inspiration",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "DEF CON talk idea index, transcripts, dashboard, and local search CLI.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cerebralvalley/defcon-inspiration.git"
+  },
+  "homepage": "https://defcon-inspiration.cerebralvalley.ai",
+  "license": "MIT",
+  "bin": {
+    "defcon-search": "src/defcon/search.mjs"
+  },
+  "scripts": {
+    "build": "node scripts/build-static.mjs",
+    "check": "node --check api/embed.js && node --check api/status.js && node --check src/defcon/search.mjs",
+    "search": "node src/defcon/search.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  }
+}

@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DEF CON Research Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #fff;
+    --surface: #f7f7f7;
+    --raised: #f0f0f0;
+    --hover: #eaeaea;
+    --border: rgba(0,0,0,.1);
+    --border-strong: rgba(0,0,0,.2);
+    --text: #1a1a1a;
+    --text-2: #555;
+    --text-3: #888;
+    --text-4: #aaa;
+    --white: #000;
+    --max-w: 1200px;
+    --font-display: 'Unbounded', cursive;
+    --font-body: 'Outfit', sans-serif;
+    --font-mono: 'Fira Code', monospace;
+  }
+
+  html {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body { min-height: 100vh; }
+
+  ::selection { background: rgba(0,0,0,.15); color: #000; }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 3px; }
+
+  /* ═══ Header ═══ */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,.94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 20px 28px 16px;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -.02em;
+    color: var(--white);
+    line-height: 1.1;
+  }
+
+  .stats-bar {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-3);
+    display: flex;
+    gap: 16px;
+    white-space: nowrap;
+    padding-bottom: 2px;
+  }
+
+  .stat-val { color: var(--text-2); }
+
+  /* ═══ Search ═══ */
+  .search-container {
+    position: relative;
+    margin-bottom: 12px;
+  }
+
+  .search-prefix {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-3);
+    pointer-events: none;
+  }
+
+  #search {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 16px 11px 30px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    outline: none;
+    transition: border-color .2s;
+  }
+
+  #search:focus { border-color: rgba(255,255,255,.25); }
+  #search::placeholder { color: var(--text-4); font-family: var(--font-body); }
+
+  .search-mode {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-3);
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    padding-left: 10px;
+    pointer-events: none;
+  }
+
+  /* ═══ Controls ═══ */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .control-group { display: flex; gap: 4px; }
+
+  .control-divider {
+    width: 1px;
+    height: 16px;
+    background: var(--border);
+    margin: 0 6px;
+  }
+
+  .pill {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 11px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-4);
+    cursor: pointer;
+    transition: all .15s;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .pill:hover { color: var(--text-2); border-color: var(--border-strong); }
+
+  .pill.active {
+    background: rgba(0,0,0,.08);
+    border-color: rgba(0,0,0,.25);
+    color: var(--white);
+  }
+
+  .expand-all {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 11px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-4);
+    cursor: pointer;
+    transition: all .15s;
+  }
+
+  .expand-all:hover { color: var(--text-2); border-color: var(--border-strong); }
+
+  /* ═══ Main ═══ */
+  main {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 20px 28px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+
+  main .no-results { grid-column: 1 / -1; }
+
+  .no-results {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-4);
+    font-size: 14px;
+    font-family: var(--font-mono);
+  }
+
+  /* ═══ Card ═══ */
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: border-color .15s;
+  }
+
+  .card:hover { border-color: var(--border-strong); }
+
+  .card-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .card-idx {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-4);
+    padding-top: 3px;
+    text-align: right;
+  }
+
+  .card-title-area {
+    min-width: 0;
+    user-select: text;
+  }
+
+  .card-title,
+  .card-video {
+    user-select: text;
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--white);
+    letter-spacing: -.01em;
+  }
+
+  .card-video {
+    font-size: 12px;
+    color: var(--text-4);
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+    padding-top: 1px;
+  }
+
+  .star-btn,
+  .youtube-btn {
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: rgba(0,0,0,.03);
+    color: var(--text-4);
+    cursor: pointer;
+    transition: all .15s;
+  }
+
+  .star-btn:hover,
+  .youtube-btn:hover {
+    color: var(--text-2);
+    border-color: var(--border-strong);
+    background: rgba(0,0,0,.06);
+  }
+
+  .star-btn.active {
+    color: #000;
+    border-color: rgba(0,0,0,.35);
+    background: rgba(0,0,0,.1);
+  }
+
+  .youtube-btn {
+    color: #c4302b;
+    text-decoration: none;
+  }
+
+  .star-btn svg,
+  .youtube-btn svg { pointer-events: none; }
+
+  .meta-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-2);
+    background: rgba(0,0,0,.05);
+    padding: 3px 8px;
+    border-radius: 5px;
+  }
+
+  .expand-arrow {
+    display: inline-block;
+    color: var(--text-4);
+    font-size: 10px;
+    transition: transform .2s;
+  }
+
+  .card.open .expand-arrow { transform: rotate(90deg); }
+
+  /* ═══ Ideas (always visible) ═══ */
+  .ideas-list {
+    padding: 0 14px 12px 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .idea-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+  }
+
+  .idea-row:last-child { border-bottom: none; }
+
+  .idea-row { border-bottom-color: rgba(0,0,0,.06); }
+
+  .idea-score {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-3);
+    flex-shrink: 0;
+    min-width: 30px;
+  }
+
+  .idea-content { flex: 1; min-width: 0; }
+
+  .idea-name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .idea-desc {
+    font-size: 12.5px;
+    color: var(--text-3);
+    line-height: 1.55;
+    margin-top: 2px;
+  }
+
+  .idea-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--text-3);
+    border: 1px solid rgba(0,0,0,.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+
+  /* ═══ Detail Body (expandable) ═══ */
+  .card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .35s cubic-bezier(.4,0,.2,1);
+  }
+
+  .card.open .card-body { max-height: 3000px; }
+
+  .card-body-inner {
+    padding: 0 14px 16px 14px;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity .2s .05s, transform .2s .05s;
+  }
+
+  .card.open .card-body-inner {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section { margin-top: 16px; }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--text-4);
+    margin-bottom: 6px;
+  }
+
+  .section-text {
+    font-size: 13.5px;
+    color: var(--text-2);
+    line-height: 1.65;
+  }
+
+  .methodology-block {
+    border-left: 2px solid rgba(0,0,0,.12);
+    padding-left: 14px;
+    margin-top: 6px;
+  }
+
+  .methodology-block .section-text {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--text-3);
+  }
+
+  .findings-block {
+    background: rgba(0,0,0,.03);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 6px;
+  }
+
+  .video-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-2);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: transparent;
+    margin-top: 14px;
+    transition: all .15s;
+  }
+
+  .video-pill:hover { color: var(--white); border-color: var(--border-strong); }
+  .video-pill svg { flex-shrink: 0; }
+
+  .action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* ═══ Keyboard ═══ */
+  .kbd-overlay {
+    position: fixed;
+    bottom: 16px;
+    right: 20px;
+    z-index: 50;
+    display: flex;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-3);
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 12px;
+    opacity: .5;
+    transition: opacity .2s;
+  }
+
+  .kbd-overlay:hover { opacity: 1; }
+
+  kbd {
+    display: inline-block;
+    padding: 1px 5px;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    background: rgba(0,0,0,.04);
+    color: var(--text-2);
+  }
+
+  .kbd-item { display: flex; align-items: center; gap: 4px; }
+
+  mark {
+    background: rgba(0,0,0,.1);
+    color: var(--white);
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+
+  /* ═══ Responsive ═══ */
+  @media (max-width: 800px) {
+    main { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .header-inner { padding: 14px 16px 12px; }
+    .header-top { flex-direction: column; align-items: flex-start; gap: 8px; }
+    h1 { font-size: 18px; }
+    main { padding: 14px 16px 80px; }
+    .expand-all { display: none; }
+    .kbd-overlay { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-top">
+      <h1>DEF CON Projects</h1>
+      <div class="stats-bar" id="stats"></div>
+    </div>
+
+    <div class="search-container">
+      <span class="search-prefix">/</span>
+      <input type="text" id="search" placeholder="Search projects, techniques, findings..." autofocus spellcheck="false">
+      <span class="search-mode" id="searchMode">loading vectors</span>
+    </div>
+
+    <div class="controls" id="controls">
+      <div class="control-group">
+        <button class="pill active" data-filter="all">All</button>
+        <button class="pill" data-filter="starred">Starred</button>
+        <button class="pill" data-filter="direct_copy">Direct Copy</button>
+        <button class="pill" data-filter="scale_workflow">Scale</button>
+        <button class="pill" data-filter="high">Score 8+</button>
+      </div>
+      <div class="control-divider"></div>
+      <div class="control-group">
+        <button class="pill pill-mode active" data-mode="semantic">Semantic</button>
+        <button class="pill pill-mode" data-mode="fuzzy">Fuzzy</button>
+        <button class="pill pill-mode" data-mode="exact">Exact</button>
+      </div>
+      <div class="control-divider"></div>
+      <div class="control-group">
+        <button class="pill pill-sort" data-sort="score">By Score</button>
+        <button class="pill pill-sort" data-sort="views">Views</button>
+        <button class="pill pill-sort" data-sort="alpha">A-Z</button>
+      </div>
+      <button class="expand-all" id="expandAll" title="Expand/Collapse All">Expand All</button>
+    </div>
+  </div>
+</header>
+
+<main id="list"></main>
+
+<div class="kbd-overlay">
+  <span class="kbd-item"><kbd>/</kbd> search</span>
+  <span class="kbd-item"><kbd>esc</kbd> clear</span>
+  <span class="kbd-item"><kbd>j</kbd><kbd>k</kbd> nav</span>
+  <span class="kbd-item"><kbd>o</kbd> open</span>
+</div>
+
+<script>
+const DATA_URL = 'data/defcon-all-v1/idea-index.json';
+const EMBEDDINGS_URL = 'data/defcon-all-v1/embeddings.json';
+const VIDEOS_URL = 'data/defcon-all-v1/videos.json';
+
+let projects = [];
+let embeddingRecords = [];
+let queryVector = null;
+let semanticQuery = '';
+let semanticReady = false;
+let semanticError = '';
+let filter = 'all';
+let searchMode = 'semantic';
+let sort = null;
+let openSet = new Set();
+let starred = new Set();
+let focusIdx = -1;
+let allExpanded = false;
+let renderTimer = null;
+let visibleLimit = 80;
+let progressiveTimer = null;
+
+async function boot() {
+  loadStars();
+  try {
+    const [data, videoData] = await Promise.all([
+      fetch(DATA_URL).then(r => r.json()),
+      fetch(VIDEOS_URL).then(r => r.ok ? r.json() : []).catch(() => []),
+    ]);
+    const videos = Array.isArray(videoData) ? videoData : videoData.videos || [];
+    const videoById = new Map(videos.map(v => [v.id, v]));
+    projects = data.projects;
+    projects.forEach(p => {
+      const video = videoById.get(p.id);
+      if (video) {
+        p.viewCount = video.viewCount;
+        p.durationSeconds = video.durationSeconds;
+        p.uploadDate = video.uploadDate;
+      }
+      p.searchText = searchBlob(p);
+    });
+  } catch {
+    document.getElementById('list').innerHTML = '<div class="no-results">Could not load data. Run: <code>npx serve .</code></div>';
+    return;
+  }
+  render();
+  listen();
+  loadEmbeddings();
+}
+
+function loadStars() {
+  try {
+    starred = new Set(JSON.parse(localStorage.getItem('defconProjectStars') || '[]'));
+  } catch {
+    starred = new Set();
+  }
+}
+
+function saveStars() {
+  localStorage.setItem('defconProjectStars', JSON.stringify([...starred]));
+}
+
+async function loadEmbeddings() {
+  semanticError = 'loading vectors';
+  updateSearchMode(document.getElementById('search').value.trim());
+  try {
+    const data = await fetch(EMBEDDINGS_URL).then(r => r.ok ? r.json() : null);
+    if (data?.records) {
+      embeddingRecords = data.records;
+      semanticReady = true;
+      semanticError = '';
+    } else {
+      semanticError = 'vectors missing';
+    }
+  } catch {
+    semanticError = 'semantic off';
+  }
+  updateSearchMode(document.getElementById('search').value.trim());
+}
+
+function searchBlob(p) {
+  return [p.title, p.videoTitle, p.summary, p.presenter_project, p.how_they_did_it, p.what_they_found, p.why_it_was_good,
+    ...p.ideas.map(i => `${i.title} ${i.idea} ${i.why}`)].join(' ').toLowerCase();
+}
+
+function exactMatch(p, q) {
+  if (!q) return true;
+  const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+  return terms.every(t => p.searchText.includes(t));
+}
+
+function fuzzyScore(p, q) {
+  if (!q) return 1;
+  const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!terms.length) return 1;
+  const tokens = p.searchTokens || (p.searchTokens = [...new Set(p.searchText.match(/[a-z0-9_./:-]+/g) || [])].slice(0, 900));
+  let total = 0;
+  for (const term of terms) {
+    if (p.searchText.includes(term)) {
+      total += 1;
+      continue;
+    }
+    let best = 0;
+    for (const token of tokens) {
+      const score = fuzzyTermScore(term, token);
+      if (score > best) best = score;
+      if (best >= 0.92) break;
+    }
+    if (best < 0.48) return 0;
+    total += best;
+  }
+  return total / terms.length;
+}
+
+function fuzzyTermScore(term, token) {
+  if (!term || !token) return 0;
+  if (token.includes(term)) return Math.min(1, 0.75 + term.length / Math.max(token.length, 1));
+  if (term.includes(token) && token.length > 2) return Math.min(0.82, token.length / term.length);
+  if (term.length < 3 || token.length < 3) return 0;
+  const distance = levenshtein(term, token);
+  const maxLen = Math.max(term.length, token.length);
+  const editScore = 1 - distance / maxLen;
+  const subseqScore = isSubsequence(term, token) ? Math.min(0.72, term.length / token.length) : 0;
+  return Math.max(editScore, subseqScore);
+}
+
+function levenshtein(a, b) {
+  if (Math.abs(a.length - b.length) > 3 && !a.includes(b) && !b.includes(a)) return Math.max(a.length, b.length);
+  const row = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i += 1) {
+    let prev = row[0];
+    row[0] = i;
+    for (let j = 1; j <= b.length; j += 1) {
+      const old = row[j];
+      row[j] = a[i - 1] === b[j - 1] ? prev : Math.min(prev, row[j], row[j - 1]) + 1;
+      prev = old;
+    }
+  }
+  return row[b.length];
+}
+
+function isSubsequence(shorter, longer) {
+  let index = 0;
+  for (const char of longer) if (char === shorter[index]) index += 1;
+  return index === shorter.length;
+}
+
+function filterPass(p) {
+  if (filter === 'all') return true;
+  if (filter === 'starred') return starred.has(p.id);
+  if (filter === 'direct_copy') return p.ideas.some(i => i.idea_type === 'direct_copy');
+  if (filter === 'scale_workflow') return p.ideas.some(i => i.idea_type === 'scale_workflow');
+  if (filter === 'high') return p.ideas.some(i => i.reproducibility_score >= 8);
+  return true;
+}
+
+function avg(p) {
+  return p.ideas.reduce((s, i) => s + i.reproducibility_score, 0) / (p.ideas.length || 1);
+}
+
+function numericViews(p) {
+  return Number.isFinite(p.viewCount) ? p.viewCount : -1;
+}
+
+function formatViews(value) {
+  if (!Number.isFinite(value) || value < 0) return 'views n/a';
+  if (value >= 1000000) return `${(value / 1000000).toFixed(value >= 10000000 ? 0 : 1)}M views`;
+  if (value >= 1000) return `${(value / 1000).toFixed(value >= 10000 ? 0 : 1)}K views`;
+  return `${value} views`;
+}
+
+function filtered() {
+  const q = document.getElementById('search').value.trim();
+  let r;
+  const semantic = searchMode === 'semantic' && semanticReady && queryVector && q && q === semanticQuery;
+  if (semantic) {
+    const scores = semanticScores(queryVector);
+    r = projects
+      .filter(filterPass)
+      .map(p => ({ ...p, semanticScore: scores.get(p.id) || 0 }))
+      .sort((a, b) => b.semanticScore - a.semanticScore)
+      .filter((p, index) => index < 160 || p.semanticScore >= 0.2);
+  } else if (searchMode === 'semantic') {
+    r = projects.filter(filterPass);
+  } else if (searchMode === 'fuzzy' && q) {
+    r = projects
+      .filter(filterPass)
+      .map(p => ({ ...p, fuzzyScore: fuzzyScore(p, q) }))
+      .filter(p => p.fuzzyScore >= 0.5)
+      .sort((a, b) => b.fuzzyScore - a.fuzzyScore)
+      .slice(0, 160);
+  } else {
+    r = projects.filter(p => exactMatch(p, q) && filterPass(p));
+  }
+  if (sort === 'score') r.sort((a, b) => avg(b) - avg(a));
+  else if (sort === 'views') r.sort((a, b) => numericViews(b) - numericViews(a) || a.title.localeCompare(b.title));
+  else if (sort === 'alpha') r.sort((a, b) => a.title.localeCompare(b.title));
+  return r;
+}
+
+function dot(a, b) {
+  let sum = 0;
+  for (let i = 0; i < a.length; i += 1) sum += a[i] * b[i];
+  return sum;
+}
+
+function semanticScores(vector) {
+  const scores = new Map();
+  for (const record of embeddingRecords) {
+    const score = dot(vector, record.vector);
+    if (score > (scores.get(record.projectId) || -Infinity)) scores.set(record.projectId, score);
+  }
+  return scores;
+}
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function escRx(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+function hi(text, q) {
+  if (!q) return esc(text);
+  let r = esc(text);
+  for (const t of q.toLowerCase().split(/\s+/).filter(Boolean)) {
+    r = r.replace(new RegExp(`(${escRx(t)})`, 'gi'), '<mark>$1</mark>');
+  }
+  return r;
+}
+
+function typeLabel(t) {
+  return t === 'direct_copy' ? 'direct' : 'scale';
+}
+
+function transcriptUrl(p) {
+  return `data/defcon-all-v1/transcripts/${encodeURIComponent(p.id)}.txt`;
+}
+
+function detailBody(p, q) {
+  return `
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="section">
+            <div class="section-label">Summary</div>
+            <div class="section-text">${hi(p.summary, q)}</div>
+          </div>
+
+          <div class="section">
+            <div class="section-label">Methodology</div>
+            <div class="methodology-block">
+              <div class="section-text">${hi(p.how_they_did_it, q)}</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-label">Key Findings</div>
+            <div class="findings-block">
+              <div class="section-text">${hi(p.what_they_found, q)}</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-label">Why It Matters</div>
+            <div class="section-text">${hi(p.why_it_was_good, q)}</div>
+          </div>
+
+          <div class="action-row">
+            <a class="video-pill" href="${p.url}" target="_blank" rel="noopener">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.45.029 5.804 0 12c.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0C23.512 20.55 23.971 18.196 24 12c-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z"/></svg>
+              Watch Talk
+            </a>
+            <a class="video-pill" href="${transcriptUrl(p)}" target="_blank" rel="noopener">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h6"/></svg>
+              Transcript
+            </a>
+          </div>
+        </div>
+      </div>`;
+}
+
+function render() {
+  const el = document.getElementById('list');
+  const data = filtered();
+  const q = document.getElementById('search').value.trim();
+  updateSearchMode(q);
+  const totalIdeas = data.reduce((s, p) => s + p.ideas.length, 0);
+  const progressive = shouldProgressivelyRender(q, data);
+  const renderData = progressive ? data.slice(0, visibleLimit) : data;
+
+  document.getElementById('stats').innerHTML =
+    `<span><span class="stat-val">${data.length}</span> projects</span>` +
+    `<span><span class="stat-val">${totalIdeas}</span> ideas</span>` +
+    (progressive && visibleLimit < data.length ? `<span style="opacity:.5">showing ${Math.min(visibleLimit, data.length)}</span>` : '') +
+    (data.length < projects.length ? `<span style="opacity:.5">filtered</span>` : '');
+
+  if (!data.length) {
+    el.innerHTML = '<div class="no-results">No matching projects.</div>';
+    return;
+  }
+
+  el.innerHTML = renderData.map((p, idx) => {
+    const open = openSet.has(p.id);
+    const a = avg(p);
+    const ideas = filter === 'direct_copy' ? p.ideas.filter(i => i.idea_type === 'direct_copy')
+      : filter === 'scale_workflow' ? p.ideas.filter(i => i.idea_type === 'scale_workflow')
+      : filter === 'high' ? p.ideas.filter(i => i.reproducibility_score >= 8)
+      : p.ideas;
+
+    return `
+    <div class="card${open ? ' open' : ''}" data-id="${p.id}" data-idx="${idx}">
+      <div class="card-header" onclick="toggle('${p.id}')">
+        <div class="card-title-area">
+          <div class="card-title">${hi(p.title, q)}</div>
+          <div class="card-video">${hi(p.videoTitle, q)}</div>
+        </div>
+        <div class="card-meta">
+          <button class="star-btn${starred.has(p.id) ? ' active' : ''}" onclick="toggleStar(event, '${p.id}')" title="${starred.has(p.id) ? 'Unstar project' : 'Star project'}" aria-label="${starred.has(p.id) ? 'Unstar project' : 'Star project'}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="${starred.has(p.id) ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M11.48 3.5a.56.56 0 0 1 1.04 0l2.46 5.48 5.96.64a.56.56 0 0 1 .32.97l-4.44 4.02 1.23 5.86a.56.56 0 0 1-.84.61L12 18.08l-5.21 3a.56.56 0 0 1-.84-.61l1.23-5.86-4.44-4.02a.56.56 0 0 1 .32-.97l5.96-.64 2.46-5.48z"/></svg>
+          </button>
+          <a class="youtube-btn" href="${p.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="Open YouTube" aria-label="Open YouTube">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.45.029 5.804 0 12c.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0C23.512 20.55 23.971 18.196 24 12c-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z"/></svg>
+          </a>
+          <span class="meta-badge">${a.toFixed(1)}</span>
+          <span class="meta-badge">${formatViews(p.viewCount)}</span>
+          ${p.semanticScore ? `<span class="meta-badge">${p.semanticScore.toFixed(2)}</span>` : ''}
+          ${p.fuzzyScore ? `<span class="meta-badge">${p.fuzzyScore.toFixed(2)}</span>` : ''}
+          <span class="expand-arrow">▶</span>
+        </div>
+      </div>
+
+      <div class="ideas-list">
+        ${ideas.map(idea => `
+          <div class="idea-row">
+            <div class="idea-score">${idea.reproducibility_score}/10</div>
+            <div class="idea-content">
+              <div class="idea-name">${hi(idea.title, q)}</div>
+              <div class="idea-desc">${hi(idea.idea, q)}</div>
+            </div>
+            <div class="idea-tag">${typeLabel(idea.idea_type)}</div>
+          </div>
+        `).join('')}
+      </div>
+
+      ${open ? detailBody(p, q) : ''}
+    </div>`;
+  }).join('');
+  scheduleProgressiveRender(data, progressive);
+}
+
+function scheduleRender(delay = 0) {
+  clearTimeout(renderTimer);
+  renderTimer = setTimeout(render, delay);
+}
+
+function shouldProgressivelyRender(q, data) {
+  return !q && !sort && !allExpanded && data.length > visibleLimit;
+}
+
+function scheduleProgressiveRender(data, progressive) {
+  clearTimeout(progressiveTimer);
+  if (!progressive || visibleLimit >= data.length) return;
+  const next = () => {
+    visibleLimit = Math.min(visibleLimit + 120, data.length);
+    render();
+  };
+  if ('requestIdleCallback' in window) {
+    progressiveTimer = requestIdleCallback(next, { timeout: 700 });
+  } else {
+    progressiveTimer = setTimeout(next, 250);
+  }
+}
+
+function updateSearchMode(q) {
+  const el = document.getElementById('searchMode');
+  if (searchMode === 'exact') {
+    el.textContent = 'exact';
+    return;
+  }
+  if (searchMode === 'fuzzy') {
+    el.textContent = 'fuzzy';
+    return;
+  }
+  if (!semanticReady) {
+    el.textContent = semanticError || 'semantic off';
+    return;
+  }
+  if (!q) {
+    el.textContent = `${embeddingRecords.length} vectors`;
+    return;
+  }
+  if (queryVector && semanticQuery === q) {
+    el.textContent = 'semantic';
+    return;
+  }
+  el.textContent = 'enter to search';
+}
+
+async function refreshSemanticQuery(q) {
+  if (searchMode !== 'semantic' || !semanticReady || q.length < 2) {
+    queryVector = null;
+    semanticQuery = '';
+    render();
+    return;
+  }
+  try {
+    const response = await fetch('/api/embed', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ query: q }),
+    });
+    if (!response.ok) throw new Error('semantic endpoint unavailable');
+    const result = await response.json();
+    queryVector = result.vector;
+    semanticQuery = q;
+    render();
+  } catch (error) {
+    semanticError = 'keyword fallback';
+    queryVector = null;
+    semanticQuery = '';
+    render();
+  }
+}
+
+function toggle(id) {
+  openSet.has(id) ? openSet.delete(id) : openSet.add(id);
+  visibleLimit = Math.max(visibleLimit, 80);
+  render();
+}
+
+function toggleStar(event, id) {
+  event.stopPropagation();
+  starred.has(id) ? starred.delete(id) : starred.add(id);
+  saveStars();
+  render();
+}
+
+function listen() {
+  document.getElementById('search').addEventListener('input', () => {
+    const q = document.getElementById('search').value.trim();
+    queryVector = null;
+    semanticQuery = '';
+    visibleLimit = 80;
+    if (searchMode === 'semantic') {
+      updateSearchMode(q);
+      if (!q) render();
+      return;
+    }
+    scheduleRender(searchMode === 'semantic' ? 0 : 120);
+  });
+
+  document.getElementById('controls').addEventListener('click', e => {
+    const modePill = e.target.closest('.pill-mode');
+    const pill = e.target.closest('.pill:not(.pill-sort):not(.pill-mode)');
+    const sortPill = e.target.closest('.pill-sort');
+
+    if (modePill) {
+      searchMode = modePill.dataset.mode;
+      queryVector = null;
+      semanticQuery = '';
+      visibleLimit = 80;
+      document.querySelectorAll('.pill-mode').forEach(p => p.classList.remove('active'));
+      modePill.classList.add('active');
+      render();
+      return;
+    }
+
+    if (pill) {
+      filter = pill.dataset.filter;
+      visibleLimit = 80;
+      document.querySelectorAll('.pill:not(.pill-sort):not(.pill-mode)').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      render();
+    }
+
+    if (sortPill) {
+      const s = sortPill.dataset.sort;
+      visibleLimit = 80;
+      if (sort === s) { sort = null; sortPill.classList.remove('active'); }
+      else { sort = s; document.querySelectorAll('.pill-sort').forEach(p => p.classList.remove('active')); sortPill.classList.add('active'); }
+      render();
+    }
+  });
+
+  document.getElementById('expandAll').addEventListener('click', () => {
+    allExpanded = !allExpanded;
+    visibleLimit = allExpanded ? projects.length : 80;
+    const btn = document.getElementById('expandAll');
+    if (allExpanded) {
+      filtered().forEach(p => openSet.add(p.id));
+      btn.textContent = 'Collapse All';
+    } else {
+      openSet.clear();
+      btn.textContent = 'Expand All';
+    }
+    render();
+  });
+
+  const search = document.getElementById('search');
+
+  document.addEventListener('keydown', e => {
+    const inSearch = document.activeElement === search;
+
+    if (e.key === '/' && !inSearch) { e.preventDefault(); search.focus(); return; }
+    if (e.key === 'Escape') { search.value = ''; search.blur(); render(); return; }
+    if (e.key === 'Enter' && inSearch && searchMode === 'semantic') {
+      e.preventDefault();
+      refreshSemanticQuery(search.value.trim());
+      return;
+    }
+    if (inSearch) return;
+
+    const cards = document.querySelectorAll('.card');
+    if (!cards.length) return;
+
+    if (e.key === 'j') { e.preventDefault(); focusIdx = Math.min(focusIdx + 1, cards.length - 1); scrollToCard(cards); }
+    if (e.key === 'k') { e.preventDefault(); focusIdx = Math.max(focusIdx - 1, 0); scrollToCard(cards); }
+    if (e.key === 'o' || e.key === 'Enter') {
+      if (focusIdx >= 0 && focusIdx < cards.length) {
+        toggle(cards[focusIdx].dataset.id);
+      }
+    }
+  });
+}
+
+function scrollToCard(cards) {
+  cards.forEach(c => c.style.outline = 'none');
+  if (focusIdx >= 0 && focusIdx < cards.length) {
+    const c = cards[focusIdx];
+    c.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    c.style.outline = '1px solid rgba(0,0,0,.25)';
+    c.style.outlineOffset = '-1px';
+  }
+}
+
+boot();
+</script>
+</body>
+</html>
