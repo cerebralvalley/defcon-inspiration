@@ -4,6 +4,12 @@ Public DEF CON research idea index with summaries, transcripts, precomputed embe
 
 This repo is meant to make the dataset easy to clone, inspect, search, and build on.
 
+Website:
+
+```text
+https://defcon-inspiration.cerebralvalley.ai
+```
+
 ## What Is Included
 
 - `ideas.html`: standalone dashboard UI.
@@ -48,6 +54,13 @@ cp .env.example .env
 npm run search -- --query "supply chain attacks" --mode semantic
 ```
 
+For machine-readable output, use `--json`. If calling through `npm run`, use `--silent` so npm does not print its command banner before the JSON:
+
+```bash
+npm run --silent search -- --query "npm malware" --mode fuzzy --limit 3 --json
+node src/defcon/search.mjs --id uFyk5UOyNqI --show all --json
+```
+
 ## CLI From GitHub
 
 You can run the CLI directly from the repo after cloning:
@@ -66,6 +79,21 @@ npm install -g .
 defcon-search --query "onion services" --mode fuzzy
 defcon-search --id uFyk5UOyNqI --show all
 ```
+
+The package includes the dataset, so the CLI works offline for exact/fuzzy search after installation. Semantic search still needs `OPENAI_API_KEY` because it embeds the query at search time.
+
+## Data Files
+
+Useful entrypoints:
+
+```text
+data/defcon-all-v1/idea-index.json
+data/defcon-all-v1/videos.json
+data/defcon-all-v1/embeddings.json
+data/defcon-all-v1/transcripts/uFyk5UOyNqI.txt
+```
+
+Each project in `idea-index.json` includes the source YouTube id/link, talk metadata, a project summary, findings, and two derived ideas with reproducibility scores.
 
 ## Website / Vercel
 

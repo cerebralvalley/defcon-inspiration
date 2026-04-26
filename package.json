@@ -10,6 +10,17 @@
   },
   "homepage": "https://defcon-inspiration.cerebralvalley.ai",
   "license": "MIT",
+  "files": [
+    "api",
+    "data/defcon-all-v1",
+    "scripts",
+    "src",
+    ".env.example",
+    "ideas.html",
+    "vercel.json",
+    "README.md",
+    "LICENSE"
+  ],
   "bin": {
     "defcon-search": "src/defcon/search.mjs"
   },
