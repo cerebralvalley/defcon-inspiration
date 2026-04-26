@@ -1,0 +1,889 @@
+All right after a morning and
+early afternoon of a lot of
+stuff about policy and things it's time for a technical talk
+in party track and we'll hear
+about a new tool and new service that will be exciting and once
+again we have a first-time
+attendee and a first-time speaker. So and Elijah is
+totally calm, not worried about
+it at all! What's that? Eijah, I apologize, he's thrilled to talk
+to you guys about his tool that
+he's been working on for a long time, demonsaw, let's give him a
+big party track welcome!
+(Applause) 	>> Thank you. Recently, our right to share
+files on line has been under
+assault by governments, corporations, and others who
+fear openness and personal
+privacy rights. People have been persecuted, fined and even
+imprisoned simply for sharing
+data electronically. As private conversations transition from
+the home to the web, we're
+losing our fundamental rights to privacy and personal beliefs.
+	Imagine for a moment a secure
+file sharing application that lets you share whatever you want
+with anybody you wanted across
+all of your devices without fear. Governments, corporations,
+and others would not be able to
+know what you are doing, what you are sharing and know who you
+are. They wouldn't be able to
+track your IP address, and not being a centralized base network
+they could not take you down.
+	Now, imagine a million file sharing networks just like that.
+This presentation is a free data
+manifesto, historical analysis and recipe for creating a new
+type of file sharing
+application. My name is Eijah and I believe in the right to
+share. 	Glenn Greenwald said one
+can easily remain free of even the most intense political
+oppression simply by placing
+one's faith and trust in institutions of authority. But I
+think the Bible says it even
+better in Psalms 56:3, when I am afraid I put my trust in you.
+The modern Internet -- (Pause)
+The modern Internet is a very different place today than it
+was in the past. We can define
+the modern Internet by four different states. The state of
+trust, a state of convenience, a
+state of control, and a state of change. 	Over the last 15 years,
+the Internet has shifted from a
+web of isolated content to a cloud of in the operable
+networks and trusted third
+parties. A primary reason for this state of trust is
+technological innovation.
+	>> Speaking of change... (Laughter) 	>> Shot time! 	>> So
+companies have begun to support
+open source technologies, web and data standards, shared
+protocols and in the
+operability. This has been going on for the last 15 + years. But
+it's more prevalent now than it
+ever was before. 	Interoperability being the
+mutual coexisting of disparate
+domains, single sign-on, shared authentication protocols and
+open ID which is what we use
+with Facebook accounts. Now I'm ready. 	>> All right. So you all
+know the drill. By the way, I
+wasn't gonna interrupt a Bible verse walking in here. I had to
+pause for a second, I was like,
+oh, shit! It is very hard to get selected at DEF CON. So
+congratulations, welcome to the
+team! [Cheers and applause] Thank you, sir. So the benefits
+of trust are cost-effective
+applications, companies can roll out apps fast they are than ever
+before. Faster to get apps on
+the market, easier to share content across domains,
+different companies are working
+together that never did 10 or 15 years before. And there is a
+level of convenience to us as
+users of this content. 	Now, trust is made possible a level
+of convenience that we have
+grown accustomed to and can no longer live without. We have
+improved application usability
+like signing in with our Google and Facebook accounts
+everywhere. There is everything
+at our fingertips, all content, our bank accounts, social
+networks, everything we can get
+to from laptops or home computers, phones, tablets. And
+everything is simple now. 	There
+is obviously concerns with this. Such as privacy. Our anonymity,
+potential abuse from these
+companies and an overall loss of control. For a model based on
+trust, the cost of convenience
+is control. When our personal data is in the hands of others,
+we have lost control. 	At that
+point, we are faced with some rather difficult questions. Who
+owns our data? Are we simply a
+source or are we greater than the sum? 	A fundamental flaw in
+the model of trust is this loss
+of control. And once we have given up control, it's gone
+forever. My favorite examples of
+a loss of control and never being able to get it back are I
+have three of them. One is
+release of the AACS processing and keys and continual release
+of those. Number two is and I
+still find this absolutely fabulous, the Tom Cruise
+scientology videos, if you
+haven't seen those, I highly advise them, seven minutes well
+worth to watch those. 	And of
+course WikiLeaks and the great work they are doing with we
+leasing documents. Loss of
+control brings concerns to us as private citizens. Data retention
+and oversight. Do we trust the
+companies to take care of our data? 	Legal compliance matters.
+What corporations are giving our
+data over to the government? What are governments doing with
+that data? Security breaches and
+what happens with data when companies cannot protect what is
+ours. Overall transparency. Do
+we have the right to know that what companies are doing with
+our data behind the scenes?
+	Finally, the bottom line, because everything a company
+does is for its' own best
+interest and is driven by financial means. 	The truth
+about this modern internet is
+that convenience does not require trust. We can achieve
+the same level of convenience
+that we get today, without giving up control and without
+trusting governments and
+companies. 	The power to change the world is in our hands.We're
+experts in our fields. We're
+passionate, envied and feared. We have the knowledge, tools and
+experiences and most
+importantly, we have the free time to code. 	The path forward
+involves becoming advocates for
+distrust, even Ronald Reagan, I've quoted the Bible now I'll
+quote a Republican, even Ronald
+Reagan said, trust but verify. We can break the mold of old and
+stale thinking, create something
+beautiful and secure and we can open up the Internet for what I
+call digital self-expression.
+	Stephen Hawking said, "The increase of disorder or entropy
+is what distinguishes the past
+from the future, giving a direction to time." And Aaron
+Schwartz said, "Information is
+power, but like all power there are those who want to keep it
+for themselves." 	Reinventing
+file sharing means that we need to understand the current file
+sharing applications available
+to us now. We also need to understand how secure or
+insecure these applications are.
+So let's look back in history and look at the existing
+file-sharing applications to see
+what type of network model they are based on. There are two
+primary models for network
+sharing applications. Centralized model and the
+decentralized model. 	The
+centralized model is a tried-and-true model with over
+45 years of history. Did you
+know that FTP is over 45 years old? 	I did not know that until
+I did a little bit of research
+for this presentation. That is amazing. 	The pros of the
+centralized model are fairly
+obvious, it's a simplified programming model. If you take
+in any computer science class or
+you get bored at home and code like I do you know how simple it
+is to open up a socket
+connection and send data. Very, very simplified program model.
+There are dedicated hosting
+benefits for centralized. Web hosting now only costs a
+fraction of what it did five,
+10, 15 years ago. You can get a shared hosting environment,
+Linux or .NET for $3 a month.
+That is extremely inexpensive. 	The cons are logging
+inaudiability. Lot of credential
+based security with a centralized model. Companies are
+storing our information, there
+is a question of digital rights management. Identity or IP and
+usage transparency, and the
+centralized model is easily susceptible to down. A single
+point of failure and very very
+easy for governments or corporations or the legal system
+to go after a single point. Here
+are examples of different types of file sharing applications
+that use the centralized model.
+Most will be familiar to us. We have file system base like samba
+or RTFS. We have IRC, FTPs, we
+have Web-based choices like mega, rapid share, we have new
+streaming applications like
+Netflix, prime, go, et cetera. And we have got Cloud Computing
+which entered the market a few
+years back like Google drive, Amazon web services, Dropbox, et
+cetera. 	The decentralized
+model, on the other hand, is a rather newer model for file
+sharing but imperfect as well.
+The pros are no central point of access or failure. It could also
+last forever. A well designed
+decentralized file sharing application or network, once
+live, has the potential to never
+be taken down. However, there are some concerns with the
+decentralized model as well such
+as identity and IP usage transparency. That's the same
+con as we saw in the centralized
+model and we'll talk about that later. You also have the loss of
+anonymity, IP address is
+revealed and that could be linked to your name. 	There is
+personal liability which is
+something new. The legal system can go after us directly for
+downloading files via
+BitTorrent. And then there's a security issue, too. Really
+quick I want to point out some
+of these, these should be all familiar but BitTorrent to go
+way back, Napster, the start of
+it all, stuff like plex, are sync, plex is newer to the
+market and then streaming
+applications that I think are very exciting like Chromecast
+and of course XPNC which has
+been around for a long time now. 	File-sharing is an amazing
+technology. But this doesn't
+mean it's perfect. There are some fundamental problems with
+file-sharing. For example, file
+share is insecure. Either we trust a third party source like
+a centralized server or set of
+applications, or we risk revealing our identity via a
+peer-to-peer or decentralized
+network. There are also legality issues with file sharing. It's
+also inflexible. I want my files
+available to me at all times. I don't want to force sync content
+across boxes and what if I'm
+offline? I can't stream Netflix. Or I can't grab my files via the
+Dropbox, so I want more
+flexibility in file sharing. 	It's also inconvenient. I want
+to watch the show that I'm
+paying for. I don't want to watch "Ads" and by the way the
+thing that most upset me about
+HuluPlus, is the requirement that we watch ads. Some are
+funny but seeing the same ad
+four times over in an hour is not funny anymore. Why do we
+have to watch ads? 	File sharing
+is also unreliable. If you look at streaming providers, they
+have exclusive content and they
+have licensing disputes which changes the content available in
+their sites. Netflix, prime does
+this all the time. Network outages. Why when they go down
+should I suffer? And there's not
+enough seeds for BitTorrent. I want something nobody else
+wants. How do I get that? 	File
+sharing choices are sometimes expensive. Has anyone looked
+into upgrading their Dropbox
+accounts? Free two gigs that were given costs substantially
+more when you want 100 gigs.
+That shouldn't be the case. Hard drives are cheap these days. The
+cloud is also expensive. And not
+only the price, but what are these companies doing with our
+data? Who has access and what if
+it's stolen? Netflix and Amazon prime are doing it the best.
+HBO Go not so much, I don't want
+cable or satellite. My HBO subscription is through U
+torrent. Some of my friends get
+theirs through the HBO subscriptions of their friends
+and their logins. I would prefer
+to watch HBO through Netflix or Amazon prime. Granted HBO
+finally caved in recently. If
+you want to watch shows five years old. What about the shows
+that are out now? So my Game of
+Thrones subscription is through uTorrent. The modern Internet
+has also taught us to value
+something if it is good, convenient, and reasonably
+priced so I want to throw those
+3 things out there. The modern Internet teaches us that
+convenience is a good thing and
+we like convenience. But it's also taught us to value things
+that are good, convenient, and
+reasonably priced. 	This is why we still torrent, this is while
+we still download illegally. I
+find from my personal use if a show is on Netflix or prime I'm
+likely to stream it because it's
+good, convenient, and reasonably priced. Actually more work to
+Torrent it. Finally file sharing
+problems or file sharing can be unfair. Not all usage patterns
+are the same. BitTorrent network
+is a very important and powerful network and we all use it but
+it's designed to adhere to a
+state of pseudoequality across the board. If it did not, then
+we would not be able to download
+if we didn't have to upload. So the ratio of seeding to
+downloading is very, very
+critical. But not all usage patterns are the same. 	What if
+I only wanted to download? Is
+that possible? Well, it should be allowed. The differentiation
+between acquisition, which is
+the initial acquiring of new content, and the subsequent
+aggregation of that, which is
+the disbursing and sharing should be separate models in a
+file sharing app and
+configurable separately. 	So these problems with file sharing
+have led to the creation of a
+niche market for solutions. Inadequacy breeds innovation.
+VPNs, proxies, file wall, dark
+net, tor, peer block, which doesn't work but people like it
+none the less, and hacking our
+neighbor's access points are all cures to the symptoms and not
+the problem. You laugh, many of
+us do it. I probably shouldn't admit that I would do such a
+thing but if I did I would laugh
+as well. 	(Inaudible) 	Yes. Exactly. 	So reinventing file
+sharing, we need to -- in order
+to reinvent file sharing we need to leverage the power of our
+Internet access. I will quote
+Aaron Schwartz who said something absolutely amazing
+2007. He said "When you have a
+distributed network like the Internet everybody can be a
+server. You can take your home
+laptop and run a server off it that can distribute movies and
+music and Web pages and e-mail
+in the same way that the biggest computers at Google can. There
+is no fundamental difference
+between the computers they have in the racks in their server
+rooms and what you have on your
+desk." 	He was absolutely correct. Reinventing file
+sharing means we need a new
+solution that's secure, anonymous, free and everywhere.
+What does it take to reinvent
+file sharing? Norm Chomsky said if you want to achieve something
+you build the basis for it. And
+Julian Assange said the only way to keep a secret is to never
+have one. 	Let's talk about five
+key principles that will secure file sharing network and
+maintain the privacy of data.
+	Number one, saving cyberspace means that we need to reclaim
+the authoritative source. Well,
+what is the authoritative source? The authoritative source
+is the primary repository of
+trusted data. It's basically our data that we're about to share.
+	When we give away the
+authoritative source we give away the control of our
+sensitive data. 	The price of
+online data storage is our anonymity and potential for
+abuse of our data. The
+foundation of file sharing is data. Right? Everything is based
+around data. Data should be the
+first thing that is secured and the last thing to be
+compromised. It should never
+leave our control. Companies I used to work in the financial
+sector, companies I learned are
+very, very good at securing their devices. Their corporate
+devices like laptops and phones,
+and USB drives, they excel at securing those, but they are
+very bad at securing network
+transmissions between those devices. The weakest link are
+the users and the methods by
+which they exchange data. 	When we lose control of our data, we
+lose control of everything. This
+includes the power to protect what's ours, the certainty that
+our data is protected, and the
+choice to respond to attacks and the ability to remain anonymous.
+The solution? We need to take
+responsibility and reclaim the authoritative source. 	Our data
+should not leave our personal
+devices. It should never go into the cloud, it should never go
+into Dropbox, it should never go
+beyond the devices we own like this laptop or my phone or my
+tablet. 	We need to do what
+companies continue to fail us on and that is secure our data.
+	Number two, saving cyberspace
+means that we need to redefine authentication. Well, what does
+it mean to authenticate? We do
+it all the time, multiple times per day, simply authentication
+is the process by which I prove
+who I claim to be. That is really it. Right now, there are
+many, many forms of stateful
+authentication. Stateful authentication is used for
+credential-based or
+certificate-based authentication where there is some sort of
+state being maintained. Usually
+in a database. It's a necessary model but in some cases it can
+be antiquated and unnecessary.
+Relying on trusted third parties is not always the best solution
+for authentication. Stateless
+authentication is a form of shared secret authentication
+that leverages shared assets or
+other known data to mutually authenticated clients. 	The
+benefits are obvious in that the
+modern Internet gives us a wealth of information or shared
+secrets. Such as pictures that
+we have uploaded to Facebook or posts we have made or tweets, et
+cetera. There is an immense
+amount of information available that can be used to share
+secrets across multiple people.
+Mutual coexistence by shared knowledge is the basis for
+stateless authentication. 	This
+means that the shared secret is something that is obvious to the
+very specific group of people.
+There is no registration process and no data storage. No need for
+databases, SQL or otherwise. And
+the beauty of this is we can use a series of dynamic encryption
+algorithms based on this
+information because no state needs to be maintained. So
+there's no certificate
+authorities, there is no databases, there is no, nothing
+in the background that can link
+what we are doing to our identity. 	So the solution for
+stateless authentication is
+redefining the need to authenticate. Let's create a
+temporary trust. We have learned
+trust is bad and we should be advocates for distrust. But
+temporary trust that can be
+changed and modified over the course of seconds or minutes or
+hours is valuable. 	Our social
+networks have an immense amount of shared secrets we can tap
+into. No data is stored and the
+loss of security because insignificant with stateless
+authentication. Why? It's not
+necessarily a secured model that needs to stand the test of time.
+It's a transitory nature,
+stateless authentication that has the ability to adapt via
+dynamic encryption algorithms.
+	Number three is saving cyberspace means that we
+transmit a module approach to
+security. Modular security is something that is based on
+layered security and layered
+security being the practice of combining multiple mitigating
+security controls to protect
+data, make it more difficult to compromise the whole. While
+modular security takes layered
+security and builds on top of it by creating more of an
+obfuscated and disjointed
+separation of duties. I use the double-lined approach so nobody
+knows the entire secret and
+there's an inability to store complete secrets. It's not
+feasible in a network design
+based on modular securities to have any secrets. It's a bit
+like a free-for-all, a hail Mary
+in a way, but a guaranteed touchdown so perhaps a bad
+analogy. 	There are existing
+applications today which are two tempting targets for take down.
+Too many single points of
+failure that reveal too much information. Modular security
+provides plausible deniability.
+We should always assume that someone is listening. Always be
+paranoid. It's better to be
+paranoid than to be caught. And what they don't know won't hurt
+us. They cannot audit what we do
+not have. The solution implement multiple modules of defense to
+resist penetration. As messages
+propagate through the transmission stream, they will
+increase in strength. But nobody
+will be able to know the entire secret and even a compromise of
+99% of a network will not reveal
+the entire secret. Each module therefore is isolated,
+autonomous, self-sufficient and
+resistant to attacks. 	Number four, saving cyberspace means we
+need to leverage existing
+protocols. Our choice of protocol message or otherwise
+does not define us as an
+application. When we create a new file-sharing app it's really
+about art and science. This is
+my second file-sharing app in the last 15 years and it truly
+is always a journey. This one
+I'm about to share with you shortly has taken a year
+part-time, as a labor of love.
+But creating a message protocol is true wizardry and have more
+difficult than creating a file
+sharing app. Use standard protocols the benefits are
+obfuscation, which there's a
+Japanese proverb I love that says "The nail that sticks out
+gets hammered down. This means
+calling undue attention to ourselves will only result in
+problems. So let's blend in with
+the rest of the http network traffic, pretend like we're no
+different. It's interoperable,
+will work with existing web services and sites, and
+hopefully undetectable
+transfers. The solution for a profile, use these preexisting
+protocols, stuff like HTP, XML,
+JSON, etc. And finally number 5 is saving cyberspace means that
+we need to support a more
+flexible and adaptive model for file sharing. What does this
+mean? Flexible and adaptive.
+Well, first of all, we need to be simple and effective. It
+needs to be easy to use our
+file-sharing app. BitTorrent is an amazing, amazing protocol and
+uTorrent is an amazing
+application. I use uTorrent most every day. It's very complex and
+a lot of my friends aren't
+necessarily like us, they might not have the same technical
+background so if we can make
+something that everybody can use, then file sharing can be
+everywhere. 	Individuals,
+families, and organizations, small, medium and large, should
+be able to use this application
+equally. It should be available on all devices, phones, tablets,
+work stations, laptops, servers,
+and even low-power consumption devices like the Raspberry Pi
+and Ouya and even these badges
+should be able to run file sharing networks. Very, very
+possible. Also operating systems
+should be agnostic, Windows, Linux, Mac, Android and iOS
+should support all of them.
+	Finally, we need a hybrid model. We need a file sharing
+app that takes the best of the
+centralized model and the best of the decentralized model and
+removes everything else that is
+crap. How do we create this hybrid model? We need to
+abstract the content from the
+transfer. No fixed servers and no direct peer-to-peer. So
+nobody knows about your IP
+address and no fixed servers, needs to be pervasive and
+ubiquitous, everywhere and
+throughout everything and it needs to be secure, anonymous,
+free, and everywhere. 	Edward
+Snowden recently said, "I don't want to live in a world where
+there's no privacy and therefore
+no room for intellectual exploration and creativity" and
+Bjarne Stroustrup, his name is
+very difficult for me to pronounce, one of my personal
+heroes, founded C++, said people
+who think they know everything really annoy those of us who
+know we don't. I think that's
+true. Right. 	He's a very -- far smarter man than I am and he
+seemed to get annoyed quite
+frequently! Do we really need, let's be honest, do we need
+another file-sharing
+application? I struggled with this a year ago before I started
+writing Demonsaw. There's a lot
+out there and every year there's a new file sharing that comes
+out. Recently I found myself
+halfway around the world. I won't tell you what area of the
+world or what country but it was
+far, far from home and I found myself there for many, many
+months. And I realized that I
+had no good way of getting access to all the files that I
+had downloaded previously. I had
+no good way of sharing or accessing my content. And I felt
+a little vulnerable and I
+thought, why is this the case? I could have FTP'd or uploaded it
+to a cloud or done Dropbox or
+Amazon a shit load of money to host my content but I realized I
+wasn't happy with the current
+state of file sharing. I wanted to share with friends and family
+or 10,000 complete strangers. I
+wanted to do it whenever I wanted on any device. I wanted
+access to all my content from
+anywhere in the world. I wanted convenience and control. Why
+doesn't a solution for me
+already exist? 	I realize this is a problem that we can solve.
+I would like to introduce you to
+Demonsaw. Demonsaw is a tool that allows me to share my files
+my way. In fact, just this
+morning, we made Demonsaw available to the public.
+Demonsaw.com, if you go there,
+you can download it, have fun, do whatever you want. It's free.
+	When I was stuck across the
+world, I realized that most file sharing networks, they really
+break down to three fundamental
+components. When you look at any file sharing network.
+BitTorrent, FTP, doesn't matter.
+They all come down to three components. That is you have a
+client or multiple client nodes.
+What these do is these either upload or download. They either
+share or acquire data. Then you
+have this type of node that serves as really a message
+propagator. What it does is
+controls program flow. It makes sure messages get sent where
+they need to. This can be
+torrent trackers, or this can be built into the client in the
+case of more direct applications
+like FTP. Then finally you have a server component that is
+really responsible, the dumbest
+of the three components. All it does, it's like a tank, all it
+does is gets data sent through
+it, 99.99 % of the bytes get sent through the server, all it
+does is propagate data. Most
+file sharing applications have combined these three components
+into two components. Either the
+client and the server are combined, or the router and
+server are combined and the
+client is separate. 	Demonsaw is a completely new type of file
+sharing application.
+Architecture is based on a combination of network routing,
+Web-based and security patterns,
+but it's succeptively simple at its core. The magic behind
+Demonsaw is it keeps these three
+functions, three different client, router and server nodes
+separate. It doesn't try to
+combine them. Because of that it's able to achieve an enhanced
+level of security and anonymity
+we'll see shortly. 	What I want to do now is give you a quick,
+very very brief demo of Demonsaw
+and just show you what it can do, just a local demo but it
+will be a live demo. I'll just
+talk you through a very, very basic scenario. What will happen
+here is a router, here just a
+Windows-based router -- all right. Thank you. 	Hmm. (Pause)
+All right. We'll use our backup
+demo, then. Which is a static demo. Hopefully that will work.
+Okay. Sorry about that, there
+are always technical difficulties in live demos. 	I
+will be available after this, in
+the cafe. And I will be glad to walk you through the live demo
+or answer any of your questions
+that you may have. 	So I always come prepared. Let's talk about
+the demo. Julian Assange also
+said non-conformity is the only real passion being ruled by,
+Sean Parker, very very famous
+person, anybody know Sean Parker said you can now be the master
+of your own destiny. 	What you
+will see here is you'll see the client. Basically there is three
+downloads that I have made
+available. There is a Windows-based router which
+serves only as a message
+Facilitator. All it does is groups clients and controls
+message flow and that's it.
+	There is the client which you see here and that is just going
+to share, search, browse, and
+transfer. And then you have a Web-based server I have
+available which is a .NET web
+app that you can drop in any .NET web hosting provider and
+all your data will be sent
+through that. For $3 or $4 a month you can go to a hosting
+company and get something that
+supports .NET 4.5, in fact, fuck it, get 25 of them for 100, get
+25 hosting environments for 100
+bucks a month, and you could basically be routing as much
+traffic as you want through it.
+Because web hosting is so cheap these days. 	But the web server
+will allow the router not to
+handle large streams of data. In this example we have searched
+for I think Daft Punk. For some
+reason I want to listen to the new Daft Punk this day. So you
+just type search, bang, gives
+you the results instantly. In the next window you have a
+browse function. This allows you
+to navigate through any of the content in your secret group.
+Now, a secret group will be
+defined by an AES key that will be dynamically created by some
+sort of shared asset. In this
+version of Demonsaw that will be simply an image. 	Let's say the
+front row and I all have that
+picture of the Christmas party where things got a little crazy.
+Right. Got a little crazy, we
+all had a good laugh and then we wanted to forget about that
+party. Let's use that similar
+imagine and the 12, 13, 14 of you are in a group that nobody
+else can get to. Anything we
+share will only be available to us in the group but even through
+using the client we are not
+gonna know that I'm downloading from you or you are downloading
+from me or you have X, Y, and Z
+files available. But we are gonna isolate ourselves to a
+specific group simply by this
+shared image from which our dynamic AES keys will be
+created. 	We'll be able to
+browse each other's content and, by the way, the names of the
+clients here are really
+irrelevant. You can make them whatever you want. I just,
+server and work station worked
+for me. 	You can transfer, download stuff into your status.
+Very Napster-like. And here you
+can share content. So I can choose what folders I want to
+share and this is a little
+browse window where I can get access to my content. And then
+right here you see the little
+image of the little demon guy, that is the image from which the
+AES keys will be created. So if
+you want to deny someone access to your group, this is why
+security is almost unnecessary
+and insignificant for Demonsaw, I just change my image and
+nobody has access to my shit.
+Say one of our friends that we don't like to hang out with
+found that image and he suddenly
+wants to transfer all our Daft Punk. For some reason I don't
+like him. We just change our
+image. There's no need to revoke security access, or we change an
+image every day, something
+different. The lack of an image will default to the global or
+default group, basically what
+BitTorrent does now. If I choose not to have an image it defaults
+to nothing. 	Now, sorry about
+that. Technical difficulties. 	Now, how does Demonsaw address
+all these problems we talked
+about with file sharing? Right. First of all, it's secure. There
+is no peer-to-peer. There is no
+IP addresses that are revealed. Nobody can know what you are
+downloading, nobody can even
+know what you are uploading and there is no centralized servers,
+routers and servers can be
+dynamic and shift as much as they want. In fact, I don't have
+my phone on me, but -- now I do.
+Right now we're working on an Android port of Demonsaw that
+will bring client and router to
+your phone. What that means is I'll be able to host a private
+file sharing network on my phone
+and all data that gets transferred can be sent through
+hundreds or thousands of
+different servers all around the world. They can be in countries
+that don't discriminate against
+data sharing rules or data sharing in general but I can
+control my own private file
+sharing network from my phone. That's what we're working on
+right now on Android and I can
+download stuff from the phone. We'll also be working on
+Chromecast and possibly plex
+plug-ins so you can download and the 2% or 3% that's done you can
+stream it to TV. Anywhere in the
+world have access, not just local like plex or DLNA or XBMC
+but you can do this from the
+phone. We all have old phones, Androids or otherwise sitting
+around, doing nothing, plug them
+in, make them routers. Take them with you, have access wireless
+networks and suddenly you have a
+mobile router that is your file-sharing network that nobody
+knows what you are doing.
+Demonsaw is encrypted. Everything is encrypted.
+Multiple layers of encryption.
+We leverage encryption standards. You could
+theoretically rotate he
+description keys and algorithms at will. That is something we
+can easily add if there is a
+need. There are varying encryption types and algorithms,
+AES, mutating, automatic,
+isolating, data-driven and stateless algorithms. There are
+varying encryption techniques,
+messages and data are encrypted separately. So if someone sniffs
+your network and they happen to
+get access to a message packet and they happen to know the
+shared Diffie Hellman key by
+some act of God and they happen to decrypt that message packet
+they won't even know what you
+are trying to do. They won't know what packet, what packet
+that belongs to, whether it's
+upload are or downloading, no idea if you are sharing a file
+or a turbo tax document from
+2003. They'll have no idea. 	In order to know that, they have to
+completely compromise the entire
+end to end chain which is what we saw with modular security.
+	Of course authentication and
+authorization is all done via keys. Demonsaw is anonymous, no
+log-in, no registration, Mo data
+retention, no loss of control. I'll go one step further. It's
+free and there's no ads. You can
+use it however you will. No callback to demonsaw.com, I
+don't even know you are using
+it, I don't even care. A year ago I started on this journey to
+write this, to meet my needs and
+I want to share it with everybody because I thought
+maybe other people share my
+need. Yours to use however you want. Set up a sniffer and
+verify I'm not sending any data
+back to demonsaw.com. It's modular, separation of messages
+and content. We are unable to
+deduce the type of content exchange. This of course is the
+need-to-know basis. It's simple.
+You saw the interface. It's share, search, browse, download
+and upload. That's it! I'm sure
+the Android and iOS versions will be even simpler once we
+create them. 	Use it at home,
+work, or while traveling. It will go right through most
+firewalls because it's standard
+http, nobody will even know what you are doing which is great
+because I didn't really think
+about the security ramifications of this but if you set up a
+Demonsaw client and share a C
+drive, yes, you can transfer your entire work computer and
+work from home. I've not tried
+this. I do enjoy my day job and the paychecks that come as a
+result of it, but that is the
+theoretically possible. Firewalls and proxies, as long
+as http can get through, this
+shit can get through. It's everywhere, Windows, Linux, Mac,
+Android, iOS and the Web. Right
+now we just released the Windows version of the router and the
+client. And a Windows web
+application based version of the server. The router will do
+server functionality. Router is
+a server as well. But if you specify additional servers like
+the web server component it will
+override that and allow the router only to do message
+propagation. 	We're working on
+the Android version. It's written in C Sharp right now but
+we're putting it to c++ so we
+can roll it across all these platforms. Just a matter of time
+before it's on Linux, Mac, iOS
+and you should see hopefully something in the next three
+months we'll launch the Android
+version, fingers crossed. It's based on design patterns. I'm a
+game programmer, that's my
+professional job and in game programming we use what's called
+the entity component system and
+what this does is favors composition over inheritance and
+it makes adding new code and
+expanding the system extremely easy. In terms of faster, more
+flexible features and
+maintenance we will be able to roll these features out fast
+because it's based on -- entity
+component system. Demonsaw is silent and unseen. We leverage
+standards, we avoid suspicion,
+and we remain undetectable. Flexible and adaptive. As I said
+before, share files just with
+yourself, share them with family and friends or share it with
+10,000 people. A million file
+sharing networks. 	Excuse me. Finally, if you are curious what
+the architecture looks like here
+is a picture of a very simple Demonsaw network. Router is
+performing message propagation
+and data propagation services. There are four clients in this
+example. They don't have to be
+all different devices but here is a very, very simple way you
+can share your content just with
+yourself or with three other people. You just, there is a
+UPNP functionality in the router
+and it will just open up and the ports appropriately in your
+routers. If you just have stuff
+and want to get to it from work this is a great way to do it and
+not trust Dropbox or the cloud.
+Since it's your shit on your devices it's free! This is a
+slightly more complicated design
+which I think will be probably the majority of you. This is a
+friends and family model. Here
+you have a router that just does message propagation in the
+center. Very, very lightweight.
+This can be on a phone or on a old Windows box you have sitting
+around doing nothing. You have a
+bunch of clients that can be anywhere and you have some
+servers here. One a Web server
+and one Windows server that does data propagation services so
+when files are uploaded or
+downloaded they are sent through the servers and router is very
+very lightweight. Finally a much
+more complicated network topology of multiple routers
+that are completely isolated
+with multiple servers and multiple different groups that
+all have different AES keys
+because they have a different shared secret. 	Green groups
+have the same shared secret, red
+have different, and purple have their own. We are currently
+working on session propagation
+technology which would allow any routers that opt in to be able
+to propagate the sessions of
+people that are logged in which means you could theoretically
+log into any router and be able
+to access anybody else. This is something that we're working on
+right now, haven't thoroughly
+tested it, haven't vetted security concerns with it but
+it's something in the works. I
+think it's kind of a cool idea. 	And in summary, Albert Einstein
+said "Only a life lived for
+others is a life worth while." I created Demonsaw as a labor of
+love to meet a personal need. I
+want to share it with you because I think it met my need
+and if it meets your need as
+well I encourage you to download it, use it, let me know whether
+you like it or not. If you have
+feature ideas please e-mail me. As Steve Jobs said and one more
+thing, "changing the world, our
+potential is unbound. We possess a tremendous amount of talent,
+we're good at what we do and we
+enjoy what we're good at. We can create something new and
+beautiful that can change the
+world and we can do it together. Demonsaw is a tool that deviates
+from the insecure models of file
+sharing. It is a new way to share content without fear. It's
+secure, it's anonymous, it's
+free and it's everywhere. My name is Eijah and thank you very
+much. You can contact me here
+and Twitter and the website. Thank you. (Applause) 	>> Eijah,
+I have one question for you real
+quick. Can you explain how it is that you are paneling encrypted
+transportation over http?
+	>> We're almost out of time but I'll take a quick stab and if
+you want more information I'll
+be at the cafe. Basically what we're doing is using standard
+http so adhering to those
+protocols and data appears to look just like http. So it's
+basically if your firewall is
+set to allow http content, port 80 or 443, this gets sent but
+because there is no direct
+connection coming into the network there's no issues with
+firewalls blocking incoming
+transmissions because everything is designed from an inside-out
+perspective. If that doesn't
+answer your question I'm glad to go into more detail. 	>> Do you
+have the protocol speck
+published someplace? 	>> I don't but e-mail and follow me on
+Twitter and I'll be glad to talk
+about it in more detail, as well as opensource, I have gotten
+questions about that. I haven't
+had time with development to even think about open-sourcing
+it but it's something that I'll
+definitely think about. If you have some thoughts about that,
+I'd love to hear them. Thank you
+again. (Applause)

@@ -1,0 +1,793 @@
+So Good Morning my name is Nir
+and I'm here to speak a little
+bit about Bug Bounty Programs evolution. Before I begin I just
+want to do a short presentation
+about myself it will be pretty quick. So I'm working as
+security architect for this
+company but it's not related to this talk this is something I
+did before working this company.
+So a little bit research that I've done is about this, that
+and least few open source tools.
+But actually I'm here because I'm trying to show something
+that I've done I'm actually an
+entrepreneur this is a like hair care but different spelling. So
+I just want to show you the
+research that I've done in last three years about bug bounty
+programs. It started actually as
+an academy final project, I thought about a way to create a
+bug bounty program which was
+something that I saw on I-Test but not from the skewed
+perspective but from the IT
+perspective. So ok I thought about creating this bug bounty
+program and I decided that I
+wanted to upload images like at testing environment in order to
+allow this safe bug bounty
+program. But then I realized ok may be a problem if wanted to
+maybe use main frames for the
+testing and then well it may be a problem. So I just decided to
+limited it to a specific scope
+and thought ok may be I'll use VMware I can take VMware I can
+just develop a nice gui and then
+just let the customers kind of upload the images to my
+environment and then they'll be
+able to do the pan testing pretty easily, and to be pretty
+honest cause if someone tries to
+drop the database well it's a test environment so that's easy
+its safe. The problem was during
+this development that I started to develop kind of virtual IP
+addresses which is something
+that amazon already developed so I couldn't go with it, it was a
+paton by Amazon. So I just
+figured out ok if it could be done join these guys but yet I
+just thought about it and if I
+just define a virtual environment per tester that
+would be really great cause
+every tester will have his own environment if you have person
+that takes a test probably you
+won't see it on the other environment which is pretty
+perfect. On the other hand if I
+wanted to create a new environment for the tester then
+I probably will need to pay for
+the traffic for the vm and there's a lot of payments on the
+way when I want to create such
+an environment per tester and by the way, no one promises that
+the tester will find findings so
+I see only outcomes not incomes. And then I met this guy, this
+was my partner his name is Jai.
+And we decided to kind of establish a new company which
+was closed a few months ago. It
+was a pretty nice concept we decided to develop a company
+that does safe bug bounty
+programs which is -- the difference between bug bounty
+programs and safe bug bounty
+programs is totally different and I will explain it here. So,
+I know that that's a failure but
+yet we decided it may be good to spread ideas here and let you
+know what is my thoughts here
+and what can be improved in the future. So, let's start with the
+evolution of bug bounty programs
+or actually bounty hunters. So the bounty hunter, not in the
+visual world let's say the
+physical world, is someone that probably don't want to be
+identified. He's bypassing
+things as a way of life. So all he wants is killers like this.
+They have got Terms and
+Conditions that are fun by the way, through tour you will
+probably find a lot of bounty
+hunters there. And I saw that they really know what they want
+to do. They know where to aim.
+And they also have few things that are similar to the way of
+work that we see today in the
+bug bounty programs. So, I just thought about it, if someone
+tries to kill and he succeeds
+with it he'll get the money, obviously. Or maybe he won't and
+he'll need to kill again. Yeah.
+But yet if he kills someone probably he'll get not only the
+money because that's only one
+time payment, he'll get a good reputation. By the way, if he
+doesn't succeed to kill someone
+probably he don't get anymore reputation cause maybe someone
+killed him. So, as bug bounty
+hunters there are specific targets that bounty hunters
+choose. So, some of them choose
+to kill animals some of them choose to kill kids, people,
+women, politicians, etc. And
+well any killer also chooses what to hack or what to kill
+cause let's say I saw something
+pretty nice in terms and conditions that one killer said
+that if someone just wants him
+to kill a politician that would be fast. Doesn't matter if you
+want to pay more money cause
+that's the way he works that's the way he believes it should be
+done. So that's the physical
+world, so let's keep it on the side because that is something
+old, this is something that
+started a long time ago. But does someone know what happened
+in 1995? Raise your hand if you
+know what happened in 1995. No one? Yeah. Yeah, so I wish I had
+prizes here. You want my iPhone?
+No? [Laughter] It's old. So, yeah Netscape established the
+first bug bounty program. And,
+well -- the first bug bounty program actually was not in
+terms of security it just --
+these guys just wanted to do good QA for their environment
+and they thought ok maybe a lot
+of people will be smarter than 5 people that testing the
+software. So they just decided
+to put the trunk of their development and just let the QA
+to test it. It was pretty nice,
+but I don't think it worked. Well, I'll explain it. That's
+pretty easy. Just putting the
+code there somewhere and the testers went to this code and
+was able to test it and as long
+as they submit findings that was nice. But then comes the part of
+the rewards. Well, someone knows
+what were the rewards then in 1995? Raise your hand if you
+heard about it. No? Ok great.
+So, there's a Netscape polo t-shirt that was nice and a
+Netscape mug that's all, no
+money, just prizes. And you know what? A lot of people did it
+because they wanted a mug with a
+Netscape logo. I know they couldn't afford themselves to
+buy the mug with the Netscape
+logo, so they just got it. So, do you think it was a successful
+story or not? Raise your hand if
+you think it was a success story. All the rest, get out.
+Ok. So, it was a success story
+and I'll explain you why. In 2004, which was following the
+requisition of -- which was
+following the requisition of Netscape by AOL, a newer
+foundation started the Mozilla
+foundation which is something that uses the same engine that
+Netscape used and created a new
+company, Mozilla. So Mozilla is kind of Netscape but an open
+source and well they started in
+2004 their bug bounty program and again it succeeded and
+you'll see the results of today.
+This is something I just found a few months ago when it was a
+result of the Heartbleed attack.
+They just said, hey guys I just signed my software kind you find
+a few vulnerabilities there and
+I am willing to pay a lot for that. By the way they are not
+giving t-shirts anymore for
+that. So I just thought ok we know about bug bounty programs
+and understand that this is
+pretty good idea and yet I just want to share with you the
+perspectives that business
+thinks about and then what a bug bounty hunter looks in these
+programs. So let's start with
+the business. I just decided to just leave the perspectives to
+three. The first of them is the
+technology perspective let's say from the technology perspective
+probably I will need to handle a
+lot of traffic cause hackers, they don't use one thread. They
+don't need to use one thread. So
+probably they'll use ten threads or more it depends on the amount
+of tools they have and how
+strong their computer by the way. And then obviously when the
+customer or the business will
+receive this traffic it may be effect on the performance and
+obviously it can do a lot of
+other things. So, maybe these companies need to upgrade their
+IDS or IPS. By the way this is
+the one that just barks, right. This is something else, this can
+bite, this is the IPS. So this
+means that I will need to upgrade my machines in order to
+stop any attacks from various
+sources and this will probably be done on the production
+environment. On the other hand,
+maybe I have a WAF so again I need to pay a lot of money to
+get a stronger WAF. So that's
+the technology and it can be solved by money, not easily but
+it depends on the size of the
+company. And then I was just thinking about the operations.
+Ok, so we have the operations,
+we have the bug bounty program and then the question is how do
+I manage incidents? Well if
+someone tries to do -- how do I manage that? If someone tries to
+drop my database because he just
+found a pretty nice Sequel injection. Well could be a
+problem because I need an
+incident response team. And sometimes in small, medium
+businesses they don't have an
+incident response team. So if we go to the enterprises the big
+ones probably it's not a
+problem. But if we go to the small ones, well they just need
+to think about maybe engaging a
+third party company to do this for them or maybe someone can
+supply that for them as part of
+the service of being a bug bounty program. So this is the
+first problem, but the second
+one is gonna be different because I know that I'll have
+bugs because someone will
+finally find something there. Obviously hackers are pretty
+good. Mainly if there are a lot
+of hackers that try to find bugs there. So, I just thought about
+it, maybe I should manage it as
+part of my change control system. Yeah. And that means
+that all the developers in the
+company will be able to see the bugs. That's not good cause they
+can sell them pretty easily. So
+maybe someone that can supply this bug bounty programs can
+also supply me a bug bounty
+management system. Which is pretty good if it is secure
+enough. And obviously this is
+something that should be managed somewhere in the cloud unless it
+is proprietary development. So
+that's just a problem. So, I just thought about another
+thing. And this is something
+that one of the customers that I worked with, asked me. You know
+what, no problem I'll get you to
+do bug bounty program, but what happens if someone just harms my
+business? What then? Who should
+I sue? Well, there are bounty hunters. How will you sue them?
+You can't. So probably you will
+sue the company that engages these bounty hunters. That's a
+problem, no one wants to get the
+liability on that. And by the way I am not familiar with a see
+saw that will want to go home
+because someone just harms his business and there's no one that
+he can sue in case of something
+or in case of breech. So, let me just split the bug bounty
+programs into two. There are
+self owned bug bounty programs and there are external bug
+bounty programs. If I talk about
+the self owned, well there is a lot of companies that just
+created their own bug bounty
+programs for themselves. And you can see a pretty nice list here.
+And by the way, if you want
+there's pretty much a more extended list on Bug Crowd
+website. So, this is just an
+example. And the other external are actually companies that
+actually provide the service of
+creating a bug bounty program. And I am not sure if I posted
+all of the companies here but I
+saw a few logos here, raise your hand if you are from an external
+company. Yeah, so there is a lot
+of people here. Pretty nice. So let me just explain a little
+about the external companies
+because the self owned are the ones the enterprises can't
+afford themselves. The self
+owned are for the rest. One of the things that I saw or one of
+these companies, the external
+ones, that these companies can actually build an A team, they
+can build an elite team of Pen
+Testers. And that's pretty good because the elite team probably
+will be better than five other
+Pen Testers because probably will fell engaged to the
+company. I know that you trust
+this Pen testing company, but yet there is only 3 to 5 people
+of my team that does this Pen
+Testing. On the other hand, when the external company builds an A
+team, that means that this
+company can trust these hackers. And then they can feel more
+comfortable when actually
+engaging them to do Pen Testing because as I said no one wants
+to be sued. The next thing that
+these external companies do or part of them, the actually
+verify the identity of the
+hackers. Because, well I need to know who's the hacker behind all
+the testing there. Because if
+something happens I want to know how to reach him. So there are a
+few ways to do identity
+verification. First of them is pretty easy, just register with
+your email but it can be ten
+minutes mail, but yet someone can register. On the other hand,
+I saw one company, I think it
+was C-nack that actually identifies with a real ID,
+identifies these users and that
+means if someone do something wrong, he knows that they have
+his ID. And that's pretty good.
+The next thing that external companies do is a search -- is
+actually the kind of meeting
+place where -- meeting place is not a new concept. But yet if
+you have a good meeting place
+with a good blog and a good community probably you'll be
+able to get better testers. So
+if you get better testers I suppose that this company can be
+-- can provide better services.
+So this is one thing that this company do but if you have
+already a meeting place,
+probably this company -- by the way this is or -- the way to do
+it. This company should be a
+middle man. That means that if someone pays for a bug they do
+kind of revenue sharing so if
+someone pays I don't know 500 dollars for a bug, let's say the
+company pays 500 dollars, then
+probably this external company will take a specific percent of
+it as a revenue and will leave
+the rest of it for the hacker. The majority by the way should
+go to the hacker. Another thing
+that I saw in these external companies is also a nice idea is
+the traffic shaping. Traffic
+shaping is like let's say using a private VPN, when using
+private VPN to connect to
+websites and then to test them, well, if you've already
+identified the users then I can
+actually verify their identity by using a VPN. On the other
+hand, a VPN is not the only
+solution that can be done here. I for instance did something as
+URL authentication. I won't
+provide the solution here but just think about it and probably
+you will get to the solution
+here. So there are a few benefits and concerns from a
+business side when you decide to
+go with the bug bounty programs. I just want to begin with the
+benefits. The benefits that --
+first of all they have very payment models they don't need
+to pay a fixed price all the
+times as they do with a company. Unless they want to do a
+competition which is a pretty
+nice idea. So they have various was to give something additional
+to the testers. So, money is one
+of them. But hey, most of the testers want to be on Google. So
+they have a wall of fame which
+is pretty nice idea probably you will see a lot of them. And
+there are obviously a few
+prizes. But the thing is that a hall of fame, let's say Google,
+you go to Google and you know
+that the hall of fame is only for Google. But for the external
+companies the hall of fame is
+not only for Google. The hall of fame is something much wider, it
+goes to all of the websites that
+the tester tests. So it can be good for the testers, they try
+to go wider but it's not that
+good for the tester that just has the mention to let's say
+test only e-commerce websites.
+So I just thought about it and maybe a few promotions can help
+here. Let's say that this
+external companies can so ok I have the hall of fame for all
+the websites but maybe I should
+just create a hall of fame per customer. And then the one that
+tests only e-commerce websites
+will be able to get recognition on it. Another thing that can be
+done as part of this program is
+that, well if someone just gets into the hall of fame of a
+specific customer probably this
+customer will want that these guys that are in the hall of
+fame will test them again
+because in the beginning probably you will find technical
+things but as long as you test
+more -- a specific platform you will understand the business.
+And when you understand the
+business it's much more easier to find bugs. So if you have
+already experience with one of
+the customers probably you want to pay them more to get back.
+So, this is not something that
+the external companies should do probably I believe that
+customers will want to get these
+promotions but yet it is a pretty nice idea. The next thing
+is a pretty good benefit because
+as I said a thousand hackers are much better than 5 and the
+customers get a real world
+hacking scenario in this case. Accept the fact that they have a
+real world hacking scenario, a
+company that writes that they have a bad bug program probably
+can be pictured as a leader. And
+why am I saying that, because if you're not mature enough you
+won't put a bug bounty program
+or if it's not early enough during the development stages.
+So, if I am just putting in a
+bad bug program that means that I know that I need security and
+I want the best security. Not
+only from one company but really from the majority of the
+hackers. On the other hand,
+there are a few concerns. Let's say that the first concern is
+well what should I test? Should
+I test the production, should I test the testings, staging
+environment, who thinks that the
+better way to test is the testing environment? No one?
+One, ok. Who thinks the
+production is better? And the rest? No thinking, or what?
+[Laughter] Ok, so the testing
+environment has a benefit. For instance if someone drops the
+database it will be only on the
+testing environment. On the other hand, no one can promise
+that the testing environment or
+the staging environment is similar to the production and
+that means that not all high
+risk vulnerabilities can be found. Only the specific ones
+that just developed now. The
+best example here, just using SSL I can use not trusted
+certificate on the testing and
+then just putting something trusted on the production
+environment and then I will need
+to pay for the hacker although it's not a vulnerability at all.
+The next concern is actually
+data leakage. Let's say we go to the production and then we have
+credit cards on the website.
+Wait we have credit cards? We have bounty hunters and then we
+just need to calculate. I have
+100,000 credit cards on one hand and I have $500 price. What
+would you choose? I think that I
+would go with the credit cards. That's better. Another thing
+that is pretty much a big
+concern is denial of service. Well that's pretty obvious
+because if you have a lot of
+testers and it goes to the production environment it is
+feasible problem. Next one is
+the way we detect Blackhats. Because let's say that we have a
+bug bounty program and we have
+our perimeter and that's pretty nice. But then we're exposed to
+all the good hackers and the bad
+ones and the thing that we don't want to happen is this. Well
+this is Facebook, by the way
+it's a screen shot from 157 -- raise your hand if you know this
+website. Ok. So I'll just
+explain shortly, this is a website that you can find a lot
+of exploits there and for part
+of them you need to pay. So you don't want to get posted there
+because the hacker can post the
+vulnerability there and get a little bit more money then he
+planned to get as part of a bug
+bounty program. Ok, so that's another concern what happens
+when there are too many bounty
+hunters and then not all of them really understand security. So
+let's say that something that I
+got from one of the companies, that they have a lot of hackers
+from let's say India, no
+mentions to harm anyone, but these hackers sometimes just try
+to post bugs that are not
+security bugs. For instance the CSS here is not working. This is
+not a security bug. And someone
+really thinks he will get money for that? Not really. So the
+problem here is not the posting
+of the bugs the problem here is who verifies that. I can get
+thousands of bugs of CSS and
+cracked CSS and then I need to spend my time as an external
+company to verify these bugs and
+if I am not spending this time probably the customer will have
+to spend this time to verify CSS
+bugs, well it can be nice because we have another QA team
+but that's not the purpose of
+this bug bounty program. So there is something nice that I
+saw on Bug Crowd's website they
+actually see what customer -- see or are given identification
+from the customers that they
+say, hey guys we have performance issues just notify
+the hackers that they need to
+stop. Yeah so they are sending mails and notifying the hackers
+to stop. Most of the hackers
+will stop so that's kind of a good solution. Maybe it can be
+better but this is pretty good
+solution because if let's say we don't have an external company
+it will be hard to identify the
+users and then send them the mail because we don't know who
+tests us. The next one is kind
+of minimizing the exposure time let's say that we found
+something as a hacker on the
+website and now obviously we are posting it but then maybe the
+hacker posts it in other
+websites so how can I be sure that actually someone will stop
+this attack. So I can try to
+prevent somehow zero days by just not publishing it
+somewhere. But yet the company
+needs to identify that there's a specific time that they have to
+fix the issue and if they don't
+fix it, probably the hacker will want to publish it. So, these
+are the perspective from the
+business side but let's look at the bug bounty hunters and these
+guys are obviously the most
+experienced people in the world because they tired from working
+only on their day job they just
+want to find the next thing. So they are just looking for bugs
+in these companies that allow
+bug bounty programs. But a small problem that we have here is
+that it is a little bit hard to,
+to classify these hackers because all of them are equal
+and we don't know which hacker
+is better and then well, I'm just competing with other
+hackers and why is that because
+they just write that they have 80 years of experience although
+they have 8 months of
+experience. So this is not exactly fair to work with a
+variety of Pen Testers, but
+that's a fact that everybody should work together. So, I just
+thought about the motivations.
+Well actually I not only thought about it I just interviewed a
+few hackers and I tried to
+understand what motivates them to do bug bounty programs. So
+the first thing is pretty
+obvious. Yeah. That's what we all want. But with dollars.
+Yeah. The next thing is
+prestige. Hackers want to be the ones who identified as the best
+hackers of a certain bug bounty
+program. Let's say hackers want to be on Google, Facebook,
+Paypal and hackers want to be
+the best of -- excel at a bug bounty program because that
+means that they have experience
+in various websites. Not only specific websites. And this is
+good because I think that if
+someone looks for a name on Google they probably want to
+have more than ten pages in
+Google and this can lead to this. The next question is,
+which one of you likes gaming?
+No one? Ok, that's all? Only half? Ok. So, hackers, most of
+them like gaming. And since they
+like gaming, if you combine gamification into these programs
+it will be much easier because
+let's say you have ranks you have kind of Kings and new born
+hackers and then you can give
+ranks to them that would be pretty nice because they will
+try to get to the King hacker.
+And they won't stop until they get there. And until they get
+there probably you invent
+another ranks. So that's good it won't end anyway. On the other
+hand there are a few
+frustrations on these programs. The first of them is something
+that I did a little bit more
+than a year ago, or less, less than a year ago. I just found
+something on a company's
+website, well it wasn't the website it was on their
+messaging system. And I decided
+to post about it not because I just wanted the money because
+this company -- not giving
+money. I just wanted to post because I'm using this service.
+And then I posted it. And I
+asked them, guys what's going on? I want to publish it, yeah,
+I just want to be on Google, but
+guys tell me what is happening. And they are not transparent
+enough they just need the
+hackers to ask them every time just pulling data for them.
+What's going on, are you fixing
+it? Because no one wants to be bad. The hackers want to be
+good, but yet they don't have
+the patience to wait for that whole time. >> Keep going. >>
+Yeah? [Applause] >> Wait another
+thing is the fact that no one really knows when bug bounty
+program stops. They can just
+post something on a HTML page, they can say hey guys just stop
+testing me. I know that you
+don't see the status so I just decided to bring it on to you.
+So you can see that the bug
+bounty program object changed to cancelation that's something
+from Paypal's website. Dam. >>
+Hey, it's really hard to get accepted at Def Con. Some love
+for our first time speaker.
+[Applause] >> To DefCon! [Applause] >> Nice Job. >> You
+have more? >> Yes we do. Do you
+want another? >> Go ahead. [Laughter] [Applause] >> I'm
+sorry the first one is free.
+[Laughter] >> What about you guys? No, what about you? Can
+you drink? >> I'm sorry don't we
+appear to be drinking? >> Maybe you are. >> It's five o'clock
+somewhere. [Laughter] >> To Def
+Con again! [Applause] >> Carry on. >> Give me another bottle.
+[Laughter] >> Ok >> You're cut
+off! [Laughter] >> Ok >> Speak responsibly. >> I can't. So,
+this is one of the problems that
+we have here. Because no one really knows when bug bounty
+program stops and then, I can
+post a bug as a hacker but then no one can assure me that I will
+get the money from it, this is
+one thing, and worst case someone can sue me because I am
+testing the website although
+it's prohibited. So I have a case study, I understand that
+these guys -- Orin maybe in Def
+Con so if Orin is here, this is Orin. This is the case study
+that I got from his website.
+[Clapping] >> Yeah, you need to pay me cause I am publishing
+you. So this is something that I
+got from his website. Orin is a bounty hunter and he found
+something on Google he just
+exposed the way that he can get emails on Google you know
+addresses. I just don't want to
+get into the details of it because you can probably find it
+on his website. But then he
+posted it to Google and the first response was denied
+because it's not a risk that's
+what Google said. But then he posted it again while explaining
+them that this is a real risk
+and they just decided to reward him with $500. As a result of it
+I just started to look at the
+title of what you've done and I saw -- well I stopped at page
+three on Google with virus
+websites just posting how bad it is, because he really found
+something that can cause a lot
+of losses for Google. I think someone just calculated it to
+more than $1,200 -- $12,000
+sorry. And it's not really much money but then the PR would be
+bad for Google if someone finds
+that. So that's just a case study of someone that I believe
+-- I didn't get this feeling
+from him but, I believe it can be a little bit frustrating.
+Another thing that can be a
+little bit frustrating for testers is the fact that someone
+just records what they do. Let's
+say that I am a hacker I have my specific knowledge that's my
+added value. I don't want that
+someone else will log everything I do. And if he logs maybe his
+purpose is to replace me at
+certain -- certain time of the testing. That's the way by the
+way of developing security
+tools. Because they learn how hackers work. But no one wants
+to be the one that just everyone
+knows what he knows. There's the way that hackers get money. So
+those are generally the things
+that are related to the business end for the testers. But I am
+here actually to explain to you
+a little bit more about what I can see in the future about bug
+bounty programs. And well, I
+think that we need to change something. And I am not saying
+that it's something that should
+be done by all the external companies, I am just saying that
+this is a conceptual thing that
+should be done. So one of the things that I believe that
+should be done for testing
+purposes is actually the fact that these external companies
+should be like front end server.
+And that means that if someone tests during testing, a front
+end server should control a lot
+of things that I will explain here and then the benefits are
+that the front end server knows
+exactly who are all the testers. And on the other hand if the
+front end server wants to log
+something about the hackers probably he will be able to do
+it and then develop the next
+product. I know that this is bad for the hackers but this is good
+for business. So I just thought
+about how to minimize the security risks by creating bug
+bounty program and I thought, ok
+if we'll allow Pen Testing and then prevent the malicious
+exploitation it can be nice. But
+hey I can't put a WAF there cause a WAF will stall the Pen
+Testing. Obviously. So this is a
+pretty good challenge. If someone tries to do that because
+there is a lot of fine tuning
+that should be done here. But yet, that is the idea. So if we
+just try to minimize the risks,
+I think that we can start with data leakage, that's a pretty
+good example because we said
+that this is one of the concerns that business have. And we want
+to take one step further here so
+if we have a front end server we can kind of do deep pack
+inspection and actually see what
+is going on there. So if we are able to see what's going on
+there and we can validate using
+a regular expression how actually credit cards look like,
+we'll be able to stop data
+leakage. And it can be done on credit cards, social security
+numbers or anything that can
+work with regular expressions. What I've did then when I had
+this middle server I actually
+created a page. This page actually was kind of replace
+response for the hackers that
+says hey man you found something! Congratulations! The
+token of what you've found is
+this one. Please post this token with your name and you'll get
+rewarded for that. Obviously
+someone will need to validate it. But yet the hacker won't be
+exposed to credit cards. And
+this is good for the business. It really minimizes the risk.
+Another thing is the fact that,
+as we all know, organizations can ddos. So if we have front
+end server -- I'm not saying
+that front end server should be a ddos prevention product but if
+this product can somehow use
+another ddos protection server it could be pretty good because
+the websites won't be effected
+by ddos. The only ones that can be effected by ddos is the
+external company. Another thing
+that I just got an input from one of the customers that I had,
+he asked me, you know what? I
+want to upgrade a version of the website and I am really afraid
+because this is the production
+and I don't want the hackers to be able to test me while I am
+just upgrading the version
+because bounty hunters are from all over the world so an IT job
+is not exactly an IT job right?
+It's 5am somewhere. So there should be kind of an on off
+switch for the testers if
+someone wants to do upgrades or any other maintenance things on
+the website. And the concept is
+pretty, pretty simple. The testers doing their job or just
+stopping their job using the
+front end server and then when finishing the testers can
+continue to work. Next one is
+actually we said that someone can exploit something and then
+report it somewhere else. So I
+was just thinking if we have the front end server and we are able
+to log the attempts that hackers
+have, probably we will be able to identify part of their
+attacks, the malicious attacks
+or at least the ones that are not false positives. I know that
+-- it's a great challenge to
+find not false positives. But yet, if we are able to get it,
+let's assume that in order to
+minimize this risk we'll be able to create a WAF rule and then
+the customer can just -- with
+the code fixing. But for now we can just supply him a WAF rule
+and then, let's say he goes with
+an open source WAF, multi security and then we're just
+generating a multi security rule
+and that's all. Fix the problem. And by the way, if this front
+end server has a WAF by itself
+we can do something even better. We can actually allow QA.
+Because we can apply the patch
+on the front end server and then let the testers just test
+everything and add the QA team
+and then probably would have a pretty good QA testing scenario
+and we would see that we don't
+have bugs and take this rule from the testing environment to
+the production which is also
+pretty awesome to have already imbedded testing environment. So
+how do we really -- can identify
+Blackhat hackers. As I said we need to somehow allow Pen
+Testing and prevent malicious
+exploitation. So I just decided to give you a few examples of
+what is legitimate and what is
+malicious. Let's say this kind of Sequel injection is pretty
+legitimate. Next one is also
+legitimate. All of the selects are -- most of the selects are
+legitimate. On the other hand,
+if we go with the malicious Sequel injection that's pretty
+nice. Yeah, especially on
+production. [Laughter] Yeah. It's even better if you can drop
+the backups. So this is one
+second thing that maybe may include invasions. So that's
+kind of other way to do it. And
+the last one shows that just selecting data is not only
+something that is legitimate but
+selecting data can actually select a file from the file
+system and then it can be
+actually malicious. So there is a lot of fine tuning that should
+be done in such a front end
+server and it's not a WAF. This is something that is much wider
+than a WAF. Because WAF will
+stop all of this payloads. Or at least should stop all of these
+payloads. So the problem is that
+we have Blackhat hackers and somehow we need to ban them from
+the system because we don't want
+them in the system. So the way to ban them is by just using
+authentication. If we know who
+they are and they already registered to our system then
+probably we will need to
+identify them. It can be done through ID, it can be done
+through as I said VPN, URL
+identification or other creative methods. All of you security
+guys will probably find other
+ways except the ones I just mentioned. So if I am thinking a
+little bit forward. I think that
+not only hackers should be in bug bounty programs. I think
+that if we just engage in other
+people to the bug bounty programs it can be even better
+because for instance let's say
+that we have attorneys. The attorney probably won't find
+Sequel injection. Obviously the
+attorney doesn't know what is Sequel injection unless someone
+learned to be an attorney and he
+is a hacker which I don't think there are people here like that.
+But yet, the attorney can find
+incorrect terms and conditions on the website. And this is
+pretty nice. This is a pretty
+short test and if he finds something he can just report the
+bug which is a business bug it's
+not exactly a technical bug and that's nice. Other things are
+also a business analyst which
+can test the flow, test the flows that we have in our
+application. And sometimes the
+flow can be incorrect and obviously I am talking about
+security analyst and I'm not
+speaking about kind of product analysts that don't understand
+security. So I'm saying that
+when we have bug bounty programs probably we will need other guys
+except the technical ones to do
+the job and we will probably need to involve them in other
+ways. I don't have the
+properties of all of these characteristics but we will
+probably need to understand what
+it means but -- yet it is a good idea. So just to sum it up, I
+just think that the bug bounty
+programs is a great idea. it can be done through internal or
+external program. The external
+ones as far as I understand up to now are pretty good. And I
+think that we will find a lot of
+these programs in the future. But yet, if I'm thinking about
+the business perspective and the
+one that really wants to defend his organization and don't want
+to go home because someone has
+breached, I suppose we have a long journey in front of us to
+fix all these risks or at least
+part of them and then we will be much safer. And if you have any
+questions there is time.
+[Applause] >> Thank you.

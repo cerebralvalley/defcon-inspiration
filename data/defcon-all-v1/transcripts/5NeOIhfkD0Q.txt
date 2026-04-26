@@ -1,0 +1,779 @@
+>> : It's DEFCON time. Yeah, all
+right. This is secure because
+math a deep dive on machine learning based monitoring. So
+please join me in welcoming Alex
+Pinto. [Applause]. >> : Thank you guys. Glad to see you all
+here and just before we start I
+just want to ask for all of you that are from the internet and
+you like to do the Twitterings
+we have a hash tag for the talk so make sure when you make fun
+of me you hash tag it or
+something like that because I also do want to laugh. I
+actually check Twitter while
+you're talking so I can read the funny stuff you are talking
+about. But anyway thank you so
+much. Let's get started. Just a little about me. Chief Data
+Sciences. The cool thing about
+doing your own stuff is that you can just make up any title that
+you want. I've pretty much been
+doing machine learning research learning and training for a
+while now and just for anyone
+who is interested in this subject I found out machine
+learning training is different
+from Pokémon training. I might have got the wrong brochure or
+something but anyway... You guys
+might enjoy it. Anyway I'm focusing my research on national
+security and a little bit of
+response. As a child I never wanted to do that again so I'm
+trying to figure out a way where
+we have to do less or maybe do it in the more smart way.
+Anyway... If for some reason you
+think I have something and you need an attribution from me I am
+Caffeinated Capybara. All right.
+Let's get going. Anyway I want to talk about what is upcoming,
+security singularity later
+because of all the amazing products launched. And I just
+want to make sure that I give
+you some context, specifically about the messaging of, I
+obviously don't know precise
+detail technically what these companies are doing, it's secret
+and saucey. It's so secretive
+and stuff like that but I can guess based on their marketing
+materials and I just wanted to
+break down for you what I think that those people were doing and
+if that's what they are doing.
+So maybe these are the questions you should be asking them
+because this stuff is hard. I
+mean honestly math is hard. And there's a lot of potential
+pitfalls and a lot of kind of
+due diligence in your experiments and I just really
+want to spend quality time
+together talking about math here while we can try to decode a
+little bit. Anyway... Let's get
+going. So I specifically would like to thank all of you because
+you guys are on vacation now.
+Nobody has to work anymore and you guys actually are coming
+here to see someone talk about
+security singularity. Why. This has been solved for a while now.
+It's sad because the guys that
+did this network security thing have nothing to do with machine
+learning. I thought this was so
+amazing I had to put it out there. Maybe she should persue
+machine learning products
+because that would make it even more awesome I think.
+Anyway... Of course you kind of
+get the point where I'm coming from. Before I continue I just
+want to make a quick side note.
+If you ever do a Google images search for network security
+solve, Jack Daniel was the first
+hit. That's branding. I'll tell you that man. It's just amazing.
+I wish I was  okay, who knows
+maybe Pokémon will train us some day. The point is there's a lot
+of confusion. Right? And this is
+understandable. There's always a lot of confusion about specific
+technologies we're working on.
+We're always like for some reason there's a cycle where we
+stop trusting and we start
+looking for new so people have to come up with new stuff. And
+the point is that I'm frequently
+being asked a bunch of questions because of the kind of work I'm
+trying to do. Hey I'm talking to
+this guy and he tells me he's doing the math or something like
+that. Can you help me out and
+try to understand? I'm not talking about someone at the
+street. These are people who
+have been doing extensive product research or have been
+actual running security programs
+for a while. And they are failing to grasp, it's a pain to
+grasp what the hell the
+companies are doing. It's almost like, you know, there was some
+sort of marketing employ to make
+it kind of obscure to make people think it's better than
+then it is. I'm not saying that.
+But maybe you can argue the point. And I think that's kind
+of bad for everyone. Right? And
+this is pretty much the point I'm coming from here. By the way
+is if any of you ever want to do
+a big data presentation there's this big data fix tumbler. So
+waves with bits. Best data ever.
+But anyway  no. I'm here to teach something. Right? If you
+pick something out of this talk
+it's the data fix tumbler. Anyway I guess my point is are
+we even trying to explain what's
+the security. You guys know that like if it's more than 3 you're
+already hyper right.? Artificial
+intelligence. It's like the third level of the matrix. What
+is that? I mean honestly. It
+kind of gets to me because  I mean isn't enough to go to the
+cyber wars and things like that.
+Do we have to scare people? I mean... Yeah. And I wasn't able
+to find  I don't know if I
+dreamed about it or if it was a company but I think it's
+perfect. It's exactly that. It's
+secure because of math. Math. The point, okay. This is hurting
+us. Right? We are unable to
+differentiate the products. The investors have no idea they're
+funding stuff. Oh I have this
+security magic there here, okay here is $10 million. And the
+point, it's like we're not even
+sure it's the same words yet in many levels and things. And I
+mean I don't know about you
+guys, I don't have a lot of time to waste. I don't want to be
+like beta testing a bunch of
+this stuff. I want to make sure the people that are trying to do
+the research or work I can have
+some way to identify more easily if what they're talking makes
+sense or not. I have people
+argue to me the point that it's all about communication really.
+Right? If you get the people
+from the technical side of things, right, and they try to
+explain  [Laughing]. Come on
+guys I have to keep a straight face here. And they explain to
+the marketing field. This is
+what we do. So we're actually working on this big selection
+process ... No. No. No. That
+sounds advanced. Yeah let's go with advanced. So maybe it's
+that. Maybe I'm being unfair.
+Maybe there's a lot of very different good stuff happening
+under the hood but I sure as
+hell cannot figure it out. Right? By reading what they're
+doing. And anytime we try to get
+a little closer it's like no, no, no. That's the secret sauce.
+It's like someone telling you
+honestly my perspective is like no, no, no I'm using this
+proprietary crypto algorithm. To
+a point it's that. So let's do an exercise. I want you guys to
+guess the year when this was
+written. So I will make it more simpler because there's not like
+there's going to be a lot of
+interaction. Of the 3 which one do you think was written like
+today or like 2014? I would like
+a show of hands for number 1. Okay there's like very, very few
+people. Show of hands for number
+2. Show of hands for number 3. Okay it looks like you guys
+don't like to play a lot of
+games. There's no right or wrong least all these suck so don't
+worry about it. Anyway... The
+first one is actually from 10 years ago. I don't know if
+there's any ISS bugs here. Guys
+released a product and I used to work for one of the largest
+integrators they had in Latin
+America. It was like the hugest thing, we sold a bazillion. We
+never could get the shit to
+work. I don't know maybe it was just us but... If you go to  the
+middle one is actually from this
+year. I'm not telling you who it is but you can do research. And
+the third one is actually when
+it gets interesting. It's actually from 1995. It's from
+actually some research that is
+being done  University research and they created a product
+pretty much like it was right
+there. That sounds very familiar. Right? And there's
+this woman, Dorothy Denning, a
+respected professor at the graduate school she did the
+first paper that came up with
+what the IDS should look like in 86. Okay there's two parts of
+this. One is it's a rule based
+engine where we have signatures and the other will be an anomaly
+detection engine that will help
+pick up the stuff that we don't have signatures for. Maybe this
+will give you a hint. Let's keep
+people informed that they shouldn't trust this part as
+much as that part. So 86. And
+anyway they actually built it out to the intrusion detection
+expert system. I think people
+drop the E because too many letters, too confusing. But the
+point I find funny actually is
+that from 95 was perfect colleagues all males stole her
+work and made it like the next
+generation idea. The next generation has been for a while
+here. So anyway let's get with
+the times. Right? And the point  everything changed because of a
+3 letter acronym really. So
+there was a 3 letter acronym that did something that was very
+significant for information
+security and that actually changed the way that we do
+research and we do a lot of
+things. It's probably not who you're thinking of. It's the
+KDD. It's actually a program 
+program? It's kind of a research track or conference from ACM and
+guided by DARPA, because you
+will probably never need another signature engine. Boy were they
+right. And they decided to start
+funding and creating data sets that people could use. So they
+had their own data sets which
+was focused on user anomaly detection. Man I'm talking like,
+soloris whoa. This is what the
+specific organization looks like for like 6 weeks. Let's see if
+you can pick it up here. It was
+a great success. It was a great success in the sense that a lot
+of people started using those
+data sets for research and there was nothing previously there
+that people could reliably use
+and repeat. So a lot of the research was based on this and
+they used this to actually try
+to improve their algorithms. I mean at first it's okay but
+after a while if you go through
+this  I mean it's like one bazillion in 99 and as you go
+across the years it looks like
+everyone is trying to warm up. The other one I got a little
+better percentage the data set
+and that's fine. I don't know what the fuck they do there but
+what bothers me is that if you
+do a search in Google today there are 300 papers in 2014
+they are still using this 15
+year old data set to come up with conclusions with what is
+good you know what is bad and
+what is promising in anomaly detection. I mean, I have no
+idea what exactly is the
+modifying information based selection but don't do it in a
+15 year old data set. I'm pretty
+sure things have kind of evolved, things are kind of
+changed. Right? And I understand
+that there are limitations. Right? I understand the
+reproducibility thing. For some
+respect I'm going to get to that but I want you guys to think
+about this. I want you guys to
+think about this. If you were going to med school and you're
+going to learn anatomy and all
+that you have to go for is this picture of Rembrandt. Right?
+Granted the human body hasn't
+changed that much. Right? But it's like hey professor what if
+we cut a fresh one open? That
+would be a privacy violation. Okay I'm not advocating like
+unlawful sharing but I'm pretty
+sure we can do better than public data sets right now. I'm
+pretty sure there's enough
+people interested in this that we can generate more stuff that
+people can use for this
+research. Right? And a funny side note is that actually there
+was a professor that was pretty
+much in 2000 raving about, okay, guys this was a bad identify.
+The data sets actually sucked.
+They are not representative of what should be going on and he
+was raving about reproducibility
+because, yeah, I mean it's not clear what technique these guys
+are using. And they are like 
+like they like to one up the other one. They have a point
+percentage improvement so it
+doesn't seem like we're having success here. That's pretty much
+how everything works in academia
+but I don't know. It's like for me it's mind blowing and people
+talk a lot about potential
+disconnect from academia in some instances. Why are we using a 15
+year old data set? I don't know.
+Maybe it's a joke. Maybe it's like if you're researching this
+stuff you actually have to go
+back to 1999. I'm not here to bash them. Right? They're all
+very scary people. Right? Yeah
+man. You should meet my friend Kyle who is a math smuggler. But
+anyway I just want to put you in
+the mind set. Right? You've done your research and let's assume
+for a point that I'm making up
+unnecessary fun of them and you have this publishing protocols
+and everything which you had to
+try to focus to do specific data sets. What I think could
+potentially happen, I'm not sure
+if this has actually happened before but I think a potential
+outcome from something like that
+and with apology to the guard life cycle I think the guy will
+get to grad school. Right? And
+he will be like, he will go there and go to the party and
+everybody would be like turn
+down for math. You know? And then they're going to come and
+it's like man I got this sweet,
+sweet data set. You guys want to have a look? You know? And he
+looks at the data set and gets
+hooked on it. Okay maybe there's interesting stuff in the data
+set. Let's do research. Low and
+behold he gets a bunch of results. These kind of things we
+talk about in machine learning
+is called over fitting which is pretty much that you know a data
+set so much inside out that
+you're actually writing instead of doing machine learning you're
+writing a program to exactly
+parse the data set. Right? And it's a very  it's a very real
+problem. It happens all the
+time. And it's one of the reasons why in model design
+you're always like okay just get
+random stuff. If you don't know want to get, get random stuff
+because it doesn't have an
+immune system and you need to try to keep it on its toes. And
+that's the point. The guy
+publishes a bunch of papers then goes to his business friend and
+they're like oh my God you're
+going to be rich. Right? The security field is so hard. And
+then they go and they actually
+get customer data. I don't know how they actually convinced
+these guys. And we get to the
+results, you know? I was expecting this thing to be
+awesome. Right? But then when I
+tried to realize data it's something that doesn't look like
+it's going to work because
+you're actually training a very biased and very weird kind of
+model then you actually expose
+it to real life data. It doesn't know what to do. What ends up
+happening in my belief, right,
+is that people start, okay, let's not do this math thing
+anymore. Right? The guys get
+frustrated. The business guy, like hey bro we have to make
+some dough and yeah, okay let's
+do people or something like that. And low and behold math is
+hard. Let's go shopping. By
+shopping I mean selling. Right? I don't know you become general
+consulting company. You do
+response for people. But then that thing you said you were
+going to do specifically about
+machine learning is not actually what you do anymore. For some
+reason it still lingers in your
+marketing materials. That's not who you are. Right. I maybe
+sound a little too righteous. If
+you get money to build something and you don't, you are going to
+fail. I'm sorry... Right. What
+do I know? I mean there are these guys that are filthy rich.
+I had to think this morning if I
+was going to take the bottle from the mini bar. But the point
+is, guys, I'm pretty sure you're
+successful and doing great work but let other people play with
+the ball in a sense. If you're
+not doing machine learning don't crowd your marketing materials
+with machine learning because it
+gets people confused. Right? There are people who are
+actually trying to build
+programs. There are quite a few startups. And I don't know if
+the worst part is them or the
+guys that are like hey, machine learning we should put that in
+our brochure. It's like yeah we
+deliver lemons by bicycles with machine learning. How does that
+work? But I mean I'm pretty sure
+you guys would be able to figure that out. I mean those two
+different types of companies.
+Right? There is a sweet spot. But there are people; ain't not
+like I'm talking about myself. A
+bunch of people that are doing research. What I'm trying to do
+now for this next part of the
+talk is to go through a little bit more technical about if
+people are telling you about X
+this is probably what they're doing and what are the potential
+pitfalls. I want to start with
+anomaly detection. Anomaly detection is kind of interesting
+for me as a solution to
+something because when you are doing machine learning research
+when you're doing modeling when
+you're trying to figure out what you're going to train and
+predict against, alomaly
+detection like stuff I'm pretty much talking about the
+clustering, I'm talking about
+decomposition, it's actually very, very important for your
+exploratory phase because you
+just got a bunch of data and you have no idea what it looks like
+and what's the shape of it and
+what you can do with it so we start asking the computer like
+questions. Okay is this weird in
+some way? Is there a normal thing going on here? And then
+you use the feedback that the
+model gave you so you can actually design something that
+could potentially work. Okay.
+And so my point is the kind of stuff you do you would have no
+idea what's going on and it's
+weird for people to say we're doing anomaly detection. You're
+like what? What are you actually
+doing? What is normal? What is weird? I mean what's the
+measure? What are all those
+different things? And to be honest this actually works very
+well for when you have a very
+well defined process. Right? So this is a factory, you're
+putting together bolts, right?
+And you want to measure if the bolts you're pumping out from
+your bolt making machine,
+however it's done is not like too big or too small. It extends
+to that standard that you want
+to do. They know the standard and you have an effective way of
+measuring that. And even so when
+you check your balance, it actually still works well. A lot
+of historical work has been
+done. It's way more complicated than that now but historical
+work was based on this. How much
+was this guy standing and has he just been to Vegas and spent ten
+thousands of dollars? Never mind
+he's been to Defcon. So  but this works because you measure
+one thing like money S  you have
+one operation goes in or it goes out. Right? And so this was
+clearly picked up quickly by the
+dev guys. And because when you think about it they're actually
+running a pretty tight shop.
+Right? They got all this bunch of server farms and different
+things they can measure about
+the performance of the servers and anyway how many databases
+and all those things and when
+you look at those independently, stuff like anomaly detection,
+most people would do rooting
+averages. They actually work. Okay I know what I'm measuring
+and I know what I'm thinking
+about. I know what or I should expect to be the norm. So it
+makes very easy for a human
+being to make a decision. Right? And it's not like  but it's not
+like if the bolt is like a
+little bit bigger and a little thinner that means it's
+(unknown) threat from China.
+Right? That's the leap of thinking that sometimes I do not
+understand. I want to talk in
+more detail. Here when I talk about that I'm specifically
+talking about network/netflow
+behavior analysis and also this new user behavioral analysis
+thing which is a new hotness and
+there's 3 challenges I want to talk about. The curse of the
+missionality, the life of ground
+crew and the last is my favorite. So the curse of
+missionality is actually
+something real. The point is if you're trying to measure a bunch
+of different things at the same
+time and trying to see how similar they are or how
+different they are if you think
+about anomaly detection the actual problem you're trying to
+solve is I got this space, let's
+say I have a square. Right? And I have a bunch of points drawn
+in the square. So which one of
+these is the closest together? That's probably normal. Right?
+Because most of them are there.
+But the things that are further apart are potentially those
+anomalies. The fact is you need
+to measure the distance. Right? Okay. So what's the point? How
+do you separate a point? And you
+can do some very simple stuff like distance which would be
+like draw a straight line or the
+Manhattan distance where you have to go straight angles.
+Right. I think this is a stupid
+name but it's intuitive. The point is when you start growing
+the number of dimensions like
+when you go like okay 3D, 4D, like 10 dimensions the actual
+distances they stop meaning
+stuff. They stop meaning anything because it's such a
+huge space. Right? And until the
+regulation, on the real, Las Vegas, United States actually
+allows expanding you will not be
+able to see it properly. It's very hard to imagine but it's
+like very far away. Everything
+is so, so far away. It doesn't make any sense. It becomes very
+hard to measure distances
+between things. Right? And another way of seeing that is if
+you calculate like what's the
+size of a sphere, right? So you have a cube. What's the size of
+this sphere inside this? Which
+you can argue is like what's the unit distance between my point
+and this other point that I'm
+trying to measure. Right? The actual volume of this sphere
+compared to the cube becomes
+very, very close to zero very, very fast. And this is a graph I
+stole, because... But the point
+is the practical result is everything looks the same.
+Right? So what's the kind of
+stuff I'm talking about? Can you give us a more practical
+example? Well let's do Netflow
+data. Right? I have a company with N nodes. Right? Okay. All
+machines can talk to them. All
+machines can potentially talk to any machine, NTC port, UDP prot.
+Right? It chooses ports for each
+one of these. Pretty much means if I have a thousand nodes I
+potential have I half a trillion
+possible dimensions. So measuring how much packets went
+from one place to the other.
+Okay. That's very hard to figure something out. Right? To be
+honest this is a very, very open
+problem and people have been trying to work. I mean this is
+not like security stuff. This
+isn't math stuff, this is actually what people have been
+trying to figure outweighs to
+represent the data and better represent the matrix to actually
+solve this. And those solutions
+sometimes there's breakthroughs and okay we have this new idea
+which is going to help a bunch
+of these problems and some become very specific. And
+there's actually some companies,
+right, they are basing their claims on anomaly detection on a
+lot of research they have been
+doing on trying to account for this problem. Some of them
+believe  I mean after 20 years
+of research they actually have some very good solutions
+involving subspaces et cetera,
+et cetera, et cetera. If that's true that is actually very,
+very, very awesome because
+there's a whole class of problems that can be solved by
+this. Right? This is not just
+security. I mean I do get a little bit, you know, sinai
+glare. If people had actually
+solved this, right, we would be  I don't know  first of all we
+would be doing a killing in the
+ad selling market. That's for sure. Second of all we could
+potentially be literally free of
+cancer with stuff like this because I mean Google just did
+project baseline which is okay
+let's get this DNA data and put the data sets together and do
+some anomaly detection to figure
+out what are the gene that is are actually not represented. So
+Google with all the resources
+are going to start something similar to this. Because it's
+hard. Because it's not a solved
+problem at all. Anyway people might have solved aspects of the
+problem. It might be a good part
+of their research. Right? I just wanted to ask. I just wanted to
+try to understand and you might
+not be able to understand the actual technical part of it. I
+certainly don't. When I say
+interesting that means I couldn't get past the abstract
+otherwise I would totally tell
+you about the ideas. But what I don't want is that you guys fall
+prey to this guy. We do not want
+the goal to have this one trick. Right? And anyway the point I'm
+trying to make here guys is that
+this is not something that's been new. It's been here
+forever. Right? And it's
+something that  it's something that you can wave your hand
+away. You just have to deal with
+it. Right? Just deal with it. Right? And try to come up with
+some solutions for that. I have
+to put the other glasses on otherwise I can't see. So
+anyway... The second class is
+what I talk about normality attacks. Which pretty much the
+problem that you have in anomaly
+detection in general which is there is no real labeling.
+There's no real ground truth.
+You don't know what you're holding against and again it
+comes back to what is normal.
+When you do the other machine learning which is label you know
+that okay I think that these
+things are good. I have a very good feeling things are good,
+let's try to get them apart. So
+some of the end  the problems of this is there's asymmetry
+because there's usually much
+more stuff that looks kind of normal than stuff that looks
+anomalous. So, you have to,
+sometimes you have to push the models too hard to actually
+recognize what's anomalous and
+they become problems. If you have detected anomaly you know
+what I'm talking about. It's
+hard to fine tune and also very easy to tamper with. Some of you
+are familiar with waves and
+people like the cross source. Oh there was a car crash here. So I
+have a bunch of friends they're
+about to leave work and there's a bunch of accidents around and
+they can get out and go.
+Anyway... I'm taking too long here. I have to rush a little
+bit. Finally and I think is the
+most important thing even if you  okay my anomalies are very
+accurate. What does an anomaly
+even mean? Right? Why is it necessarily evil? Right? And
+this is a thing I saw all the
+time, is that you turn on something like anomaly detection
+engine and it picks up all sorts
+of weird stuff that is not necessarily security. This is
+mostly a problem of process, of
+how do you actually put this in and it's funny you will never
+see an anomaly detection company
+specifically only marketing itself as security. It will also
+use the word performance because
+that's what anomaly detection is good for. I guess the point I'm
+trying to make is if there's a
+spy on the production server it's using a bench of memory,
+who is more likely to have done
+this? Is it the evil hacker or is it the hipster developer that
+said yeah let's bring the
+machine closer... I mean honestly guys. It can't be all
+of that. So I just want to get
+to user behavior quickly. User behavior actually works but
+you've got to have a limited
+scope. So everyone here who does the product security, so yeah we
+are the start up or we have this
+product on the web, you will be doing user behavioral analysis
+and fraud detection things in
+your product. It works surprisingly well because you
+have a limited scope. You know
+exactly your application inside out so you can actually program
+relatively easy all the
+shortcuts you need to have to go through some of the problems
+that I described. What bothers
+me, right, and again people use anomaly detection to actually
+then view the classification
+model. Right? But what bothers me is can this be generalized?
+Right? Can we come to people and
+say, oh, I just filed these. It works like a charm, the math is
+amazing. You just have to have
+role based access to all your users and do classifications. If
+I do that I do not. This is
+something that bothers me. I guess a lot of these companies
+actually come from more of
+military background where this is all a given. Right? And I'm
+pretty sure it potentially has
+good results in that environment. It's just that
+that's not how the thing works.
+Anyway... The other point is if I'm actually doing user behavior
+do I average it all out like all
+the different  oh, yeah. I was putting a bunch of stuff in my
+expense system here because I've
+been to DEFCON then it blocks my access to the work order because
+I was dos.ing this. How does
+this work, how does this actually interact with the
+other? How does one thing
+actually direct? There's a lot of open questions. I really wish
+there was a way to build a
+general user behavioral thing. Right? But I mean question mark
+for me too. Anyway I'm very
+late. I just want to quickly go through classification. I'm
+sorry this is a repeat slide but
+there's no way to talk about this to someone. So you're
+trying to talk about cats and
+dogs and you are trying to teach the program what is a cat and
+what is a dog. The point is it's
+really about how many cats and how many dogs and how many
+different cats and how many
+different dogs. If you only got grumpy cats in your data set you
+have a serious case of bad
+labeling, you will definitely not be able to pick this cat.
+It's a happy cat. There are no
+such things as happy cats because all the cats, so because
+all the cats I've seen are
+grumpy. It's a problem that's similar. In the sense that you
+don't have a good sample. It's a
+little biased. In the same way if it's all majestic and you
+will miss this guy. I mean come
+on. Poor guy. I love teen tuna. Tuna is awesome. Anyway there's
+been malware activity. The point
+is everyone has been doing this. There's been a lot of public
+data sets and a renaissance of a
+sort of research because a lot of people are publishing those
+hundreds and hundreds of
+gigabytes of malware so it's productive of doing this. My
+opinion, right, is that we've
+actually got pretty good in telling malware apart. I already
+know this is malware so I can
+know pretty much what family it comes from by analyzing code
+paths and things like that. I've
+seen interesting work in that field. But actually detecting
+it, I mean just like that based
+on this stuff it's not there. One of the arguments is
+companies have been doing that
+forever. I mean we all think this is brand new but the people
+who started doing this, I don't
+know, like 5 years ago I was hearing about the implementation
+about story and processing the
+malware. I don't think we're much better off. I don't think
+they've actually cracked the
+problem. Right? People tell me the lead researchers here and
+there left for this other
+company because the guys at the av's didn't believe that was the
+way to go. But I don't know.
+Maybe there is something here. I just really, really wanted to be
+better than those av's on my
+computer because that crashes my computer every single time.
+Let's all hope for that. Right?
+Again we have to make sure about the bad data. The bad specific
+labels that you're picking up.
+So I mean the problem is if you're writing a paper and
+you're doing classification and
+you're like, yeah, I'm comparing this evil effort I'm pretty sure
+your models will be great. But
+that's not representative of what is really out there, what
+people actually use. So imagine
+what could we possibly use to compare a piece of evil malware
+from the internet, the file
+system, that can access the camera and send data to a remote
+controller, if there was
+legitimate problems that look exactly like this and do exactly
+this kind of thing, right, and
+the point is that looking at that I almost thought I had it
+figured out because oh my God I
+know the thing that tells them apart is the features. Browsers
+have sand boxes. So that's what
+we should be looking for as a feature. Then I remember, ah,
+sorry FireFox, we almost had
+discovered but anyway... Point is good data. It's not so much
+having all the bad samples. You
+also have to have good representative good samples for
+the research that you're trying
+to do. And I'm really beating myself up here like everyone
+makes mistakes. Right? How the
+fuck do I do training of my machine learning models and all
+that I have to show for good is
+stuff for  I don't think I even got to use Chromium. It was not
+only different classes of things
+I was comparing at the time and were more representative of
+stuff you're going to get,
+right? And of course the model was like, oh yeah here is a
+banana and a fire engine. So can
+you tell these apart? Yeah I'm pretty sure I can. So, um,
+anyway the point is don't use
+bad data for good samples. I mean there's much more stuff and
+anyway you can go for that. But
+let me try to wrap it up here. How's it going then in right?
+How have things been? So what
+I've been trying to do is really to extrapolate information from
+intelligent feeds. So the
+problem I'm currently trying to solve is if I got a bunch of
+samples of bad data and just
+like mal ware the amount of information we have increased
+exponentially for the last years
+or so. So there's good samples there that can be used and I'm
+talking about indicators and
+domain indicators and things like that. Right? And so models
+with this information and give
+it the same data that an analyst would use. Get addresses for
+analyzing. Where are they coming
+from? Why should you care? You should care because I think it's
+much easier to do everything in
+the computer to do the first triage. If you want to do it
+yourself I have some tools you
+can use to reach them and do statistical thinking with them.
+This was covered in the other
+talk that I did this year. But I think having everything
+automatic is kind of cool. And
+the actual ground truth I use like I said is the data from the
+anomaly  sorry the data from the
+feeds and there's a lot of things I've tacked on. Using
+Alexa. The good thing about
+designing this model the way I did is that I don't have to
+worry too much about data
+tampering because the only thing that I can actually change is
+the log data inside the company
+which they would be sending me to compare this. If they're
+changing the log data there's a
+whole bunch of different problems much right? But they
+cannot inject something that
+would look more normal because I'm not really doing anomaly
+detection here. All the stuff
+I'm using is actually external to any other company. And
+they're kind of hard.
+[Indiscernible]. It's hard to change that then just to try to
+inject random stuff into your
+environment. False positives. The point is it's intrinsic and
+will always be. It's like the
+100 percent in machine security thing. There's no 100 percent
+accuracy. If you do model it's
+100 percent you've done something wrong. Go back to the
+drawing board. That's the
+biggest thing you can find. I believe it's all about you
+creating an actual process
+around this. Right? And the idea  what I'm presenting this
+as is it's a way to facilitate
+triage. You still have to have a human being to do the last leg
+of the investigation and they'll
+be able to actually tell us for feedback that something was bad
+or something was not bad. And
+based on all that I propose a buyer's guide. Specifically
+these questions I've talked
+about, right, these are the questions you should be asking
+the machine learning. And for
+some reason you do not use them. If they give you bad answers if
+for some reason you try to argue
+and they are like no, no, no we're different, you don't
+understand. That's the other
+guys. That's not me. I am very different. You know, you can
+hash tag them not all
+algorithms. Right? Because that's pretty much the argument
+they're making and feel free to
+tag me as well of course. But just make sure you disagree with
+me first. Anyway this is us.
+Don't take my word for it. You can try it out. We're trying to
+get this data up and running, we
+have some limited capacity. Take your time. I mean it might take
+a little while and that's pretty
+much all I have. Thank you very much, guys. [Applause].

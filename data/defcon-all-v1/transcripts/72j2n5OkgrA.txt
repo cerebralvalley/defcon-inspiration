@@ -1,0 +1,114 @@
+>> PIOTR DUSZYNSKI: My name is Piotr Duszynski. And this is about active defense in progress. I will go quickly through the slides because
+I have a lot of them. So keep your shirts on and let's start. Basically a short thing about me. I'm a security consultant with Trustwave Spiderlabs. Basically, I do security, amongst other things,
+but let's move to another slide. So this presentation is about the efforts
+of my private research of using active defense in practice. Defense part will be about the new technique
+that I have developed basically to slow down your attackers, to keep them from staying ‑‑
+to keep them out, from seeing your profile, while they analyze your system and providing
+them as little information as humanly possible. The second part will be example based and
+I will present you a new attacks for the software that I have taken from the Internet. So far it's used for scanning and exploiting
+assistance. At the end, there will be a PoC demo from
+one of the well‑known support canners. I hope you like it. Basically we can start with the first part. This part is ‑‑ made me focus on the
+recognizance phase the most important part of every recognizance phase. This is the most popular tool. It's possible that someone will be using it
+to scan your system. Here we have someone trying to scan your system
+and they get all the information, all of the running services within an instance. And yeah, it's not exactly what we like to
+share with our, let's say offenders. Basically this information can be used as
+other steps to carry out more sophisticated attacks. So I thought, what would be the most ‑‑
+the worst case scenario for persons scanning or trying to get a view of your running services
+on your system. What if all the ports were open and what if
+on every port there was actually a byte or it appears to be value services listening
+and your attacker has to get a view of all the running services on your remote system. So basically, I portspoof. So when you want to get a full view, you try
+to go through all the ports and get all the services identified. Oh, your attacker will need a lot of patience
+because as I have seen, basically as I have tested, well, all of the ports will be opened. He will have to send, like, about 120‑megabytes
+of data and the scan will take him ‑‑ >> Stop talking. So we have a traditional at DEF CON. First time speakers need to do a shot on stage. Let's give him a round of applause for getting
+selected. (Applause)
+>> PIOTR DUSZYNSKI: Cheers, everyone! Thanks for coming. (Applause). >> Now we have to see if we can pick up where
+he left off in the technical talk. You guys judge how well he does. >> PIOTR DUSZYNSKI: I'm from Poland, come
+on. It's just one shot. So coming back here. So basically you've got ‑‑ our attackers
+get nice just the output, 65,000 or more services identified by Nmap. I focused on the Nmap but basically it can
+be any other port scanner. So why not. If you go through the listing, you can see
+different services like, telnet. There's even a bug there if you can see. So basically, among that, there's some, probably
+your service running, which could be possibly exploited, but try to find it, it's not so
+easy, I guess. And some in the ‑‑ when the attackers
+go through your ‑‑ through the service scan, they can find a hidden message. (Laughter). So basically ‑‑
+(Applause) Yeah, you can put any ASCII art out there. And it's a bit strange. You can see that the real operating system
+was actually Linux, 3.2. Here you have like UNIX, Windows, Linux, Solaris,
+you don't know what it is. Additionally which is actually the part, the
+second part of the presentation, you can also control certain fields which can help you
+with exploitation of a particular system. So, yeah, AMAP, there are similar results. All the ports are open. Some of them are unidentified. Yeah, so what are the conclusions? Basically, the it's no longer helpful with
+this because if all the ports are open, basically you can make a connection. If there's an open port, then there's a service
+running, all of them are open. So, yeah, also identification is a bit more
+challenging. Yeah, it's ‑‑ it's also forces your attackers
+to generate a huge amount of traffic. So basically you can detect them or it's easier. Yeah, for service probes, and, of course,
+it's frustration to the offenders. Some might say this is security by obscurity. If only it works, you know, that's the point. I don't know if you can see the fish there,
+but it's there. Yeah. So but I'm sure that also we are thinking
+like, okay, fine. But I'm sure I can find some kind of bypass. So for the ‑‑ that's also the way I was
+thinking. I think some of your questions, there's no
+trivial way to detect false signatures apart from using some type of protocol probes. IP fragmentation, the network techniques will
+not work because it goes through the colonel to the user‑based program that they have
+written. So basically, you can use fragmentation for
+any way that you want. It will anyhow be assembled. The only thing that will work is actually
+the full connectivity ‑‑ not a mistake in the ID but every software is vulnerable
+to this. I made some tests. You can always try to mitigate this by using
+some of the ‑‑ of the spool parameters or try to use IT with traffic ciphers. And if you have any ideas for the bypass,
+I will try to fix the software or, I don't know, implement your idea. Yeah, the portspoof, it's a user‑based software. It doesn't provide any kernel modules and
+it binds to one port per instance and then it just configurates through IPstables by
+directing some of the ports that you want to spoof to local host. Yeah. Okay. So let's go to good the part, which is practical
+exploitation of your offenders' tool box. Maybe the output here is not very clear. But with Nmap, you can control certain fields,
+like for example, the version fields, host fields. That gives you ‑‑ I like vector possibilities. So it went to the Internet, look for Google. We have Googled for some software that could
+be exploited with that. And basically, the first example is, okay,
+safari, because they have not responded to me. Basically if you set up on the portspoof,
+a bailout, like on any part, and somebody used Nmap to scan your system, and generates
+a rebirth and basically you are able to inject some JavaScript code into his processor, say,
+context, when he will be browsing the read ports on his computer. There was a nice thing about that, for example,
+if he runs Safari and goes through the ‑‑ through the results, basically, the policy
+doesn't apply. It's actually my friend, Mikalu told me this
+one. So there's a simple exploitation vector for
+this one, like port 17, you can have one of them. The next example is non‑Nmap, so just ‑‑
+so we don't stick to Nmap, all the time, just proof of concept, you can go to the McAfee
+superscan, it was fixed a few days ago. But anyone could scan your system with this
+particle two, with a reboot and they would be able to inject JavaScript code into his
+process context. You can use B for any other tool to do some
+exploitation, what we are going to do. Yeah. This actually a real exploit from the Internet. So I don't know if you can see the exact vulnerable
+line, but this here, basically we control the contents of the storage files which is
+retrieved from one of the ports. If we set up a payload, on port 18, which
+is actually the ‑‑ to which the port ‑‑ the exploit will connect. Well, if somebody will launch the exploit
+against your system, he will get an additional context, which is root. So basically you are able to execute ‑‑
+or to do a command injection in the ‑‑ in somebody's shell, if somebody is launching,
+for example, an exploit against your system. What's nice about this you can also create,
+for example, a weaponized version of this ‑‑ of this ‑‑ for this payload, but, I won't
+go through all the details here, because, I mean, for example, if you want to exploit
+the particular line that you have a relation of the file content, and basically have to
+go around some ‑‑ like, you cannot uses spaces. So basically this would be in the conference
+mode if you want to use it later. The result is that basically if you set up
+such payloads on one of your ports. Yeah, next time when somebody will launch
+the text, on your system, he will not only get who am I, output, but you will be able
+to, for example, download his whole root directory. Another example is taken from the auto pwn
+script. The pwn scripts usually go through all the
+ports and try to exploit all the possibilities. So basically if you have, like, different
+payloads on every port, some of them might hit the particular vulnerability and you will
+be able to exploit it too. In this case, you have again ‑‑ and this
+is a real line of code. I don't know if you see the vulnerability. It's rather pretty obvious. Yeah. And, again, what surprise? Who am I will work. What can you do with this? And what are the conclusions for the current
+state of the security tools because from what I have seen on the Internet in different tools,
+different software, most of them, not all, but most of them are exploitable, if it was
+simple payloads, like, for example, who am I, or any other escaping sequences. Especially auto pwn tools used by script keys
+and I don't know who. Yes, if they launch, the type of script against
+your system, basically, you can also try to create a ‑‑ I named it aggressive honeypot
+because you can create different payloads for every port with different escaping sequences. And then it's up to you, which command you
+inject. And if you want to find, for example, more
+vulnerable software, just go to Google. The ones I found are actually the top of a
+mountain, an ice mountain. I mean, many, many scripts are vulnerable. You can use just your imagination while creating
+some payloads. In this case, I'm sure you will find something. And in the end, I wanted to show you a nice
+proof of concept for Nmap official NSE script which, again, proves the concept. It's nothing against the tool itself. Okay. Let's ‑‑ okay. Let me try this. Can you see it? >> We can't see in the front. >> PIOTR DUSZYNSKI: No, really. >> AUDIENCE MEMBER: Do an interpretive dance! >> PIOTR DUSZYNSKI: Ah, right. In front here, you can see it? >> AUDIENCE MEMBER: Just tell us. We will trust you. >> PIOTR DUSZYNSKI: Yeah, then, I will tell
+you. Basically the first screen that you can key,
+it's the top of the portspoof tool, along with a map interpreter. The second one we scanned a remote system. We want to check actually what's on the port
+80. You can see that there's an old version that's
+exploitable. So basically what we will do ‑‑ yeah,
+here's a reverse handler on that exploit. This is the latest Nmap version, C25. So if you have that, it's still vulnerable
+and just the exact HTTP script which basically results in a remote arbitrary file applaud. So if you launch that against, for example,
+the system, or on portspoof, you will be able to upload an arbitrary file, override any
+file that's accessible with Nmap privileges and in this case, I have written the script
+itself, so the next time because someone might think it's strange that there's some ‑‑
+there's some strange results in there. The next time someone launches the particular
+script of the same ‑‑ with the same parameters, yeah, you will get pwned. He will get a remote reverse interpreter. (Applause)
+>> PIOTR DUSZYNSKI: Just like here. I know the quality is a bit low, but if you
+want to just go to the main website, you can view it online. I will change ‑‑ I will upload in a second. Sorry for this. I thought it would be visible. At the end, yeah. So thank you for your time and for coming. I hope you enjoyed it. (Applause)

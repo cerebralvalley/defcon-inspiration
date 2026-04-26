@@ -1,0 +1,229 @@
+>> JOE BIALEK: This talk is called PowerPwning:
+Post Exploitation by Overpowering PowerShell. So my name is Joe Bialek. I'm a security engineer
+at a large software company, or actually, devices and services company in Redmond. You
+can find me on Twitter and I have a blog and GitHub.
+All right. So if any of you don't know anything about PowerShell, it's pretty awesome. PowerShell
+gives you full access to the Win32 API and all the .Net libraries, and PowerShell has
+a remoting functionality which allows you to connect to other systems and run scripts
+on them. And these scripts that you run over PowerShell remoting never touch disks on the
+remote system. In addition to that, any scripts that you
+run are going to run inside either the PowerShell.exe process if you run it on the local computer
+or the WSM prov host process if you run it on a remote computer. So this is pretty nice,
+too, because you don't have to execute any suspicious or unsigned processes, which means
+that you can generally bypass antivirus and application whitelisting assuming that PowerShell
+is whitelisted. So that's all pretty great. But I have a lot
+of pen test tools that I use right now that are all written in unmanaged code, and I really
+don't feel like porting all of those tools over to PowerShell. But I really want to take
+advantage of PowerShell's forensic benefits because you can be really sneaky if you use
+PowerShell. So the solution that I came up with is to write a PowerShell script that
+will just reflectively load PEs, which is what an executable in EXE file or a DLL is,
+in the PowerShell process. And execute them. So that's what I'm going to be talking about.
+So for those of you who don't know how loading PEs works, this is all documented on MSDN.
+I'm not going to go super in detail. But I want to give you an idea of kind of what Windows
+is doing when create process or load library is called.
+So what's going to happen is, first, memory is going to be allocated inside a process
+for the PE. Next, you're going to copy the PE into that memory. Then you're going to
+do what's called performing base relocations. So inside of a PE file, there's going to be
+a whole bunch of memory addresses that are hard coded. And the PE file in its header
+is going to supply a base address. So it's going to tell windows, this is the memory
+address that I'd like to be loaded to. And if you don't load me to this memory address,
+then you need to go and change all of the hard coded memory addresses in the PE file
+so that they point to valid memory locations. So you're just patching up these addresses.
+Next, the PE file that you're loading is probably going to have dependencies on other DLLs,
+so you need to load those. And then the last thing that you're going
+to do is you're going to call the entry function. So for a DLL, this is the DLL main function
+which just lets the DLL know that it's been loaded. And for an EXE, it's going to be a
+function which does some initialization and then eventually will call like into main in
+C++ or C or the equivalent to other programming languages.
+Oh, and I wanted to note that when I say that I'm going to be reflectively loading PE files,
+what I mean by this is that instead of relying on Windows load library or create process
+to go through and do those steps that I just listed, instead, I'm going to do all of those
+steps in PowerShell. And what this will allow me to do is ‑‑ the Windows functions
+require that the PE file is stored on disc. So you can't call load library on something
+that's just in memory. It has to be a file on disc. But if I rewrite all those functions
+in PowerShell, then I don't have that same constraint. So I can just hard code the PE
+file in a byte array inside the script. So this is really nice. Now I don't need to write
+executables and DLLs to disc to execute them. They just needed to be encoded in a PowerShell
+script which can then be run on remote systems. Okay. So for DLLs in particular, loading a
+DLL reflectively is really not much different than loading a DLL using load library, in
+the sense that when you call a DLL using load library. I mean, at the end of the day, a
+DLL is still being loaded inside of a process that already exists.
+So reflectively loading it, the only change here really is that I didn't call the load
+library function. I just wrote my own. But other than that, everything is the same. A
+DLL is still being loaded into a process which already exists. So the first thing you're
+going to want to do is you're going to want to call a DLL function that you exported,
+and this will contain your pay loader, you know, the code you want to execute.
+Then a little caveat with doing this is that if your DLL or your EXE for that matter outputs
+data using standard out, so like if you use print F or CL in C++, PowerShell can't capture
+that output. If you run a script locally, it doesn't matter because the output is still
+just going to be sent through the console host window, so you're going to see the output.
+But if you're doing PowerShell remoting, the only way that you can see output is if PowerShell
+can capture that output and serialize it and send it back to the computer that you did
+the remoting call from. So if you want to be able to see the output, what you're going
+to need to do is make the DLL function that you're calling return you a character array
+or like a byte character array and PowerShell can then take that pointer and marshal it
+into managed memory and then it can serialize that and send it back. So it's just a small
+change that you need to make. And on my blog, I have a post showing how it takes about five
+minutes to change meme cats from outputting using standard out to outputting to a string
+that can be, you know, retrieved by PowerShell. So reflectively loading an EXE is a little
+more tricky. Because normally when an EXE is loaded, it's loaded using create process,
+and a new process is created specifically for that EXE. But what we're doing is loading
+an EXE inside of a process that already exists with PowerShell.exe running inside of it.
+So as an example, normally when an EXE exits, so the EXE that you reflectively loads ‑‑
+that you reflectively loaded runs and quits, it's going to go and call exit process because
+it thinks everything is done. But the problem is that that's actually going to kill the
+PowerShell process because that's the process that's actually running. And that's not ideal
+because you probably want ‑‑ you probably wanted to see the output from the EXE that
+you just ran, and if PowerShell just dies, you can't.
+And so it turns out there's a pretty easy solution to this. Basically what I do is I
+call the EXE in its own thread. I call its entry function in a new thread, and then you
+overwrite the exit process function with shell code that just calls exit thread instead.
+And so the EXE will start up in its own thread, and then when it's done running, it will just
+nicely kill the thread that you provided for it. So it's a really clean solution.
+And just for reference purposes, I put assembly in here, but we don't actually need to talk
+about this. Okay. So the other problem that I had reflectively
+loading an EXE is that you're going to want to pass that command line arguments. But the
+command line arguments that it's going to retrieve are the command line arguments that
+PowerShell started with because you're running inside the PowerShell process. And so it turns
+out that, well, the first thing I wanted to do was just go inside the process environment
+block, the PEB, which is where the command line arguments are stored and just overwrite
+the string that stores the command line arguments. But that doesn't actually work, because the
+way that EXE normally retrieves its command line arguments is it makes a function call
+to get command line or underscore underscore get command line. And those are provided by
+two different DLLs. And when those DLLs are initially loaded,
+they actually cache a copy of the command line arguments, so if you just overwrite the
+PEB, you didn't overwrite the cache copy that's in the DLLs, and so you're still just going
+to end up getting the command line arguments that PowerShell was started with which is
+no good. So I had to create solutions for both of these functions.
+So patching get command line is super easy. Get command line is a function that takes
+no arguments, and it just returns you a string pointer to the command line arguments with
+no formatting or anything done, so all you need to do in PowerShell is just allocate
+a string on the heap, and then overwrite the function call get command line with shell
+code that just returns the string, the address to the string you allocated. So very, very
+simple. Right? The next function underscore underscore get
+command line is a little more complicated to overwrite. So I didn't want to do that,
+and the reason is it takes a number of parameters and get ‑‑ this function actually goes
+and parses out your command line arguments into ARGV and ARGC. I didn't want to go through
+the trouble of parsing stuff if I didn't need to.
+But what I found is that the DLL that this function is exported from also exports two
+variables, A command line and W command line. And these variables are just spring pointers.
+And so if you go and overwrite these variables and then you call the get command line function,
+it will parse the variables that you just overwrote. So that's an even easier solution
+than the previous one because you just replaced those string pointers with pointers to strings
+that you allocate. Okay. So what about remote reflective DLL
+injection? That's possible, too. It's a little more painful to do it in PowerShell compared
+to C or C++, which is what some of the current remote reflectors are written in. But it turns
+out, it's still very possible to do. So the general process that I used for this
+is I allocate memory in both the remote process and the current process. And then I load the
+DLL into the current process, so into PowerShell.exe. And I'm pretty much just using PowerShell.exe
+to stage this. So I want to get it ready before I write it into the remote process. And what
+that entails is I go and I look and see what DLLs does this DLL depend on. Just like I
+did before. Right? Except when I load those DLLs, I actually
+load them in the remote process. And I get the function addresses for everything in the
+remote process. And when you do your base relocations, similarly, you use the memory
+address for the memory you allocated in the remote process when you're doing your base
+relocation calculations. And once you've done all this, you end up
+with the DLL which is currently in the PowerShell process, but all of the memory addresses have
+been patched as if it was being loaded in the remote process. So all you need to do
+is take those bytes and write them into the remote process and the DLL is pretty much
+ready to go. You just give it its own thread and it will start executing.
+So I just have, once again, more assembly here just for reference purposes for the shell
+code that you actually write into the remote process to call get or load library and get
+prop address. (Applause)
+>> SPEAKER: First time? All right. Wait a second. How you go back to that code? All
+right. Here we go. Everybody take notes. You got this?
+I know none of you understand why we're here. You know, it slays me how many new speakers
+there are at DEF CON this year. I'm beginning to think they're just saying that to fuck
+with us. Thank you, sir. And did we ‑‑ you got one? Yes, what's your name?
+>> AUDIENCE: Rick. >> SPEAKER: Rick, we got Rick, new attendee.
+He's representing all of you. All right. Cheers, gentlemen!
+(Applause) >> SPEAKER: We'll see you soon.
+>> JOE BIALEK: Everybody got that code? Probably not the most interesting slide to leave up
+there. All right. So let's do some demos. Okay. So I have two VMs here. This one with
+the gray background is a domain controller, and it's going to be targeted. And then I
+have this demo client. See if I can resize these windows. There we go. There we go.
+All right. So just as an example of what you can do with this script, so I have this script
+here called invoke meme cat 64. All I did was just hard core the meme cat's binary into
+the reflective PEInjection script just so it's a little easier to use. So what I'm going
+to do here is you can supply computer name. And the computer name right here is DC1 which
+is my domain controller. Computer name is actually an array, though, so you can supply
+hundreds or thousands of computers to run this script against, and PowerShell will do
+it all for you automatically to the concurrency, blast this script off.
+So let's go ahead and run this. Hopefully it works because this is live. All right.
+And the output gets strung back. So what just happened ‑‑
+(Applause) >> JOE BIALEK: All right. So it looks like
+the domain admin is running with the password 123. That's not very good. So anyway, what
+this allows you to do is we just ran meme cats on a remote system without ever touching
+disc on that remote system, without ever triggering any application whitelisting products, without
+triggering antivirus. As far as the domain controller is concerned, all that happened
+was someone made a remote PowerShell connection to the server and ran a script that we now
+have no record of. That's pretty awesome, I think.
+So this next script, this is called invoke ninja copy, and this is online, too. So a
+little while ago, I saw a blog post which someone who wrote a tool called SAMX. Basically,
+their observation was, by default, not even administrator can make ‑‑ can access certain
+files on a Windows system like the registry hive or the NTDS active directory database
+because LSASS has a lock on the file. So LSASS is the only process that is allowed to have
+the file open. However, if you know how to parse NTFS, an
+administrator can get a read handle to the C volume and then just read the NTFS structures
+on the C volume or D volume and scan to the exact position where the bytes that make up
+that file are located and read them off. So I thought that was pretty awesome.
+And I kind of wanted to write that in PowerShell. But then I realized that someone had already
+written an open source NTFS parser, NC++, and put it on code plex. So I figured maybe
+I should just use that and reflectively load it and save my time parsing NTFS on my own.
+And that's really the beauty of this script is that you can just take these tools that
+other people have written and then just turn them into PowerShell scripts that are super
+sneaky all of a sudden. And so that's what we're going to do here.
+So I'm actually ‑‑ I'll going to the domain controller really quick. All right.
+Gray backgrounds. We're on the domain controller. And here is the NTDS.DIT file. And I'm going
+to try to open it. Let's try to open it with Notepad, and we're going to get this error
+message saying the process cannot access the file because it is being used by another process.
+So even though I'm domain admin, I can't get this file. Bummer. I really wanted it.
+Okay. So let's go back to the demo client. And we're just going to go ahead and remote
+PowerShell into the domain controller, and I have here the file path to the NTDS file,
+and I'm going to copy it to the desktop of my attack box. And we'll go ahead and run
+this guy. You can see from the output here, it's just going to copy 5 megabytes at a
+time of this file directly from the desktop, and if I go ahead and open my desktop, we
+now have a copy of the NTDS active directory database file. And once again ‑‑
+(Applause) >> JOE BIALEK: So once again, no suspicious
+processes were run. The only thing that ever touched disc ‑‑ well, nothing touched
+disc. This was all done in memory. And we stringed the file back over the wire. So that's
+pretty awesome. There's very little evidence left behind that an attacker ever did something
+here. And just for reference, it took me maybe a
+couple hours to turn the NTFS parser into a DLL that I could use with my script and,
+you know, good to go. So it's really, really fast to turn things into PowerShell, turn
+arbitrary programs into PowerShell scripts that are really hard to catch.
+Okay. So the obligatory detection and prevention slide. So there's not a whole lot to say here.
+PowerShell remoting requires administrator access, and it requires open ports. So if
+you don't want someone to do this, then don't let them have admin access on really sensitive
+servers of yours and don't let them have network connectivity to really sensitive servers of
+yours. Standard stuff like firewalls, limiting powerful accounts, right, like lock down your
+accounts. Make sure that I can't just remote PowerShell into every server from any server.
+And it helps defend against this. Of course, nobody does that. But ‑‑ or maybe some
+people do that. PowerShell also has ‑‑ PowerShell DT
+has pipeline logging which might help detect this. But it would be really easy for an attacker
+to turn it off or clear the logs if they wanted to. And there's also going to be a lot of
+noise if you actually use PowerShell. Constrained run spaces can help limit the
+power of PowerShell. So you can say, even though someone's allowed to remote PowerShell
+into the server, there's only specific commands they're allowed to run. So I don't have full
+access to the Win32 API. I only have access to these 50 command lits that are deemed to
+be safe. And another one is machine‑wide profile
+to log actions to transcript. Once again, super easy for an attacker to turn this off.
+But if an attacker doesn't know that you're doing this, then you might be able to record
+what they're doing. So closing thoughts, this is not a vulnerability.
+All of this is by design. PowerShell is a very powerful language. It has full access
+to the Win32 API. It has full access to the .Net libraries. So yes, it is able to do this.
+And pretty much any programming language can do this if it has access to the Win32 API.
+And if a programming language has remoting functionality, then you can use the remoting
+functionality of other programming languages as well.
+I think PowerShell is a great way to manage Windows systems, so I hope this talk doesn't
+scare you away from PowerShell all together, but I hope that it does encourage you to treat
+PowerShell sensitively. Make sure you configure it correctly. Don't expose PowerShell to all
+the servers in your environment. And hopefully, it also gives you awesome ideas on how to
+attack Windows networks because that's kind of why I'm here.
+Got some references to helpful documentation. Microsoft documents a lot about how PE loading
+and DLL loading works. Links to some other reflective loaders like metasploit has a reflective
+loader, for example. That's how it does migration and whatnot. And then some really good PowerShell
+related blogs. Exploit Monday especially is super good. Matt Graber has really great documentation
+on how to do awesome stuff in PowerShell. And just links, once again, to my blog, my
+Twitter and GitHub. And that's all I've got for you.
+(Applause)

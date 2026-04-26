@@ -1,0 +1,367 @@
+>>  SO, I'm going talk to you
+about highjacking build
+pipeline. I'm Kyle and this is Greg. We both came from
+Rackspace. 	All right. When I
+talk about build pipelines I'm talking about your source
+control from GitHub, GitLab
+GitBucket, wherever you are storing their code, depending
+what site you are on. Continuous
+integration, are you running on (?), Kravitz, do you just run it
+on your local box? What actually
+is  -- where are your tests running as well as upstream
+sources? Like NPM, by pi ruby,
+GEMS, all of those. 	The reason I care about this is I work with
+a lot of open source software
+where we set up builds for that software and you know anybody
+can contribute, anybody can push
+patches in, so what sort of vector is that? What can you do
+with that? What can you leave?
+Kind of the precursor here is all need secrets, you might need
+secrets for testing if you are
+deploying to production, database credentials, OF ced,
+might be cloud credentials,
+GitHub tokens, Twitter tokens, the actual SSH keys to get onto
+boxes. 	So need to manage these
+secrets in some way. Not everybody does this
+appropriately. Credentials get
+leaked. Like if you do a simple search on GitHub for AKIAJ
+you'll find Amazon credentials
+instantly. I'm throwing 1071 results just finding for that
+stream. Right? Run
+infrastructure or do whatever, keep going. 	I think this is a
+problem with how people treat
+Git. (Pause) Like you start up a new project run GitApp,
+everything goes in there. If you
+have any secrets encoded into the repository itself it's there
+for the world to see next time
+you get pushed. 	This even happens to people who know what
+they are doing. Rich Milgo gave
+a talk at BlackHat on working with the cloud, and to do
+security appropriately, set up
+the DEV environment appropriately as well as lock
+down your instances and how to
+handle keys. When he ended up looking at the account that got
+highjacked for him, what did he
+find running there? 	Right, so they didn't actually care about
+his running infrastructure at
+all, they just wanted someplace to go mine. They pulled up
+really big, really, really big
+instances and just started spending his money. If you want
+to read more about that, go to
+bit leave/mobile, he does a good article on what happened, what
+he did forensically to figure
+out what they had done, tried to go back through cloud trail to
+figure out what they had access
+to and what else they tried to get access to. It's not just in
+the GitHub credentials either,
+this is an Android file, APK. If you look here in the middle,
+there's there cedes so every
+client that downloaded the app has access to their Amazon.
+(Laughter) So what fun can we do
+with cloud credentials? I can spin servers, take down their
+servers, redistribute DNS and
+load balance exercise, maybe you have another node you want to
+put into the mix. I can remount
+volumes, if you are on Amazon you have your cloud server and
+it has a EVS volume on it.
+Disconnect that, connect it to a separate like you've got their
+server and their EBS volumes
+connected to their own. Have your SSH and make you have
+access on their box. 	For open
+stack Nova you can append your own key to the main key they use
+when they spin up new servers so
+that every time the authorized key file gets dropped you get
+access to the new server. 	So
+how do we find these keys to begin with? 	Like I was saying
+before for Amazon, just search,
+find a list of keys, there it is. For open stack and the open
+stack writers it's a little
+harder because they actually just use a hex decimal D so you
+have to look at what it would
+look like in the code. OS passion word would be if they
+had an environment variable or
+in some config file. 	The results are really big here but
+it could have come from a
+library. Same thing with Bianchi, looking at 3,000
+results. And then API key,
+305,000 results. Again, that's like could be the libraries,
+too, doesn't necessarily mean
+it's the actual API key. We have to do some amount of triage. For
+GitHub they only let you search
+for 1,000  -- you only get 1,000 results back so you to have
+break it up. 	So like one day we
+took the Rackspace EPI key and we were looking for one good
+Python, we can do it with or
+without language. GitHub is their own search setup so you
+can break out as many things as
+you want and also look down particular paths and languages.
+We get 4 20 for Python and 8,303
+for the rest. When I was breaking these out I had to go
+through pretty much all
+languages and break them into their own discrete begins.
+Paragraph bins. Right. Keep
+sweating. 	Couldn't we just let people know when they fuck up?
+Like those are all there, their
+e-mails are attached from GitHub. 	So we created a project
+get get sec nanny. It searches
+repositories for the same security oop. He mail the
+original committer and the owner
+of the project, let them know how to revoke keys and also how
+to panic! 	(Laughter) The
+responses were very flip. They were like wow, thank you, how
+did you find these? You're such
+a savior and, this is only a testing project. Is it your
+testing credit card? (Laughter)
+So far I found about 265 keys, I'm clearly going after one
+provider I want to protect.
+There is certainly more out there to find. 	One of the
+biggest offenders for this were
+rails developers, config initializer secret RV, it's got
+usually with cred, there are
+rails itself and this one is infamous, there's a port out
+there that will never get
+accepted that just adds it to the get ignore so it doesn't
+happen to people in the future.
+The comment from rails was, they're not gonna do it in there
+because people shouldn't be
+doing it that way. (Laughter) You know  -- (Laughter)   --
+great! So they're supposed to
+use environment variables, that's the way you are supposed
+to develop and deploy an app.
+Anyway... (Laughter) So you have to be  -- we have to do it the
+right way if we're doing a
+security checker. This isn't my security checker I just noticed
+this last week so Danny
+Greenfield here he got the message back. You can't read
+that enhanced. There we go! All
+right. So they said they have confirmed this possibility by
+manual inspection and then
+there's the secret. I don't think they inspected that. 	So
+that's it for secrets. But what
+if you actually need secrets for testing? It's not like you can
+live in a vacuum where your code
+never touches anything. You are not gonna build any real web
+infrastructure with that. One
+opportune nivt  -- I'll give -- (Inaudible) -- in a second,
+travesty i I great for open
+source, just do a get push, hits the web hook and then sends out
+tasks to run the build and let
+you know if you have success. Lot less control than Jenkins
+but super simple. This is the
+definition for a Travis yammel, you sign up language, here we
+are doing Python, 2.7, we have,
+before the install you have steps as well as the
+installation and then what
+script will run. 	They thv neat thing called encrypted secrets,
+though. Like you put secret on
+the Web out in the open, so I was curious if I could use it.
+All this does is sets up an
+environment variable that can be used later. 	So could we leak
+those deC ed secrets? Like where
+do they come out? How do I get the secrets out? Say we open a
+request and we'll try to echo
+off their environment variable has the secret. 	Oh, nothing!
+What! So Travis, the keys used
+for encryption and decryption are tied to the repository. If
+you fork a project and add it to
+Travis it will have a different pair of keys than the original.
+What that is saying is if you
+make a repo it gets one key, someone forks your repo they get
+a separate key. They could run
+their own secret stuff they are running off their own fork to do
+testing, but then only the stuff
+that is on master gets tested with the original keys. 	Nice.
+So let's say we emergency that
+port request, secret message then comes in. So drink. Right,
+so you are only  -- only
+variable is cloud review and the fact you to have trust Travis.
+At some point Travis is
+decrypting secrets so you have no idea. But those guys drink
+good coffee and live in Berlin
+so I assume they're great. Now we'll talk about Jenkins and
+I'll pass over to Greg.
+(Applause) 	>> Thanks, Kyle. So for those of y'all who are not
+familiar with Jenkins or you're
+not  -- Jenkins is a continuous integration and deployment suite
+used for not only functional
+testing but also deployment to production. Even if you are not
+a Jenkins user this is something
+you have never heard of before, why do we care about Jenkins?
+Well Jenkins is the road to
+production. If there is a general since server at the end
+of that pipeline is either a
+repository that multiple servers are using, or a production
+server with data worth ceiling
+sealing. The normal interaction is hipster developer pushes code
+to GitHub  -- (Laughter)   --
+Jenkins is notified via web hook that there is some code ready
+for testing. What we want to do
+is masquerade as hipster developer so we can push code to
+production servers or
+repositories and compromise them. 	So let's say that hipster
+developer makes an oops. He
+either commits his cloud credentials which have no off
+token or he commits his GitHub
+token directly to his code repository. We're kind of off to
+the races, right? 	So if there
+is a repository at the end of that pipeline, all we do is
+propagate vulnerable code we can
+scan for and then pop every single server  -- yeah, and the
+mic  -- (Laughter)   -- so you
+can pop every single server that is using that repository. Can
+y'all hear this? 	>>  Yeah! 	>> 
+No shit! Okay. (Laughter) So what's the other option, right?
+The other option is instead of a
+repository there's a server with information we want to steal and
+sell. So one thing you can do is
+propagate things for persistence, think reverse
+shells, the other options is to
+try to extract the secrets that Jenkins has out of the build, so
+there's two different ways to
+manage environment variables in Jenkins. Either you throw them
+directly in configuration or
+you're using the credentials plug-in but at run time they all
+boil down to actual environment
+variables. So both plug-ins could possibly be leaked if you
+could sneak something like this
+into the code. 	So the goal of this script is to print the
+environment variables and then
+phone them home to a server. No problem. 	So that's kind of cool
+but that will only give you one
+server. You know what's really cool is compromising multiple
+servers. So how do we do that?
+We target the Jenkins install directly. So for my testing, I
+was using the Jenkins database
+library or Jenkins user management for authentication,
+Jenkins is like widely
+configurable so you might not run into this unless you use
+that exact authorization to
+replicate this. 	I was curious about how Jenkins decided to
+manage its users and it boils
+down to this file called config.xml and here is what it
+looks like. You'll see that
+there is a user name, a hash'd API token and a hash password.
+	So what caught my attention is
+they are using JV script. So I did more digging. A lot moreing.
+All the way down to this file
+called Hudson private security realm. And wall you'll see is
+how Jenkins is actually encoding
+and stories passwords. There's nothing really wrong with this
+except that it's really to
+duplicate. 	So using this three-line Java code, we can
+create hashes that are passable
+to Jenkins. But so now we have to figure out a way of how to
+actually pass those hashes and
+get them installed on Jenkins. 	So what if we have something
+like this in our build, the goal
+of this code is to locate the config files for all users and
+attempt to replace all hashes to
+a password of our choice. Let's find out. (Pause) So over here
+is my Jenkins server. To show
+I'm not cheating, I need a password, anyone. Admin? That
+would be a good guess.
+(Laughter) So "admin" clearly doesn't work, right? What I do
+is go over to my Java code ...
+(Pause) We get back a secret path. So then we go over to the
+compromise repository. And we
+throw this in our code. So if we go back to the Jenkins instance,
+we will see our project is now
+building or it's queued to build and it's building. Building...
+	>>  -- (Inaudible) --
+(Laughter) 	>>  So part of the reason that it's going through
+this right now is in the script
+there's a command to restart because you have to refresh the
+file. And boom! We can then  --
+(Cheers and applause) 	>>  So from there it's really simple,
+right? All you have to do is go
+change the voice script and propagate them through. The
+other thing I wrote just so  --
+thankfully it worked, too, I'm really scared of live demos, the
+other thing our script did is
+phoned home all the users that Jenkins has so I wouldn't even
+have to know user name, Admin.
+It's right there for me to see. 	Yes. Maybe. Not in this room.
+They kick you out. 	But so there
+is a catch to this technique and that's this config file is only
+stored on the master node of
+Jenkins. So if builds are allowed to run concurrently
+that's really good news for us.
+All you have to do is add a sleep function to your malicious
+code to put the nodes to sleep,
+and back on (?). If you are not allowed to run concurrent builds
+you'll have to get creative. One
+option is to just keep committing and that's because we
+know these people we have
+compromised are developers and they will be executing other
+builds. 	The other thing you can
+try is with the compromised credentials, commit other
+repositories and push other
+repositories to try to trigger other bills on Jenkins but what
+if there aren't any oops, right?
+What if we really want to compromise this deployment
+system because at the end there
+are 100,000 servers that are consuming the repository or
+maybe you have like a vendetta
+against someone and you just really want to get into their
+production boxes. 	Well, one
+thing that can help you out is that the low-hanging fruit in
+this scenario is that they're
+doing automatic floor request building which basically means
+they are taking all the core
+requests they get and they are building them before they decide
+to push them to master or merge
+them into the repository. From a security perspective that sounds
+really stupid, right. Why would
+you ever run code that you have no idea what it does. Well the
+nice thing about Jenkins is if
+you were to do this, it would tell us first it was functional
+and, two, how the performance
+compared to previous versions of the code. 	There is definitely
+an argument to be made for doing
+this. I'm glad I don't develop because I would probably do
+this. The other option, though,
+is that you hit the gate. And you get this notification from
+Jenkins asking for one of the
+Admins to verify the file. 	So if you are not going to give up,
+and no one likes to give up, you
+essentially have two options. (Pause) (Silence) The web hook
+we originally talked about,
+right, Jenkins is notified there is code that has to be a web
+hook from GitHub and it's always
+or it's by default configured to be at GitHub-web hook on the
+Jenkins server. How the process
+is kicked off is a simple post request. If you can forage that
+post request, you can beat the
+gate and cause a trigger and compromise the Jenkins server
+and all things attached to it.
+	The worst-case scenario, right, it let's say there is no
+continuous integration, there is
+no deployment system, it's just a repository you want to
+compromise. Sneak in your code,
+hope no one sees it and it might propagate. So real quick, I'm
+going to do the quickest
+overview ever on how to secure a Jenkins server. So disable
+anonymous access, date your
+deploys, use random port, disable executors on master,
+change web hook from default
+URL, and it's that easy. (Applause) 	>>  So we can take
+questions. If you have
+questions, come up to the mic. 	>>  This is kind of tall. 	I
+noticed that Jenkins failed. I
+have a suggestion. There is a URL you can hit on the Jenkins
+master that will make it reload
+all the files without restarting so no one would be able to tell
+you just did that. 	>>  You have
+to be authorized for that. 	That's my question. You back
+off! 	(Laughter) 	You're
+absolutely right. There is a reload URL in the Jenkins server
+but there's two problems with
+that. A, you have to be authorized and, B, you have to
+know where Jenkins server is.
+This is like a blind injection. I don't even have to know where
+the server is because it will
+phone home that information to me. 	>>  Okay, thanks. 	>>
+Anyone else? Anyone? Anyone? No.
+I know you. I'm not taking your question. (Laughter) Thank you
+all so much for coming and feel
+free to come up and talk to us. (Applause)

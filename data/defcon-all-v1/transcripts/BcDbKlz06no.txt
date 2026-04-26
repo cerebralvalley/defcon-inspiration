@@ -1,0 +1,316 @@
+>> JOHN ORTIZ: All right.How is everybody
+doing today? It's great to be here. (Applause.) >> JOHN ORTIZ: I developed this presentation
+and I hope that you all find the various tools on here interesting and most of all fun and
+useful, as useful as I have over the years. See, try that now. All right. There we go. Anybody know what that is a picture of on
+the screen? Raise your hands. Just kind of curious. One person, all right! And the audio did not work. Try that one more time. (Squealing sound, static.) >> JOHN ORTIZ: That's what solitaire sounds
+like when you play it through a sound file. We'll get back to that. All right. So what can us defenders do? You know, sometimes I'm sure all of you had
+had malware attack your system. It does stuff, drops files, changes register
+keys, stuff like that. You want to know what happened. Another useful topic we'll talk today is file
+content type identification. Just because a file has an extension, that
+doesn't mean that's what it is. We will look a little deeper than looking
+at the magic numbers and so forth. A little bit of steganalysis, a little bit
+of XOR encryption. There's stego tools, they are all on the CD. I checked this morning and there's a couple
+of the analysis tools you'll get to see. Attackers have tools, packers, encryptors,
+wrappers -- I wrote that one. That's just for the fun. Various stego tools out there. A lot of them. Hex editors and strings, you know what that
+is. Footprint that's one I wrote that helps identify
+what malware did to your system. It takes a snapshot of files, registered keys
+and services. You can take a later shot and compare them. Write histogram which is a terrible title
+but I can't think of anything else to call it, takes an image of a final and also takes
+some basic statistics. You can learn a lot from just a few basic
+statistics. Then the statistical analyzer kind of combines
+the two and automates them. I don't have much time to talk about that
+one. It's there and if you want more information,
+my contact information is at the end of the presentation. A little bit about me. Instead of counting sheep, I count in powers
+of 2. I learned how to program at 14. I did have a couple of Atari games published. You haven't heard of them. It wasn't pack man or anything. I joined the Air Force, got my degrees and
+now I'm an engineer at Harris and part-time instructor at UTSA. Wrappers is just a small utility. It will take any file you want and wrap it
+up into a bitmap header or wav file header. Various types. A few options there. It's simple, good for demos. Here is a steg LSB tool. This one hides in the least significant bit
+which is common. This one has five bits hidden. First glance if you didn't see the original
+you might not notice, but the original, of course, looks a little better. Think about that, five out of eight bits,
+that's a lot of data. This one hides in jpgs. That's also on the CD. That's my dog. He texted me last night. He's lonely. You can't see anything, though. You can't see any artifacts between the original
+and that one. So you've got that tool on your CD as well. We'll show you how you can detect that, though. Malware effects as I mentioned. It does lots of different things to your system. Also sometimes you install these programs,
+trial programs or maybe programs you don't want anymore and you did the unregister, get
+rid of the register keys and files. Footprint can help you find out. It takes a snapshot of the system, stores
+it in a big log file. It can save it by size as well. And date, the date part isn't working yet. I have to get that one done. If anybody wants the upgraded version with
+date, you can e-mail me. That's good for finding files that were recently
+installed. Often malware will drop a bunch of files,
+maybe in different places but they all have the same date. This can identify stuff that just has been
+dropped on the system. If you like getting videos that they don't
+let you download or pictures that you can't save picture as, go to content folder, use
+this tool and it will find it. Regular Windows browser and searching doesn't
+search the content folder. If you get there and -- you don't have to
+get there. Write it from the C drive and it will list
+the files. And you can find that video and copy it from
+that folder to what you want to use it for. Footprint can compare the two different files. Log files, here is all the files. What has changed. Same thing with registry keys, same thing
+with processes and services. This is a sample output I'm going to go through
+quick to show you how it shows you if the file was deleted or added. It's a textual program. Here is what the file looks like when it's
+modified. It creates a big log file or small. There hasn't been any changes since the last
+footprint. File type characters. Malware often disguises itself. May be encrypted. This can help detect that. The write bit histogram map tool can do things. It can create a bitmap image as you saw in
+the beginning. That was solitaire. One person probably recognized that as executable. The chart on the right was a histogram. That's typical for a executable. And then before discussing the tools, you
+have to do a little bit of math. Once we get through the math -- there's a
+lot of slides in this presentation. So once we get through the math and you understand
+a little bit about the tools as it goes on and its uses, if we don't get finish, it will
+be easy for you to figure out on your own. Who has heard of entropy before and knows
+what it is? Okay, curious, looks like half or so. Very good. What about a histogram? You all know what a histogram is? About the same people. All right. Usually we consider, of course, bytes with
+considers, the 255. So the maximum entropy is the log base 2 of
+the total number of symbols. So log base 2 of 256 different symbols is
+8. The maximum entropy for a file can be 8. If that file is base 32 encoded, maximum entropy
+is going to be 5. I don't have an example in the slides this
+time, but you can actually tell if the base 32 encoding has encoded an encrypted file
+or if it's encoded a text file just by using this tool. And, well, of course, for base 64, that's
+a little quiz to -- two to the 6 is 64. Who got a gold star? One person. very good. Two. A little bit of statistics here. So P is the probability. The log is often abbreviated LG to mean log
+base two. That's simply two to what power equals X? Log base two of 64 -- log base two of eight
+is three and so on. We can estimate the probability in a file
+by counting. So you take a file, count how many zero bytes,
+count how many one bytes, how many 2 bytes, so on. That's the histogram, the frequency distribution
+of each byte is another way of putting it. So giving that count and the total number
+of bytes, we can compute the probability for each byte. So we can say, you know, zero up here, 25
+times out of 100, we can say the probability is .25. And then we can plug into this nice nifty
+formula here which looks complicated but it's really just a four loop that is multiplying
+the probability times the log base 2 of the probability and adding it all up. You'll get a negative number out of that. I'll skip the log derivations for today. You add it up and get an entropy count. 8 is the entropy. Encrypted files have the greatest entropy. Compressed files are next and so on. Every file type generally has some characteristic
+range of entropy. Twenty-four bit bitmaps I found have been
+very varied but executable files, text files, they are kind of in a range, compressed and
+encrypted files are in a very narrow range. You can identify a lot just by the entropy. So bottom line is, the higher the entropy,
+the more uncertainty. That's what you want in an encrypted file. You don't want the opponent, the attacker
+to know what you encrypted. You done want to have any kind of information
+about what symbols are. Compressed removes pattern. Once you remove pattern you get a randomized
+looking file, but it's not as random as an encrypted file. English text I found to be around 4.5, 4.6,
+4.3, in a narrow range. You can identify that immediately. Now, of course, it does depend on having sufficient
+data. Okay? Very small files, the entropy counts are going
+to be skewed. I found that in practice around 4K is where
+it starts to get reasonably accurate. Of course, the more you have, the more accurate
+it looks. So histogram, I kind of talked about that
+already just on the chart, on the left side of the chart. That's going to be the zero count. On the right side of the chart is the 255
+count. And the darker lines are at 16 value intervals. It's 16, the line is darker. Thirty-two, the line is darker, just to break
+it up a little bit. Many file types I discovered have unique histogram
+characteristics. So I use that. You can identify them very quickly in many
+cases. So of course, here is how you identify a file? You have this new file. What is it? You look at the extension, but that doesn't
+mean anything, right? You look at the magic number. That may mean something if it's not disguised
+as something. We can apply visualization. That's what this tool does. It will do the audioization, which is a strange
+word, but it is actually out there. And statistics. So here is where you check on the file. What's in it? Does it match its extension? Does it have unusual data? Does it have hidden or appear pended data? Is part of it compressed? We can tell a lot. All right. That's just a command line for using the histogram
+tool. All of the tools have usage functions. I'm sure you can figure them out. Here is a text file. On the left is what it looks like. You can see it's dark because the text is
+all below 28. It's all the darker shades of gray. On the right you can see the histogram. What character is this, do you think? >> (Speaker away from microphone.) >> JOHN ORTIZ: Right, space is the most common
+character in text. Followed by the E and the T. These are lower
+case. Upper case is hard to see in this one. Not much upper case. You can see the pairing, character turn line
+feed. Those are all the same size there. You can see that. This is the text output of the program. So that gives you like the exact numbers. So you can see the exact counts. Sometimes it's useful because, of course,
+the visual one is scaled, right? You can't necessarily see the difference between
+a few values on a large histogram. Here is HTML. So you see that has some textual characteristics
+but it also has a lot of pairings. HTML has all the tags with the braces and
+so forth. You can see that here. C source code, Java code and stuff shows up
+the same way. You get pairings, so you can see the difference
+between C++,. Here is the bitmap, a bitmap of a bitmap. It kind of gets out of synchronization there. But you can see that it's smooth. That's the characteristic of a natural bitmap. All of them are smooth. If they are not fairly smooth, then something
+is going on. Now, eight-bit gray scale is very spikey,
+just like that. As well as a eight-bit color bitmap. We don't know where the spikes are, which
+values are the most common, but they all look spikey. Of course, for some of you that know gray
+scale, eight bit gray scale and eight bit color is the same in terms of the file content. It's just the pallet that's different. Speech. All eight bit wave files that are natural
+wav files look like this. Waves os late around the central ac six. As you go out towards the edges you get fewer
+values. Music is fewer than speech. You get the central spike. Sixteen-bit speech, it's a little tough to
+notice at first, but you get -- where is my cursor? You get a U-shape, very open U there because
+there's very little in the upper extremities. These are the upper extremities. There's very few samples up there. When you get music like that, you get a Fuller
+U shape. Fit doesn't have a U-shape, it's not 16-bit
+audio. You can take anything, just like I did with
+the solitaire program and wrap it up in a wav file header and you will not get this
+histogram. It will not look like this. Natural audio all has a U-type or pointed
+type shape if it's eight bits. Jpg, this one has a lot of zeros. It's uniform over here and fairly flat over
+there. That's characteristic of jpg. Some of them are more spikey than others,
+but they all have a reasonably uniform distribution across the top. PE files typically have large numbers of zeros
+and large numbers of FF and various values here. The thing about the PE file that is very characteristic
+is that it has different sections. So it looks like a text section and which
+is the actual code and then various sections in here of different data types. They all have kind of a striped look. Encrypted, I use a program called AX crypt
+which is available for free download. It has been out there a few years. You can see this, you can't really see the
+difference between the jpg, but this you can. It's very, very flat. It gets flatter as the file gets larger. All right. So file type identification. That's kind the overview of some of the things,
+the tools that you would be looking for when you use them. So here is this one. Can you tell, compressed or encrypted? Just by looking at the picture of the file. Not really. But from the histogram, and especially the
+entropy value, this is the entropy calculation over here. It's easy to tell. Ebb entropy .99997 for the encrypted file. Unless the files are pretty small you can
+use this to distinguish between compressed and encrypted. Even if they are small, the entropy for the
+encrypted will go down but the entropy for the compressed will go even further. Packed or unpacked. Here is executable. Is it packed? You can't tell by looking at a hex editor. Here it is looking smooth to me. Has a large number of zeros which throws the
+entropy down, but this looks fairly uniform there. I'm going to say it's more than likely packed
+unless it's full of compressed data. Maybe you have an executable full of jpgs
+as resources. Packed or not packed? Quite a difference, right? Now, this is thrown off a little bit because
+of the large number of zeros. All this has to be scaled. It's just a spikey. You can see the different patterns going throughout
+there. I use this to examine a RAM one time and there
+was -- ROM one time. There was one area that was all white. That was the area that was the RAM on the
+firm water. It was like a firmware download, it was the
+RAM on the, where it's blank. Here is a histogram with the zeros going off
+the scale. It looks kind of like an executable. However, you can see a little bit of uniformity
+down there, kind of in the bottom. So I would say that maybe this has some packed
+data in it that the whole thing isn't packed up. All right. So histograms and entropy aren't always effective. This is the full color bitmap that you saw
+earlier in black and white. You see how it's fairly smooth. Let's see if we are hiding something. Data appended to the end of the file. Statistics don't tell you much about it. However, if you look at the histogram, you
+can see that. That's unusual for a 24 bitmap to have these
+kind of spikes in there. Some of that comes from experience. I have done this on hundreds and hundreds
+of bitmaps and looked at them over the years in preparing several other talks and so forth. Here is the bitmap showing the picture of
+it and then you can see some data hiding at the end, okay, because that's got a different
+characteristic there. So that can reveal something. Are we using steganography? LSB steganography hides the least significant
+bit. Very difficult to see if the number is less
+than four. There are images where you can see them, but
+others where you can't. Sometimes even at four bit -- at four bits
+in a normal picture you can't even tell. Five bits is where you can really start to
+tell. What about with the histogram? Of course, otherwise I wouldn't bring it up,
+right? Okay, here is honey bee, the original. You can see a fairly smooth histogram there,
+7.55, we go to one bit of randomized data. Tough to tell on that one, right? That would not raise my alert flag there,
+looking at that histogram. It's a little spikey, but not too much. We go to two bits. Three bits. Four bits. It's getting easy to tell. The picture, however, can you tell by the
+picture? I think on this particular image the background
+is a little blurred. So you've got some smoothness. You can actually tell in the picture a little
+bit. Go back to three and look at the green background
+and go to four. You can see little bits of discoloration there. In the fore ground where there's lots of detail,
+you don't really see that. However, the histogram is clear. This is not a histogram of a 24-bit bitmap. Neither is this one. And that one, that one would raise my suspicion. So would two-bit. Let's see if we have five on here. Oh, yeah, it becomes obvious at that point,
+right? You can even tell by the picture. Even though I didn't know what a honey bee
+looked like, then that ... six bits and seven bits. (Laughter.) >> JOHN ORTIZ: Anyone want to guess what kind
+of data we're hiding? It's randomized data, right, because it's
+flat over here. We're hiding text data and it gets text look
+to the histogram at this point. Then eight bits. (Laughter.) >> JOHN ORTIZ: Now you don't have a bitmap
+at all, right? How about jpg? Does this work? Here is my favorite pet, Mandy. She actually looks kind of annoyed. (Chuckles.) >> JOHN ORTIZ: I mean, like why are you taking
+this picture? And that's the histogram of the jpg. Entropy is fairly high, but it's not like
+an encrypted file. Here is Mandy with 146,256 bytes of hidden
+data. She still looks annoyed. But you can't really tell. I can't tell. I can't tell even if I flip between the two
+of those. The entropy is a bit higher, though. 7.97. Right? So that gets a little higher. Still you might find jpgs with that much entropy. How about an image of the jpg? That doesn't work. However, if we decompose the jpg into its
+DCT coefficients and take a histogram of that, which is where we're hiding, then it's quite
+obvious that on this side it's very matching, which is normal for a jpg. They don't match exactly. I know these look like they're exact, but
+if you look at the raw numbers, they are not exact. They are close. This is one, two, three -- this is like a
+plus eight and minus eight or something. The generally the plus coefficients match
+the minus coefficients. One and negative one, two and negative two
+and so forth. When you start messing with those and hiding,
+they don't match anymore. And it's easy to figure out why. If you are hiding something in a negative
+one and you change the least significant bit, what does that number become? (There is no response.) >> JOHN ORTIZ: No, no, you have a negative
+one and you change the least significant bit. >> AUDIENCE: (Speaker away from microphone.) >> JOHN ORTIZ: Negative two, right? If you have a one and you change the least
+significant bit it becomes a zero. Even if you change one and negative one evenly,
+they are off balance. Okay? So that one is a little bit, takes a little
+more work to hide. There are some stego programs that try to
+balance those out. The one you have will produce the histogram
+like this. Doesn't try to balance them out. >> AUDIENCE: (Speaker away from microphone.) >> JOHN ORTIZ: Yeah, the tool that I provided
+on the DEF CON CD for hiding a jpg will do the hiding that you've seen here, but it doesn't
+do anything to balance the DCT histograms. Okay? Wow, we might actually have time for demos. I didn't think I would get through it this
+fast. There are so many slides, people said you
+are not going through 75 to 80 slides in just 45 minutes. There's lots of pictures. Am I going too fast? Okay, all right. Let me try some demos reversing XOR. I would have put more in this if I had known
+I would get through this fast. Something XORed with zero will be itself. I don't think I wrote it up here, but the
+reason that XOR is so popular in encryptgraphy, when you XOR something with a key you get
+cypher text. When you X over the cypher text with the key,
+you get the original. XORing it twice retrieves the original. Notice this, this is an interesting property
+of XOR. A lot of malware will use basic encryption
+to hide stuff. Something XORed with a space will change the
+letter. If you XOR a capital letter -- it becomes
+an upper case letter and of course, that's typically the most common character in the
+English language. XORing with a single character doesn't even
+change the entropy F you use a one-key XOR and XOR the thing with the key, the entropy
+stays the same. Gets shifted a little bit. Here is a text file that has been XORed with
+some character. You get the same characteristic spikes kind
+of grouped together. You get a brighter visual because now all
+these values are upper side of the bit values instead of the lower side. But it's still kind of looks like a permuted
+English text histogram. So that can be revealed. So this kind of looks like an executable. The image does, right? It looks like this is fairly union tomorrow
+in here. So entropy, 7.2, suggests some type of compression
+or encryption or weak encryption. That's another thing I should point out. The encryption in order for it to have the
+7.9999 entropy has to be good encryption. If you use weak encryption, you get the same
+effect as if it were compressed. I discovered that once. A client brought us some stuff and said here,
+tell us what you can tell about the network packets. We said okay. We did a lot of examination on it. One of the things I came back with, it says
+it looks like you're using weak encryption. How do you know? Like this. Oh, I should back up. So knowing that the first two bytes in an
+executable is MZ and that zero is prevalent can also help you a little bit with that. Excuse me. So in the target file we found that two bytes
+or DNN looking at the textual histogram we found C, A, N and D are more prevalent than
+others. We can start guessing one those might be a
+space. One of those might be an E. One might be a
+T. I kind of did some hand waving here because I didn't think I would get to these slides. So there's a little bit more to it than that,
+but the point is that you can use the entropy and the histograms and the visual tool to
+help reverse XOR encryption. Statistical analyzer. This takes the footprint perhaps and combines
+it with the histogram tool to automate the analysis. So you set it loose on a directory. It will iterate through all the subdirectories
+and run like ten different statistics, not just entropy. It will create histograms and bitmap images
+if you want and compare it to a baseline. You compare it to a baseline and it will pop
+out and spit out any anomalies that you have. This one says it's jpg but doesn't look eight
+it. It has high entropy. And I have presented on that particular tool
+before, a few years ago. So I didn't obviously include the whole presentation
+on that here, but if anybody is more interested, my contact information is at the end of the
+slide presentation. All right. I hope you learned something useful. Looks like we do have some time. So I can do a few demos for you. There's my contact information. And you can e-mail me if you want. Here is some blogs at Harris@relevant. Reversing XOR encryption, somebody else wrote
+that. And here you go, this is what I added to it. Then here is some irrelevant blogs at Harris
+that I wrote. That's actually a serious article. It is not, you know, anything that -- they
+wouldn't let me publish one that was bad, right? All right. And I do want to thank Mr. Greg Conti. He presented at Black Hat before. He gave me the idea in 2005 of the whole visualization
+concept. That's where a lot of this stuff was born
+from. All right. So anybody want to see demos? (Shouts of "yes.") >> JOHN ORTIZ: All right. Let me find my screen again here. Okay. So what do you want to see? The steg program? What demos? Any preferences there? No, I know, it's. >> AUDIENCE: (Speaker away from microphone.) >> JOHN ORTIZ: There we go. It's on the screen. Let me find the ...
+>> >> AUDIENCE: Look under your favorites. >> JOHN ORTIZ: My favorites? Let's see what we have. My favorites are the stego tools, really. I like to do those as well. All right. I'll pull out the -- and where is that? Steg jpg, okay. All right. And then I just need a little media file here. Find some jpgs here. I'll try to pull out some, more of president
+interesting ones. Oh, yeah, this is one of my favorite jpgs
+to hide in. I actually had heard on the news about this
+-- I heard about this device sold by a particular company, which I will not mention, that was
+supposed to detect like porn on your computer or something. So I decided to -- see if I can move this
+one over there. It doesn't want to -- I have to figure out. I'm sorry, I apologize. >> AUDIENCE: You want to duplicate? >> JOHN ORTIZ: Yeah, we can duplicate. That will work better. Thank you. I appreciate it. Okay. So this is supposedly, I put this thing on
+my laptop. And it divided the pictures into three categories. Like suspicious, highly suspicious, or not
+suspicious. This is the one that was most highly suspicious. (Laughter.) >> JOHN ORTIZ: Now, if I find that, that's
+not what I'm looking for. Let me find my -- okay, let me get to this
+directory. And so here is, let me change the prompt so
+it's nice and short. So here is the steg jpg one. Just show you that in action. And it has a number of different features
+to play with. I mean, it can take randomized input and create
+it from a pseudorandom number generator. You can add that. There's several parameters here. Typically just keep A and U, like four to
+eight, and quality is pretty high. That gets you the best file hiding. We will try to hide this one in there. 75K and 209K. All right. We'll try to hide the flower in the baboon
+there. Do that. Tell it dash hide. We need a cover file which is the jpg. It will take either bitmap or jpg as a cover
+file and convert that to a jpg on output. The message file is the flower. It may not fit, but we'll give it a try here. One hundred quality. I'll go for the max. >> AUDIENCE: (Speaker away from microphone.) >> JOHN ORTIZ: On what? >> AUDIENCE: (Speaker away from microphone.) >> JOHN ORTIZ: The message file can be any
+arbitrary thing. It doesn't care. Reads it as a stream of bits and hides it. >> For questions, please come to the microphone. >> JOHN ORTIZ: Yeah, I'm sorry. The question was what kind of files can you
+hide? Does it have to be a picture file? No, it can be any arbitrary file. The steg program, you have to give it the
+dash LSB option. It has a special demo mode. But all right. So here is what it said. It said our storage capacity was 146,000 bytes. The message size was 759 fix. So we can look at the resulting file here. Can't tell anything. Isn't that a pretty baboon? I took that picture in Africa. All right. So you can't see anything. Now, of course, no steganography is complete
+without extraction, right? You can always say yeah, it's hidden in there,
+right? So let's see what we can do with that. We have a stego file. That will be the hid file. And then it should pick up the quality okay,
+but these parameters, dash A and dash U have to match. And let's see. Oh, I need to tell it to extract. The command line is very archaic. This would be much better with a GUI. If anybody likes developing Windows GUIs and
+they want to develop one, great, send it to me. I'd appreciate it. That's a good sign. It found the same message size. And let's see. Where is it? It extracted that to this. Now, how did it know the file name? Well, I have to put in, in addition to the
+file data, I put in the size and I went ahead and stored a annual term -- no determinative
+file name and the rest of the data. I add a .jpg extension on this this one. You'll be able to see. I do ... there is the flower picture. (Applause.) >> JOHN ORTIZ: You know, I should have shown
+you the original, right? There is the original. You're like oh, yeah, it works! I could have extracted anything. Now, let's --
+>> AUDIENCE: (Speaker away from microphone.) >> JOHN ORTIZ: Let's do the WBH thing right
+there. This one is a simple command line tool also. We'll put the hid jpg file there and the dash
+B option creates the image of it. So there it is. By the way, this bit entropy, I tried that
+out with zeros and ones. It doesn't tell anything. Yes? >> AUDIENCE: (Off microphone.) >> JOHN ORTIZ: It is exactly the same, byte
+for byte. Oh, thank you. The question was, does the recovered file
+have the exact checksum as the original? The answer is yes because the original file
+is stored in there exactly byte for byte. There is no loss. Thank you. So the bit entropy here, that was experimental. That didn't work out too well. We see 7.97 with the hidden data. We've taken compressed data and hidden it
+in another compressed file. We can look at the textual histogram just
+for grins there. So you can kind of scroll down and you can
+see the exact counts in the exact distribution, so forth, of that. Okay? And then the -- where is it? The histogram, the bitmap histogram, okay? It's very uniform here except for a lot of
+zeros. If you want, we can use the tool to get a
+closer look at this. So like I will use what is called the zoom
+feature. I'll run the same thing again. This time I'll use dash Z and 5, okay? And now we have one -- let me stretch this
+out a little bit with a Z5. That's what that is. I over-zoomed a little bit. Let's try 3. So very easily I can do 3 and then go to the
+zoom 3. And now you can kind of get a closer look
+at that area. In fact, that would be actually a good one
+to use on an executable, right? It's not quite as uniform. We are do WBH of itself. All right. And then take a look at that one. And here is the histogram of WBH at zoom 1. Zero and 255 kind of mask out some of those. So we can use the zoom feature. And dash Z and 3. And now you can see that a little closer. Okay? The image, where did we put that one? That one was the baboon. This one here. That's the image of the jpg with the hidden
+data. You can't really tell anything from that. >> AUDIENCE: Would you show a picture where
+we can actually see the flower and the baboon? >> JOHN ORTIZ: It is with the bitmap where
+you see the flower behind it or whatever? I have time. I've got -- we have the technology. >> AUDIENCE: (Speaker away from microphone.) >> JOHN ORTIZ: These two folders here, by
+the way, are on your disk. I included tools that you can download for
+free just like I did. Here is the steg LSB one. We'll take that over to the demo area here. Let me clear out some of these other things
+just to make room. Okay. So now I have steg LSB in there. Now all I need are bitmaps. Let me grab some of those. These, let's see here. There we go. All right. The only thing is, for this picture in a picture,
+steganography, it's not really useful. I mean, as far as just for playing with, right? Because everything has to be the exact same
+size so that I'm going to take the upper four bits of one picture and stuff it in the bottom
+four bits of the other picture. Okay? So let's see here. We have, that one is 36, 1711 -- I don't know. Let's see. I have top find the right media file. Seventy-six by 512. No. I may not have the right size there. These are all different sizes, apparently. Hmm. Well, I might have to do LSB on that one for
+now. I'll show you how to do it but it will come
+back and tell me that the files aren't the right matching size. I'm trying to think. I know I have files on here somewhere. I can try my backup disk here. >> AUDIENCE: (Speaker away from microphone.) >> JOHN ORTIZ: Yeah, I could do that. It has to match, you have to match exactly. So I'm sure that I have one, you know -- maybe
+not. I really didn't expect to get done as fast
+as I did. I appreciate your patience with this. I went to the wrong ... no, that's going to
+be the same thing as what I have here. Well, let me just show, since we have a couple
+of minutes, let me show the files and we can meet later on. You had a question? >> AUDIENCE: When somebody ... (Speaker away
+from microphone.) >> JOHN ORTIZ: If it wasn't messed with, it
+wouldn't have anything hidden. >> AUDIENCE: I want something and I post it
+to flipper or something. Somebody grabs a copy of the Twitter picture
+to make a thumbnail for their website. >> JOHN ORTIZ: Right. >> AUDIENCE: I feel like after they've done
+that, the stuff I hid in my original picture is not visible -- (Speaker away from microphone.) >> JOHN ORTIZ: The question is, if I do a
+transcoding, like when you post stuff to Facebook and Flickr, a lot of times they'll change
+it for you or change the quality and shrink it. You can't recover your data but can you tell
+something is hidden? No, because the coefficients get scrambled
+up again and made a new. You have a question? >> AUDIENCE: (Speaker away from microphone.) >> JOHN ORTIZ: I have! >> AUDIENCE: Another one --
+>> JOHN ORTIZ: Sure. >> AUDIENCE: So in your example you used two
+images that had no relationship to each other. Let's say we're talking about somebody, like
+a journalist in a conflict area and they have a picture that is like the street before the
+demonstration and the street after. There's a lot of overlaps. Is it possible to use steganography to's tensionally
+re-reuse the cover agency as part of the steganography, so you encode the deltas and take advantage
+of the original image where there are exact or close similarities? >> JOHN ORTIZ: You can certainly encode a
+delta. There might not be any reason to. When you take two different pictures, the
+way the camera is going to encode it, the way the light hits, everything. You are going to have very high probability
+of having very likely, completely different images. >> AUDIENCE: Not yet, not yet --
+(Cheers and applause.) >> JOHN ORTIZ: Mathematically you'll have
+very different images anyway. You can hide both of those in two different
+images or hide them both in the same image and you can't tell that they are related in
+any way. >> AUDIENCE: So you can't take advantage of
+any similar runs of -- >> JOHN ORTIZ: In a jpg there won't be much
+common. If they were both bitmaps, you would be able
+to find some commonality. I did not cover in this presentation the math
+behind the jpg. It's easy once you know how to use it, but
+it looks very complex. Multiply that summation by cosines and stuff
+and it gets to be very complex. Everything is interdependent. You would have an eight by matrix and run
+it through a bunch of math at different frequency, a frequency correlation of your image. You change one little thing in there, it goes
+this way and this way and get et cetera to be very different in bitmap. You have blue sky. With jpg, if you're off by one, no. Yes? >> AUDIENCE: (Speaker away from microphone.) >> JOHN ORTIZ: Well, we are out of time for
+today and I don't have that file on the disk. It's confusing and ... if you e-mail me I'll
+see how I can get it to you. I don't have a problem giving it out. It's fairly complex to use. Yeah? >> AUDIENCE: (Speaker away from microphone.) >> JOHN ORTIZ: Sure, I can do that. It's fairly easy. It's just a stego@STAX.com. >> MODERATOR: You have time for one more question. >> AUDIENCE: You mentioned wanting a GUI. Is this open source? >> JOHN ORTIZ: You have on the disk some of
+the source code. I honestly don't remember which source code
+I put on there. I put the wrapper course code and the WBH. They were written by me. If the source code is not in there and you
+want it, just e-mail me. Well, thank you very much. I appreciate it. (Applause.)

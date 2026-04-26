@@ -1,0 +1,821 @@
+>>Hi Defcon. That's better.
+Welcome to I'm in Your Cloud.
+And um, I'm Dirk-jan. I live in the Netherlands, work for
+Fox-IT. Um, I mostly focus my
+research on Azure AD and um, active directory. Um, if you do
+surf with active directory,
+you've probably heard of some of the tools I wrote, like mitm6 or
+um, a Python version of
+BloodHound, and I also have a blog where I write about stuff.
+I also wrote the PrivExchange
+and of course, I have a twitter account where I uh, share my
+research. So, today we'll be
+talking about clouds and in the cloud, as you all know, um,
+everything this magic and
+secure. You don't have to patch and everything is automatically
+arranged for you. You just spend
+some money and everything is good. Um, I will offer you the
+reality, at Fox we also have
+like, inside response department and most things they see is um,
+the cloud being compromised
+because people actually didn't secure it properly. And on the
+conferences, I don't see a lot
+of talks yet about cloud stuff. There are some focusing on Azure
+and um, on Azure virtual
+machines and stuff and AWS, but I didn't really see anything
+about Azure AD, so that's what
+we'll be talking about today. And first I'll be giving an
+introduction into Azure AD, what
+it is, how we can talk to it and how its' architecture is kinda
+built and about the rules,
+applications, service principals. Then I'll take a
+short step and have look, have a
+look at some fun with multi factor authentication and then
+we'll talk about linking up the
+clouds and on-premise, then talking about Azure Research
+Manager and how it's connected
+to Azure AD and last but not least, I'll talk about
+integrations and as an example,
+I'll take Azure DevOps. I have to apologize in advance. Uh, if
+you're still tired or hung over,
+this is a talk which is pretty fast paced and I've got a lot of
+content, so try to keep up. But
+first, what is Azure AD? According to Wikipedia, Azure
+active directory is Microsoft's
+cloud-based identity and access management service. Um, that's a
+whole mouthful, but basically it
+does the authentication for Office 365 and Azure Resource
+Manager and anything you want to
+integrate with it. Um, I always like to compare it's, kind of
+it's login with Facebook,
+because you can integrate that on a third party website, and
+then you just log in with your
+Facebook account and your registered. Only then, um, it
+has a Microsoft logo and it's
+called Azure AD. And it's actually on the, apart from
+that, it's actually pretty
+similar. And it's called Azure Active Directory, but if you
+compare it to the Windows Server
+Active Directory or the on-premise Active Directory that
+we all know, there's actually
+nothing that's really similar to it. Um, all the protocols are
+different, the structure is
+different. There are different um, terminology and different
+set up, so for this talk, try to
+forget almost everything you knew about active directory and
+we're really gonna focus on
+cloud. So, if you want to interact with Azure AD, there
+are a couple of ways. First,
+there's the portal, which if you did use Azure AD, you probably
+used. There are some PowerShell
+modules and there is also a command line interface and
+lastly, there are some API's.
+And it's already quite a bit of ways and there's uh, a few
+difference between those. Um,
+for example, the portal, it's very um, nice and shiny. It's,
+it works nice. You can click
+around and configure stuff. But if you try to understand how
+Azure AD works and you're
+looking at the portal, um, it's not going to work out, cause I
+started with the portal and then
+I moved to trying to understand how things work with the API and
+such, and I found out that the
+portal just made it more unclear for me, cause um, Microsoft
+tries to make everything
+user-friendly and translates uh, things from the complex
+terminology that's actually used
+in the back-end, and so if you want to understand Azure AD, um,
+don't use the portal. There is
+also a PowerShell. Actually, there are a couple of PowerShell
+modules and I think the oldest
+one is the MSOnline PowerShell module. This one really focuses
+on Office 365 and as such, it
+has a few features that you won't find in the other modules.
+Um, this is a bit old and
+Microsoft is deprecating this one, so you shouldn't be using
+it, but it's still has some
+specific features that are not available in the other modules,
+so sometimes you still have to
+use it. There is also the Azure AD PowerShell module, which
+really focuses on Azure AD, but
+it has a different feature set than MSOnline PowerShell Module.
+And lastly, there is the command
+line interface and yet another PowerShell module, but this one
+is focusing more on Azure
+Resource Manager, so you can use it manage virtual machines and
+V-lines and that kind of stuff.
+And, the most interesting ones from my perspective are the
+API's. Yet again, there are some
+different ways here. So, you have the Azure AD Graph, which
+is, as it said, is really
+focusing on Azure AD, but you also have the Microsoft Graph,
+and Microsoft was like, okay so
+we have this graph for Azure AD, but why not put all of our
+product in one single API and
+I'm like, umm, that doesn't really make it much easier to
+understand. If you would like a
+API definition, that would take a year reading through and I
+can't really find anything, so I
+prefer the Azure AD Graph, um, that's, that one is already um,
+considered legacy, so I, in the
+future you probably have to use the Microsoft Graph. Lastly,
+there's the Exchange
+Provisioning service which uses XML, so I really to avoid that
+one, but once again, that's the
+back-end of the MSOnline PowerShell module, so there are
+some features in there which are
+actually not in the other API's. Now which one to use? Um, all of
+them have different features and
+some of them have unique features, but they are um,
+deprecated or considered legacy,
+as you can see in the, in the, in the corner below. They
+support different authentication
+methods, so some of the PowerShell modules supports
+different authentication and
+some don't. So, if, if you want to actually use all of the
+features, you're stuck with
+using different API's and different PowerShell modules all
+over the place. And to make it
+even more confusing, there is also a different terminology.
+Like here, I am using, um, at
+the top I'm using the Azure AD PowerShell module to list the
+directory roles, and you see I
+have five directory roles, but if I used the MSOnline
+PowerShell Module, I suddenly
+have a lot of more roles. You also see the ObjectId for the
+role is somehow different
+between the two modules. If that's a reason, but it doesn't
+really make it um, much clearer.
+Also, here I am looking at the company administrator role, and
+if you look at the portal, that
+one is conveniently called Global administrator. So, once
+again, uh, different
+terminology. And to conclude on this, there is not really one
+uniform way to talk to Azure AD.
+I wish there was. And you're also kind of limited to what
+Microsoft considers important,
+like on-premise active directory, you have L-Dep and
+everything in active directory
+is kind of stored there. But, in the, in Azure AD, you have
+different API's and not all
+features can actually be called by API's. And most of this
+research comes from using both
+documented and undocumented API's in Azure AD. So, let's
+have a look at the architecture.
+In Azure AD, there are um, three major kinds of principals. First
+you have the users, which often
+are the physical users that are in your company. These users
+can, of course, have devices.
+Uh, a device can be like a Windows 10 laptop that can be
+joined to Azure AD, but it can
+also be an i-Phone or android that is joined to Azure AD via a
+mobile device management. And
+lastly, you have applications, which we'll talk about later.
+And your users, um, can have
+specific roles and this is also, this picture is kind of
+important so, usually if you
+hear about Azure roles, they're talking about role-based access
+control, Azure RBAC roles, on
+the left. That is what is used for the virtual machines and
+stuff, and it's not actually
+used for Office 365. So first, we'll uh, focus on the roles
+that Office 365 uses, which are
+defined in Azure AD. And there are some different admin roles.
+The first one, or the most um,
+important one, is the Global administrator, or Company
+administrator if you use the
+API's, and this administrator can do anything. Of course, you
+don't want all your
+administrators to be able to do anything, um, so there are also
+limited administrator accounts,
+you have the application administrator, authentication
+administrator, exchange
+administrator, etcetera and they all have their limited part
+which they can manage. Now, at
+the time that I made these slides, um, the roles were
+fixed. You couldn't change that.
+Actually in the past week, um, Microsoft started to change
+that, so um, you see that cloud
+is changing all the time, and they are actually looking now
+into uh, a way that you can
+create your own roles, but I haven't played with that yet, so
+let's assume that um, these
+fixed roles are all there is for the sake of this presentation.
+And now we're talking about
+applications, and I think this the most confusing part of Azure
+AD. It took me a long time
+before I finally understood how these work and it's also because
+the documentation is not really
+clear on this and once again there's a, a big terminology
+difference between the
+documentation, the API that are available, and what you can see
+in the Azure portal. And these
+applications have a very complex permission system. So, what is
+an application in Azure? Well,
+about everything. I mean, the Microsoft Graph, which is an
+API, is an application in
+everyone's Azure AD. The Azure Portal is also a registered
+application in the Azure AD that
+your using. In fact, there are about 200 applications and
+associated service principals in
+um, every Office 365 installation. So that's a lot of
+stuff that is in there by
+default and you can do quite some interesting things with
+this. So, when I say
+application, there are actually two parts. And if we're looking
+at the simplest case, which is
+an application which is defined in your own Azure AD, then there
+is the application definition
+and a service principal. And the application definition basically
+defines what the application is
+about, you give it a name, etcetera, and the service
+principal is the uh, actual
+principal in our directly which gets the rights and has the uh,
+rights to perform actions in
+your directory. So, there are two parts of an application and
+in this talk, I'll, if I say
+application, I usually mean the definition and if I say service
+principal, I mean the kind of
+account that is present in the Azure AD. So, because cloud is
+multitenant, you can have
+applications from another directory in your directory. So,
+this is the simplest case, uh,
+where you have both the application definition and the
+service principal in your own
+directory, with great third-party applications then
+the definition of the
+application is actually in another directory, and once you
+start using that application, a
+service principal is created in your own directory and that's,
+is the presence of that
+application in your directory. For Office 365, Microsoft as
+some internal um, tenants in
+which all these applications are defined. And in your Office 365
+directory, all the service
+principals are created. So, once again, it's a split between
+definition of the application
+and the service principals. Now, applications can have privileges
+and there are basically two
+kinds of privileges. In the Portal, they are called uh,
+delegated permissions and
+application permissions. And delegated permissions are only
+used when a user is actively
+signed in in the application. However, application permission
+is something the application has
+statically and it can use it at any time. So, these privileges
+actually assigned to the
+server's principal portion of the application. Now the
+permission model is as follows.
+Um, every application defines its own permissions which can
+then be granted to other
+applications. And, like, commonly used uh, are the
+Microsoft Graph and the Azure AD
+Graph and they define permissions such as directory
+dot reads, which gives an
+application or a user, permissions to read attributes
+in a directory and these can
+then be granted to other service principals. So, let's look at
+uh, how this looks in the Portal
+first. So, here we have the application definition and we
+see there are a couple appli-
+permissions defined for this application. So, first is the
+Directory AccessAsUsers,
+AccessAsUser, which is a delegated permission. So, once a
+user is sign in into this
+application, this application has the right to access the
+directory as if it was the sign
+in user. There is also an application permission here,
+which is um,
+Directory.ReadWrite.All, which gives the application
+permissions to read and write to
+the directory. If we look at the service principal, we see these
+privileges again. So, the um,
+the application has permissions to read and write directory data
+in this case, and also uh, an
+admin sometimes has to grant these privileges because by
+default any user can create new
+applications, but of course, not every user can give these
+applications permissions. And
+sometimes the high value or high impact permissions have to be
+approved by an application
+before they can be used. Now I created this small table to um,
+see how permissions actually
+work versus how um, the Microsoft Portal, or the Azure
+Portal tells you how they work.
+So, on the right is the Portal terminology and on the left is
+how um, they are used in the
+API's, which for me is um, conical. So, every application
+defines will have two
+permissions and application roles and these get translated
+to delegated permissions and
+application permissions in the portal. And, an application
+definition then requires uh,
+access to certain permissions such as OAuth permissions, or
+application roles, and when an
+administrator approves those permissions, these are granted
+to the service principal. So,
+you would imagine that um, we have the Microsoft Graph
+application, which defines
+permissions. Uh, we create our own application which needs to
+access the Microsoft Graph, so
+we set some uh, definitions that of which API calls, or which API
+permission this requires, and
+these are then granted to the service principal associated
+with our application. How this
+is clear, a bit. Um, and as I said, um, Azure previously an
+admin has to approve these
+applications, so that's how it works in the Portal. That is not
+necessarily how it's required to
+work. So, normally you add permissions in the application
+definition and an admin then
+approves the permissions. However, if you use the API's,
+you can directly um, assign a
+role to an application on the Microsoft Graph or the Azure AD
+Graph. There are some API calls
+for that. And then when admin looks in the applications
+overview in the Portal, it says,
+oh, there are no permissions required for this application.
+Which looks great. If you now
+move to the service principal, suddenly there are some
+permissions that the service
+principal has so even though the application definition doesn't
+say it has these permissions,
+the service principal still has them. And also, you can see that
+these privileges were granted by
+an admin, but it doesn't say which admin. It just says
+granted by an administrator.
+There is not really a way to see, hey, who was this
+administrator that assigned
+these permissions without actually putting them in the
+definition? It gets even more
+confusing when you look at Microsoft applications. Because
+all the Office 365 applications
+are considered uh, first-party applications in OAuth terms and
+as you see in the Portal, they
+don't actually have any permissions that you can see.
+So, you, we are looking at
+Microsoft Teams Web Client here, and it says, oh, there are no
+permissions for this um, service
+principal. Okay that's great, so it doesn't have any privileges,
+you'd think. But when I sign in
+into Microsoft Teams, I get access web token which uh, if
+you decode it, contains the
+privileges that were granted to this application. And you
+suddenly see that this
+application does in fact have permissions. So, in the scope
+variable of the access web
+token, um, you see this application can actually send
+emails, its- it can read my
+information and it can write to my calendar. And it has these
+privileges on the Outlook API.
+And as you see, this is actually the same application that we
+were just looking at, the
+Microsoft Teams Web Client. So, why does this all matter? There
+are some admin roles uh, which
+allow an admin to manage all the applications in a directory.
+Such as the Global
+Administrator, of course they can do that because they can
+manage anything. Or the
+Application Administrator or Cloud Application Administrator.
+So, these administrators can
+assign credentials to applications or route it to the
+service principal of the
+applications, and then they can log in as that service principal
+using those credentials. So, if
+we compromise an admin account in Azure AD, we can, um, assign
+credentials to an application,
+um, and then we can log in as that application. And of course,
+since applications are uh, not
+humans, there are no multifactoral options for
+service principals. Also, if
+there is an application that actually has more rights than
+the application administrator,
+it is possible to escalate privileges this way. Actually,
+in previously, there used to be
+some default Office 365 applications which had roles
+assigned, so it had more
+permissions than the application administrator had. So, the
+application administrator could
+just assign credentials to the application and then perform
+actions that he previously
+couldn't do. This has been fixed by Microsoft, by the way. So
+just to give an example how this
+works, um, you can use PowerShell to create a new
+certificate and then assign
+certificate credentials to a service principal. Then you can
+log in as a service principal,
+in this case I'm using the Azure AD PowerShell Module, and you
+see I'm signed in with a
+certificate on the directory. Now if perform any action, such
+as adding a user to a group,
+then the login will show that this was performed by the
+application rather than um, the
+admin that assigned the credentials to the, to the
+application. So, if I assign
+credentials to an application, and then I wait x amount of
+time, that the login kind of
+rolls over and there are no more logs that I actually modified
+the application, there is no way
+to see which user assigned these credentials and this actually
+performs these actions.
+Furthermore, a bit of a twist, um, so application admins by
+default can't assign roles to
+the application that allow it to interact with the Microsoft
+Graph or the Azure AD Graph. If
+they could, they could just assign the permissions to the
+application which they don't
+have themselves, which would be privilege escalation again. But
+this is not possible. But what
+they can do is assign OAuth permissions, or delegated
+permissions if you use the
+Portal, but these are only valid when the user is using the
+application. But, of course, you
+can exploit this. Um, if you add the user impersonation
+permissions to the application
+and then phish a Global Administrator to actually sign
+into its application, you can
+perform any actions that the Global Administrator could do.
+And then here is a small demo.
+Let's hope it works. So, we sent an email to the Global admin
+here and here's the link. He
+clicks on it and then we captured his access token. So,
+this is an access token for the
+um, Microsoft Graph and with this access token, I could
+perform all kinds of actions.
+And you can see here that actu ñ this token has privileges to
+access directory as if it was
+the user. So, with this token, um, I can perform all kinds of
+actions and I can um, modify my
+own role, I can give myself permissions, I can add users to
+group and all that kind of
+stuff. And, um, as you saw, this didn't require any consent from
+the admin, that's because the
+Application admin already approved the privileges for the
+application. You can make this
+even more fun. Um, so, because there are like 200 built-in
+Office 365 applications, that
+the Application admin can also modify. And, if you assign a
+read ñ a write listed URL that
+this application can use to sign users in, and you then assign
+your own URL, you can use the
+built-in permissions for the application to actually uh,
+phish the admin again. And if
+you look at the logs, uh, this actually doesn't show anything
+suspicious, because if, if an
+admin is using Office 365, um, these kind of sign ins appear
+all the time and the login
+doesn't specify which URL the admin was redirected to. So, you
+can just add your own redirect
+URL, uh, get a token, and in the login it won't actually say
+anything, apart, of course, that
+you modified the application, but the sign in log is kind of
+useless here. So, there was a
+bit about Azure applications. Um, I'm gonna take a little
+ide-step and have a look at
+multifactor authentication. So of course, um multifactor
+authentication is good and
+everyone should do it. Um, and there are multiple options for
+this. So, the authenticator app
+is one of the options, um, it's kind of similar to Google
+authenticator, when you have
+like a code that you dis-display and you use that as the second
+factor. You can also have
+notification that kind of pops up on your phone that you can
+approve the sign in, and then of
+course, the good old uh, text message that I think has been
+reiterated, uh, a million times
+already that these can be intercepted and are insecure and
+stuff. So, I didn't look at
+that. But there is also the option to authenticate with a
+voice call. And this works as
+follows. Um, you have your phone and are registered to Azure AD
+and then um, Microsoft calls
+you, and in order to approve the sign in, you have to press the
+hash sign or the pound sign.
+Now, I thought, okay, what about I break into someone's
+voicemail, and I change his
+welcome message to the tone of a pound sign, because these signs
+are just specific sound
+frequencies. So, if you can record it in your voicemail
+message, then, um, potentially
+Azure would call you and hear that same tone. Now you make
+sure that the phone is occupied
+so when you are performing your sign in, you call the victim and
+make sure their phone can't
+answer it and the talk, and it will go to voicemail. You sign
+in using the passwords that you
+phished previously or you found it in a leak somewhere, and
+AzuraAD will get redirected to
+voicemail and it will authenticate you. And if you
+think um, can I actually break
+into someone's voicemail and how hard is that, uh, you should see
+this talk from last year. Um,
+this guy made like a Python script to brute force all the
+ping codes on voicemails, which
+is really cool. So, here is a small demo. So, I changed my
+voicemail message, I hope you
+can hear this. This is the sound of the pound sign, now I put my
+phone airplane mode and I enter
+the password for the user that I somehow obtained and it will say
+okay, I sent you a text message,
+but you can also choose to call the phone. And now Azure is
+calling the phone and hopefully
+getting redirected to voicemail. And we have to wait for a little
+bit. And there it goes.
+[Applause] So, if you do compromise someone's voicemail
+and you change the message, you
+can potentially bypass his multi factor authentication. I
+reported this to Microsoft and
+they're saying, okay, yeah, um, we see the issue here, but you
+still need to compromise
+someone's voicemail first and it's kind of a post- post
+application technique, so we
+will be fixing this at some point, but not right now. So, I
+haven't tested this recently,
+but I assume this still works. So, if you do allow voice
+messages for authentication in
+your tenant, you may think, you may want to think about
+disabling that. Okay, up next,
+um, linking up the cloud and on-premise, cause um, of course,
+you don't have all your
+infrastructure in the cloud yet. You also have a part on-prem and
+you would like to combine the
+two. And previously we talked about the Application
+Administrator and how he can
+backdoor stuff, escalate privileges and stuff, but let's
+assume that this account is
+protected with MFA and we can't hack into his voicemail. So,
+what about the on-premise
+infrastructure? If you want to synchronize Azure AD and
+On-premise AD, that's usually
+done through a utility called Azure AD connect and you install
+that on-premise and you, that
+synchronizes at the directory redial to Azure AD. And
+depending on which methods, uh,
+you use to authenticate your on-premise using Azure AD, you
+can for example use Password
+Hash Synchronization, so that they can sign in with the same
+passwords on-premise in Azure
+AD, or you can use, um, Federation with ADFS. Both
+require this Azure AD connect
+tool. And the account for this tool in Azure AD has quite some
+privileges, which is all very
+nicely documented, by the way. So, if you look at the
+documentation, you see the
+directions synchronization accounts. And we can see that it
+has permissions to update
+service principals and to assign credentials to service
+principals. And these were just
+the applications that we abused with the Application
+Administrator account. So, um,
+briefly some interesting things about the sync account. If you
+use Password Hash
+Synchronization, then the sync account will have access to all
+the password hashes on-premise,
+so that basically makes it domain admin, cause you can use
+synchronized, or synchronize the
+password hash of the kbtt account and then you can
+comprise on-premise. And, of
+course, in the cloud it also has high privileges as we just saw
+from documentation. And, the
+access in the cloud may not just be limited to the single AD
+domain that you're
+synchronizing. So, there is some potential for privilege
+escalation here. Um, I wrote a
+tool to extract the Azure AD connect passwords from the
+on-premise server. There are
+some, several protections for these passwords uh, about which
+I presented at Troopers earlier
+this year, so if you are interested in the technical
+stuff, uh, check out the link
+below. But basically, I wrote three different tools that
+depending on your scenario can
+be used to dump the credentials off this account and some work
+over the network while some
+others uh, can be used in example, for a global strike
+through um, assembly loading and
+these tools get your, get the both the on-premise passwords,
+any cloud password from the
+server where AD connect is installed. So, once we have
+these credentials, there is some
+fun stuff we can do. We can dump all the on-premise password
+hashes if the organization is
+using Password Hash Synchronization. We can also use
+this account to log into the
+Azure portal, don't ask me why, but this works. It's a user
+account, so you can just log in.
+And we can bypass conditional access policies since there are
+some conditional access polices
+to require multifactor authentication for admin
+accounts, but the sync account
+is of course, excluded from this since it's not a human account
+and this account do multifactor.
+Just like the Application Administrator, we can add
+credentials to service
+principals and backdoor stuff and do all kinds of fun things,
+and we can also modify service
+principal properties. So, we can change the authentication URL of
+a Microsoft application, phish
+an admin, and escalate to Global admin privileges. And, there are
+some more things where service
+principles are used and that's where the connection between
+Azure Resource manager and Azure
+AD comes in. So, once again returning to this picture, um,
+Azure AD is the authentication
+and, and identification access management for both Office 365
+and for the Azure role-based
+access controls in Azure Resource manager. This means
+that if you are a Global
+Administrator, you can um, by design, also access all the um,
+virtual machines and network
+infrastructure that is stored in Azure Resource manager. And, you
+can also assign privileges to
+manage Azure resources to service principals. Which, can
+be managed by Application
+Administrators or by the on-premise sync account. And if
+you have an application such as
+Terraform, which is used to automatically provision cloud
+resources, then it obviously
+needs high privileges in order to create and modify delete
+resources and this is, this can
+be done with service principals. So, if you have act control over
+the on-premise sync account, you
+can assign credentials to service principals which have
+rights in Azure Resource manager
+and you can also control all the cloud resources. An example
+which actually uses this is
+Azure DevOps. And what is Azure DevOps? Azure DevOps is uh,
+DevOps tooling and it's in some
+ways kind of like Git hook. You can use source code managements,
+you can collaborate on projects,
+um, you can have automatic build pipelines and automated
+deployment. It's the whole
+DevOps, um, toolkit. Now have a look at Azure DevOps pipelines.
+Um, this is kind of cool because
+Microsoft makes this feature available for free to for
+example, open source project and
+you can automatically build your codes through, for example, Git
+It intergration and when you
+push your, a new version, it will be automatically built on
+hosted resources in Azure. An
+example of this is my own Azure AD connect tool. I have
+connected that to Azure
+pipelines so as soon as I create a, put the new comment in there,
+um, the, the net binaries will
+get automatically built on Azure and you can download this. So,
+there are multiple ways to
+change the definition of a build pipeline. Previously, um, when I
+looked at this, only the uh,
+agree could be used to change the, the build definition, but,
+um, I think earlier this year or
+at the end of last year, a new feature was added which allowed
+pipelines as code in YAML files.
+So, then the pipeline definition is part of the repository where
+the code is in. And it kind of
+looks like this. So, this is a YAML file with the um, build
+definition. It's says, okay when
+I push a new uh, comment to master, uh, you build it using
+the hosted official Studio 2017
+profile. You can provide, you can set up all build steps in
+order to um, do stuff with this.
+So, let's talk about a hypothetical scenario. And we
+have a DevOps team and a team, a
+member of the team wants to automatically publish the built
+artifacts so for example,
+executables, uh, to Azure using Blob storage. Blob storage is
+kind of like S3 in AWS. It can
+store all kinds of stuff in there. So, he links up Azure
+Resource manager with Azure
+DevOps and actually it's nice. But, from there, which you can
+select your subscription and
+then you click authorize and then soon the lead or two are
+connected. Now, there is a new
+user, or a new team member at the company and this team member
+needs minimal privileges to uh,
+contribute his codes to the repository. Because he is a
+newer member, there, we don't
+give him acc- any special privileges to, for example,
+alter the build definitions. And
+adding a new user isn't exactly uh, isn't exactly a nice person
+cause the first thing he does is
+actually editing that build definition in the code and then
+pushing that change to, uh, to
+the repository. So, even though he didn't have privileges to
+edit the pipelines, because the
+pipeline is part of the codes, this user can still edit it.
+And, meanwhile, in um, a
+completely unrelated Azure VM, which is not related to the
+source code at all, the
+following happens. If the video plays. Yes. Oh, that's a
+Notepad. How did Notepad get
+there? I thought we were editing source code? So, what happens
+here? Um, remember that I said
+that we allot um a copy to Azure Blob storage for the artifacts?
+Well there's uh, a task for that
+which is called Azure File Copy and I've edited this build
+pipeline a little so what it
+does its, it's gets the Azure file copy script and it vectors
+that to dump some of the
+authentication data that is used to link Azure Research manager
+to Azure DevOps and it will then
+put the backdoor code back in the original PowerShell thread
+that is used to copy the file.
+So, when the file gets copied, uh, instead my code gets run,
+and we can gain access to some
+of the credentials. So, if you look at the logs, um, we see it
+dumped the tenantid, service
+principal id, but there all um, there all masked in astericks,
+because Azure DevOps doesn't let
+you log sensitive stuff of course, to the logs, but if you
+bay 64 and code that, um, then
+it's all fine. So, at the bottom you see that I dumped the
+authentication data and the
+password for the account using bay 60, bay 64. And we can
+decode that and then we see you
+get the tenantid that is used for Azure subscription, the
+service ID of the service
+principal that was created and you get the service principal
+key, which is the password for
+that service principal. Now, I was a bit confused when all this
+happened cause I just remembered
+clicking the authorize button and I didn't really get a
+warning that the service
+principal would basically get contributor rights on my whole
+Azure subscription. So, when I
+clicked that little button, a new service principal was
+created and he got full
+privileges on the whole Azure Resource manager subscription.
+So, it means that he can edit
+any virtual machines, discs, access files, and all that kind
+of stuff. And, with these
+credentials that we just obtained, we can log in using
+the Azure uh, C-line module and
+that password you saw before, even though it looks, uh, like
+basically for encoders, it's
+just a very long string. So, here I used the credentials that
+I dumped from Azure DevOps to
+actually log in on Azure Resource manager. Now, how about
+the Notepad, um, I added a
+little extra so it is just inline script without a new
+custom extension to a virtual
+machine in Azure and this runs a PowerShell script which then uh,
+spawns Notepad. So, that's just
+to prove that you can actually access those virtual machines as
+the highest user there is. So,
+can anyone edit pipelines? Um, normally, no. Uh, the pipeline
+definition uh, there's a
+specific role required to edit the build section of pipeline,
+but since the piplines move to
+be part of the code, anyone who can edit the code could actually
+edit the pipeline. I reported
+that to Microsoft and that is fixed in the latest version of
+Azure DevOps, so I didn't retest
+this yet, but uh, this shouldn't be possible anymore and
+hopefully now the edit pipeline
+role is actually enforced also on the source code in the
+repository. A few conclusions
+about this. Um, be careful with integrations. Look - have a look
+at which privileges to actually
+get on your subscription and um, how they are used because anyone
+that can edit your build
+pipelines can access the secrets that are exposed to the build
+pipeline and if you enable
+secrets for public repositories and you allow, um, you allow
+builds on pull requests, then
+anyone who creates a pull request can actually extract
+your secrets off any service
+that your integrate with Azure DevOps. Um, though this is
+disabled by default and this is
+documented uh, pretty well, I think. At the link at the bottom
+it actually say Warning, anyone
+who can edit your build pipeline can access your secrets if you
+enable this. You don't want
+this. Some general conclusions. Um, I think cloud can be
+beautiful. It definitely allows
+us to do a lot of things that we couldn't do before, but all your
+stuff is on the internet and you
+will have to uh, secure it yourself because not everything
+is secure, by design, and
+especially enable MFA for all your sensitive users because uh,
+99 percent of the cloud
+compromises are users that didn't have MFA enabled. And if
+you have software Azure service,
+um, it does take away your need to patch manually. You always
+have the latest patches, you
+always have the latest features, but you also have the latest
+vulnerabilities that got
+introduced by those fancy new features. Especially in Azure
+DevOps case, if you really lock
+down your permissions, and then suddenly there is a new feature
+which uh, changes that, then you
+have to be uh, aware and redo your um, risk calculation and
+sometimes there may be a
+vulnerability that makes your security sudden ñ suddenly a bit
+more insecure. And of course,
+there is uh, a full trust implied in the vendor from who
+you are renting your cloud
+services, so um, you do have to trust that they are actually
+doing everything correctly and
+following best practices. So, this was I'm In Your Cloud and
+thank you for attending.
+[Applause]

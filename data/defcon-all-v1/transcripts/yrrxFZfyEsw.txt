@@ -1,0 +1,1120 @@
+>>Uh, we are going to hear now,
+from, uh, Jeff, but first, a
+couple of announcements - uh, no smoking or vaping in this room,
+uh, of anything, of any kind, at
+any time. Uh, if you manage to sneak in outside beverages,
+shame on you! Uh, uh, and uhm,
+if you are, uh, consume any, uh, anything that you brought it, it
+needs to be water, and that is
+all. That is all. Yeah? Cool! So, Jeff here, uh, came in from
+New York, he is giving an update
+on a talk that he has given before. He is unfortunately not
+a first-time speaker, but it's
+good that he came back! And was not terrified into, uh, uh, uh
+never returning. So, let's give
+Jeff a big round of applause! [applause] Have a good time,
+man. >>Thank you. [applause] Hey
+folks, so, uh, I'd just like to start by saying that this sort
+of a 45 minute condensed
+snapshot of, uh, 105 minutes talk submissions. So, this is
+gonna get pretty dense. So, uh,
+I'm Jeff, I work for NCC group, uh, doing lots of research and
+other hacking stuff, and, uh,
+one of the things that brought me to this topic was the fact
+that I've done a lot of, uhm
+pcap processing stuff. Uhm, and also, dynamic instrumentation
+and this kind of work has
+actually tickled both of those for me. Uhm, so, we're going to
+be covering a whole bunch of
+things. Uhm, and, uh, part of, a big part of this talk is, is set
+up and then, uh, the rest of it
+is, kind of, a whole bunch of very, uhm, fundamental,
+primitive techniques that can be
+used to build up some really nasty things. Uhm, so, first,
+eBPF - it is extended BPF what,
+what is all this BPF nonsense? So, BPF is "Berkeley Packet
+Filter", it is this sort of
+bytecode instructions set virtual machine that runs in
+kernel space ideally to process
+packets in plane. And, the idea is that, uh, when you run TCP
+dump and you give it like a port
+filter, uhm, TCP dump doesn't want to, you know, process
+through all the packets. And you
+don't, and it's a lot of, uh, it's very expensive to send it
+down to a lot of user space for
+it to print them out or not. So, it sends up a little program to
+the kernel and then the kernel
+decides on which packets, based on the program, to actually send
+back down the user space to TCP
+dump. eBPF on the other hand, uh, is extended stuff is sort
+of, takes the same general idea
+but extends a very limited instruction set to just
+something that basically is ,
+kind of, just almost 1-to-1 with x86. Uhm, and it's, it's to the
+point that you can actually,
+basically compile, like C-code down to it. Uhm, it's used for a
+lot of this you can still do the
+packet processing stuff but it's also being used for kind of, uh,
+dynamic tracing along the lines
+of, uh, d-trace on other unix systems. Uh, and everything it
+does is basically done through
+this BPF syscall. Uh, the main two things you do with it are
+your load programs and your
+programs are the code and the maps are these kind of internal
+data structures that map, that
+allow you to share data between the code runs in the kernel and
+code that you have that runs in
+the user space. So, uh, eBPFs, uhm, instruction set
+architecture are like super
+featureful. And because of that there's a whole but of stuff
+that's done in the kernel to
+make sure it doesn't crash the kernel or hang it and stuff like
+that. Uhm, I'm not really
+talking about that too much in this talk, I talked about it in
+my previous talk. We're just
+gonna kinda go straight into doing stuff with bb, BPF and
+simply, simply hope that the
+code works in the first place - doesn't get rejected. So, uhm,
+the general idea with this is
+you create one of these eBPF programs and then, uh, you
+create some maps, you hook them
+together, and ideally they run. All of these things are file
+descriptors on the userland
+side. And, uh, the, the programs will, you get to attach them to
+various facets of the system
+using very specific APIs and then they kind of get called
+inline to process the events,
+uh, when they happen. So, uh, most of the interesting eBPF
+stuff requires cap sys admin -
+the sort of God root privilege of Root that makes Root, Root.
+Uhm, but you can still do stuff
+without it, uhm, specifically, uh, socket filters. Uhm, there
+are other types but they require
+other, other privileges to actually use. Uhm, the main
+thing within this restricted
+runtime, uh, that you need, that you do, that's useful, is you
+call these helper functions that
+are essentially APIs to the kernel, to actually do the heavy
+lifting that you otherwise can't
+do in a restricted environment. Uhm, and then, the code is, is
+verified both for like loops and
+stuff but also to make sure that the arguments are passing to
+those helper functions aren't
+gonna, like, crash the kernel or corrupt memory inside the
+kernel. Uhm, so, why eBPF? Uhm,
+why am I doing all this stuff? So, it's got a lot of
+interesting APIs and things to
+play around with, it was created for a kind of high performance
+packet processing, now it's just
+being applied to anything and everything in the kernel because
+programmatic logic is the best
+logic. Uhm,and it, it really had, kind of, 2 modes - there's
+no, no inbetween right now.
+There is work on it but it's not really done and it really just
+scratched the surface. So,
+basically, when you're running your eBPF code it's either
+running like super unprivileged
+or does ALL of the privileges! And there really isn't anything
+between, uhm, which makes it
+really hard to sandbox to the point that, you know, if you're
+actually using this, in say a
+container, uhm, to use it, it, like you have to turn on.
+Certain things you have to turn
+off all the security just to use it properly and then that leaves
+you a very vulnerable target to,
+to attack. Uhm, so, why "evil" eBPF? Uh, because there are a
+lot of fun things we can do with
+these fancy new APIs that the people who made them were not
+really thinking of because, uh,
+they were trying to move really fast. Uh, so, what does this
+talk about? Uh, "shenanigans"
+and, and what I mean by that is we're going to be doing things
+along the lines of, uh,
+obfuscated, uh, obfuscated communication channels between
+process that are really hard for
+someone on the system to track unless they're using very
+similar technologies to follow
+them, and rootkits - lots of rootkits. Uh, so, we're gonna
+talk, start with a bit of
+tooling on what we need to do to get all of this stuff working up
+and running. And then we're kind
+of gonna jump straight into the meat of it. So, you know, we
+want to build all this stuff. We
+want to get this eBPF code running. But, you know we have
+to, we have to, we have to
+actually have like a tool chain that does stuff so we have to,
+you know, figure out a way to
+compile code in this eBPF stuff. Uhm, actually get it to load
+another kernel. Uh, we have to
+set up, uh, you know, comms between the kernel and user
+space code and eBPF code. Uh,
+and then potentially we're also worrying about, uhm, portability
+across systems because if we're
+building this thing, uhm, to target and run on a system that
+is not our own, we can't
+necessarily assume it is is going to be amenable to run, uh,
+us running our code on it. So,
+we wanna keep things very lightweight and small. So, uh,
+as with many things in Linux,
+there's a lot of choices to shoot various digits off with.
+Uhm, so, uh, you kind of have to
+pick a way to do a bunch of eBPF stuff. Uhm, and, uh, heads up,
+I, I went with the LLVM/Clang
+approach but I think it's important to kind of go cover
+all of them in what they're good
+at, what they're not good at. So, at a high level, you know,
+you can do raw eBPF
+instructions, uh, by hand, C-macro domain specific
+language. Uhm, it's, it's often
+used for very simple examples, it's, it's hard to build up
+bigger stuff with it. Uhm, you
+could use this LLVM too chain to compile C-code into these eBPF
+architecture ELF binaries. Uhm,
+there's a lot of infrastructure to build it, uh, to build into
+the links kernel, it's a, uh,
+it's build infrastructure is a little slow to get it done, so,
+there are also, uh, tool chains
+to do it out of tree, out of Linux tree. Uhm, but then you
+have to manage all your headers.
+Uhm, and then at a high-level there are things like "bcc" ad
+"gobpf", which, uh, essentially,
+uh, have a bunch of instrumentation happens to your
+c-code and they do a bunch of
+stuff that kind of make a, a variant of c that allows for
+easier auto registering of
+things. And then the rest of the code you interact with from
+either Python or go on the
+userland side. After that, you know, generally at a high-level,
+just interact with the eBPF,
+APIs, there are raw syscalls because libcs don't actually
+ship, uhm, wrapper stub
+functions to call these things. Uhm, but then there's lib bpf
+which is maintained in the
+kernel which basically solves that problem and provides a
+couple of other nifty things.
+And then this magic "bpf load dot c", which I'll get to in a
+bit. So, uh, raw bpf, uhm, is
+very unsanitary, uhm, yeah, I wouldn't really recommend it for
+building anything complicated.
+Uhm, but you're going to be able to generate bpf code - that
+LLVM-toolchain and the kernel
+may not be expecting, because it may not be expecting the sorts
+of things that the
+LLVM-toolchain is going to build and not stuff that you cobbled
+together by hand. So, I'll leave
+you with that. Uhm, and then, the LLVM stuff is pretty simple,
+assuming you've got a basic
+toolchain that can kind of just build this stuff for you. Uhm,
+I've got a load of code
+snippets, I'm not necessarily gonna walk through all of them -
+they're kind of more for
+reference material. Uhm, so don't feel like you've go to
+read and understand every line
+of code that appears in this talk. Uhm, so, I have kind of
+avoided using the Linux kernel,
+uh, toolchain, because it's really slow and I like to make
+small changes and rebuild -
+quickly. So, I've been using this XTP project, XTP tutorial
+repo, uhm, from what appears to
+be Facebook developers who have been doing stuff with, uhm,
+packet processing and I'm not
+using this for packet processing all that much, but it works.
+Uhm, it's a very hackible build
+system. Uhm, and then, once you actually have your binary, you
+need to actually load it. So,
+the interesting thing about how this stuff works, is that to
+reference those maps, uhm, you
+actually have to take the, uhm, instructions and then inline
+into them map, uh, file
+descriptors. You actually have to create the maps first. Uhm,
+and then shunt them into the
+bytecode and then load that into the kernel. And the libBPF and
+BPF load, uh, do a lot of magic
+to pull the code out of sections of the binary and pass it up to
+the kernel. Then there's the
+high-level APIs, they're really useful for things like tracing.
+They make a lot of stuff very
+easy, they take care of a lot of heavy lifting. But they also do
+a lot of magic and it could be
+hard to figure out what's going on at the deeper layers of these
+things and they also require a
+very extended runtime presence to have access to headers and
+their own libraries and do
+things dynamically. So, you basically have to get the whole
+thing on top of a system to use
+it in the, in the first place. Uhm, I, so I went with the
+LLVM/Clang approach, uhm, by
+modifying the make files of that xdp tutorial repo - I have been
+able to make statically linked
+binaries that also statically link in their, uhm, eBPF ELF
+file into it. And then I've been
+using, uhm, MEFds called APIs to actually load that buffer as a
+file path, uhm, due to how..
+Those libraries want to load it from a file path and not just
+straight from a buffer. Uh, BCC,
+gobpf can't really reasonably do this kind of stuff. I just want
+to drop a binary on and have
+like an extended everything but BCC is really useful to get
+started with a lot of this
+stuff. Uhm, and it's useful for kernel tracing but it doesn't
+support all the kernel tracing
+APIs I'll actually be talking about today. So, let's talk a
+little bit about doing bad
+things with IPC, and, and this really means, uhm, obscuring
+communications, leading people
+astray and sending data without sending it and reading data
+without reading it. So, uh, to
+talk a little bit about the maps, uhm, the maps basically
+are what you use to share data
+in the kernel and your userland stuff. But it turns out you
+actually don't need to attach
+them to a bpf program to use them. Uhm, you can just make the
+calls from userland to store
+data off, off process. Uhm, and then the maps are actually, you
+know, they're just file
+descriptors and you just make a special syscall to them to
+interact with them. So, because
+their file descriptors, we can just pass them between processes
+using things like unix domain
+sockets, or binder if you're on Android and have access to this
+stuff. And basically this allows
+us to do a very, uhm, interesting form of IPC. Where
+we'll send the file descriptors
+across and then, uh, we'll have the other process kind off write
+into the map and then we in the
+original process will read from it or vice versa, and basically
+just have a couple of indices in
+your map, uh, spread out. Uhm, so, in this case we have, uh, 2,
+2 slots in the map - they're
+each 256 bytes, they're indexed by, like, just a regular
+unsigned integer. And, uh, you
+just kind of associate them with, with one particular
+processor writer-reader. Uhm,
+sender-receiver. And you just write to them using bpf-map
+update elem and you read form it
+out, uh, using bpf map, uh, lookup elem and both of these
+are just kind of wrappers around
+that same bpf syscall - it just has a bunch of different
+sub-commands. Uhm, word of
+warning though, all of the things about these maps are
+managed by the kernel -
+including the sizes of their values. So, uhm, if you're
+blindly receiving these file
+descriptors from untrusted processes, you're very,
+potentially going to run into
+problems. So, uhm, if we go back to this example, you'll not that
+in a bpf map update elem call
+here, you don't actually pass a size but we've made sure that
+the buffer is 256 bytes even
+though we've only put "Hello World" which is a couple of
+bytes. The reason for this is
+the kernel knows that if the entry is, is 256 bytes it's
+going to read those 256 bytes
+from whatever pointer you give it. So, if that buffer isn't big
+enough, it's gonna start reading
+the values after it and vice versa when you're trying to pull
+data out, if your buffer isn't
+big enough to hold the max value - it's just gonna clobber,
+clobber wherever you put the
+buffer, uhm, or after it really. Uhm, but there's a way to deal
+with this, uhm, bpf is very kind
+of reflective - you can query the kernel for all sorts of
+metadata about the programs,
+including the size of these things. You can just dynamically
+allocate the amount of size that
+you need. Uhm, so, the programs are a little bit interesting,
+because they're actually just
+sort of single functions and every time you have really a
+separate function it is actually
+treated as a separate program. Uhm, and, generally you call a
+bunch of static inline functions
+so they just get kind of bundled into the 1 program. Uhm, and, it
+turns out you can actually have
+multiple of these - at the same time, the same execution
+context. You make, uh, special
+bpf map called a "program array" and you can fill it with these
+file descriptions from user
+space and then in the kernel side you can call this "bpf tail
+call function", uh, which will
+essentially just jump the context over and it will never
+return. So, if there is a file
+descriptor for a program in the map in the indices, indices,
+your, uh, index you're trying to
+call. It'll just jump to it and never come back. If it isn't, it
+will just fall through and keep
+executing. Uhm, so, the interesting thing about this is
+that these, these, uh,
+programmer remaps can actually be updated dynamically at
+runtime. So, uh, you can just,
+kind of, keep updating it and each call will just call a new,
+uh, function whenever, whenever
+it sees it. Uhm, so, what this means is, is that we can just
+pass over some maps to another
+process, have them kind of, dynamically fill in, uh, their
+own programs that will, uh, take
+the spots in that program array and then every time sort of
+event happens such as a packet
+is received. Uhm, it will call their code which can then send a
+message back to us. And so the
+idea here is you actually need to send 2, uh, map file
+descriptors. You need to send a
+program array that they're gonna write into and then you actually
+need to send the map, uhm, to,
+to put in that it's going to write to because it doesn't have
+a global context awareness of
+the file descriptors up on eBPF side, so each program is
+associated with its own maps,
+they, uh, they simply can't call each other separately through
+the arrays. Uhm, so, in this
+case we have a very simple program that all it does is call
+this bpf tailcall and then the
+idea is that we send the file descriptors over to, to the
+other process. In our process
+we're actually just gonna setup something like a TCP socket
+server and we're actually just
+gonna keep sending packets to ourselves so that at regular
+intervals we can, we can trigger
+the functionality to run in the kernel And then we'll pull the
+data out from, uh, from the map
+afterwards. You, the, the thing with this is that, why we need
+the 2 file descriptors, is that
+you will, uh, first, uh, in your regular code that the one, uh,
+that the writer is gonna be, is
+your gonna, you're gonna be dynamically updating, uhm,
+you're going to be defining your
+own map and generally speaking, the way that the, the libraries
+work, is they'll just kind of
+create a map for it. You actually don't wanna use that
+map. You have to actually go
+through that code after the fact, iterate over it and shut
+the, the actual map that you
+want to be writing to which you go over the unix domain socket
+or binder, etcetera. Uhm, and
+then reload that program and then you put, uhm, you use bpf
+map update elem to shunt the
+program's file descriptor into the, uh, the program array. Uhm,
+and so, the demo for this, uhm..
+The demo for this, basically to, to start, we have a couple of
+things going on here. I'm going
+to briefly explain, on the right side we have the code that
+actually does the updating, uhm
+and the iteration of, uhm, all the functionality. Uh, so, it's
+iterating through the
+instructions and every time there's one that would have a
+map file descriptor, it puts in
+the map that the map file descriptor it's received and
+then at the end it does, it
+loads the program and then it updates the map entry and in the
+middle we have the, uh, the
+actual code that's going to be dynamically updated injected in
+- it just prints out "DefCon 27"
+and on the left, uh, we have the original programs which are the
+main entry point and then kind
+of, this fall back implementation that prints
+"waiting" until, uh, until it
+gets overwritten. And so, in this example, uh, we're just
+gonna, start, start the thing up
+and, uh, the first couple of times it's got that "Waiting"
+printing, and now, it's been
+updated dynamically after the fact and so, this, essentially
+allows us to, uh, do a bunch of
+very, uh, dynamic updates. So, hold on, there we go. Uh, so
+that we can just sneak data in,
+in places that people aren't gonna be looking. You could do
+all sorts of other stuff where
+you could actually have data that's being sent over the
+socket that's, then it's being,
+uh, potentially transformed in kernel and then written out as
+the real message to the bpf
+buffer. So, if someone that's just looking at what's going on,
+in the socket, if that's not
+actually the data that the application is really operating
+on, Uhm, so, to talk a little
+bit more about the sockets. The socket filters. Uhm, they are
+really special. Because they are
+the only ones you can use really, uhm, from unprivileged
+processes. So, uhm, I say this
+"unprivileged" - docker actually blocks the bpf t syscall unless
+you're running capsys admin,
+uhm, for whatever reason. But in general, this is an unprivileged
+dot call and doesn't require
+anything. Uhm, it's also super poorly documented, as it turns
+out. So, privilege processes can
+create, uhm, like raw IP sockets, you know, this is what
+ping does to send you those,
+those the i-net packets over the internet, raw. Uhm, but without
+privileges, you know, you can
+create normal tcp, udp sockets, unix domain sockets either
+stream sockets or datagram. When
+you attach your socket filter program to it, uh, either the
+eBPF of the classic bpf, uhm,
+different things happen. So, for the raw sockets you, the, the
+program will actually see the
+packets from the beginning of their ethernet frame. And for,
+kind of, the regular IP-based
+ones, like TCP, UDP, it'll see them from the start of the
+transport header, the UDP
+header. For unix sockets, it actually just, the start of the,
+the array into the buffer is
+actually just like the data payload itself. Additionally,
+while these, uh, socket filters
+can't modify the packets directly, they can drop them,
+uh, which would just completely
+break TCP. Uhm, but they can also truncate them. Uhm, and so
+that can cause, that can cause
+very interesting things. And you can potentially build a very
+complicated, uh, setup that
+might fool wire shark where you say, uh, drop a packet that
+contains like the real message
+and then, uh, with a modified, uh, TCP stack on remote coast
+you have full control over, you
+send another magic packet that will actually be accepted and
+then when someone tries to, in
+wire shark reassemble the stream, uh they see something
+different from what your
+application actually processed because it was reading from the
+packets and not from the
+sockets. Uhm, so, this leads to an interesting, uh, just attack
+in general, like, you can also
+read without reading - you don't actually have to call "read" or
+any receive syscall on the
+socket because these events get called every time the packet is
+received, not when the userland
+product actually tries to read from the socket. So, if you just
+set up a socket server and you
+never actually receive on it, you can have someone send you
+data and then if someone's, uh,
+trying to look at your data, not like tcp dump, but through like
+s-trace, they won't see the data
+because s-trace doesn't actually print out the strings that are
+passed over, uhm the bpf syscall
+for, uh, for reads and writes as it turns out. They'll just see a
+random pointer and they won't
+know what's going on. Uhm, so it's fairly simple to do this.
+You just kind of register your
+socket filter to it and then every time that a packet comes
+in, you just write it down to
+the map that gets red out every so often by the userland process
+which then, it never, it never
+calls read. Uh, you can also do this in reverse direction. So,
+you can, uh, you can write to
+things and then block the data from actually going out, such
+that it won't actually, such
+that it won't actually send packets. But every writer will
+then be shunted into the, the
+memory in the kernel and then, depending if you've actually
+communicated this with the map
+communication, you can then link the data out to another map file
+descriptor every time you hot
+write. And, and anyone who's on that computer will be like, none
+the wiser about it. Uhm, you can
+also use these techniques, using other bpf programs that can
+actually write to these packets.
+So, they might be able to hide data in and then take it back
+out. So, that everything looks
+normal to user lan level but actually everything that goes
+over the network - or doesn't go
+over the network - is sort of, some secret data so it's hard to
+see what's going on. Uhm, but
+they vary in required privileges and you could do all kinds of
+crazy stuff with them too. So,
+as a demo of this, uhm, I have this, uh, piece of code here
+that runs a regular tcb socket
+server and it never calls receive, read, receive from,
+receive message - all of these
+kind of standard syscalls for reading data from a socket and
+on the right side I just echo
+into, like, telnet into the service. So, I'm running s-trace
+on this to prove that like no,
+none of these syscalls are being issued and so if someone were
+looking for these, they just
+would not see anything happen. [coughing] So, we've now, we get
+the data from this - 41, 42, 43
+- that's all just hex for, you know, capital A, B, C, D
+etcetera. And, uh, the signal
+stuff that goes on at the top is just because that's how I'm
+doing, uh, I'm checking, I'm
+pulling at the eBDF buffer. I have a signal handler that pulls
+that at like once a second. So,
+I have not actually, if you look at this, I have not issued any
+of these standard reading
+syscalls on the socket and yet I have somehow I have obtained the
+data that was sent to it. Uhm,
+you can do all sorts of stuff to build up on this to hide data
+from people who, depending on
+how they're trying to look at what you're doing. So, let's
+talk a little bit about the,
+uhm, the kernel tracing. So, eBPF, uh, basically supports a
+whole bunch of modes to do
+dynamic instrumentation of kernel functionality, to see the
+data that's flowing through.
+Uhm, this is very privileged, uhm, and can be used to, you
+know, compromise systems as it
+turns out and these things could read arbitrary kernel memory and
+user space memory. And this
+presents us with an interesting opportunity for covert IP on a
+system we've really kinda posed.
+So, we can actually just read data out of processes that they
+were never actually going to
+send to the kernel. They never attempted to send it there, it
+was just sitting in memory and
+they're not issuing any syscalls. Also, what they can
+do, they can issue bad syscalls
+that are gonna get rejected and the data's not actually gonna
+make it through the kernel so,
+like, if they do a send on a bad file descriptor, it's not gonna
+result in a packet and so TCP
+dump is not gonna see it. But we can. So, I, uh, I like to do
+this mind reading trick, uh,
+with the code, uh, where, uh, because close is the magic
+syscall it takes a file
+descriptor and that's it. FIle descriptors have to be
+non-negative, they're
+non-negative integers. So, anytime it receives a negative
+integer, it just rejects it and
+doesn't do anything and it's kind of by deponent. So, uh,
+what you can do here is you can
+hooked closed and you can just wait for like certain magic
+negative file descriptors, to
+start a stateful handshake with a particular, uh, process. And,
+uh, after that, just start
+unmarshalling data out of these negative file descriptors, to
+communicate,with, with yourself,
+basically, and, you know, if someone's looking at this,
+probably, they don't really like
+it closed if they see it, they may think something is wrong.
+But are they really gonna
+attempt to figure out what's going on here. Maybe, maybe not.
+So, that's a neat trick like it
+would just absolutely corrupt memory. Uhm, so, there is this
+special bpf probe-like user help
+function, uh, which I talked about in my previous talk nd
+this is sort of the that gives
+it rootkit capability. So, when you use this, it raises an event
+that like goes out on d-message,
+but, it's so useful. Uhm, you can, also, when you're using
+these things, you can actually
+abort syscalls at entry. Uh, syscalls on a couple of
+functions of the kernel that
+have this special macro that denotes that it can be, uhm,
+aborted. But, basically, this
+bpf override return allows you to bail out of executing this
+syscall and you can also just
+give an arbitrary return value. So, uhm, you know, we need to
+write things that are useful and
+most of the interesting, uh, data that are in syscalls are
+pointers to userland memory.
+Uhm, so, we can actually, potentially override strings and
+other trucks that are being, uh,
+sent to the kernel or written back by the kernel. Uhm, uh, and
+we can just prevent syscall from
+reaching the kernel. So, there are a couple of variants of this
+attack. Uhm, this kind of way of
+building a rootkit, uhm, you can redirect syscalls, you can
+modify them, you can make opens
+for a, like a, a shell file, a shell script. Open a path that
+is something you control,
+somewhere else, so it just opens and reads your code. You could
+also, every time they read, you
+could just send bad data back to it, uhm, and just lie. So you
+can, uh, after the kernel has
+written the code, you can, you can stomp over it with your own
+data. You can also just fake the
+return by aborting the call and write the data yourself. And you
+can also just completely
+blackhole the data so they just can't communicate with the
+outside world. Uhm, so in the
+first one we're going to be modifying the data that's being
+sent to the kernel. Uhm,
+generally speaking, the way this works is you set kind of a
+tracing hook, a k-probe, is on
+this syscall entry, k-probe gets called the, the syscall return,
+after the kernel's, like,
+processed it. And, generally speaking, uh, you know, when
+you're hooking the syscall, all
+the calls across the entire system, regardless of container,
+make it they're all sharing the
+same kernel, they're all using the same syscalls. All of them
+go through that. And so,
+potentially you're having a lot of throughput going through
+there. And so, if you're going
+to be messing around with this, you're actually wanna be very
+careful you're not gonna crash
+stuff. So, you wanna, you wanna kind of filter through and
+determine if the particular
+process that's calling in, in its particular inputs, are stuff
+you actually wanna mess with,
+otherwise you might just crash the system accidentally. Uhm,
+when you do this, uh, you could,
+you could just overwrite it and then be done with it. But, if
+you wanna be sneakier, you
+actually want to persist the stack data, or keep data
+wherever it was from the, uh,
+the userland process that's being sent up. Uhm, so that, on
+the return, after the syscalls
+have finished, uh, like, processing, but before context
+returns back to userspace, you
+can actually try and write back their data to it. So, if they
+checked it after the fact, it
+would look clean. Like nothing happened. And the way that you
+want to do this, uhm, is you
+wanna use the process ID, uh, thread group ID, and then maybe
+a file descriptor as well, if
+you're keeping track of it. Because, uh, all of this is
+essentially stateless, other
+than the data that you maintain in your bpf maps, so you kind of
+can't maintain context without
+using those maps. And the only anchor point you have for
+context is this kind of, very
+basic information about the process and kernel thread it's
+using. Uhm, but that, but that's
+good enough actually, as it turns out. Uhm, and the, the
+opposite approach, where you're
+just modifying the data, you do basically exactly the same
+stuff. Uhm, word for word. But,
+uh, you do your filtering to determine whether or not you're
+gonna do stuff at the entry
+point. Because the entry point is the one that actually
+receives the arguments. And, at
+the end, uhm, you can either have persisted the arguments and
+then decide at the end if you
+wanna do something or not. Or you could have just decided at
+the beginning. But, it's at the
+end, after the syscall's been processed that you need to write
+the data because otherwise, if
+you overwrite their stuff, the kernel's just gonna overwrite
+you again. Uhm, and then
+nothing's gonna happen. Uhm, but other, other than that, it's
+basically the same exact
+approach. "Black hole-ing" everything is fun, uh, you, you
+can just block the syscalls, but
+you can do so much more than that. Because you can just
+pretend to be the kernel,
+essentially, and write in arbitrary data as if they had
+succeeded. And so, they think
+they're communicating out, they think they've alerted, like the
+IDS or whatever it is, that
+something bad is going on. They think they're writing out to
+like their, their, log stash or
+whatever, it hasn't happened. It's not happening. They think
+it's happened, it hasn't. Uhm so
+we, that, that's really useful, depending on if you're trying to
+like reverse something and you
+don't want to let it kind of communicate out. Whereas, like,
+if you're attempting to use set
+comp to deny stuff, you know, it's gonna know that it's got
+rejected. And it's gonna be able
+to act accordingly. Uhm, so, there's one other limitation to
+this probe right user call - you
+can't write non-writable pages . So, you know, we can't just
+clobber the text section with
+shell code, unfortunately. Uhm, at least for like properly
+compiled programs, if they've
+got bad, bad protections on their sections, then, or they
+jit stuff a lot, uhm, things
+change, uh, but we can't assume that for all processes. Uhm, so,
+this limits us to, kind of,
+what's in the stack heap other sections that are writable. Uhm,
+things like function pointers,
+uh, same file descriptors, maybe they have, they generate scripts
+like dynamically or shell
+commands that we could write into. Uhm, things like that. But
+can't, we can't guarantee that
+these things are there. The only thing that we can kind of, at a
+high level guarantee exists, is
+their return addresses. Uhm, mostly. So, I put together kind
+of a very, uh, concrete way of,
+of writing raw payloads into userland processes from eBPF,
+uh, kernel tracing stuff. And
+this is kind of the stuff you wanna do, uh, you can do for
+real rootkits to get into, like,
+kit 1 which is what I did in my previous talk. But, uh, to
+really cover the whole thing,
+there's a lot of things to do, so, you can either start with
+kind of 1 or 2 ways of looking
+at it. You can say that you want 1 payload that you wanna
+indiscriminately inject into all
+processes and if you wanna do that, you need to, you need to
+have it be working on something
+like a shared library that they're all gonna load, like
+their libc. So, jewel lib c is a
+great target for this because it's got all sorts of wacky
+functionality built into, uhm,
+like, a deal open implementation, which allows you
+to dynamically download a shared
+library from a file path. And, um, and the moment a shared
+library is loaded, it actually
+gives it arbitrary code execution right then and there.
+So, all you have to do is scan
+for some gadgets, put it together, uhm.
+budda-bing-budda-boom, you have
+code execution if you can get your opchain to actually like
+load into a process. Uhm, very
+reliable, uhm, they have every gadget you could ever want to
+make this across every version
+of the binary I've looked at across multiple different
+distros. Uhm, then, you know,
+you wanna do your raw payload, but maybe, maybe you're not
+gonna be dynamic, you're not
+gonna be generating like this, maybe you're dealing with a
+statically linked binary, maybe
+you're dealing with one that does code gen. And where you're
+getting called from isn't
+necessarily stuff that you can really know what's going on
+easily so, uhm, I'll talk a
+little bit about, uh, dynamic, uh, generation of raw gadgets
+and things. So, when we do this
+eBPF stuff, we need to, you know pick some syscalls that ideally
+are target, target process will
+be calling. And we're gonna register some k-probes, some
+k-rec probes on it. Just so we
+can get stuff, just so we can get a userland context to be
+able to get the ability to 1 -
+have pointers to, uh, to their userland and also actually be on
+the right kind of processing
+context to write the data to them. Uhm, so, then, within the
+code, much like before, we kind
+of need to sift through and, uh, see that the particular calls
+are actually coming through
+processes we want. Uhm, the only system you could very easily,
+the only process you could very
+easily detect is pit 1, because it's pit 1 across the entire
+system regardless of containers
+and namespacing and things like that. The real pit 1 is always
+pit 1 for real. Uhm, so it's a
+very easy target, uhm, but, other than that, you know, if
+you wanna know that someone's
+doing a specific, a specific process. So, if you're gonna
+change the world view of a
+process, uhm, and not target others, you kinda need to watch
+what it's doing and some state
+about it to know that it's actually the one that you wanna
+hook. Then, there, there are two
+step 3s here on purpose. The first one is when you're running
+this kind of pre-generated raw
+payload. And the second one is when you're gonna try and
+dynamically generate it on the
+fly. So, in the former, there's in your, in your k-probes, uh,
+when they get called, they
+actually receive all of the user land, uh, registers that were
+that were the state of the
+registers when the syscall was made to trap upto the kernel.
+And so, we can just like pull
+out the instruction pointer, uhm and, and we know that that is
+probably, that's gonna be made
+in libc somewhere. So, we know exactly the offset from the
+start - just by what the address
+of the syscall instruction was. And, like, then we know exactly
+where we are. Uhm, if, on the
+other side, depending on kind of, how ridiculous the binary
+you're dealing with is, uhm, you
+could do the same thing but the, the instructions at, at where
+it's executing may not all, uh,
+be that useful. They may be, you know, in the heap somewhere
+where there's not actually a
+whole bunch of code it's just a bunch of jitted code. Uhm, and
+so, you probably wanna, uh, scan
+through the stack and so you can do this, uh, you just kind of
+look at valid stack offsets from
+the where the, uhm, where the stack pointer was, uh, stack
+pointer register. And then, you
+essentially want to look back and see if the thing that, like,
+the former instruction that
+would have been, uhm, the one before, uh, so, when you like an
+x86 when you make a call
+instruction, uhm, it's going to increment the, uh, the address
+and then put that in the stack.
+So, what you're returning to is the next instruction. We need
+the previous instruction that
+actually issued the call. And so, we can then try and detect
+what that instruction was and if
+it was a call, and it actually looks like it went to where we
+are and everything's good. But
+it may have actually been a plt entry and those are actually,
+uh, those are like the entries
+to dynamically linked functions, like your lib C. And, so those,
+uhm, are the call will actually
+go to a jump and the jump will go to where, where the code
+you're, you were, it was
+formally executing before maybe the syscall was. And so, you
+need to just parse those
+instructions a little bit to dump out kind of the offsets and
+things, and then, and then you
+know where you are. Uhm, after that in both cases, uhm, you can
+just, uh, go backwards as far as
+you can until you get page faults essentially that are free
+for you. And don't crash
+anything. And then you know where the memory regions
+started. And then you can just
+scan the data straight forward and dump it all out until you,
+again, reach a page that's not
+read-writable etcetera. After that, you potentially are going
+to, uh, generate your payload
+based off of this. So, you've dumped out all of the raw memory
+of process, you know exactly
+where it sits, uhm, you can just attempt to find gadgets and
+build them into some generic
+payload that does whatever you want it to do. Uhm, you just
+need to make sure there's a
+clean up routine. Uhm, after that we go back in with another
+hook and we need to do the stack
+skimming stuff again because we need to, uh, find out, uh, where
+we were so that when we, when we
+write into the raw payload, this time, it's actually in the right
+place, so when the syscall
+returns, then the kind of syscall stub will then attempt
+to return back in user space and
+it'll jump right into a raw payload. Uhm, before we do this
+though. Uh, we need to back up
+the memory from userspace. Because we're just gonna clobber
+all of it, we need to return
+cleanly so the thing doesn't crash after our code runs. Uhm,
+and so we do, is we, we not only
+need to get the general stacks we're writing to, we also need
+to backup all the space we're
+potentially going to clobber as part of our chain itself. Uhm,
+then after that, we write it in,
+the opchain starts executing and it's done, it's whatever it's
+magic task is, that's up to you.
+And then it starts its co-ordinated cleanup routine and
+what this needs, what I like to
+do with this is I like to do those hooks on close to signal
+that I, it, it should, uh, the
+kernel side should write back most of the stack. Not all of it
+because we have we have a couple
+of ROP gadgets we still need. So, last ROP, uh, as we do this
+we're actually gonna write some
+new ROP gadgets pass the end of the stack, uhm, and those are
+gonna help with our cleanup
+routine. The remaining ROP gadgets that are still there
+that we haven't overwritten with
+the backed up data. Uh, those will then execute once you
+return back to userspace. And
+they'll exist simply to shift the stack pointer to where the
+new ROP gadgets we put are,
+which weren't actually in what's considered the stack, until we
+shifted the stack pointer. The
+new ROP gadgets will then exist to overwrite and, uh, restore
+the backed up data to the, the
+last ROP gadget we didn't overwrite. And then it will, uh,
+set a return value for all the
+way back the thing we actually hooked on. Uhm, and then it
+will, uh, uh, ship the stack
+pointer back to where it needs to be and then the code will
+return back into whatever it
+actually called the original syscall wrapper in the first
+place. And everything's clean
+and it never, it didn't now what happened. Uhm, but there's a
+limitation on these, on these
+k-rpobe, k-upoint trace APIs. Uhm they all use the sysFS -
+uhm, it's a special mounted
+files system that does a lot of magic stuff on Linux, a lot of
+things are under it. Uhm, but,
+docker by default has an AppArmor profile that blocks
+access to this and docker also,
+doesn't mount it as a fully writable, uhm, mount. Which you
+otherwise need to do this, this
+k-probe tracing stuff. However, eBPF is another type of tracing
+program that doesn't interact
+with the sysFS at all. And there hasn't actually been all that
+much tooling built on it yet.
+Uhm, even BCC, uhm, the, the main, like, instrumentation
+framework, doesn't actually
+support these raw tracepoints. These are magic, uh, and it's
+got a very complicated process
+for setting it up - step 1, you call the system, the BPF syscall
+with the raw trace point open
+subcommand and you literally just give it a name of the
+registered tracepoint event you
+want to attach to. That's it. That's it! All there is. Uhm,
+you also, you know, have a BPF
+program that you've loaded in there, put it in there as well.
+But, like that's, that's what
+we've already done that before. Uhm, so, M and M once, once
+said, "And Moby, you can get
+stomped by Obie", uh, mobile is the sort of upstream, open
+source code base that docker is
+built from and so, we're gonna break out of that. Uhm, in a way
+that otherwise hasn't been
+displayed publicly. Uhm, because everyone who's been showing
+docker breakouts using bpf
+stuff, that isn't otherwise exploit like a kernel
+vulnerability, has basically
+turned off AppArmor to do it. Uhm, which like, we don't need
+to! We'll just leave it on, I
+don't care. Uhm, this is a slight modification of the
+previous ones we've been talking
+about. Uhm, which is necessary because of the way the raw
+tracepoints work. You can't
+actually trace all events with them like you can with k-probe.
+They'll probably add it in the
+future, they only did it for regular trace points, not the
+raw trace points. What we can
+hook on are these sort of primordial syscall events, sys
+enter and sys exit. Uh, which
+essentially gives all of the same data anyway. It just means
+that need to reimplement,
+reimplement the hooks so instead of having like a separate BPF
+program for each like function
+return. We just have one fro like the entry to all syscalls
+and one for the end, uh, the
+return of all syscalls and we just use like a switch on top of
+the syscall ID and just handle
+it differently. So, we can write essentially all the same code.
+Uhm, and it all just works. And
+even if we can't necessarily have very fancy DSL that gives
+us all the arguments as actual
+function permateres - they're all just in the registers anyway
+so we get the register state,
+You know, RDI, RSI, RDX etcetera and your standard AMD-64 calling
+convention. Like, those are the
+first couple of, couple of arguments past any syscall. So,
+uhm, this is very easy. The one
+thing that you need to make sure to do, is, again, you need to
+save that state because on the
+return we absolutely 0 context other than that we know the
+particular, uh, process ID
+thread group ID again. So, in this particular case. We're just
+gonna serialise like all the
+register state and the syscall ID. We're just gonna shove it in
+there. We're gonna index into
+hat, uh, hat map, like, it's a hashmap data type so we can, we
+don't have to be like regular
+indexes from 0, we can just pet use the, uh, process ID thread
+group ID in there. And, uh, and
+everything's good. and then in the return, the first thing we
+do is we just see if we even
+have a state associated with us. Because if we don't then we
+didn't even attempt to do
+anything on the entry, we don't care about the return, we just
+bail out and let the, let the
+syscall happen, but if it's something we want to be dealing
+with, then we're actually gonna
+start processing again with another switch on top of the
+syscall ID and then we're
+potentially going to process the data. Uhm, so, my example here,
+I'm doing, uh, basically the
+same sort of, uh, clot, using the, uh, the syscall hooking
+stuff, uh, that, I'm not, I'm
+not just writing into memory. Uhm, like to do an opchain, I'm
+just overwriting, uhm, say, file
+IO without things realizing it. So, uhm, I've started up a
+docker container. The only thing
+I've added to it is the sys admin capability, uhm, that's
+it. I haven't turned off app
+armor. I've got a binary in there [sneeze] I'm about to run
+it, it's got some, some payload
+there. I'm going to cap this file that otherwise doesn't
+exist. And, mind you, I'm
+cladding it on the outside. Uhm, what this payload does, is it
+actually overrides crontab when,
+whenever any file tries to read it. And, so, basically, we're
+going to download our code and
+now, when we try to load crontab, now we have our own
+thing, our own code in the top
+level crontab of the host, outside of the docker container
+. So, now we're just going to
+wait a little bit for cron on the system to pick it up and
+start executing our code. And,
+now, we've, we've completely successfully broken out of the
+docker container using nothing
+but capsys admin. We haven't turned off any of the actual
+security mechanisms. Uhm, we
+just gave a regular privilege that people o whenever they're
+gonna do, like fancy BPF stuff,
+uhm, we've just broken out, we're done. [applause] We've
+escaped. [applause] Uh, yea.
+Here we go. So, what can we, what can we do to defend against
+this stuff? Uhm, you could
+remove or blacklist this bpf sys, syscall entirely. Docker
+sort of tries to do this when
+it's unprivileged. But the moment you cap sysadmin, it
+dynamically updates its syscall
+filter that uses seccomp BPF to actually allow it back in
+because you need to do stuff.
+Uhm, unfortunately that's not gonna work because modern Linux
+systems are increasingly relying
+on BPF stuff - so, system D relies on it, so, if you're in
+it, you don't want your in it
+crash right at the beginning of boot cause you've decided to,
+you know, mess around with your
+kernel, now, that would be bad. Uhm, so, and then, you know, you
+really need to be prepared for
+what someone could do when they, when they have access. So, you
+can actually just log all of
+these eBPF programs. Uhm, using that same API, that we, uh,
+pulled out, uhm, the sizes of
+the maps - if you're privileged, you can actually just dump out
+the context of the maps; you can
+dump out all of the code of the programs, uh, when they're
+loaded. Uhm, BPF tool, uh, is
+the utility to do this, it's, it's very simple. Unfortunately,
+because they all use the BPF to
+syscall, uhm, they are susceptible. So, if someone has
+one of those k-probes in there,
+they can start overriding the response data and lie to it and
+they can hide what's actually
+going on. So, once it's in there, it's kind of, it's still
+game over. Uhm, but we can
+actually yourself, use tracing. Uhm, to see things that maybe
+are bad. So, we can look for
+when, like their eBPF maps that are transferred, are being
+processed. We can look for, uh,
+you know eBPF maps that aren't actually associated with eBPF
+programs. We can look for just
+when eBPF programs are being sent between processes. I didn't
+talk about this too much
+because, because it's kind of, it's a 1- to -1. Every Time you
+have to send a new message, you
+kinda need to send a new file descriptor over. I'd rather have
+like a 1 setup, uhm, of the
+example in the call where we just send a couple of maps over.
+and then no one sends any magic
+file descriptors to each other - they just magically appear and
+start executing. It's much, it's
+much sneakier to do the other, the other way around. And then
+you could also just look for
+when there are unexpected, uh, eBPF programs being attached to
+things that they shouldn't be.
+And when they're unexpected, you know, eBPF tracing programs that
+are being added, that's probably
+a sign that something bad is going on. But, it's honestly
+unclear how much more common
+these operations are gonna get. So, they may not be, uhm, kind
+of anomalies in the future, as
+they are now. Uhm, so, the more APIs that we have, the more
+problems that we have, uh,
+because there's more kind of chicanery that people can do
+with them. Uhm, and even the
+unprivileged APIs, uhm, can enable really like skew
+behaviours to avoid people to,
+to see what's happening on the system. And, once you get the
+privilege eBPF, it's impossible
+to stop. And, honestly, a good number of these APIs shouldn't
+even require these privileges in
+the first place. There is work being done to kind of change
+this. But like, they shouldn't,
+shouldn't, you shouldn't have required cap sysadmin to do a
+lot of things that really don't
+require it. Because a lot of it is essentially analogues to raw
+packet IO. Uhm, so, they, like
+they shouldn't require that and if you do that makes that
+programs a softer target because
+they need to be less and less sandboxed to be able to work
+properly because of all the
+stuff that gets layered on here. Uhm, I'm personally waiting for
+a special eBPF map type that
+allows us to just generically pass file descriptors across
+processes, but, I doubt that
+one's gonna happen. Uhm, I'd like to thank Andy and JKF, uh,
+for their help with a lot of
+this research. And a wise man once said, you can't hide
+secrets from the future using
+math, I think a simpler version of this that also holds true is
+you simply can't hide from the
+future. Uh, I don't have time for questions, uh, but I'd be
+happy to talk about all this
+stuff and other research I'm doing at MMC group. Uhm,
+somewhere else, uh, feel free to
+find me. I'm also on twitter, uhm, happy to talk. Uhm, thank
+you. [applause] [whistling]

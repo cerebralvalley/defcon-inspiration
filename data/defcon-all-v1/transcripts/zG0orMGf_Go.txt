@@ -1,0 +1,139 @@
+>> SAM BOWNE: I want to talk about SSD data
+evaporation. I'm Sam Bowne and I talk at City College San
+Francisco for the moment. If you have a magnetic hard drive and you
+write a file on the disk. And if you reformat the disk, the file remains
+on the disk. Computer forensic people love this because
+you can get information from perps that they think they deleted this stuff. The only time you get rid of the stuff is
+when you write on top of those sectors where the data was stored. If you empty the recycle bin, that doesn't
+do anything. It makes them available but it doesn't erase
+the data. So forensics people have gotten used to a
+couple of luxurious things that computer forensics people do that other kinds of forensic people
+have. One, they can recover deleted stuff and they
+can make an image of the file and calculate an MD5 hash ands is exactly the same and then
+do that forever until the drive has a mechanical failure or something. So computer forensic has been a beautifully,
+clean, mathematical sense of forensic science and that time is pretty much over. Another fun thing is recover deleted data
+which is more important for people in computer forensic. If you have a PC and you want a file back,
+you can use Recuva or Disk Drill and it will bring back your deleted files which is great
+and there are a bunch of people who make a lot of money doing this, Drive Savers, it's
+a great company. They will get your stuff back if your drive
+fails which is an enormously fabulous deal. This is a MacBook Air and your SSDs and they
+are an ever increasing part of the market. And it's something like 40% of all storage
+will be on SSDs pretty soon. I switched to them almost completely because
+they are wonderful. They are fast. They are designed to save data efficiently
+without any regard for remnants. Remnants is an artifact of the technology,
+of magnetic hard drives, SSDs have other constraints. You cannot erase one page of an SSD. You have to erase an entire block, which is
+many pages. There's many things. You have to erase an SSD block before you
+can write on it. And you can only erase it so many times before
+you have warn out the SSD and you break it. So what you have to do, there's firmware,
+proprietary processes running in the SSD which erase a block of pages when they decide in
+their wisdom that that block has had enough files deleted that what remains doesn't matter
+very much and it will move it somewhere else. So this means that erasure has to happen before
+you right. And, in fact, there's a garbage collection
+process running in the background, which erases things when the wisdom of the SSD controller
+says it's time to erase them. It forensically wipes them. If you delete files on an SSD and wait, they
+really do vanish sometimes, and sometimes they done. It gets complicated. This was called self‑corrosion, data evaporation
+seemed like a better name to me. Let me do something here, just to get started. Now, if you do the simplest possible test
+to this, that would be to just put some stuff on the desktop and that's what I have done
+here. So I have a folder called Spam demo, which
+is empty, but I deleted the contents of this folder at 4:05 which is now about half an
+hour ago. And I have another folder here, called Spam
+2, which has four files, each 200 mega bytes. By the way when you do this you have to have
+a lot of data. Make sure you have about a gigabyte of data. Otherwise you won't see any significant data
+evaporation. Now I will put it in the recycle bin and empty
+the trash. Are you sure you want to permanently erase. We have seen that message and on the magnetic
+hard drives, it's a lie but on SSDs not as much of a lie. Let's run disk drill, which will recover deleted
+things. The quick scan is good enough and it will
+take a minute or two to run. And we'll see what it finds. And yeah, I'm impatient enough to go back
+to the slides while this happens. All right. And here I will just cut ahead to the chase. Did I this many times, sitting early in the
+morning at Starbucks a few months ago. The time it takes to erase the files I that
+I deleted them, random, up to an hour. So the quick scan is finished and let's see
+what it found. It sound users, my name, desktop, Spam two. It found all five files in Spam two, but the
+ones in the older folder there are all gone. There were five files. I deleted them half an hour ago and now they
+are completely gone and unrecoverable. That's the essence of this talk right there. The only remaining interesting fact is how
+strange and random this is. So I have all five files there. I will run this thing again at the end and
+we will probably see that some are gone by then, although probably not all of them. So those are the results and you see frequent
+result is it erases some of the files but not all of them and another pass comes through
+later, I'm not able to detect any pattern here. So in the wisdom of the people that made the
+controller for the Mac SSD, it can take up to an hour to complete the garbage collection
+for items on the desktop. Now you can run this command and see if it's
+supporting TRIM. Has to happen with SSDs, that doesn't lap
+with the magnetic files. Normally your drive doesn't know when the
+operating system doesn't know when you delete a file. It's only supported by the latest versions
+of operating systems and only if you have your drive running in SATA mode and AHCI. If you satisfy all of those conditions and
+you have latest partition format, then you may observe evaporation, but you can't control
+the timing and you can't turn it off. So here's some more examples, you are running
+it through USB and you can't run through PCI‑express and RAID. But if you don't break any of those large
+number of rules then you will have the phenomenon that the deleted files are vanishing. You will have to be able to explain what happened
+here because it's going to mess up your traditions, because if you make an image of an SSD and
+calculate the MD5, as soon as you put the power on to the SSD even though you have a
+hardware write blocker, the data on the SSD is changing. It's evaporating away the data and when you
+make another copy, you don't get the same MD5. So that will make your evidence appear wrong
+and you will be have to be able to explain this. When I have took computer forensic classes,
+my instructors made it very clear to me, this is true, the reason you are an expert witness
+is you are allowed to have opinions but those opinions must be based on experience not hearsay. You cannot quote something you read in a book
+or something that a teacher gave you. You have to say, I tested it myself and this
+is how it works. Therefore you have to have testing tools. So I made a testing tool to make it easier
+because it's obvious to me that people will have to test the exact drives that they want
+to testify about if they want to explain this stuff. Since it depends on everything. So let me show you the tool I made to check
+on the Mac because it's fun for a demo. I wrote a command line tool called evap. And I will get my window to come to the front. Pass this is a Bash shell script, and there's
+not much to it. Let me put in a password. All right. So it has a few options here. Now in order to run this tool, now what I
+did before, was a demonstration putting a folder on my desktop. But for this tool, I create a partition just
+for this purpose. So I have a 500 gigabyte Apple SSD. Here's the big one and here's the little one. I have a 1 gigabyte I created just for testing. You have to do that because I'm following
+a 2010 paper that started this and I found something that caught my attention. If I format that as a journaling HHS plus,
+with ex, that will format that partition and then I can write test files on that partition
+with W and when I scan it, I'm going to scan the entire partition and print 80 individual
+bytes evenly across it. So you get a sort of overview what's on there
+and what I did was write a bunch of files full of ASCII characters so they go in order
+and there's a bunch of files on there in this area. If I scan it again, you see what happens,
+they are all gone. Now, if I write them on there again, and scan
+them, and then delete 'em and then scan 'em, they are all gone again, which there's a fly
+in the ointment here. I expected ‑‑ I'm frequently able to
+show you that there's some of that left. It didn't really get them all. And it's kind of a random process. Sometimes I can see some of those letters
+left and sometimes I can't. But anyway, what's even more fun is to put
+it in a different format. If you make it in an older Macintosh format,
+the non‑journaling system with F and then write that data, and then scan it. The data is on there. If you delete that data and then scan it,
+it's all still there and it will stay there forever, just like a magnetic hard drive. So this process is not complete, and it's
+very hard to predict. And by the way, if you are a crook and you
+want to not get caught, you can't trust this evaporation to thoroughly remove all the data
+either because some of the data you put in there will not fill enough of those blocks. It will decide to leave them and wait until
+later. It doesn't erase 100% of the data and I have
+another format, some more commands that take a little longer to run where you fill the
+entire thing with Xs and then erase it and then measure how many Xs are left and you
+will find a significant number of them left. So it's an important thing to realize, and
+that's the main point here. All right. Now, I had another demo, which is not going
+to work. My SSD has failed, but I want to point out
+there are two cases here on the Mac's desktop, it takes up to an hour for these things to
+evaporate. On the separate partition, it takes less than
+one second. I can't measure the time at all. They are instantly, if you buy a Corsair,
+SSD, it makes 15 seconds which makes an entertaining demo, you can put them in a hex viewer and
+watch them and after 15 seconds they just vanish. So I don't think ‑‑ I can't give you
+that demo because my SSD just failed and I think that's all I have to tell you. Are there any questions? (Applause). Well, if I don't have any questions in here,
+I will hang out in the hallway to see if anybody wants to hear anything more about this. >> AUDIENCE MEMBER: (Inaudible). >> SAM BOWNE: What's that? >> AUDIENCE MEMBER: (Inaudible). >> SAM BOWNE: Immigration. (Laughter)
+I'm sorry, I can't hear the question. I'm sorry, I still can't hear the question. Why don't you come up here. >> AUDIENCE MEMBER: Is this true just for
+MLC drives not SLC. >> SAM BOWNE: I do not know. Let me run this drill again and see if anything
+has happened there. I don't think it's been long enough. Let's try this again and see what happens. Anyway, you had something? >> AUDIENCE MEMBER: (Inaudible). >> SAM BOWNE: Secure erase is just writing
+on top of the data, right? No, it doesn't. A security base will not erase an SSD, because
+SSDs have extra bytes. If you buy 100 gig SSD, you really get 110
+or 115 and the sectors are incredibly mapped by the controller. So when you erase them, you never get the
+whole thing and there's no tool that will erase the entire contents. >> AUDIENCE MEMBER: (Inaudible). >> SAM BOWNE: You can't access all the sectors. >> AUDIENCE MEMBER: (Inaudible). >> SAM BOWNE: It's going to different sectors
+than you think it is. The only way to securely erase the SSD is
+to grind it up physically or replace the firmware with hacked firmware. Let me see what came here. >> AUDIENCE MEMBER: What about using a TrueCrypt
+image. >> SAM BOWNE: Now they are all gone. There's nothing on the desktop. >> AUDIENCE MEMBER: What about having that
+as a main pass protection, will that cause any issues later on? >> SAM BOWNE: You are on to it here. This is what Mac, iPhones do. iPhone 4S and later, you turn on encryption,
+before you save any data and then when you want to erase it, you erase the key. There's no way to erase all the data on there
+because some of it is going to sectors which are then mapped to be invisible to the drive. >> AUDIENCE MEMBER: The same thing with the
+MacBook Air. There's no way to clean it. Unless I turn on the encryption before you
+start and that's what iPhones do. >> AUDIENCE MEMBER: A fly in the ointment
+when you were trying to show there was still some data left, do you think that's a result
+there was not enough activity going on and so the garbage collection was running efficiently? >> SAM BOWNE: It's a good question. Why did I not see the leftover letters. Sometimes I do and sometimes I don't and I'm
+always working the system on a completely empty partition. The results are not always the same and I
+don't know what causes it. That's the main thing I discovered is you
+really have to try it under your conditions to know what's going to happen. >> AUDIENCE MEMBER: (Inaudible). >> SAM BOWNE: Yes, Apple to tell you and there
+were a bunch of other SSD brands and you wouldn't know about them. >> AUDIENCE MEMBER: Have you done any research
+in terms of the whether or not the system is handing off, like, power commands so that
+it's not running a garbage collection during certain moments to save battery life on certain
+devices. Is that tied in at all? >> SAM BOWNE: I don't know. He's asking if you turn off garbage collection
+to save power. I do not know in the computer can do that. It sounds like a good idea to me, but ‑‑
+>> AUDIENCE MEMBER: (Inaudible). >> SAM BOWNE: I haven't heard any ‑‑
+I haven't read anything about being able to do that. It sounds like a good idea. Yeah. Maybe we ought to gather in the hallway and
+get out of the way of the next person.

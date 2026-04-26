@@ -1,0 +1,851 @@
+>>	Hello... Alright, we're here.
+Thank you so much for coming to
+DEF CON and umm, also for coming to our talk here on how to
+disclose and exploit without
+getting in trouble. As an initial matter, you should know
+that uh, I have to tell you I
+guess. I'm an attorney >>	Boo. >>	Just put that (Laughing)
+>>	Yay. >>	Actually I am an
+attorney, I represent hackers. And uh one of the things I think
+you might like about this talk,
+I hope, is that, in addition to TOD's excellent portion of it.
+Is that this not about the law.
+It's not about what the law is. It's not about what the law
+should be. I uh don't like going
+to those talks myself. And I imagine you like them even less.
+What this really about is it's
+about trying to keep you safe, enabling you to continue to do
+the research that you want to do
+without getting in trouble. It's that simple. And there's
+basically a few pointers that
+we're trying to get across and some techniques and some ideas
+about how research can be done
+and how disclosure can be done that will increase the safety
+for the research community. We
+can't -- one of the things we're not going to be able to do is
+completely eliminate risk. This
+is sort of a risky business in a lot of ways. And what we can do
+is manage it and we can be aware
+of it and we can reduce it and mitigate it as much as we
+possibly can. So with that said,
+I should tell you this is part two of a talk I gave in a
+20-minute slot here last year.
+It's worth giving an update on, because some things have
+happened since then. In
+particular, the United States department of justice and their
+computer crime section are now
+actively engaging with the research community and they're
+getting together. They're having
+sit downs and they're looking for a way forward because they
+recognize that there is
+potentially a chilling effect to the way computer crime laws are
+being interpreted and being
+enforced. And they recognize there is a public good in
+research that's going on and
+they want to find a way to make sure that the bad guys or the
+right bad guys, as we define
+them, are deterred from doing bad stuff. But the good guys are
+still enabled to continue to do
+what they do. So as an initial matter, I should introduce. Oh
+my God oh oh >>	I work at Rapid
+7. I work mostly in metasploit. Maybe you heard of it. And I
+deal with a lot of disclosure
+issues all the time. We sometimes find our own 0-day and
+then go through a disclosure
+process that is pretty easy and straight forward. Sometimes
+people come to us and say like
+hey I have this awesome bug and I don't know what to do with it
+and so we just kind of help them
+say what we think they should do and sometimes people just drop
+0-day on med display in the form
+of a poll request so hurray um you know I think that approach
+is totally effective at getting
+some attention on it and it's probably the highest possible
+risk you could take. Especially
+if you are standing in a jurisdiction that shares
+jurisdiction with the vendor
+that you are dropping 0-day on and that could be a problem But
+anyway, I'm Todd. That's my PGP
+key the first one is the one that lived on my phone. So it's
+okay. The second one lives on um
+in here actually, it's here. So, good luck. And that's it. >>	So
+my contact info is here as well
+PGP, red phone, tech secure, sound circle, et cetera. Twitter
+as well. Anything works. So this
+again is an over view of what we are gunna cover here is two
+types of risks, the risk that
+comes from the activity, the research activity itself. And
+then there's the risk that comes
+on the back end when you disclose the research that maybe
+no one else knew about before.
+Risk mitigation strategies some ways you might be able to do
+disclosure while keeping that
+risk to a minimum. Overall the point of this is to make
+yourself a harder target. Okay
+so what are the kinds of the activities, it is always worth
+getting this out there. What are
+the activities that are potentially risky. They are on a
+spectrum there are no real
+answers there are some things that are probably not too risky
+and there are some things that
+are really they are much more risky. On the sort of less risky
+end one might be changing an
+ATTP query strain and seeing somebody's utility bill. This
+seems like a relatively innocent
+thing. Technically yes this could be a violation of the
+computer fraud and abuse act. We
+will get to why this is not a big risk for you if you do that.
+But technically, this is
+technically a violation of a law in almost any context. Another
+example would be you find out
+your neighbor's WiFi or no password and you're able to
+access files and see some things
+on that net work. A little more risky, you break some DRM or
+write a better RAT and start
+using it out there somehow. So the risk, the bad things that
+could happen, your research
+could get buried. You could be barred from disclosing it by
+court order usually by a vendor
+perhaps or there maybe some pressure from a government who
+is also interested in this not
+coming out. You might get sued and umm, you might accidentally
+disclose a zero day. So all
+these things happen, I don't want to put too negative a spin
+on it. Because there are some
+rewards for disclosure. As you can see, It's just not -- it's
+not really that bad. Kind of.
+But really just I think as we'll find out the best you're likely
+to get is some recognition
+hopefully, if we do it right, that'll be it. So the main thing
+everyone's concerned about right
+now is the computer fraud and abuse act, because there have
+been some high profile
+prosecutions of some members of the community that have a lot of
+sympathy. And the sort of act
+of, without going into the details of it because we don't
+need to in for presentation, is
+the meat of it, the ambiguity that causes so much trouble is
+that what you need to do to
+follow in this statute is to access someone else's system
+without authorization or exceed
+the authorization that you had been granted. And it's very hard
+to figure out what is
+authorization? How is it granted? Especially when you're
+out in a public internet,
+because we're not engaging in this back and forth, can I be
+here? Okay. Come in, no you just
+show up. That makes it really hard to answer the question. But
+we can kind of break it down
+into a simple checklist. If you can check all of these boxes,
+there's going to be some risk.
+Are you connected to your internet. Well if you are just
+in your own box doing your own
+thing, you might do something else that runs into trouble, but
+at least you don't have this
+problem. Are you accessing a remote system that's not yours?
+Do you have permission to access
+it? We don't know right, That's what we were just talking about.
+And did you obtain information?
+Probably did. Otherwise what happened? It's not a valid point
+of being there if you didn't.
+Here's some examples and this is really where people start
+getting concerned. Because these
+are not, the point of these cases is to give you an idea of
+what kind of activities are to
+be charged under the computer fraud and abuse act. In some of
+the cases the charges were
+ultimately dropped or dismissed or reversed on appeal and so on.
+But this is not about the law,
+this is about am I going to get arrested? And even if win in the
+end, this it's already too late,
+so what kind of things that get you in trouble in the first
+place? Since we're in Vegas, a
+good one to mention is the case of Nestor who exploited a bug in
+video poker. And what he was
+able to do is play one game. And switch into a bit up and switch
+into another game and get out
+these huge pay outs. He didn't actually connect anything into
+the computer poker machine,
+didn't change any code and didn't hack a machine. He caused
+a code that was written for that
+machine to execute the exactly the way it was supposed to
+execute. It just gave out too
+much money. He was charged under the computer fraud and abuse act
+under a hacking statute for
+that. There is another defendant that had other people use their
+valid employee log in
+credentials to obtain information from the first
+gentleman's former employer. No
+one hacked anything, but access was made to that system. Of
+course there is the case of
+Aaron Swartz who, among other things, spoofed his MAC address.
+Andrew Auernheimer who had a
+script to run queries on public facing API and get a lot of
+e-mail addresses and then Jeremy
+Hammond who pulled whole lot of e-mails out of Stratfor. These
+are the type of activities that
+you are the subject of high profile computer fraud and abuse
+act prosecution. But there's
+also the risk of civil prosecution. And ironically, you
+are far more likely to be sued
+on the civil side than by the criminal side. There's hundreds
+and hundreds of cases where
+employees, actually, get sued by their employers because the
+employee has been terminated or
+left for some other reason and decides to take some documents
+with them. So this is, usually
+there's some other trade secret claims, other intellectual
+property claims that you see in
+these cases but the computer fraud and abuse act gets loaded
+on with that too. But, even
+though some -- even though many of the activities that these
+researchers were engaged in seem
+to be just really basic things that you should be able to do,
+why can't I query this public
+facing API? I can do this all day long, that's not
+unauthorized, they made it
+available right? So no passwords were required to do it? But what
+we find, what you'll see is that
+in the cases that are getting actually getting prosecuted,
+there are these aggravating
+factors, these extenuating circumstances that make that
+prosecution feasible and make it
+happen. This is what we want to cover. We want to get to a point
+where we know that if I do X, I
+can not run into legal trouble. Well we could have another talk
+with what that law might look
+like. That's not the law we have. But none the less, we can
+take the look at the cases that
+are out there and see what these people did beyond just the
+technical act. And this is where
+you can reduce your risk, because even if you have to hit
+that public facing API in order
+to do the research, there may be no other way to find out if the
+systems work. So you may have a
+technical violation of the computer fraud and abuse act,
+but the question is, is the DOJ
+going to come and get you. In the case of video poker, this
+guy didn't just find out this
+bug, make a hundred bucks and say cool, and disclose it to the
+vendor. He made, he pulled out
+over half a million dollars of the machines to do that. Great,
+great use of the exploit. But
+that's going to, grab a, that's going to get some attention,
+right? And in the case of
+Nozzle, where you're -- he had used the -- he had other
+employees in the company use
+their valid credentials to download highly sensitive
+documents that he was going to
+use in a competitive way against his old employer. Aaron Swartz
+entered the premises to connect
+equipment. Maybe that certainly might not have been a
+dispositive reason why the
+prosecution continued, but it certainly heightens the stakes
+when something like that
+happens. Of course Andrew Auernheimer , famous as a troll,
+that made him less sympathetic
+as a defendant. And beyond that, he harvested over a hundred
+thousand e-mail addresses. And
+certainly far more were necessary to prove that, to make
+his point that the system was
+insecure. In the case of Jeremy Hammond the intentional
+disclosure of the sensitive
+documents for the point of making those documents public as
+a statement. So there are some
+-- in this context of this really over-broad statute that
+everyone recognize sweeps in
+legitimate security research and in light of these aggravating
+factors that seem to get the
+attention of the department of justice in bringing case, the
+question is well what do we do?
+What it's a take away? With respect to the research itself,
+stick the proof of concept.
+Don't go beyond that and hold down a hundred and ten thousand
+e-mail addresses. Hold down ten
+if that's what it is, and then you can do this responsible
+disclosure as we'll get to in a
+little bit. That'll keep it much safer, and makes it look like a
+legitimate researcher and not
+somebody with an agenda and or on a mission. In disclosing, be
+professional. I can quote Mr.
+Pink from Reservoir Dogs "We're supposed to be professionals
+right? " I, keep it that way.
+And in that regard, one of the things you really got to be
+careful about, and this can't be
+over emphasized, when you make a disclosure, don't ask for
+anything, at all, Because then
+it starts to look like extortion. I know even if
+intentions are good, I'm sure
+we've all heard many cases where this happened or been involved
+in them yourselves where you
+approach a vendor and they become very hostile to the
+disclosure right off the bat.
+And once you're in this adversarial relationship, it
+could go bad quickly and to the
+extent you've asked for anything. Even disclosure, if
+you've asked a vendor to
+disclose it even that could be taken as a threat. So nothing,
+don't ask for money, don't ask
+for recognition, don't ask for disclosure and don't is ask for
+employment. Any of those things,
+you're welcome too, to do that, of course, but these increase,
+this is about we are trying to
+decrease the risk of getting in trouble, that will decrease the
+risk. You can ask for anything
+you want. You get the risk that comes with that. Beyond that,
+when you're making a disclosure,
+not just to the vendor, but if you're blogging about something
+you found, you want to talk
+about it, there's some basic things you want to do that can
+help keep it safe for you. Seems
+kind of obvious, maybe, don't direct technique information if
+someone you know might use it
+illegally. That starts heading in the wrong direction for you.
+In that vein, be careful
+providing support. If someone has questions for you about
+your, the vulnerability and
+you're not sure exactly what their intentions are or who they
+might be, I'd be very careful
+about answering questions or discussing it further. A few
+more points Don't, consider not
+disclosing, not discussing it directly with individuals. Keep
+it, the keep the public, so you
+don't get, so you reduce the risk of having conspiracy with
+other individuals. Don't prompt
+it on forums that known to support or promote illegal
+activity. Maybe disable comments
+to avoid being in a conversation about it with somebody who might
+be using it illegally. And then
+of course, use secure communications as much as you
+possibly can. (Accumulative
+chatting.) >> Well go on >> Ah this is great. Do I get to too?
+>> Oh you think so now	 Raise
+your hand if you're a new speaker today. (Applause.) >>
+	We're not kidding in the last
+one there was a situation like this and the guy in your
+position got Jack Daniels
+spilled all over him. So we'll give that to you. >> 	Cheers >>
+	To our first time speaker!
+(Applause.) >>	Thank you. Delicious. Alright so going on
+>>	Go ahead, keep doing your
+thing >> 	Thank you, thank you so much. >>	Nice work,
+congratulations >>	I promise I
+am actually part of this talk >>	We will switch over in a
+second. Some basic ideas about
+disclosure here, you might want to think about whether or not
+you've done everything right, as
+you're making your disclosure. If you that, if you feel very
+confident in the fact that you
+haven't broken any law and nobody thinks you're breaking
+any laws and your clearance is
+not gunna be at risk. Go ahead and acknowledge your identity
+and put it out there and have
+the have at it. Absolutely, there's some others, we'll talk
+about some additional ways that
+can happen to do that responsibly. One of the things
+you might want to consider if
+you're a little bit concerned, but not terribly concern is to
+offer that vulnerability up with
+a, well we'll get into this in a minute. Let me hold off on that.
+So, as we were saying, if you
+aren't sure if you did everything right, you may want
+to stay anonymous. I'll have
+more about how to make that happen effectively. As a last
+note, I want to introduce this
+concept to everyone and get some feedback. The goal here is just
+to get some feedback to the
+community. One of the things I'm working on, in connection with
+the good folks at Bug Crab, is
+an open source responsible disclosure frame work. What
+we're trying to do is
+essentially create a procedure, a process that we can all kind
+of agree on that will enable
+researchers to continue to do their work, enable companies to
+accept that work, and reduce the
+risk. Again, it's about reducing the risk to researchers and
+reducing the risk to the
+companies so everyone can be comfortable with that and there
+by promote the research. So you
+can find this online if you Google That. The basic concept,
+is that the company, whoever is
+being pen tested essentially, publishes their scope ahead of
+time. What kind of domains you
+look at, what kind of tests you can run, what you can hit, what
+you have to stay away from. The
+researcher agrees to stay in scope ,of course. And that
+includes avoiding pulling out
+personal identifiable information, disruption to the
+service, or whatever else the
+company wants to keep off of. And in exchange for that, the
+company agrees not to pursue
+legal claims against the security researcher. And in
+exchange for that, the vendor,
+sorry the researcher will agree to keep the bug confidential for
+a period of time until a patch
+can be put in. So anyway we're just going down this road now
+and kicking around these ideas
+and we'd be delighted to hear any feedback that you might
+have, and with that. >> Hello,
+cool so, one of the things that you need to do if you're going
+to be disclosing through an
+attorney, as we, as I did a couple months ago. You have to
+train your lawyer. I don't have
+to train Jim at all. His name is Cyber Law on twitter he knows
+kind of what he is doing. He's
+got the text secured. He's got the red phone, and the PGP. I
+asked him yesterday, so when you
+go to your bar association barbecue, how often do you talk
+about PGP and secure mail, he's
+tells me it never ever comes up and this is a problem. So one
+thing I want to do is figure
+out, how do you train your lawyer? And so last year when
+Jim presented, I saw his talk
+and he said some things that I thought seem a little fishy. So
+we worked out a procedure where
+in we could pen test it, we could test drive it. How do I
+disclose anonymously with my
+attorney cut out? And the biggest thing I get out of that
+is this notion of
+attorney-client privilege, and umm, the idea is if I'm a
+vulnerability researcher, I can
+find my valn, I can see if that works. I can try not to violate
+CFA too hard. And then hand it
+over to my attorney. And say, here, you go. I need to talk to
+these people. Don't mention my
+name and if they ask you, say just no thanks. And this, we
+believe, is fairly effective.
+Unfortunately, we didn't get investigated or prosecuted by
+anybody. So we really couldn't
+get to that end point. So maybe next time we'll give the DOJ a
+heads up or something. The
+biggest thing we need to do though is, obfuscating the meta
+data of the material you hand to
+your attorney. When I do vulnerability disclosure, I'm
+almost always am armed with a
+metasploit module. One of the, if, if I hand over a metasploit
+module to a vendor or cert CC or
+whatever coordinating body I am handing it over, I'm pretty much
+giving away who that author is.
+It's a really great paper. It's the authorship analysis in cyber
+crime investigation. It is the
+tiny little URL there, but just Google it. You'll find it. It's
+-- I think it's fairly seminal.
+It gets cited a lot and it's all about authorship analysis. Some
+people do -- sorry, some people
+do like you know, they will just always have like a return faults
+unless not, not, something.
+Which is a bizarre way to say true, I think. I dunno it's
+really hard, it gets uses and
+this looks like a fingerprint. You can fingerprint people off
+the code all the time. So first
+step is don't provide proof of concept code unless you secure
+this hold harmless clause,
+because otherwise, if you open with that, you've given up the
+game. So that's the big thing.
+When you go down this path, the big thing you have to know is
+your adversary. If you are going
+against a uh, if you have a disclosure that you believe
+would be interesting to the NSA,
+don't talk on your phone, all that stuff. Don't talk on the
+phone, don't get photographed
+with your attorney, and don't do anything on your computer and
+should probably just walk away.
+There's very little you could do to defend against that
+adversary. If you're merely
+dealing with a litigious multinational corporation,
+chances are good you can still
+talk about this stuff on the phone as long as you're aware of
+like where you are and who
+you're with and your bosses is one cube over and maybe you're
+dropping 0-day on your employer,
+like don't do it at work, obviously. Which has happened,
+we've had, I haven't had anybody
+- not lately at least, I haven't had anybody at least drop 0-day
+on their own employer, at least
+through metasploit. If you're doing it on some free and open
+source software project, again
+you could probably talk on the phone, you could probably meet
+up a lot. You could do a lot of
+clear text e-mail. You don't have worry about PGP. It's a
+shame PGP is so difficult. How
+many people ever tried to teach a non-professional PGP and was
+successful? Hey look at that.
+That's like a solid half a percent? Yeah. Congrats.
+(Laughing) just keep up that
+good fight. Text secure and red phone are both fairly easy to
+use. And umm, but they have
+their own issues, by the way, if you try to text secure me, I
+can't -- text secure believes
+I'm a user of text secure so all I get cyber text so don't send
+it, do it for Jim al day long.
+If it's an important free open source software project, you
+might want to tread a little
+lightly cuz again, you may be attracting the attention of
+things like the department of
+homeland security, whatever the equivalent is in your home
+country. You want to air on the
+side of anonymity at least until you get a hold of this hold
+harmless clause. But it all
+comes down of taking some kind of reasonable precautions. You
+don't have to be super cloak and
+dagger about this. More is better, but it turns out, secure
+communications is really hard,
+me and Jim are both like pretty well versed in security. And we
+screwed up like at least three
+times. We totally gave away the game. We were using PGP and then
+at one point, one of us, I'm not
+naming any names, mentioned the vendor in the subject line of
+the e-mail. Whoops, so like if
+we were actually trying to like avoid attention with the NSA
+that would have been not
+greatest. Oh and the other unspoken adversary all the
+people that like all the people
+who like to drop docs on hackers. If you're 0-day in your
+e-mail in the clear, you may
+find that you get your stuff disclosed before you are
+planning to, right? So moving
+onto our case study, so this is a vulnerability that is present
+in Yokagawa's Centium 3,000
+Human Interface System, This is a piece of software. Yokogawa
+makes a human interface system
+disc data software that runs on Windows, like you do. It
+controls things like really
+expensive turbines and factory floors and all that stuff. It's
+real popular in Japan, not so
+much here, but they have a have a fair number of customers in
+Europe, UK, I'm almost positive
+in Russia and probably Ukraine. So, what this bug does is we've,
+somebody, I'm not naming any
+names, discovered this. And I've learned about it and said hey
+Jim, I totally have an 0-day for
+you. Let's test this process. So we did it. So we went through,
+what happened was, let me back
+up a little bit. You can see the details. I don't have to read
+this slide to you. I think it's
+published on the blog now. Yeah if you go there you will see all
+the details on it. That's what I
+was doing over here I was prepping it up and finishing it
+up the blog. That was fun and
+then drank. So our disclosure on this was sometime after the last
+DEF CON, Rapid 7 and Jim we
+entered into an attorney-client relationship. On April 14th, we
+-- I'm obviously blowing Rapid
+7's cover right now. But that's okay, because it's important to
+show that we actually tried to
+do this and it was really hard. On April 14th, I disclosed all
+the details to my attorney. And
+then we had some negotiation and back and forth on how we're
+going to present this. And this
+is where we came up with the whole authorship analysis thing.
+And gee, we probably shouldn't
+give the metasploit modules. One of the best things we did --
+well let me back up a little bit
+on, May 1st about two weeks later. We offered the details.
+We, Jim, actually wrote to
+Yokagawa offering details of this vulnerability in exchange
+for some hold harmless thing.
+Which by the way I don't know is this exchange for hold harmless
+thing not extortion too? I don't
+know. I don't know. Maybe it is. Like I'm going to promise not to
+sue you and that extortion, I
+don't know. But any way, they didn't reply at all. They didn't
+get angry, they didn't demand to
+know who it was, they just didn't say anything. And I'm
+suspecting that when people get
+random unsolicited communications from attorneys,
+that is probably the way to go.
+You don't -- maybe you don't want to talk to they will. But
+we are offering this
+vulnerability details on their software. But they were not -- I
+don't know why they didn't
+respond, but they didn't respond. On June 25th, after
+giving them several weeks to
+give us some kind of guidance on what they want to do with this,
+we disclosed to Cert CC, not to
+be confused with U.S. cert, they are totally different. We
+disclosed to Cert CC. Fairly
+complete details minus the metasploit module of course, but
+we have a nice PDF about it and
+talking about all the technical details of this bug. Which by
+the way, the bug is, if you are
+on the same net work as one of these things, you can use some
+undocumented UDP based commands
+to rewrite the file system that is all, so it's pretty good. And
+so then today, details got
+published right there. I did it. So here's some source code.
+Because it's not a DEF CON talk
+without source code, I'm going to step through every line. So
+hang on. You can read about it
+yourself. It's up on the blog, up on Github. It's merged to
+master right now. If you happen
+to have access and authorization to own some Yokagawa gear,
+you're -- today's a good day for
+you. This is a disclosure doc we sent to Cert. Like I said, it
+details out fairly completely
+what the vulnerability is like hey maybe you should put some
+communication mechanism in front
+of these like store and reter commands instead of just like
+letting them get run. And umm,
+the surprising thing to me was, I wasn't super surprised that
+Yokogawa didn't reply, I was
+surprised that we didn't get much response from Cert for
+this. I deal with cert a lot as
+under my own name, but Jim I guess doesn't deal with cert too
+much so maybe they don't know
+who this dude is and maybe they think it's a scam or something
+like that. But we didn't get any
+reply from them. I'm super curious to talk to them almost
+immediately after this talk. And
+I was hoping Art would be here but he's not. Anyone work at
+cert CC? No? Aw guys, gosh you
+should totally come. Well I'll hook up with him later. And I
+think that's it for my part.
+I've already disclosed one. You can see what it is. Obviously by
+disclosing it I'm blowing my
+cover, but the point of this particular flavor of anonymity
+is that we wanted to keep -- we
+wanted to be able to give this talk and be able to disclose a
+vulnerability. Imagine I just
+did a whole long boring talk about Yokogawa. I want to be
+able to do that. The point is
+it's not anonymity forever. It's anonymity for three months or
+four months or something like
+that. That's fairly useful for people in our community. So if
+you have bugs to disclose, feel
+free to tell me. Maybe retain Jim he was super cheap.
+(Laughing) in fact, I think I
+make money out of this deal because I'm the co-speaker too.
+But yeah, that's all I got.
+Anybody have any questions? Please go to the mic in the
+middle. Ya know climb over all
+each other to do it and uh riot. >>	So Jim, you know this, the
+hold harmless agreements don't
+bind criminal prosecution. And lawyers are prohibited from
+using privilege to protect
+conspiracy to do criminal activity. Doesn't this just
+mostly kind of theoretically
+protect against the DOJ and then they are still gunna smack you
+around? >>	That's a fair point.
+It's not possible for anyone except the department itself to
+say, okay, we're not going to
+pursue this accident. And even then, I've spoke with the people
+in the department, that said can
+we come -- can we create even a no action letter sort of thing
+where we would be able to, the
+department would say, we don't think, it would be great if you
+had a letter from the department
+of justice, we don't think port scanning is a crime. That's all
+you do is port scanning. This is
+okay, you can't even get that. So for sure, even if you have
+this agreement with Yokagawa or
+whoever it happens to be, give us the deets on this bug and we
+promise that we're not going to
+sue you. But it can go further. It says we don't sue you, we
+don't chase you down assuming
+you are not misrepresenting what you did if you did something
+really nasty and you're not
+telling me about you're telling me you did this but you actually
+did that then of course the
+agreement is not going to fly. But if you're being honest with
+me and your telling me you did
+this or you didn't do whatever the bad thing is that we think
+you might have done. We're not
+going to come after you ourselves. They can go a little
+bit farther and say we're not
+going to support a prosecution by the department of justice.
+And that makes a big difference.
+Because you know >> And subpoena, but JSTOR didn't
+support the Aaron Swartz
+prosecution and look where that ended up. But MIT did. So that's
+the difference. When -- so the
+cases come out in a couple different ways , CCIPS the
+computer Crime and Intellectual
+Property Section of the department of justice can do its
+own investigation if it has
+reason to believe something's going on. Or some aggrieved
+party comes whining to the
+department saying these people are hacking my system and you
+need to do something about it.
+If you are AT&T and do that the department is gunna listen. If
+you don't go to them, the
+department is not, no one can promise. That's the thing no one
+can ever promise. But I sit down
+with folks from DOJ and they tell me we're not out there
+hunting the internet for people
+who are doing slightly fishy stuff. So it's risk right? It's
+risk at where you draw the line
+But we can -- the best we can do is reduce the risk so people can
+continue to do the research.
+>>	So if I find an exploit I can hit you up and you're gunna do
+it for free, because I know my
+local lawyer is gunna be like what are you talking about and
+ya know I have a thousand dollar
+retainer. How are we expected to go out and find an attorney to
+do this? Because I don't think
+that is something reasonable for us to do and pay out of pocket.
+>>	There is a really big
+interesting question out there with respect to scale. Right? So
+we did one bug. And it costs,
+it's not a -- a dollar would be too much to pay for this sort of
+thing. But if you have thousands
+and thousands of people coming through the system looking for
+this measure of anonymity of
+disclosure to attorneys, it's not, there needs to be some way
+to make it work. It's not real
+clear what that is yet, but that's definitely an issue.
+>>	So question is any devices
+coming out from unknown Chinese vendors with vulnerabilities in
+them? >>	I'm sorry can you say
+that? >>	Devices coming out from Chinese vendors and their
+vulnerable and these Chinese
+companies are. Many times you don't know who they are, no
+e-mail address or whatever. And
+how do you deal with those. >>	With things like that, we
+have run in with that before
+with metasploit. Typically what we do is make some kind of
+effort to find out who it is
+first. That generally doesn't go anywhere. So we get in touch, I
+work with cert CC a lot. And
+they have a nice long list of people that they can talk to. We
+have gone through cert CC and
+generally cert CC will get in touch with someone like JP Cert
+or Cert CR or responsible
+entities in china, whoever they are. Possibly they know who it
+is. The main concern we would
+have is not so much, you know, I'm an American, I'm standing in
+America, and uh, I'm happy to
+help the people of china. I'm totally one to do that. But it
+gets really hard really fast
+because there are languages barriers and there is time zone
+barriers. So I could usually
+make a play like ICS cert or department of homeland security
+and say hey, we have all these
+boxes of unknown origins, ya know anybody? And it is, it's a
+very personal kind of process
+with a lot of people talking to other people. It doesn't scale
+great. But it's -- that's how we
+do it today. >> So presumably, a cy -- cyber lawyer would have a
+fairly finite list of clients.
+And portions of that list would be exposed during the
+litigation. So wouldn't the,
+wouldn't just communication from that particular lawyer be a risk
+of losing your anonymity? >>	The
+fact of the attorney client relationship itself is
+confidential. And the identities
+of criminal defendants in a criminal case would be. So for
+example, if someone came to a
+criminal defense attorney and said you know I robbed this
+bank. That is confidential
+information that only the attorney has. So it's --
+attorney client relationship is
+probably the most secure relationship that you could
+build in terms of disclosure
+that involves potentially criminal conduct. >>	I know what
+you're saying here. You're
+asking more about traffic analysis. If I'm e-mailing Jim
+in space and Jim is known to
+sometimes disclose bug, it gets real easy real fast to figure
+out who's talking. So obviously
+you would want to, if you're really that concern, again, your
+adversary, if my adversary is GE
+or AT&T, they're not, unless it's AT&T's network, they're not
+going to be, really have a lot
+of reach into like getting a hold of my e-mail. Sure they can
+subpoena it. They could try to
+subpoena all day long. Good luck subpoenaing an attorney for all
+their points of contact. I don't
+think any judge would ever do that ever. They could try to
+subpoena me, but they already
+know who I am. I can have throwaway e-mail addresses and
+use have PGP because I know his
+key and that's how Cryptography works. I don't have to ask him
+for his first. So I could just
+say, hey Jim this is Todd and I know I'm on like hot dudes 22 at
+Yahoo. But it's really me I
+promise. Or something like that. You know? That's how I would
+solve it just throw away. >>	I
+had a question, like clarification from the example
+you present. There was no
+response from the vendor. But like if they had responded in a
+really adversarial way, like if
+you're a researcher and you get an unexpectedly hostile response
+from the vendor, like what
+should you do then or like how do you approach that? >> 	Hire
+Jim! >>	Yeah yeah, you hire Jim,
+he's very reasonable. So generally, we have gotten --
+I've gotten hostile responses
+from vendors like that weren't this. I've disclosed a lot and
+when we do that, we just,
+generally try to calm them down, we assure them we're not asking
+them anything we're not selling
+them pen testing. A lot of times they'll get on the phone and say
+what do you sell me here?
+Because I don't need like pen testing services. I'm like well
+A. you do, and B. we're not
+selling that. (Laughing) so I mean, it's, generally, it's
+talking like sometimes you have
+to talk on the phone and be a person. You know, it's very
+human hacking to kind of walk
+them off that edge. >>	Thank you. >>	If you're going to go
+the lawyer disclosure route,
+where would jurisdiction fall in? I don't know if that's
+necessarily the right term, but
+let's say you live in one state. Your, the target or, you know,
+the software group or whatever
+lives in another, lives works or whatever. How'd that play in?
+Would it play in? The answer is
+jurisdiction never found in New Jersey. That's for sure
+(Laughing) . >>	Yeah, got to
+make a New Jersey joke >>	That's a real issue. Because in weev's
+prosecution, they bought the
+case against him in New Jersey and that was THE basis for
+overturning that conviction. So
+it doesn't, where matters. >>	Assuming we can't afford a
+lawyer as a researcher, is it
+reasonable to contact a vendor or try to contact them using
+just a website e-mail then you
+don't get a response as indicated and you disclose
+publicly on a blog or something
+>>	Right. Right right. Yeah, exactly. Just for the record,
+this sort of disclosure
+intermediate thing is not something I would charge money
+for. This is something I just do
+community. It's a project we're working on. It's not like a
+service for sale, to be honest
+for you. And it couldn't scale. It wouldn't make any sense to do
+it. To answer your question,
+that's really I think an opportunity where this hold
+harmless agreement could come
+in. If you're going to stay anonymous behind the attorney,
+the hold harmless is not as
+necessary, because you can't find out who to go after any
+way. If you are going to have an
+identity, this two step process starts to make sense where you
+reach out to the vendor and say
+I found something and I can tell you about it, but I'd like you
+to agree not to come after me or
+support prosecution. There's going to have to be some
+negotiation back and forth. If
+you do something really horrible, they're not going to
+be like fine I really do care
+what you did. I think that can be worked out, but if that
+negotiation process can complete
+successful that would enable independent researchers to go to
+companies. And of course the
+other option would be >>	Metasploit? >>	Yes the
+metasploit module. Exactly do
+that. >>	Like I'm not an attorney and can't offer the
+attorney client privilege, but
+I've done it before for individual people. They'll come
+on IRC or ask me on twitter for
+some reason. Or e-mail me. They are like hey, I have this bug I
+don't know what to do with it.
+And generally I say we can help you with it, we can write the
+metasploit module, that's what I
+get out of it. And we generally just do, we tell the vendor, we
+wait 15 days. We tell Cert CC
+and we wait 45 days, we publish the metasploit module. That's
+generally how we do it. It's
+working so far. I'm not in jail yet, and that's the door.
+(Laughing.) >>	That's it, Thank
+you so much for coming everybody. (Applause.)

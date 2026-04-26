@@ -1,0 +1,249 @@
+- Hi, thank you for joining our talk, A Decade After Stuxnet'S
+Printer Vulnerability, Printing is Still the Stairway to Heaven. First, let's introduce yourself. My name is Peleg Hadar, I'm in the InfoSec field
+for more than seven years. Currently working as a
+Senior Security Researcher at SafeBreach Labs. My main focus is on Windows internals and vulnerability research. - Hi, my name is Tomer Bar, I'm in the InfoSec field
+for more than 15 years. Currently working as
+a Research Team Leader at SafeBreach Labs. My main focus is on APT
+research, Windows internals and vulnerability research. In this presentation, we
+will cover the following: We will demonstrate our threat actor, might had the ability to
+build the propagation part of Stuxnet 2.0. We will do that by work by
+octo on the vulnerabilities which were used by Stuxnet. For each one we will
+describe the root cause, describe the patch and evaluate the effectiveness
+of the of the patch. We will continue with a deep walkthrough of our print spooler research findings, including demos of the tool zeroed. Finally, we will suggest new mitigation for the entire Arbitrary
+File Write backlash. We will be focused on answering
+two fundamental questions. Is it possible to build we
+will propagation capabilities as Stuxnet capabilities? Second question: If I fully patch my entire
+Windows Operating System am I safe know? Last note, before we start: We will use two symbols
+during our presentation. A Narrow Patch means that the
+patch logic is very specific and it was possible to exploit it. And secondly; a Regular Patch, means that it solves the problem and had not been bypassed until nowadays. As much as we know, now that we are ready, let's see the recap and
+the timeline of Stuxnet. Stuxnet is considered by many to be one of the most complex and well engineered
+computer worms ever seen. It is believed that the
+project was developed in 2006 and lasted four years,
+until it was discovered. Stuxnet can be described by
+the following three parts: The first part is the
+propagation to the target network by using three remote
+code execution exploits, and two local privilege
+escalation exploits. The next part is the
+special evasion techniques, which allows Stuxnet to
+operate under the radar. The third part is the final payload delivering specifically to Siemens PoC. In our opinion, a decade after Stuxnet, the most interesting part is
+the propagation capabilities, which is still relevant,
+almost any targeted attack. Let's zoom in into Stuxnet propagation capabilities. We will describe them one by one. Although it was a decade ago, it's still relevant to all of us because according to a
+research posted in 2017, those capabilities were
+used widely after Stuxnet, for attacking a wide
+range of organization. Let's dive deeper. Handing over to Peleg. - Thank you, Tomer. So let's start in talking
+about the LNK vulnerability which was used by Stuxnet. It used to spread via
+weaponized USB flash drive traveling between
+internet facing computers and internal network computers. So the attack vector
+contains a crafted LNK file, which is a shortcut file. Once it was displayed in arbitrary DLL, which was specified as
+the icon file of the LNK, was executed. Here's a screenshot of
+the crafted LNK file which exploited the vulnerability. You can observe that the LNK
+file contains the following: The path of the CPL external
+file and the Icon ID, zero, which caused the code to
+trigger the execution of the DLL every time the LNK file was displayed. So let's take a look at the exploit path and how it was patched. The main problem was that instead of loading the CPL
+DLL file as a data only file by using LoadLibraryX, the code actually called
+the LoadLibraryW function and also executed the DLL. We expected the patch to replace this code in order to avoid execution. But let's see what will actually happened. So the patch added two validations in order to mitigate the vulnerability. First, he checked if the provided CPL file was a Microsoft's whitelist
+and was allowed to be loaded. Next, the Icon ID which we control would have been extracted
+and converted from a string. If the idea was zero, it
+would overwrite the zero with minus one, meaning
+it wouldn't be loaded. The path was very specific,
+because as you can see, the LoadLibrary function still existed, meaning that if someone
+would have been able to bypass the validations, then the CPL could have been executed. So let's see the bypass which
+was specified years later. In order to bypass the patch, we need to bypass the Icon ID check and transform it to zero. It can be done if you will be
+able to send the minus sign as a parameter to str two in w function. Let's see exactly how it was done. Because of that confusion between the white color
+buffer and the color buffer, the original Icon ID
+string, was truncated. We can exploit it by providing
+a long enough buffer. So the icon ID will turn
+into the minus sign. Once StrToInt will return
+zero is the Icon ID or arbitrary CPL will be executed. The patch for this one was pretty simple. The truncation bug was removed. The code to LoadLibrary, which was the actual
+root cause was unchanged. That means that if there is another way to trigger the load CPL module function, it would have been been still vulnerable. And apparently there was. Three years later, a new vulnerability was
+discovered and patched. It called the load CPR module function by using another exploitation
+path which was left unpatched. So the best for this one was adding the previous
+logic of a CPL whitelist but LoadLibrary still was not replaced. What's interesting here is that we have noticed that
+there is another last step to LoadLibrary function, but we haven't seen any
+disclosed vulnerability yet. So moving to the next
+propagation capability. Next we will talk about the
+Stuxnet RPC vulnerability. Handing over to Peleg. - Thanks Tomer. On 2006, three years before
+Stuxnet first known infection, a new worm RPC vulnerability was discovered and patched. According to Microsoft, it was a very limited
+scope attack back then. But later on a very
+similar exploitation path was used by both Stuxnet
+and Conficker Worm, which became one of the most
+credible warm ever seen. RPC vulnerabilities were the main cause of global computer worm since 2003. Remember blaster? So it's obvious that
+the cost of venerability in this mechanism is huge. Let's dive into the specific details. The RPC vulnerability root
+cause that will present is due to a canonical path. So let's understand what
+is it, a canonical path. It's actually a pretty simple. It's get an absolute path and convert it to the shortest absolute path in the meaning of strengthline. The most common usage of canonical paths is for textual comparison of
+two different representation of the same canonical path. The original vulnerability
+was a type confusion which leads to a classic
+stack based buffer overflow. Vulnerable function was scoping a buffer which exceed the allocated buffer, causing memory corruption. Here's the exploitation path. RPC requests trigger the
+vulnerable function remotely, which lead to an out of band wide caused by wcscat function. Please notice the RPC
+functions name, NetpW. We will explain why it's
+important in the following slides. The patch editor proper
+buffer length check, which eliminated the original
+buffer overflow vulnerability. Two years later, a newer
+vulnerability was discovered in the same exploitation path. This time it was discovered
+in the RPC wrapper function, which is called, Netpr. This function calls the original
+vulnerable function directly. Remember, NetpW? Let's dive into the root cause. So the root cause of the vulnerability is that the input path includes most less dot dot slash cause than the number of
+prior directory entries. This will result in gaining control over the output buffer pointer, which we point backwards on the stack and we trigger out of badth writing after calling the WCS copy this time. So the patch MS08-67 replaced
+the WCS copy function with the cipher function,
+string copy Walker W. Let's dive into Stuxnet Task
+Scheduler vulnerability. But first, let's understand
+how the task scheduler works. Task scheduler job. xml file
+contains the metadata of a job, including which user will execute the job. The folder which contains
+it is writable by all users. To protect the integrity of
+the job configuration files will prevent the user from modifying them. The scheduler calculated a CRC 32 checksum on each created task XML. When it's time to start the job, that scheduler we
+calculated the XML checksum and compare it to the original value. If they matched, the job executed, if not, it would have been ignored. The CRC 32 algorithm is collision prone which may lead to data fogery. Stuxnet 2.0 exploited this fact by forging an XML file of a job which was executed as NT authority system. The custom CRC 32 checksum, which was identical to
+the original dax XML: Therefore, to Linux executed as system resulting in a local privilege relation. In the patch MS 10-092, Microsoft implemented a
+second integrity check by using the SHA-256 algorithm implemented by the ComputeHash function, which is less collision prone. Moving forward nine years later, a newer Task Scheduler
+vulnerability was formed. The vulnerability abused the
+backward compatibility feature of the task scheduler mechanism, which provides the option
+of migrating all task from C Windows Task folder
+to the new task folder, which is system 32 tasks. In order to exploit it, the attacker would need to
+reform the following four steps: Step one; create a new job. As a result, an XML file would be created
+in the new tasks folder. Step two; overwrite the job
+file in the legacy task folder with an out link to the file which the attacker wishes to control. Just that is creating a new
+legacy task, with the same name. And finally; trigger an all
+new task integration of RPC. As a result, the task scheduler service will update the security
+information of this file, which the attacker wishes to control, granting the attacker full
+control privileges on it. The attacker, can now
+replace or write to any file, gaining local privilege escalation. So this is the exploitation
+path that was used. Let's see how Microsoft patched it. The patch, make sure that the
+file is not a symbolic thing, by using two different checks. The file checks verify
+that the original path is the final path of the file. If it's different, it means that it was
+redirected by a symbolic link. And the second check, verify that the number of the files NTFS
+links is not bigger than one. Okay, so let's see the
+fourth vulnerability moving over to Win32k. Actually, there were dozens of Win32k local privilege escalation vulnerabilities over the last decade. Here's a list of several
+options from 2020, which can replace the original
+already patched vulnerability in order to rebuild the Stuxnet 2.0 propagation capabilities. The only current capability which remained is the principle of vulnerability. Let's start to talk about our Windows full of research and findings. We will start by presenting how we found a 20 plus year old bug by using 20 minutes of fuzzing. We have noticed that each time
+a print job is being created is represented by two files. First an SPL file, which
+is simply contains the data to be printed. Second, and SHD file, shadow
+file which will be focused on is represented by the under
+committed shadow file stocked and contains the metadata
+of the print job. For example, printer
+name, printer Port name, document name, and etc. We found that the printers folder, which contains the SHD files
+is writable by all user and that the SHD files are being processed once the service is started. So we ask ourself, what will happen if we craft our own SHD file? So we started to mutate the SHD
+files, and fuzz the service. After 20 minutes of fuzzing,
+we had our first crush, we have managed to crush
+the print spooler service by using a limited user
+and a crafted SHD file. It's appeared that the code
+was trying to dereference some part of all data. Suitain it as a pointer
+to a security descriptor without any validation or
+sanitization of the data with provided in the SHD file. Microsoft did not fix this bug. We will show the response
+in the end of our talk. Okay, demo time. Let's see a demo of the crash in the latest windows 10 insider build. So on the left side
+Johnny is a limited user. We can see that we are running
+on the latest Windows 10 fully patched machine. On the right, the user
+John is administrator and is used only for convenience. To avoid restarts of the OS, instead, we'll restart the service to
+trigger the vulnerability. So we are copying the crafted SHD file to the printer spooler directory. Now we will trigger the vulnerability by restarting the service and listing the printers via WMI command. As we can see in ProcMon,
+encrypt the service. Handing over to Peleg. - Thank you, Tomer. So the crash was cool, but we wanted more. Let's talk on how we got
+local privilege escalation. Twice, one of them is still zero. So in order to understand the
+next vulnerability we found we will dive into the printing
+process in the Windows OS. The print spooler is the service which is responsible for
+creating and handling print jobs in the Windows OS. Accessing the print spooler
+is possible remotely. For example, using a
+shelf printer and locally. We'll on the local scenario. More specifically, we
+will focus on the fact that the spooler allows
+the user to print to a file by using a built on printer. This is an important part, which
+our photos largely rely on. A quick brief on the flow of
+printing profile scenario. First, the user sends
+some data to be printed using an application, for example Notepad and specifies which file
+he would like to print. It means that the data will be printed. It means will be written to a
+file using a virtual printer instead of printing, or instead
+of printed to real printer. The spooler service, Spoolsv.exe,
+which is the RPC server gets the request. Later on, the local print provider which is responsible for
+printing data to files will print the data into the file which was specified by the user. Let's start with the first
+print spooler vulnerability which was used in Stuxnet. This is the flow of the vulnerability which was providing the
+remote code execution. The vulnerability exploited the fact that the spooler allows
+the user to print to a file on a remote computer on behalf of system and has printed the
+malicious file to System32 which was the mo file. So it was patched on 2010. The patch included two validations. A. Check if the printing job was dispatched locally on the
+machine itself or remotely. If remotely, it will override and ignore any requested file write operation. Second, it will check that the
+user have write permissions to the path of the file
+that he wanted to print before it's running to. Moving forward to 2020, we have found a way to
+bypass the patch locally using almost the same exploitation path. The first check bypass is obvious. Because we shifted from
+a remote code execution to a local privilege escalation. The second check needed some work. So let's dive into our
+print spooler results. We found out the limited user can do some interesting operations without any elevation require by just using partial commands. For example, adding a butyl printer which prints to a local printer meaning it will print to a file and specifying a path of the file, which doesn't have access
+to, for example, system 32. Okay, interesting. So does that mean that
+a user can just print any data he would like to system 32? Let's check. So apparently no, or
+that's what we thought. As we mentioned before, the MSDN 61 patch has added
+a function which validates if the user can write to the
+path he asked to print to. Which means that the user
+won't be able to print data to system 32. So let's understand how can we bypass it. Every time the print spooler initializes, it processes the SHD files
+which are waiting to be spooled in the same directory for every user. A limited user can create an SHD file which represents a printer, which prints to any path
+for example, system 32. Once the print spooler restarts, it will process the SHD file without being impersonated or aware of who created the print job. Therefore, it will operate
+as anti authority system and will print the data to any
+file as NT authority system resulting with allowing
+the user to write data to any file on the system and getting an Arbitrary File Write in a local privilege escalation. This was actually the bypass
+of the second patch validation specifically for the validate
+output file function. Because the spooler is running
+as empty authority system. It has writing permissions
+to almost every file in the file system. So the check will pass successfully. So let's see a demo of the
+first local privilege escalation we found in the print spooler. As you can see, we're running under the
+context of a limited user. We're using a Windows
+10 machine from March before our vulnerability was patched. We're using Gianni
+which is a limited user. So first we'll use PowerShell in order to do the following stuff. We will add a printer port which allows us to print to system 32. We will add the printer driver which allows us to create
+a beautiful printer. And finally, we will add a printer which is using the system32 port. Next we will use a pre crafted SHD file which represents a printer
+which prints to system 32 and we will use a DLL payload which we would like to write to system 32. We will rename it to
+SPL and we will copy it by using our LinkedIn user
+to the spool printers folder in system 32, which is
+writable by all users. Now before we will restart the VM, I want you to notice that
+there are only three users in the computer administrator,
+Johnny and john, and the following file, Windows Server 32, which names exploited txt does not exist. Next, let's restart the
+VM by a limited user in order to... The print spooler will
+process our SHD file. Once we are logged in
+back into Johnny user, the print spooler service
+will process SHD file. We treat it as a print job and we'll write our file to system 32. Next, Windows service will execute the DLL and as you can see he will be able to add a new
+administrator to the computer. And he was able to write
+a file to system 32 named exported.txt. Now let's verify that you're
+actually added an administrator we will open a command
+prompt which is elevated and we will just log in using
+our new administrator user. As you can see, the administrators
+group contains our user. So we've been able to gain
+local privilege escalation using the print spooler service. So now that we coupled them all together, we reach our destination. We have fun equivalent
+capabilities to allegedly build Stuxnet 2.0 propagation,
+but our work is not over yet. After the first vulnerability
+we found was passed, we been able to exploit it. And we credited with CVE-2020-1337. Microsoft are currently working on a fix, which will be deployed in
+the upcoming Patch Tuesday. Therefore, we can't release any
+technical details right now. We will publish it once
+the patch will be deployed. But let's see a demo. So as you can see, we are running under
+the context of Johnny, which is a limited user. We're running on a fully patched VM. Under the context of Johnny,
+we will execute our export which will bypass the
+parts of CVE-2020-1048. After we crafted our SHD file we will copy to the
+print spooler directory. But first, you can notice that the
+elevated DHL file does not exist and that we have only
+three users as before. Now let's restart the VM. Once it was initialized, we will login again toward
+limited user journey. Now, as before, the print spooler will
+process RSA DHL file, and will bring the data to system 32 which is our payload which is a DHL file. Our DHL file will be
+loaded into an elevated anti authority system service and we will again call execution. Now, let's try and find
+the exported.txt file. As you can see, we write
+the data to system 32. And we have been able to
+add an administrator user once again to the VM. Let's execute a command
+prompt, which is elevated. And let's log in using our
+new administrator user. As you can see, again, a
+local privilege escalation and call execution using the
+print spooler once again, after the first vulnerability was patched. Handing over to Tomer. - Wow! 1337. That's awesome. So going back to our second question, we would like to propose an
+additional possible solution as a second level for patching. We believe internet security
+mitigation approach. So we report to MRC on each
+level ability we found. But we still believe it's not enough. So we developed a PoC
+for real time prevention of the attack. The main root cause of the
+Arbitrary File Write backless in the context of local
+privilege escalation is the fact that a limited user is not allowed to write directly
+to the following location. This is dangerous and can
+be exploited very easily. And we found that it's
+actually not really needed for the regular use. Today, we will release
+a mini filter driver, which restricts any Forumite
+operation by a limited user to some of these location as a PoC. This mitigation proposal is not specific to the spool of vulnerability
+and can be used as a template for mitigating the Arbitrary
+File Write backless. please treat the driver as a PoC and be careful not to execute
+it in production system before validating it for false positives. Let's see again. Okay, so this time we are
+running on Windows 10 OS1 an older version without the patch for the vulnerability
+we were going to use. And as usual, we are running
+as Jonny a limited user. Let's make sure that
+driver is loaded to memory. And now we'll present that regular usage of printing is allowed. So our driver will examine the file write of the SPL and SHD file and will allow it. You can see that there are two files in the printer spooler
+folder which is not you. And now, let's copy the SHD SPL file to print spooler directly. Now, actually, our
+driver examined the write and blocked it. You can see the files are have zero side. That demonstrates the
+task scheduler exploit. This is a public exploit and you can see that our driver blocked the write. So Microsoft's response for the spooler local
+privilege escalation, the additional vector CVE-2020-1048 will be addressed in August
+2020, this CVE-2020-1337. And for the spooler denial of service, the technique results in
+a local denial of service, which doesn't meet Microsoft servicing bar for security updates. We'd like to give credit
+for the following people for searching similar areas: Alex Ionescu & Yarden Shafir. Dave Weinstein, ITh4cker and Jeongoh Kyea. Today, we release our repository, which includes an Exploit
+PoC for CVE-2020-1048. And an Exploit PoC for the 0-day denial service of the spooler service. The driver for the Arbitrary
+File Write Mitigation, and in a few days on August 12, we will release the CVE-2020-1337
+Supernait Exploit PoC. Please check our repository. Thank you for joining us and
+let's go over for the Q&A.

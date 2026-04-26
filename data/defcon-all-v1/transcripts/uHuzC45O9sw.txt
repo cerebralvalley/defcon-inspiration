@@ -1,0 +1,650 @@
+I'm excited about this. Yes,
+we're starting a little early, but you guys were at the
+program. We will cover a lot in a short amount of time. Real
+quick anecdote. I'm a big fan of social engineering tool kit and
+all the stuff you guys do. When I'm back home I do security
+awareness talks for other attorneys, and this spring I did
+a live demo of the social engineer tool kit. Who is in the
+audience? The chief justice of the Missouri Supreme Court. So
+you're terrifying a lot of powerful people for a long time,
+so I'm excited to see some new stuff. Let's give him a big
+hand. >> It's Sunday and you all are still here. A round of
+applause for you. I've experiencing delayed reactions
+and headaches. So we have shrieking and loud noises
+throughout the presentation to keep it fresh content-wise. I'm
+Dave Kennedy, and I started my companies, and it's funny I just
+saw somebody here I used to work with in the military. It's funny
+how you kind of see all the people that you kind of go
+through this industry with as well as a whole bunch of new
+people coming into the industry. I got a hug yesterday -- I'm a
+big hugger guy. I got a hug from somebody into the industry
+saying I'm so passionate and am learning from all of this. When
+I was coming into DEF CON, I think DEF CON 8 or 9 was my
+first. I learned from other people, because everybody is so
+damn smart in the industry and no one inning everything else
+that the other person knows. It's about that and that
+community. DEF CON is a great place for that. I give a round
+of applause for everyone that makes it possible. The goons
+that clear up all the traffic flow after the first day giving
+their nights over and over again. Let's give a round of
+applause for everybody at DEF CON. ( Applause ) So I authored
+the social engineered tool kit and other tools. I'm going to
+show one today which I had a new modular for Pivoter that Geoff
+wrote we will release today. This is Geoff's first time
+presenting at DEF CON. Can we give him a round of applause for
+getting up here and having balls? ( Cheers and applause )
+>> As Dave already introduced me, I'm Geoff Walton. I'll a
+senior security consultant. What I do on the side when I have
+time is to write tools and create some things. I've
+authored a tool called Chips that is pretty popular and
+recently I wrote a tool called Pivoter, so that's kind of who I
+am. So Dave is going to talk more about the history of pin
+testing and stuff like that and what we do. >> So really quick
+we come up with acronyms for tools, CHIPS was going to be
+chips because one guy ate seven bags of chips in one sitting. We
+were going to name it after the tool, but we didn't have a
+acronyms. We changed it to S.H.I.P.S. Pivoter sounded cool.
+What was your original name for it? Proxy something or other? >>
+This is -- the mic is not hot. This is kind of funny. Dave
+seems to have a habit. I come up with very boring, restrictive
+names for my tools that say what they do. I called this proxy
+kit, and like every other thing I write, Dave immediately
+renamed it, which is awesome. Dave's names are alley better.
+>> Sweet. All right. We'll get into the talk here. A little bit
+about the history of how attackers kind of move and kind
+of our challenges as pin testers in the past. If you look at pin
+testing in general, we go after an infrastructure and try to
+find an exposure, whether it's social engineering or going
+after a specific attack in a web, and we find a flaw and
+compromise that and get access to one system, right? We get
+access to one system, if we have elevated rights, we have the
+ability to move into other systems, right? From there we go
+after other things and get more information. It's like a puzzle.
+We put it together until we get access to stuff we want access
+to. If you look at that, the whole lateral movement thing is
+a big talk right now. It's been difficult for us in the industry
+until you use pro versions, they have a VPN functionality that
+works and tunnel and pivot through a session. Cobalt
+strikers has the ability to if you have administrative
+overwrites, right? They're concepts we use every single day
+to go after specific targets and from there move across the
+network. To talk about that, you look at lateral movement, you
+compromise one system, right? It's random Chuck Norris things
+through the presentation. If you look at lateral movement in the
+organization, it's about compromising a system. Getting
+information whether it's credentials and spring across a
+network and going to other systems to get access to them.
+We look at it and say, well, it's difficult in a lot of cases
+to he escalate permissions sometimes. Let's say you have an
+organization that doesn't run administrative rights or
+compromise a network service account, something you had the
+ability to target and have access to a system but maybe
+there's not information in the system to get you to another one
+to move laterally in the environment. That's been or
+experience that you target an individual and organization that
+has limited permissions to actually go about that. So, you
+know, we look at that. We look -- what we do at PIN testers,
+it's about thinking outside the box. We have to navigate
+security restrictions to stop us from attacking different things.
+In most cases we do. We get crafty. We find one exploitation
+wasn't successful, right? We go to another avenue that may have
+been successful and we may go to other systems that get us the
+types of information that we need. It requires us to think
+outside the box. Unfortunately today the focus is really around
+just getting domain admin rights, right? I see someone
+taking a picture of that screen. I apologize. Don't Google clock
+and forget the L. When you look at a lot of the types of attacks
+we do and the types of methods we do, it's about getting domain
+administrative rights, right? That's how we target our tests,
+but that's what we see as far as attackers. They want access to
+information and things that make us unique organizations. For
+example, everyone is worried about PII and credit card data.
+For manufacturing that's less of a concern. Manufacturing is
+focused more on how do we make the product, the chemical
+compounds and who the suppliers are and how much we pay. Those
+are property pieces that make that company unique as an
+organization, and we don't target that as part of what we
+simulate as an attack. We're at a disadvantage and simulating
+how attackers go after a situation to attack the
+different areas. For me, looking at this, we have to evolve to a
+different type of framework and way of attacking organizations.
+It's not to say what we're doing is not right. We need to think
+differently in our mind about going in. It's not about
+smashing and using root to get access to the system and own
+them and high-five each ear and give a report, right? How do we
+go after an organization and figure out what makes them tick
+and unique and how to target them to go after them in a way
+beneficial? Can we do that with the types of techniques the
+attackers are using? That's what we talk about Pivoter and the
+release of Pivoter and what that actually does. For me, if I'm a
+sophisticated attacker, I go after what makes a company
+unique. I go after what makes them unusual. What's interesting
+today is that if you look at the history of breaches, you saw --
+I hate to mention the specific breaches because we've all had
+hype in the media. This is a specific point. When Target
+happened, executives were fired, right? If you look at the five
+breaches in the past year and a half, you notice they blame them
+on sophisticated hackers. It's like a crux of hey, we got
+targeted by fist indicated hackers even they we neglected
+security for the past ten years and we haven't funded it and
+given it light of day, we got targeted by sophisticated
+attacks. Now that's okay, right? ( Applause ) By the way the
+sophisticated attacks are four lines BASH. You're all APTs.
+Congratulations. Sophisticated attacks are bullshit. It's about
+everybody being targeted. It's how often your security program
+is up-to-date and refreshed as an organization. If you look at
+that, we have an excuse in security to say if I'm targeted
+to North Korea, China or Russia, it's a sophisticated attack, so
+it's okay. It's not okay. We need to build defenses against
+them. I'll talk about a targeted attack that looks like that we
+struggle with doing PIN tests. This was a fun one. You get the
+traditional testing, we have an external or internal PIN testing
+pour PCI or whatever. A customer wants a full-scale red team
+engagement, right? There's different material levels of
+that. Customers really want you to do a red team engagement, but
+you have to do it between 3:00 and 4:00 p.m. on Tuesday. You
+can't break into anything, and you can only talk to one person.
+So in cases like that, it's not a red team, right? In this case
+this customer is awesome and wanted us to do an attack and
+any method was available. Whatever you wanted to do aside
+from breaking windows and punching people in the face. If
+we get busted, can we punch people in the face and run away
+in no. I'm a hugger. I would hug them. The whole purpose was
+this. They spent a lot of time on R & D and protecting research
+and development for the future products, and why it's
+important, manufacturing companies, the sustainability of
+them depends on the product and how to refresh the products. If
+someone gets ahold of them well ahead of them releasing, it's
+disastrous, especially if it's other countries competing
+against them or other competitors. The R and D piece
+where they do the next generation product line, a lot
+of times that's the most important thing, the
+sustainability long term of the organization that still compete.
+I came from a company that had a tough time diversifying the
+markets they're in. They're still suffering because they
+couldn't keep up with what they're trying to do. In this
+case they go after them in a way that compromises them when they
+want to. This is phishing, right? Phishing creates a
+scenario or something as believable as the most important
+pieces, so creating a fantasy. I look at what I can do to
+compromise them. So I start to look at their outside, and I
+found a foul up for vulnerability on web shell. If
+you've been under web shell, very limited, right? You don't
+have squat to do anything with network service. You can't
+escalate permissions and you're restricted to the I-net public
+directory, and sometimes you can find a web file and sometimes
+sensitive data to use and tunnel and piggyback to a SQL server
+and things like that. A lot of ways you're pigeonholed in that
+environment. I was at a dead end at this point. We hadn't made
+Pivoter yet. Geoff, thank you. I had to do hard work here. What
+we did is used the website and creating a subwebsite of that
+website to be like a survey type of thing. We had a password
+field and stuff like that in there. If I go and create a
+website that's on the customer's domain that can send e-mails to
+a customer with a domain in there, it's probably pretty
+legit. What we ended up doing is send it off to a couple of folks
+and we ended compromising someone in the sales
+organization. The sales people are phenomenal and great. You
+can have sales people do anything you want to. Especially
+if you give them money, that's the best. Can you disable this
+antivirus to open up this virus. No problem. Cool. Do I still get
+the sale? No problem. Cool. We compromised them and got access
+to it. I don't understand companies. Predominantly 90% of
+the customers we run into, VPN is two factor and the OWA is
+not. So you have access to full access, but you don't have it to
+VPN, which OWA is for a hacker is the best piece that can ever
+happen. You have established lines of communication and
+trust. If you have trust already, you already have
+communications where someone is talking and sending e-mails back
+and forth, it's easy to send them something and click it and
+they're compromised, right? It's easy to attack other people, and
+what's funny about two factor for example. The mayor of (
+inaudible ). Does anybody have the one where it calls and
+issing if you're logging in or give you a push notification to
+allow you to log in or not? Do you know how bad that? Seven to
+ten PIN tests where it calls you and asking if you're logging in.
+They allow it because they're logging in somewhere. I rented a
+penthouse one time and logged in with the user name and password.
+Please call. I'm like, oh, crap. I'm busted. There's my whole
+Phish and two days worth of work. You log in, and you're
+sitting there on the screen. All of a sudden you log in. That was
+weird. So whenever you give the users the able to err, what will
+they too? They will err, right? Unless you teach them right. In
+most cases two fact authentication is a problem.
+They didn't have it. What was interesting is I wrote is
+unicorn that does PowerShell injection true PowerShell and
+injects into memory and gives you a shell through there,
+right? The last version of Unicorn they're from a good hub
+sites, they're literally running this command and gives you a
+one-liner command on any system and it gives you a shell. It's
+like magic. That's why it's called Magic Unicorn. It's
+awesome. There's another attack with Excel injection. What's
+great about Mappos, because they're in the past. Those
+usually get flagged, but with a lot of macros do straight
+PowerShell injection and never tough the disk. It's a
+white-listed application, so you have the ability to get remote.
+The execution on the system that has next generation stuff which
+is all a memory that is fantastic. What we found out is
+they're using a sandbox technology. They had some sort
+of virtualization technology. Does everybody know how that
+works, right? Something comes in via an e-mail, whether incoming
+or via gateway, if it doesn't look right it will virtualize in
+the sandbox and look at the calls and anything like this. In
+this case they had something like that. When I sent the
+macro, I got to the initial stage and just stopped. They
+were using virtualization technology. I'm not going to say
+what it was. We ended up writing bypass sandbox technology. It's
+complex and took multiple months to get around it. We will list
+it today, which is awesome. Just kidding. It's like three lines
+of Python code. It took about 14 minutes. Most virtualization
+technology, the way it works is that they virtualize in a very
+predictable sandbox environment. If you detect you're in a
+sandbox environment, if auto I'm in something that's this
+pattern, don't do anything, right? In this case this
+specific sandbox technology that worked for two of the main
+three, I think, if they use more than two CPU cores -- does
+anybody have a computer with one CPU core? Sir, I'd like to talk
+to you. I probably couldn't hack you. Can't see you that far.
+This is ice? It's not. Thank God. I thought it was ice for a
+second there. I've got to do it? I'll do it. ( Applause ) That
+was easy. I thought it was going to be a warm ice. That would
+have been terrible. So in most cases they use more than one CPU
+core or less than CPU cores. In this environment, don't do
+anything and make changes to everything else. Just shut it
+down and quit. It's all quick and cool and passes it over to
+the end user. I built it into PowerShell. I checked to see if
+it was in a specific CPU core, and it got past the technology
+which was great. About 14 minutes. So stupid. Anyway, so
+we end up compromising one of the boxes and one of the people.
+I spent a good 20 going through a lot of boxes and compromised
+one. It took some time, but what was great is I already had the
+environment so I had a shell, which was great. The customer
+did a great job at never segmentation, so we spend a lot
+time getting to the information and I couldn't get access to it.
+I found the physical access system that allows badges. We
+found the Internet site. Step one, step two, step three do
+this and did all of that and and created abadge. This is live
+footage on the right. We walked into the building, pick up a
+badge, walked into the facility. So, you know, I addressed the
+part right. This is a suit and tie type of thing. I wore a suit
+and everything and went to this R & D place with smoke glass
+windows and everything. They spent a lot of time and money on
+this, right? I badge in and have a PIN to walk into the place and
+a PIN number. It's a moment where you walked into the wrong
+place. They're in jeans and T-shirts and I'm in a suit,
+right? I walk in, and they're having a massive meeting of 50
+people and everybody stops talking and looks at me. At this
+point you're like, oh, shit, do I walk in and do something or go
+wrong room? I walk around the side, and they start talking.
+The worst thing happened. I wasn't paying attention. I was
+nervous because people were around me like who is this dude
+in a suit. I see this trash can, a metal trash can. There's like
+mustard everywhere all over my suit and people are picking it
+up over the ground. I sprained my ankle. It was terrible. You
+never want it to happen in real life and it did and you're like,
+that's really me that did that. They picked it up off the ground
+and pick up the mustard. It worked out okay, but I planted
+this device in. I'm going to open source this next week. It's
+called the implant twice, the tap device I've been working on
+for a year. What it is when doing physicals, you replace or
+drop something, you use an Intel Nook. It's a Tyne any thing. I
+usually put 28 gigs of memory in it and put 8 gigs of RAM. What
+it does is it's a software that uses the LT network to do a
+reverse SSH out of the network and finds different ways out. It
+uses the LT network first and the regular network second. Jeff
+wrote some software that does a full transparent into the
+environment. You can print or tap off of your device onto the
+network itself. If anyone has used SSH, it's like that but
+more stable. If you've done a scan over it, it doesn't work.
+This is a full tap interface and you can VPN in the environment
+and too what you want. It's not a tap device you implant. You
+deploy tap and you find a port out and it will have a
+connection and you VPN into the environment itself. What's nice
+is it's self-healing, so an issue with the operating system
+or an issue with the tunnel restructures and rebuilds it. If
+you want to keep all the tools local in itself, you use the
+reverse SSH to update it for you. You don't have to worry
+about outbound filters on the network itself for tools and
+updates. I'll go and release that this coming week here
+shortly. You should see that in the repos this week. On that I
+could have skipped all the steps tripping over the trash can, the
+mustard if Geoff had written Pivoter earlier. We can Blake
+Geoff for this one and me having a sprained ankle. It's still
+bothering me. We'll go ahead and introduce Pivoter. >> Okay. It
+all started around this time last year when Dave was talking
+to me about some of the engagements he'd been on and
+trials he'd had. Specifically is there anything like SSH for
+Windows that wouldn't need privileges so we could move
+forward? I thought about it a little bit. I thought it seems
+kind of do-able. It's a reverse proxy what you're describing,
+and you know, we can implement that. Of course, I didn't get
+around to doing it until I started to do more of my own PIN
+tests and needed it myself and suddenly it was a lot more
+important to me like Dave said. What I've been finding on a
+locality of PIN tests is that mostly big companies are doing
+good things and have configurations in place. It's
+not like where you install all of the SQL server management
+tools and stuff on every web server and stuff like that so
+you can count on it being there once you got on a box. You get
+on a fully patched server 2008 R2 box with nothing but the
+minimal support libraries with the web application they're
+running. There's still the five or seven-year-old PDF in house I
+can take advantage of that. There's tools on the Linux side
+that can kind of do this, and certainly as Dave mentioned in
+Pro, you have the VPN functionality. That's not
+available to everybody, but I wanted something others can use
+and also I find there's a lot of times when I don't want toe use
+it for one reason or another. So I kind of came up with some
+basic objectives. I wanted to have something that would be
+relatively small payload. As long as I'm dropping on a server
+that has the visual on time installed I can get it down to
+30 K today. I do believe that we can get that a little bit
+smaller as we work on it some more. I definitely wanted
+something that didn't need any elevated privileges, because it
+tended up to a case that I was IIS user or local user on the
+machine. You usually don't have a good escalation path. I may
+not have a good shell. I may be working with a lousy westbound
+shell. I wanted to support simultaneous connections and
+stuff so I'd be able to go ahead and do things like port scans
+with some efficiency. So we have a few slides here that show how
+you use the tool. The first thing is I went with environment
+variables to set things up. If you do you know it acts as a
+library wrapper or whatever information you want to execute.
+They're not designed to take some of these inputs. Dave, I
+don't think we have the picture up, but that's all right. >> I'm
+doing interpretive dances in a second, so it will be fine. >> A
+lot of times the tools don't have the ability to take the
+input information I need says, so I thought the easiest way is
+to communicate with environment variables and the other piece to
+this we introduce in a minute, the connection broker uses the
+same variables so the setup is a little easier. The next step is
+to start the broker, and what that broker does is it will be
+listening to the the incoming connections from the service
+proxy component that you drop and any application that you run
+when it makes connections outbound. The next step is
+somehow on our victim we need to start the service proxy. Again,
+it doesn't need special permissions and not trying to
+bind ports or have firewall rules open so we go out on
+something that we know is open like 80 and all the connections
+are outbound. So we're not listening. And finally our last
+step is we go ahead and start the application. Anybody who
+sees Linux is probably somewhat familiar with using LD Freeload.
+Load this library first, so when the dynamic linker comes along
+and gets a call to connect it comes across mine first and does
+that. It steers the traffic over to the broker, and then
+basically the connection and side effects of Connect would
+perform within the program. So if you have seen a proxy before
+maybe used sox cap or something like that on Windows OC sox on
+windows there's two out there and you have the wrapper.
+Basically I cut a third piece out and with the connection
+broker away from the proxy service itself so it can do all
+the listing locally on your machine and we can have a single
+connection back from the proxy server back to the server so we
+don't see multiple firewall events and stuff that give us
+away if we opened a lot of connections outs. Once we have
+the proxy connected up, our library wrapper will read the
+environment and make sure the connect events gets hosted by
+name. That goes over to a broker. He listens to the
+messages, accepts those proxy connections, and then creates a
+simple message it can send the existing socket over to the
+proxy and using a fairly protocol to do that. It's fixed
+sized, which I will show you on the next page here. You see
+actually I've got -- oh, boy. I moved it again. Anyway.
+Typically in a SOAP proxy what we had in the past was one
+connection to the proxy server, one connection to the remote
+host. Obviously, that went going to work in this case, so I had
+to come up with another method of letting the proxy server keep
+order as far as where replies needed to go and things like
+that. I decided that basically process ID and the file
+descriptor in the process should be unique enough. It's an
+integer type value enumerated and usually it's connect, get
+host by name. As I was interpreting it, I ran into a
+few surprising. Even though we know when sox evolved from BST
+sockets, the status codes and return values were different. I
+had to do a little bit of mapping before fed the values
+back to the Linux programs I was running. It led to interesting
+chaos that exercised some code and things like net cap that
+never were intended to be hit mainly because, you know, things
+would happen like a valid file desscriptor so the behavior was
+rather ( inaudible ). It turned out on the library side I didn't
+need to enter functions, because it was relative thin wrapper
+around the connect call most of the time or around name or get
+at our info type functions. Those actually then just
+performed the connect to the broker piece of it away. So
+didn't have to reimplement the actual socket function or
+anything like that. I didn't have to get into all the flow
+controls that would have been more complicated. Just a few
+other things before I launch into our demo here. I did look
+around for some code on the Internet before I wrote
+anything, of course, because you never want to reinvent the wheel
+and most people are better programmers than I am even
+though I did it for a number of years. What I found with the
+open source proxies out there is they were implemented with that
+idea of one connection in would be one connection out kind of at
+their very core, so they didn't have a lot of internal
+housekeeping to leverage when I had to route things back based
+on file descriptor so I couldn't use a lot of that code so I
+decided to write my own thing. I made decisions along the way
+that every programmer is familiar with. I used link list
+to keep the traffic flowing in and basically always ready to
+read on the wire and connected sockets on the outside to remote
+host sorted in form. I wish I used a thick sized array and
+stepped over it like that. It would have been a much simpler
+data structure and a simpler implementation, although it
+seems like the binary performs very well. So I decided to
+continue to live with that for a while. We'll see how things
+evolve. I have a video of the demo today because I'm a
+terrible typist and you don't want to sit here while I make
+errors and things like that. We're going to do pretending. I
+have a vulnerable web application here. This is a
+software testing tool from a little while ago and it's
+running on a pub 172 IP. There's other stuff that gets to on
+another 172 space that my attacking PCs can't see
+directly. First thing I'm doing here is taking advantage of the
+testing tool a little bit. I'm setting up a test that's going
+to call PowerShell and rig up a file drop. It will make the
+request back to an Apache server I have running. So it's run
+there, and it's continuing to run here. We're going to see in
+a second that I actually get an error back from PowerShell.
+That's important later. It tells me extra stuff is on the command
+line. You see me use PowerShell again to manage the arguments to
+get past. I go over and look at the Apache log and see that
+request happened. I know my file drop was at least partially
+successful. The request happened and got written to the disk. So
+the next thing we need to do is start getting stuff set up on
+the tacking box. You see me go ahead twice here with two
+different tabs. I can set up the environment once and background
+the broker. I'm choosing not to do that. I want to run the
+broker but the defrags, enables, and runs the library without
+them. The main reason not to run it with them it introduces a lot
+of stuff on standard error that confuses it and makes it
+difficult to work with. It's there so you can debug what's
+going on if something is not working the way you think it
+should. However, you get a lot of good debug output from the
+broker itself that letsmen what's going on. I run the
+brokering typically in a second tab. It is possible to do this
+tool with some shell injection and by PowerShell reflective
+injection and stuff like that. I went with a simple file drop for
+the sake of of a demo. It's easier to do that, obviously,
+and it works. Typically in terms of cleanup, it's not that hard
+because it's one file to delete later. So not too many issues
+there. So we're getting ready here with the rest of the
+environment variables. And I hope that's big enough people
+can see it. I don't know. >> We can do it. >> I got it. Don't
+you worry. >> All right. >> I may have deleted the videos. >>
+I hope you didn't delete the videos. >> Excellent. >> What is
+that? 2? >> I think we're on 2. Hold on a second. >> Can you see
+that a little better? I'm going to start interpretive dances
+here. >> Dave will do the interpretive dances. I don't
+know if I mentioned this before, but I'm stopping Apache. I'm
+doing that because I instruct my proxy to come back out on port
+80. Why? I know it's open. I don't have to fool with guessing
+whether the firewall will let me out. Okay. So at this point we
+are ready to start the broker. We have our environment set up.
+We'll get the separate second tab going, and once I get this
+environment set up, I'm going to pivot to network that's
+surprisingly interesting to pivot to that I didn't imagine
+would be so interesting at first. The 127 network. A lot of
+people write firewall rules that trust local hosts a lot. When
+you open a new socket usually the source IP address will take
+the adapter that that network is native on. Traffic looks like it
+comes from local hosts and looks like it goes to local hosts once
+we do this. Now the next step here I think -- can you go to
+the next video, Dave? Can you do that for me? >> Computers are
+hard. >> Computers are hard. I'm going to use the same injection
+technique to invoke my proxy. Basically I set up another test
+here. >> All these commands we have, you know, we have all of
+this and all the source and all that good stuff. This is a
+little difficult, but we have all the commands on your website
+that we put a blog post on. >> Once again, I just did a really
+simple PowerShell wrapper there just to swallow the extra stuff
+that comes on the end of it so it doesn't confuse my
+application. I have something in the little toolbox we'll talk
+about later that substitutes some IP addresses into the
+binary without recompiling it just to simplify things a little
+bit. We're into the next video here, Dave. Now I'm using all
+the preload and I'm using our desktop and hit the box on local
+host. Again, the reason for that is essentially now even though
+I'm sure the firewall won't let 3389 in, now I'm going through
+my tunnel and going from local host and going to local host,
+even if they're running a local software firewall on the box.
+I'm going to be likely to do that, and I have PowerShell. Not
+PowerShell. Remote desktop. The other reason I wanted to run
+remote Desktop is to show we can support more than protocols and
+feed a fair amount of data at a recent rate. This is just me
+playing around. I'm guessing that maybe the application or
+the password that worked in the web application will work on the
+desktop. It doesn't look like I'm being real successful. I
+don't need to get any terrible access to the bock. We can
+continue this attack on other network hosts behind it. (
+Applause ) So at this point I'm going to try some other attacks
+here. I think we're playing the wrong video, but that's fine.
+We'll go with it. This is an example of scanning with a net
+cat. I can't scan with in map directly. They want to use raw
+sockets and things like that, which are hard to work with,
+unfortunately, and we wouldn't be able to complement on the
+Windows side without privileges. I'm just using the switches on
+net cat and scans for 445. Pretty good way to find Windows
+host. The proxy, of course, can handle multi-that Redding in
+terms of outbound connections on the remote side. You can certain
+run multiple net CAT scans and parallel what you want to scan
+into blocks of ten or something like that and run three or four
+wide at a time is what I usually do. I'm going to continue to let
+you drive, Dave, rather than try to. >> That's scary. >> Figure
+out how to use your track bed settings. So I did find a box.
+We're PIN-testing a web application here. I'm going to
+go ahead and see if it works. You see me editing my command
+there. Again, you know, in an actual attack scenario without
+having compromised that box, I have to put a lot more footprint
+on it and drop tools to interact with the database and any other
+tool to use and any other I want to do and things of that nature.
+Those utilities around probably on the box. What Pivoter will
+allow me to do is use tools that I natively have installed and
+attack the other VMs -- or those other machines on that DMZ
+behind that victim box. Turns out apparently that this
+database won't talk to me, which is interesting. I guess we'll go
+to the next video. So there's a little situation with DNS that
+doesn't always work the way we would have hoped it would. To
+that end I wrote another tool that helps me do additional DNS
+recon while using Pivoter. Since we have that one host we know
+about, I'm going to do things we test with any company with any
+size with Intranet. Sure enough, I got back the same address I
+had before. That probably tells me that maybe that database
+there is actually to support another web app or something
+like that. Finally, I looked up an outside address. That's
+another thing I do here to show you I can get back all the
+addresses with this tool. If we see different DNS resolution
+inside versus outside, there's things about how the network is
+set up as well. Just to point out what's going on with
+performing the DNS resolutions by the proxy. It's happening
+from the perspective of the victim box, not my local Cally
+box here. I can see the enter DNS space. Another thing I
+decided to do with DNS resolution is I went ahead and
+-- even if you use the get host family of functions on the Linux
+side, they went back to the old host by name function on the
+Windows side. That falls back to wins. I get that even with no
+DNS response. Anyway, more to come. Certainly there's a lot
+more work to do. There are some limitations with the tools. I
+talked about DNS a little bit. I think we're a few slides back.
+Yes. There's some work-arounds DNS recon. It's a simple DNS
+resolver and looks it up. It's not Pivoter aware in any way.
+When you call it, as you saw in the demo, you actually wrap it
+with the libraries the way you would anything else. And talk
+quickly about how to speed up scanning with net cap. Yes,
+there's definitely more work to do. We certainly want to wrap
+more sox calls. It would be nice to do interpretive integration
+to make it easy. Overall the tools at that point where we had
+that lump of enriched uranium on top of the tower in the desert
+with a bunch of explosives around it, we can make it go
+boom. I'm altering it and doing a customer compile all the time
+but it does work and let us continue on. I guess I'll hand
+it back to Dave here. >> I've been working on the set
+integration, too, so the new version of S.E.T. 5.7 should be
+out in the next week or so. When you go in and do your payloads,
+it running the terrible tool on top of it. You can do most of
+the PIN testing work inside most of your tools you use on a PIN
+test as part of it. >> I don't know if anyone has a chance to
+see the framework, but I'll show you a quick demo of this. I
+released this about two weeks ago. The biggest issue that you
+have with PIN test distribution is we love CALI, and it's near
+and dear to our heart. We also write our own tools and
+distributions. The biggest thing with a test you are all toot
+time is making sure I have all the greatest and latest tools
+out there. It's a modular framework around keeping the
+tools up to date. There's up to 46 modules for tools. You can
+clone it from GitHub. I like it in my armpit. It's good in my
+armpit. Clone it from GitHub. It will grab the latest
+distribution for it. Every time you run it from there on out, it
+will update itself. Whenever a new module is added, it will go
+through there. I don't know if anyone saw the empire tool out
+there. Really great talk. Within an hour someone wrote a module
+for that and pushed for the PTF framework and get the tool as
+soon as it's released. Push it for Pivoter, and we'll show you
+how easy it is. Just try the connection first and try to pup
+date itself. It's all set. Any tools has to have that, and then
+it's like ( inaudible ). Show the modules. You can see all the
+different tools that are available. So big screens are
+kind of broken up. You see SQL map inception. All of those are
+there. If you want to install it, just hit use modules and use
+exploitation set and Gadzuric and run. It installs it all for
+you. If you want to keep it up to date, as soon as you hit run
+again, it's been solved and updated for you. Let's say you
+want to do all tools. There's an option here. It will hit modules
+and/install or update all. It will install or up date it for
+you. You'll have a common distribution point for all the
+tools. I don't know if anybody used backtrack or anything
+below. We structured everything around the PIN test.
+Exploitation posts, exploitation reconnaissance are all
+structureded within the framework. I've also added
+Pivoter. So you can search for Pivoter. It's in there as well.
+We use this module. Go ahead and run it. It takes a second. The
+Internet is slow, and it's hard. It's done. You have Pivoter.
+Easy to go. So really easy framework. The way that you
+actually add a module real quick is you go under modules. I
+created a whole framework around building modules that you don't
+have to require any type of coding background whatsoever.
+You can create in about three minutes. Go to exploitations and
+go to set. The author of the module, the description of the
+module, right? So a description is this is the social engineer
+and install types and supports. Get SVN and file. If it's a zip
+file, grab it and extract it for you into the directory. The
+process location goes to pull it. Right now I have DEVIAN as
+the main support. After commands are what occurs after you
+install it? Your commands will sequence through on all the
+commands. It does all the information for you to install
+it after it's done getting everything out and installs all
+those other things. It's pretty efficient going into all the
+modules for you and solve them realtime. You sort of go in and
+install it for you automatically, which is great.
+So Pivoter is now released. Go to GitHub.com and it has the
+latest code base into it. It links you to a blog to walk you
+through how to set it up and what you need to do to route
+your traffic through Pivoter. Hopefully it's an evolution so
+we make it better as we go along. One of the things Geoff
+is doing is continuously up dating it as it goes along and
+we will add different changes to it. All the codes are there, and
+I appreciate everybody coming out to the talk and hopefully
+you get some sleep here in the
+00:49:22.193,00:00:00.000
+next three weeks. >> Thanks,
+everybody. ( Applause )

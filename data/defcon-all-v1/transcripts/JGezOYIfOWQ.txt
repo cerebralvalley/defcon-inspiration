@@ -1,0 +1,756 @@
+>>Uhh so, welcome to the Mi
+Casa, Su Casa talk. Umm now,
+I’ve never been good at introducing myself, But I do
+what any hack does when
+presented with a problem for the first time. I uhh, I looked on
+Google [audience laughs]. So uhh
+I searched for presentation ice breakers, and one of the top
+results was, Enchant your
+audience with statistics. Now, I’m not going to subject you lot
+to a presentation that starts
+with statistics, so instead, I’ll start with a confession.
+The last time I was on stage was
+20 years ago, I was dressed as a donkey for my elementary school
+Christmas party. Umm, and
+unfortunately for you guys, I don’t have a picture of the
+event, fortunately for me. Umm
+I’ll try and bring the same nervous energy to this [audience
+laughs and claps]. Now hopefully
+the ice is broken, umm my name is Elliott Thompson, and I’m a
+UK based principal security
+consultant over at SureCloud and I believe I’ve spelt it wrong on
+this slide, c’mon. Nope, that’s
+the donkey. That’s me. So uhh, yeah, so uhh that’s my alphabet
+soup there- OSCP - CTL over in
+the UK umm as well as uhh 2CVU privilege escalation in uhh
+beyond trusts bond application
+and a uhh browser based remote execution and the v-tech android
+tablet. Now I’ll jump on to the
+meat of the presentation. So, the core assumption that mi casa
+relies upon is: if you’re
+connected to your own network and browse to 192.168.1.1 then
+connect to my network and browse
+to the same IP address, as far as your browser’s concerned,
+they’re exactly the same thing.
+Umm now this alone certainly isn’t a new discovery but we can
+stack a few of behaviors things
+together and make something exploitable. So digging deeper
+into the internal IP’s thing, so
+I said that browsers treat them the same no matter what network
+your on, but what do I actually
+mean by that? So I'll go through three examples. So the first is
+caching, then cookies, then
+JavaScript. So this is a just a rough example of a sticky
+captive portal that I’ve built,
+so normally any page is served by a captive portal, a
+regressively not cached. The
+last thing stopped upon is for you to keep seeing the captive
+portal page after you’ve signed
+in. Umm, and when connected to my Starbucks network, I serve a
+page with the cache control
+header set to a max age of one year, so uhh when you go home
+back to your corporate network,
+umm you will keep seeing that same, uhh that same captive
+portal. So that that kind of
+quickly demonstrates the caching side of things. Now onto
+cookies- so the next I kind of
+want to go over is the behavior of cookies in this kind of same
+situation. So cookies that are
+set by a login interface on one network, are automatically
+attached to requests for
+anything accessed through the same URL on a different network,
+at least until the cookie
+expires. Umm and then to many of you, especially on the website,
+that this is like super obvious
+expected behavior, but stick with it the fun stuff is coming.
+So, here we have PF sense
+running on my HOME-AB12 wireless network and the page is hosted
+on 10 10 10 1 umm and when we
+login, we see the php session ID is expected- is kind of stored
+as expected against the kind of
+domain 10 dot 10 dot 10 dot 1, so far, so standard. Umm but if
+I then rush out for some junk
+food, and connect to this fake McDonald’s wifi network umm, in
+this case the fake captive
+portal happens to be on the same IP address as the uhh the PF
+sense machine. So it means the
+browser sends our PF sense php session ID to this totally
+unrelated captive portal. But so
+what? Right? so, sure Mcdonald’s now has a session token to my PF
+sense on my internal network to
+actually use that session, they’d need to get inside my
+network. And there’s another
+problem as well, so, we have to contend with how long these
+cookies are going to last. So,
+cookies can be set to expire in like a specific set amount of
+time or at the end of a session.
+And the definition of kind of “session” varies between
+browsers, it gets a bit fuzzy.
+So Chrome- Chrome umm, when you close the browser and all kind
+of profiles that you’ve got
+open, that’s when the session kind of ends. Umm for IE it’s
+the same kind of without the
+profile thing, you have to close all the windows down, and then
+the kind of sessions- sessions
+are cleared. For Firefox it removes the cookie as soon as
+the tab is closed, umm and when
+I tested it on Android the flag was just completely ignored, it
+was just kept for as long as it
+was needed. Umm so the window of a cookie being available umm is
+either going to be the date
+specified in the expires flag, or kind of when the session ends
+or when the browser closes. And
+on the subject of browsers being closed, so these days it’s
+fairly common to leave browsers
+open for a long period of time, especially if you’ve got like a
+laptop. Umm and in fact if any
+of you have seen these arrows in Chrome, like feel shame, like
+the green one is- Chrome has
+like needed an update for two days and you just left it, and
+not uhh not uhh not updating it,
+not closing Chrome. Uhh and red is like a week, you’ve left
+Chrome needing an update for a
+week without restarting it. So it’s safe to say, like I’m sure
+some of you have probably seen
+at least one of these arrows umm but it’s safe to say that, uhh
+browser that require the entire
+process to be stopped, we can rely on users not closing their
+browsers meaning the kind
+expired session cookies, are kind of fair game. Umm as well
+as any cookies with a new
+expiration or some expiration kind of far in the future. Umm
+but of course we’re still
+limited by anything expiring service side as well. Now onto
+the uhh last of the three
+browser behaviors, here we go, umm in the previous cookie
+example, we first started on my
+safe home network umm and then logged into PF, uhh so we first
+started on the safe home
+network, logged into PF sense, and then run to McDonald’s and
+joined the unsafe network. But
+what if we reverse the order? So if instead the victim starts
+somewhere unsafe, and then
+connects back their own secure network, could something be left
+behind? And the answer is yes, I
+wouldn’t be standing here if the answer was no [audience laughs].
+Umm so instead of just serving
+the McDonald’s captive portal on ten dot ten dot ten dot one
+let’s hide some JavaScript on
+the page. Now I totally accept this is some hideous JavaScript,
+I just tried to collect as many
+deprecated functions as I could, umm, and line 2- I go through- I
+go through the important lines-
+so line 2 umm just gets the CS ref token from PF sense on the
+new VPN client page. line 5
+pulls the token out, again it’s horrific, I’m sorry I’ve done it
+this way, I apologize to any of
+you that deal with JavaScript. Ummm and lines 8 and 10 just
+build a malicious post request
+and submits it to PF sense along with the CS ref token. Umm and
+all that the post request does
+something really simple, it just creates an additional open VPN
+user. So here we are , so now
+we’re connected to the McDonald’s free Wifi connection,
+uhh McDonald’s free Wifi network
+and in the background our page has loaded that malicious uhh
+JavaScript and it’s cached for a
+year. Umm, and that JavaScript will be continuously running uhh
+while they’re on this captive
+portal network and that PF sense request that kind of gets the
+open VPN stuff to grab the CS
+ref token, that will be continuously failing until they
+go back home again. So then when
+they try and login into their PF sense web interface, they’ll
+instead see the McDonald’s
+captive portal page and probably think, huh that’s weird, hit
+refresh, and they’re kind of
+back into their standard dashboard. Umm but by this point
+it’s already too late. That
+malicious strict has executed and we have a new VPN user right
+into it. So as the attacker we
+can go straight in their internal network without ever
+having connected with-without
+ever having to of connected in the first place. Umm but, and of
+course, if we actually check the
+VPN configuration, we can see all the malicious changes. So
+uhh, I just want to stress it’s
+not a vulnerability in PF sense, this was just an example I
+chose. Umm, we’re just using the
+standard interface through JavaScript. Umm the attack will
+work against just about any
+interface. Anything you access over IP address at least. So
+that goes over the three browser
+behaviors that we’re going to look at: caching, cookies and
+Javascript. Umm they’re all
+shared between devices accessed through internal umm RFC 1918 IP
+addresses, umm and the reason
+behind it is pretty simple. Browsers aren’t really aware
+that the network you run has
+changed. So, and it totally makes sense for origins like
+Google dot com or VK dot com or
+whatever, they only really exist once. Umm so browsers that use
+those differentiate- they use
+the kind of the domain and to differentiate between uhh things
+like caching, cookies and like
+just resources in general, that’s what they use to
+differentiate them. Umm there
+are a couple of exceptions like cookies being scoped exclusively
+to uhh certain pages or paths,
+or specifically to HTTPS connections, like with a secure
+flag. But anyway, onto the
+second major component. So, karma. So when writing this
+presentation, umm I remembered
+the karma attack, I remember it being the most recent thing
+without explanation or
+introduction. Umm but after checking, my definition of
+recent made me feel so old. So
+15 years ago, uhh Dino Dai Zovi and Shaun Macaulay [presenter
+laughs] found that you can
+effectively coerce wifi devices to connect to networks that you
+control without user
+interaction. So how does the karma attack actually work? So
+umm when you connect to a
+network umm and allow automatic reconnection to it umm wherever
+your device is not connected to
+that network, it’ll send out probe requests asking if any
+other networks are nearby. Umm
+if one of those networks is nearby, the access plant will
+send a response saying that’s me
+and start initiating the connection. And do you know,
+when Shaun found that you could
+boot someone off of there, you can truly boot someone off their
+own wireless network uhh with a
+deauthentication frame, umm and then respond to the probe
+requests asking for a kind of
+network access, as umm, yeah sure I’m Starbucks underscore
+wifi that sounds about right,
+connect to me. Umm it’s worth noting it only works on open
+networks, so encrypted ones
+require the pre check key to be known by both sides. So I’ll
+quickly do the uhh a quick go
+through- So this is what the karma attacks let’s us do: It
+let’s us pull someone off their
+network, and temporarily bring them to our dangerous network.
+So in this illustration we have
+uhh two seperate networks with all clients connected happily.
+We send the deauthentication
+frame, umm a spoof deauthentication frame
+effectively telling
+them-effectively telling it hey router says right now you need
+to disconnect. And then the
+client dutifully just does itself and disconnects. Once the
+client’s disconnected, umm it’s
+not searching for networks anything that it remembers. Umm
+but that searching involves
+shouting the names of all the networks it’s previously
+connected to uhh hoping that one
+of them will respond. So we respond to all of them. So if
+you’re looking for Starbucks 1
+underscore wifi, yeah sure that’s me! Umm you mean Hilton,
+yes yeah me too. Umm as long as
+those remembered wireless networks didn’t require a PSK or
+a certificate or whatever. Umm
+but now the target’s- now the target’s on our network,
+thinking it’s on Starbucks wifi
+or whatever. Umm but how does that look to the end user? So it
+isn’t super obvious- isn’t it
+super obvious that we disconnected then reconnected
+and most places you’ll have a
+couple of seconds of like the connecting animation followed by
+the connected sign again. Umm
+and if someone clicked on a wireless icon, yeah sure they’d
+see that they’re now on
+Starbucks underscore wifi despite being in their corporate
+office, but uhh most of the time
+there’s nothing that’s going to be plainly obvious for them to
+see. Here we go, umm one sec,
+okay, but now that the target is connected to our network umm we
+can poison the cache and display
+whatever pages we want. Umm but that’s not particularly useful
+to us while their connected to
+our network. Umm anything I drop down can only be used to attack
+me, and I don’t want them
+attacking me. I can do that already. Umm but before moving
+on, I just want to stress that
+obviously I had no part of discovering karma, that was Dino
+and Shawn, I was probably a
+teenager at the time, umm but on to the next bit. So at the start
+umm I demonstrated that we can
+add JavaScript onto internal IP pages, umm that users use- umm
+enter on to internal IP pages,
+if users connect to our network and we demonstrated we can use
+karma to pull- pull victims onto
+our network or pull targets onto our network. They’re only
+victims once they connect. Umm
+while they’re connected to the network, we can poison anything
+we want, but none of that
+matters until they’re back on their original network again. So
+like a rescue animal, we want to
+release them back into their home. Although, unlike a rescued
+animal, we’d be sending them
+back with more parasites. Umm and this is by far the kind of
+simplest part of the
+exploitation chain, but though it is still absolutely critical.
+All we need to do is boot them
+off our malicious network umm and hopefully they’ll
+automatically find their way
+home. So booting them off our initial fake network umm is
+super easy, we can just
+disconnect ourselves, umm and the device-the poor device will
+get confused, it’ll start
+looking for it’s known networks and this time we shut the h**l
+up, and the targets’ back home
+again, along with our JavaScript payload running umm and we can
+attack their router our whatever
+it is we’ve poisoned earlier. And to the target this looks
+exactly the same as it did
+before, a slight kind of brief moment of kind of connecting,
+umm and no internet access
+followed by connected back to the home network again. So, in
+summary so far, we can use the
+karma attack or just wait and pull someone onto a fake captive
+portal, poison a particular IP
+address domain or IFC 1918 domain with JavaScript, then
+have the target go back to their
+own network allowing the JavaScript to execute in the
+context of whatever internal
+network device that we just poisoned, but when we’re not
+done just yet. [drinks water] So
+now we reach the final, and kind of most complex component, which
+is the automation side of
+things, now this component uhh exists purely to solve two
+specific problems with the chain
+of exploits so far. So, the first problem is we need to know
+the IP address of the system
+that we’re targeting. Um, and the second problem is we need to
+know the HTML slash DOM
+structure of whatever it is we’re targeting. But we can
+overcome both of these. So
+starting with the IP addresses issue. We can switch from our
+kind of one shot sniper method
+and go thermonuclear. So obviously 1918 defines all
+internal IP addresses. In total
+there are roughly 17 million across these three ranges. Cool,
+so let’s hit them all. So let’s
+try imposing 17 million IP addresses as quick as we can. No
+surprises that does not go well.
+[speaker laughs] I tried to uh, but yeah every single browser
+you try to submit 17million
+requests for immediately and just doesn’t go well. But that's
+a surprise to non one.
+Realistically, we don’t really need to poison every single one
+of the 17 million addresses. So
+Textbot dot com and a few other sites listed a ton of common
+default routers, and firewall
+and switch IP addresses, so let’s start with those guys. So
+the IPs have been helpfully
+separated by vendor, but we don’t really care. So, instead
+we just want the unique IPs. I
+started with a list of about 500 default IPs across various
+different sources and various
+different websites of which 54 were unique and 53 had the right
+number of octets, which sounds
+like a more reasonable starting point. So, these were the most
+common 53 default device IP
+addresses which was a good starting point. Now, if you guys
+look closely, can someone spot
+something which doesn’t belong here and just shout it out?
+[audience clamor] Yeah there we
+go, so there’s one in here in at the bottom right which starts
+with 200. So 200 dot 200 dot 200
+dot 5. So when I first saw this, I immediately thought ‘ah it’s
+just a typo. It’s clearly just a
+typo. No one would really do that right?’ But then before
+just deleting it from the list,
+um i thought maybe I should check. It turns, yeah, TrendNet
+released a device a good few
+years ago, the TEW432BRP which used those dot 200 ip addresses
+in its management interface, and
+i checked the IP address myself to see if it was like a range
+that was defined for like
+documentation or something kind of something unusual that I
+hadn’t seen before. But no, it
+was a Brazilian ISP. So this, the TrendNet had just handed out
+public IPs for this Brazilian
+ISP to their internal network devices. It gets better too. So
+It's not just that one
+management interface. There’s like 200 DHCP addresses or 100
+DHCP addresses that are owned by
+this Brazilian ISP that have just been handed out to internal
+TrendNet devices. Um, my
+favorite part about it as well is, so I mentioned that it’s
+like a v3 of the TrendNet
+device. The V4 had it as well, this was a mistake they made
+twice. [audience laughs] But
+show down shows that were multiple devices that were
+happily listing on the address
+as an alternative interface. Although I didn’t get any
+responses from the real IP
+address, unfortunately. But moving on. So now we have a list
+of 53 or 52 RFC 1918 IP
+addresses. And it was interesting to see there weren't
+any common default in the 172
+dot 16 range. But just to make sure they all get loaded into
+the browser crash, the first
+task was to create some sort of page, kind of orchestration
+layer which submits a request to
+all of our 52 targets. A few lines of terrible JavaScript and
+we’re ready to go. So all this
+does is, it runs through like a fixed list, and send each TTP
+requests and it's not pretty but
+it was quick. Um, and it can also, we can just add additional
+stuff to the list, at hardly at
+any point. So we can add kind of all of 192 and 168, and like the
+slash 24 dot one, like the slash
+24 dot zero, whatever is the most common particular
+engagement. But cool. Now we are
+submitting requests to all of these IP addresses. But we still
+need a way to provide http
+responses for them all. Now if we were just doing dns
+hijacking, um that would be
+super easy. All we’d need to do would be to provide a dns
+server, through dhcp and then
+like submit, like send anything through to a particular ip
+address that we controlled.
+There are modules and there are things that exist to do that.
+But we can’t do that with RFC
+1918 IP addresses since we expect them to not require DNS.
+But the simplest option, rather
+than sending specific routes through dhcp was just to use IP
+tables. So just to quickly break
+down how this works, so I've got a server running on 172 dot 16
+dot 214 dot 1, that’s the first
+time I’ve said that right first time. And any client that gets
+pulled onto my network gets
+assigned a dhcp address in that same slash 24 range. And the
+only reason that was chosen it
+was because it seemed as far from one of the defaults as
+possible. So this ip table is
+real effectively says anyone using this gateway, so anyone
+who's joined my network that
+attempts to connect to 192 168 slash 16 or 10 slash 8,
+translate that to servers
+gateway ip address, where we’ve got an apache server or a non
+generic server listening. So
+anything we host on that 172 ip, kind of our server ip address,
+or our gateway IP address, is
+going to be kind of responding directly to any request to those
+RFC 1918 IP or default ip
+adresses. Now that we’ve got our orchestrated payload done, that
+submits, so we've now got our
+orchestrated payload which submits all the requests to the
+internal IPs, and we have now an
+ability to respond to them all. But at the moment, we’re just
+providing the apache, it works
+50 times. So, that’s no fun. Um, but before I get onto the actual
+payload, I’ll quickly mention a
+fun optimization technique, that like almost all of you probably
+already know about but I find it
+really interesting at the time, which was, if you go to say
+google dot com and there page
+imports a piece of java script from say their Cloud Flask-CDN,
+then you got to a totally
+different website like Linkedin, if Linkedin imports the same
+script from the same CDN, your
+browser doesn't need to make a request for it, it will just
+load it locally from its own
+cache. So instead of us having 10,000 lines of JavaScript sent
+50 times, we can send it once,
+cache it, and then have all the other pages look at that
+particular cache. So the number
+of requests that we're sending won't change, or the number of
+responses that we’re sending
+won’t change, but the data goes from megabytes to kilobytes,
+which is what we need to kind of
+help get increased from 50 to anything more than that. So,
+anyway, that’s the optimization,
+on to the actual payload. So at the current stage with what
+we've been through so far, i
+need to create a payload for every different device that I
+want to target. And I’m
+targeting projects like PFSense, that’s fairly easy since we can
+just download a copy and build
+our own payloads. Similarly router interfaces, they’re
+pretty easy too, if we can just
+buy one of the routers off ebay. But there are plenty of devices
+that we’re not going to be able
+to have this level of access to. So instead of building a million
+different payloads for a million
+different payloads, I needed a way of writing a single piece of
+javascript that was used for no
+matter what context it was running under, something that
+could be used to attack any
+device in any state. So the first step was relatively easy.
+Um, if the route page looked
+like a login interface, the next step is pretty easy, like try
+and log in. And detecting login
+pages thankfully isn’t hugely difficult. So there are
+definitely plenty of options
+when it comes to detecting login interfaces, but most of them
+aren’t going to be super
+reliable. So lets kind of rule them out one by one. So firstly,
+the obvious stuff. The contents
+of things like titles, paragraphs, and divs, they’re
+expected to change based on the
+device itself. So we can rule those out. But that’s the first
+step. The next is the form
+action. So credentials could be getting sent to any URL, or it
+might not be in standard
+location, or it might not be a form action at all. And same
+with the various names of the
+inputs. They could be something specific to the device, or it
+might be in just, in a different
+language. But now we are narrowing it down. So, with the
+input elements themselves, the
+type value is part of the html spec, and is unlikely to be
+custom. But we don’t know
+whether the interface is going to be asking for a username, or
+whether the submit button is
+handled elsewhere, or you just hit enter or whatever, or like I
+say, it could be missing
+entirely. But we can expect in 99% of cases for there to be an
+input somewhere of the type
+password if it’s a login interface. So now we have our
+first check, which effectively
+fits in our ‘if statement’. So, if it's a login page, what do we
+want to do? We want to login.
+And we don’t necessarily have credentials, or we might not
+necessarily know credentials but
+we can just throw it like a brute force, it’s on the inside
+of someone's network. We might
+be able to just login with brute force. Or it might be already
+authenticated if there’s already
+a session that’s active. But what do we do if the target
+device either doesn’t require
+authentication, it’s already logged in, or if the brute force
+attempt somehow succeeds. Now
+this is where it gets a bit tricky. So if we see a router,
+we might want to add, like we
+did before, add a VPN connection, or extract or change
+the PSK. If we see a Firewall,
+we might want to punch a specific rule through. Or if we
+see a CCTV camera, we might want
+to just turn it off entirely. But the answer: we can send the
+logged in interfaces to an off
+site mural network trained to identify the most strategically
+relevant next steps when
+confronted by any device interface. And by that I mean
+send it to you, the human. And
+that will stall them from xkcd. So welcome to the most bizarre
+stock image I have ever paid
+real money for [audience laughs]. Now, grabbing the
+authenticator device pages isn’t
+trivial, but thanks to the BeEF JS project, all the hard work
+has already been done. So it was
+surprisingly easy, if you ignore the ridiculously hard work that
+has been put into the BeEF JS
+project. So to quickly explain that particular project, it was
+designed as an XSL cross site
+scription exploitation framework by Wade Alcorn. So the idea
+being, if you found like a
+stored cross site scription vulnerability on a page, you can
+build a payload which includes
+the BeEF java script hook, then anyone connecting to that page
+with the hook loaded effectively
+gets this script running in their user contacts on their
+machine, with their session
+hooked as well. Along with features like Mantis block
+module integration and
+integrated browser exploitation, that kind of stuff. It’s
+fantastic piece of code. But the
+killer feature we want to use is the ability to tunnel our
+requests through java script
+running on the target’s browser. So within the context of
+whatever interesting device we
+are targeting, when they are connected back to their own
+network. And this means that
+when one of our poisoned pages is active, we get a call back
+that we can tunnel straight to
+the device through the HTTP proxy through BeEF JS. So to
+clarify the java script tunnel
+itself runs over the internet, and so we as an attacker, we
+don’t necessarily need to be on
+the inside of their network to do this. But enough diagrams.
+Um, I”m going to try and see if
+you can, so get a video result of me frantically get this
+working like an hour before the
+deadline to send to Nikita. So I will try and get this onscreen.
+I taped my notes over the
+touchpad on the laptop. So this is the most awkward thing.
+[video presentation begins,
+speaker annotates] Here we go. Can I fullscreen this? Yeah,
+cool. So here we see the victim
+device on the right, and then two laptops performing the
+attack on the left. So the one
+on the far left is performing the meat of the kind of the
+authentication and the
+poisoning, and the one in the middle is just the, like it’s
+easier to show two screens at
+once, and that’s the BeEF hook effectively. So here they are,
+browsing a stole http msn dot
+com. And then we do the authentication, so then we boot
+them off the home network while
+they’re browsing game of thrones. Think i spent too long
+scrolling through this, but
+we’re on the journey now, you're all on it with me. So after a
+couple of seconds, they should
+be getting disconnected from their home network, and then
+this is the Karma stuff, this is
+just the default Karma, getting pulled onto my network, so there
+they are getting disconnected
+from their home network, and then it should already be
+connected to the fake McDonald’s
+wifi stuff that’s getting ultimately responded too. Again,
+it’s just Karma. So far it’s
+just Karma. As they’re loading pages, so now the, i think after
+a page refresh, the BeEF JS hook
+should be in, so it’s not the BeEF JS hook itself that I'm
+loading in, it's, that’s
+orchestration java script, which is loading 52 separate BeEF
+hooks on those various different
+router ip addresses. So if there are session cookies, its hooked
+onto that. But as far as the
+user is concerned, they are just seeing whatever, any unencrypted
+page that they are already on.
+There we go, so we’ve got the BeEF hook there against the
+particular router IP address. So
+this is the Fritz box log in, the Fritz box router interface.
+So in BeEF, you just like right
+click and start like kind of use as proxy. This is like three in
+the morning, so forgive me for
+this not being the most kind of nicely put together thing. So as
+they’re browsing through,
+hopefully a long article, to give you as long as possible to
+interact with their stuff,
+they’ve been sent back to their home network again. So now
+they’re back home with that java
+script running on that page, or any pages that were unencrypted
+that were opened. And now if we
+go to, so this laptop again is completely, not on their network
+at all, but it’s proxied through
+that java script running on the dss page. I hope it works, I
+think it worked at the time.
+There we go, so that’s their internal router login interface,
+over the internet, through
+javascript. I mean it’s all thanks to BeEf. But it’s, we can
+now kind of change the PSK, we
+can do whatever we want on their internal interface. [video
+presentation ends, audience
+applause] So there are things it won’t work on, like if there is
+a password or whatever on the
+device. But I tried it on an engagement fairly recently and
+managed to access the data
+center fire suppression and HVAC system. It wasn’t quite fully
+authenticated, but the guest
+account did have right access to everything. [speaker working
+computer] Get back into the
+presentation, full screen, there we are. [speaker addresses
+audience again] So that was the
+video. Now, so this is the project itself. So at the
+moment, by the end of DEFCON it
+will be open public. At the moment, it’s a combination of
+bash scripts and apologies.
+[audience laughs] So uh, I’m hoping in the next week or two,
+it should be kind of a nice,
+relatively seamless piece of Python, but at the moment, yeah
+bash scripts, apologies, I’m
+sorry, one more sorry to add to the pile that were already
+there. Just on another separate
+quick note, something that was kind of funny. During this, i
+found that, so each of the
+different browsers, if you’ve got, say for example you’ve got
+a router login interface, one
+into one bit whatever you’ve got your username and password
+stored, like remembered in
+chrome or IE or firefox, in firefox and IE, when I tested
+it, to use the stored
+credentials, you needed to click from the dropdown and select
+your username and then it would
+populate the fields, and then it would be available in javascript
+and DOM. With chrome and
+chromium, it was automatically populated, but you needed to
+interact with the page in some
+way. So if you like kind of left clicked anywhere on the page,
+then the credentials would be
+available in DOM. So you could, like there was a demonstration
+where you could have like a
+captive portal that stored the credentials ,the inputs didn’t
+need to be visible, they could
+be kind of hidden away in css or whatever so you couldn’t see
+them. In firefox you needed to
+click on it. If they weren’t there, you couldn’t click on it,
+so you couldn't use it. But um,
+on chrome, you could. You could, um just as long as they clicked
+somewhere on the page, then
+you’d have them, have the credentials that you could
+replay back again . so I
+submitted it to the chromium project. And we got, kind of, it
+was a back and forth, but kind
+of the overall consensus was yeah, it was a usability, the
+kind of, the idea was it’s meant
+to kind of make it easier for people to kind of login to
+stuff, rather than clicking and
+clicking and drop downs. And I completely agree with them, like
+love the guys over there. But
+then they fixed it, [speaker laughs] so uh, but i guess it
+was just like a numerator thing.
+So it was fixed months and months later. But anyways, onto
+fixing it generally. So we’ve
+seen that it can be realistically exploited, but how
+can we defend against it. So the
+method that works best in enterprise environments is
+accessing devices through dns
+names, configuring trusted certificates, the standard stuff
+that we do in enterprise anyway.
+But most importantly, disabling the http interfaces, especially
+if those interfaces work over
+like direct IP address. Like if you can connect over IP address
+directly, then it's worth
+disabling them. Especially for the weird and wonderful, like,
+kind of like Skylet, I say
+Skylet, especially like the weird and wonderful random stuff
+that’s on the network. And for
+home users and residential vendors, simply disabling the
+http interface entirely and
+having only https listing, it should be enough to stop the
+attack working on a mass scale,
+since no one is clicking through, or i hope no one is
+clicking through 50 separate
+certificate warnings on the same page, but it seems it would be
+possible to target a specific
+device. But it defangs the attack significantly Another
+potential is the wider option of
+IPP 6. SINCE there are so many more options in IPP 6. local
+address don’t necessarily need
+to be shared between networks, and that doesn't really exist in
+it. So uh, but if vendors still
+use like a common set of defaults instead of using kind
+of unique ones, then the attack
+could potentially still be viable. Um, the final one is
+WPAv3. So based on the spec, I’m
+one of kind of a few other people who have been through, so
+far the common attacks still
+look to be technically possible. So protected management frames
+are enabled by defaults so you
+can’t trivially boot someone off their own network, but there’s
+still the potential, as far as I
+can see, for kind of the good old fashioned signal-to-noise
+ratio jamming. And as far as we
+understand the spec, open networks are still a thing. So,
+key is, uh generated negotiated
+,so there’s no kind of unencrypted communications. But
+there’s no trust-on-first-use
+mechanism. So it might still be possible to uh, if, for example,
+you connect to mcdonalds
+underscore wifi and connect to a different mcdonalds underscore
+wifi, there's nothing there
+saying this isn’t the same network that you’ve seen before.
+But this is largely conjecture
+anyway. Like I don’t have any yWPA3 devices, this is based off
+like other people going through
+blog posts, other people going through the spec and me reading
+their blog posts. So, roughly
+makes sense. And that brings us towards the end of the
+adventure. I think we have a few
+minutes left on the clock. So if there are any questions?
+[audience applauds]

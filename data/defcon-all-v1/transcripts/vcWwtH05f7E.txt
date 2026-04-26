@@ -1,0 +1,707 @@
+>>How is everybody how holding
+up? Way better, okay.
+[Applause]. Okay so this is Fatih and he's going to be
+talking about VioP Wars, let's
+give him a big DEF CON welcome. >> [Applause] >> >> Thank you. I appreciate it,
+for lasting and saying hello. My
+name is Fatih Ozavci and I will talk about VoIP wars today. What
+we need we kind of previously on
+Voice over IP Wars. Because I had another presentation last
+year and we had Voice over IP
+wars, return of the SIP and we talked about session initiation
+protocol attacks. I provided
+Viproy; it's a kind of next generation Voice over IP testing
+tool. It is developed for only
+pen testing, not for attackers. So basically you can omit
+your tasks but attackers may
+not. I will not talk about SIP too much today because I already
+talk and if you are curious
+about SIP security, you can get the talk but I will talk about
+Voice over IP solutions to your
+security and some Cisco and voice solutions products and
+newer novelties. I will provide
+a few new techniques; I will provide a few new attack
+services. A few new novelties
+almost for you novelties and three of them still unpatched.
+And I will provide new tools and
+new features also developed new interface for you as well. >>Ah,
+yeah, we are starting now. >>I
+am Fatih Ozavci, Security Consultant and I am working for
+Sense of Security. I'm proud to
+be part of this team and thanks for them. Also my interests are
+voice over IP mobile
+applications, network infrastructure, I am a
+penetration tester so I can pen
+test anything, that's why I am pen testing voice over IP. I
+missed some skills in this
+presentation so the key word is combining and merging the
+skills. I....voice over IP
+penetration testing tool kit. It is actually a Vulcan-ish word
+that means call, so this tool
+will have new feature and those features are skinny attacks,
+skinny libraries, voice special
+attacks, STP features, encryption features, and vander
+extensions. My agenda is talking
+about host voice over IP services and giving some basic
+information. I am sure you don't
+need it but let me try. Furthermore we will talk about
+network attacks, Cisco unified
+communication domain manager attacks, Cisco
+inter...manager attacks. We will
+have three different lines. First one is attacking SIP
+services and we will talk about
+Cisco specific SIP problems. Furthermore we will talk about
+attacking lines and we will talk
+about skinny attacks. This is a basic infrastructure for hosted
+voice over IP services. Hosted
+voice over IP services are multi tenant environments. So,
+basically multi tenant
+environments, pro-wide talent specific services. Sandbox items
+and sandbox services are fully
+dedicated to this tenant. But shell services, they are
+available for all talents, not
+specific ones. So basically they may have IP phones, soft phones,
+teleconference systems, some
+other third party connections but they will use sandbox items,
+sand box objects for all voice
+over IP communication. Which are STP, RTP and SIP servers,
+unified communication servers
+and some CDR servers and data base servers, of course.
+Furthermore, they have shell
+services. Shell services are IP phone services, client
+management, tent environment
+management or PBX connections such as land line connections
+and GSN connections. Furthermore
+they have shells to each as well, but it depends on the
+infrastructure and
+configuration. If we want to attack one single talent, we
+should use sandbox items. If you
+want to attack all the environments, if we want to
+compromise all talents we should
+attack directly to the shared services. I will show some jail
+breaking attacks here. I will
+talk about Cisco and VOSS solutions, VOSS solutions,
+basically hosted a voice over IP
+provider and Cisco is a partner so basically they will provide this
+hosted voice over IP environment
+for many customers. We will talk about Cisco and VOSS today but
+these attacks can be cloned as
+well. Also known as voice over ...... as well, so you can use
+this extension as well. We will
+talk about these services. Services are basically separated
+into two sections. First one is
+web based services to support and manage all tenant platforms.
+The second one is Voice over IP
+services to provide essential services. And we will attack
+almost all of them. Our goal is
+discovering the network, finding the box, defining the errors,
+learning the design and
+attacking those objects. They think hosted voice over IP
+environments are secure, it is
+physically but they are not. We have physical pen testing and
+they showed me, even military
+grade operations, they are not secure. Their physical security
+is kind of insufficient for
+those services. We can use a tenant connection, local form or
+comprehensiary forms; we may
+have PC port connections behind the forms. Furthermore we may
+impersonate a technical guy or
+another, a cable guy and we can get an access. Also we can
+manipulate a physical access and we
+can get a connection, a kind of access for voice re-land but we
+should know voice re-land and
+that is why we have CDP attacks, DDP attacks and Arp spoofing
+attacks as well. I do hope to
+raise a simple model for Viproy; it is called a discovery
+protocol model. It is available
+on Viproy package and you can use it on Metasploit, actually I
+used VoIP Hopper .... too many times,
+too many years. But I needed a cross path, a kind of
+customization which is why I
+loved this model so, if you have a Linux you should use VoIP hopper, if
+you do not have a customized
+engagement, you should use this model to customize it. Also you
+can use this model to far.....
+And after all do you have voice vLAN ID. And we will have a
+kind of connection but we should
+keep it persistent, we should add a kind of modified form or
+wiretapping object. This is why
+I think about Tapberry Pi. Tapberry Pi is basic Raspberry PI in the IP form.
+This is Cisco IP form, 7940. I
+disassembled it and I saw that there's another board on it and
+this board is a basic board and
+it provides broken actions. Those network connections are PC
+port connections, talent connection
+and a kind of auxillary connection as well. Furthermore,
+they have power source, when I
+extract this board I saw that it is connected using a wide
+circuit. You can use this
+circuit to connect or disconnect. When I extracted I
+saw that this internet
+connection, RJ45 connection has pins behind the card. So
+basically we can use these pins.
+I used a basic cable kit 5 and I created a basic clone of the
+transpart. If this phone will be
+attached to the voice land we can create and connect Raspberry Pi
+to the same network. And yeah,
+there are two spaces inside the phone. First one is on this
+board and the second one is
+speaker space. I put my... to the speaker space and you can
+use the other one as well. You
+may need the other one for battery because power on the
+internet may have to choose in
+the same environment because it needs, actually the IP phone
+will use electricity.
+Furthermore ...needs electricity as well. But power over internet
+may support only two power
+supplies at the same time. And as you know IP phone needs more
+electricity. This way you need
+another power source. You can use a cell battery or you can
+try your chance with a current IP
+phone. For example, if you extract speaker you will see a
+battery connection right there.
+And yes, it has electricity so you can use this electricity to
+your Raspberry Pi. It is not completed
+yet and I am still working on it and I will provide a blog on it.
+Actually we will not talk about
+hardware attacks we will talk about the modern protocol
+attacks and service level
+attacks. All of this environment must be managed. This is why we
+have Cisco Host Calibration
+suite. This Cisco Host Calibration suite contains Cisco
+unified communication domain
+manager. Also know as Wahl Solutions. It has IP phone
+services, self care, talent
+user's management and their services, furthermore talent
+services management. The
+difference is Tenant uses will use self care. Tenant
+administrators will use Tenant
+Services administration. Furthermore, unified
+communication manager will be
+used for all voice over IP based services. We have reported
+almost 40 vulnerability to Cisco.
+Cisco reported that some of them they are not vulnerability, some of
+them, yes they are vulnerability
+but their impact is very limited. And yes, some of them are a
+vulnerability. And Cisco published a
+few advisories. I will share those references at the end of
+the presentation. But, here is
+the thing, we have another security advisory. This security
+advisory contains two different
+unpatched vulnerabilities and one real vulnerability. Two unpatched ones
+are vulnerabilities. We found them on
+VOSS solutions IP phone examiner services. It is still unpatched
+and will be patched in
+September, maybe the second week. The other one is embedded,
+maybe you already know that, but
+the product is pretty expensive so you cannot get this product
+easily. So, I have no priority
+right now. If you have this product you can extract SSH key
+easily using this exit file.
+Cisco unified communication domain measure also for
+embedded. VOSS ....is a basic
+client platform and this platform contains some scripting
+novelties and yeah they are
+stored scripting novelties and you can affect other users of
+the same tenant. But domain
+manager actually management services for tenant it is a good
+attack surface for us. We can
+get an administrative user easily by using features.
+Furthermore if we have a user we
+can elevate our privileges as well. We have multiple privilege
+escalations. Also we have some
+stored scripting novelties. We have potential injections and software
+escalations as well and we will
+talk about them. A basic user is here, if you use device user you
+will have a response and you can
+create this easily. But if you use upload features and if you
+send a bogus file which contains
+injections or a few bogus contents as well you will have
+this error message. This error
+message contains some additional errors, for example, sop errors, some
+SQL errors. Cisco says that it fixed
+this bug but it is not a vulnerability because there is no SQL injection
+here. I could not test it
+because all of them was a part of a project in an engagement.
+During the engagement I had only
+5 days to test all this environment. HCS, infrastructure
+also unified communication
+system as well. This is why I could not try SQL injections. If
+you believe Cisco it is fine but
+if you do not believe you can try using insecure file out put
+features. It leaks; it has CGI
+tools so you can create the qualified inclusion attacks and
+execution as well. But they are
+potential attacks, you can attack. Escalation is easy, you
+can modify a user if you have
+basic access, you will be a kind of location administrator of the
+talent. You can modify the
+environment and modify the user and add a different role on it
+and add role for example talent
+administration, division administrator or infrastructure
+administrator. Furthermore if
+you want to add a user you can use user type as well. If you
+use user type, you can use admin
+user and you can add a new admin from scratch. Furthermore we can
+manipulate number translation to
+redirect all calls or all extensions to us. So, basically,
+we have many attacks. However we
+have another measure service here and the services are
+perform management feature of
+VOSS solutions. VOSS solutions provide IP phone examine
+services. This service is a
+shell service. It is a family, a basic tool set, but it is a
+basic shell object for all
+tenants. All phones, IP phones or cell phones or teleconference
+room phones, or devises, it
+doesn't matter. They will use this service. So basically we
+can attack the service to get
+additional access or compromise all tenants. We can use
+additional attacks on it. For
+example, call forwarding, speed dialing manipulation, voice mail
+access, pin changing, it is
+still unpatched. Second week of September it will be in use.
+This URL is the basic attack
+service; SRV is the service type and service name. Device ID,
+make and address and you can
+easily get it. An action may be call forwarding or updating
+basic speed dial. It is very
+secure, binary, unrecordable protocol. So it does not need
+any authentication authorization
+feature. Who can't record a XML file, right? Basically this
+service works on an XML content.
+You can not record an XML file, right. This is why I developed
+two different models to exploit
+this vulnerability. I will not share this exploit on my software
+package but I will share here.
+Furthermore I will show the service in a different way.
+First problem is this product is
+expensive. I have mentioned yet? Okay. But the thing is I cannot
+provide a live demo on this
+product because I have no Cisco UCDM here, that's why I
+developed a fake service for it.
+So basically I will use my exploits to this fake service. I
+hope it will work, I hope you do
+as well. But, we will see. Okay, we have a cheat sheet here and
+basic Wahl's demos. This service
+provides MAC based identamanagement, after that it
+all services such as call
+forwarding or speed dial. At this demo I will use the call
+forwarding feature. I have this
+service here, probably one of them. Ahh, here. This is our
+fact service. We can copy on
+past our code. Basically we us a model call forwarding, 4.1 which
+is me my port and action and it
+seems we have a target. If the MAC address is valid we will
+have a display name of the faint
+number. Faint number is eunuch in this environment. But this
+faint number is basically
+exemption. If you want to redirect it you should update
+this faint number. So basically,
+we will update it. For example set action, forward two. See, it
+seems okay. Our display name is
+007. Furthermore, we are talking about Cisco environments. Right?
+We are not talking about IP
+phones. We are talking about everything which means we have
+jeopardy interface as well.
+Jeopardy interface provides additional connectivity for
+third party items as well such
+as Cisco Jabber or regular Cisco clients. Furthermore, SDK for
+all other third party clients
+such as Microsoft Link. At this point we can use forwarding just
+like this as well. For example
+set forward to James Bond. And we can use name, as you see name
+is updated. I am showing this
+because Microsoft Link and other products may need email address
+to handle a message or call. So
+this is basic call forwarding we can update all tenants and we
+can redirect all phones to us
+and we can redirect just like a basic internet exchange server.
+We have additional speed dials.
+Those phones need a speed dial service because they have no
+speed dial on SIP protocol. That
+is why they need a kind of protocol to provide this speed
+dial access. That's why we have
+another model here. Viproy was speed dial. Okay? Here we go. We
+have three different speed dials
+for this MAC address. MAC address can be obtained using
+scan attacks as well. So we can
+get a kind of communication map of the tenant or all tenants. So
+we will have a communication
+path. We can add or remove a content for example, add Viproy
+to third position. Set action
+list and run. See, Viproy is in the third position. We can try
+to add Viproy to a specific
+position, for example one. That position is not available
+because it is in use. But, we
+can modify this as well. So, get the list again, Viproy is in the
+position now. This service is a
+kind of dangerous service but the thing is it has been used
+for all tenants, we can jail
+break all platforms here. We can redirect everybody, every user
+of all talents. Okay, if we go
+back. We have additional features. We talked about web
+based attacks. But the thing is,
+sorry; I should show the fact services code and my exploit code
+here. My expert is, actually it
+is pretty complicated. Actually it has bypass and depth bypass
+issues as well. So, basically
+you should very careful. Agency this is the exploit part. This
+is my shell code and as you see,
+this is ASR bypass feature, provide their name, field number
+and forward to. If you do not
+use forward to, you will not bypass sandbox and AS alarm and
+dep as well. So basically
+exploit is very complicated. I will not share this exploit
+because it can be pretty
+dangerous. However, I can share my fake service so you can find
+how it works. Right? It is
+already available on Viproy so basically you can work on this
+fake web service to understand
+how it works. Okay. We should continue. Sufficiently attacks,
+we have additional voice over
+web attacks here. Those are unified communication attacks.
+We have TDM, PSDM and they are
+old they think SIP is next generation and they think SIP is
+ready to use for all unified
+communication systems. However, they do not agree about features
+of SIP that's why they modified
+SIP. Not even Cisco. Cisco, Microsoft and all third party
+vendors, because SIP has message
+metals. It has invite as well. But, the thing is they use
+secure sharing, adding file
+transfer or a kind of voice mail using sample, Wildfire, etc.
+Those are very complicated
+things. You cannot use SIP just like that. That's why they
+modified it. But they modified
+SIP, regular SIP protocol. They have additional exemptions. We
+will talk about a few ones. The
+thing is Cisco has authentication problems about
+SIP. Microsoft has a few
+additional features on SIP. Yeah, we will talk about Cisco
+now but we can talk about
+Microsoft later. It is basically a Linux operating system so if
+you will first remove the Cisco
+unified communication and if you have a novelty you can execute
+the code on a regular Linux
+server. Keep the same formations. We should discover
+web services using our regular
+features such as Viproy discovery features, registry,
+other tools. Furthermore, .....
+are in the group tool, it is in use and developed by Zander
+Gucci, thanks to him I have used
+this tool for many years. After that I developed Viproy because
+I needed additional
+authentication features because attacking SIP services it
+needs some kind of
+authentication. After authentication you may have
+additional features. For example
+registration, yeah you can get that kind of access on this SIP
+server. And we talked about SIP
+service attacks last year, and I actually demonstrated a few
+advance attacks. But the thing
+is Cisco SIP authentication is somehow different. It needs
+address, device type and
+exzantion. Three of them must be valid to authenticate you as a
+form. If you want to use user
+name and password it is fine, it is supported for third party IP
+phones as well. Furthermore,
+Cisco suggests that security deployment is essential for
+voice over IP environment. So,
+they can use digital certificate base for authentication. Cisco
+unified communication provides
+additional user name and you can use these errors. Register and
+subscribe it is very easy task.
+You can use Viproy; you check my presentation last year. You can
+use or change your phone number
+and address or regular text and we can use them. Furthermore I
+have demonstrated additional
+advanced attacks such as SIPro advanced attack. We can use
+remote SIPro, other services to
+attack. It was what we demonstrated last year.
+Furthermore, we can use it to
+attack other servers. For example, they provide four or
+three billion messages which is
+too much. If you send a bogus message you have errors. If you
+use IP spoofing you can use
+basic DoS attacks. Also we can use hacking SIP trust
+relationships. We can use IP
+spoofing, we can get a communication. After that, we
+can add IP addresses in the
+field. Find which IP address and port is trusted. I demonstrated
+this last year this, and we
+initiated a base call. Also, we can attack mobile applications
+using this as well. But the
+thing is.... is somehow different in the same
+environment. First of all Cisco
+UCM accepts addresses as identity and it doesn't need
+further authentication for many
+SIP based IP phones, and our own skinny environment. Also, we can
+find raw waste in the same
+environment, it will provide for users, antennas and all the
+other environments. However,
+they need citrons connections, that's why they use additional,
+some connections are looters.
+That's why we can use them to initiate calls because they have
+no identification by default. We
+can use custom headers, we can add specific headers. Here is
+the thing, remote party ID is
+where generic header and Cisco accepts remote party ID because
+it is a kind of compatibility
+issue. So, if add a basic remote party ID in our current
+connection, authenticated
+connection, Cisco will accept remote party ID as an identity.
+So we call everywhere with a
+fake identity. Caller ID spoofing, yes, it bypasses the
+billing features furthermore we
+can access voice mail and third party operators. Here is the
+thing; we have public real world
+attacks such as caller ID fraud for all operators. If we had a
+vulnerable operator we can initiate
+our attack, caller ID spoofing attack. Initiate a call through
+the land line connections to
+call the third party GSM operator to access a voice mail
+account without a pin. It's all
+caller identity, it's an attack and it is in use. Also we can
+send call back messages, we can
+send fake messages, we can use spam, we can use this attack
+against other operators and we
+can use for other terms. And this is a basic demonstration of
+an attack. I already
+demonstrated other SIP attacks, you find my last presentation,
+voice over IP, it is on you tube
+as well. I will use a basic SIP connection here. We will use our
+invite model and we have two
+different clients here. First one and second one and they are
+connected through a Cisco
+server. It is a trial edition so basically we will have a trial
+access and yes it works. I have
+registered forms here and I will use invite model with proto TCP.
+We have TCP on tailor support
+now so we can use it. Furthermore we will use specific
+phone number and log in
+features, furthermore we have different log in metals, I
+choose register. Furthermore, we
+have vander extensions and it must be used. Vander extensions
+first one is Cisco device. If
+you want to register yourself as an IP phone such as 7940 or 41
+you should use Cisco device with
+application. If you want to use third party device such as third
+party clients you should use
+Cisco unification header, after that my user name and password.
+This is not a vulnerability, see we
+have a call. And yeah, the thing is it is one of thirteen. Let me
+explain why. If I had set the
+remote party header it will have a call from 2001 which is my
+original one, right, see. But
+the thing is we can set custom IDs. For example from James Bond
+or we can use a current client
+for example, 1013. Also we have additional features here, for
+example sending a message. We
+have no public tool to send a message. We should manipulate or
+we should prepare our tools such
+as SIP and after that we can send a message, right? But we
+can manipulate message features
+such as message tie or message content that is used for
+additional sharing features of
+third party clients such as Cisco jabber. So basically we
+can change this content to
+attack different clients using different scale. For example
+message tie, fuzz 2000, it is
+possible as well. But I will use this sample for a basic search
+engine feature. Operators hack
+the operator because bypassed authentication. Furthermore, it
+is the basic HTML feature, HTML
+message. So basically we can send this message to the real
+phone as well. If it receives
+this message, if it is a smart phone as well, this can be good.
+Furthermore, we can change
+message content, for example message tie, it is still text
+and plain but message content
+could be fast 500, fast 5000. It depends on you. Some of the
+clients they are really
+vulnerable such as Cisco Jabber or for example XLight or you
+know Microsoft Link. Yeah, we
+will continue with other attacks, because we can attack
+clients. I mentioned client
+attacks last year so I will pass this slide I already provided
+this slide on my presentation so
+you can check them as well. And Cisco has different clients and
+we can attack all of them we can
+use attacks as well. And I have a tool for it. Reproxy is
+another tool I have developed
+for TCP, TNS interception. Furthermore, it supports custom
+digital search features. It has
+low feature it has multiple duplication as well. It is a
+fork of proxy. So basically we
+have used this tool to manipulate other clients. It has
+multithread issues; sorry about
+that but I will fix it in a few months. You can fix it as well,
+it is available on Viproy. I
+would appreciate a few patches. This is a basic SIP fishing demo
+and I already showed it. Basic
+client attack demos, we can use them as well. I have crashed an
+IOS application last year using
+only spoofing, so we can attack. But, this is not the case. We
+should talk about skinny as
+well. Skinny is a generic protocol. Cisco uses it for all
+local environments. Even for
+hosted voice over IP services. It is a kind of compatibility
+requirement because they will
+use SIP by default. They will use skinny for regular SIP
+phones, regular Cisco IP phones.
+It is a kind of protocol so basically you should use many
+packages to register yourself.
+We can use basic attacks, when I search, VoIP or SIP attacks or
+skinny attacks; I sell always
+one single name, Jace Nostrom. He has a passion about VoIP but
+not only VoIP as well he helped
+me too much for this presentation, thank you for him
+again. Of course Viper and Spara
+they have published some tools and vulnerabilities on skinny. I am
+not sure about Viper 11 as
+skinny support because I saw a documentation but I am not sure
+because there is no information
+on their page and yeah. Also Felix found a few novelties on
+skinny protocol. But we have no
+public skinny analyzer or skinny tool. That is why I decoded this
+protocol using Wireshark, just
+like it. But the thing is it is different versions, such as 17,
+19, 20, so some of the packages
+and samples are not available on Wireshark consult. So basically
+you cannot decode them. There is
+one item of this library, right side basic skinny passer, it has
+many different options for many
+different responses from server and left side is a basic sample.
+Signing the register, it is
+pretty easy. Everybody develops a basic skinny model. But the
+thing is, developing a skinny
+model; yes it is easy, such as register or call. It is pretty
+easy. But if you need more, you
+can develop using same library as well, because I provide a
+basic library through
+Metasploit. So you can basically develop your own fuzzer on skinny.
+I have a basic fuzzer. It is not
+good right now. But, think about it, register needs no
+authentication, right? First
+register packages. So basically, many fuzzers fuzz it, but
+nobody fuzzes, for example,
+get-button templates or nobody fuzzes
+the remote server
+during a call. So you can do it because all
+packages and all comments very
+easy for example prep, open, receive channel. And you can use
+a bogus device app here or a
+port. So it's a kind of new attack surface for you. But I
+have a demo as well. If you
+register it to a specific mega address we can use regular
+clients as well such as Cisco IP
+Communicator, it supports device name, custom device name and you
+can use your device name here,
+if you have a registration. Here is the demo. I have Cisco
+communicator right side. I have
+Cisco UCM, I have Cisco UCM 912. But I tested all the novelties
+on 10.5.1, 10.5.2 and lower
+versions so it works with them. It has two different options
+Cisco IP Communicator or regular
+Cisco IP phone. You can use all of them. In this sample, I have
+two different clients; let me
+check they can call each other. They can call, good and they
+called, and yeah. Now we will
+use skinny attacks. This is a basic register plug in.
+Basically we will use remote
+target MAC address and IP address, that's all. IP
+addresses, server IP address MAC
+addresses, IP phones MAC address. After that we can
+register. As you see, I can
+attribute information of this MAC address such as line ID's.
+But the thing is I am not using
+MAC spoofing here. I am using MAC address in the connection as
+an identity, that's all. There
+is no MAC spoofing here. So, I can use other MAC addresses such
+as this MAC address. When I use
+this MAC address as you see lift up our first line. It is
+disconnected now. It's a kind of
+service for older versions. I reviewed the information which
+line is available for this MAC
+address and I am one of them. But the thing is we can insure
+the call here. For example, I
+can call anyone. This is another model, Viproy skinny call and I
+will use another MAC address and
+my target is 1,013. When I use it, it will be registered first
+and the Agency it is here. I do
+not fix this error. It is necessary because if the other
+client, real client, will try to
+connect, re-connect, you will have this error. Because your
+PTC connection will be
+terminated, that will be only one single client. This is why I
+keep this error. This says the
+remote client is trying to reconnect. We will try it again,
+see it will work. So, it is
+registering now and we are getting confirmation and we are
+calling, see from 1001. Okay,
+register called we can additional features such as call
+forwarding, it is more useable
+one. It is still trying to register, but if you try to
+redirect this phone number 1001 to
+1013, it will be really good for us, right? Because, we can
+redirect all phones to us, after
+that we can redirect them to anywhere. It is connected right?
+When I try to register it is
+disconnected again. It may try a few times but it will have
+success. Lines open for call
+forwarding, 1013 numbers dialed and see it is forwarded. This is
+my skinny model and you can use
+basic features such as register, call or call forwarding or you
+can turn it as a kind of
+advanced pauser so you can attack remote Cisco UCM's using
+this attack. As you see I did
+not talk about toll fraud too much because we have a good
+speaker here. Patrick McNeil
+provided a really good, maybe best toll fraud speech ever,
+this afternoon, sorry this
+morning. And it was really good and you should get a video or
+presentation and please visit
+our register 436. Am I right? Okay good. So he has a really
+good toll fraud speech. And I am
+talking about other attacks. So basically, we can attack
+network, we can attack Cisco
+UCM, we can attack Cisco Unified Communication Domain Manager
+clients, skinny protocol, SIP,
+we can attack everywhere. Solutions, our solutions
+published by Cisco and we have
+additional suggestions. First of all, IP phone examiner service
+or remote party ID. This ..and
+they are yeah, they are still unpatched and you can attack
+these servers using remote party
+ID or IP phone examiner services. Furthermore, you can
+use other novelties and starting
+from 3277 to 3283. Furthermore, a few additional novelties and
+92, sorry 97 and 32 sorry 3302
+and we have yeah, many novelties here almost twelfth series
+assigned, some of them not here
+because they are information level. And yeah, basically you
+should secure your design we
+have attack services on everywhere we can attack server,
+we can attack protocols, we can
+attack lines and we can attack web applications as well.
+Basically security deployment
+and good design they may help you to secure the network.
+That's all. And yeah, I have
+references that you can download that you were here. I have a 15
+minute training video, also I
+have another Def Con video you can use you tube to find it. And
+we have agency attacks there.
+Furthermore, I really appreciated a Sense of Security
+team they supported me too much
+actually. They encouraged me again and again here.
+Furthermore Jeff Norstrom helped
+me too much about this presentation. Furthermore, some
+good suggestions about my point
+of view. Also, Mark, Paul Henry and Sandro, of course. This is
+my presentation, this is what I
+have. Do you have any questions related with this topic? I
+cannot see by the way. Do you
+have any questions? No question? You do not give any questions
+here, okay? Okay, thank you.
+(Applause)

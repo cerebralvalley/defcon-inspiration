@@ -1,0 +1,730 @@
+I would like to introduce Dr.
+Phil and Captain Polly and
+they're going to talk to you about cyberhijacking airplanes,
+tell us, is it truth or fiction.
+>> I guess you'll find out. >> Alright, guys, well, thanks for
+coming. Hopefully if our talk
+sucks, the next one doesn't and you can just stay here and have
+a good seat. That was my plan
+for my talk yesterday. That said, I'm Dr. Phil and this is
+Captain Polly. Just a little bit
+why this talk. Well, you know, a lot of people have been talking
+about being able to take over
+planes remotely and such, and of course when you say things like
+that, you get a lot of press.
+And so we just thought maybe it was time to investigate some of
+these things and look into them
+a little further and it's okay to be scared but if you're going
+to be scared be scared because
+of reality, not because of some fiction, maybe some stuff that
+the media has made you think.
+So, just a little bit about me. Some of you may know me as a
+hardware hacker. I wrote a book.
+Which I'm shamelessly plugging by putting my cover as a
+background for this slide.
+Anyway, in addition to that, I also am an aviator. I have 12
+aviation ratings, they're all
+current including commercial pilot flight instructor,
+airplane mechanic inspection
+authorization holder, avionics technician, a couple others.
+Thousands of hours of flight
+time. Also aircraft builder and importantly for our talk today,
+I've actually done some
+development and trussing work on some of the avionics that you
+would find in some of these
+modern airliners. I also have access to manuals, current and
+former airline pilots, i.e.,
+Captain Polly and others, and that's about me. >> So, I'm
+Captain Polly. I'm currently an
+associate professor at a college, University of Dubuque
+that has a flight program that
+trains pilots. >> University redacted. >> Redacted, yes okay.
+>> My background one here is to
+just give you the perspective is commercial airline pilot
+training. How we train and
+safety and mind. >> Alright. Little bit about what we want to
+talk about today. We wanted to
+talk about things like ADSB. You may have heard about it, ADS-A,
+its kinda similar but different,
+ACARS, transponders, collision avoidance systems, how do they
+work. A little bit about GPS,
+you guys already know about GPS, auto pilots, some avionics
+busses and networks and some
+attacks which you may have heard about. So, you may have heard
+about people saying, okay, I can
+attack your airplane, take it over by hacking into the
+avionics network via in flight
+wifi or the entertainment network. We'll going to talk a
+little bit about that and
+examine is that true or is that not true or is it kinda true.
+We'll talk a little bit about
+ADSB hacking, also talk about things like engine system
+monitors, ACARS, what it is how
+you might be able to exploit it, etc. Alright, so let me get this
+out of the way to start with.
+One thing that everyone needs to understand you cannot over ride
+the pilot. Alright, you cannot
+over ride the pilots inputs on flight controls. That system is
+closed, you know, even if it is
+fly by wire. Believe it or not some of these airliners still
+use cables for some of their
+controls. For example, the Embraer regional jet actually
+uses cables for the elevator
+controls so it's not even fly by wire completely. But, also
+something you should understand
+is that all of these airplanes do feature mechanical backup
+instruments. Now, I'm not going
+to say that the pilots still know how to use them, I'm just
+going to say they're there.
+(Laughter) >> Right >> You can't really hack a mechanical
+altimeter or an attitude
+indicator, et cetra, et cetra. I said, you can but I should have
+said you may be able to affect
+the auto pilot. But if the pilots notice what's going on
+they'll disconnect the auto
+pilot and Polly can tell you there's at least nine different
+ways to do that. In addition to
+that, you can overpower the auto pilot and there are limits on
+what's allowed for certified
+aircraft. For example, if you have an airline pilot that's a
+size zero model and she
+moonlights as a airline captain, she can still throw all of her
+90 pounds on that control yolk
+and overpower the auto pilot. Also, you should realize that if
+you try to do something to hack
+into the auto pilot you're most likely going to generate some
+sort of alert that, again,
+hopefully pilots would notice. Little bit of background talking
+about avionics networks. In the
+olden times, people used something called ARINC 429 which
+is a standard for
+interconnecting avionics systems. In the bottom corner
+you'll see a little picture of a
+PCM CIA card that says 429 on it and this is something that you
+could use on a laptop if you
+were going to test a piece of avionics that uses ARINC 429. By
+the way today we're going to
+talk a lot about ARINC standards. It's a really old
+company that's been doing stuff
+in aviation and they've developed all these standards
+that everybody uses, so you'll
+see that a lot. Now, ARINC 429 is not really connected to
+anything useful for our
+purposes. And it requires some specialized hardware. Some
+people said, you know, buying
+proprietary stuff so you can test all these avionics is a
+pain in the butt, let's do
+something better. Let's do something based on COTS, common
+off the shelf stuff. And that's
+what where we get into our discussion of ARINC 664 which in
+certain airplanes basically if
+it's an airbus, they call it AFDX, which is essentially the
+same thing. So, what is this
+AFDX or ARINC 664. Technically it's 664 part seven networking
+but nobody cares. It's built on
+ether net but you can't just start sending packets. You know,
+it's like saying I have a
+videocassette, can you, can you play it. Sure I can. Oh, it's
+beta max and it's PAL.
+(Laughter) >>All right. So, yeah, it's the same but
+different. Something you should
+know is never wireless. These avionics networks are never
+wireless networks. They do have
+some security in place. They're not connected to things like the
+entertainment system and they're
+not connected to anything wireless. Alright. So, ARINC 664
+or AFDX is something that was
+based on ARINC 629. 629's kind of like 429 but different, right
+and the 629 was first found in
+the Boeing 777 and pretty much that's the only place you'll see
+it. Nobody else uses it. It's
+only found in that one aircraft. Boeing is going on like the 787
+uses 664 instead but as I said
+before, this allows you to use your nice common off the shelf
+components so that it's easier
+to find chips and things in order to build your avionics.
+Built on internet but not the
+same thing. One of the big differences that you'll find
+with this is that it uses two
+redundant channels and we'll talk more about that in a bit
+and also it assigns time slices
+to avoid collisions and to make things terministic. Ether net is
+great and we all understand it,
+we all understand how to use it but one of the issues for this
+case for using trait up ether
+net is you don't know how long it's going to take for your
+packets to arrive and that's a
+problem if you are trying to do something like move a flight
+control. Also in the ARINC 664
+standard is this idea of virtual links. So, essentially what you
+can do, you can have multiple
+links on the same wires and each of these links is a
+unidirectional logical pipe.
+Every one of them has one and only one sender and one or more
+receivers. And as I said, you
+have some time slicing that's done to avoid collisions and you
+have to decide how much
+bandwidth you want to assign to each of these pipes. There's
+only so much bandwidth on the
+wire and if you have multiple things that are going to be
+used, you have to decide, all
+right, I'm going to use this much bandwidth or whatever.
+Playing music, downloading music
+over A cars, you can't really do that but and then there's also
+the idea of jitter. Jitter is
+just the maximum difference in timing for those packets to
+arrive. And it's based on things
+such as how many virtual links are on the wire and what the
+bandwidth is assigned to each of
+them. Alright. So, a connection on AFDX would look kind of like
+this on the left. Hopefully
+that's not fuzzy. It's a little fuzzy on my monitor up here, but
+you have a couple of pieces of
+avionics and each of them has 2 ether net adapters an A channel
+and a B channel. And logically
+you have kind of a nick, if you will, inside each of these
+avionics pieces and they have
+these two channels but logically inside the avionics it looks
+like just 1ether net channel and
+in order to connect to -- I think we might have a brief
+pause here. >> Oh no, keep
+going. >> Okay. As I was saying, in order to -- >> Security
+alert. >> Captain Polly is
+looking worried. Security. Never mind. >> What does any of this
+mean? Go ahead. >> What does
+anything mean? Alright. So, only thing you should realize is that
+there always needs to be an
+avionics switch of some sort. >> No, no, no, no, no. That's
+wrong. (Laughter). >> I'm sorry,
+go ahead. Go ahead. >> Okay. (Laughter). >> You should have
+run this by me before you
+started speaking, right. Nothing can be done about that now. >>
+It's not my first time. >> Ooh.
+You know what, second -- still in tune on the speaker. >> Raise
+your hand if you're a first time
+speaker. >> All right. >> Thanks for that by the way. >> Now we
+can't talk for eight hours. >>
+Eight hours at least. (Laughter) >> So, as I was saying , there's
+no equivalent to a crossover
+cable in these situations. Pretty much you're going to have
+to go to an avionics switch even
+if you have just two pieces of avionics which you would never
+have that situation anyway. But
+looking a little bit at ARINC 664 in real life, this is a
+partial diagram for a
+undisclosed airliner and you'll notice that some of the links
+are highlighted in yellow and
+those are the two wave lengths. So those are the 664 links
+between the flight management
+system and some flight computers and some other stuff. And if you
+don't think this is pretty
+tightly integrated, this next picture will kind of give you an
+idea that, again, this is only a
+partial diagram from some unknown airliner, and you'll see
+that there's quite a bit of data
+floating around on these busses. The other thing you should
+realize, the number of 664
+networks varies from one aircraft to the next. Some of
+these networks are twisted pair,
+some of them are fibers, some of them are coax even. All of these
+where allowed and they
+interoperate and typically these switches will translate between
+the different media connection
+and such. Let's talk about entertainment systems. A lot of
+talk has been about these
+entertainment systems. If you look at the in seat displays and
+you see, oh, this is where we're
+going, this is where we've been kind of thing, nice little maps,
+something pretty to watch, of
+course we find on some of them like Spirit -- well, they didn't
+even have that but if they did
+I'm sure there would be a credit card reader. I flew out on
+Spirit. I'm waiting for them to
+have a credit card reader for the toilet paper in the lav ,
+you know. Just better hold it.
+Alright. So, it's connected to output ports on the GPS and FMS,
+the flight management system, or
+thorough something called a NED, a network extension device.
+We'll talk more about those in a
+bit. One thing you should realize though these are never
+connected to that ARINC 429, 629
+or 664 network. There's no reason for this to be connected
+and also remember it's never
+wireless and it's not compatible with your everyday friendly
+TCPIP. You might wonder why do I
+have a picture of a VGA port. This kind of emphasizes the
+point, this is an output it is
+connected to so, you know, trying to hack it and trying to
+get to the FMS through this
+avenue is kind of like trying to hack into your computer through
+the VGA port. You know, it's --
+you can send signals there but if nobody's listening, nobody's
+listening. Alright. Here's a
+picture of one example in flight entertainment system. You can
+see kind of how it's connected
+and there's a server that serves up stuff to the passengers, et
+cetera, et cetera. And down in
+the corner is a picture of one commercially available in flight
+entertainment system. Alright. I
+want to talk a little bit about the 777. There's been some
+confusion around the 777 in
+particular, because of a little flight -- any one ever heard of
+, what is it? >>Malaysian Air
+370. >>Malaysian Air 370? Any one heard anything about that?
+There's been a lot of confusion
+around this. And here's what the situation is. Alright, so Boeing
+went to the FAA and they asked
+them for a special condition to allow passenger information
+network to get some sort of
+connection to networks such as the aircraft information
+network. So, in November of last
+year, FAA granted them a special condition which basically said,
+okay, you may now do this. They
+provided that they could use one of these Neds, network extension
+devices, as long as they met
+certain conditions. So, what are those certain conditions, those
+special conditions? This is what
+they said. The applicant must ensure that the design provides
+isolation from or airplane
+electronic system security protection against, access by
+bad people basically. Alright.
+And that's where the NED comes in. The NED is a Gateway and
+essentially what it does is it
+translates whatever protocol is being used on the avionics
+busses, be it ARINC 429, 629 or
+664 into IP, basically into something that everybody else
+understands. So, like any
+Gateway, each of these pathways has to get programmed. Alright,
+so that's one thing you need to
+realize. So, you can't just say, well, I'm going send stuff to
+this Gateway. Again, even if you
+could send something to this Gateway, if nobody is listening,
+nobody is listening. You know,
+it's like the tree that falls in the forest. Do you still have to
+pay taxes on it? (Laughter).  >>> So, the other thing you need
+realize is that the FMS does not
+receive any input from the NED. You know, it might output
+information such as where is the
+plane now, where is the plane going to the NED, so you can't
+send bogus commands to an FMS
+through this NED, because it doesn't listen for commands from
+the NED. Now, I will say this. A
+possible attack factor, if you did compromise the NED, you
+might be able to impersonate
+another device that the FMS does listen to. Alright, I'm never
+going to say everything is
+impossible, I'm just trying to say that you can't compromise
+the NED and talk directly to the
+FMS. You might be able to fake it out a little bit but, again,
+in the end, you got the pilots
+there to protect you from weird stuff and hopefully they pay
+attention, don't fall asleep,
+overfly the airport 'cause that's never happened.
+(Laughter). >> Exactly. Alright.
+Here's an example NED which I shamelessly took off of Tela 9
+Controls web site without
+permission but hey it's out there. And from here you can see
+that the black lines, in this
+case its an ERIC 429 NED, you can see a black line coming from
+the FMS to the NED but you do
+not see any corresponding return path to the FMS. So, let's talk
+a little bit about Malaysia 370.
+What was this plane? It was a 777. A 777 using ARINC 629 and
+as we said, it's not the same --
+I mean, it's a 777. They're the only ones that ever use the 629.
+It's not really the 664 that
+we've been talking about mostly, so it's not ethernet, it's
+really not ethernet. It's not as
+close to ethernet that you're used to as 664. So, because this
+is the only plane that uses 629
+and because it's really not ethernet, it's even further
+away, that makes it a little bit
+harder to hack. I realize it's somewhat security, but, yeah --
+I'm not saying it's impossible.
+Nothing's impossible but it's a lot harder. And I'll let Polly
+talk about this next slide here.
+>> So, Dr. Phil thought since I was the newbe you guys might
+give me a few less jeers than
+you would him, boos. So, we real did try hard. We thought we were
+close. But for proprietary
+reasons we weren't able to get any of the manufacturers to
+share their goodies, so what we
+did what we have is even better for you. We have -- we're going
+to move from schematics to
+dramatics. We have just a movie clip of what this might look
+like if passengers in the back
+were trying to hack into the input entertainment wireless
+system. >> Hello. Welcome to how
+to hack into and take control. (Laughter) >>Step one, trying to
+get access to the plane's
+navigation system, try to utilize the plane's in flight
+entertainment system. >> ¶¶  >>> This is near to impossible.
+But with enough typing
+(Laughter) >> buzz words, such as I'm in and rerouting the
+network, also (Laughter)  >>> We can make it seem like the
+in flight entertainment and
+navigation systems are connected and thus frighten an air marshal
+enough to incapacitate you .
+(Laughter). >> With enough hacking one could be able to
+sign onto the planes WIFI for
+free. >> And just by the way, all of the actors were pilots.
+>> No real tasers were used, no
+pilots were harmed in the filming of this. Alright, and
+you know, that was meant to be a
+bit humorous, so hopefully you found it so. Also just to
+reinforce the point, the in
+flight wireless is not connected in any meaningful way to the
+system, so good luck trying to
+get in that way. I want to shift gears a little bit, talk a
+little bit about ADS-B and
+ADS-A. Some of the things that you can do. ADS-B is a pretty
+well known protocol. There's
+been some other talks about it. If you look at the slide down in
+the bottom left, you'll see a
+board that you can use to receive encode ADS-B signals,
+even send your own and on the
+right, is a commercial unit that you might find in a small
+aircraft that's a GPS/ADS-B
+unit. For receiving and sending ADS-B signals. Actually I think
+that one only receives ADS-B. As
+others have said it's true there's no security in this
+protocol. You can create phantom
+aircraft, you can create bogus ADS-B transmissions all day
+long. You could even create fake
+weather reports if you so choose or if you're just really
+frustrated, you could always jam
+it. You can jam any frequency. However, as we're going to talk
+about in a bit it's not likely
+to affect any kind of traffic or collision avoidance system and
+there's some reasons for that.
+So, little bit more about ADS-B. ADS-B is automatic dependent
+surveillance broadcast, that's
+what B is for, and this was piloted in Alaska and it was
+intended to improve the
+situation where there's not a lot of radar coverage. Alaska is
+a very large state and it's not
+very populous. This is part of a long-term goal for a system
+that's known as free flight
+that's planned for the future and the idea is that eventually
+aircraft would be able to kind
+of negotiate with each other in order to avoid collisions, et
+cetera, et cetera. It can
+provide traffic and weather in places where that's available
+and it's used by small planes to
+broadcast their positions. The corner picture is actually of an
+ADS-B out unit. This is
+something that's been mandated by the FAA for small aircraft to
+have by 2020. >> 2020. >> 2020,
+yes. Alright. Now, there is something similar but different
+to ADS-B it's called ADS-A, all
+right. And you might hear people talk about ADS-B. The one thing
+you need to realize is the
+airlines use ADS-A. This is related to the ACARS system
+we'll going to talk about as
+well. And it's like this. ADS-B is kind of like a cable ready TV
+and ADS-A is a cable box.
+Alright. It's addressable so you can do things like pay per view
+movies for the cable box. For
+ADS-A it allows specific aircraft to send and receive
+messages and it allows lower
+separation outside of radar coverage through a system called
+FANS, the future air navigation
+system and essentially what this means if you look at an airliner
+that's flying over the ocean in
+times past this separation between airliners was fairly
+large because they're over the
+ocean and there's no radar coverage. With something like
+FANS reporting their position
+through ADS-A, which sometimes is called ADS-C for -- I just
+forgot. You can look it up. It
+will report into the FANS system and that allows them to be a
+little bit closer which means
+more traffic going through, et cetera, et cetera. Another thing
+you should realize is that
+airliners use neither ADS-B or ADS-A for collision avoidance.
+They do other stuff. Other
+things about the transmissions, ADS-A transmissions and also the
+ACARS transmissions, they can
+either be VHF, HF or satellite and it really depends where they
+are. If you're over lands and
+over the United States, it's probably VHF. If you're over
+Europe it might be HF. If you're
+over the arctic, might be HF and if you're in the middle of
+nowhere, it's probably
+satellite. And they selectively choose which media they're going
+to use based on things like cost
+and speed. Alright. So, collision avoidance, when you
+look at collision avoidance
+system is primarily small aircraft you might see something
+called TRISB, traffic
+information service B, and this is a service that's provided by
+air traffic control and it
+requires you to have either a mode S transponder or ADS-B in
+and sometimes you have both of
+those things. It's only available in some areas. It's
+also not authoritative. What
+that means if you're flying along in a plane equipped with
+TISB and air traffic control
+says hey, you have traffic at your 1:00 o'clock 2 miles, you
+can't say, I have the traffic
+unless you can physically see them. So, it's not an
+authoritative system. The other
+important thing to know is that this does not use the ADS-B
+signals from others. And ATC
+does not automatically relay every ADS-B signal they receive.
+So, we talked earlier about the
+fact that you can very easily take a board and you can
+generate ADS-B messages and send
+them out. The problem with that is those signals are probably
+going to get ignored. If there's
+not a corresponding radar blip somewhere that corresponds to
+that aircraft, most likely ATC
+is going to ignore that transmission. Also, again,
+they're not going to pick up
+that transmission, so they're not going to send it to somebody
+else who might be running TISB
+in their aircraft. Other kinds of collision avoidance, some of
+the small planes use something
+called TCAD I think they named it this because it sounded like
+T Cass and they thought you
+might give them more money for their stuff and it provides some
+information. Again it's not
+authoritative and what T CAD does is it essentially just
+listens for transponders around
+it and then it goes, hey, I heard a transponder over here,
+don't go over there or gives you
+some sort of indication as to traffic around you. Now, the big
+boys, biz jets and upward they
+have something called TCATS. So let's talk about TCATS. By the
+way, its just backing up here a
+second, the display on the bottom is a T CAT display.
+Sometimes people call it the
+fish finder. You'll hear people say I got them on the fish
+finder sometimes incorrectly
+pilots especially if their name is Joe, that's a little private
+joke with me Polly, will say I
+have them on the fish finder. They don't have a fish finder
+and that's not legal for them to
+call it traffic. But T CATS. What does T CATS do, it uses the
+transponders around it and
+unlike T CAD and these other systems, it can actively
+interrogate other transponders.
+If you ever look at a radar system you see the big typically
+red parabolic antenna that's
+rotating, on top of that you might see another antenna array
+often painted white and that
+antenna array on the top is sending out another signal and
+then transponders are responding
+back to it. And they're saying, oh, I'm over here and we'll talk
+a little bit about them in just
+a second. But a T CAT system can actively query other
+transponders. So, how this
+works, for example, if I'm sitting at the airport ready to
+take off and a biz jet or larger
+and comes in to land, I can look at my transponder and I will see
+the reply light continuously
+illuminated indicating that somebody keeps pinging my
+transponder. Now, this is an
+authoritative system which means they do not have to actually
+physically see you to say that
+they have you as traffic. And that's a good thing. Now, it
+might be a little bit hard to
+see but down in the corner you see an example of what we call
+an RA, a resolution advisory. >>
+Advisory. >> Advisory. And it says in red traffic, traffic and
+it has some information. In
+addition to this you'll have a nice lovely voice in the cockpit
+also telling you, traffic,
+traffic and in some cases a recommended action as well. If
+they're really close. >> And the
+voice does get more and more excited the closer the traffic
+gets. >> Is it a sexy voice? >>
+I don't tend to think it's sexy. >> Yeah, military aircraft, they
+actually like to use female
+voices because they found that military pilots respond better.
+Maybe they used to listen to
+their mom. So, one of my friends did some work on an undisclosed
+fighter plane and he did some
+work on the system known as bitching Betty. And bitching
+Betty would tell you about your
+fuel situation and how you needed to go back before you ran
+out of gas and landed in the
+ocean. So, transponders -- here I got a couple examples. Up at
+the top is an example
+transponder off of Boeing, I think 737, but don't quote me.
+And in the bottom we have a
+couple of general aviation transponders. On the left we
+have a nice one from Garmin with
+a digital display and if any of you are pilots in the room,
+you've probably seen the old
+school ones with the little twisty knobs on the right.
+Alright. And these have
+different modes of operation. The most basic mode is called
+mode A and in mode A, what
+happens is it will send out a ping and you'll respond and
+you'll give them that code on
+the front. By the way, they actually are the only people
+that I know of that use octal.
+So it's an octal system, so each of those numbers goes up to
+seven. So it's a 4,096 code
+transponder. Alright. So, there's also the ability to send
+your altitude which is what we
+call mode C and then there's mode S which is the selective
+system. The other thing you
+should know is that airliners have at least two of these by
+regulation. They must. And I'll
+turn it over to Polly. >> Okay. So, this next clip is just going
+to show you that attacking the
+ADS-B may possibly be harassing but I'm going to let it speak
+for itself here. >> Force the
+plane to reroute to another location or at least harass the
+flight crew. Simply, have your
+have your pilot friends fly multiple planes front, behind
+and around the plane you would
+like. Have said plane send beep transponders signals to the
+hijacked plane and force it to
+react to resolution advisories. The crew may possibly reroute to
+another location. (Laughter). >>
+Seems like a lot of work, I wonder if we could borrow that
+one. >> In actuality here's what
+would happen. >> ADS-B attack. >> Interceeded . >> Be advised
+that nobody could hack into the
+airplane, that would be.... (Laughter). >> Alright. So,
+technically that was two kinds
+of attacks. Yes, you could -- again, you could attack the
+collision avoidance systems but
+because they use directional antennas in an array, you can't
+just beam signals at them.
+Alright. You can't beam ADS-B signals. Transponder replies or
+whatever at them. You would have
+to beam signals from multiple directions and it would be
+fairly complicated and if the
+plane that you're trying to target is a lot faster than your
+friend's plane that's going to
+be pretty challenging. >> The Lego plane would have a really
+hard timekeeping up. >> I don't
+know. Luke Skywalker 's got R2 D-2 helping out. I don't know.
+Maybe he would be okay. Kind of
+our last topic we want to talk about ACARS and such. Engine
+systems, engine monitors and
+such might be hooked up to this ACARS system and you may have
+heard things about the 370
+flight, people saying, well, there were these pings, right,
+these pings that were coming on
+after the plane had disappeared. And I believe what they're
+probably talking about are these
+ACARS messages and the way that this is normally set up, a lot
+of the systems in the plane will
+send messages back home either to the manufacturer or the
+airlines just giving them status
+information. By the way there's also some boring stuff that
+comes across ACARS like hey the
+lav's broken, you know stuff like that. >> Stuff like company
+for a drug test after you land.
+>> That's not fun especially if you just had a shot. >> Alright.
+So, sometimes control systems,
+people have talked about well could I hack into the engine
+control systems. One thing you
+need realize about the engine control systems is that all of
+them have a purely mechanical
+backup and in most cases the controls themselves are actually
+in the mechanical with an
+electronic system that is used to trim it. This is kind of a
+general theme in aviation in
+that we always like to have things that are safe, not
+necessarily most efficient so
+the idea is that if the electronic system were to fail,
+the engines would continue to
+operate, just not perhaps maximal efficiency. Alright.
+ACARS is a system that's used to
+send messages to and from the ground. It can be used to and
+from people or systems and it's
+used to send things like weather information, delays, updated
+flight plans, maintenance
+information as we just said, and here in the pictures you see a
+display with an ACARS message
+and then there's always a printer, like a little ticker
+tape, so if you look at the
+bottom picture in the corner you'll notice a little printer
+between the pilots that will
+print out all these ACARS messages that come along. Now,
+you could create a bogus flight
+plan update. You could create bogus weather. I know that there
+was a talk recently, last couple
+days, talking about some SATCOM systems that have some
+vulnerabilities and those surely
+exist and it is certainly true that you could send out bogus
+ACARS messages. The real
+question that you have to answer is what will happen as a result
+of those messages and we'll talk
+about that here in a second. And in my opinion, I'd say that it's
+not a very practical way to take
+over an airplane and in the picture you have an engine
+display from an airliner and
+what you'll notice again, you know, there's an output of
+status information and the
+period varies depending on the system and the aircraft, you
+know, but, say, every hour or so
+might be typical information that's sent when it comes to
+status information on the
+engines and such, and then when they're on the ground, there's
+additional information that can
+be downloaded for more maintenance purposes. >> Cyber
+security experts and airline
+pilots have very much in common threat mitigation. There's
+multiple levels of safety and
+one that you are about to see here, every airline flight
+that's in progress has a company
+dispatcher that's behind them that they can communicate with
+and pilots are supposed to ask
+themselves does this seem reasonable, does this make
+sense, to do a gut check. >> She
+must have had a big shot because she just went the wrong way in
+the press. >> The video you'll
+see here --the pilots catching it, that just doesn't make
+sense. Let's check on this. >>
+From the ground one may be able to take control of the flights
+ACAR's message. Where a crew
+receives flight plan modifications and ATC
+clearances. >> We got an ACAR's
+message. >> Emergency! Reroute plane to Cuba. We're... >> Make
+sure to submit the orders to a
+Pilot to verify a change in flight plan. I don't know about
+that, we better verify that with
+company. >> Hey company, this is 2734 could you just confirm, we
+just got an ACARS message saying
+we need to reroute to Cuba. >> No, that is incorrect, please
+say on course. >> In conclusion,
+hijacking an airplane is very serious and highly illegal and
+requires a specific set of
+circumstances that are very, very difficult. >> ¶¶ >> There
+will be no cigars today, right?
+(Applause). >> Alright. I was going say, you know, Polly went
+backwards on the slides that's
+why there's that eight-hour rule, you know. Okay, just some
+closing thoughts. Nearly every
+protocol that's used in aviation is unsecured. There's no
+encryption on ACARS, there's no
+encryption on ADS-B. By the way we didn't mention it but one of
+the things that you'll see
+sometimes come across ACARS, are things like passenger lists, so
+not very private but anyway. And
+there certainly is a lot of potential to annoy ATC and or
+small aircraft and, you know,
+there's an increasing level of automation with these unsecured
+protocols in place and this
+potentially could be problematic and definitely something that we
+should continue to be aware of
+as that level of automation increases. However, thankfully
+there's a lot of checks and
+balances and in a case of airlines we have two pilots on
+every aircraft, so we have two
+humans kind of in the mix that will hopefully keep us safe and
+for now, I think we're pretty
+safe. I feel pretty safe flying airliners. I don't have a
+problem flying them, taking my
+children, et cetera. Anyway, if you have any questions, you
+know, come see us later. Hit us
+up on twitter, I'm just P Polstra, I'm not very inventive
+and Captain Polly. So thanks a
+lot. >> Thank you. (Applause). >> Great job.

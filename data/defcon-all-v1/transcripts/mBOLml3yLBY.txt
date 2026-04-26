@@ -1,0 +1,955 @@
+>>Hello, everybody. Good
+morning. DEF CON. We'll go ahead
+and get started so hold onto your seat, all right. 	>> Thank
+you so much for joining us at
+such an ungodly hour. Does anybody have a headache, cuz we
+can write you something for
+this. 	>> It's good to see you all here, one of the problems
+with the Con, if you can call it
+a problem, is it's hard to choose between all the awesome
+tracks and awesome talks offered
+at the same time so this morning is no exception. And as you
+know, there's a bunch of killer
+presentations being given right now by some incredibly talented
+researchers and I would
+encourage all of you go check those out after they are posted.
+	>> We are sincerely grateful
+you have chosen to come start your morning with us so proper
+introductions. 	>> My name is
+Christian DeMeth, please call me "Quaddi", I'm an emergency
+medicine physician early on in
+my training, and I am also a DEF CON aficionado, this is my 10th
+year, I love some capture the
+flag and It's just like a second home for me here. 	>> I'm Jeff
+Tully, pediatrician, vaccines
+don't cause autism so pass that around! [Cheers and applause]
+	>> I'm Peter Hefley I work for
+Sunera, IT consultant and I have seen several episodes of "House
+MD." So a standard legal
+boilerplate, this talk is not sponsored, endorse or affiliated
+with any of our respective
+professional institutions or companies. No unethical or
+illegal practices were used in
+the researching, acquiring or presenting of the information
+contained in this talk. All
+girls you are going to see are consenting adults over the age
+of 18. (Laughter) 	>> That was
+good. (Laughter) 	>>Do not attempt any of the theoretical
+or practical tact concepts we
+talk about in this presentation. We promise you will go to jail
+and it will not have a fun time
+in jail. 	>> One last thing I want to make sure we emphasize,
+we've done a lot of work to
+learn a great deal about how the 911 system works and we have had
+some really unique opportunities
+to explore behind the scenes but we're certainly claiming to be
+world experts in 911. The 911
+systems in our country have such varying implementations. The
+tacts we talk about, may or may
+not apply to all of them and most certainly may not apply
+abroad. 	>> Just the last little
+bit of disclaimer here. We will play two audio recordings of 911
+calls. They are rather
+disturbing. If you are sensitive to that kind of stuff, maybe go
+check out another talk or just
+plug your ears. >> With that in mind, I'm sure many of you guys
+are wondering what the hell are
+these clowns doing up here? What do we know about 911? This
+actually starts four years ago,
+Jeff and I began working on medical research involving the
+free hospital, specifically at a
+hospital with cardiac arrest and how 911 dispatchers teach people
+how to do CPR over the phone.
+It's a life saving intervention What that meant at the end of
+the day is that we have listened
+to thousands of 911 recordings. 	>> As we listened to a
+multitude including where dozens
+which technical issues prevented the dispatcher from immediately
+identifying the location thus
+delaying medical response we realized we knew nothing about
+the technical infrastructure
+behind 911. This is just a slide of some of the papers we
+actually ended up publishing
+about dispatching 911. 	>> Furthermore after listening to
+some of these calls where there
+are technical limitations, we really wanted to dive really
+deeper and see how, what are the
+security measures really being put in place here to prevent use
+of this system. 	>> Little
+background. My wife went to school with these two, we became
+great friends we play DND, we
+drink beer together, as someone not behind the scenes from a
+medical perspective I was
+fascinated when they would talk about this because this is one
+of those things we take for
+granted. When do you think the last time these emergency
+response centers conducted any
+type of risk assessment or vulnerability scans against
+their systems. 	>> That's kinda
+how we got together and thought this is something we should
+probably research formally. 	>>
+This actually is a result of that. We are gunna talk a little
+bit about an outline here and
+start with why you are all here, why this talk really matters.
+	>> Then we'll go over a 30,000
+foot view of how these systems are designed to work and then
+talk about the research methods
+and avenues we were able to explore. 	>> Then we'll hit
+attacks we feel emphasize
+particular points about where these systems are most
+vulnerable. 	>> Then we hope to
+loop it back to people. Our patients, your family members,
+your friends. Because that's how
+we came into all of this. Let's start with an example why this
+stuff matters. 	>> This is going
+to be a call recording of a rather disturbing 911 call. Just
+be prepared. >> 911 Emergency.
+Help me my husband has fallen he is holding his chest and I don't
+know what to do please come! I
+need your address ma'am Okay oh um I live at 1375 Orange Street,
+I think he is still breathing
+but ya'll need to hurry it is bad. 1375 Orange Street Yes
+ma'm, please hurry he is holding
+his chest Emergency personnel will be over as soon as possible
+Oh my god, Hurry, hurry oh
+please thank you, thank you, please hurry! 	>> Little
+sobering there. We also thought
+about incorporating a laugh track so you guys don't get
+particularly depressed. 	That is
+how the 991 system is supposed to work, quick, address, get out
+on the gate and get someone
+help. This is the subsequent call that caller calls back a
+few minutes later. And this is
+the recording. 	>> 911 Emergency 	Oh my god where are you guys
+at! He is on the floor he has
+turned blue he is dying oh my god where are you guys at!? He
+is not breathing anymore I do
+not know what to do please help me please help me! 	Okay ma'am,
+I'm going to call the paramedics
+right now 	Just hold on, please don't go please don't go honey
+	Ma'am I'm having difficulty
+finding your house 	What? I live at 1375 Orange Street
+	Paramedics are at the
+intersection of Palm and Orange Street 	Where? 	Intersection of
+Palm and Orange Street 	Oh my
+god that's too far. Please hurry please hurry I don't know what
+to do he has stoped breathing he
+is blue please help mne! 	>> So yeah definitely pretty heavy
+stuff and thankfully most of the
+time the emergency medical system works really well to
+respond to serious situations
+like that call. 	>> There is a lot that goes into this response
+and a lot we rely on in an
+emergency. If my heart were to stop right now, I would hope one
+of you would call 911. 	>> And
+do CPR 	>> Then hopefully you would call 911 on your network
+phone here and that call would
+be carried by a wired or wireless provider to a dispatch
+center where people with
+freakishly unnatural zen-like calm necessary respond. 	>> Then
+they'll relay that information
+to firefighters and paramedics on the fire engines who will
+take you for definitive
+treatment. 	>> If this is done in a timely enough process you
+are hopefully you get to the
+hospital through this door and not through this one. Exactly
+how does this system work and is
+it as secure, effective, and safe as it could be and are
+these questions even worth
+asking? We thought so. 	>> We began with a couple goals when
+we began to explore this field.
+We wanted to understand the components of this system,
+better identifiers of
+vulnerability and also get a better idea of some of the
+attacks that have happened
+before as well as some of the solutions that were implemented
+in their aftermath 	>> Finally
+we wanted to see if research would lead to any ideas for
+solutions to problems that
+haven't been addressed yet. 	>> We'll talk about the future of
+911, how understanding future
+state can help us identify potential weakness, attacks and
+solutions for the system's next
+evolution. 	>> So research. We've been saying that a lot.
+What does it mean in this case?
+As you can imagine it's not easy to walk into a dispatch center
+or server room and ask to take a
+look around. One of the main things we hope to convey is how
+difficult it can be to get the
+conversation started with people in charge of these systems. The
+only advantage we had in our
+prior research is we had a lot of contacts within the 911
+system. We had a little bit of
+access to these systems that other people may not. 	>> We'll
+keep those partners anonymous
+but we did have a number of doors open that allow for ways
+to collect information that
+we'll share with you today from in-person interviews to process
+observations, to regional
+surveys. 	>> And as you can imagine experimentation on a
+live 911 system can be a little
+dicey if you are not careful. 	>> We'll tell you about
+examples of how we messed around
+with the system without getting in too much trouble. 	>>
+Persistent element that has
+continued through all this and will hopefully continue through
+the future of our research is a
+development of solutions that will enhance and strengthen this
+infrastructure. 	>> Without any
+further ado let's get to our 30,000 foot view. Start by how
+the structure currently operates
+with the simple example, wired telephone call. 	>> Here an
+individual will pick up their
+telephone or home phone and dial 911. The call reaches the end
+office by the telco provider at
+which point the telco attaches subscriber information onto the
+call, specifically automatic
+number identification or ANI, this functional tags the
+subscriber's billing telephone
+number onto the call at which point the voice call and
+unlimited amount of data, or
+ANI, are pushed forward. 	>> Recognizing this is an emergency
+call the end office will send
+that call to the selected router over dedicated emergency call
+trunks. Selective router's
+function in e 911 or enhanced 911 is to route the call to an
+appropriate basing point, that
+is the PSAP, public service answering point, PSAP. That's
+routing based on the ANI with
+the routing that it maintains. If for some reason the call
+comes in without information or
+the ANI is corrupted router sends the call to a designated
+PSAP based on default route,
+much in the way routers we are all familiar with work. 	>> When
+the selective router sends this
+call tagged with information on to the PSAP it does so over a
+dedicated trunk, ISDM line or
+POTs line . Once the call reaches the PSAP dispatcher will
+answer the call. Frequently
+assisted by a computer-aided dispatching system or CAD
+System. It's really important at
+this point the dispatcher be able to accurately determine two
+things, first is where is the
+caller located? We need to know this so they need to dispatch
+responses to the appropriate
+location. Second thing is what public services actually service
+that address or that location?
+Is it county, fire, city police, and a local ambulance company?
+	>> To get this information
+quickly PSAP, usually through a CAD, does a lookup against a
+database. PSAP will send the
+caller's ANI information and in response an automatic location
+record back. This information
+and the database that it is stored are maintained by a
+for-profit 3rd part. You pick up
+the phone, dial 911 Comcast sends emergency call and
+selective details to that
+selective router which then sends your call to the
+dispatcher or PSAP and you hear,
+911, what is your emergency?" All the while your location is
+being determined in the
+background by the database. 	>> Things get more complex when the
+caller can move around. In the
+case of cell phones. Have you ever called 911 when you are not
+at home? Maybe at out of state
+on vacation? How is it that your call is answered by a PSAP that
+is close to your physical
+location and not billing address? How does that work?
+Well the answer truly varies and
+it depends on the implementation of e 911 standards based on the
+physical location. One is called
+wireless phase 1 as in the older version, little bit less
+accurate, and then wireless
+phase 2. Which is what is being rolled out around this nation
+right now. 	>> Starting out by
+talking through phase 1 which is displayed here, when you make a
+cell phone call, your call
+reaches a cell tower maintained by a provider. In phase 1
+scenario that call is passed by
+the tower to a mobile switching center which starts the
+bifurcation of location data and
+voice call. You can think of this as location information
+flowing along the bottom in
+yellow and the call flowing in red over familiar
+infrastructure. To the selective
+router and then along to the PSAP. 	>> In phase 1 your
+location is approximated based
+on the cell tower you are using. That location and sector or
+phase of the tower handling the
+call. So the mobile switching center will send a cell tower
+location, cell tower sector
+handling the call and a call-back number to or CBM a
+mobile positioning system which,
+this is complex, it provides you a token called the emergency
+services routeing K, ESRK or
+psudo ANI or PANI. It provides the same function as the ANI on
+the hardwired telephone call.
+Just a little token then used to tag the call to the selective
+router and then on to the PSAP.
+	>> In this scenario the selective router looks up the
+appropriate PSAP because you
+don't want to be sent to a dispatch center not close to you
+or send the right strike
+package. In this situation that is based on mapping between the
+cell tower face and appropriate
+PSAP. On the bottom you can see the mobile positioning center
+forces the CVN, cell tower
+location and cell tower sector into a temporary ALI record and
+that's referenced by the ESRK or
+Psudeoani PANI. This way when the PSAP does a lookup of the
+location based on the PANI, they
+receive the information in the computer dispatch. All this is
+done seamlessly and
+automatically. 	>> This is what the CAD is going to show the
+dispatcher. You have your
+callback number up top, next is the emergency services number or
+identifying number. Then we have
+the wireless carrier name, cell tower location, PSAP name, the
+Call type, carrier that we have
+our little temporary ESRK or PANI and location. If this were
+a real lookup you'd also see an
+emergency services strike package which basically tells
+you what police, fire and
+ambulance providers will end up servicing in that location. 	>>
+Wireless pahse 2 is an
+enhancement, allows the PSAP to locate wireless callers and cell
+providers positioning
+determination equipment seen here in the lower left. It's
+important to understand this is
+an abstraction and implementation is left up to the
+cell telephone provider, this
+allows provider to implement whatever technology they want to
+determine caller location. This
+could obtain -- be obtaining GPS data, signal triangulation, both
+or some other technology. The
+delta between a phase 1 and a phase 2 call for 911 is that at
+the actual caller's location as
+opposed to a guess based on cell tower location and sector is
+passed along to the ALI
+database. When the mobile positioning sensor gets the
+initial data for a call to
+include the call tower or cell tower, tower sector and callback
+number it queries the position
+determination equipment to determine where the caller is
+at. That data is inserted as a
+temporary ALI record and is provided to the PSAP when they
+request it. This allows the PSAP
+to best direct emergency responses to the correct
+location. In these
+implementations it is also common to see a mapping system
+integrated, with the computer
+dispatch system, that pulls up the caller's location on a map.
+	>> Here you can see the ALI
+data provided back from a phase 2 system. Major change is you
+can see the caller's location
+data as latitude and longitude. Incredibly important in urban or
+rural centers where you might
+not be at a physical location, you may be in an alley or in a
+place that is not with a
+physical address. Positioning system provides a level of
+confidence in a percentage and
+certainty in units of distance based on the mechanism it uses
+to determine location. 	So to
+recap on wireless calls, you call 911 on the cell phone, your
+voice call is sent by wireless
+provider to the PSAP through the intermediaries that we talked
+about, specifically selective
+routers. All the while your location is being determined
+either by cell tower
+triangulation, just cell tower sector which would be in phase 1
+or using your chip in your GPS
+chip in your phone. That all gets put into a database and
+sent to the PSAP who then has
+your voice, call stream and estimated locations so they can
+send folks your way. 	>> The
+last thing we'll talk about as far as call flows goes is using
+voice over IP or VOIP. We all
+know about VoIP that reach the residential market like Magic
+Jack or Vonage. In these
+scenarios the VO IP service provider will maintain a
+database of information that
+links subscribers to the appropriate PSAP by location.
+This is information that they
+frequently compile and recompile based on the subscriber's
+billing address. 	>> When VOIP
+caller places a 911, their VOIP service provider passes that
+call to an emergency services
+gateway which passes the callback number or subscriber
+information on to the VSP
+database and obtains the appropriate PSAP and emergency
+services query key, just like an
+PANI just called something different, just that token. From
+there the call flows very
+similar to what we discussed. The call is forwarded on to the
+selective routers into the
+appropriate PSAP who get's caller's location. Based on the
+temporary record the VSP has
+created with the subscriber's location and callback number.
+	>> If that all wasn't enough,
+this is not where this process ends. So in any of the possible
+scenarios we talked about,
+whether it be wired, wireless or VoIP you still have to get the
+information from the caller to
+the dispatcher and the dispatcher has to initiate
+appropriate response from the
+strike package from the ALI data and then they must actually call
+contact those units and get them
+dispatched. Plans, fire engines and patrol cars will arrive on
+scene, render help and if
+necessary transport. When an ambulance is used to transport a
+person in need to a hospital,
+there is another communication line that occurs most often
+cellular in which they will call
+that receiving center, communicate a few pertinent
+details and then get acceptance
+or refusal from this receiving center on whether or not they
+can take the patient. 	>> All
+right. So we have given you a pretty good overview. How we'll
+talk about ways to take
+advantage of the system. Before we do that we thought it might
+be a good idea to lay out
+objectives a malicious individual might have. These are
+three objectives we came up with
+for someone who wants to hack 911. 	First objective is to
+initiate emergency response when
+one is not required or appropriate. This may be an
+individual who wants to disrupt
+business operations at a competitor, play a prank on
+their friend or redirect
+emergency services to some end. Think about calling the cops in
+to respond to a major incident
+on the west side of town while you rob a jeweler on the east
+side of town? 	>> The second
+goal you might have is to interfere with the necessary
+appropriate 911 response. Here I
+may want to prevent someone from obtaining medical attention,
+delay response to their call or
+prevent an individual or institution from using 911
+services altogether. To this end
+perhaps I'm interested in denying access to PSAPs
+themselves or the emergency
+responders. 	>> Finally there is possible value in the
+surveillance of emergency
+responders. So maybe you're an ambulance chaser or just want to
+know when alarm response times
+will be highest and then plan your mayhem accordingly. 	>>
+Let's jump in and talk about
+possible weaknesses in the system. 	>> Talking about end
+office control. In this
+scenario, either control of end office or PBX linked to an end
+office that lets you set your
+ANI information arbitrarily you can place a 911 call with a
+falseified or invalid ANI field.
+As a result PSAP can't determine your location with any certainty
+and they will have to rely on
+the information provided verbally by the caller. It's
+important to note this type of
+attack can basically be accomplished using any mechanism
+that strips off the ANI data. If
+you get the call forwarded to 911, the ANI information will be
+incorrect or stripped. Also TTY
+services can take advantage of this and as they may or may not
+include ANI data. 	>> All of the
+location determination mechanisms we have looked at
+here today rely on the ALI
+database. If they were to alter or own this you could change the
+ALI record for a phone number to
+your target address and then call in an emergency response.
+	>> If you access this, you are
+able to force the PSAP to rely on location information they are
+given over the phone. We will
+talk about how that may or may not be reliable. So here it's
+just really important how we
+highlight how the entire infrastructure relies very
+heavily on this type of
+mechanism. 	>> Have you ever powered on an old cell phone to
+look up someone's number or
+contact information and noticed that even though you are not
+paying for service on that
+device, the emergency call feature looks like it's enabled?
+That's on purpose! The 911
+infrastructure was required to support these non-service
+initialized or NSI cell phones.
+	>> And here there is no callback number, as the phone
+isn't subscribing to any service
+so what is the exact CVN that's provided? Well in this situation
+it's the number 911 plus the
+last seven digits of the electronic serial number or
+international mobile equipment
+identity number which is specific to the phone itself.
+Like the phone's MAC address,
+but these calls are still subject to location
+determination in either phase 1
+or 2 depending on where you actually are at the time when
+you place that call. 	>> Just to
+kind of review remember with the wireless phase 2 environment you
+are relying on location data
+from the mobile handset in addition to tower triangulation
+so it's definitely possible to
+inject an arbitrary latitude or longitude through GPS spoofing
+or getting the phone to think it
+is where it is now by modifying the firmware. So this call will
+still be routed to the
+appropriate PSAP but once the call reaches PSAP you can make
+the PSAP think the call is
+coming from an arbitrary location. This is a little bit
+more believable when your
+arbitrary location is still in the same area serviced by the
+PSAP and not like crazy like you
+are calling from North Korea. 	>> Again, taking a look at the
+critical data storage along
+those fault loads, VoIP service provider databases which
+maintain that mapping between
+the subscriber and their actual location, that would also be an
+interesting target. Changing to
+that database or denial of service to that aspect of the
+provider's infrastructure would
+have the same impact as modifying or denying access to
+the ALI database, but with
+potentially a different security posture than the ALI database.
+	>> So we even after we get
+through the call flow and into the latter part of response we
+see some large areas for
+disrupting or altering the call. We have to keep in mind PSAP
+itself is a physical location.
+One of the people we talked to said when I interviewed to work
+at the 911 center I expected
+high levels of security, guards with guns, high fences and heavy
+locked doors. What I saw was a
+normal building, poor visible security and the smiling faces
+of people waited to be socially
+engineered. 	>>Traditionally PSAPs were segmented or air
+gaped such that phone systems
+and CAD systems and general work stations for e-mail and web
+browsing were all separated or
+broken out. PSAPs we talked to noted segmentation barriers have
+gradually broken down overtime
+to increase integration and decrease administration
+overhead. So penetrating these
+systems would not only be desirable if you wanted to see
+service but could be very
+valuable for establishing surveillance. Some of the folks
+we interviewed denied having any
+incident response plans or basic security practices such as
+anti-virus in these dispatch
+centers. 	>> The second potential for attack after the
+PSAP itself would be to attack
+the responding units. Almost all fire and ambulance engines
+either have their own locally
+broadcasted cell wireless -- for transmitting things like EKGs or
+vital patient data from the
+field to receiving hospital. These units rely on cellular
+connectivity. One of the
+individuals we interviewed talked about how on dozens of
+their ambulances these wireless
+hot spots themselves were only encrypted with 64-bit WIP
+encryption and they are using
+that to transmit vitally important data that may or may
+not save this patient's life.
+	So we talked through some weaknesses in the system. Let's
+talk about actual attacks
+scenarios. 	As mentioned earlier one of the goals an attacker
+might have would be to initiate
+a police, fire, or medical response to location that is not
+in need of one. Most notable is
+example known as swatting. During swatting an attacker
+initiates a 911 call and falsely
+reports to dispatcher that some crime like a hostage situation
+or active shooter is currently
+happening at a particular location. In more sophisticated
+attacks, attacker will
+impersonate the target they are trying to actually get a SWAT
+response to, implement various
+obfuscation techniques or try to hide their identities to target
+a particular PSAP which can be
+difficult. To make their call more believable so that when you
+call that in it will be more
+likely to produce a SWAT response. Now what is are about
+to hear is a call from an actual
+SWATTER. Really messed up. Pay attention to the call flow
+because there's a couple things
+we want to highlight here. First the SWATTER is unable to target
+the specific PSAP that is
+services his target so he has to get transferred, then also perk
+up when that transfer happens
+because there are tones that will be used during the transfer
+call. We'll talk about that
+later on. 	>> 991 how can I help you 	I am at ** Main Street
+Colorado 	Not sure if a good
+address Can you verify that for me? 	It's *** Main Street 	Not
+sure that's an valid address
+	What do you want the phone number? 	Give that for me
+	719-393-0078 	Home phone? 	Yes
+it is 	No what's going on there? 	Listen here I got 2 people held
+hostage 	Okay 	You know what
+happens here right? It's not like on the movies understand
+that? 	Okay 	One of the people
+here is named Danielle and her father. The reason why I am
+doing this is because her father
+raped my sister 	Okay 	And I am armed okay, I have a pistol and
+I swear to god I will kill these
+people. If any cops come in this house with any gun I will shoot
+them. 	Name sir? 	John Steffano
+	Are you in Security? 	What do you mean 	Are you in the town
+Security? It is out of my area
+Yes 	So you are in security? 	Yes 	So I need to transfer you
+to the sherrif's office there
+	Can I ask you a question? 	Sure 	I am going to need you to stay
+on the line cuz I am not talking
+to these people anymore. 	Okay 	I've had enough of this shit.
+Remember I am armed and I will
+shoot 	What kind of gun? 	A .22 	A pistol? 	Yes it is 	2 people
+there? 	An 18 year old and her
+father 	Stay with me 	They are duct tapped in together in the
+next room 	Let them know I am
+transferring over and wanted me to stay on the phone 	(Ringing)
+	This is Jennifer can I help
+you? 	This is Crystal with the city I am transferring a call
+over to you it's a hostage
+situation at *** Main Street in Security, let me transfer him
+over to you. He wants me to stay
+on the line. John you still there 	Yes I am still here 	I
+got the county on the line here
+	John? Tell me what is going on 	>> So yeah that's pretty messed
+up to call and initiate a threat
+like that. We don't know why people want to do this, motives
+vary but targets at very least
+humiliate them and there have been many reports of victims
+dangerously coming close to the
+accidental use of lethal force so it's not a benign practice.
+	>> All right. Several we'll
+known celebrities have been targets including Justin Bieber
+and Ashton Kutcher. Recently, in
+Arizona, a 15-year-old boy was a target after he talked some
+smack on XBox party chat. Last
+year the disturbingly we saw some journalists targeted for
+publishing in cyber criminal
+identities so it's an increasing tact. 	>> As we showed you
+earlier the ability for a 911
+system to identify who is calling and where that caller is
+is pretty extensive. How do
+attackers avoid identification? So believe it or not the person
+who swatted Ashton Kutcher and
+Justin Beiber was a 12-year-old boy and he utilized a popular
+telephone service for the deaf
+called TTY or text telephone. This is an example of an old-ass
+one right here. Many deaf
+nowadays don't carry this stuff around as they can use online
+services or various apps. And
+traditionally these services allow a person to call a relay
+service with this machine. Phone
+number they wish to call is communicate and the relay
+operators calls the number on a
+separate line. When that person answers they talk to the
+operator who communicates her
+role, that the person is using TTY. Then the deaf person can
+type the desired messages to the
+relay operator who will read them to the answering person and
+that person can speak to the
+operator who types back to the deaf person. 	Now if an attacker
+dials the relay service and
+conveys there is an emergency, operator will then call 911 and
+report that whatever exactly the
+TTY person is typing. The thought here is that the TTY
+service strips some of the
+potentially identifying information of the call such as
+recording of their voice or in
+some circumstances the actual ANI/ALI data attached to a
+normal 911 call. 	>> Contrary to
+popular belief caller ID spoofing is a method that almost
+never works with regard to
+masking your identity because most service providers won't
+care what you claim your ANI
+information to be. It will just insert whatever ANI is supposed
+to be there and passes that to
+the ALI database as well as PSAP. In rare circumstances,
+where a few VoIP providers we
+researched that will pass on proclaimed ANI without altering
+or mending, but those are far
+and few between, furthermore many anti-spoofing service
+providers, like the one seen
+here, treat 911 differently and will not connect without
+altering the ANI back to record.
+However there is one example. 	>> One attack that can actually
+benefit is circumventing
+automatic routing in an effort to target a specific PSAP. PSAPs
+have a 10 digit direct number.
+Calls to this number are treated as emergency phone calls. This
+number is most often used to
+transfer between PSAPs in case you end up with the wrong PSAP
+or the municipality dispatches
+fire and police from separate centers. If an attacker uses a
+VoIP provider that will push
+that spoofed ANI the way through an attacker can initiate a
+seemingly innocent-looking call
+from that spoofed number to the 10-digit PSAP using the
+appropriate dial number and
+place an emergency call. The general problem with this is
+that these numbers are secret.
+They are impossible to discover, right. Everyone out there,
+impossible to discover, secret
+things! Well, we were successful in enumerating several of these
+by listening to the 911 call
+that are recordings readily available on the Internet and
+then listening for the DTMF
+tones, remember I told to you perk up. Those are DTMF tones,
+those aren't widely utilized
+there are some other actual schemas you can use to transfer
+calls but if they use DTMF, you
+can then record them, run them through a tone extractor and
+enumerate the 10-digit PSAP
+number. Thus an attacker could better target a specific PSAP
+and could avoid the automatic
+routing done upstream by the carrier once a call has been
+dialed. You may have noticed in
+our swatting call that the dispatcher had to transfer the
+caller to another center. This
+would be a prime example of how difficult it can be to target a
+particular PSAP. If you could be
+successful in targeting a particular PSAP that is local to
+your target you may improve your
+believability of your swatting call and then be more likely to
+actually have a swatting
+response. 	>> So remember that non-initialized phone call flow
+we talked about before, where
+you can basically call with a simless phone and the call back
+is diversion of the phone's MAC
+address. What's interesting about this is you have a level
+of abstraction between the
+caller and their identity that you can obtain old used cell
+phones of craigslist and buyer
+doesn't know who you are, you have just removed from your
+identity from the standard links
+between a 911 call and caller so you have all the mayhem with
+much smaller chance of
+attribution and entanglement with law enforcement. 	>> I know
+many of you guys out there use
+VoIP. You can use it anywhere, it's superior to a lot of
+traditional services but you can
+call anywhere from cell phone, a SIP client, a laptop in a coffee
+shop. How does the VoIP provider
+allow you to change location? Is there any verification against
+your billing address? For kicks
+we actually tried a major VoIP provider here in the U.S. and
+observed the 911 location
+mapping functionality features that were available to us. Here
+you can see a thick client to
+update to the VSP database. Interestingly enough we were
+able to change our location to
+each other's address and other addresses without any notable
+verification. 	How do you stop
+911 from working the way it's supposed to? There's the
+old-fashioned cable cut as seen
+here. That will stop your target from calling from at least from
+land lines. Cell phone jamming
+is also a possibility if you want to conduct crime and
+prevent folks from calling 911.
+A cell phone jammer will provide you localized disruption in
+services. If you can edit that
+VSP or ALI record, we talked about earlier, for target you
+may be able to ensure even if
+they call 911 your response is directed to the wrong location.
+Think about that. That web
+request you just saw and think about some of the problems with
+web servers, would it be
+possible to use that to change an entry or record? Let's say
+you want to get your murder on.
+If you could alter the VSP or ALI record for intended target,
+mind you now it's premeditated,
+then you might be able to direct to emergency responders to the
+wrong location if you don't
+allow your victim enough time to state their true location to
+dispatchers before you off them.
+	>> Major weakness in many telephone systems obviously to
+include 911 is resource
+consumption. A PSAP only has so many dispatchers available and
+only so many trunk or phone
+lines for these calls. You can tie them all up and denied
+access to 911. Obviously there
+is a denial of service attack that must have been interesting
+is the F.B.I. published a white
+paper saying these types of attacks on PSAPs and Hospitals
+are actually increasing
+substantially. Interestingly enough there is a talk tomorrow,
+track 1 at 10:00 AM I believe
+that involves hacking cell phones to make it an automatic
+dialer. So you have a portable
+T-DOS. 	>> I'd like to draw attention to one particular
+example of TDOS. We get this
+question all the time. Is anyone actually doing this? They are. A
+few years ago some jack ass
+TDOS'd off an entire bank of phones in a San Francisco
+hospital and not only were the
+lines in the emergency department that take calls from
+incoming ambulances, trauma,
+heart attracts and strokes disrupted but it inter-hospital
+communications was also
+disrupted so imagine the ICU teams trying to talk to the ICU
+doctors, and when smooth
+communication is disrupted, patients' lives are at risk. It
+is that important of a thing.
+	>> We already talked about the PSAP as being the location with
+inherent vulnerabilities but
+TDOS attacks highlight these are places staffed with people who
+use machines to do work.
+Therefore if you are either overwhelmed human ability to
+respond or take out systems they
+use to facilitate that response you can again rate negative
+impact. Unfortunately based on
+research many PSAPs are understaffed and continue to
+support legacy computer systems
+due to budgetary constraints. As noted earlier traditional
+segmentation barriers and those
+that support administrative functions are on the decline.
+These organizations have all the
+same challenges of small company with limited budgets, extremely
+high availability demands and
+customers who want rapid response. You have to imagine
+how challenging it can be to
+keep up this type of organization and keep it secure.
+		>> So what happens if you were
+successful in TDOSing a particular PSAP? Well that
+hasn't happened on a larger
+scale but what we did see is an accidental denial of service for
+six hours. In April, 4,500 calls
+over six hours to 911 were denied in Washington, Oregon,
+portions of California,
+Pennsylvania, Minnesota, Florida, North Carolina, South
+Carolina. The ALI database had
+exhausted its call tracking tokens and no new calls could be
+routed so people would call 911
+and they got a busy signal. During this time one woman was
+documented to have called 911
+about 37 times and got the busy signal every single time while
+an attacker actively tried to
+break into her house. What about people during that time that had
+heart attacks and strokes? Did
+they suffer damage they can never get back or did they die
+as a result of that delayed 911
+response? 	>> So swatting Justin Beiber is great but what about
+when you mess with the 911
+system when people actually need it but can't depend on it? So
+What is the true impact of a 911
+hack and how do you measure the cost to Betty White with a heart
+wttack who can't get help
+because someone changed their address in a ALI database. So
+let's kind of talk about that,
+how much do even minute-long delays end up costing victims?
+	>> Hard to say without being
+able to see the future. Most serious medical problems, mere
+minutes mean the difference.
+Take cardiac arrest for example, in our state the average time
+from when you pick up the phone
+and call 911 to when someone arrives at the house is about
+six minutes, all of you are
+thinking that's really long. That's really an amazing
+response time for the United
+States. When someone has a cardiac arrest, you can see
+their survivability decreases
+greatly without intervention, at two minutes without oxygen heart
+must also begin to die, at the
+six-minute mark they have less than a 50% chance of survival.
+	>> So CPR can extend but our
+hypothetical victim is still looking at significant increases
+in mortality with every minute
+hat pases, it's not unrealistic to say even a delay of 5 to 15
+minutes can end up killing
+people. 	>> This is a similar pattern with other things. From
+penetrating trauma to strokes to
+breathing problems. Taking a step back and thinking on a more
+global scale these systems are
+heavily relied upon by individuals in dire situations.
+Consider the benefits to a
+foreign state or non-state threat agent to exploit or deny
+access to emergency response
+systems. Furthermore note it would be possible to target any
+country or locality's emergency
+response infrastructure, not just the United States. Imagine
+the loss of competence, panic,
+of loss of life which could occur if different structures
+were targeted to get accomplish
+state or non-state objectives. We talked a lot about potential
+problems but want to talk about
+potential solutions for the issues we noted. One of our
+objectives was not just to poke
+holes in something we all really appreciate. I have not needed to
+use 911 yet but after this talk
+is over I intend to drink my way into an ambulance ride. Before I
+get there, let's talk about a
+few of these solutions we have come up with to address the
+issues so far. In the current
+global payment environment it's possible for each transaction to
+be assessed for potential fraud
+indicators. This can occur when the delivery address doesn't
+match the billing address or
+payer's name doesn't match the recipient. These are simple
+examples but the fraud catches
+available for payment environment are pretty robust,
+with thresholds configurable on
+merchants and payment networks. 	>> So quickly we'll hit some of
+these. What if a 911 system had
+call-grabbing red flags to allocate risk ratings based on
+indicators seen and maybe these
+red flags don't result in priority or queuing changes but
+rather result in indicators or
+alert on the CAD system? What we're saying is we don't want
+dispatchers to focus on things
+that don't matter. We want them to deliver care in a timely
+fashion, but maybe there's a way
+to assign competent values or validity values as they come in
+to assign them to each call. 	>>
+So for denial of service why don't we use some of the
+solutions we have seen in
+application and networking areas like in order to mitigate PSAP
+resource consumption by TDOSing,
+insert some sort of proof of worker intelligence system kind
+of like a captcha 	>> This
+doesn't have to be nearly as robust. Let's use common things
+we have seen in other services
+like press 2 for English and para Espanol a prima quatrro,
+that might be 3 for English, and
+ocho for Espanol. We don't want to cut into response times here
+but simple scenarios might be
+used to mitigate TDOS attacks. On a more nationally we want to
+highlight these organizations
+which have done a phenomenal job helping folks day in and day out
+have done so with limited
+security standards to guide them on what they can do to protect
+this infrastructure. The
+national emergency number association, or NENA, published
+a security standard for next
+generation 911 systems; however, there is no express penalty for
+noncompliance. Experts in the
+field, that we spoke to, estimate under half of the
+organizations actually comply
+citing disparate and often constrained budgets. By
+recognizing the importance of
+the service and the need to secure it, we may help get
+resources and motivation to the
+organizations that need them to protect life and limb. 	So we're
+running pretty low on time. We
+didn't do a good job on time management. Let's pop to the
+end, It's difficult to condense
+this all into 45 minutes. We have a lot more to that we'd
+like talk about as far as
+solutions and further contributing to make the system
+a little bit better. So if you
+have any experience at all with 911 or would like to collaborate
+or any further questions, find
+us around, we'll get your e-mails and get in touch with
+you because we would love to
+talk to you. Sorry we ran a little bit late at the end. 	>>
+We really want to emphasize how
+much respect we have for the hard work everyone does on a
+daily basis from the folks at
+the phone companies to the local, municipal, state, and
+federal officials, to
+dispatchers to first responders, every stakeholder in this
+process goes to work every day
+hoping and working to support a system that saves lives and we
+really want to thank them for
+those efforts but still highlight that there are aspects
+of this system that could be
+secured better. 	>> All right. Well, let's thank them, all the
+responders and we thank you for
+showing up to our talk. (Applause)

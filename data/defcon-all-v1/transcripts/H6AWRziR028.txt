@@ -1,0 +1,411 @@
+There it was again. This must be
+some kind of prophetic truth, masked in coincidence certainly
+but couldn't be. No these were not imagined patterns of the
+mind seeking to connect accidental thoughts of blurred
+lines, this was something real. Something elegant in its
+simplicity yet dangerous in its enigmatic complexity. Deniable
+in all its obscure imperfections. Could everyone
+else be so blind? Or were there others who observed this covert
+conspicuousness. Able to untangle this perplexity.
+Understood this cipher that surrounds this key. This 23. >>
+Well, good morning. I'm glad you're here early at Def Con.
+This is my first time speaking here so I'm glad to be here
+myself being here with you guys. So let's get on with this. This
+track, this talk is about network security monitoring for
+industrial control systems. A little bit about me. My name is
+Chris Sistrunk. I'm a registered professional engineered. I used
+to work for a company called Entergy for about almost 12
+years. I was involved with project robust where I was doing
+protocol fuzzing and some other protocols as well. Now I work at
+Mandiant as a senior ICS security. Last year at Def Con I
+helped bring the ICS village here. So we're back again. Real
+proud about that. And I also run, besides Jackson. And I also
+love network security monitoring. So what happens when
+you use N map or fuzzer on an industrial control system? ICS
+is vulnerable, but why haven't we seen more attacks? Perhaps
+we're not looking. If your ICS is breached today, would you
+know about it? Could you tell if it was just commodity malware or
+was it a targeted attack or even just a misconfiguration? I'll
+show you the tools that you need to hunt for on your control
+systems. I'll show you some real-world examples on how to
+use the tools, and finally I'll give you some nuggets to take
+back so you can do this yourself. The reasons we don't
+see more of these attacks. We have intent, or the lack thereof
+where we just don't have enough ICS breach and attack data to
+fully understand attackers that target control systems, and the
+second is visibility. We have a lack of visibility of monitoring
+control systems. We have lots of monitoring of IT systems, but
+doing network security monitoring and control systems
+is generally limited. Let's talk about some of the intent. Since
+we don't have very much data, like some examples are Marucci
+shire in Australia, Stuxnet and lately the German steel plant
+attacks. Why are they different? It's a who, not a what. It's
+professional, organized, well-funded. For the big things
+there could be disgruntled employees in another way, if you
+kick them out, they will return. Just like the shark is the top
+predator, they come back for the seals that don't have much
+protection. We don't have visibility. See no evil. There
+may be someone from IT looking at the enterprise side of the
+network, but most businesses don't regularly look at traffic
+patterns and logs in the control system network, even if they're
+available. ICS network alerts most likely aren't tied into a
+company's operations center. So what happens when the FBI shows
+up at your door? That should not be the way that you detect
+attacks. I did some research on the publicly known control
+system vulnerabilities. And from 2001 until 2014 there were 949
+known publicly -- 342 of those were exploits, so they made it
+-- those packs and three of those were malware. The trends
+going up is when Stuxnet. After Stuxnet happened, people are
+starting to look for vulnerabilities in control
+systems and the things are there. There's over 1,100 now in
+my last count. I'll be updating this slide later this year. If
+your ICS gets hacked you can't make gadgets or water or
+electricity or hammers or cars or medicine anymore. It's
+critical to our way of life. So we've got to protect it. Now
+what? We have more government security regulations. We have
+ICS security is still lagging behind IT security. Any time you
+scan a device it's in a control system, it doesn't have -- to
+deal with it. And breaches are inevitable. Today we know this,
+attacks aren't stopping. They're happening in every sector,
+including industrial control systems. Managements asking
+could we be hacked? Maybe they are, they should be asking that.
+What can we do to get ahead of this? The answer, I believe, is
+network security monitoring, or one of the answers. If you don't
+know what network security monitoring is, this is from the
+practice of network security monitoring by Richard Bejtlich.
+It was invented in 1990, but it really started, I think, kind of
+with Cliff Stoll and The Cuckoo's Egg. If you haven't
+read this book, and you're in control systems, go get it and
+read it. It's very important. The things they did in 1986 and
+1988 and 1990 are still applicable today. The network
+security monitor in 1990, and net ranger, real secure, snort
+and others came out and the formal definition came out in
+2002 with Richard Bejtlich. NSM has been around for almost 30
+years and has a proven track record. Stoll dug into an error
+and discovered a hacker in their system. The first documented
+case major case of catching an attacker, of the 80 systems that
+the hunter reached, only two of the system owners noticed.
+Because they weren't looking. Only two looked. So how can we
+look? Before we need to look, we need to have one person to watch
+and hunt, kind of like Cliff Stoll did. And we also have to
+have the right tools to collect and analyze the data. A security
+expert says NSM and hunting are two sides of the same coin.
+Let's talk about the NSM cycle, the collection phase, the
+detection phase and analysis. And it just keeps going around
+and around. To make NSM work, you have to have both sides of
+the coin. Instrumentation to collect the data and the network
+and at least one person to analyze the data to hunt for
+evil. It requires people and propers not just technology. A
+lot of people these days focus on buying the latest blinky
+thing, right? But we know that really resourceful and they can
+get around those blinky things. So you have to have a
+resourceful human on the back end defending your networks. So
+let's look at the methods of monitoring. We have to have a
+network tap. If you don't know what a network tap is, it just
+allows you to physically put a network device to capture all
+your data, or you can use a spam port off of a router or switch
+that will dump all of the packet capture to a device that you
+want to collect. A center will have a host network interface,
+can also collect this data like TCB dump or whatever and you
+have a zero port or you use printers to print out the 9600
+baud traffic or whatever it was, which still today in many
+control systems still have sero networks but knew we can use
+terminal servers that do full port capture with port
+mirroring. There are seven types of network security monitoring
+data. Full content data, which is unfiltered collection of
+packets. So it's the entire phone conversation. You have
+extracted content, files, web pages, data streams, firm ware.
+Session data is like the phone call list on your phone bill. So
+you have your to, who is the originator of the call and for
+how long, things like that. Transaction data is transmit and
+receives, statistical data, you can analyze when the data occurs
+during the day or when someone logs in at a certain time, and
+you can do analysis that way. Metadata is who owns this IP
+address or where other data about data and the last is
+triggers from IDS tools like snort or bro. And Richard
+Bejtlich's book, he says IT networks have difficulties for
+network security monitoring, encrypted networks, wide spread
+network access translation, mobile devices, extreme traffic
+volume, so if you have traffic blowing up near all your
+bandwidth, or privacy concerns if you have other countries that
+don't allow encryption. This is perfect for control systems,
+because we don't have any of that. There's no encryption.
+It's very static. ICS devices aren't mobile. You just don't
+have mobile devices, really. Substations don't move. And
+devices within substations don't move. And you have low
+bandwidth. Good old 1200 baud, right? And no privacy concerns
+since the ICS network is private to that company. Here's an
+example control system that has segmentation. Some that we
+encounter in the real world are flat but this one actually has
+some segmentation. So woo have enterprise network up at the
+top, have a demilitarized zone in the middle or we might have a
+historian or a web interface where people on the network can
+get to the control system data without actually getting into
+the control system itself. Then you have the plan and control
+where you have your HMIs, your control system servers, your pie
+historian and the lower level is the PLCs, the RTUs, the centers,
+all those things. Each control system is different, but this is
+the model I'm going to use for this talk. In the attack you
+have the cyber kill chain, everybody should be aware of
+this. You have the attacker gets in, tries to find out where he
+can get in, deeper pivot or do whatever attack he wants to do
+and get out of there. And a lot of these days malware is not
+even used. They're using stolen accounts. So how can we use
+network security monitoring to look at accounts? It's pretty
+easy to do and I'll show you how to do that. If we have attackers
+attacking our control systems, let's envision some of these.
+Since we don't have a lot of data, we can gather some of
+these things that happen on IT networks and envision the
+control systems. Let's say he might want to damage equipment.
+Or steal process information, steal a formula the industrial
+process of the chemicals and how they're mixed or cause a safety
+or compliance issue to cause a plant to shut down. And it
+actually doesn't affect the actual operation of the plant.
+Just you can't report your emissions to the EPA for some
+reason. Or let's pivot from a vulnerable control system up to
+the enterprise. That's happened before. So the attacker either
+has to get physical access or remote access through like a
+stolen engineering work station or a laptop or compromise a
+client machine that has access. Let's do some network security
+monitoring. Mike Asante, if you don't know who he is, he's
+really important in helping spread the word about control
+systems security. You have to have an inquisitive mind, you
+need to have -- We need to protect those too. So what does
+collection look like in our example control system? We have
+standard enterprise collectors like sys log and other -- just
+imagine any IT collector or agents or things like that. You
+could put those in your DMZ and most DMZ environments could be
+in a data center, in standard equipment. So that's a
+no-brainer there. You have network sensors that are doing
+full P-caps and capturing session data. And if there's a
+firewall we can collect the firewall logs. On the control
+level that's where we have to be a little more careful than what
+we have available to us. We can capture most HMIs are on windows
+systems. We can collect SMNP traffic like percent CPU
+loading. And alerts from any agents that might be installed.
+From the PLCs they might have logs only. So let's talk about
+that in relation to hunting. So looking at logs is like looking
+at tracks in the mud. You can see the different animals and
+the different paths they're taking. Or you can put a camera
+to see where they're walking on your property or where ever
+you're hunting, for instance. If you like to hunt. What we would
+look for in an industrial control system? Well, since it's
+well known and static, we should be able to get a baseline of
+what's happening. A talks to B, but machine B never talks to C.
+And then you have your top talkers. You may have a web cam
+that's looking at the security gate of the power plant, and
+that's always going all the time and it's a high bandwidth
+traffic and there's some devices that may only report two or
+three times a day to let's say an external source. Unexpected
+connectivity to, say, the event net or business network or an
+attempted connection. You can also look for known malicious IP
+addresses or domains. There's known beaconing malware from IT
+investigations. Log in using default accounts. Many accounts
+and control systems you can't change them and there's backdoor
+passwords. They look for the admin accounts to log in and
+have a warning every time that happens. Unusual events, error
+messages that could correlate to vulnerabilities. Updates. A lot
+of these things we could easily look for on the control system.
+The detection phase of network security monitoring, an analyst
+should look for these anomalies and try to categorize those and
+escalate them to incident response. So we'll look at IDS
+alerts that we've learn. So a snort rule that says this
+payload is being attacked, attacking our control system, or
+log in with the default credentials, high bandwidth
+that's way larger than normal, devices going on and offline or
+behaving strangely, like they are fanning goats. Need to look
+for those. Or a door alarm that is coming in when no one is
+checking in in the steps station. Going back to the
+hunting metaphor, we see tracks, but we found a wolf track. It's
+a whole lot bigger than a dog print. And we look in our web
+cam and we see strange things happening there. Someone is
+eating all our corn that we're supposed to be feeding to the
+animals that we're hunting. The last phase is the analysis
+phase, where we're hunting and finding evil. So this is where
+we'll see the application exploitation, third-party
+connection, so someone may be using ICCP traffic to another
+control system and someone is coming in that way. Or someone
+is doing ICS specific protocol attacks, and that's what we're
+trying to teach down in the ICS village. We're teaching you how
+to do these things. And how to use those protocols but also how
+to watch on how to defend them. You can also see things like
+what happened with Stuxnet calling back to strange DNS
+requests like totalfootball.com or freesexycelebs. Why would you
+even see that happening on a control system? So this is a
+really great picture I found on the Internet. Say we're looking
+at our logs and we see our little bunny rabbit hopping
+along and swoop, an owl comes down and attacks the poor little
+bunny. And on our web cam we see that he's flying off with -- >>
+Just step in with an episode of wild kingdom? >> Yeah. Welcome
+to wild kingdom. So if you look for anomalies, you might find
+them. Did you know that squirrels attack deer?
+(Laughter.) If you don't look at your control systems, you won't
+see this kind of crap happening. (Laughter.) So let's do some
+real-world examples of network security monitoring using free
+tools, not a $3 million SIM. Have you ever heard of security
+onion? Okay, great. This is for you. >> May I interrupt? >> You
+may. >> So, welcome to Def Con! First day. (Applause.) How many
+of you are first timers? We have a little tradition here at Def
+Con. First-time speakers. >> I don't mention this anywhere in
+my talk, but cyber, everyone. (Applause.) >> As you were. You
+have to get back to the squirrels. >> Jericho keeps
+telling me about girls. So we look at top talkers. There's a
+program that was written that was called flow bat by one of my
+colleagues named Chris Sanders and you can install it on
+security onion. I'm an electrical engineer. I used to
+be a power engineer. I still am. I'm not a security guy but I can
+install this and use this. That's how easy it is to use. So
+you can see, this is a real world packet capture that we got
+from a control system. And just looking at the session data, we
+can see web traffic. That's the number one thing. And why is
+that byte count way higher than the rest? Is that someone
+downloading something, searching for a new Ford truck to buy
+while they're watching the control system, or is someone
+exfiltrating data through the web. We can see net bias NTP.
+There's other tools in security onion that do flow, but I really
+like silk and flow bat. Network miner. It's already installed in
+your security union but you can download it by itself. You can
+find potential arm spoofing and many indicators using network
+miner. You can look at abnormal DNS traffic. So this one has, I
+don't know if you can see it in the back, but some of the things
+it says -- what are those going to from my control system to
+those strange websites? I see also Adobe flash. So that makes
+sense someone is updating their flash which should be in the
+control system anyway. That's a bad sign or a good sign if
+you're evil. We can also look at it with the other tools like
+ELSA and looking at the BroIDS log. So it's the same thing,
+same kind of screen. I know its a hard chart. But you get the
+idea. You can download the presentation later. The packet
+inspection. Love this one. Malformed Modbus, one of my
+devices in my house in my network and you know, you can do
+a filter on my bus TCP and wire shark and all of a sudden it
+shows red it says malformed packet. If you take the network
+statistics, it shows 20% of the traffic in mod bus was
+malformed. You can probably deduce, even though I've already
+told you someone was fuzzing your network, you can figure it
+out yourself just by looking at the packet captures. Or we can
+see custom modbus going on. Wire shark looked at this one and
+said there's unknown function code 90. Function code 90 is not
+normally used in the standard for modbus. It just turns out
+that snider mod con uses it without authentication. And
+digital bond a couple years ago wrote a module to exploit this
+feature. Because that's what they do. They exploit features,
+unauthenticated and unencrypted. So we can detect if it's just
+normal traffic. There's three IBSs available in security
+onion. Bro I haven't DS, snort and SCADA. The great thing about
+bro it will deduct it on any port. So if someone is running
+modbus on port 80, it will detect that. It's really great.
+The folks at Urbana, they're developing more ICS protocols
+for bro. That's really exciting. Snort, they have processors, and
+emerging threats has the rule pack for snort and digital bond
+has the quick draw snort rules available that were recently
+updated. The folks just unveiled a new DMP 3 parser, probably
+after all the stuff we've been doing, and they also have the
+emerging threat rules there as well. The modbus are everywhere
+and these are free tools that you can look at your control
+system traffic and look for anomalies. I did another example
+here I fuzzed my bus and sent some strange things. This is the
+bro weird log, they also have modbus and DB 3 logs by
+themselves. And also it will show up in ELSA. Squeal is a
+nice GUI, if you like those. Some people like GUIs,
+especially the one that have all the different screens happening
+and the weather map and the golf game going on over here. So you
+can see in your sock what's going on. So you can see someone
+scanning or using modbus attacks or you can see standard going on
+or other things. Sys log is kind of new in control systems. And I
+have an RTU that just has sys log and I was so happy to see
+that. Sys log has been around for a long time. Let's start
+collecting it directly from our devices in the control system. I
+set it up and bro picked it out of the wire. Whenever I tried to
+log in incorrectly, that's what I have highlighted there,
+Mandiant log-in attempt failed three times. And then locked me
+out. So here's some RTUs, if you have control systems, these are
+mainly for the electric sector that I'm aware of, Switzer, GTE,
+Novatec and Cooper. If you have these devices, start collecting
+sys log please. And if they don't have sys log, put it in
+your procurement language when you buy the darn thing and say
+please allow sys log so I can have logs instead of FBI Jesus
+showing up knocking on my door saying you've been breached.
+Because we've had that happen, you know, if someone calls we've
+been breached, do you have any logs? No. What can we help you
+with. There's really not a whole lot we can do to put the picture
+together. So the logging is seriously important. Security
+onion allows you to look at the seven data types and these are
+some of the different tools. That was kind of neat. I was at
+a power company and we were getting traffic from them and so
+I said to one of the folks that I was working with, I said go to
+a website and showed them in network miner and I saw one of
+the operators was looking at getting a new Ford truck. So
+it's neat that you can show them that hey, I see exactly what's
+going on. It's really great tools that security onion has
+been doing. Just mor examples of some of the GUIs. Some of the
+net flow tools that's really important. That's one of the
+neatest things that you can do. You can even put silk on a box,
+you can put it on a pie with a big card and start collecting
+net flow. That's really important. And you can save net
+flow for a long time, as opposed to P-caps. Go to flobat.com and
+you can install security onion with just two scripts. Really
+nice features there. So what if we want to install security
+onion and the control system? Well, as an engineer who had
+control systems, what do we do? We test it in the lab first just
+to see what we can see. And sometimes if you just go put it
+in production, we all know what happens there, right? You know,
+more RAM the better, the bigger hard drive the better. But think
+about where it is going to go. If it's going to be in the data
+center, just go grab the thing with 128 gigs of RAM and go to
+down. But if you're going to put it in a power plant or
+substation, you're going to have to keep things like heat and
+chemicals and vibration in mind and figure out how you're going
+to get the packets to that center. And also in the proper
+placement. So there's two books, the practice of network security
+monitoring and applied network security monitoring that shows
+you all the different places that you can put a center, make
+sure that you're collecting all the right IP addresses. If you
+have NAT going on, then you get the real IP addresses. And also
+you want to work with the right stakeholders. If you're a gung
+ho IT security person, you net to get a box of doughnuts and
+get the engineer from automation, you need to get the
+vendor who makes the control system, probably might need to
+grab a manager somewhere and have a big meeting with
+doughnuts down in the control room and talk about where are we
+going to put these things because we're going to start
+monitoring our control system now. Here's an example of a
+hardened control system sensor. This is an example from
+Schweitzer. You can select a lot of data for a terabyte. I pick
+on them, I love them. It's like a George foreman grill. George
+loves cooking in the substation with his new line of industrial
+grills from Schweitzer. Sorry not sorry. That's a great tool.
+And you can throw it in there and the new 3560 is the one on
+the right. It's this big and you just throw it in a go bag. And
+if you've got to go to an IR and start collecting packet captures
+and it's in a plant or on an oil rig, you can take that with you
+and it will work. So let's talk -- maybe we should call it
+security onion for ICSs. Onions have layers, security has
+layers. Onions smell bad. Poor security can make you cry,
+scream and cuss. Welcome to security ogre. If you like
+references and if you like to go watch YouTube, I recommend go
+watch The Cuckoo's Egg. If you don't already have the book,
+it's a great little show. And it opened my eyes to how we can
+defend our control system networks just by looking at what
+you have. Because more times than not, an attacker is going
+to know your network better than you. So let's flip the tables
+and know our networks better than the attackers. You have the
+practice of network security monitoring from Richard
+Bejtlich, NSM wiki and securityonion.net. You can
+implement security monitoring in your control system today
+without impacting your operations. Because it's
+passive. You're not scanning, you're not making your goats
+fall over. And fail over. There are free tools available to help
+you start looking at ICS and hunting for evil. And the most
+important part is people. You can have all the alerts and all
+the gigabytes and all the things, but if you don't have
+someone there to interpret it, it's not any good. You can
+analyze the data and understand what's normal and what's not,
+and remember adversaries are a who, not a what. I'm getting
+close to the end of the talk here. I've got some thanks. If
+you don't already know about the ICS village, go see those folks
+over there. Go play with modbus. And the real protocols. Robert
+Emily, NSM for ICS drum, my folks at Mandiant, and my other
+ICS peeps. I see a few of you out here in the audience and I
+really appreciate you coming to my talk. And I challenge you to
+go find networks. (Applause.)

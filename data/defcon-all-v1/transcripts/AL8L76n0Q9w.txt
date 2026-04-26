@@ -1,0 +1,560 @@
+So, yes, I'm Jason Larsen. This
+is Marina Krotofil and this is rocking the pocketbook. We're a
+team of an academic and a hacker. I'm the evil hacker and
+she's the cute academic. We're here to play who wants to be a
+millionaire. If you're in Vegas probably you want to be rich. So
+this talk is about giving you all the tools to get rich and
+get all the girls like in the movies. If you want to get rich
+and have money, maybe you want to hack some process control
+networks. So industrial control systems. So in general,
+industrial control systems are just a whole bunch of computers
+that have only one thing that is different than all the other
+computers in the world. They run physical stuff out in the real
+world. They run power grids, chemical plants, all of that
+type of stuff. So typically run for the benefit of man kind. So
+industry means big business and big business means big dollars.
+So some smart hacker starts in a coffee shop and sits down and
+clicks on a keyboard and half a world away, of course all the
+movies will tell us that fire and destruction breaks out at
+some factory over there. But all the stuff that happens in the
+middle is one of the big mysteries of the 21st century.
+So the typical understanding of SCADA hacking, there's this
+magic big red button and whatever your thing is, it
+either shuts down the process nicely or it hits the button and
+everything blows up. In reality, the hacker has to build the big
+red button there's not one there for him. >> To start with, the
+attacker has to decide what he wants to do to the process. Like
+impacts can be divided into three groups. You can for
+example -- you can go after the production, for example, you can
+spoil the product, production that's more expensive so the
+product will be less competitive on the market. And these two
+groups of damage will never make the headlines because the
+companies do not need to report them and it's bad for their
+reputation. So if you want to change the company and make it
+public, then have you to make the company noncompliant. The
+most damaging attack will be the attack on occupational and
+environmental safety. The productions of contractual
+agreements. And when the attacker decides well what do I
+select out of this list. So he has to kind of follow some
+thinking process. So, for example, damage equipment,
+damage comes to hacker mind first. The disadvantage is it's
+irreversible. You can't undo it later on. The problem is it's
+difficult to understand what is collateral damage. Public
+information is easily available. Again the problem is the
+collateral damage is unclear if you contaminate the water you
+may kill the fish. So many people get upset with that. This
+type of attack, probably might be what you want. But if you are
+not unclear how well you hide your traces, you might not want
+to do. Like it may be problem for you because investigating
+the case. So out of this consideration, the production --
+nobody needs to report them, nothing get killed. So for the
+attack it sounds like more safer scenario. And this is exactly
+will be what we will be considering in this talk. We
+will illustrate the attack from the beginning to end, how we
+will cause persistent economic damage to the plant. And the key
+word here is persistent. So you want make it hurt for a long
+time. The thing that you have to make sure that the attack will
+not be attributed to cyber. >> So process control. We're going
+to go over a little of process control basics. This a 101
+track. If you go and look at the thermostat, on the thermostat
+you've got a sensing element that measures the temperature
+and then you have a set point. So whatever temperature you set
+it to, you say I want my house to be set to 72 degrees and keep
+it at 72 degrees. So we do this because in the 21st century
+nobody likes to run up and down and kick the furnace on every
+time they want it on and off. So in process control terms this is
+a control loop. You have sensors and they feedback through the
+control systems and the actuators turn things off and on
+whenever the control point is set. In the control system this
+is just another way to look at a control system. Here we have all
+the same processes and the measured actual set point is
+called the process variable. The observed temperature in the
+house right now is called a measured variable and it feeds
+back in the little red X over there we make decisions on
+whether we should kick things on and kick things off. So if you
+go up to a large scale, then you can't really fit all of the
+logic that needs to run a whole big chemical plant inside a
+little thermostat. We stick them in larger boxes. We call these
+program controllers. They're specialized computers. In
+general, the internals of a PLC, you have a whole bunch of
+sensors that are plugged into it, one time per scan cycle, it
+takes all the readings and copies it into input memory and
+runs logic and those outputs are turned around and run all the
+actuators. So the PLC is the brains of the control that are
+running it. Most PLCs are programmed rapidly. Back from
+the day when everybody still ran processes and peg boards you
+would have your input plugged into the. And so we did that
+graphically and it's still programmed that way. So most of
+the time. So the most common control algorithm that's out
+there is PID. This is a complex set of equations that run to try
+and keep the process within certain limits. So outside the
+PLC you have the PLC and wires running out into plants. Those
+are cabled up and run into big wiring closets and these are
+mostly analog things. This is usually not IP-based technology.
+So even though the PLC has all this logic and everything can
+throw into it, we still need humans. So a good friend of mine
+that works in nuclear says that any chemical plant you build is
+in an imminent state of failure and it stays that way forever.
+So things go wrong all the time in plants. Everybody knows it
+doesn't hum along batch after batch like a computer program.
+So the operator has to sit there and see all the alarms coming
+over there and figure out what to do and generally keep things
+in control. >> So specifically for this talk it is extremely
+important to understand what is the different between IT hacking
+and OT hacking. Because what we are going to do is not IT
+hacking. It's operational technology. We have PLC which
+prevent operator from observing the real state of the process.
+So after the attack was discovered, figure out how does
+it happen. What interrupted the flow. None of them has any sense
+to the operator. He doesn't give a shit. Only what he says is
+like, I'm not controlling the process. And this is in OT
+security, the security that you need to observe, observability
+and controllability. You need to be able to measure the process
+in order to be able to control it. If you are not measuring, if
+you are not observing the process, you are not controlling
+it. So you're not having a process. >> So an attacker that
+wants to do something behind beyond simple may yes, ma'am
+will want to control the process. If you run over there
+and say there's a burner underneath this tank and I'll
+crank it up and bad things will happen. Usually what you're
+going to do is exercise the shutdown logic of the process.
+Once you hook everything in the process together, they're
+actually related in the physics relationship. So if you crank up
+the temperature, you're going to change the pressure and the
+flows and everything else that's going to happen downstream. So
+in order to actually attack the process, you need to remain in
+control of the process. And you need to work in terms of control
+theory and not in terms of hacker like injections and
+scripting involved. >> So in the domain, the attacker and
+operator, they competing for the controls over the process. And
+the attacker wants to be -- so the security is in the IT domain
+are actual controllability, the availability describe the state
+of the process. So just to remember CIA this for
+information security, CO 2 for control security. And I know
+that the guys who grew up with this state of mind they will
+hate it. But just shake it off. (Laughter.) >> So when the
+attacker goes and hits the process, he can take one of a
+few approaches. So he can either take control of process and
+reliably control it through the entire life cycle of the attack.
+And this is what we'll talk about later. He can take control
+of the process and control it into a state that then puts it
+in failure and just let it go and let bad things happen. And
+that's what I talked about a few days ago at Def Con. Or you can
+make the process unusable by messing with the controls. So
+let's consider a car and a driver. So the attacker has
+hacked into a car and he has control of the brakes. So if he
+comes over and grabs the left brake, the driver is going to
+compensate and go to the left. The hacker is going to
+compensate the other way until they're going back and forth
+trying to keep the car under control. So since the attacker
+is a computer, the attacker will always be able to anticipate and
+win this one. We call these multiadaptive algorithms. In the
+case of the car, the human is called the hidden actor in the
+process. So any subset of a process can be modeled as a
+hidden actor. So if you have a refining phase you can consider
+that the hidden actor and apply multifeedback or multiadaptive
+algorithm loops, run them back and forth and try to get things
+to run out of control. So this is actually a single set of
+algorithms that's based on the algorithms we use to
+automatically tune process control variable loops. Except
+we're applying them to remove the variation to add more and
+more variation over time. So you can grab them and apply them to
+a car or apply them to a boiler and they work just as well
+either way. >> All right. So we are ready to start. So whenever
+you want like -- before you even start something like -- you need
+to learn like -- and also you need to test your attack. It's
+really possible to buy a chemical plant the problem is
+plants are extremely expensive. Also you cannot relocate them
+easily and you need more than two people to run them. You will
+need more money to fix it. So hacking into a real plant is not
+sustainable. So the -- more common to use a model of the
+processes. So researcher been using a model -- it's a plant
+which produce a commodity chemical vinyl acetate which is
+used to produce chemical plastic and so on. And that's like also
+release two models of chemical plants which transform into the
+framework physical exercises. Wanted to show you quickly how
+it looks like. >> So this is a how much far we can get to the
+open source. All chemical like, all models processes, this is
+information -- yeah. (Laughter.) Oh, no. >> The problem is --
+model of the plant what you see on the website is on the left
+side is actually the set point into the process. So if it will
+kick in a little bit inside, this is the plant, this will be
+-- this is the source code which actually schedules all the
+report, CCC processes. >> I have something for you. How are they
+doing? (Applause.) >> As you all know, it is not easy to get
+accepted as speakers at Def Con and you two have accomplished
+this, congratulations and thank all of you for staying here late
+and seeing them. So give yourselves a round of applause.
+You all know the drill. Here's to Def Con. (Applause.) Now I
+just want to see you continue. (Laughter.) So for example the
+advantage of the model they're easy to understand and it's
+extremely to -- for example go here, integrated the blogs where
+we can for example model different attacks on the signals
+and here the different we can select the different attacks and
+so on. And here we go inside. This is the control levels which
+handles like if it can see this is attack here and so on. Just
+to give you feelings like what we've been working in and we
+build all of this. So if we will go one more here. So this is
+entire control structure of the plant with all of the
+controllers. Transmitters, sensors. A lot of parameters and
+everything we have been introducing you in this
+beginning, the attacker cannot have the process if he does not
+understand the principle how do you tune them and so on. So that
+was just to just give you what we've been talking from. >> The
+stages of cyber physical attacks. When you're attacking a
+process you need a final pay load that you deliver to the
+process. This is going to be carried out on the target
+process and final pay loads are always bespoke. You can't take
+the final payload for one vinyl acetate plant and play it on
+other vinyl acetate plant. So an attacker that is remotely
+attacking a process is immediately gifted with complete
+knowledge and all the things he has to manipulate before he gets
+to deliver this final pay load to the process. And generally
+you run through the attacks in stages but your knowledge is
+never complete. So once you first get into the process, you
+don't know anything about it and you start figuring out stuff and
+you move through the stages of them and then you have to circle
+back and say I need to know more about the process before I can
+start controlling the process. And continue on from there. So
+the first staining of hacking process is access. So you have
+the guy in the coffee shop in France and he's running over and
+hacking in the process. In general SCADA networks, have
+them click on to the business network. So generally process
+control networks have firewalls and additional protections away
+from the business network. So there you've got to get across
+antiviruses, patch management systems and into the process
+control network. But once you're into the process control network
+then you stop having to use hackers tools. Because most of
+the things in the process control network will respond to
+any properly formatted commands. If you take a modbus controller
+and throw that pump on, it will take that command and run on it.
+So you can move freely. Now there's people that will sell
+you exploit packs. You can run to the network, apply a bunch of
+credit card to the problem, you're all done and you have a
+bunch of exploits for the SCADA network. There is an alternative
+approach. One of the things you can do nowadays, if you don't
+really care who you're hacking into, show me all the industrial
+controllers on the Internet. There's way more than there
+should be. Go grab a bunch. Pop pop pop. And a third approach
+you can get sensors are getting smarter and smarter. They're
+getting IP stacks and are all getting to be part of the thing.
+So if you looked at my presentation in 2014, I
+described how to take the SCADA attack and miniaturize it. You
+just have to get the sensor into the middle of the process and it
+can unpack itself and keep on going. So after that you have
+discovery. >> Okay. So you're in. So how much do you know
+about the plant? Well, I'm in some plant. You really need to
+understand lot of things about it. Do you know what stripper
+is? (Laughter.) No. It's not exotic dancer. It's a stripping
+column. So you really need to understand the treatment when
+you try to hack a plant. So in general hacker need to know this
+much information about the plant. The actual kinetics are
+proprietary, how the process is controlled. What is the control
+strategy, how the plant -- basically how the sensors
+connected to the PLCs and very important what is the physical
+constraints of the plant. These stages very long time old
+fashioned espionage. And for example most information you
+will need to hack is for example most of the treatment is
+designed by third-parties. And actually the attack is
+understood the necessity of the stage long time ago. The
+industry started long time ago with the samples. And just to
+quote you the description of one of the ATTs is that the goal of
+the attackers appear to be intellectual property such as
+documents, formulas and manufacturing processes. So the
+attacker knows what to do. So then you'll be looking something
+like that looks like chemical formulas, instrumentation
+diagrams, instrumentation list, and he will understand how the
+plant is built and operate, he will start thinking what can I
+do to cause persistent economic damage. So at this stage you
+already understand how the plant works. So in general the easiest
+way to cause economic damage is to destroy the pipes that
+carries the final product. It's not persistent. The plant can be
+divided into two parts. Reaction to refinement. It's just
+approximately 1 kilometer long. A lot of opportunities to mess
+up with these things but operators have opportunities to
+notice and correct things. Moreover you can always recycle
+product back and try to refine it again. In contrast the
+reaction process in the reactor, you reliably produce less
+product. So that it's good scenario for the persistent
+economic damage. And important to understand that even this
+simple analysis is not possible without input of experts. So
+after this -- then the attacker has to start -- needs to figure
+out how the plant is -- this is one of the most time consuming
+and difficult part of the SCADA hacking. So the hacker has to
+figure out where the relationship between the tags
+and the PLC and how it all looks on the diagrams. So most of the
+process operate on the points, abstract player so everything
+can be measured basically and set. The plant may have 10,000
+points. Where do they go, what do they do. You have to perform
+all of this mapping. It's a lot of work and interestingly
+enough, the malware first attempts on tackers could
+actually map and mind their equipment in the field. So the
+attackers already this far. So this stage he already could
+figure out all of the mapping between equipment and
+controllers. So we are back to -- we need to figure out the
+location of the control loops. Once we have that, the attacker
+needs to understand how those control loops are tuned. The
+good place to go for that is instrument engineering
+application, because they will have everything you need. We
+will be looking for something like this is a pressure points
+meter and it serves the reactor control loop. It, we have here
+it will be the tag. It's actually -- there are all the
+parameters, how the instrument used within the process. And
+what is also very interesting, we have also had user who is
+allowed to modify this equipment. So we now know what
+account details we need to obtain. So what the attacker
+needs to do is close. And nicely flow from left to right, they
+flow all kinds of direction. For example, in this case vinyl
+acetate it flows from tank to the reactor section and to the
+refinement section. It's too bad for us because we need to
+operate the valve and that means we will have to -- we would not
+want to do that because we need to invade more devices. So this
+is the attacker will find this information. So this stage we
+already know everything about the control configuration and
+location of the control valves. So in the contents of the
+models, the controllers are called variables. Because we
+like to be using it from one table. What is very difficult to
+understand for the IT hackers is that obtaining control is not
+being in control. So first of all the obtained control might
+not be used, and the attacker might not be able to obtain
+control. And what does it mean? That we go into the control
+stage of the attack. So until now the attacker was discovered
+information in the process. But physical purposes who have their
+dynamics change over time and if you apply to it it will change.
+So the attacker need to understand how much he can
+control the process. What is his -- how much he can control the
+process. >> So as I mentioned together earlier, once you hook
+all the stuff together into a process, related to each another
+with the physics, so if we adjust a valve over here, and
+what happens to everything else downstream. So adjusting the
+temperature can also adjust the pressure and the flow and all
+the downstream effects need to be taken into account. One of
+the things we need to understand is how much of the process can
+we change before all the alarms and automatic shutdowns would
+kick in and start shutting down the process. >> So this is
+examples. In the red you have -- as you can see everything
+downstream has changed and changed in different scales, the
+response has different shape and what is more interesting, for
+example, in one case something goes up and this goes down. The
+response of the process manipulations cannot be
+predicted by the attack. Attacker. And this is what he
+needs to figure out. And for example as you can see, why this
+different in different control loops. Not only because all the
+process, because also that because there are millions of
+parameters which influence the process response. So this is a
+control loop which we wouldn't show before. There are many
+parameters in each stage that would be influence the response
+to the manipulation. And the attacker needs to take into
+account all of them. What is more important, the attacker
+change something, he can never understand where the response is
+to the attack or if it's because of the configuration of the
+process. So just to give an example, when I've been
+designing, I been considered several of those parameters and
+I have to really include into my explored the way how I will be
+dealing with them. One of the most difficult parts of hacking
+continuous process is -- most of the physical processes are
+nonlinear. What does it mean? In short it means that the process
+is not proportional to the input into the process. For example,
+if the process is heated, how does the process behave from
+being heated 140 degrees to 150 degrees is completely different
+when heated to 160 degrees. And even if you never model the
+process you don't know how the process will behave. The
+behavioral process is known to control as well to the extent of
+the modeling. So the control algorithm has never been tested
+and designed to deal with the process control in the trench,
+it will not be able to control it. The attacker will move the
+process outside of the optimal envelope. So he have to deal
+with all of those strange behaviors of the processes and
+it's not easy. So just to give you an example what is
+nonlinearity you see a simple response the reactor and the
+temperature. And all of those are extremely annoying to the
+attacker because it cause alarms. Because it heats maximum
+values. Another problem one of the issues which we have to deal
+hacking this particular process was that this was a very badly
+configured plan and all the controls were purely controlled.
+So whenever we try to change something to our benefits, many
+control loops had an effect. So if you will see this like look
+at the circle you can see like fluctuations, like why do we
+even bother. The problem is those tiny fluctuation caused
+enormous impact on other control loops. So unfortunately most the
+control loops were causing alarms so we could not really
+stay like end of the radar because we did not want to cause
+any alarms. It took us a way to figure out how to deal with
+that. In general we apply two types of attacks. Step attacks
+is when you bring a product to a state and leave it there. And
+periodic attacks is when you attack the process, let it
+recover, attack the process again, let it recover and so on.
+So we have to test all of those control loops which we've been
+identifying in the reactor section. We've tested them for
+multiple parameters. This was other mental model of the
+dynamic behavior of the process. >> I do want to know whether you
+measure yourself 5 foot 3 with or without your high heels on.
+>> So obviously this is our first attempt to -- you see,
+this is the first public talk on the complete attack from start
+to end. So obviously this was the first attempt to understand
+the dynamic behavior of the process. So we were not
+obviously optimal. So we now trying to find a way to optimize
+it so it would fit in a small payload. So the outcome of the
+attacker will need to classify the available control loops,
+like how they useful for -- how well he can control them. So
+basically factors, for example we use the sensitivity of the
+control loops. So highly sensitive loops are not reliably
+controllable so you probably don't want to use them in your
+final payload. Also the propagation, you want to know
+what is the marginal parameters of the attack which do not cause
+-- So now we want to know what we can control to which extent
+and we can actually start designing the real attacks. And
+transition to the damage stage. >> In the damage stage you're
+trying to figure out okay, I know all this stuff I can do
+about the process, what am I actually going to do about it.
+The damage stage is the least familiar stage to IT hackers. So
+there's a lot of good starting points when you go and start
+looking at the damage stage. So one of the good basic principles
+is that things happened in the real world by accident. You can
+probably make them happen by malicious intent. So you can go
+to all the places where these are recorded, to government
+databases, the plant's own databases, the chemical safety
+board, et cetera, and read about all the things that have gone
+horribly wrong. And they're out there on the Internet for you to
+go and read. So the target plant may not have been designed in
+the hacker friendly way. So you may really, really want to know
+what this particular value is, but there may be no sensor there
+or no sensor close to it. And information may be spread out
+across the process. And the control rooms could be designed
+to control different parameters than the ones you want to reach
+in and control. I would really like to change the pressure here
+but there is no pressure control loop so I won't do it. So in
+this case -- >> In this case, since we want to -- measure the
+impact of the attacks we need to measure how much molecules --
+the concentration of chemicals is usually measured by
+analyzers. There are only flow and temperature. In order to
+compute the volume we need actually the concentration and
+the flow. A place where we could get those numbers is in the exit
+of the plant. But measured in there is too late because the
+values are available in like 8 hours. So you will have to text
+something and wait 8 hours. It is certainly not sustainable. So
+we've been actually in desperation because it seems
+like how do we proceed? Because we don't have numbers, we can't
+evaluate how effective our attacks could be. This is a good
+point, I remember the presentation of Jason from
+another convention where he had been talking about proxy
+sensors. The concept behind that is -- generally there are two
+answers to measure something. It's technician and engineer
+answer. Technician will tell you that something is decreasing or
+increasing and engineer will tell you by how much. So by
+using proxy sensors you actually can obtain at least a technician
+answer. And a proxy sensor something will change with
+respect to another parameter which you are interested in. So
+in our case a proxy sensor is a temperature reactor exit. But if
+temperature is decreasing it means that less reaction is
+happening in the reactor. So at least we can see if our attack
+is effective or not. That is already good start. It still
+doesn't allow us to compare the effectiveness between the
+attacks. So we desperately needed the engineering. And this
+is where we started to sink further. Process algorithms are
+extremely complex. There will be lots of intermediate
+computations. So we decided to give a shot like maybe there
+will be some numbers computed in between which can be useful to
+us. So we started looking into the code and we knew that we
+need to look into place to find differential equation. And
+eventually we found code which seems like they're computing
+what they need. The problem was that the numbers which were --
+the numbers we couldn't do really anything with them. They
+didn't come up to 0 or to 1 or to hundred. They are just too
+small. So we didn't know what to do with it. But still they told
+it was the right number so we spent two weeks try and play
+with those numbers until we actually could figure it out. We
+could compute the concentration of the vinyl acetate in the
+reactor exit and we could actually finally measure the
+effect of our attacks. So the outcome of the damage state is
+the attacks which you classify as damage potential. And then
+you just apply those attacks. So you would think that this is all
+and we already done because we have our attacks coded and we
+can go and hack it. >> So the final stage of hacking a control
+system is cleanup. So in most IT scenarios you go hack into
+something, I've got the databases and all the stuff,
+erase all the stuff and I was never really there. In hacking
+process control systems, if you leave the big smoking plant,
+someone will investigate the big smoking plant. So you have to
+convince the people that are actually investigating this that
+the big smoking plant was the result of operator error,
+misconfigured equipment, all those types of things. So having
+a human in the loop turns this from just a purely cyber system
+into a sociotechnical system. So since there's real people
+playing with the process and real people that are going to
+analyze the process when it's all bad and gone, then we can go
+and attack the system. So creating a forensics footprint.
+Somebody is going to notice and say why are we not making money
+and they're going to try and fix it. But you can do things like
+timing the attacks when a particular employee is on shift
+and after a while they say whenever Bill is on shift, then
+things go horribly wrong and we don't make money so let's beat
+Bill a little bit. He must be the problem. So an employee
+could end up getting investigated instead of the
+process. In this particular case we're going to show you one
+where we picked several ways that the temperature can be
+increased. So our plan is we'll wait for the next scheduled
+instrument calibration, we'll perform the first tack and then
+wait for the maintenance guy to be yelled at. And we'll perform
+the next one and he'll go back and tune it again and we'll
+perform the next one and the next one. So here we see four
+different attacks on the reactor temperature. And the results and
+you can see they're different. So the lines and the changes
+with the recalibrations, it just looks like the guy is messing up
+and not getting the calibrations right. >> So eventually they
+will start thinking probably the reactor is not performing well.
+It is not possible to see into the reactor. So how the forensic
+guys investigate, they have the metrics to complete to
+understand what is happening with the reactor. You have to
+understand how they do it in order to fool them. So this is
+just like some of the metrics which we've been computing and
+although they look similar, they all tell completely -- So just
+change the fact according to the efforts of the plant personnel
+and they will keep thinking they're not doing a good job. >>
+So in general, we'll go through all of the stages and we plan
+all this stuff out, some of which can be totally offline and
+some of it on process, we take all of this stuff and wrap it up
+into the final payload and that's what we're going to stick
+inside of our tack and send into the process. So if all things go
+well, then our tack works and we make lots of money and everybody
+is happy. Well I guess everybody on the attacker's side is happy.
+>> But it's a big problem right now. So the plant really goes
+through tremendous modernization. So most of this
+really for now -- the plants are now connected to the Internet
+and the Internet can talk to the plants. So the attackers are
+already in the plants. And although like the argument like
+why we cannot improve the state of the security of the
+industrial control system is like well you don't see any of
+those attacks. The problem, all of those accidents are not
+classified information and they're not allowed to be
+public. But that does not mean we have to lean on our chairs
+and do nothing. It can be studied and this should do it.
+So by standing what the attacker needs to do and how, we can make
+exploitation harder create a solution which works. Food for
+thought if you're an attacker. >> So most of the things when
+you actually get into breaking a process are about cost. So one
+of the reasons the cyber physical attack is because all
+the other people that are probably out making money right
+now are studying cyber physical attack. So for most attackers
+then the cost of an attack can quickly exceed the cost of the
+damage or the cost of the benefit they get there. So if
+you actually make it harder and the attacker has to hack into a
+large number of devices or suppress a large number of
+alarms and spoof a large number of data, his costs go way up and
+his testing goes way up and his chance of failure goes way up.
+Each process is unique. If we look at a wide range of
+scenarios, then we can start seeing all the patterns. On the
+other hand, the opposite is true too. As we figure out how to
+deal with all the uniquenesses and all the processes, probably
+attackers are going to get better at their job too and
+figure out all those that can be applied to different ways. So
+SCADA payloads are probably only a matter of time. So I guess in
+the end, if you want to be the evil James bond villain and make
+millions of dollars, going to start building your evil lair,
+hacking chemical and process control systems is probably not
+a bad place to start, but it is a very complex and it's very
+challenging field of hacking. So anybody that wants to come and
+join us and study hacking processes and physical damage,
+then they should come and do so. >> So just go and check our
+stuff there and you can get there right now as well. That's
+the end of our talk. (Applause.)

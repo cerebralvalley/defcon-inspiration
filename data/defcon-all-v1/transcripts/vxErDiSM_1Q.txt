@@ -1,0 +1,549 @@
+>> TILLMANN WERNER: Welcome, everybody, to
+my presentation. That's better. That's much better. So welcome,
+everybody to my presentation. I'm Tillmann. I work for a
+company that deals with targeted attacks but today I'm going to
+be talking about something else. I'm going to be talking about
+one of my favorite topics, one of my hobbies, which is
+peer-to-peer botnets and they're interesting because they're
+designed to be resilient against attacks, right? I'm usually
+trying to attack botnets and have fun with them. Let's see. So, yeah, there's an addenda. Okay. Let's start
+with a quick introduction to peer-to-peer botnets. I guess most
+people in the room here are familiar with peer-to-peer networks
+in general. I mean, they're networks like BitTorrent and
+others and the usually the purpose is to build a
+decentralized infrastructure that's self-reorganizing. So if parts of the
+infrastructure go offline, you know, it recovers itself and so
+on. And usually people build peer-to-peer networks
+in general because they don't -- they want to get rid
+of any central components so the infrastructure cannot be
+taken down so easily. When you analyze a peer-to-peer network of
+some sort, you want to understand the protocol first. That's not too much of a
+problem for all the popular file share networks because they're
+well documented but if you look at peer-to-peer botnets they
+usually use their proprietary protocols and you have to look at
+the samples, do the reverse engineering and so on. But if you do that for several peer-to-peer
+networks you will at some point see that there are different
+approaches. One is
+based on gossiping. If you think about that you got all these
+different nodes that are interconnected somehow and you want to
+propagate some information in this peer-to-peer network, right? You can either do that by what we call gossiping
+so each peer kind of gossips information to its neighbors
+so it forwards information to all its neighbors and these
+do the same and so on. But you can -- if you think about that, that's
+probably not very effective, right, because probably several
+peers will receive information several times. So you fill up the network
+with more information than you actually want to or have to. So more advanced peer-to-peer networks use
+what people call an overlay network. So you have addressing on top of, you know,
+the general addressing what methods like IP so every peer has an
+ID or some sort of idea and then there is a routing method so
+you can address specific peers and if you want to send
+information to a specific peer, then, well, you can -- if you
+know its address you can route that through the peer-to-peer
+network. An example for that is eDunke (sp.). Every peer has a hash
+which is at the same time its ID its idea and then you can look
+up data and the hash tag. But I'm not going into deal about
+that. One important thing when we talk about peer-to-peer
+networks is bootstrapping. Bootstrapping is the process of establishing
+connectivity with the peer-to-peer network when the new peer
+comes online, and that's a very important aspect. It's a very
+important thing because when you think about that you want to
+get rid of any central entities in your peer-to-peer network,
+right? So it might not be a good idea to have a seed
+server to contact. That would be a central component, and you
+don't want to have that. So what people are doing -- they deliver a
+seed list, a seed list of other peers together
+with the node itself. With the executable -- it's executed on the
+node system. But
+what happens if these peers go offline for some reason or if
+they are not online, the computers have been switched or or
+something, then you need a fallback method and that's where it's
+getting interesting. And if you look at the box at the right-hand
+side, the third entry is Conficker which is a very famous
+or infamous piece of malware that was 2009 and is still very active
+and it used random scannings so it scanned the internet
+for other peers and, of course, there's no way to block that, right? There's no
+information that the bot realize on when it's first started. It
+just starts scanning the internet until it finds other peers and
+then it can learn other peers from that one and do that to
+establish connectivity within their network. Speaking. Of that box, that's my own private history
+of peer-to-peer botnets I analyzed. So I started in 2008 with the Storm worm,
+which used the eDunke or protocol together with some other
+people. Some of them are here in this room. There are other
+peer-to-peer botnets that are known. I think new gash was
+active in 2007 and maybe there were some others, but I think
+2007 is the earliest that I know earlier. Then there was
+Waledac which people believe is the successor of the Storm worm
+because Storm -- it caught a lot of attention by researchers. And a lot of -- lots of security people tried
+to, you know, investigate Storm and tried to understand
+the protocols. Some
+even designed attacks -- how you can attack the peer-to-peer
+network to knock it offline, take it offline, take the nodes
+offline. So apparently the people behind it decided
+to abandon it at some point and turn -- or create a new
+botnet and that was called Waledac and it was not relying on any
+peer-to-peer infrastructure so no -- no eDunke anymore
+instead they implemented their own protocol which was very
+similar to -- maybe I shouldn't say very similar to eDunke
+but, you know, the overall concept behind the botnet had similar
+structures and design characteristics so that's why people
+said you it's probably as successful as Storm. Then I already mentioned Conficker because
+it started out that was a bot that was entirely centralized
+with its command and control infrastructure. Many of you have heard of the DGA
+the domain generation and it had names all the time and then try
+to contact -- resolve and contact that host and ask for
+basically updates. Later on these people switched to version
+C the third version. They switched to a peer-to-peer protocol as
+a fallback command and control channel because there
+was some effort to block access to the generator domain or they
+would lose their 8 million nodes botnet, right? So that was Conficker. In 2010, I believe late 2010 the Kelihos era
+that's a bot that's known as Asprox. I think it's the other most
+well-known name. And that again is a successor of Waledac which
+was taken down by some people and myself. With a recipe attack
+and I will talk about that in a minute. That botnet was taken
+away from them so again they created a new one. And that was
+call Kelihos A, and it's interesting because if you look at the
+list it was attacked as well with success. So they created
+Kelihos B a successor and tried to fix some stuff. That was
+taken down as well. And again, they created Kelihos C, a third
+version. We attacked that as well. It wasn't too successful. It somewhat survived because we weren't able
+to own all the peers and just recently they changed something
+in the protocol and added private/public key encryption to
+it. It doesn't make
+sense at all because, you know, you might want to enscript your
+traffic but you can't do this with -- it doesn't do
+public/private key stuff because the peers have to generate
+their own keys and exchange keys and is to on. Anybody can do
+it. Anyway, okay, and then in 2011 there was the
+minor botnet and I will show you some protocol example for
+that. A really stupid
+piece of malware that was written in dot.net if I'm not many and
+the protocol was HTTPS protocol and they made many mistakes so
+it was trivial to take down. Okay. The remaining two ZeroAccess and Zeus -- they're
+still around and they're really successful. They're some of the
+most -- the biggest and most traveling botnets that are around
+these days and they're mostly used for dropping other malware on
+the infected system. It's used to deploy other malware like
+click bots. It's split into seven or eight separate botnets. Yeah, I don't know why they have some affiliate
+program or something. They distinguished 64 and 32-bit systems because
+they want to be able to I don't know, inject into other
+processes and that might make sense to maintain two separate
+structures. Going back to my slide here. Obviously, people build
+peer-to-peer networks because they want to -- they have the same
+goals with other peer-to-peer networks. They want to create a
+resilient infrastructure that's resilient, again, takeover
+attempts or takedown attempts. So that's the goal and that's
+why, you know, they're getting somewhat popular. I'm sure there
+are other peer-to-peer botnets out there that I don't have on my
+list. I'm aware of a few but I haven't looked at
+them so I'm not going to talk about them. Interestingly, for I think all -- yeah, all
+botnets that you've seen on the previous list, the architecture
+is not -- peeler prepare. It's a hybrid architecture. It's what you see
+here. The thing at the bottom is the actual peer-to-peer
+network and the dash lines represent a peer being in the peer of
+another peer but when they want to receive commands for I don't
+know sending out spam or something like that, they still reach
+out to central components and the boxes you see in the middle --
+you see that? Yeah, the botnets you see in the middle are
+proxy servers so they have another layer in between
+like systems like burner systems so some of the proxy servers
+get taken down they can easily replace them without losing their
+command and control infrastructure. And then there's a command and control server
+on top that is the actual back end, okay. There might actually be multilayers
+between the peer-to-peer network and the C2 but, well, unless
+you get access to one of the proxy servers you don't see what's
+behind it. But we're fairly certain in these cases the
+proxy servers because, for example, when they speak
+HTTP and they respond with an engine X banner and -- well,
+you can't be certain it's a proxy. Most likely at least. Okay. Let's take a look at some protocol examples
+so you get an idea what these people create and come
+up with. This is the
+already mentioned minor bot and as I've said that was really a
+trivial and also stupid protocol. It was HTTP-based and the
+bot -- it wasn't a full HTTP server but just very rudimentary
+one. It was backed up by the fall system if you
+would issue a get request with this search parameter and
+the -- you know, the IP list two value that file name would be
+looked up in the respective directory and then delivered to
+the requesting host. Okay? So it was really -- I mean, if there were
+other files on the file system in that directory you could request
+them as well with this method and it was probably not intended
+by them. Yeah, anyhow, so you can see their response
+there. I think the
+engine X server is fake. They just copied that from somewhere
+and sent it with the responses. And you can see at the bottom
+is the actual payload, a list of other peers, a list of IP
+addresses. And minor always responds with the entire
+peer list that it has, all peers that it knows about. And that's stupid
+because it can be huge and also that makes it easy for us, you
+know, to enumerate the bots and understand how many affected
+machines there are so forth and so on, if you want to attack it,
+for example. I mean, this is only the start, right? You can
+see it's 11K in size. And this is by far not the largest
+request or response we've seen. You can try to recreate the other peer-to-peer
+list and talking to other nodes by a graph. You can recreate that by
+crawling peers. We will talk more about crawling. I mean,
+that's a topic of the talk, right? We'll talk more about that
+in a minute. But if you request a peer list from one peer,
+you can recreate these links in the graph and
+then take the response -- the IP address from the response
+that you got from these and then plot pretty pictures like this
+one here. I think
+that's about 37K nodes, which is only a subset of the -- of the
+minor botnet at that time. But it takes like ages to render
+these pictures here so we only did that for a subset of the
+nodes we found. You can see that other peer-to-peer protocols
+are also similar. This is version 1. There's two versions out there. This is the earlier version. And they define, again it's a
+propriety protocol that they implemented. They defined 6
+different message types and one is a get L, which means get
+list, get peer list from the other peers and the red 0 is the
+return peer list message. This is what you get when you reverse
+engineer the message form and decode it and pause it. It's not
+plain text. I think the version 1 had a 4 bite K and used
+that hash to decrypt its messages but it was always
+the same key so it was basically an encryption with a static
+key and the other version just used Axor with another key, version
+2. So if -- if you undue the encryption you end
+up with something like this. And you can see here in the case of
+version 1 a peer list has 256 entries so it always returns up to
+256 entries, but since the botnet is so -- is large enough,
+every peer has always more than 256 entries at any time. So
+whenever you ask a peer for its peer list, you will get these --
+most likely these 250 entries. And you can see there's some
+order there. So the first -- the first number is a time
+stamp or a time delta so to speak because the botnet
+favors peers that have recently been active and that makes sense
+because you don't want to keep -- maybe if that is your strategy,
+you don't want to keep like peers from the stone age that's
+in your list that may be offline so the entry becomes invalid
+and say you might want to favor peers that have recently become
+online that you have recently talked to so that's why they
+sort this peer list by the time delta and then return the 256
+most recent ones you. They changed this protocol a little bit in
+version 2 so this is version 2. You can see there are again these two message
+types. I've already mentioned the encryption is likely
+different but for the most part the protocol is very similar so
+there is get L and red L and you have the time stamps and the IP
+address but they figured they don't need to send back 256 IP
+addresses. That's way too much, you know. It's sufficient if
+you respond with only 16 IP addresses. That makes the messages
+smaller so, you know, less overall communication in the botnet. And the reason is -- I mean, the version 2
+is really 2. We've
+crawled some of the -- some of the botnets and they count like
+3.7 million. I think that was the count we got. 3.7 million,
+in fact, machines and if you have 3.7 million machines talking
+to each other that's a lot of traffic so you might want to
+reduce the message size. So that's what they did but if you take a
+look at the IP addresses, you might notice that the last
+one looks a little strange. It's very high, and that is because they do
+some data duplication. You don't want to -- or multiple entries with
+the same IP address in your peer list obviously
+because if you allow that, it's trivial for other people to poison
+your peer list and inject one entry multiple times and overwrite
+all the legitimate ones and then you're not connected to the
+peer-to-peer botnet anymore. That's why they do D duplication and in order
+to do they sort the IP addresses and then, you know,
+go over the sorted list and if they have two consecutive
+entries that have the same IP address they kick one out. But because IP addresses
+are at least on PCs stored in little -- you know, and they sort
+them you have in the result and these IP addresses, it in the
+response. What's interesting is they do that but they
+don't filter out invalid IP addresses so when you crawl the
+botnet you come across an IP like 255, 255, 255 so all that's
+set with obviously is an invalid IP address but it regularly
+shows up in these lists because when you sort the list, in increasing
+order then it's the topmost entry and it's always included
+and they have some other garbage in there but for some reason
+they don't filter these entries which is interesting. Okay. Let's talk about crawling so -- I mean, crawling
+is nothing else but recursively enumerating peers. You start with
+one peer you request it's peer list. You take a look at the
+response and do the same for all the returned addresses, right? And so on until you, you know, want to go
+offline or I don't know. So that's all -- all that crawling is, but
+you really want to think about crawling strategy, and
+one -- one important thing is crawling speed. So ideally we would be able to take a
+snapshot of the current peer-to-peer graph and then, you know,
+enumerate the peers in that snapshot but that's not possible. First off because, you know, you have to do
+that actively. You
+have to send out requests and process the responses and that
+takes time. And while you're doing that, the structure
+of the graph might be changing, right? Peers might go offline, new
+peers might come online so you will never be able to get that
+snapshot, right? But to come closest to that, you want to be
+as quickly as possible. Yeah. And when you do that, you have to think about
+things like unresponsive peers. What if you -- if somebody sends you
+an IP address back that's offline? How do you deal with that? Do you want to keep it in the list and try
+again later? I mean,
+you don't know why it's unresponsive, right? You might lose
+packets. The internet might be overwhelmed with your
+traffic because you tried to be as fast as possible. You don't know why
+it's unresponsive. Yeah, there's some hiccup on the internet
+and you might want to keep it in the list and try again later
+but you can see it's getting a little bit more complex. And
+what you see in the top right corner is the result of us
+crawling peer-to-peer Zeus which is also known by game over by
+the way. The red line, the red graph shows you did
+number of IP graphs and we call them known peers but most
+of them are not actually reachable, although, the protocol
+is pretty robust so they don't include any invalid IP addresses
+in it. But most of
+them are actually reachable, so if you count only the peers that
+you can talk to, you end up with a green line and you can see
+it's way less. And you see -- if you see these little dips
+in the red line, that is because for Zeus -- peer-to-peer
+Zeus we told a strategy where we cleaned up the list
+of known peers from time to time so we said this is unresponsive
+for too long and kick them out and keep the list small because
+otherwise you have an endlessly growing list. What you can also see is that the green line
+converges very quickly and that means you have probably reached
+the number you are able to crawl. And that gives you some size estimation,
+okay? Okay. There's some fancy animation here. You might wonder
+why anybody wants to crawl peer-to-peer botnets at all? I mean,
+it's interesting to play with that. It's interesting to
+understand the protocol and reimplement it and so on and then
+play with the botnet and maybe, you know, snoop on what they're
+doing. But we usually have other goals. I mean, reconnaissance
+is usually the foremost thing, right? Why do you want to learn
+something about the peer-to-peer botnet and the infected
+machines? I've already mentioned size estimation. If you talk
+to the press, they really like high numbers. So if you tell
+them, you know, it's 10 million infected machines large they
+will love that but next time you have to tell them the botnet is
+15 million infected machines large or something. So, yes, size
+estimation is one thing but you have to be aware that you can
+only crawl a subset of the infected machines. Most of them,
+obviously, are, you know, behind NAT, behind gateway, you can't
+directly talk them. You can't directly reach them from the
+internet, right in they're part of the peer-to-peer botnet. They're like leaves in the graph. It's not trivial. If you do
+what we did for peer-to-peer Zeus and you get a number of green
+lines that we talk to you have to extrapolate from that number
+to -- to get to a more realistic size estimation. Infection tracking is something that people
+are doing who want to remediate or, you know, kill these
+botnets. They want
+to learn about infected machines and then can report the IP
+addresses to let's say ISPs to pass the information on their
+customers and hopefully they clean up the information so the
+botnet dies off but I've never really seen that be successful. Preponderance geographic distribution is something
+you can also get from that. If you have all the IP addresses you can do
+geolocation lookups and then if you want to, plot them on the
+map like what we did here and I want to mention Mark and some
+other guys who created the code we base this on. This is
+actually a live thing so we -- we send in a live feed of the
+crawling results and place these nice little red dots. Okay. But what we're usually after -- we want to
+attack peer-to-peer botnets so -- I mean, if you
+can, for example -- if you know all the nodes you might want to try
+to send them commands yourself if you understand the command
+and control protocol. There's sometimes interesting commands if
+you can send an uninstall commands to all the bots
+that we identified and they're the ones you can talk to so it's
+the backbone of the whole graph, so to speak, then you can kill
+the botnet entirely. Or if you can, I don't know, send requests
+for more information about the infected machines, you can, for
+example, get information about the operating system version
+or other stuff. So that's usually interesting as well, but
+you can also probably manipulate the peer-to-peer infrastructure. So think about it. If you can generate your own peer list
+and then propagate these into peer-to-peer network you can
+create edges. You can kill other edges by replacing them
+and so on. So you can basically, you know, tamper with
+that infrastructure and we will talk more about
+that in a little bit. Ideally, I mean, you might be able to sinkhole
+the whole thing by replacing all the legitimate entries in
+the peer list with your own ones and by that have all peers talking
+to your own machines. Which means nobody else has access over them
+anymore. If you think about crawling strategies, you
+might ask yourself, do I want to implement a depth search
+or a BFS but it doesn't really matter at least that's what
+we think because first off it's not a tree. It's a graph. I mean, you can
+distinguish the two strategies because it doesn't really matter
+because it's dynamics. It doesn't really matter which nodes you
+start with and which nodes you continue with. At some point if
+you're quick enough, fast enough you will hopefully be able to
+learn the biggest part of the regional machines. If you track the infected machines, you need
+to be able to distinguish, have I seen that IP address,
+have I seen that peer before? Do I want to include it in my list? Or is it a new
+one. If you rely on the IP addresses only, that's
+a bit of a problem because I've already mentioned there's
+a lot of IP churn and, you know, IP addresses that change after
+24 hours and if you happen to crawl a peer or contact a peer
+and then the IP address changes and you contact it again,
+you count it twice. You want to avoid that or you get screwed
+numbers. Some peer-to-peer protocols are nice. They implement UNIX
+IDs especially the ones that identify overlay numbers because
+you need them for routing and if you have that, well, then you
+can have more accurate numbers. >> Wow, you just gave it to me. Who knew? So part of the
+Defcon experience is the best technical talks delivered by the
+top speakers. It's very hard to get accepted to give a talk
+here. You all should consider what you're doing
+to maybe become a speaker at some point. This gentleman -- this is his first
+time. Let's give him a big round of applause. (Applause.) >> So we have another tradition at Defcon,
+typically first time speakers do a shoutout on stage. So cheers. >> All right. >> We've had to do this all day. (Applause.) >> And now we'll see if he can pick up the
+talk and start off where he left off. >> And I know some of you have seen this many
+times. I'm not
+going to make him do that entire speech next time. (Laughing.) >> TILLMANN WERNER: Okay. Thank you. Okay. (Laughing.) >> TILLMANN WERNER: I think I need one more
+to nullify the previous one. (Laughing.) (Applause.) >> There you go. Now you'll be better. (Applause.) >> Good job. >> TILLMANN WERNER: Let's finish this before
+it kicks in. You're done with the crawling when this curve
+converges because you don't learn about any new peers anymore. And if there are
+some changes, then it's due to churn. So what you see here is
+an analysis of the congregants for the peer-to-peer botnets be
+crawled. I hope you can read that. I realize it's rather
+small. But on the left-hand side you see curves similar
+to the one we had on the previous slide. Like the actual number of
+machines that we identified, and you can see -- I mean, it
+depends on the size of the botnet, of course, the upper curves
+of 0 axis which is pretty large to you. You get way more hits
+and the ones on the bottom are way more -- let me see. So
+that's a botnet called Sality that I haven't looked in myself
+but my friends has and he's provided these numbers so you can
+see depending on the size of the botnet the scale is different
+but the shape is more or less the same, right? So you can see
+that all of them kind of converge against a straight line, and
+then you know you're more or less done. You can also take a look at the population
+increase or -- yeah, increase in percent and that's displayed
+on the right-hand side which basically correlates with the other
+graphs; right? Yes, so -- oh, by the way I mentioned I'm
+going to read some code after this presentation. We figure whenever we want to
+crawl a peer-to-peer botnet, let's write some basic code that we
+can add the protocol implementation to, do it right once and add
+the changing stuff to that. And I'm going to release that as
+open source later on. (Clears throat.) >> TILLMANN WERNER: So, yeah. So how do you distinguish
+peer-to-peers? You have IP addresses and IP addresses versus
+IDs. In the case where you have IDs, in the case
+where you haven't, you can still derive some, you know,
+conclusions from other cases where IDs are available. And what you see here -- I
+mean, I'm cheating a little bit here because these graphs are
+not generated by crawling. This botnet that's actually Kelihos
+C that was attacked earlier this year. These numbers are not
+generated by crawling the botnet, but in this case we did node
+injection and we propagated an entry into the peer-to-peer
+network and then it became very prominent and then all the other
+peers reached out to that machine and by this you even get the
+ones that are not directly reachable because at some point the
+entries propagate through NAT and gateway and this gives you way
+accurate numbers and it allows you to peer count to the ID
+count. So green is the total number of bots and the
+total number of UNIX IDs and you can see this goes
+up even though we have seen all -- or almost all UNIX IDs so
+the -- so the next slope whatever it's called is much slower
+for the green line. And that's actually very similar so the ratio
+between the two after, say, 24 hours or 48 hours is almost
+the same for all botnets we've taken a look at. I mean, we have a paper out on
+that where you can take a look at all the numbers, but I'm not
+going to cover that here. So you can see after 24 hours that's
+where the two lines crossed so even if you don't have UNIX IDs,
+you can say I take a look at the IP addresses I can collect in
+24 hours and that probably gives me pretty accurate numbers. Yeah. I already mentioned speed, speed is important. You
+want to be as quickly -- as fast as possible, but being fast is
+not easy. I mean, if the protocol is UDP-based it's
+a little bit easier because you don't have to worry
+about such an establishment and so on and timeouts. Actually, I didn't get to
+finish the UDP code. Most of these botnets use UDP for a
+reason. The overhead is less. But I didn't get to finish the
+crawl template code for UDP so that's left as an exercise for
+you or you wait until I'm done and check into the repo. But
+UDP. Either people have one of two threats, one
+that sends out information and one that consumes incoming
+messages. If you do
+that and many bots work that way, actually, most of the UDP ones
+we have seen. If you do that, you have to worry about
+synchronization so you have to, you know, have a peer list that
+you lock when you want to send out stuff or select a peer that
+you want to send data to or when you receive data, you also
+probably want to lock the peer list so you have to synchronize
+the two, so we usually the main loop and just a single thread
+because it's faster. The code is a little bit more complex but,
+yeah. When you're talking TCP, it's -- yeah, a little
+bit more difficult. You have to establish TCP code connections
+and worry about timeouts because you don't want to get
+dust. If you don't
+worry about all these things and you crawl the network, they
+might like open half -- create half of connections and not
+respond to you or keep connections open forever that are
+established and then you're running out of fiber scripters and
+your crawling doesn't work anymore. You probably want to have a
+limited set of fiber scripters or sessions that you want to
+handle. So what the code does that I'm going to share
+publicly is it allocates a fixed number of slots for
+sessions and -- I mean, I mean, that's the amount of simultaneous
+sessions the code can handle and, you know, when it wants
+to contact a new peer, it takes the next free slot in that
+array. So by that you
+make sure your crawler doesn't get dust. Yeah, I talked about timeouts already. Another thing is if you talk to a peer, then
+you can -- I mean, definitely say it's live. It definitely exists. Thank you. The question is how long do you want to keep
+it in your peer list flagged as active because as I've said
+previously you want to beginning between IP addresses or peers
+that you encountered or the ones that you actually talked to that
+are alive. If you
+talk to peers for live, how long do you want to consider it live
+so that's another thing. I mean, do you want to consider life
+for 24 hours or only 3 minutes or do you want to periodically
+recontact it and if it doesn't respond anymore then you say it's
+not live anymore. So these are parameters that are really,
+really important. I mean, it might not sound like that but
+they're really important and you might want to -- you want to
+tune them for the specific botnet that you're crawling to get
+accurate numbers. Yeah. Also, especially when you're talking UDP,
+I mean, you can't send out lots of UDP packets per time. And fulfill up
+your own line, your own pipe with UDP packets you will have pack
+lists sometimes and you get funny results. You either get a
+bigger -- bigger line, bigger bandwidth or slow down a little
+bit so you want to have a parameter that allows you to slow down
+the whole crawling process. So Prowler is the name of the tool that we're
+going to release today. As I've said, it just implements the crawling
+framework, so to speak. And you have to add the protocol
+implementation yourself. It provides with some step functions
+that gets called and that's where you have to implement the
+protocols. So if you want to check it out, please do. As I've said, it's only TCP4 now. Yeah, and you can see what
+it looks like at the bottom of the slide. You can even see that
+it distinguishes between known peers and active peers. Can you
+see -- take a look at the last two lines, you can see the number
+of active peers goes down from 719 to 717 and that is because,
+you know, after some time, some peers don't respond anymore so
+they're not considered active anymore and get flagged as
+inactive. And in that case, we were crawling Kelihos
+C and that was in February. The peer list I started with only contained
+two entries. You see that on the right-hand side. And Kelihos
+always shares 250 entries and that is why if you take a look at
+the first line why -- that is why it immediately goes up to 250
+known peers; right? It contacts one peer and loads 250 entries
+and it knows 250 ones immediately and then it continues from
+there. But if you take a look at the two graphs,
+again, the green line is active peers that it can talk
+to and the red line are peers that I have seen in peer lists. You can see that the green line gets constant
+very quickly. So it converges really quickly and, you know,
+somewhere in the range of, I don't know, what is that, 700? Yeah, that's in line
+with the numbers below. And that is because Kelihos configures
+with other peers, more recent peers so they have this backbone
+of what they call router nodes and there's never on more than
+the range of 700 that's why we'll never be able to talk to
+around 700 peers at a time. And you can also see these, I don't know,
+steps or whatever you want to call them in the rat curve and
+that is because if new peers come online, they propagate in the
+peer-to-peer network and become active at some point and
+then you get some steps because immediately it gets propagated
+to all peers that are online and that's what causes this effect. Okay. So I'm almost done here. This is the good repository
+where you can check out the code. As I said, I will hopefully
+add a UDP version soon. And I've checked in like that version
+like one hour before the talk so there might be some bugs in
+there, but I -- if you tell me that there's something buggy, I
+will fix it or you can fix it yourself and send me a patch. But I also want to talk about the alternative
+that we already touched on briefly which is node injection. As I've said, by
+crawling you will never be able to reach the peers that are
+behind gateway network so forth and so on so you can actively
+participate in the peer-to-peer network as an alternative and
+propagate your own IP addresses, and then at some point
+depending on the popularity of your node, the other peers will
+reach out to you and, you know, say, take me down or sending
+commands. So, yeah. And that's actually a comparison here
+between tracking based on sensor injection and crawling. So you
+can see the top two lines are again -- this is peer-to-peer Zeus
+so we have IDs, unique IDs and IP addresses so we distinguish
+between the numbers unique IDs and peer addresses, of course,
+the number of peer addresses are much higher and the top two
+lines are what we achieved through sensor injection and the
+other lines are what we achieved through crawling. And the
+bottom lines are the active IP addresses or the active peers
+that we can talk to so you can see it's much less than the peers
+that show up in the peer list. Okay. That's basically my presentation. I want to give
+shouts to some people here because they're awesome. And did
+some of the work with me here and deserve credit for it. And
+that's it. I think we have a few more minutes left, maybe
+3 or so, so if you have any questions, you can
+ask me now or hunt me down at the bar later on. Thank you. (Applause.)

@@ -1,0 +1,891 @@
+[laughing]>>So I guess you're
+all here to see how to make your
+own Defcon black badge, right? So yeah, you got do it yourself,
+otherwise it's not gonna happen.
+Um, we're gonna blow by the agenda, because we have so many
+slides and one hour. Um I'm
+going to introduce us, um we are DC503 from and Portland, Oregon.
+That's Jessie, Jessie raise your
+hand, he is the human computer. Kenny, he really is good at pick
+and place. Mike, senior
+troubleshooter, trouble cau- maker, maker, trouble maker,
+sorry. Makers Mark is really
+good. And you should introduce everyone else. [laughing]
+>>Alright, this is Mickey.
+Mickey is Israeli but he's actually the least Israeli
+person I know. And, um, this is
+Joe, Joe used to work for Intel, but he reformed now. And then
+there's Dean, raise your hand
+Dean, Dean is the bricker of all things, don't let him touch your
+stuff. >>I'll be, I'll be doing
+most of the talking. Um, Mike's his first time speaking at
+Defcon, so let's have him a good
+welcome here, um, so [applause] thank you, thank you. Anyone
+here's there first Defcon, raise
+your hand. Holy shit, okay [laughter in the background]
+never mind, er, there is a
+tradition in Defcon for years that if it's your first time
+speaking at Defcon, the goons
+come by, they give you a shot of Jack Daniels and you take a
+shot, but unfortunately this
+year you cannot do that, the goons have been barred from it.
+We have our own, so Mike, your
+first Defcon talk. [applause]. For the record, this booze has
+been bought in this hotel.
+[laughter] Okay, hold on. You have animated gifs and stuff.
+>>So, why why make a black badge
+anyway, right? Like, what's the point? You spend a lot of money,
+countless hours, for what? For
+the LOLs, right? We did it, we wanna do it. I guess you all,
+sta, sto-stood in lines, right?
+We don't wanna stand in lines, no one likes lines. Plus "Lost"
+said it was impossible, and we
+kinda like to prove the opposite of people and we wanted to do it
+anyway, it's a nice challenge.
+So this talk is going to be divided into three parts because
+we did three badges. We did, er,
+Defcon 22, and then we did a Defcon 14, and then the 23 was,
+er, the last one. And it's going
+to be weird because, 22, 14, 23, bear with us. Um how this all
+started is an interesting story.
+We just ended up at Defcon, ended after Defcon 22, we come
+home and we open, er, whatever
+open source schematics released from, um, from "Lost" and it's
+amazing. It's the human badge
+and we saw the Uber badge and they're almost identical. We're
+like: "Holy shit, we can do
+this, we can make a copy. What do we need?" So we downloaded
+all the files, played around
+with it, and we kinda know Eagle, if you don't know what
+Eagle is, you're lucky. And plus
+we know "Lost", we love him, he's a great a guy and we wanted
+to surprise him with one of,
+your know, our, er, donation to his work. That's the page links
+and forums where it's er located
+at. >>So, er, yeah. I've been using Eagle for like fifteen
+years, um which is the only
+reason I don't use kicad because there's like a learning curve,
+and so, er, "Lost" represented
+the badge users DipTrace which is a software program that makes
+stuff and er, like hey it has an
+export to Eagle function, I know Eagle, that's a lot whole easier
+than using like a software I
+don't know. Has anyone here ever designed a PCV before? If you
+can imagine a paint program that
+doesn't do what you tell it to do, that would be fucking
+frustrating, wouldn't it be?
+That's what EDA tool, board design tools are like. Um, so
+ja, I know like Eagle, we can
+export to Eagle, we'll go that path, we can try that and yeah,
+it was just a mess, so we went
+back and then Mickey had tried to-to open up this program
+DipTrace, which is a Windows
+software >>I think we tried on-on OSX, Windows and Linux
+>>Yeah, and I argued to run it
+against linux running under wine, so I ran the Windows
+version on linux, and it worked!
+[laughter]. So, er whatever, um so we had that software and
+basically we, we took it, it's
+the same schematic, it's the same layout and everything, what
+we had to add to it was all, the
+bits and pieces, the er... >>What, what.. >> C' mon you
+guys, you're further away. Um,
+I've already spilled once today, er, DipTrace, yeah, DipTrace is
+an interesting set of software,
+so basically we, we, we changed the outline of the badge. The
+circuit was the same, we had to
+add a bunch of artwork to it. And I think in the next slide
+>>the next slide, yeah >>You're
+gonna have >>what you see >>Some kind of... >>What you see here,
+that is um, days to weeks of
+Googling. Yeah, so, you, we have, by the way that's a public
+picture of the black badges, so
+everything we went on was erm, was a public pic -picture of the
+black badge. For the 22 we did,
+we have, we had no access to a real one, >>So what's really
+cool when you look at these
+badges and you see all those pins on either side? Those are
+point one inch headers, so if
+you're trying to scale something, you can use those
+points as like really good
+indicators to what size is. So basically taking that we could
+take this photograph angle, we
+could orientate it properly, we could actually get like
+millimetre precision to where
+every single silk screen and every single like metal area on
+that board was. Yeah, and Mickey
+did all the artwork stuff, and he sits there in MS paint
+pushing buttons, so. >>[laughs]
+paint dot net. >>paint dot net, whatever >>open source >>Windows
+something >>Er, it's a really
+cool tool to use, I, we were sitting in the 503 hacking space
+that control H1 in Portland and
+Joe has this technique of of measuring on screen, he takes
+like a piece of paper and he
+puts it on the monitor and he measures it and he does this and
+that's the spot t needs to go
+>>I'm no the only one, I swear >>He swears it's legit, I don't
+know. Anyway, so we had this
+picture, it's public. >>Where the hell do I get that Uber
+font? Open Google, free fonts,
+open 1001 free fonts er, show me er hundred results at a time and
+I type in I wanna see how you
+show "uber" in that front. And you go page by page until, I
+find something similar and I
+found the exact font for that. >>Actually, I wrote, I wrote an
+AI image recognition program
+that found the font. Searched them all automatically. I just
+didn't want to tell you.
+[laughs] >>I hate you Joe. >>You know that's a joke because I
+haven't even... >>I haven't even
+gotten the Korean yet [laughs]. Um, the next up is the skull, so
+I've been, I spent like two
+months looking for that skull, I took a picture of it with my
+phone, as, with my camera, as
+high res as I can, cropped it out, do reverse image search,
+nothing helped. Then I thought,
+hmm, it's a PCB, maybe it's inversed, so I inverted the
+colours and I found the image
+and it's the skull and bones on the blood. I actually had to
+literally Google: skull and
+bones image search, and page by page until I found that alien
+skull and continue from there.
+The Korean is interesting. I, er, kinda hate "Lost" for that.
+Because in Korean, when you type
+a letter, it's weird, because you type another letter and it
+changes the word, I don't know,
+it's like that little tiny man dancing at the top there? The
+top right, the the one legged
+man, the one legged devil, that's like four characters
+together and if you type the
+wrong one it has, er he has two two legs and then he has one arm
+and – it took me hours to figure
+out the right combination for that >>I thought those were a
+bunch of [inaudible]sisters, I
+couldn't figure them out >>For the 23 it was easier, I just
+asked a friend to ask his Korean
+friend to tell us what says. I should have done that to begin
+with. And we ended up with this,
+so this is the gerber for the, the Defcon 22 black badge. >>So
+have any of you made a board
+before? You have the schematic, the schematic is all the
+circuits and where, what
+connects to what. The layout is where you go and place the
+components in relation to each
+other and you know, place the routes where everything goes.
+But still, that's not like the
+file format that the board designer, board manufacturer's
+gonna want, they want a gerber
+which is kinda like a cat organising format. It's all
+text. But figuring out how to
+extract gerbers from DipTrace is pretty interesting because they
+have like a 101 options.
+Basically, it, I can't remember, this is the one that they want
+you to like use their service to
+buy, order boards? >>Yeah, you want gerbers ... >>So, >>...to
+pay us money >>Yeah gerbers pay
+us money, yeah you just check the right boxes, um, you can
+actually get gerbers out of
+them, and you have to check the right boxes over and over again,
+and do it a hundred times and,
+or write a script to do it, you know, if you don't like doing
+stuff manually. >>And after we
+have the schematic, we have, well the layout, we have the
+silk screens that go on the
+badge. We need to figure out the parts. So, comes the part of the
+bomb where we er, laid it on
+Dean. [laughing] We have a picture of of the the speaker
+badge we had from 22, because we
+gave a talk at 22, and we put numbers on each component on a
+high res picture, send it to
+Dean and said:" Dean, figure this shit out." >>So, let's see
+if this microphone works, okay
+we're good. Er, so I'm not good with Korean, or Eagle so this is
+what I got stuck with doing. Um,
+they put a bunch of numbers on the board, and then we had the
+bill of materials which they
+call bombs, which is scary, um, that like, we had the bomb from
+the parralax website, and we
+didn't necessarily know, where all the components went, and so
+I went through and where all the
+orange dots are, er, I verified with a multimeter that this
+actual component that we think
+it is, cause, like a bunch of like different resistors have
+different resistances, that are
+like just kind of ...what? [audience calls out] Okay. Is
+this better? [audience responds]
+Yay, >>Move forward >>okay, I pulled this thing as far
+as...okay, we're good. >>I was
+talking to them, Dean. Swallow the mic >>Yeah, we're good >>Um,
+[laughs] damnit, um yeah so,
+there's all these orange dots everywhere, so I spent a long
+time like going through with the
+multimeter and making sure that each component was the component
+that I thought it was from the
+list of components that exists. Er, just so that we knew that,
+you know, the right thing was in
+the right places and there were some differences like, um the
+colors of some of the black
+badge LEDs are different from the colors of the er human PCVs
+that we had. Um, er, there are
+strange differences like, even like what kind of version of
+resistors do you need in
+situations and whatever, yeah, so, it was fun and exciting and
+I did stuff with electricity and
+probably broke some stuff, but >>Sorry, I promised Case I'd
+call him up for a shot on stage
+>>Yay >>Take it, take it, take it [laughter][applause] Sorry
+for that interruption. Here you
+go Casey. Okay, you're done. >>So, er, after we did all that
+stuff we had a lot of parts it
+came to order the boards and there's a lot of variables that
+you can get when you order
+boards, and there's a lot of places where you can order them
+from and some of them are
+expensive and some of them are cheap. If you actually want
+something specific, it's
+expensive, it's really expensive. But if you're kinda
+like, er, you have low
+standards, like me, it's really easy. You just find the cheapest
+place, that ships these boards
+from China and um and so there's this place I've used regularly
+and um, and they always ship
+pretty quickly when I get bulk orders and they had just right
+finish so the right color of
+black and the shininess of the black, so we decided to go with
+them. And we ordered a first run
+of the boards and what you see there is the first run, and we
+looked at it and there's a
+couple things you might notice, um if you're Mickey and you're
+really really erm, erm very um,
+attention, attentive to detail or something like that um so you
+see that there's like that the
+headers are pins on each side? The left and right on the front
+of the badge, there's a little
+white outline around them and you'll notice, it's just a tiny
+bit too low, right? And you'll
+get the Korean text at the very bottom and it touches all the
+way to the bottom of the badge,
+which wasn't the case with the original badge. The other thing
+is the spacing of the numbers on
+the back were little bit off. Um, has anyone seen any other
+differences they might notice?
+Did anyone notice the dick-butt underneath the chip? Yeah, so if
+ever, ever not really sure
+whether it's legit or not, just take off the CPU and if there's
+a dick butt there, it's real and
+if it's not, then it's fake. [laughter] okay? And actually
+there's something I wanted to
+say, I don't usually say this in talks, but cyber, cyber, cyber,
+cyber ... >>Take a shot >>
+...threat. Threat threat threat.threat, okay. [laughter]
+thank you [audience responds,
+laughter] >>Oh, the lot number, Joe >>you want more? >>You
+forgot the lot number. >>Oh yeah
+there's a lot number, on top left >>top left >>See on Uber
+there's a lot number, so you
+know, cheap places, they don't speak much English, but they
+assemble boards quickly so they
+usually don't worry, er, so we got a second run, and we fixed
+all those things. The hard part
+is like, does that mean we have to move our silk screen up a
+little but or is it tolerance of
+the ones we made? I think we moved it up half the difference?
+>>And it's also the the the
+thickness of the boards they use. Remember the first batch we
+got was thinner... >>Oh yeha
+>>really thin >>We forgot, we used a non standard thickness,
+>>Yeah they were like >>Sorry, I
+don't remember >>that's what we got >>then we chose a thicker
+one and it was better, er, um
+hey whatever >>yeah, whatever floats your boat >>So what we
+did, I also, I also asked them,
+and this was tough, with the language barrier, but they
+managed to to put the lot code
+on the back, so when they do these boards, we're not ordering
+er 20 000 boards like "Lost"
+does, we're ordering few. Number to not be disclosed. And er
+[laughter] special requests
+don't er come out well so they put these on a panel with a
+whole bunch of other people that
+are making their own fake black badges, and we don't want that
+panel so we put a little box on
+the back. You see on the left side there's a little white box,
+inside that, we, I asked him
+like eight times to put the lot code in there, and he'd say: "oh
+yes, oh yes" and then I'd ask
+him again, he said "sure" and then they finally did it, which
+was great, so whatever. Um, so
+actually it's concealed by the battery. So the other thing if
+you like ever want to find out
+if it's real or not, look underneath the battery, and look
+for that lot code, and yeah, if
+it's under there, then it's real. >>So now, we have we have
+the boards, we have silk skin,
+everything is ready. Now the next stage is manufacturing, so
+these are 0402s, right? >>0603s
+>>0603s, not that terrible. 0603 means point six of them, no 6mm
+by 3mm. point zero six inches by
+point zero three inches, sorry I don't do [inaudible]units >>so
+these are actually kinda big, er
+if you do a whole lot of service network, then this is a very
+convenient size. I can talk into
+the mic even more...hello >>Thank you Kenny >>How's this
+workin' for you? Yeah, is this
+good? Ahh yeah >>Deeper? >>no, okay. I don't know if my voice
+goes much deeper. So as I was
+saying, these are the big ones, these these resistors here
+0603s, they're actually a very
+convenient size if you're making a small project by hand, work
+with those 0603s they're pretty
+great. Er, these are very carefully organised, that is not
+my work. I, I'm usually very
+fast and just like throw the things on the boards, but it's
+kinda hassle to pull all the
+parts out of the bags and put them on the board, so having a
+helper is fantastic, and I was
+lucky enough to have Jessie as my helper who is amazing,
+meticulous and a machine. And he
+aligned all of these resistors for me so I could more rapidly
+place them on the board, so that
+was fantastic. >>So Jessie was the pick and Kenny was the
+place? >>Er, so here we have an
+uber badge actually there're five of them barely visible
+inside the toaster oven, er,
+this is actually a reflow of them that I had access to at the
+lab and er the process here is
+fairly simple. The idea is erm, we use some lasers, we use some
+caustic chemicals, not nearly as
+caustic as yellow cake, but hey, we have our own fun, so first
+pass is to take some of those
+gerbers that have what's called a um, a a stencil, er, or a
+solder piece mask. And build a
+stencil, and the stencil is, we were just using parchment paper,
+laser cut with a pretty standard
+laser cutter that you'll find at a lot of hacker spaces, and er
+lay that over each badge and
+just sorta squeegee on solder paste and then you have the
+solder paste in all the right
+places and just lay the parts on top of it. Pretty easy and
+straight forward. >>You know if
+you need to you can also use one of those laminated paper human
+badges, you know as a stencil,
+if you wanna use for it >>Yeah, what else you gonna do with it,
+I think, well, get into some
+talks I guess. Yeah, so, it's kinda a time consuming process.
+You put this solder paste on and
+you put a whole bunch of parts on, and then throw it in the
+oven, and then it pops out and
+it's ready to go. Solder on a few more components later, like
+the er battery holder, because
+you can't do that in the oven, and er power it on and see
+what's broken. Usually when you
+take it out of the oven there are going to be some problems
+you have to fix, a few stutter
+bridges on the, you know, finer pins spacing parts and just go
+back to it with some soldering
+wick and give it a little bit of flux and it's, em, not too bad.
+So, this is something that I do
+for, a si, a side gig, er, I just build tiny stuff, I also
+unbuild tiny stuff so, if you
+have a sniper rifle and you want to get it the flash off it, let
+me know, er, that's one of the
+things I do. Er, but don't be afraid of this, surface mount
+soldering for a lot people seems
+really like challenging like, a lot to learn and "oh man my
+hands aren't steady enough" I
+hear it so often, "oh gosh I'm terrible at soldering," from
+people at other hacker spaces,
+but it's really not too bad if you take some time to figure out
+the techniques. There are a few
+things that will help a lot, mostly figuring out how to
+stabilize your hands. If you're
+just holding your arm out, it's not going to be very stable. If
+you rest your wrists on the
+table, it will be a lot more stable. Simple tricks like that
+go a long way. Try it out, start
+with a simple project like a goon badge. It only has a few
+parts on it, it's really easy.
+>>Right. And er once we had the badge by the way, this is it,
+it's er a working. This is a
+fake one, it works, it blinks. Um, we did flash it with the
+human badge firmware because we
+didn't have the Uber badge firmware or any other firmware.
+But, er, it's passable right?
+Okay. >>So we got the badges and we get to Defcon and we're like,
+"What do we do with this?" >>But
+did it work? >>And Mike..hmm? >>Did it work? >>It worked, yeah
+[laughs] [laughing] >>We got
+through erm, black badge registration, registration,
+sorry, anyway so um a few days
+go by inside of into Defcon and you know there's the EFF badge
+contest and Mike is like texting
+me Saturday noon, and it's like 4AM for like a Defcon attendant,
+right? There is a badge contest
+happening right now, get your ass over here [laughter]. I run
+over there and and we won it. We
+won the badge hacking contest for the for the black badge. Um
+and here's a couple of cool
+shots. This is a real one next to a fake one. So anyone want to
+guess which one is the real one?
+Yell it. [audience responds] Left is the real one? If you
+think the left one is the real
+one, raise your hand. If you think the right one is the real
+one, raise your hand. The right
+one is the real one. [chuckles]. We have a small, a short video
+of them working side by side. We
+had um, participated in that contest that had a Defcon 22
+black badge, he ran to his room,
+brought it back and we, er...wanna play it? And we had
+them side by side. What you will
+see is the Ube badge communicating with supposedly
+human badge firmware. Through
+IR. It works. [applause]. That is the closest we get to a demo
+at this talk [laughter]. Now,
+why did we do the Defcon 14 badge to begin with is an
+interesting story. You might've
+noticed that Mike hasn't said anything. Well, because we were
+all doing the 22 and Mike as
+like, "I want in, I want in!" and we were like, er, um, you
+know what? Everyone's doing
+something and everyone's covering practically everything,
+so um we need you to do
+something, to do like, contribute. "Let's do another
+badge!" >>We done with
+everything on time we need like a last minute project, so maybe
+you can start with that
+[laughter] >>This is a whole story by itself, it's gonna be
+hilarious. So me and Mike worked
+on the 14. By the way this is the only picture I found online
+from Defcon 14. >>How many hours
+did you look for that...on Google? >>I am the Google image
+master [laughter] >>Master what?
+[more laughter] >>So why do the 14 anyway, right? Because we we,
+Joe Grant, he's from Portalnd,
+we love 'em, if you ever met Joe Grant he, you know, he is the
+sweetest person. Ever. And we
+wanted to surprise him and it was...when we showed this to him
+it was hilarious. He he freaked
+out, "you did this is Eagle?" [laughter] and yeah, that was
+really impressive. We thought
+this would be the easiest badge to make. Not quite. >>If easiest
+match makes, then Mike found the
+hardest way to make it. [laughter] >>Yeah, so the
+Defcon14 black badge was the
+human badge in black. >>So, that seems pretty easy, right? >>Eat
+it, eat it, eat the mic
+[laughter] >>Just spray paint right? Er, so that seems pretty
+easy right? You just like, you
+know, make another one, just like that but black. Right? This
+is easy. Um, you know, maybe it
+wasn't exactly so easy. Um, unlike the 22 they didn't just
+publish you anything really. You
+had to find like a 14 badge, fortunately we had someone who
+had a 14 black badge and we had
+a human badge >>From Dean, Dean has a human badge, Jessie
+actually has.. >>Jessie has one
+too >>Jessie has two legit black badges [laughter] by the way.
+Two, two legit ones. I don't
+know how many unlegit ones...but two legit ones. >>Did we mention
+he's smart? >>Yeah, he's a smart
+one >>He's smart, Jessie's smart. >>Watch out for this guy.
+>>So yeah you know, we took some
+measurements and everything is on the the like 22, things are
+like we have the point one inch
+headers and things lined up appropriately and it seems like
+from photographs you kinda
+figure out what's going on. [muffled speaking] So, you know,
+it seems like this should be
+like easy to do, but you know, it was a long time ago, and a
+galaxy far far away and they
+didn't know about maybe like putting things on a grid so er,
+we worked from photographs. And
+er, so in order to get to, in order to get to the er, to the
+part where we had it like on a
+PCV, on, in the EDA on Eagle, um we basically took, er,
+photographs, scaled them.
+Mickey, like, um some sort of obsessed monkey, like traced
+them in like MS paint 95 or
+something [laughter] at like 4000DPI, and um, you know what
+happens when you put like a
+4000DPI bit map into into eagle, the world's crappiest but free
+EDA software? [laughter] it just
+explodes. So, okay, that wasn't gonna work. And it doesn't
+really support any vector
+formats, so okay, this is obvious what we need to do, we
+need to take from the
+photographs, make these high resolution bit maps, er, trace
+those bit maps into a vector
+format, simplify that vector format into a series of polygons
+and then write a script that
+makes, er, takes those polygons, does er, um does a projection of
+them so they are in the right
+place >>This sounds like a software solution to a hardware
+problem, Mike [laughter] >>And
+then like import 'em into Eagle and hope it doesn't explode. And
+at least one time it did not
+explode. [laughter] and then just go over and trace and trace
+and trace and trace, and we're
+like, okay, you know, this is going to be easy. Um, and then
+we discovered a quirk of Eagle,
+well it's free but, but, um it has this weird thing that says
+like, the free version can't do
+anything over 80mm by 100mm and you know, that's like, and some
+ula about like you know you sign
+your life away, and I didn't read any of that. And so I just
+proceeded and it let's you make
+the board that's this big and let's me place the cut outs
+that's this big, but you know,
+it turns out, that while it lets you place any components over
+80mm, and the badge is bigger
+than 80mm. And um, this wouldn't have been too much of a problem,
+except for this was like this
+was probably you know, three days before con or something
+[laughter] and we're like oh
+shit, oh shit, oh shit what are we gonna do, what are we gonna
+do and er, we can't call the cad
+company and buy a real licence because they're asleep and
+they're in Germany, what are we
+gonna do? Then we're like, wait a minute, you know, you only
+have to have it within 80mm to
+place the components so, and all the components are within 80 mm,
+so we can, we can just do that.
+All we have to do, is redo everything we did before in
+terms of projecting all of the
+things, placing all the things. So that's no problem. Okay so,
+we got our gerbers in line and
+we got that all worked out and now we just, all we have to do
+is have it made and assemble it.
+This is no problem, right? We're probably like, you know, two
+days before con at this point.
+It's fine. >>It was, it was, er, it was a really really, like the
+week before we were talking
+about Mike. We need to find someone, er, sorry it was a week
+before and we need to find
+someone to make these in black, and you'd think it would be easy
+to find someone who makes these
+these PCVs in black... >>You need two things. I need, I need
+PCVs that are black, now black
+is not green [laughter] and I need it like NOW. [more
+laughter] and I called every
+board house that I could in the US, like I need unspecified
+number black PCVs, two cut outs,
+you know, one ounce [inaudible blah blah blah blah blah, black,
+you know black solder mask. Can
+you do that? Every single one was like: yes, yes we can do
+that, we'll have that to you
+tomorrow. Yes, yes we can do that, yes we can. And then now
+you, get a phone call, like
+okay, here's all my money, because, er, if you want boards
+tomorrow, that's expensive.
+Okay, here, here's all my money, and then they would call me
+back, after they took my money,
+about two hours later, when I'm hoping to get like, okay, you
+know you're going to give a
+message that boards have been mad, then they're like: "You,
+know, what about green?"
+[laughter]. And er, er the first guy, I was like, you know,
+that-that's that's not okay,
+give me my money back, by like the fifth guy, I'm like,
+motherfuckers [more laughter]
+and, er the last guy called back and said, "what about green?"
+and I was about to go on a
+really, um, long swear word, blatant tirade with him, and er
+he said er, "you know we can do
+black, but you have to buy the whole panel." And I thought, er
+well okay, that's kinda more
+than I'm maybe looking for, but, okay we can do that. Um, and he
+said, you know "this, this will
+this will make it, you know, this make it so there's no lot
+numbers on it, which is funny
+because we had talked for about half an hour earlier about it
+having no lot numbers.
+[chuckles] but you know, it turned out pretty okay. This is,
+er, do we have real one?
+[muffled speaking from the panel]. This is the fake one?
+Yeah this is real. >>Is it a
+real fake? >>It's a real fake, oh I have it backwards, and er
+Jessie, you have the real Defcon
+14 black badge, and you're wearing the fake one. [muffled
+response from the other speaker]
+Oh, okay cool. Okay, so it looks pretty good, you know, it turned
+out,er, pretty well, you know
+there's there's the levels of er, success like fool a goon,
+fool DT, er fool Joe Grant. We
+got pretty good [laughs] and er, you know, that's what the final
+image processing output looked
+like. And er, when we finally had it, you fabricated, but you
+notice like in the story I
+didn't tell you about like assembling it or anything,
+that's just get a board in hand,
+so this is fine, you know it's just some soldering we we can do
+that really quick, um, well you
+know, we can that really quick in our hotel room. So I brought
+my entire like solder board
+station to Vegas, and er, the night before con, we're like
+feverishly soldering this stuff
+in our hotel room. And er, you know, I think it worked out
+pretty okay. And like Mickey
+said, we said, "oh my god, they're having a...it works kind
+of, okay, er Mickey's reminding
+me that , it works in the sense that. Er, you can er, you can
+win the badge pageant and you
+can impress Joe Grant and fool DT and fool goons, but like, I
+don't know what exactly what
+went wrong at 3am in my hotel room, but it didn't actually
+function [laughs]. But um, >>how
+many components? >>Hmm? >>How many components? >>Oh, oh this
+is embarrassing >>Isn't that why
+you brought me up here? To shame all of you? >>Well like, you
+know, less than ten [laughs]
+>>Erm, so so funny story about the bomb for this badge. Er, can
+you hand me one? This badge has
+one button in the back of it. One. And in our fake badge it's
+blue. >>You're shitting me,
+right? 10 minutes? >>They did that on purpose. >>10 minutes?
+It's one thirty, okay hurry the
+fuck up. Anyway, the button's blue, it was ten years ago they
+stopped making it, if you want
+to buy the white button, the way it's supposed to be you have to
+pay like twenty bucks a button,
+and we're like, no. Anyway, Defcon 23. We go radio active on
+this stuff. Okay, why would we
+do the 23 because "Lost" said it was impossible and we already
+did the PCV, let's do something
+that's not electronic. It'll be fun, why not. It's nuclear. Um,
+so how'd we do it? We just just,
+we wanted the triangles. You know, "Lost" said, if you don't,
+if you're unfamiliar with last
+year's black badge, it is called Captured Lightening in a flexi
+glass triangle, right, that's
+what Jessie's is holding up. Beautiful model who's holding
+the...er, it's charged with
+millions of vaults and then some guy, I think Brent, Brett, comes
+and hammers it with a nail and
+it discharges and it shows lightening inside. There's only
+one guy in the US that does
+this. In the world that does this. He holds the patents and
+that particular shape and size
+of triangle is no longer manufactured. That's the picture
+from their website and that is,
+so the model was 14A and 14, this one was the other one they
+had, was the same size as the
+black badge, but was an inch thick, thick. And you don't want
+a black badge, it's an inch
+thick. You give it to someone, who, who's , a goon or DT or
+"Lost", "Lost"'s gonna be like:
+"what is this shit?" so we have to have the original, we need to
+have the original triangle,
+anything. So I email the guy, okay, we gotta do this, we have
+to do, we're a bunch of makers
+from Portland, er we wanna make like triangles that light up
+with LEDs, we're, anyone here
+seen Portlandia? You gotta email him like that, er, we wanna do,
+I don't know, a fancy >>We gonna
+put birds on it! We're gonna put boards on it, and pour beer,
+IPAs >>Craft beer >>Craft beer
+[sniggers] mini brews. Okay, I'm hurrying, I'm hurrying. Um, oh
+where am I? Okay so we really
+had to have that specific one. We had to put in a special
+order, the minimum order is, er,
+oh good, "Lost" is on his way. Er, we had to put a special
+order in, so it was like,
+minimum order is 10, we were like, we're not going to be like
+too suspicious. Give us 12.
+Because we know we're going to fuck up at least one. Um, well,
+we guessed as much, and, um,
+we're like yeah, okay when is it going to be ready ,and we out
+the order in at er, September,
+and he was going to go to the super particle accelerator in
+December , okay, we'll wait five
+months. Fine, Erm, so an an interesting story. During the
+email conversation , he's like:
+"you know, this specific model you're asking for was er used by
+this guy at this Defcon
+conference and they were doing this nuclear crazy stuff, like
+check out this link," I'm like:
+"Oh wow, that's amazing" [laughter]So >>Mickey, was that
+nuclear? >>Nook, Nuc, nuclear,
+English not my first language. >>Okay, okay, just checking >>I
+love America. Okay so, I'm
+going, I'm going. How did we deal with radiation? So, Okay,
+I'm I've never done this before.
+Ledpig. This is what this is called, this thing is like this
+big and it weighs a ton. Okay,
+go on Ebay. I need a Led radiation container. Got it. I
+need, um uranium glass dipped
+marbles [laughter] I won the bid on that one. Um, no like what
+else do I need. I need a Giger
+counter, okay, "Lost" has a Giger counter that cost like a
+ga-zillion dollars. I'll show
+you a picture later. And I'm like, I'm poor, I'm going to go
+on Ebay and I'm going to find
+the cheapest one I can find, and so I'm like okay, it has to be
+Russian [laughter] and because
+its, Russians are good with radiation [laughter] and it has
+to be cheap. And so I found one
+for like $60 bucks, and I'm like, "Oh my god, it's a steal
+because this this specific model
+is like 250 minimum, like the whole length of this is a Giger
+tube. And I go, what's the
+catch? It has only Russian. The interface is only in Russian.
+I'm like Okay, I looked online,
+and probably the guy's an idiot he can't change the language in
+the settings, I'll buy it. No.
+It's it's hardcoded in Russian. Good thing I know Russian,
+kinda. But it's really amazing,
+when this thing glows red in Russian. Like holy shit, um so
+we got the uranium marble. I'm
+hurrying, I'm hurrying. We've got 5 minutes. You're serious?
+It's one forty. Um, anyway we
+got the uranium marbles, we got tritium, "Lost" ordered tritium,
+he got it, oh, here's "Lost"!
+Hey! [applause] So we have this deal. Every year we do the fake
+badge we give a copy of it to
+DT, one to DT and one to "Lost". And he checks the...this one's
+for you brother, for you to
+check the quality and and , he's already wearing a competitor's
+black badge >>So these are both
+fakes. So I'm going to have a battle of the fakes and I'm
+gonna see who does the best
+forgery. But his guy is awesome. [laughter] >>I've got like five
+minutes. Okay so, um we got the
+tritium, so like okay I'm a foreign national in the US and
+I'm faking a nuclear black
+badge. [laughter] who do I know who's a citizen. Dean, you order
+the yellow cake uranium. >>Yeah,
+you know what I don't give a fuck >>Excatly, these guys do
+the NSA playset. You're on a
+list somewhere. >>Has anyone been on United nuclear dot com?
+[laughter] anyone know that
+website, everyone's a fan. [laughter] Has anyone ever
+bought anything from it? Yeah,
+they accept paypal and they ship really quickly and it's like
+giant lasers and sorts of crazy
+crap, but yeah do... >>I have to ask, Mickey, did your tritium
+viles come in packaged in fake
+coffee packages like mine did? >>I,I hoped for it, but er no.
+[laughter] but had Jessie
+ordered eight of them >>We, we need to compare sources then,
+because mine came and it was
+labelled and they had taken coffee and opened it up and
+sealed them inside, and so it
+looked like I was getting filters [laughter] >>We were
+like, we're not going to order
+from a Columbian drug lord like "Lost" [audience laughs] we are
+going to, yeah like, Ebay.
+Tritium vile. I think it's blue. Order. Please don't arrest me,
+please don't arrest me. I send
+this picture to "Lost" anyway, this is the Giger counter, this
+is one of the PR pictures you
+have had for your badge. And I remember zero point three three
+eight on the Giger counter for
+the real Uber badge. And this on the fake, the fake badge and the
+Russian Giger counter.
+[applause] >>Is that standard or metric? >>Yeah, I gotta hurry
+up, so er, the coin. The coin
+was the biggest challenge here. We had to fake the coin. So um,
+how do get high res pictures of
+the front, the back, front, the front again. What do we do?
+Muns. MS paint >>MS paint
+>>Again. And we get high res, so um two things that are
+distinctly different in this
+one. The font and the back of the coin, where I said "fuck it"
+I', I've spent months on 22 Uber
+fonts, I'm not going to do it again and the dick-butt at the
+front. >>Did you actually
+translate the Korean? Do you know it says? >>It is, so, wait
+for it, we have a slide for
+that. Funny story about Korean. So, we got this thing. Anyone,
+if you know what Ninegag is,
+raise your hand. Awesome. So we went on Ninegag. Anybody knows
+what this says in Korean?
+[audience responds] everyone was like, "Oh hey, our supreme
+leader," and er one guy said,
+"the taffey salesman does whatever the fuck he wants"
+>>So, it's a Korean proverb, it
+says, get junk o so mundro which means they guy who sells yet can
+do whatever the fuck he wants.
+>>Yes, exactly and yet is taffey. It's Korean taffey.
+>>But it's a double entendre
+because you tell someone to go a yet, it's like fuck off.
+[laughter] >>Exactly, so we try
+that and I'm like some guy on the internet told me this means
+that, I'm like no. anyone I
+know, knows anyone who know Korean and a co-worker of mine,
+Toupher, has a friend who speaks
+Korean, so I'm like Toupher, ask your friend, but I'm not going
+to this thing again where type
+into word documents in a Korean font and I'm trying to guess,
+which combinations of English
+letters cause that to look like a, look at the top right, the
+three and the two. Right, what
+is that? I don't know. I don't do Korean, and he he sent me the
+Korean text in gmail, I was like
+copy paste, screw it, um, so time. Yeah. We're almost done.
+So how did it end up? We found
+out a week ago, Jessie sends me an email: "there's this guy on
+Reddit, " are you here by the
+way? Robert? Come here, come here. This guy. [applause].
+Comes up on Reddit, says: "I
+present to you, my Uber badge," and he he he made his own. Which
+is awesome. Kudos. Because wow,
+I thought it was bigger. This is the first time I'm seeing this
+>>Yeah, so I didn't know
+anything about the badges >>Come here >>I didn't know how big the
+badge was supposed to be because
+I only had a picture of some guy holding it. So I assumed that
+guy's finger was as big as mine
+[laughter] that's why I set the CAD scale >>long fingers >>this
+is the third time people have
+done forgeries, that they're the wrong scale based on pictures
+like that [laughter] >>But this
+is really good. The back of it is, is carved as well. This is
+really good. >>And then in the
+way I did it, the "likenberg" figure hacker, however it's
+pronounced, two quarter inch
+pieces of acryllic, laser engraved it ,painted it, er, put
+some clear epoxy on it. And then
+I just smashed it together with enough force to about make the
+croak explode and then I cleaned
+up the edges. [laughter] [applause] >>Awesome job. Go
+find the back. And while, we're
+doing the slides because no ever has – I know we're outta time.
+No has ever, no ever has the
+slides ready. Er, so while we're doing the slides Mike comes to
+me and says, "holy shit, did you
+see someone else fake the Defcon badge?" And I'm like, a third
+party? Okay and, um... >>Oh and
+by the way, people always ask me if I'm pissed about it, I'm
+like, Mickey will tell you, I
+always tell them it's great, feakin' keep doin' it man. >>We
+were scared shitless, the first
+time we did this. We're like either we go out as er as the
+ones who faked the badges or we
+get banned for life. >>Nuclear badges. C'mon man. >>It turned
+out well. Er so thank you,
+Jayger, from the council of nine, we we corroborated the
+information we had was a legit
+black badge. Um, but we, the assumptions at first >>I got one
+bomb to drop on you >>you got
+what? >> it's official that no one has found one yet or copied
+it precisely. That only I know
+about it. >>There's one thing missing? >>We'll do it again
+>>Gotta do it again? Shit. We're
+not doing it again. [laughter] so >>You're gonna do this year's
+uber, right? You've seen it
+>>Have you checked it? Have you checked ours? >>I have checked
+yours. >>Did did you say it was
+impossible to do? >>Yeah, but I have to say that, right?
+[laughter] >>No, okay we gotta
+>>Security theatre [laughter] >>We went last night to a party
+and er, we had er, the winner of
+a social engineering black badge was there last night and we had
+the real one versus our fake.
+And it looked, ours looked , looked cleaner. [laughter] I'm
+sorry. Yeah, so that's it, we're
+done, this is the last slide, this and I have to embarrass
+Mike, hold on, [applause], we
+will be taking questions, er, >>Just not here >>Not here, no,
+no, the goons are kicking us
+out. Thank you. [applause].

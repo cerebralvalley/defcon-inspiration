@@ -1,0 +1,808 @@
+>>Our next speaker is Bill
+Swearingen. Bill Searingen is a
+hacker from Kansas City. [yelling] [applause] Bill has
+been coming to DefCon for a long
+time. He is a veteran of the Alexis Park and all these new
+people. [applause] Um, but just
+because he’s been coming here, he hasn’t ever spoken be- spoken
+before. But believe it or not, a
+lot of you may have felt the influence of Bill Swearingen
+before. For example, if you
+drive past a construction information sign and you think
+every single time that should
+say Zombies ahead and I know how to do that. That’s this guy.
+[applause] If you live in a
+non-major metropolitan area and you have a hacker space or have
+been to a hacker space that is
+in part this guy. [applause] He co- he helped co-found the uh
+Cowtown Computer Congress in
+Kansas City a few years ago. What else? If you um have come
+to a little thing that we call,
+SecKC [yelling] Which is the world’s largest and the greatest
+monthly InfoSec meetup. That’s
+this guy. [applause] But, probably the the the largest
+reach that this man has had. How
+many people in here are either still drunk or hungover off of
+booze that somebody else paid
+for. [yelling] >> These are my friends, yeah. >> This guy is
+the uh is the uh better looking
+part of uh DefCon parties. [cheering] So, this is Bill’s
+first time. This is a banger of
+a talk. I have seen this thing before. You guys are in for a
+real treat. Give my friend and
+yours, Bill Swearinger a big welcome to DefCon. [applause]
+Good f*****g time man.
+[applause] >> Hello. Yeah so uh Juris, thanks for that great
+introduction, but some- uh wha-
+you actually mentioned some of the things I want to talk about.
+So this my 15th year at DefCon
+in a row. And and so and last year I decided it’s time for me
+to start giving back and so
+those of you that that uh have attended and those kind of
+things I I’ve you know I would
+say that you do the same. Start giving back to our uh you know
+to this this community. Ok. So
+who’s ready to hack some cops? [cheering] Ok. So I’m gonna tell
+you th- [audience murmuring]
+That right away th- this talk is illegal. Ok. And and it’s
+illegal in all 50 states and and
+so uh I am a little nervous being in front of you and and
+and it’s it’s uh not little bit
+not about speaking in front of you. Not really about the
+legality of the talk. I it’s
+really that I run with the SecKC crew and they’re pretty wild.
+And um um I see a lot of them
+right up front here and I’m a little bit nervous of what
+they’re going to do. Um and so
+as I as I’m thinking about it. Right. [laughter] So this
+morning while I was thinking ok,
+how’s this gonna go? I realize that there’s probably gonna be a
+few times in this talk where
+people yell, “Bill you suck!” and >> Bill you suck! >> Right.
+And so about 50 percent of those
+time I expect that those might actually be my friends. So take
+that take that as it is. >> Bill
+you suck! [laughter] >> I don’t think that guy is my friend.
+[laughter] Ok. But I I am
+serious. So some of the things that we’re going to talk about
+today. That if used are a
+federal offense. Ok. And so what I’m here to do is just kind of
+talk about it and explore it and
+explain how they work. Right. I’m gonna try and do a good job
+and ex- explain what is a good
+idea to do and what is a bad idea to do. To do. But I’m gonna
+leave that up to you uh for your
+own interpretation. Uh, ok. And also I I do realize that the
+talk that I’m about to give is
+very U.S. centric um and so when we talk about the technologies
+that are used and the laws uh
+that that we will break. Um th- there you know they’re they’re
+U.S. but so for those of you
+that travel a long way to get here, uh to attend DefCon, um, I
+I think that the technologies
+will translate pretty well um but do a lot of your own
+research about your own laws and
+and go from there. Ok. So given the topic and the nature of this
+topic um I’m not exactly sure if
+I will or will not get arrested during this talk. Um and so I I
+have I have consulted with my
+attorney and everything like that and so, but I figure just
+in case, it would probably be
+good to go ahead and post the slides up up right now. Um so
+there they are and I wanted to
+give a shout out to SecKC, let’s hear it one more time. SecKC.
+[applause] Alright um, next. If
+anybody has any questions after the talk or whatever, please see
+if I am in jail and if I am,
+bail me out and I’ll be happy to answer any of those questions.
+[laughter] So Vincent already
+kind of talked about, I’ve been in this space before. Um, so
+about 10 years ago I owned a
+website called iHacked and and one of the things that I re-
+released was a device that would
+trigger uh the emergency pre-emptive devices that would
+turn street lights green. Right.
+Um and it was awesome man, it was really cool. We’d be driving
+around you know just like it was
+green lights all the way and you can go as fast as you want. Um
+and I got a lot of attention
+about it. Um, I I got interviewed uh by you know lot
+of a lot of different media.
+Wired was one of them. Um and and I thought that was that was
+pretty cool, but um, so I I
+learned I’ve I’ve grown since then. You know that was 10 years
+ago um I’ve learned a few
+things. First, um, you know you, you really probably should
+consider talking to the media
+about committing federal offenses. Right. Um, that that
+was uh that was that was not
+that didn’t actually work out very good for me. Um and and
+also it was really interesting
+the the quotes that came out of that right so, so I was giving a
+very technical uh, you know
+interview to to Wired um you know and talking about 5 5 5
+timers and the way that we can
+interact with with the pre-emptive devices and my quote
+that I got was that I take the
+highway to work. Right. Alright, but. But more importantly right
+um, don’t talk publicly about
+committing felonies. Alright. So it turns out that it is a felony
+to to sell, buy or use emert, uh
+so you know the preemptive device uh punishable by up to 2
+years in prison with a maximum
+fine of 10k. Um, or both. Whoo. So. Well, I’m out of jail and
+fines are paid so let’s do this
+again. Alright. So here’s the thing. I I am a hacker. I’ve
+always been a hacker. I’ll
+always be a hacker. Um and when I think about like what that
+means to me and why and how I
+ended up this way. I I really do think it it tur- it you know it
+really kind of goes to to my
+dad. Right. So my dad was an engineer. I mean he spent the
+time with me as I was growing up
+to to question and and try to understand and and explain and
+the way that that things work in
+our world. Right. Um and and just question how it works. So
+i’ve spent my life uh you know
+very curious and trying to understand uh how do things work
+and why. Right. And and and how
+can I make sure that that I’m in a position that I can influence
+those devices to to make my life
+better. Right. Um. So I want to take advantage of my world in
+any way possible and and I think
+that as hackers this is our game that we can win. [audience] Um.
+So before I get started. Um I do
+want to read an excerpt from the hacker manifesto real quick. Um
+and it it says and it just
+clicked off but it says, I’ll I’ll paraphrase here, but yes, I
+I am a hacker and my crime is
+that of curiosity. Uh I do not judge people by how they look,
+but what they do and what they
+know. Right. And so and I think that really is a good ethos as
+hackers to have. Um and and and
+I hope that our community stays strong that way. Ok. Please. If
+there are any local or federal
+law enforcement in the audience. Please raise your hand. And and
+I understand that that that
+might not be you probably don’t want to do that, but I, but it’s
+for a reason um so, so first, I
+I’m gonna be using some audience th- uh um participation and and
+you do not want to be selected
+as that audience member so, any any local federal law
+enforcement, please raise your
+hand. Ok, I got a couple, how about any under cover. Any under
+cover. Uh, ok. Right. [laughter]
+Yeah. So I I I can’t believe that worked. Um, but I, but I do
+believe that I just won spot the
+Fed right there. Um. [laughter] Ok. But uh really really why I
+want to do that is I don’t want
+to live in a society without laws. I uh really do respect
+what you do. Um your mission and
+and that’s not the point of this talk, right? Um and so I I don’t
+want you to feel like targeted
+or or you know anything like that in this talk. Um it’s it’s
+really about the technology and
+understanding and being very curious about how that works.
+Ok. Um and I will tell you for
+specifically for those that that are in law enforcement. There’s
+gonna be couple slides in here
+where you get a little nervous um and um it’s ok. Like uh uh
+just the- trust trust me. We’ll
+We’ll get through it together. Um I you know, and and and
+everything’s ok. Um, so what
+we’re, what we’re talking about um, i- just gets right up to
+that spot um and then I stop.
+So, uh, trust me on it. Ok, so story time. Um, I’ve always also
+been a speed junky. I mean if
+you take a look at some of the things that we’ve done you know
+the preemptive uh traffic
+lights, those kinds of things, just always kind of been a speed
+junky. Um, fast cars,
+motorcycles, et cetera. Um I love them, right? But what I
+don’t enjoy is all the speeding
+tickets that go along with it. Um and so. A few months ago, I’m
+sitting on the side of the road
+um, with some blinking lights in my mirror, um and I started
+thinking, like, what is radar?
+Like, how does this work? Um, how how can, how can I outsmart
+this? How can, how can I take
+advantage of of my position to make sure that that I’m going to
+win this game? Um and an
+interesting thing is uh I as I’m sitting there, I thought about a
+story my dad told me one time
+and this goes back when I was very little. Um, he told, he
+told me that um that that he had
+some friends that were taking a part microwaves um and and using
+the magnotron in the microwaves
+to to to jam radar. Um and you know and as a kid I I didn’t
+really understood what that
+meant. I didn’t understand how that worked. I didn’t really
+understand, but for some reason
+that that stuck with me right. So that that little that story
+that that that my dad told me it
+stuck with me and so as I’m sitting there I I decided well,
+I should probably figure that
+out. Ok. So it turns out um that that radar wor- works just by
+measuring the doppler shift of
+sound waves. [sound affect] So we’ve we’ve all seen that
+before, right? We we’ve heard
+that sound and and and probably everybody here under- has a has
+a very basic understanding of
+how radar works right? We know we know that a signal is sent.
+Um it is reflected and it comes
+back to you know to the sending device and it and it measures
+our our speed, right? Um and and
+what what’s really interesting is when you start looking at at
+how? Like how does this work?
+It’s actually very basic. Right, so when you take a look at at
+the doppler shift um, and the
+way that that we measure that, um what we can see is the police
+use high frequency radio waves
+and and they’re actually microwaves ac- actually to to
+bounce off objects and then they
+measure the shift using this equation in the in the return
+frequency to to measure the
+speed. Um, now, what’s really important and I’ll keep calling
+this out during this talk. But
+this is a very important point here. Radar measures speed. Ok.
+So so what does radar measure?
+Come on tell me? >> Speed >> Speed. Ok, that’s very important
+and you’ll understand here in a
+little bit. Um, and and so and and here you can you can see the
+equation, but basically, um you
+you you can you can read the th- they measure the the change in
+frequency over the sent uh
+frequency equals 2 times the velocity of the target over C
+with constant of time. Um and
+now that I recog- uh you know I do understand that now that I’ve
+shown the math, we can kind of
+all go home. Right, ‘cause everyone understands what we’re
+gonna do? Right. I I get that.
+Ok. Um. But ok. So let’s shift gears a little bit. Um and and
+and before we start hacking,
+let’s look at how police use radar. Um and and I do want to
+say I apologize for the the
+quality of of this uh the- the image here. The video here. But
+a 100 percent of the police
+polled uh would not let me film them radaring people um and they
+start asking a lot of questions
+and so I left. I found this one on YouTube. Ok. [laughter] Um.
+But one of the, one of the
+really neat things about RF radar um is that the officer can
+kind of just set it and forget
+it. Just look at look at the video. It’s just sitting there
+uh it’s radaring the cars as
+they go by. Um and and he and the officer doesn’t have to do
+much. Right? Also, what’s
+incredibly neat about RF based radar is they can drive while
+they’re doing. Um, we’ve all
+been radared by by police uh you know passing by those kind of
+things. And what’s neat is the
+way that these radios work is they’re transmitting this
+frequency and they’re receiving
+signals back from multiple objects, right? Um, the the
+device can determine its current
+speed by the reflections that are coming back from stationary
+objects. Like trees or signs,
+right or or you know other stati- buildings, other
+stationary objects. Um and then
+calculate the speed of the moving objects based off of
+that. Um and some some of the
+more advance radar systems that police can use can even track
+multiple targets and even show
+which lane of traffic that they’re in. Um I just think
+that’s really cool. Um you know
+I I think that that’s very interesting that the way that
+this technology works. Um and as
+as we really start to dig in um and and understand ok, what is
+is happening um you know with
+with our radar, this this slide is also very important. So a
+very tiny fraction of the
+signals sent is actually reflected back to the police
+radar system. Right? The the
+rest of the RF signal continues to to go on. Um bouncing off of
+trees, um can uh scattering off
+oops. Scattering off the car. Um you know but but it continues to
+to to go and that’s that’s
+really all I’m trying to show in this slide. Is that, it’s just a
+little tiny fraction of what is
+sent that that’s returned back. Ok. So. >> [beep beep] X Band.
+[beep beep] K Band. >> Oh. I
+forgot about that one. Sorry all you guys. >> [beep beep] Ka
+Band. >> Um. So police radar eh
+really comes in three um major forms. And and you guys all
+probably know this. Right. So um
+but this slide if I were to take a picture of a slide, it’s be
+this one. Um and you’ll
+understand why, but but X X band is was kind of the the de facto
+back in the day. Right? Um so
+it’s kind of like the the older uh the the older radar systems
+that that really aren’t used
+much um in in today’s um next is K Band. Um and believe it or not
+K Band is is used worldwide and
+it but it is the most commonly used radar in the United States.
+Um so it if you were to rake,
+you know if you were to take uh a poll, K band still reminds the
+default radar system. Um it’s
+also classified as the grocery store band um because those are
+it’s the same frequency that the
+the doors um at at grocery stores use and so if any of you
+guys have radar detectors using
+false alerts it was likely K. Um Ka is is the new um the the the
+new multi mode version of K. Um
+it’s the it’s the emerging system. Um and um I mean it’s
+it’s definitely in use uh
+around. Now just uh, there’s also the Ku band. Do I have any
+Ku? Any people from KU? [crowd
+boos] Alright, so so KU band exists but no one paid a ticket
+for that. So. [crowd boos]
+Right. Uh yeah. Um actually Ku band is is uh is the European Ka
+so uh for anyone in Europe I
+have the I have the sign- or the frequencies there. Ok. So does
+everybody at least have a basic
+understanding of what radar is? Ok. Um anybody remember what
+does radar measure? >> Speed. >>
+Ok, thank you, that’s very important. I really only wanted
+to to make sure that that point
+was driven home. Ok, so it’s time for a live demo. Ok. Um,
+what should we not do at DefCon?
+Live demos. Buty we’re gonna give it a shot. Ok, so I do want
+to take a volunteer up on the
+audience. And as I was looking across one persons kind of
+sticking out. Um I have, sir?
+Would you please join me? On stage. [applause] Oh my God. >>
+Police officer. >> That’s the
+other half of DefCon parties right there. [cheering] Ok. So
+what we’re going to do, um the
+demo that we’re gonna show is that I’m going to uh give our
+Mr. Police Officer here a radar
+gun. Um I’m going to walk towards him and I am going to
+return the same frequency that
+he is sending to me which should indicate that I am standing
+still. Ok? Then I am going to
+slightly adjust the frequency sending uh and I will stand
+still and I will indicate that I
+am moving. Um and and I realize that I don’t have any good way
+of of demonstrating this to
+prove to you uh that this is happening. So you’re just going
+to have to trust me that this
+wasn’t all lies, ok? That, good there? So what you’re going to
+do is you just head head over
+there and point it at me and hold down the radar gun. Ok. So
+I’ve two different version so
+radar guns here. One just commonly off the shelf, um,
+radar system and a hot wheels
+one. Um, the the turns out the hot wheels one was a little bit
+easier to modify for my needs.
+Um oh and if there are any people from the FCC here, um, I
+I’ve got you know I I do wanna
+tell you that um, that uh, it it’s all good. I stayed within
+the legal limits. [laughter] Ok.
+Well. Ok. So the first demo is going to be you holding down the
+button radaring me. I’m going to
+return the same frequency to you, um and and hopefully if all
+goes well, you will not get a
+reading. Here we go. Ok you ready? [applause] We believe
+you! Ok, now on the second the
+the second demo, what I’m going to do is I’m going to slightly
+adjust the frequency of this
+gun. And what what I’m doing is now using the the doppler shift
+because I know the exact
+frequency that that gun transmit. I am going to return
+the signal that says I’m going a
+certain speed. So don’t radar me yet. So 111 miles an hour.
+[applause] Yeah. Sorry. But
+alright you want to do one of those? >> Yeah sure. >> Alright
+it is 5 ‘o clock somewhere,
+right? [cheering/applause] Ok. This is where it gets good. Oh
+man that was good. Ok. So can we
+do this same thing to police radar? Yep. We could build a
+device um that that says and
+transmits that we are always going 65 miles an hour. Ok? Um,
+since we know uh the vehicle
+speed that we want to go, um, we just have to solve the equation
+for uh two other variables
+right? And that would be the frequency that uh that that’s
+sending to us um and uh a- and
+we- well I guess that’s it. I only have to solve for one. And
+and the change uh the change of
+frequency from there, but using the using the math. Um and so
+turns out that if I needed to to
+uh to defeat X band radar, and say that I’m going 65 miles an
+hour, all I have to do is
+transmit at 10 point 5 gigahertz. I don’t have to do
+any kind of special encoding. Uh
+there’s no packets. It is truly just a microwave signal at 10
+point 5 gigahertz. Uh if I would
+like to do the same to K band radar, uh which once again is
+the most commonly used radar in
+the world. Um and the U.S. Uh all I have to do is transmit at
+24 point 1 2 gigahertz. And that
+will return that I’m going 65 miles an hour. Um if I would
+like to so so Ka is a little bit
+different. It’s it’s a multi mode transmission. But, uh,
+believe me, uh if you were to
+transmit at 33 point 8 uh you’re go- you’re gonna get away. Ok?
+And and and as I was doing the
+math here, I started to think, ok, remember my dad? You you
+remember that story about the
+microwave? Uh, did that work? And it turns out it did. Um, if
+we would have had our microwave
+oven transmitting um, back in the day when they were using X
+band radar, it the cops would
+have seen that I was going negative 97 million miles an
+hour. [laughter] [applause] Ok.
+Raise your hand if you know where this is going. Yeah.
+Alright. Well, here we go. So eh
+uh, the interesting thing though is is so let’s take that 65 mile
+an hour example, we we have a
+little bit of a problem with that. Right? Uh so if I was
+always transmitting 65 miles an
+hour or if I was always transmitting at at a certain
+frequency, I’ve already shown
+you that that some of those freql- they’re they’re ranges,
+right? Um and and the
+calculation matters. Um, but but really the the biggest problem
+is, is if I was always going 65
+miles an hour, what happens when I go through a school zone?
+Right, um and and we don’t
+actually know what frequency, the the police radar is sending.
+Well friends, I got to tell ya,
+we live in interesting times. [laughter] So we live in the
+future. Right. Uh the world’s
+information is at our hands right now. Right. Um and we can
+do with it as we please. Um and
+the newer radar detectors, uh specifically the Valentine 1 and
+the Escort 360 detect the radar
+signals about 2 to 3 miles ahead and via Bluetooth can share
+exactly which frequency we’re
+being radared with. [cheering] Do you understand? [applause]
+Ok. So real quick I do want to
+give a shout out to Tri Wolf. Thank you so much for, where you
+at? There she is. For finding,
+she was able to find me a very consistent location to to to uh
+run some tests. Would be a good
+way. [laughter] Testing. Yeah. Perfectly legal. Official
+business. Ok. Oop. I went one
+too far. Ok. So all we need to do is we would just need to
+build an app that knew exactly
+what the current speed was of the current speed limit, using
+this this uh, roads API. Uh a
+way to detect what frequency that we’re going to be radared
+in about 2 miles uh the current
+generation of radar detectors do this um and then, uh, ca-
+calculate the frequency of the
+speed that wish to go based upon the current speed limit and
+transmit. Right? Um, all we need
+a very very small processor to do this. Um, you know up here I
+I’m showing an ESP 82 66, we
+don’t need much to do that. Um, the uh one the one of the issues
+that currently that the common
+commonly available SDRs uh or Software Defined Radios that
+that are available to us,
+currently aren’t, aren’t working in that high frequency or or
+microwave space. Right? So so,
+they- they’re they’re actually much lower on the spectrum. But
+if you take a look at the
+hardware that it would take um and and just even the way that
+the SDRs progressing, um, we
+could build this device very very trivially for about 700
+bucks. Ok? Uh, right now and
+that and most of that most of that cost would be around the
+SDR. Right? Um and the high
+frequency transmission. But, but um, the FCC is is not gonna want
+you to do that. Um, So the FCC
+is very strict about radar jammings and they’ve actually
+been ill- illegal since uh 1996.
+Um, that means that anyone that uh, that that uses or sells the
+devices, um, you know could,
+could be a federal offense. Right? And and and I they they
+are serious about it. Um, um and
+so and and not only that, like they’re they’re so serious that
+you’re not even able to like
+they they are so concerned about radar jamming, that you’re not
+even able to advertise. Um,
+right so it’s actually against the law to advertises radar
+jammers. Not even just use or or
+or sell. Um and so and and right now when you take a look at it a
+700 dollar device, it’s really
+not that cost effective anyway. Eh eh, yet. I mean it will get
+there, um and and knowing the
+way that we can do this and and when those devices become
+available that’s when you can
+make a a good decision. Alright. Um, so so the FCC won’t let us
+speed. Um you know or let me be
+me, so le- let’s see um. What what other effective
+countermeasures uh do are
+available to us? Um and and they’re and they’re the common
+things, they’re the common
+things, but but if you have not used the radar detectors, the
+the the current generation radar
+detectors. They’re they’re tremendous. So earlier I I I
+showed you how how the the the
+um the radio frequency uh continues to scatter. Right, it
+continues to go and it continues
+to bounce around on the current generation um of radar detectors
+are picking that up very good.
+About 2 miles and waves is really good. But the problem
+with radar detectors, the
+problem is that they suck when it comes to to detecting laser.
+Right? So, you’ve [laser sound]
+Probably heard the the ra- radar detectors today um when when you
+get hit with with the laser, all
+you’re going to do is that just tells you that you’re going to
+get a ticket. Right? Um, and and
+and most people probably feel like the the cops are using
+laser anyway. Well, well slow
+down trigger, ‘cause we got some neat things to talk about. So,
+the FCC doesn’t even regulate
+the light spectrum. That’s done by the FDA. [laughter/applause]
+So so let’s hear it for light.
+Come on! Light! And it also turns that that these laser
+guns, they’re very different
+than their RF cousins. Um, they they use an eye finder to single
+out a specific target. Ok. Um
+and if if you take a look at the picture I have here. You’ll
+notice that there there’s two
+lenses, one for one that’s uh the the transmts, that’s the
+smaller lens, um and then one to
+receive, that’s the larger and that will be important here in a
+second. Um, and what’s really
+interesting and what what I love about laser if the officer has
+to treat it like a weapon. It
+has to be, they have to be stable. They have to point. They
+have to single out a target and
+they have to find a reflective surface on your car to get a
+signal back. Ok. Um, so
+generally speaking, what they’re after is they’re looking for
+those, for your headlights or
+your uh license plate, or those sweet sweet fancy, blingy
+grills. Um and here’s what an
+officer sees when they’re targeting your car. What you can
+see in this video is you see an
+officer trying to to get a lock on a car. Um and then the second
+one its a little bit harder to
+see when when they do. Ok. Um, but because laser is regulated
+by the FDA, lasers have to be a
+class 1 laser. That is the same, uh, class as a laser pointer.
+[laughter] Laser guns are laser
+pointers. Ok. They have to be eye safe, which means that
+pretty much, you know, that the
+amount of reflected laser that’s coming back to the police
+officer is very very little. Ok.
+Also, um, because it’s regulated by the FDA. They are restricted
+to the the, uh, the actual
+frequency of laser that they can use. They have to use a an eye
+safe laser, um, and wh- and they
+they have standardized on 904 nanometers. It’s an invisible
+laser beam, um, but what’s great
+about this, is it’s standard. There’s one. And it’s very weak.
+And we can buy them too. Now
+another thing, what does radar measure? >> Speed. >> Well,
+laser does not measure speed.
+Laser measures distance. Ok. Super important slide here. Um,
+I’m going to give you guys time
+to write the equation here. [laughter] Um. Like if you eh-
+you know, if we have any math
+majors, you can you kind of tell people you know explain how this
+works. But is is uh, a result of
+distance over time. I saw somebody take a picture of that
+slide. [laughter] Ok. Now now
+the issue is that um, laser guns uh when they when they do
+measure distance, they’re doing
+it at a rate that that’s a a very aggressive. Usually around
+100 to 200 measurements per
+second. Um and so that really kind of goes back to by the time
+your radar detector has gone
+off, um, the laser gun has already acquired your speed. Um
+and and in fact, many times
+over. Right? Um and and that’s the calculation that that the-
+you know the gun is using for
+distance. Um here’s where it gets interesting. Ok, haha. Here
+we go. Alright, whoo. It turns
+out that in about two thirds of our country, um, represented by
+the green states that are super
+cool, um, laser jamming is perfectly legal. Um, the yellow
+states are not as cool and I
+just literally don’t know what the f**k is going on in
+Virginia. [laughter] So, we have
+a couple options. Um this is the one that I’m going to go with.
+Um it’s not really effective,
+but it’s hilarious and it makes it very hard for the police
+officer to get a lock on my car.
+Ok, or or or we can detect the gun. Let’s detect a gun.
+Alright, here we go. So first we
+have to know exactly how these laser guns work. Um and before
+we get started I I’m gonna show
+you an example of timings. Ok? So the timings we’re going to
+talk about here will will not be
+for every gun, but the frequency that we’re using is. Um and and
+what’s and what a uh one mea-
+under, want you to understand is that once you understand how
+they work, you will understand
+how to attack every single one. It only comes down to a matter
+of timings. Ok. So the things
+that are really important here. Um are the pulse width, how long
+the laser is on, um and the
+period cycle, which is, how often it shoots. So in in this
+demonstration, I show um, uh a
+pulse width. 1 2 3 4 5 pulse, pulse, pulse, pulse, pulse.
+Those are pulse width. Right. Um
+and the period cycle of a 5 millisecond period cycle, ok.
+You’ll understand here in a
+second. Ok. But this part gets really important. Ok. So when
+the when the gun sends a series
+of pulses. What it’s expecting is a return ok. And that return
+measure what? Does anybody
+remember? >> Booze! >> Booze. Distance. Distance. The pulse
+measures distance. Ok. So when
+your car gets hit by the first pulse, does that officer have a
+lock on your speed? >> No. >>
+No, they only know how far away that car is. It’s not until the
+second, third, right? You know
+until they can start, that gun can start getting a lock on
+you-, on uh on your speed. Right
+and so that’s why, why the, why the um, why they they measure so
+many times in in one second, a
+hundred or a hundred or you know a hundred to a hundred, two
+hundred to get your speed. Ok.
+So let’s go ahead and and zoom into this pulse period and let’s
+talk about some countermeasures.
+Alright, so these red lines indicate pulses from the gun.
+Pulse. Pulse. Pulse. Ok
+everybody good? Alright and and it expects to get a return.
+Pulse. Return. Ok. But we have a
+5 millisecond window. That we can return our own. Ok. And what
+does la- laser measure? >>
+Booze! >> Distance. Ok. It does not measure speed. Right. So if
+we were to return a pulse before
+the reflected one, we can tell them how far away we are.
+Alright. So what I’m going to
+show you is a brute forcing method. So uh just imagine
+driving around knowing exactly
+which frequency you’re going to be lasered with, it’s always the
+same, 900, 904. Right? And every
+1 millisecond putting a pulse. Ok. So what um, now the
+interesting thing is in in your
+brain, I know where you’re going, ‘cause I probably went
+the same thing is, well, if if I
+turn if I turn an immediate re- and immediate response am I
+telling the cop that I’m going
+97 million miles an hour? No. No. What I’m telling them is
+that I’m very close. Right. I’m
+100 feet away. But then they get another one. He’s 100 feet away.
+Then they get another one. He’s
+100 feet away. I’m going 0. Right? Um, yeah. And so, most of
+the guns believe it or not, so
+there there’s probably, I don’t know, 9 or 10 different models
+of of laser guns on the market,
+uh, this method comes back with an error message. Just a simple
+brute force, 1 millisecond pulse
+will return an error message to the gun. Now, um, there are a
+few models uh that that have
+implemented countermeasures to countermeasures um and we’ll
+talk about that here in a
+second. Um, so. So commercial uh so some of the the the newer
+guns that what they will do is
+they will they will recognize, I sent one pulse out and I got
+four back, right? So that’s
+that’s not right, so they’ll, they’ll actually laser shift,
+they like, they’ll shift their
+pulse width to to account for that to find an empty spot in in
+the return the return signal.
+Um, but but we can counter those too. Right. So once we
+understand how the gun laser
+shifts, what it’s expected result, we can shift our um, our
+uh response to that just as
+easily. Now what’s interesting is because of of the the pulse
+width and the timing, we can
+identify the gun by the second pulse. So when we get once and
+then we measure how long did it,
+you know, so then we move immediately into brute force
+mode. Right. Um, then we receive
+another one, now we can identify exactly which gun we’re being
+targeted with and we can
+implement countermeasures from there. Um, and so I I’ll go
+through those here real quickly.
+Um, a countermeasure, so what you’re seeing here on the
+screen, the red lines indicate a
+pulse from from the laser gun, um the orange uh the orange
+indicates our reflection and the
+green is what we’re returning to the gun. Um so what we can do is
+we can vary our own returns.
+Right. So imagine if we have if we understood that we have a 5
+mi-, a 5 millisecond window to
+return uh that the first we we return a very early signal,
+we’re at 600 feet away. Right.
+Then on that second pulse, we’ve identified who the gun is. We
+know that, we know exactly which
+gun we’re being targeted with and we can move into, we can
+move into countermeasure that.
+But we we then say that we’re further away. Uh perhaps, you
+kno 1,000 feet away. Now to that
+gun, we’re going in reverse. Right. And then we can continue
+on wi- with the strategies like
+that that that continue to to even bypass even the most
+lasered guns. Um, and commercial
+laser jammers are already doing this. There there’s a couple
+there is a couple different
+commercial uh products that you you can purchase. That are
+already, that are already
+implementing uh these countermeasures. Uh and so I
+just wanted uh to let you know
+those are available. Ok. So um, a a few years ago I released a
+uh uh tool called COTCHA. It’s
+an ESP based uh wifi hacking tool. Um and and and you know
+and basically what what I’ve
+done is like ok, let’s let’s build on that platform, let’s
+continue to stay with the ESP 82
+66, um, it’s a build platform that that I’m very comfortable
+with, that uses the arduino, the
+ard- arduino platform and we can and we can build off of that.
+Well, so what I’m going to
+release here is is NOTCHACOTCHA. So what NOTCHACOTCHA is is an
+ESP 266 based, um, laser jammer.
+Um it’s based on 12 volts circuitry for easy auto-
+automotive installation. Um and
+um it uses on the same 9 uh 940 bru- uh should be 9 4, but it
+has, it implements brute force
+mode, meaning that it’s pulsing at at a 1 millisecond pulse
+rate. Um, that will bypass 80
+percent of the laser jammers, um that are in use right now. Um it
+will not jam the the more ad-
+advanced Dragon Eye, um systems that that uh implement
+countermeasures to brute force
+mode. Um, however, um you know, we we’re doing this open source,
+right. And so, because because
+commercial um, commercial jammers exist, um, it should not
+be, it shouldn’t be too
+difficult for us to reverse engineer um, the pulse cycles
+that that those more um actually
+I don’t know if that’s legal or not. Um. Let’s not do that.
+Let’s build our own. Ok. Um, so
+um, wireless connectivity, Android app. Um, it’s legal in
+some states, right remember
+those green states? Oh, I forgot to mention, I don’t know if you
+saw that, but on that that um
+map, where where laser jamming was legal, Colorado wasn’t on
+there. I’m like come on,
+Colorado, I thought you were cool. Like, I just kind of…
+[laughter] I don’t know. Um, it
+also can la- it can uh immulate laser guns. So you can test uh,
+your your own um, you you can
+test it, you can test your um, yeah. Your radar detectors, et
+cetera. Um, yea and it turns out
+MIRT Mode worked ok too which would be uh green lights, but
+that’s a super bad idea. And
+probably probably shouldn’t do that. [laughter] Um, ok. Well so
+I’m just gonna tell you. Like
+NOTCHACOTCHA is freedom and this this is how we can take control
+of any systems that that are
+targeting us. Um, we um uh hey audio guy, gonna get louder in a
+second, just FYI. Um and I just
+want to say Go America, um except for Virgina, ‘cause I
+don’t know what’s going on
+there. [laughter] Um. Uh so real quick this is kind of what it
+looks like. A bill of materials.
+Super simple. We’re looking at a ESP 82 66 and and an LED Array
+essentially and a 12 volt
+circuit. Um cost is 8 bucks. [cheering] Um, so so code is
+available now. It’s kind of
+janky, but that’s how it goes at DefCon. Um and I actually meant
+to bring one, I have I have one
+here, but I broke it yesterday uh when we were pre- prepping
+for the talk. Uh. >> Bill you
+suck! >> I know. Bill, I know. [laughter] Um, so seriously um
+you know, so it is being
+released open sourced, um the brute force mode works. Um, I I
+‘cause I test it. I live in
+Kansas, it’s legal there. Um, and um so you know it’s only
+round one. I’ll continue to to
+to post code um and I I would really expect, or I would really
+hope or and appreciate if
+anybody would like to to help me, build a fully open source uh
+laser jammer that that competes
+with with the commercial grade eh- eh- equipment. And so that
+guys thank you very much, had a
+great time. Um, really appreciate it. [music]
+[applause]

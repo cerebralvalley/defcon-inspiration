@@ -1,0 +1,419 @@
+>Hi! Welcome to track 2. [crowd
+responds] Yeah! [applause] So
+I'm Fish, this is Jonothan. Um, we're going to abuse VNC really,
+really badly. Um. Do you have
+anything? No? Yeah? >>No. I'm good. >[laugh] Right. So this is
+us. Yeah fun times. We both do
+terrible terrible things on the internet. Uhhh usually on
+twitter, it's usually public and
+usually it's very very amusing. So internet stuff it seems like
+it's getting nicer, but it's
+proliferating lots and lots of horribly broken vulnerable
+devices so, the internet is
+getting pretty bad. Uhhh its not really getting better, they keep
+adding more problems and more
+vulnerabilities and no one gives a crap about security. And then
+you have this sort of thing
+happen and then this sort of things happen and then basically
+this is just us, saying hey dude
+you can totally see the faint outline of some cyber cyber
+something legislation in there.
+And you can smell the totally you are not allowed to hack all
+the routers proposals. [Sniff]
+Yeah thats right, that was the...who was it? Was it the
+FCC? So hahah cameras. >> Yeah
+so I was doing a talk back in March this year and uhhh the
+screen you are seeing on the
+left was a house. Was actually close to where I was doing the
+talk and I was also talking
+about VNC stuff and I just popped open a Windows and I'm
+like hey this is a house if you
+look to the left, you can probably see it. And there's
+just a bunch of stuff, so you
+can go from cameras to people putting SCADA stuff on cameras.
+Umm and over time, sometimes
+stuff gets fixed. So this company had this on VNC, you
+could basically go into the
+settings and people could mess things up. And what they did
+when I reported, was they
+removed it and on the same IP address something else came back
+and it was a camera and it was
+looking at the same screen we had on VNC before. [Laughter]
+Just so people couldn't screw
+with the settings. But you know it's okay, because now you
+cannot just mess with anything
+and they just want to remotely see what's going on, uhhh in the
+factory. Ummm this is another
+interesting one. So there's a company in my country and when
+you ship something back, because
+you don't want it and they unpack it, to see if you didn't
+mess with it. If you didn't
+unpack it. this is the camera showing the guy unpacking all
+this stuff, because they want it
+registered, incase something's up. So I could send my own
+package and see it passing by,
+basically. Now something else that I've been doing which is,
+kinda sketchy sometimes, is look
+at the middle east. They have a ton of interesting stuff, I only
+put this one on there because I
+don't wanna, I don't know put people off. Or get the wrong
+people looking at me. But there
+is like a bunch of cameras and a bunch of interesting devices
+online in the middle east as
+well. > Hahaha what could possibly go wrong? Its burn your
+house down as a conference. Ummm
+umm so let's, let's introduce introduce some 5th dimensional
+thinking. It seems the world at
+large is now in 1999, realizing there is more on the Internet
+except facebook and candy crush,
+and this realization has terrified people enough, to
+believe that they need to have
+like support groups to cope with that idea. So we see uhh uhh
+something like this, and for two
+guys that spend their time trolling the internet and
+finding ridiculous, ridiculous
+stuff that shouldnt be on the internet, we are just like what
+the f....really? Huhhhh. So
+this. [Laughter]. Hmmm. >> hahaha. >Yup you can browse the
+internet from your fridge, what
+could go wrong? [Laughter]. Hahah >> Yeah sometimes you find
+the most sketchy devices. So
+this one wasn't connected online, uhhh this is basically,
+uhhh it doses the drugs you get
+in hospitals. Uhh but these used to be hooked up on the hospital
+networks locally and you could
+telnet to them, and they could do statistics and you know
+change values. Ummm but somebody
+thought you know we need to upgrade this, it, we need to
+rebrand this. We need to sell
+more of this basically, so you know it's running linux sort of
+as well, so let's just add wifi
+cause thats good. So they have telnet, but nobody added
+authentication. [Laughter]
+[Crowd gasping]. So that's kinda good. But then somebody actually
+got a CVE, for the thing not
+having authentication so apparently you can now get CVEs
+for features you want to have,
+which is kinda neat. We don't really know what's up with that.
+> Hahahaha. I don't even.
+[Cheers from crowd] [Laughing]. I'm not sure. I think this is
+one of these, there are no words
+slides. So we are just gonna show you a picture. What could
+possibly go wrong? Umm, so,uhhh.
+Apparently theres, I'm not gonna read this slide to you because
+I'm sure most of you in the room
+can read. Ummm apparently there are toasters that will complain
+to you if you don't feed them
+whole wheat bread. You are not allowed to eat this kind of
+bread, you have to eat that kind
+of bread. Umm and Fridges are shutting down when certain types
+of consistency...um
+inconsistencies are detected. So now you have your fridge telling
+you like: you can or you can't
+eat your food, or you can't refrigerate your food. Cause you
+know that's fine. Ummm and then
+cut to more internet be-douchery and you have, this, umm which we
+found it on VNC. We are...what
+on earth is that? At the time, the little red arrow was moving
+over this grid. So if you ever
+played that game in the 80s, it was Spectre or something, it
+looked like that. It was like
+this little arrow and it was moving over this grid, and we
+are like that's really weird,
+it's alive. So we looked it up and it's this tool, that's used
+by farmers to...oh was it water,
+no its not water? Maybe it's....it's something involving
+travelling over crops and I
+can't remember whether it was to give them nutrients or to, to
+water them or to collect things.
+But uhhh, theres a video that we are trying to get. There you go!
+And wonder if it will let us, no
+it won't let us skip it. So like sorry to make you wait for 30
+seconds, but this is their demo
+video. This is their like reel, and you can see it at about the
+45 second mark, you can see it
+behind the dude's head. This guy is in a tractor and this thing
+is kind of like, if tesla was
+wearing overalls and had to hay seed. [Laughter] It drives the
+tractor and it like keeps track
+of where has been dealt with, and in a minute, he pans up and
+he moves his head and the dude
+points at the thing. The audio was crap so we cut the idea, but
+uhh like this thing, in this
+device, is on the internet, with no authentication and you can
+like: You want to take control
+of a tractor? Over the internet? [Laughter] Cause you can do
+that, because somebody thought
+it was a good idea. And now we have this. Fun fun times. Hahaha
+>> So what's also interesting,
+like all these devices are on 3G, 4G uplinks, so if you just
+scan certain Verizon and AT&T
+networks, you will get different stuff pop up every time. So this
+one you couldn't find it back if
+you scanned the next day, it would be somewhere else.
+Whenever they turned it on and
+whatever IP they got. Ummm so yeah we got these Ancient
+industrial stuff we've been
+tweeting about mostly, like any dam or water irrigation system,
+we will find it. But there is a
+lot of new toys basically, just like the infusing thing at the
+hospital. There is also this
+which is an exercise bike. This was in Hawaii and we could get
+the exercise bike and remotely
+see like the screen, we had to press start and pick what you
+wanted and then we actually
+found one that was live. So you could see like the guy...well
+you could not actually see the
+guy cycling but atleast you could see him, you know, him
+progressing. > How to embarrass
+yourself over the internet live. >>Hahahaha. And there's also
+this kind of stuff. So this is
+like a solar power thing you can have at home. [Cough]. These
+were all open in Germany, so the
+manufacturer didn't do anything, and again they were on 3G
+sections of the network. And it
+was reported and they said it they fixed it, so what they did
+they added a new GUI and then
+they said it's fixed. [Laughter]. They are still there
+basically. And yeah you found
+your boat. > Why is there a yacht on the internet? Who
+thought this was a good idea? It
+lets you control the engine. There is not enough booze at
+this conference. Anyway there is
+a lot of that, but it happens on twitter. Why...I don't even. You
+find...what do you do? You find
+a yacht on the internet, and then what? You just go
+[inaudible]. You make a meme or
+you download instagiffer and you make some gifs. Umm but it gets
+worse, it gets much worse. Fun
+times. >> Yeah so sometimes you find really weird sketchy stuff.
+So this was a guy who was
+cashing out people accounts, and he was on VNC. So we could
+basically see him like, uhh pull
+out accounts, so the right side column is the email address and
+says if it has any balance, if
+it's connected to Mastercard or VISA, and then if he pulled
+anything off if it, like if it
+had a positive balance. And this guy is just cashing out people
+and we could just watch him do
+this on VNC, which is kind of interesting. Oh yeah and then
+you found your Aquarium. >
+Hahaha. I thought this was an aquarium and I thought wow
+someone spent a lot of money on
+their saltwater aquarium. It was the ocean, the ocean. This was a
+camera that was in a place I did
+not know existed at the time. The Maldives, which is
+apparently a very very fancy
+island chain. This is a camera in a hotel that shaped like a
+Octagon, that's below the Ocean.
+It's like submerge, and one side of the restau...it's a
+reastau...its a restau..yeah the
+restaurant is submerged and one side of it, this whole thing is
+this big octagon of plexiglass.
+So you go and you have dinner under the ocean, and one side of
+it has coral reef, and the
+camera that's on their website, which sort of advertises their
+hotel, is pointing out the
+window. So when you see it, this is what you see and you are like
+this whoa that's kind of
+interesting. And its RTSP, and it's live and if you know the
+address, and you know how to
+plugin into VNC, you can just hit play and just full screen it
+on one of your displays. And
+then you have this huge fish tank right. So it's really neat,
+this is the view from dinner.
+Like if you can afford the $16,000 a night hotel room. But
+you can also do what I did which
+was leave it up full screen and be like, this is really neat
+I'll just leave it up while I'm
+working whatever. Then you go out and you have dinner and you
+are like what the f...what? Why
+are there people? There were divers on the other side that
+had gone in and where cleaning
+the glass. Ummm but yeah. When you think you find everything
+you find this and you realize,
+no there's still more. Umm but yeah, and yet there is still
+much more. It doesn't end, it
+never ends. >> Yeah and it goes from funny to really bad. So
+this is a cardiac imaging
+device, which was online. You could just reach VNC open,
+nothing. Same kind of stuff, 3G
+network, so one day you would find it other day not. Just
+depends if it's actually turned
+on. Ummm so you have this thing which is, its in some kind of
+company, and its to scan badges
+or to register badges. They put up their finger for fingerprint
+screen and it pops up all their
+information. So would you want to steal identities, you just
+sit there, you have a
+fingerprint, you have all of their information. You just wait
+and you go printscreen,
+printscreen, printscreen. [Laughter] Yeah. Ummm and then
+we found this, which is kind of
+interesting. So usually if you want to SWAT somebody you
+usually do a call and at the end
+you will just end up in jail or fined. You can now do it over
+VNC [laughter]. So this is some,
+yeah some station somewhere, and this is the software they use to
+control which patrols are out
+where. And we could just call one up basically. So let's say
+you want to SWAT somebody, you
+just enter the address, you send 10 squads there and you hit go,
+and they all get an update and
+they go there. [Laughter]. So yeah...a little less traceable.
+Umm and then there's this, so
+originally I thought this was like a device controlling a
+X-ray machine. Turns out umm you
+actually need to press a button on the hardware to make a x-ray
+image. Then this is stored on a
+data store and then you have a machine that interacts with the
+datastore. So what I was looking
+at was some doctor I guess, who was working with the data on the
+datastore, and he was just
+making notes and annotations in the documents basically. Yeah my
+guess at first was he was
+controlling it, but yeah close enough right? Ummm so yeah we do
+a lot of scans. As in literally
+we are probably one of 5 people who constantly [laughter] bash
+VNC on the globe. > Is is Erodo
+ROb in the room? No. Is John Matherly in the room? No. Uhh
+there's basically 6 of us, that
+scan the whole World routinely for VNC and like 4-5 of us are
+at CON. So yeah fun times. >>
+Yeah so we do scans and we get back results basically...we..I
+usually scan for the RFB header.
+So connect on anything on known ports, expect RFB headers back
+and just store them and store
+the IP addresses. And you get about 335000 that will respond
+to you. 8000 of those will not
+have authentication, you can connect and do whatever you
+want. Ummm now what's
+interesting, when you look at the visioning. So you get back
+all these banners and you get
+like a major and minor version, I can just..you can just graph
+these. Umm but if you look at
+the official versioning, or the official documents that were
+brought out saying this is
+version 3 point something . Ummm there's 3.3, 3.7 and 3.8 those
+are the official versions
+basically. Now if you look in these graphs, these should not
+exists, these are numbers that
+make no sense. There's a bunch more that should probably not
+exist, but when you look at them
+you can kinda figure out what it is. So um you go to Apple
+Remote, uhhh Desktop, which
+basically what they did they changed the authentication to
+use Apple ID kind of stuff, but
+the rest of the VNC part its pretty normal, it's standard
+VNC, just different
+authentication. Ummm you go to realvnc personal, so the guys
+who originally wrote the RFB
+protocol, they actually made a company and now they're also
+selling products. So you got
+realvnc personal which is on 4.00. > Just hit the 5 minute
+mark. >> Ohhh. > Only 5 minutes
+left. >> So then you have realvnc enterprise which is
+5.0.1, you got something unknown
+and then you have the guy who has been messing with us. He's
+basically running a honeypot,
+gives back whatever number ummm depending on the port you
+connect to. But there is
+something else with no version saying 0.0.0. Umm 3.5 thousand
+actually. We found a bug so i'll
+just kinda skip through this cause we are sort of slowly
+running out of time. Basically
+we got a discussion on twitter, and we ended up finding a really
+nasty bug in this thing, so uhhh
+too much talk. Let's see. So what it ended up with is, this.
+We can use these VNC devices to
+reflect back on the internet, or reflect back onto the internal
+network. So these are 3 and a
+half thousand devices which us allow us to use them as
+anonymous proxies or it can go
+back into their network, which are just open. No
+authentication, nothing. Full
+port control through some bugs we had, umm we actually got this
+CVE for this, because he
+fixed..uhh we did port dropping and they fixed it. [Clapping].
+Heyyy! Umm but it actually gets
+worse, so he did a fix, there was a CVE, he made an update,
+and then 4 days ago when I was
+making these slides or sort of finishing them, he got back to
+me and said: hey why are you
+using this bug, there's also like a feature to do this. You
+don't need to abuse this bug to
+do port dropping and connect anywhere, you really don't..you
+can just do it anyway. So this
+means that you can connect to any host on any port on any
+protocol, inside or outside the
+network, through these devices. Ummm and even more interesting
+these devices have
+blacklisting....uh whitelisting. This is locally hosted so if you
+connect to one, and you connect
+to localhost on these things,you can get on the interface and you
+can just turn off filtering. So
+literally if you do curl through these things, you set allow
+connection, refused connection
+to nothing, all the filtering is gone and you can go anywhere
+that you like. Thats kind of
+neat. >Yeah the fix was whitelisting, but you just
+proxied to local host and turned
+off the whitelisting. [Laughter]. Okay good job. >> So
+we called this stargate, because
+you know people get the reference, you go in somewhere
+and you don't know where you end
+up. Sometimes end up from the same IP address, sometimes you
+go through somebody's network
+out to the internet on the other side. We don't know where. So
+basically its a open proxy and
+you can pivot into it and got to anything inside. We made python
+scripts, so if anyone wants to
+look at this, it's up there. If someone actually manages to use
+this in some kind of red-teaming
+or a pentest, please tell us. Because we haven't found
+anything interesting on the
+inside yet, it's pretty difficult to go into a network
+and then you sort of have to
+guess what's always gonna be there, except the web interface.
+Ummm so we have some demos, so
+let's actually see if we can do this > 2 and a half minutes for
+demo. >> In time. We will do the
+most interesting one actually [Laughter] Uhhh let's see.
+Alrighty have the. Okay what I
+did is I run a stargate proxy locally on my host and I have a
+VM that's proxying towards my
+host, through the stargate proxy, through the stargate back
+on the internet. Umm sooo ummm
+we can do the most interesting one then before we run out of
+time. So there's a bunch of them
+online, but this is one we find which was kind of interesting.
+Uhhhh. So let's see if we can
+then probably go to Google if it works. So just to show you can
+go into Google, and it will..it
+works. Proxy through stargate back on to google, depending how
+fast it is. Here we go. What
+language is that? is it just? [Audience inaudible] Well there
+you go, apparently this is in
+France. > Yeah its french.yeah. >> So let's see what happens if
+we actually go to the server
+uhhh it's hosted on. > So this is browsing the local host. >>Oh
+there's one thing. This thing
+does not support concurrent connections. So this, you are
+doing local host, you get by
+Google 404s, it's because it's badly caching. Yeah. So now,
+alright so now we get something
+internal in this network. We get and apache server which is in
+the network, we cannot reach it
+from the outside. Uhhh and then we can actually with this one go
+serverstatus, uhhh I can barely
+see it typing. [Inaudible] >There you go. >>Internal server
+status page, from a pa...from a
+internal service, through a proxy through the stargate. >So
+this should only be available to
+local hosts, but because we are proxying through the box that's
+hosting the thing, we are
+localhost. So fun times. Are we
+00:19:37.109,00:00:00.000
+done? [Clapping]. Yeah! Alright.
+We are done done. Thank you
+everybody. [Clapping]

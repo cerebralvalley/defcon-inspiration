@@ -1,0 +1,256 @@
+Welcome to the game of hacks. >> This is Amit Ashbel Hi everyone. Hi guys. So this is my first talk at DEF CON so
+go sees see on me, okay. So, we're going to talk about
+something called game of action some of you may know it other
+may not. Were going to dig into more details about the platform.
+In terms of the agenda we are going to start by understanding
+what game of HACK s'es what we made it to be what's behind it.
+We are going to have a type of T-shirt contest not really going
+to be a wet T-shirt contest so no need for water. After that,
+we're going to talk about [indiscernible] which the
+platform is based on OJS and just a few take a ways.
+Regarding the game anyone who has internet connection don't
+worry we are not going to HACK you just want to have you
+participate in the game ten first places are going to win a
+cool T-shirt so hope you'll join. >> Okay. So, game of HACQS
+was initially was born by -- HACKS was born by a few of my
+legs at checkmarks we were walking around ACON freeness we
+saw a few guys standing in front of a wall we saw they were
+looking at a wall with code on it and ired are it said spot the
+vulnerability there was no prize no anything but people just
+standing there and trying to figure out vulnerability we
+thought that's interesting. On top of that, OIS published a
+research that showed that one of their top concerns or priorities
+as wear injections for training of developers so secure training
+for developers. In addition to that, they're challenges as I
+said are related to -- related to the education -- we looked at
+all of these facts, the people standing in front of a wall
+reading code we said okay let's put one and one together and
+make something out of it. So we both -- built a game the game is
+actually a challenge either against yourself or you can
+challenge a colleague too spot vulnerability. The idea was
+initially, you know, just to to get people interest Ted it was
+kind of a marketing campaign. And win the first 24 hours we
+had thirty five thousand participants play the game. So,
+to our surprise. I'm going too quickly go into the game so
+hopefully internet is going to work properly. Yep, its working
+so this is a game you get to choose single player or
+challenge a friend. Once you choose, you have three levels of
+difficulty so the beginner, intermediate and advanced. And
+we'll go for beginner. It starts up you have the different
+sections of the game we'll dig into Thorstein few minutes. It
+gives you vulnerability on the screen code with vulnerability
+on the screen if anyone wants to guess the answer I'll be happy
+to hear out of the four. Beginner, come on guys? >> You
+can't read it? >> Let me zoom it in for you. Too much. Better? >>
+I can't hear you. We got 20 seconds left. Command injection.
+All right. Nice. Okay. So that's the idea you get five questions
+you have a timer a minute percent question. After five
+questions trs a -- there's a leader board the faster you are
+the bore -- more points you get and of course the more answers
+correct the more points you get as well. But that was not it. So
+we said okay. This is interesting we can do more than
+just marketing campaign with it we thought why not get some more
+information out of it. We are going to publish this on line
+and why not gain some data and understand what hackers are
+really doing or really trying to do with these types of web
+applications based on need we'll talk about need in a section. As
+you can see our assumptions were found to be correct these are
+screen shots from, from some discussion boards so some of
+them said I don't know if you guys can read it something like
+game itself was harder than to hack it. Tries to teach security
+but fails at it. So, we actually failed on purpose. We wanted to
+have vulnerability in the game. We wanted people to try and hack
+the game along the line we fixed vulnerability to see if people
+get more out of it. The architecture of the game, as I
+said It's based on OJS client side is chrome web browser or
+mobile device and then you have local server with -- we see that
+[indiscernible] work perfectly together we'll talk about that
+as well. So no JA single dwelling thread d -- event
+driven and I just want to quickly go over the idea of OJS
+because it is relevant the rest of the talk. As you can see on
+the left side you have the event C U E, it actually is what's
+waiting to be processed tasks that are waiting to be processed
+in the middle you have event loop which is actually the
+brain. Events loop has ability to use CP U as much as it wants
+however it will try to send all the tasks to its -- to spare
+time. So every time event loop gets something it will pass it
+on to the event handlers as fast as possible freeing up the next
+event and the next event that way the single thread can work
+very fast and very efficiently. Just to make this a bit clearer,
+this is kind of an analogy to OJS you have single thread whose
+cashier here he's getting the orders from the crowd from the C
+U E. You have the event hand her simply doing the task that he's
+getting from the single thread the event loop. Going back to
+game of action, you have different entities, we have
+different entities which we based the application on there's
+questions difficulty level, the score, the answers, the question
+number of course, sixty-second timer and code itself where
+effect of the score is based on the time as I mentioned the
+correct answer of course and the speed, which was the answer was
+answered at. Okay. Guys. I want you to experience a bit of game
+of action. It's not going to be only val never rant I'm going to
+open up the screen now and I need you guys to either join via
+laptop or your phone. I'll give I was few second to do that.
+Just go into cart captioning hoot do the IT punch in that
+opinion that you see on the screen right now. I see people
+joining already, cool. Okay. Nice. Remember, top ten will get
+a T-shirt. Maybe even like mine. All right. That's going better
+than expected. All right I'm going to start. You still have
+sometime to join I think the first question doesn't have any
+points to it. So let's go. Why don't I have any sound? >>
+Doesn't matter. Okay no worries no points in this one. Let's
+move on. Second question. Okay. >> [Laughter] >> Okay. From now
+on it's a bit more serious so concentrate. The current leader.
+Okay we're going to have three vulnerability questions. Okay.
+That was beginner level. Can you see the code? >> That makes
+sense then. I'll try and zoom in for you. Hope that will work.
+Whose DKS. Raise your hand, come on. Way to go. Okay. All right.
+That was that interactive immediate yacht level. Let's see
+how that went. DKS, nice. All right. Last one. Last game --
+after that we're moving on. I see the results for this one. It
+is confusing. Let's move on. All right. Nice. DKS, what happened?
+>> Okay now these are a bit more relevant to the platform that
+we're talking about. Very -- well not very well done. Okay.
+Okay. Actually, the server won't no the answer if the client is
+doing the random. There's no way for the server to -- just a
+second. There is away for the server to know the answer but
+most -- won't no the answer yeah go ahead. I can't hardly here --
+hear you. We use [indiscernible] we can discuss that off line
+later. Another question related to -- oh, POO. Nice. Gave you
+free points. Shall I ask who the three we're -- stay seated. It's
+okay. All right eight out of 15. -- nine out of ten. Very well
+done. So, yeah the client actually, if there's no
+validation on the server side, the client can answer the same
+question multiple times. The solution for that is actually to
+write a flag saying answer question. Question answered,
+sorry. Okay. And the last one before we move on with our talk.
+So the calculations on the dash didn't yep if you put in
+negative number your score is going to go very very high.
+Okay. So, let's finish this off. We have the top five on here.
+Actually, I don't think I can see the top ten, we'll trust you
+then. No, I don't think zoom out will help. All right. So let's
+move on with the talk. Okay, so these are just a few items
+related to the question that we had so initially the -- and
+answers allowed hackers or developers or script kit tease
+to answer the same question over and over again and you can see a
+snapshot. I don't know if you can read that it says more or
+less you can -- post the answer for the same question multiple
+times. And that was obviously resolved by putting up a flag on
+the server side saying that the question was already answered.
+The next one was the timer. The timer initially was handled by
+the client on purpose, of course. We p wanted to see if
+people are going to use it. Timer was there to force the
+user to go on to the next question when the time ends. So
+once -- is on the client's side the user can halt the timer and
+gain time to answer the question. And what you see here
+someone who said here's how to hack the hack and game pretty
+simple in your console -- answer one time minus anyone anyone
+anyone anyone anyone anyone. And that -- casually 88888 that
+actually -- dash obviously after that we patched that and that
+was it. The time now is calculated on the server side.
+We have -- it does create a small [indiscernible] but not
+effective enough to modify this -- the scores. It was also one
+guy who found a nice trick on I phone on IOS he found if you
+hold your finger on the time phone on the iPhone screen it
+actually stops the time so that's another trick that was
+circumvent Ted using the server side time validation. Okay. A
+few more no JS points to I mean remember remember now these are
+related more to code admitting I know J s'es very very pop her
+however it does have ghts up sides and down sides up side
+single thread d quick response very good for IO intensive
+tasks. However, its less good for CP U intensive tasks so
+let's see try and see that in action I mean we're going back
+to this image here imagine the guy who has the single thread on
+his head over there having to do a lot more work before he moves
+onto the event hand her that would create a huge C U E and a
+huge delay in people getting their food so same thing goes
+for for no JS. I'm going to show you a quick sample of denial of
+service I hope it's going to work. What you see at the bottom
+is a small script that we've created that actually sums up
+the number between one and P where the number -- the P can be
+anything you put in. Which is a CP U intensive option as the
+more the number the calculated number is high. So if we put in
+five for example we'll get 15 so one plus two plus three, so on
+we get to 15 and let's try and see this in action. I pop -- I
+hope you can see the screens on there. So this is actually going
+to run the script. I'm going to put the number, I don't know,
+visit -- 50 for example in here we'll get a response quick CP U
+calculation and that's it. Now we are talking about single
+thread so the no JS can only run a single CP U intensive tasks at
+one. What we'll do now I'm going to put a large number on this
+screen here. Hope I'm not going to make it too large then I
+might key 98 myself a denial of service. How many Sears to I
+have on here. Let's make it like that. Okay. At the same time,
+I'm going to calculate this for let's say five. We'll start this
+one and after that I'll start the second one and what you'll
+see is that this one as long as it works, agencies its
+calculating the other one won't be calculated Ted so it's going
+to have to wait for the event loop to complete the job. That
+was too fast. Another zero. Okay. Now you see the one on the
+right is still calculating and the one on the left is not able
+to perform its tasks as long as the right window has not
+completed the calculation. And that's very sim p l single
+thread problem and there it is. So once the large number
+completed the small number went immediately after that. All
+right. Everyone clear? >> Cool. Okay. Another thing with OJS
+it's very popular to work with with [indiscernible] because of
+the Jason based functional will the that it has. It has the
+ability actual toll take objects to take Jason values and put
+them in the request or database. What happens in this case is
+that a user can actually, when you are trying to log into an
+application a user can use they values or these Jason values to
+play around with the log in. So this is kind of -- without
+[indiscernible] I'm going to try [indiscernible] that as well. So
+we have this log in application here, so this is justs -- just
+the log in screen if I punch in, it let's me in. Which is great.
+And if I take this in the U RL it's the same thing actually
+I'll just do this, so you see that it works the same way.
+Okay. So that works. But what happens if I use the great than
+tag so I'm going to use the greater than A which means that
+any user on the system registered on the system is
+going to be able to allow any user that's greater than A which
+is probably all of them and password that is great than A is
+going to be able to log in. So, I don't have the ADMIN password
+in here once I CLICK enter there's no differences let's try
+a different let's -- letter let's try B and it logs me in as
+a different user so what I've actually done I've used a Jason
+parameter greater than to overcome the validation, which
+is kind of a Jason injection. All right. One more thing
+regarding to Jason, because of that ability to use the Jason
+values, you can actually use a lot of Jason values one of them
+is regular expression. Regular expression is highly CP U
+intensive. And as you can see, or as you can remember, the no J
+s'es very very sensitive to CP U heavy CP U tasks. If you take
+this line for example, and we're going to go again -- sorry.
+We're going to go again to that log in page. We are going to see
+that we can cause denial of service or regular expression
+denial of service to the log in process to, the application but
+just giving it a huge number of regular expression wild cards.
+So, let's see that in action. What were going to see now I'm
+going to try and open my task manager here. Hopefully it will
+work. Okay. If I load this, where's my task manager my
+computer is already stuck my browser is already stuck because
+of that what you would see in this case and you just saw that
+the [indiscernible] is using 25 percent of my CP U, which is a
+single core out of my four course so very easily I could
+enforce the application -- and by that actually causing denial
+of service. All right. Some take a ways. -- we really believe in
+edge indicating developers to write correct code to write
+secure code it's not only when you say I think the strep
+understand that that one of the best ways to educate is -- it
+works forever one all ages. So, any time you have opportunity to
+make learning experience fun highly recommend we saw that
+with game of action we saw that with the number of -- develop
+first of all types and kinds. Regarding the code that you are
+using when you are using new code in this case OJS you want
+to make sure you know what it -- its pitfalls are. What we could
+have done to avoid denial of service and Jason is to actually
+validate completely the length of the fields and the validity
+of the field completely. And last point OJS highly sensitive
+to CP U. Important to watch out for that. And that's it. It's
+time for questions. >> [Applause] into is it -- yep. >>
+Question asked. >> In this on line version of the game it
+doesn't. It just tell us you wrong. There are other versions
+that we could integrate win your product and that allows you more
+information once you get something wrong. Any more
+questions? >> Okay. Thank you everyone.

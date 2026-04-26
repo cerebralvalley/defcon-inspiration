@@ -1,0 +1,697 @@
+>>Now we are going to talk about
+cars. I bought my first adult
+car. A Volkswagen. Turns out German cars are a long troll
+just to take your money ‑‑ this
+had all of the fancy stuff. I used to listen to big timers in
+college. They talked about frog
+eye headlights which my car has. Then I hit a Coyote. There are
+like 40 motors in the headlight
+that go up and down. I had to keep taking my car back and forth. My point
+is: In cars these days all kinds
+of shit can break and shit that might be really problematic.
+That is what Charlie and Chris
+and going to talk about right now. So, let's give these two a
+big Party Track welcome.
+(Applause) >> How's everyone doing? Hangover's gone? Still
+drunk? I think you all know
+Charlie. He is kind of Internet famous. He works at Twitter. I
+am Chris Valasek. I work at IO
+Active. We have been doing car stuff a while. Nice enough to
+have us here last year as well.
+This year, Black Hat was practice. Now the real thing. >>
+Now we have the kinks out. We
+can deliver the real deal. We have introductory stuff to go
+over. How car attacks work. Talk
+about cyber stuff. Then we will cruise through remote survey. If
+you really want to read about
+that stuff you should check the paper. It is already out. I will
+release it on the blog next week
+as well. 95 pages of details about all of the cars we looked
+at, our thoughts and
+conclusions. If you are really interested, this is our song and
+dance ‑‑ read the paper. >> But
+he who is going to do that? >> I wouldn't. I wrote it. >> Last
+year: Four downloads. >> The
+blog had like a zillion. Reading's stupid. That is why I
+watch movies. (Multiple voices).
+>> Half a gig. That is why we never release the slides: They
+are too hard to download.
+Lastly, we will talk about some algorithms and a little device
+that Charlie and I came up with
+to stop the attacks that we have known about so far. There is not
+going to be any remote shells.
+More of academic. Except we actually release stuff. It's
+really motivated to talk about
+remote attacks and ‑‑ Frankly it comes out to how we pick be our
+cars for research which was very
+scientific I would describe it. >> How much money can we have.
+That is how we choose cars. >>
+Computer control. After last year we wanted to do research
+and talk about remote things.
+(Off microphone). >> We were like let's do research on which
+car to buy. >> That was probably
+a little misguided first time around. Turns out I was talking
+to academic guys they
+were like before we put a bought our car we bought all these,
+manufacturers. Great idea. I
+wish we would have done that. Which cars park themselves?
+sweet. Can we afford that? Let's
+do it. >> This talk is really about the research we did. We were doing it
+like, Hey, other people might be
+interested. Charlie had the special treat for you at the
+end. Basically, the talk sucks.
+But if you stay to the last five minutes I promise it's all good.
+Now a days, everyone seems
+interested. As soon as there is a car wreck now the first
+question ends up being: Was the
+car hacked. We don't know. But everyone seems really interested
+in this now. It is cool research
+to do. Popping shells gets old at some point. You want to pop
+something then smash it. That is
+why I think we have had a blast doing this. Got a lot of good
+feedback and generally had a
+good time. Remember when you crashed your car? >> Hacked. >>
+Definitely hacked. >> We wanted
+to get the facts out. If you are interested in remote attacks and
+remott car research this is
+going to tell you exactly what you need to do. So you don't
+have to listen to people who 
+don't know ‑‑ you should be able to do that and wreck the
+car and see from some of the
+diagrams it is not really that straightforward. >> Right. >>
+Some cars are one way, sop the
+other. Not that straightforward some are less than others. Cars
+have computers. Charlie and I
+wanted to explain to you how attacks work and we hired Pixar
+to do a little animation. This
+was the budget. They were all hieroglyphic characters. They
+were the cheapest. Here is how
+the remote attack works: Shadowy guy with computer, he does
+Internet to things or wireless
+to things. From there, the ‑‑ you could potentially have code
+running. That is what we are
+concerned with. Not kind of eavesdropping and his E.
+listening to things but want to
+execute code on a computer. That may be on the same network or a
+different network which is
+represented by the chip thing and that blue line. >> Step
+one ‑‑ there are 310 steps in
+remote attacks ‑‑ probably where the bluetooth stack lives At that
+point, you can't necessarily do
+harm to the car. You know ‑‑ maybe you could record their
+voice. We don't car about that.
+We want to crash. >> Smash them up. After you figure out how to
+get on the computer can you send
+messages as well. While most cars have steering angle
+sensors, a lot do not park
+themselves. That might mean you don't control steering at all.
+You have to figure out what
+parts of the automobile were controllable by computer
+messages. While all of the parts
+of the car are computerized doesn't mean the network
+messages will be able to control
+that all the time. >> That was our research last year. Step one
+. . . step two can you send
+message from radio lands. Step three can you make it do
+something. Our whole research
+was can you send messages. Can you make it do something. >>
+Step four: Smash E. 'em up. That
+usually ends up being step four. People have done this already.
+It is not theoretical to have
+wireless codec of a car, physical aspects, take control.
+The researchers from the
+University of Washington and University of California did
+this in ‑‑ 2011 (Car sounds) >>
+Beep‑beep‑beep. That was the Internet. That looks dangerous.
+Here is a test track (Making car
+sounds) Look out. There is something in the road. I hear
+something. So what they showed was
+something. They were able to get
+execution ‑‑ able to lock the breaks and crash the car. >> We
+were plugged into the vehicle.
+We kind of did some different things. We leveraged the actual
+normal cam [phonetic] messages.
+This is a video of crashing a reporter from Fox news. If you
+have to crash a reporter, the
+Fox News guy. >> Smashed in an 'em bang. Off the road. As you
+saw him, he kind of took his
+hands off the wheel Charlie was like don't do that. Then I
+pressed the button. Wrecked. It
+was awful. I was in the back ‑‑ you guys can make . . . yeah, we
+can. Okay. Show me. The camera
+man was faced backwards in the passanger seat. Went home to his
+wife and kids probably and gave
+them a big hug. Did you guys mean to do that? Yeah.
+Apologize? Shit. Earlier we were
+like put your seat belt on. He was like I can't get the shot.
+Listen, not my fault. All this
+comes down to as Charlie said before. We think remote hacking
+for control has at least three
+parts. Remote attacks. Everyone is kind of familiar with that.
+Everyone is familiar with
+wireless communication. Look at the cars, figure out which to
+buy and hack. We wanted to
+figure out which of the three steps would be the easiest. We
+can't go out and buy 30 cars and
+bluetooth ‑‑ time, effort, money we don't have all of it. What we
+did, instead of actually doing
+that we looked at the size first. We were like the bigger,
+the more bugs, better chance of
+gaining remote access. Try code. More code, more chance. That is
+the way we figure it. Do you
+have a different opinion? Then . . . >> Get out! >> Come back for
+the last five minutes. >> Other
+part is cyber physical: Computers take messages that control physical
+aspects. Adaptive cruise
+control, car breaks if it sees a car in front of it. City
+driving, things like that. These
+are ways that you almost can guarantee that you can send a
+computer message. A lot of times
+people used diagnostic messages. You may or may not be able to do
+something. With cyberphysical
+aspects, they are designed to ‑‑ >> We found, we did our research
+on the Escape and Prius. The
+Escape didn't have any ‑‑ we were able to make the breaks lock
+up and make them not work which
+was exciting. On the Prius they had a computer designed to send
+messages on the cam bus for the
+breaks. We had to do what they do. It is a feature. When we
+were trying to figure out of 30
+cars which we want to buy ‑‑ again we don't know whether the
+breaks have a vulnerability we
+want to engagement the most features are probably having the
+most things you can control. We
+wanted success with this. Don't want to look like bigger losers
+we already are. Remember the
+battery ‑‑ >> Talk about failure. >>Literally did not
+watch it. It was too
+embarrassing. >> The third piece is network. A lot of this is
+about. A lot of people,
+especially the media were very keen on. Remember it is only
+one‑third of the whole equation
+we are talking about. Certain cars have certain features at
+certain places. Not just this
+flat network. They can be segregated. Certain cars may
+provide challenges others don't.
+With the second ‑‑ network. If you attack, say, the radio and
+you want to control, say, the
+breaks, can you get messages from one to the other. Can
+imagine a car designed that
+there is no physical way to get messages from one to the other.
+In which case you are safe. You
+can attack my radio all you want, can't crash me, I am happy
+with that. Other carses might
+have on the same ECU ‑‑ could. Right next to each other in the
+network, nothing in the way to
+stop you from going from one to the other. Searched all three of
+them, combined them, tried to
+figure out which cars we would have the most success trying to
+do this on. As a prelude to next
+year's show. >> Exactly. >> We have those cars. >> We got the
+cars we want. Now we have to ‑‑
+>> Or never hear from us. Ride off into the sunset and that
+will be that. >> Features for
+most people now are attack be surface [phonetic] these cars
+are becoming more and more
+complex and connected. That is why this work is even more
+intriguing. Super, super
+complicated computers on four wheels that can brake
+themselves. Cars are
+complicated. It will be cool to hack them. There are too many
+cars for any two, three, 40, 100
+individuals to look at it. Everyone needs to look at it as
+we look at code on the Internet.
+People look at cars and information, how to do it. By
+now, I figure we have it
+covered. For some reason no one did it. Probably because the
+tools are crap. But what are you
+going to do. Remote attack service ‑‑ this was awesome. >>
+But dash there is a lot of
+remote attack servers we only cover a few. I am taking my
+time. >> Go with that. >> So we
+are going to go in all different kinds of things you can imagine
+attacking remotely, a 
+vehicle. We are going to sort of go in increasing range. The
+first one we have here is ‑‑
+what is it called? Passes ‑‑ what is it called? >> It starts
+the car. >> On the left you see.
+an instrument cluster. >> On the right is a little thing that goes
+around where your key goes in
+There is a little antenna in there. The data is
+passed between it to make sure
+only ‑‑ from an attack perspective, I don't care about
+someone ‑‑ I care about can you
+have a little radio station sending radio waves that somehow
+exploit a vulnerability in the
+code, waiting for this information from the key? This
+one does not seem that likely the
+not much data a sent over radio. It is a couple of millimeters.
+While it is an attack service,
+probably not the best. Giant ass antenna pointing at ‑‑ I think
+it is obvious when you see a
+giant antenna pointing to the passenger seat. I wasn't plugged
+in. That was remote. Right
+there. You could hack it. But probably not your first choice.
+Next is the tire pressure
+monitoring. All of the cars today since I don't know when ‑‑
+>> 2006. >> Thank you,
+Mr. Egghead. Sensors in the tire communicate wirelessly with an
+ten as that is processing that.
+Hey, light comes on, you are getting a flat tire. In the
+floor here is ‑‑ function box.
+It has the antenna that receives the signal from the sensors.
+Anyway the point is here you
+have maybe a little more range, meters. There is going to be no
+complexity in the date that
+passed. All going to be like ‑‑ >> It is a number, right, the
+PSI of your tire. >> Not much
+more than that. >> But researchers have communicated
+with cars. There is something
+going on! . Something. So, there is code running. Means probably
+there is stuff there. Still we
+do not think it is the best candidate for remote entry into
+a vehicle. But way better . . .
+almost everyone here is familiar with the car clicker that can
+start ‑‑ sometimes start the
+engine in as well. These again, broader range, talking more than
+a couple of meters now. Again, a
+con of it is probably the not much data. Probably going to
+challenge the response, set a
+specific value to open or start the car. Not really too much
+else. On the other hand it is
+usually connect the to a lot of cool parts, locking, unlocking
+the door, the engine. Ends up in
+a cool place in the car. Probably more concerned with
+theft from reproducing these
+than code execution as the car flies by to do brakes or
+steering. Probably a more viable
+option. They are going to lock down on these car manufacturers
+because they care about that.
+Hard reverse‑engineer. The others we will get to in a
+second they probably don't care
+about. >> Exactly. One of the more familiar wireless protocols
+is bluetooth. We think this is
+probably one of the most ripe attack surfaces, right? Because
+almost every car has it because
+something for not using your phone or demanding hands free. A
+lot of times they support
+streaming of audio and data. You can stream your music. It also
+gets the ‑‑ I don't believe
+there is a lot of code out there that has not had a vulnerability
+for audio parsing. For image
+parsing. These are things people are familiar with. Especially
+because they have been around a
+while. They may be using old computer software with known
+vulnerables. You have to get a
+new bluetooth. We think this is one of the most viable attacks.
+(Off microphone) Still
+bluetooth, you have you to be around 10‑meters, 30 minutes.
+You have to be able to see the
+car basically or be close enough. There are some that you
+don't have to be very close at
+all. So, in your radio, you see the beautiful radio from my
+cheap Ford Escape. It is
+obviously getting FM signal or something with audio in it which
+probably I can't imagine but
+there is more data than that coming 106.7. This is data that
+is sent anything to the actual
+you imagine people screwing up ‑‑ people tend to mess it up.
+It is still pretty ‑‑ really,
+the holy grail a lot for all of this is the gateway now for WiFi
+cars as well. The range is
+practically unlimited. If you are in range, you are in range.
+They are designed to be used
+everywhere. You want to hit an SOS button or get this
+connectivity. Or like Chris we
+want to make dinner reservations. I have the car,
+SOS button. It has a concierge.
+Yo, I want dinner reservations. Sir is this an emergency. Yes I
+want to make dinner
+reservations. Hit the other button. This is for an
+emergency, people who are are
+dying. Can you still take dinner reservations. Communicating data
+across the world. >> This is
+probably what most automobile manufacturers worry about. The
+use is pretty well understood.
+Right and The new thing I think that
+becomes very concerning for us
+is cars are now getting their own apps, getting web browser,
+he we know we he can't write web
+browsers or secure apps. I hope to have a car with a web
+browser. I know how to write
+a web browser exploit. I don't know anything about a Bluetooth
+exploit. I can't write anything but
+a browser exploit. This adds attacks the security community is
+already familiar with this. That
+is why it ends up being pretty concerning. Imagine you brought
+a device 2012 a piece of
+hardware that had web browser on it, you couldn't update it.
+Would you be worried? If there
+is a problem it is really hear to fix as well. Don't you
+dare ‑‑ >> I am not. I have this
+new Jeep that is cool. It can be a WiFi hotspot. It provides
+Internet to ‑‑ but I actually,
+look here it has open services. You can ‑‑ we are getting closer
+to cars being more like software
+which people like us ‑‑ most of us understand, hardware
+problems. Bluetooth and radio
+stuff is still . . . in the game. Getting in the car,
+services we have been doing
+years and years. >> Something wrong, doesn't work. Came
+pre‑backdoor. >> Cyberphysical
+as I explained before they control these last attributes. I
+am not the biggest fan of cyber
+anything. Well,. >> Yeah, you are. >> Well, one.
+Cyber‑specific site. The thing
+is people in the government sector, in the private and in
+the public sector use these
+terms. If we are going to get along, communicate and work with
+each other, we have to agree on
+a set of verbiage. It seems like if we want to communicate with
+them ‑‑ in the talk I am going
+to use device this is your car that can control things in your
+car. Here is an example of a
+thing in your car ‑‑ >> Yeah. Now we are going to go
+through ‑‑ very 250. Sweet car
+has all of these awesome features. >> These cars have.
+Not many of us realize they have
+(noises/beeps). >> As you see, I am on a closed test track in
+Pittsburgh. I am not ‑‑ >> I
+thought that was a Hollywood testing. >> You can have
+controls that you don't to press
+from our experience like that, send messages, sensor, compute
+values, sends messages, brakes
+work ‑‑ don't work ‑‑ >> A sensor hooked up to the brakes.
+The brakes engage. The computer
+knows what the sensor values are and communicates to the brakes.
+How to do that. When to do that.
+That means if you are on it, you can be ‑‑ >> Exactly. (audio
+lost for captioner. >> It means
+that it has tock network Yeah so even things simple
+as headlamps connected to
+the cars network. To turn the corner. It provides better driving experience
+and safety but at the same time
+another piece of the automobile onto the cars network. It needs
+to know how to turn the lights.
+Things that were complete separate are joined together.
+>>It means the steering has
+to be network accessible can have. Because you can't
+isolate those things you think
+would be isolated. It may have a gateway in between but still . .
+. intelligent cruise control
+(noise behind a voice saying something once it sees the back
+of the vehicle then the car
+speeds back up again. >> The car pulls it ‑‑ slows itself down,
+speeds itself up. Can happen in
+communication, sensors, wires. Sending mess as to the car,
+telling it to accelerate. That
+might be something we can take advantage of (background noise
+with a voice. Saying actively
+stand back (inaudible). >> Describe it as Andy Capping
+[phonetic] itself. >> You dated
+yourself. >> I did. There is one old guy in the back nodding. >>
+But, yeah, steering. It will be
+a peace that is network accessible. These are useful
+pieces; they keep drivers more
+safe. >> There is a computer that can control the computer
+while you are driving.
+(background noise.) >> It is all of compared to this didn't have
+sounds. You guys are getting
+bonuses. >> Bonus. >> Collision prevention I am not going to
+touch brake. Hear the beeping?
+>> The brake, automatically, in that instance ‑‑ I guess the
+radar knew it was cardboarded,
+not a public transit vehicle. It's the same shot. >> No,
+different angle. This is why our
+hacking is (car sound in background) imagine what they
+thought about this psychopath?
+Drive it through 'em? Anyway it was a lot of fun. Way more
+fun ‑‑ >> Testing is better than
+connecting to the bug. >> Actually wanted to really crash,
+thought it was going to stop one
+of the boxes smashed underneath my car. >> Then. (Multiple
+voices). >> A lot of the
+coverage was really on the network architecture view. We
+wanted to look at these three
+separate piece toss a remote attack and look at cars and
+decide if we were to get one,
+which would we get which would be most successful. We used the
+term "hack ability" we used that
+because it is less difficult than explaining it every time as
+well. >> We can'ted a car that
+would present the least possible problems to a remote attacker.
+>> Exactly. Our thought was you
+can buy a consumer reports magazine it will tell you the
+cars with best safety features
+and ratings. I think we should start doing it for cyber
+security of vehicles. We want to
+know what kind of security we think these things have when we
+buy them, so you can be an
+informed consumer. My paper, if you really want to read it,
+there is a lot of good stuff in
+there. >> We have presented so far about ten pages. We will do
+the rest in the next four
+minutes. >> Getting the information was hard a. Every
+manufacturer is different. Go to
+the mechanic's site. The wiring diagrams are different. We try
+to correlate everything. It took
+a long time. >> The reason we get the diagrams, go to the
+mechanics' sites, the first
+time, we downloading ‑‑ didn't try to hack it. No instructions
+on how it is done. The sec time
+we looked at the wiring diagrams. >> And decided we
+should have used them long ago.
+Hackers don't want to read instructions. You buy a new
+table and for the next ten days
+figure out how it is assembled. >> Hackers. Read the
+instructions. Didn't actually do
+the hack. >> The Internet is hard. Let's go shopping. A lot
+of the websites ‑‑ >> Let's do
+it now. The websites just weren't very useful. >> The
+forums. >> I am trying to be
+nice. >> You search things like cam. Nothing. I know you have a
+cam bus. I have used it. If you
+are not logged in, you don't get search results. If you are, you
+get different once. This
+constantly only works Tuesdays and Wednesdays and bank
+holidays. >> Looks like they are
+working perfectly. Suck. Load up IE 6. Don't tell you to use a
+different browser. I can't find
+this. Dude, IE 7. You have to look at it. I am sure all of the
+computers ‑‑ to hell and back
+be. >> Huge collaboration between the NFA and automotive
+manufacturers. >> Exactly. >> It
+took time. I don't want to say ‑‑ this is the boring part,
+remote survey. We tried to make
+it easy. If you get the paper you will get these icons. These
+things are kind of important
+pieces, the pieces bee he want to research and are concerned
+with. All of the ‑‑ cyber
+physical things. Put them on the diagram. We are going to fly
+through the diagrams. There is
+not much to say. You want to read the paper, look at them.
+Note there is a bunch of
+different arc about tech tours. I thought most of the cars would
+be ‑‑ had all of the Internet
+stuff somewhere then the important other stuff somewhere,
+other stuff other places,
+connected by a gateway. That is how they are set up. Obviously,
+this is not the case. You have a
+new Accord, for example, or audionav unit connected to both
+cam buses. Things like that are
+problematic for us. If you hack bluetooth you are on a device
+not only on your power train bus
+but on your secondary cam bus as well. >> The last two cars is
+way easy, presents less
+obstacles. In the three steps there is no step two. >> Remote,
+figure out how to make the
+brakes. >> Exactly. You have almost everything on one cam
+bus gateway that communicates
+with braking and steering. Having stuff on one bus
+especially that contains the
+wireless connectivity features is something that we probably
+think can be used to easily
+achieve hacking into the car. >> Because there happens to be a
+gatewar between the radio and
+brakes does not mean you can't send messages it will make it
+harder. The academics were able
+to go from a part of the car's network to wherever the brakes
+and stuff were by reprogramming
+the gateway. It is possible you can get by the gateways. >> They
+are not stopping everything. We
+have to look at it. >> Something else you have to look like. In
+the Escape there are two
+networks, one where the TPMS and the brakes [phonetic]. On
+not sure how to get from the
+PPMS to the brakes. Hard to hell. Cars went through
+evolution. Here is a 2010 and
+2006. Each car taking the place of the other. Went from the flat
+pan networks to a more segmented
+one they added more features and functionality. People say I am
+going to go buy that. >> I buy
+the new car. Has all of the safety features of those things
+are going to safe your ass more
+than be . . . >> That thing stops itself. I can drive and
+tweet all the time. All day. >>
+Why wouldn't you. >> Drive and tweet. Get a latte. Don't know
+if we have time to do this. This
+carry ended up getting most hackable. There are two
+different cam buses, all a of
+the interesting things are cam C. But there is the radio
+which has almost all of the
+wireless stuff. I lives on both of those networks. Essentially
+it does not look like a flat
+network. But it is completely flat. Everything you care about.
+While the Dodge is the same way
+it does not have cyber specific things even though the network
+architecture is the same. The
+car is made by the same parent company but network line is
+different. The big difference is
+the radio is only on the privileged network not the one
+that has the brakes. Even though
+you think they are both the same parent company they would be the
+exactly the same douse not end
+up the same. It is the same as 300, less cyber specific
+features. Goes fast. >> I wanted
+that to be the most hackable to justify buying it. >> SC
+[phonetic] segmented cam but
+interesting stuff connected to both. Old Ford Fusion not much
+in it. New one, a lot in it.
+These things go through an evolution. BMW as well. >> The
+cars most applicable have the
+most features. >> That does not mean that we want cars with less
+features. We want cars with all
+sorts of radical features. But design ‑‑ exactly. You can see
+BMW similar throughout. Most
+cars except the concept car is crazy. >> Even that is
+segmented. >> Yes. Range Rover
+very segmented. Has not changed all that much in the evolution
+of their vehicles where you just
+have ‑‑ ended up using technology, still enjoy it, have
+suppliers that use it. It
+happens a lot. Sometimes they don't change at all a. 2014
+Prius basically identical to the
+2010. At one point you had this massive shift in architecture.
+Again more features more
+complexity. They re‑architect how these things are done. We
+have been told to eliminate all
+of our chatter ‑‑ >> Right. What about the Presidents car. What 
+about gangster rappers. What
+cars do they drive? about . . . range Rovers. >>
+Bentleys. All of the cars we did
+not look at. More completion. Manufacturers have different
+designs for different cars. We
+have been saying for almost two years: Almost every car had
+something different about it. >>
+Right. >> This is the thing that made hacking a car hard. Even if
+you know everything about a car
+it does not generalize to other cars. Which is why we do this
+talk. Last year, we knew
+everything about two cars but nothing about other cars next
+we'll give a talk where we know
+a little about all the cars but not much about each of them.
+>> One of the biggest things 
+we thought Holy shit, patching is a huge disaster. We get a 
+Windows update or Mac patch or
+update, it is easy, almost automatic. Right now you with a
+problem in the car they send you
+a letter, tell you to go to a mechanic shop to get the car
+fixed. What happens when you
+sell the car? Right now there is this huge issue with patching.
+If something comes out, there is
+no good way to fix it. >> When I get a recall notice ‑‑ I rip it
+up. >> I still get recall
+notices for the Prius and Ford Escape. >> Those cars are
+fine. >> Those cars are fine.
+They are dead. Securing an automobile is important to us.
+End points. People are doing
+right now. Maybe you could segment cam message injection.
+The thing with the bluetooth
+does that have to write messages on the bus? Probably not. I am
+not an automotive architect.
+But, you know ‑‑ >> We can tell manufacturers to focus on
+stopping the remote attacks.
+That is one of the three steps. We want to make all three steps
+difficult like lessons learned >> It
+is kind of turning back a clock. The same a steps we went through
+in the late '90's and early '00s
+same things happen in cars. Crypto not going to work. >>
+Feel sorry the people who are
+leaving. They are going to start crying if they don't see this.
+>> From our perspective, adds a
+layer of complexity for hackers. What didn't we talk about? That
+is used almost ridiculously in
+everyone's environment is prevention. This is the
+hackolator 3000. We came up with
+these algorithms. >> I did actually >> I architected it. >> You were
+there. >> I was present. So
+that's something. Basically, press a button, learn how the
+car works. If anything is ‑‑
+stadard movement. We saw how attacks work. No way to
+objfuscate them. The networks
+are simple. Then stop the attack. We have in thing here.
+>> Car networks are different
+from Internet. The main thing. Network is completely
+predictable on computers. Things
+like attacks stand out. Go! (Video) (Multiple voices inaudible) Only took few seconds to learn how
+the car works. If there is an attack
+disabling the brakes, you can stop it before it is happening.
+We opted to short the cam bus out.
+Nothing would work but I am sure you can do something else. >>
+Like anything is anomalous, all
+of the attacks we know ‑‑ >> You can plug this into any car. As
+long as you can get a nice
+sample ‑‑ >> That is it. Thanks. Wait. There is one more thing.
+Oh, I fooled ya. >> Suckers! >>
+So we are going to have some bugs dropped now. Two methods to
+jailbreak Jeep, Dodge SRT. >> That
+is a model skateboard. >> Here is how you can jail‑break your
+car. The way that updates work
+is ‑‑ for these vehicles is get a USB stick, download ISO file
+stick it in the car. The car sees
+the USB stick with the ISO file It checks it and if that's 
+cool it updates your file. So I
+had an idea: I will wait until it checks for ‑‑ runs through
+and verifies. Then I will switch
+out the USB switch see if that works. It is cool, says it
+installed it. Ungh. Did not
+work. The stick. Says it is not ‑‑ you are not going to
+change up on me. They thought
+about it. Well done, Chrysler. They didn't think about this I
+go further. Say yes, I would
+like to install this software. So it starts to do its thing.
+I look at my hand in a second
+because I am ready (noise in background. The noise
+you are camping. >> That is the
+Bronx. >> As soon as it restarts, I pull the stick, now
+the car is in a bit of a pickle.
+>> [Laughter] >> It has written values saying it needs
+to restart in like, upgrade mode.
+But it doesn't have anything to upgrade from so  what it is
+going to do now instead of fully
+rejecting me, in a moment it is going to beg me for ‑‑ >> You
+are going to put the same one
+that was in there? >> No ‑‑ fair enough ‑‑ I am going to stick
+the stick in there. Now it is
+going to check. The code that does the check is from the USB
+stick. I am going to leave off
+that part. >> Can you fast‑forward here a bit. It says
+insert USB stick. >> So bad. >>
+Anyway, you can fast‑forward to the end ‑‑ you will see that ‑‑
+never mind. You ruined it. Jail
+break method two, the preferred method for hackers. Take the
+upgrade file, reverse it. There
+are some ‑‑ in there. In charm of the check. There is an
+awesome code snippet there. It
+opens the file, reads 128 bites into the file, reads one byte.
+If it is a capital F ‑‑ be if it
+is ‑‑ awesome data. Skip. I am a good reverse‑engineer. Yeah.
+>> I think most people can do
+that ‑‑ >> I found it! Found it. Entered capital a letter F and
+although and behold it totally
+works. Then I can do things ‑‑ it already has SSH on it. Put
+that on, enter my password. >>
+What would you do? Also. (Applause) >> If I had my car, I
+would do this what would you all
+do? >> When you start your car . . . (sound of car starting). >>
+Thanks a lot. (Applause)

@@ -1,0 +1,664 @@
+I'm Tony Trummer. This is my
+colleague, Tusher Dalvi. Were both penetration testers at
+LinkedIn. First of all we want to thank everyone at DefCon for
+inviting us to speak here and putting on this event every year
+that all of us love. So to keep our suits happy at our company,
+obviously our opinions are our own and don't reflect those of
+our employer. Jumping right in, the reason we're here today is
+to introduce a tool we've developed called QARK. It stands
+for the quick Android review kit. We decided to build QARK
+after surveying all the open source tools available for
+Android application security, and feeling more could be done.
+So we took ideas from the best of them, added some things we
+think are innovative and duct taped it all together with some
+poorly written Python, at least the parts I wrote anyway. The
+results are in automatic -- excuse me, an automated static
+code analysis tool, and attack framework for auditing and
+exploiting Android applications. The reason for building the tool
+was obviously to secure our own applications, first and
+foremost. But we wanted to share what we built in order to help
+raise the bar for Android application security overall.
+After all, the less vulnerable apps there are in the world, the
+less we have to worry about in our apps from them attacking us
+and obviously the safer all of us Android users will be in
+general. One of QARK's key objectives is to provide users
+with informative, authoritative sources of information, so if
+they're not familiar with Android apps, they can learn and
+then subsequently teach others around them about potential
+security issues. Again, we're trying to increase the
+collective knowledge around Android application security. We
+wanted to make QARK available to every one. If you're one of
+those one person shops, you can assure your apps are secure,
+even if you have no security budget, no security team
+whatsoever. We're sure there are some big names code analysis
+could buy, as good or not -- maybe better job than we do. But
+QARK is free and you can always use that first and see where you
+stand and move on if you need to. We don't require any complex
+setup. There's no consultants have to come to integrate SCLC.
+As you'll see, we've got some features that aren't available
+in other tools that we know of, and using QARK is simple as
+could be. So obviously we're not the only people interested in
+protecting Android applications, so we figured by open sourcing
+QARK, not only would other people get to benefit from it,
+but all of you could help contribute back to it to make it
+even better. So if we fail to look for a bug that you know of,
+maybe we didn't write the check right or maybe idiots in some
+other fashion, let us know, and we'll fix it, add it, modify,
+whatever. If you're a developer who isn't scared to look at my
+sacrilegious python code, we encourage you to go ahead and
+directly improve it and lastly we hope that some people might
+look and say, hey, if these two guys can build in a couple of
+months, maybe we can do something on our side. We think
+it would be awesome if the app store owners across the world
+would possibly scan applications before allowing them into the
+stores, notifying the developers, possibly the
+security teams and ideally the consumers about potential
+security risks associated with that application. Although the
+latter is probably a bit of a fantasy. So what are the top
+issues in Android Ecosystem? Primarily, unfortunately, the
+number one issue is completely out of our hands and that's the
+fragmentation. Due to a finger pointing and failure to act on
+the parts of the OEMs, the carriers, the Googles, et
+cetera, we're left with a world, somebody go out and buy a device
+today that's vulnerable to Stagefright and other
+vulnerabilities and may remain that way for years and may be no
+way for them to get a timely update if even one exists. So
+bad customers have actually resorted to class action
+lawsuits to these different entities just to try to get
+updates. I'm not going to pine on that, you can ask yourself,
+what does it say about the prioritization of security when
+those are the links the customers have to go to just to
+get a fucking update. [Laughter] Flipside of this is of course,
+you can't rely on the users to necessarily update the OS or the
+apps themselves. So as a producer of mobile applications,
+may inadvertently shift a vulnerable app, only to cross
+your fingers or pray for some sort of mitigation on the server
+side for months or even possibly years after you've already fixed
+it, just because you have users who are slow to update. So all
+this really puts a premium on getting it right the first time
+every time. Another very common issue with Android apps,
+researchers are constantly finding that they're failing to
+validate X509 certificates, when theyre doing TOS handshaking.
+Countless apps vulnerable to man in the middle attacks and plenty
+that say screw it and don't use TLS at all. Frequent use of web
+use, which are those mini browsers inside of your apps,
+still vulnerable to most, if not all of the OS top ten legacy
+bugs, you know cross side scripting, cross side
+[indiscernible] et cetera. But there are some unique twists and
+thankfully there are some limitations. But in this world,
+we have to assume that all the apps on the device could
+potentially be malicious as well, so we're operating in an
+environment where they may pass tainted data into our
+applications, via these various IPC mechanisms to attack our
+applications. So if we care about our users, we additionally
+have to put in mitigation sometimes to protect them from
+bugs in underlying operating system again due to the
+fragmentation of the ecosystem as we mentioned earlier. So when
+I grew up in IT, we had a saying, which was -- if you lose
+physical control of your computer, it's no longer your
+computer, right? The reality is, that that expectation no longer
+holds for mobile devices due to the increased likelihood they
+might be lost, stolen or subject to law enforcement snooping.
+Despite strides towards improving physical security on
+Android devices, again, mostly due to fragmentation, we're not
+currently at a point where we can say that all devices require
+strong authenticators or make use of full disk encryption.
+Unfortunately many applications continue to store PIA -- excuse
+me, PII, other data, unnecessarily, within the client
+even after you log out, simply because they don't make another
+network request. Which is often not a worth while trade out from
+a security perspective. Finally we have special developers who
+can't seem to get their head around the fact that these apps
+are all reversable, anything you put in will eventually be found
+by an attacker. Keys, et cetera. So numerous countless -- excuse
+me, countless publicly reported bugs with people hard coding
+secrets and stuff into mobile applications, and while QARK
+does look for some of these as our -- one of our -- colleagues
+stated, these bugs are kind of lame, so not really the primary
+focus of what QARK is. Why do we go through all the work of
+creating and open sourcing a security tool for Android?
+Fundamentally most pentesters are lazy and once we know
+something, we don't want to have to keep redoing the same thing
+over and over again, right? So we want to automate it. We want
+to get back to doing other more important stuff, right? Much of
+QARK is based around the manual security process we used to do,
+but with some added features that make validation of
+vulnerabilities a lot easier. Apparently our crazy boss
+expects that every time we ship an app it's free of
+vulnerabilities before it reaches our members devices.
+Pretty crazy, right? Many of the apps we publish are -- sorry,
+with as many apps as we publish, associated updates, stream of
+work for reviews would be quite heavy if we were actually try to
+do this manually for every integration right? So if we're
+going to review every line of code for each release, we'd be
+swamped with doing nothing but that. So we wanted to be more
+agile and mirror the case of development in our company.
+Everybody knows developers are some of the laziest creatures on
+the planet and normally this is just annoying, right? But when
+faced with those nagging warnings from IDEs or compilers
+about something they're doing wrong from security perspective,
+what do they do? They turn it off, right, and drive on. What
+I've read, the go to -- go to fail bug never would have
+happened if developer hadn't done exactly that. Point being
+we can't rely solely on potentially false assumption
+that these checks are in place and being acted upon accordingly
+during the development process. As I mentioned earlier, once we
+understand a bug and get it fixed, we want to automate it
+out of existence, right? If there's one thing we can't stand
+is a repeating bug or a bug that gets reintroduced as a
+regression. Lastly, many widely installed apps are developed by
+these very small companies, Flappy Birds or something like
+that, that just goes viral and catches on and ends up on
+millions of devices, with no consideration for security
+whatsoever. Not saying anything about Flappy Birds specifically,
+just an example. Potential vulnerable applications however
+somewhere down the road may integrate with an application
+like yours or mine, right, it might be important for us those
+are secure. Ultimately they could put our member data at
+risk, either because they're a platform for attack or because a
+[indiscernible] to us or something like that. So under
+the hood of QARK -- sorry. To deal with all these issues that
+we talked about, we decided to create QARK and it grew very
+organically using the very rigorous but less known, oh yeah
+we should add that too, development model. We didn't
+necessarily reinvent the wheel for basic functionalities but
+chose instead to leverage what already was available. We
+happened to luck out and find a Java token library, called
+POLIJ, we used to process the Java files which make up the
+QARK component of most Android applications. It has certain
+problems with Android constructs but for the most part it was
+functioning very well and best thing we could find at the time.
+So we also used common things like Beautiful Soup, and many
+dominant XLR files and again all glued together, with some poorly
+written python. And you'll notice that we used several
+different decompilers, I'll let Tusher explain this to you,
+which is one of the interesting parts about QARK, and lastly, we
+do implement the -- or instrument the Android SDK in
+exploitation phase, which Tusher will demonstrate for you
+shortly. If you have no idea what an Android application is
+built of, this is it in a nutshell. Essentially APK files,
+just a compressed archive consisting of the directories
+and resources listed here. Slightly abbreviated, prettier
+slides. Many have actual relevance to security one way or
+another but QARK mainly focuses at the two top center, Android
+manifest XML eventually the classes text file. Heart of the
+Android application. For those that don't know, the Android
+manifest XML it defines all the app's capabilities and
+components, we'll discuss shortly. Whether app can be
+debugged, whether a person with physical access can create a
+backup of it, of the data, which permissions it uses or declares
+and the versions of Android that the app was built to run on,
+which you'll see is important to how the app needs to be
+protected. So to begin testing an already built Android app,
+the normal process is you'd have to reverse it, right? We used to
+have to use APK tool to extract the manifest and decompress the
+archive. Once we decompressed, wed have access to the
+classes text file, but we -- which is downloaded by code, not
+human readable. And then we used to have to convert that to .jar
+file containing Java by code and use GUI, to retrieve the
+underlying Java classes and wed finally get back to
+something very similar to what the developer had originally
+wrote. That is assuming decompiler did an adequate job.
+Don't worry if you didn't take notes on anything, because now
+that we've covered all of it, you never have to do any again.
+So the days of manually reversing Android apps are
+officially over as far as we're concerned. QARK handles that for
+you, and can pull the APK off the device for you, you don't
+have to know how to use ADB. And if you don't know how to use ADB
+don't worry because QARK also helps teach you that along the
+way as well. Yes, we Googled it all for you. So these features
+alone are reason enough to find QARK useful but once it's
+acquired and decompressed the APK, it quickly parses the
+manifest looking for vulnerability or potential
+vulnerabilities and immediately reports any findings but I'll
+let Tusher show you all that cool stuff. Functionality is
+similar to but we feel improvement upon the attack
+service functionality offered some other Android tools. QARK
+does factor in the permissions for specific vulnerabilities, et
+cetera, let you know how your app will be vulnerability on the
+specific API levels you choose to support. Of course, before
+you can properly audit an application, you have to know
+what the potential sources of tainted data are, right? We have
+tainted data in every applications that come from
+malicious site, web view content or URLs, and also the potential
+for IPC base attacks originating from malicious apps on the same
+device. These primarily come in the form of intents, but
+possible [indiscernible] messages or possibly in AIL.
+Each of these along with insecure network requests I
+mentioned earlier can carry potentially harmful data, cause
+data leakage from your application, or invoke unwanted
+application of actions in your application. Quickly going over
+the components. After reversing the app and inspecting the
+manifest, review would usually start by looking at these,
+specifically the exported components, exported means
+they're available for other apps to talk to on the device. Via
+these vary mechanisms we just spoke about. Reviewing the
+different component types, we have activities, services,
+providers and receivers. Quickly, activities are all the
+visual screens that you see, little things you tap on.
+Services, long lived, run in the background, do backgroundy,
+servicey, things. Providers, facilitate access to files or
+databases and receivers basically just hang around and
+wait for something to pop open. Each of these have listed
+lifecycle methods, which we refer to as entry points, that
+execute various times during the application lifecycle, depending
+on what the app is doing in -- what it's -- what you're doing
+in the app, what the app is doing in the background or what
+data it may be receiving, system or other applications. In
+particular, each has a primary method or methods, such as on
+create, where another application can pass data in
+usually be an intent and since this data can be malicious, it
+can cause undesired consequences, so we begin our
+examination of flows there. Basics, go what makes QARK
+unique. Unlike some Android security tools we've seen, QARK
+doesn't stop at the manifest. Once we've defined the attack
+surface, QARK begins trying to tie it all together. It takes
+the information from the manifest and then finds the
+classes which MAP to the vulnerable components. For those
+that dont know, theres a direct relationship between the
+components named in the Android manifest XML, and the underlying
+class files. So for example, if you were to have a food activity
+declared in the manifest, you would find a food activity.Java
+file in the project. From here, begins parsing all the classes
+and locating all those entry point methods that we covered,
+and as again, these are the places potentially tainted data
+can get into your application. Once we've identified the
+sources of tainted data, we attempt to follow them through
+the code, looking for wherever it passes through, what we would
+consider to be a sensitive sync. Essentially we're looking for
+anything that performs an action that could have negative results
+for the application or user, such as retrieving, modifying,
+or accessing -- or excuse me. Retrieving, modifying, or
+writing data, or accessing sensitive device functionality,
+which would normally require permission. Since not all the
+vulnerabilities are evident from the outside in, QARK continues
+examination process by looking for issues which originate from
+the app itself such as a web view configurations, data sent
+from the app, such as broadcast intents, which gets sent out to
+all the apps on the device, anybody who wants to listen.
+Sticky broadcasts, which are basically the same, except they
+remain persistent for some time. And pending -- possibly insecure
+pending intents, which can allow another app to use your UID and
+permissions. For web view issues, QARK also includes HTML
+files to demonstrate vulnerabilities or configuration
+issues, to allow you to load them locally or load them
+yourselves, if you don't trust us. Include links to our site,
+if you do trust us. Where we host them, in case you can't
+host them to yourselves for some reason. With that, Tusher, will
+show you what QARK does. >> Thanks, Tony. [ Applause ] Can
+you guys read on the screen, or do you want a bigger font? Good?
+>> You're going to get lots of colors. >> Okay, so before we
+begin the demo, let me talk a little bit about the insulation
+process. We tried to keep it fairly self contained in the
+sense that all of the [indiscernible] are included by
+default when you download the source. So that being said, the
+only thing that you need to provide as part of the setup is
+the location to the Android. So if you are an Android developer,
+you already have [indiscernible] on the system, so you can just
+run the front location of the tool, and you're ready to go.
+And if you do not know what specific Android components are
+needed in order to use QARK, don't worry, QARK will actually
+download the file for you and it's also going to see --
+configuration file, so that you don't have to repeat this
+process every time you run the tool. So that brings -- we only
+support MAC and Linux right now, so if you are on Windows, we
+recommend running a [indiscernible] and if you want
+to compute the patch to run on Windows, we are more than happy
+to include it. So just run QARK, and as QARK starts, you notice
+quite simple. So at the starting point, give you two options. We
+can either start from an APK or a raw source code so in both
+cases, the QARK does the same. The owner, two different
+options, so that, let's say, if you are a developer and you want
+to run checks on your Android application, as you keep adding
+more checks to the application, then youll probably start
+scanning the source code. If you are an auditor or let's say a
+penetration tester for company, or maybe you want o get a list
+of the attacks you can start with the APK. So a demo, let's
+take this APK for now. So at this point, QARK will ask you
+for the location to the APK. So this would be either off the
+device system or you can also pull it off of the device. And
+it actually comes very handy, and you do not have the app
+listed on the app store. For example, applications, come
+installed on your devices. So let's go ahead and pull the APK
+off the device. So QARK going to do, connect device to computer,
+which I have. It's going to take a list of all the applications
+that are there on the device. And you can select the APK that
+you want. So since we don't want to get sued, and we don't want
+to draw up on anybody's Android application, we're going to
+choose the [indiscernible] application. So for those of you
+who do not know what this is, it's essentially an Android
+application [indiscernible] when the link isnt there or
+educational purposes. So once we do that, it's going to deflate
+the APK, and read the manifest, so if you guys have ever
+decomposed an APK, youll realize that the Android
+manifest, does not directly use a readable format so we give
+easy option to inspect the manifest and it's just going to
+display the contents of the manifest. So Android manifest is
+the most important part of the APK or most interesting part
+because it kind of gives you an idea what's within the
+application, right? So you can see what kind of associates,
+activities, receivers, you know, everything that's there, what
+kind of permissions are required by the application to run
+correctly, or what permissions required by the other
+applications to invoke some components from within your
+application. You have things like [indiscernible] diversion,
+target [indiscernible] diversion, a bunch of other
+things. For example, one versions of Android OS on which
+application may eventually land, right? So if you do not know
+what to make sense, don't worry. QARK will find the attack
+service, the potential attack service, and load it for you. So
+most of inquiries are pretty much self-explanatory, and
+whenever possible will give you credible sources of information,
+which you can, you know, reach out to learn more about those
+kind of issues, so for example, you know debugger
+[indiscernible] which of course, you wouldn't want to do on your
+list of applications, you can also see a bunch of activities
+that are -- are not predicted by any functions and are marked
+exported. So we'll save this information for the
+[indiscernible]. Again, you can see a bunch of other services,
+and receivers that are not protected by permissions, so one
+of the other things as Tony mentioned QARK does, it's going
+to look for the minimum SDK version and based off of that,
+it's also going to recommend or show you a few other
+vulnerabilities that could exist outside your ecosystem. That may
+affect the integrity of the application. So, so far, so
+good, right? So in order to go in depth, we actually need
+access to the raw file ecosystem. If you started off
+with the .jar source code as the starting point, you are good to
+go, and in case of an APK [indiscernible] we actually need
+to reverse the text file to class and then class to .jar
+source code so automates this for you, and you see that we are
+running multiple decompilers on the same .jar file, and the
+reason for that is, you know, transfer particular decompiler
+may not be able to decompile all the files directly, where some
+decompiler may be able to decompile some of those files.
+So the idea here is because each compiler behaves in a
+predictable way, fact to identify which [indiscernible]
+and to see if some other decompiler was able to decompile
+those parts successfully. So it's going to take -- >>Sure.
+All right. >>So as can see, because of this technique, we
+were able to restore about 11 or 13 files, and that's almost 85%
+in terms of recovery so we have list of potential attack, and
+now we have also stored to begin static code analysis. So all of
+the checks you see here are actual checks on the raw java
+source code to find those type of vulnerabilities, and you will
+see in a moment, going to be color coded to kind of give you
+a sense of what permissions we have in those [indiscernible].
+So included in the checks are the standard Android security
+link checks, some research done by security researchers in the
+industry. And also some research that did on our own. Again, this
+list is not exhaustive and we are still adding more and more
+checks. We are more than happy to receive a patch and include
+it, and even if you guys have an APK, you can say, hey, guys,
+here's an APK this is the type of bug that we think QARK should
+be able to find, we'll write a patch for it. So all of the
+entries you see here, are actually the entry points we
+found from the manifest declaration and we are going to
+look for vulnerabilities in those files, or the other way
+around, which is, hey, we scan for these files, and we are sure
+there are no problems here, because sometimes essential to
+realize but if something was not acting as a vulnerability,
+because the file couldn't be -- properly or if -- but couldn't
+find any vulnerabilities in there. Right? So -- and we
+actually wanted to show you that, you know, this file is
+part of the attack surfers, because this is something that
+is accessible through other applications. So for example,
+you can see that theres an activity that's not predicted by
+permissions, method. So in short, we are [indiscernible]
+data to this similar application, speak with
+[indiscernible] again, we'll save this information for the
+exploration phase, and because we are not trying to sell you
+anything, we will not give you a false sense of security by
+hiding [indiscernible] in the application. So whenever there's
+a error, it will actually display on the terminal, so you
+can verify those files manually for any type of vulnerabilities,
+and these errors occur because of, you know, maybe there's an
+Android specific response, couldn't understand, or simply
+because the decompilation, if you started off with a raw java
+file as the starting point, then probably you wouldn't get these
+kind of pictures. So moving down, you can see that QARK has
+found potential vulnerability, and more than just saying what
+is wrong with the exploited component, we actually do a
+source specific mapping of the entire .java file, if you
+dont recognize and see if there's source mapping, and if
+it exists, you know, we turn it as a potential vulnerability. We
+also give you the details of what exactly do you need in
+order to explore this potential vulnerability? So for example,
+you would need to send [indiscernible] specific key of
+the type string, message, and [indiscernible] string, so keep
+saving this information for the exploration phase. Some of the
+other kind of issues that we can detect with QARK, certificate
+validation issues, give you credible source of information,
+whenever possible. There are few pending issues that we can see.
+The other type of issues that we can detect with QARK are
+insecure, deport configurations [indiscernible] issues for use,
+or if there are any security impacting configurations that
+were embedded in the first. So we break it down by file names,
+and we start all the configurations for that
+particular, so we'll see how we can use that in exploration
+phase. So at this point, this is something you can see with a
+bunch of other tools as well. The real question is, can a real
+world application actually exploit these abilities, so for
+this, we actually going to give you a couple of options. The
+first one is to use ADB commands. Whenever possible,
+give you specific Android ADB commands that it can run on your
+computer while your device is connected to it in order to see
+if you can exploit those vulnerabilities, so as you can
+see here, QARK has listed out a bunch of ADB commands that it
+can actually run. And wherever possible, for example, here, we
+are going to -- going to give you possible extras that you
+need to [indiscernible] in the intent in order to see you know,
+if you can do anything meaningful with that. At this
+point, all of this information can be seen here -- we create an
+HTML import, its probably too small to track it down, but on a
+regular screen you'll see, vulnerabilities, any warnings,
+debugs. Again, everything that you saw on the terminal can be
+found in the HTML artwork and its pretty self-explanatory.
+For example [indiscernible] vulnerabilities, and what
+exactly do you need in order to exploit it? And you notice that
+we actually turn everything else a [indiscernible] vulnerability
+and not a vulnerability, because we don't want [indiscernible] to
+be understood in the application, you know, to
+saying, hey, this is a vulnerability, go fix it.
+Actually give you the [indiscernible] to say whether
+it's vulnerable or not. So conveniently they speak
+everything as warnings, unless we deem it as potential
+vulnerability. So you have web issues, certificate web issues,
+all the ADB commands listed out here. I promise this looks
+better on a regular screen. Again, specific bugs, or
+processing errors, if any, so you can look for these -- but
+now for the fun part. So we are going to attempt what
+[indiscernible] has done until now, so we'll give you the
+option to create a custom APK exploitation, so we do that, and
+what it's going to do is we gathered all information from
+the manifest attack survers and we have the source to sync
+mapping from the raw java source script static analysis, so we
+are going to save this information and do a templated
+APK, and try to create an APK, deploy on the form in order to
+exploit the application that just about to test. So think of
+this as an evil twin for the application you're testing, and
+hopefully this should pair successfully. All right. So they
+said yes, want to install this device. And success. So Tony is
+now going to demonstrate the actual attack. >> Just so you
+don't think we're pulling shenanigans. We do have a live
+demo, we do have a recorded, if its either not visible or in
+case doesn't work for some reason. >>Can you guys >>So
+let it auto focus. Does it help? Is it better? Yay, demo win. [
+Laughter ] You know what? I think it probably left the auto
+adjust on and readjusted once I took my finger off of it. So
+let's give it one more shot. Oh, you know what -- we actually had
+this blinder. >> Let's do this. >> We meant to do this. You're
+going to hold it? Feel so special. Okay. Better? Yeah. >>
+Start application [indiscernible] >> Okay. Okay.
+All you critics. Okay. So when you start up QARK, nothing
+interesting to see here, right? We have this drop down menu that
+shows you all of the different features. Sucks. Sucks. >> Let's
+-- >> We're going to go to the recorded demo and then we'll
+come back just to demo the actual exploitation thing. Okay.
+So this is much better right? Sorry, we luckily this was
+recorded like midnight last night. So good to go. [Laughter]
+Very well prepared. So anyway, okay. Again, blank screen, drop
+down menu. So first thing was the bottom, I'll have to wait
+around here. Pause. Ah! You bastard. [ Laughter ] Really
+come on. You can't be that difficult. Okay. So the very
+bottom menu item, one the play bar okay. So is -- I'm going
+to start in sort of like a reverse order, save the cool
+stuff last. The bottom thing is a send custom intend. Basically
+this is a tool anybody who is testing Android applications
+would need, right? You need to be able to modify things and
+maybe we just didn't pick it up quite right and you want to
+tweak some things and play around with different extras
+that we recorded and see -- do some other things other than
+what our automated test provides. Also, it makes it
+flexible so you don't necessarily have to uninstall it
+every time you test a new app, but obviously to get the full
+value of it, you want to do that. So in here, we have
+several fields that are required for most intents that you need
+to fill out. You know, there's the component name, the package,
+the intent action, and everybody knows typing on these things
+sucks, right? If you don't know, you can use ADB to actually push
+type keyboard commands into the phone so you don't have to
+actually manually type them, but if you must, we try to make it
+as easy as possible for you, so whenever possible, we have these
+fields that activate and prepopulated with the most
+common things you need to put in there, in the first place, just
+to save your thumbs. So you can see each of the categories are
+already there. Flags are already there. And the bottom we have
+this -- this intent extra section, so we will list out any
+intents that -- any intent extras that we're able to scrape
+out of the application in the report, so that you can play
+around with them, and then you can go ahead and put them in
+here and then try different values and whatever to go with
+them. If you need more, you press little plus sign there,
+and it will create another key value pair set that you can add
+to the extra. Once you're all done, you click the next button
+at the bottom there. And you get to this screen. So -- let's try
+this magic again. Come on just a little bit more. Play and
+Even recorded demos can have problems, right? And menu. All
+right. So different intents can invoke different actions in the
+application, give you this -- this drop down list to choose
+what exactly it is you're trying to do with the intent you're
+sending. For example, starting activity, will just open up the
+UI element if you start activity for result it will listen to see
+if anything was returned, which can be an information leakage
+bug or something like that. So anyway, once you're done filling
+out the fields and selecting the proper settings you go ahead and
+press send and of course, the out crashes. That's because we
+didn't put anything in there. It's not a bug. There's nothing
+-- that's the way Android handles when you send something
+that doesn't make any sense. So the next thing is, obviously, a
+file browser. You obviously need this to know if you want to look
+around, recorded some readable file or something on SD card you
+want to look at, basic that any Android tester would need. Glad
+I spent so much time demonstrating the files the next
+thing is web view tests. So these are not exploits, these
+are demonstrations of the configuration options for web
+view. Oh, thank you. What they're doing is just showing
+you what different features look like when they're turned on or
+turned off. Also, because it is version aware, you'll notice if
+you click into some, you'll actually see the application
+says, this is not the right version for this test. So these
+things include, like, whether or not JavaScript is enabled, umm
+-- >> Its going to take awhile. >>Okay. So this one
+tells you whether or not JavaScript is enabled, and then
+it demonstrates the difference, in the bottom left-hand corner,
+I don't know if you can see, click here, and I'm clicking it,
+nothing happening. Trying to run an alert box, in certain web
+views, the alert box doesn't work. It depends on what web
+view client you're using, right? If you're doing cross side
+scripting tests, you need to be aware of that. Where as if I go
+into the web Chrome client, same test, I click on it, it will
+show you the alerts enabled, right. It also -- that's a no
+script block, so if it were JavaScript or not enabled, you
+would see a different view, so it's just letting you know what
+it would look like. If you click on any of the ones that aren't
+applicable for the device -- yeah, the device you're on, it
+will tell you, this is not the right version for this test,
+because obviously you've been doing API version specific
+testing, you have to be on a device that matches the version
+you're trying to test the bug for, right. People will tell you
+tapjacking is not an issue in Android, but clearly it is. We
+stole this code from Invisium so thanks for publishing it so we
+can steal it. Basically you put a transparent overlay over
+things so you can see that. In fact we are overlaying over it
+and we can pass the touches through the application behind
+it. This is just very similar to click jacking on a website,
+right? You -- you put some sort of opaque overlay on an app and
+play a game and it's, you know, sending all their bank account
+information to you, or whatever, you want to do via tapjacking.
+So this is the most boring demo ever, and this is the intents
+server so background service that sits and listens for
+broadcasts from applications, so if it sends broadcast out, it's
+going to sit there and listen and unfortunately those are
+lifecycle events that don't always happen, so you have to
+just wait, so this -- there's nothing to show here. The cooler
+parts are the exported activities here, the exported
+components, so in this one, just pops open a UIL element nothing
+to see here, unless it's bypassing an off screen or
+something like that, probably not important. This is a log in
+one, but its a little bit different because there's
+actually a result from this one, and as you can see here, our
+application grabbed the session could be that was returned as
+part of the log in process because it was, as using the set
+result method to return that to the caller. Here there's a
+username that it asks for, and if you don't put anything in,
+nothing happens. So that's why it's important to know that
+there's these extras supposed to be there, so if you do submit
+the right extra, with a value, you'll see it returns the GPS
+location. So it's just showing you that context awareness is
+important, right? Finally we have a broadcast receiver. And
+this is where we would We dont actually have to put a
+phone number in here do we? >> Uhh Not necessary. >>Okay, so
+this is where we want to do the real demo part real quick. The
+only thing is, we know what you guys are going to do if we show
+you the phone number. [Laughter] So we don't want you guys
+texting us for like the next six months or something like that
+what -- what we did is, during the analysis phase, we derived
+the -- you want to put it in? We derived the fact that there is a
+-- an intent -- or a broadcast receiver that was listening for
+something that had a phone number and SMS message, as the
+parameters it was expecting. Provided that to you to fill in
+with whatever value you wanted to, and here Tusher trying to
+hide his phone number. [Phone Vibrate Alert Sound] And there
+you go. We were able to send a text message, the thing you
+might not be aware of, our app doesn't have the ability to send
+text messages. What its doing is its proxying through the
+other applications vulnerability to send the text message through
+it using its permissions, so -- I know we got to wrap up quick
+here. All right. Let's go back to this because I dont think
+we have time for anything else. Okay. So I think I got two
+minutes left. To recap some of the unique aspects of QARK,
+unlike any tools were aware of anyway, we do improve the
+chances of decompiling on the APK successfully using multiple
+decompilers, it builds an APK for manual testing, which
+includes some prebuilt functionalities that you'll need
+for any Android tests. Creates ADB commands so that you can
+demonstrate common vulnerabilities via SLI, and
+finally creates a custom built APK built to attack the one
+you're testing. We really wanted to stay away from the forensics
+analysis types things, this is kind of where we're headed. What
+I mean, this is where we're headed and we wanted to stay
+away from the forensics analysis, those bugs are kind of
+lame and usually a simple grep away. But if theres something
+you think we should include in that venue, just let us know, as
+long as it's not grep minus, password, we'd be happy to add
+it. QARK isn't yet a dynamic analysis tool. But that's simply
+due to time constraints, the entire thing was built in about
+three months, mostly in spare time, but with some gracious
+amounts of time from our employer. So forgive us if
+its not as perfect as should be. QARK has plenty of things to
+add in the future. Running out of time, so we do plan on
+planning dynamic analysis, small inspections for improved
+results, nonandroid specific Java vulnerabilities, ODEX
+support. We only want to make it more extensive for you all and
+were asking for your help, if you know of bugs, developer,
+whatever. Just if you know of a vulnerability, maybe an old app
+that you guys patched a long time ago and make sure we can
+check for it, let us know and well be more apt to. Thanks
+to NPWRA Labs for making Drozer, which is kind of the inspiration
+for this. Rocket Play Lab for the web exploits and Vizio for
+the time tracking code All the open source community for
+helping us. Jason Haddicks and other people for donating some
+vulnerability APKs for us to test on. Here's our contact
+information. And if you want, this will be on LinkedIn is
+GitHub Repo later on this week. So thanks a lot. [ Applause ]

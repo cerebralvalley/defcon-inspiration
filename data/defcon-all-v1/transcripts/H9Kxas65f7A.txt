@@ -1,0 +1,403 @@
+>> CHRIS: Apparently there was more sober
+people than I thought there were going to be.
+>> AUDIENCE MEMBER: Who said we're sober? >> CHRIS: Good point! Just before I start
+how many people have woken up especially early to come and see this? And how many people
+are still drunk? And you woke up and you're still drunk, even better! So, yeah, this is
+my first presentation at DEF CON. (Applause.) >> AUDIENCE MEMBER: Brink! Drink!
+>> CHRIS: So I've spent the are entire week thinking I can't drink because I'm presenting
+so this presentation would be better if I had drunk, pretty sure. Quick, one drink of
+Vodka. This is a little bit about me. No one cares about the speaker, so read this whenever
+you want. I do podcasting and blogging and shit like that. (Laughter.)
+I am the firm believer in the wisest man knows nothing and I am absolutely happy to admit
+I know nothing. I like edge case stuff, it's freaky, most people are just like, it's an
+edge case, no one cares, but the freaky stuff and weird stuff intrigues me, and it makes
+me think that's cool I should dive into that so that is part of the edge case stuff that
+people don't give a shit about but apparently you guys do, otherwise you wouldn't have woken
+up early to come and see this. I'm going to start with a quick warning. This
+presentation contains numbers and jokes and cases of pea nuts! Who has ever seen me talk
+about? If you had, you wouldn't be here. Anyone who has seen me give a talk about I'm sorry
+I use the same jokes every time so laugh when everyone else does! Not you, Ed, you have
+to stay! So I'm going to give everyone the TLDR on what I'm going to be talking about
+today. The goal is to describe the defensive uses of status codes, that sounds sexy, doesn't
+it? This is an absolute "must see" at DEF CON on a Sunday morning! Back to ‑‑ why
+are you guys awake again? I'm going to run through the why, the how, the goals and then
+we will bring it together and review what we have covered. I'm going to try and run
+through this reasonably fast so I can get everything in so HT to P status code, who
+has never seen what? We know what an HTTP request looks like, this is the status code
+or the response code, the terms are interchangeable depending on how much you had to drink. It
+it's like a small little thing, every time you make a request or every time you get an
+answer from a server it comes with a status code. No one cares what they are, the browser
+doesn't tell you what it is but it's an important feature of the HTTP standard. What I'm going
+to somehow you is a small detail but it's a big impact. If you don't pay attention to
+the status codes some bad things can seriously happen. A little bit of history on HTTP status
+codes, there is an RFC, I thought I couldn't sleep so I would read it last night, but that
+didn't happen. There are five classes of responses, you get the 100, informational stuff. You
+get the 200, which is most of the time success. Your web page is here, here is the content,
+thank you very much, please go away. You get the 300, the redirect stuff, the 400, which
+means you fucked up, the 500, which means they fucked up! Simple as that, okay? And
+there is a wonderful RFC and this is worth reading for the 700 codes, by John Bodin,
+if you go to his GitHub page there is an entire section. I specifically like this one, fucking" ‑‑
+(Laughter.) And there is like 300 of these things. I have
+no idea how they squeezed it all into the 700 range because there are 300 of them but
+these are amazing and where did the 600 range go? (Chuckles.)
+I really hope they accept that RFC and start implementing that in stuff. Let's go through
+the basic stuff this is the theory bit, it's boring. You get the 100s, the protocols, so
+forth. Moving into the 200 stuff it means it worked, it understood so you're getting
+a 200 okay, which is ‑‑ most of the web is running at 200. Okay.
+You also get weird stuff that you don't get to see, like content, great, thanks for the
+header! (Laughter.) There is also some interesting stuff that
+isn't supported by Apache, "low on storage space" I've never seen that returned by a
+server ‑‑ (Sneezing)
+Bless you! 300 you don't get  to see very much, what is it, like an exam?
+They give you tick boxes or something, 304 you see the way data flows, and weird stuff
+like switch proxy, that sounds fun and used proxy, if you return a proxy in a location
+header it says you should use this for your communications. I'm sure no one would use
+that for malicious purposes in any way. (Laughter.) So moving on to the 400, the you fucked up,
+usually stuff, 404 being an unreasonable response for I search for random crap on the internet
+and I like the 407, authentication required. I will talk more about that later on and there
+are interesting ways to do malicious stuff with that.
+This is a long list. I quite like the 418, I'm a teapot, it's an April fools and web
+servers don't implement it but I am a teapot! Moving into the 500s, unfortunately used quite
+a lot for SQL injection, I got a 500 error that must be a SQL injection trigger. You
+don't get to see it very much if you're not abusing, sites. Wow, that's a lot of fuckin'
+numbers! (Laughter.) So everyone here knows every single response
+code, right? Great, now I don't have to talk about them anymore. Why are we doing this?
+It started off as a little idea, I wrote a couple of books, I do that on a few occasions,
+I don't know if any of the authors are in the room, sorry, plagiarizing your work! Screwing
+with  Kitties is a life calling and that sounds
+like fun! (Laughter.) Something I thought I wanted to do on the
+weekend, everyone follows the Grec on Twitter. He's not here, he's drunk, or he should be.
+He said "Stop this missing object security in the object security, because unpredictability
+works to your advantage." We can say that an attacker is going to waste 3 hours attacking
+a web site that's going to take three minutes, we should be more active on our defense. There
+is some prior art. I looked around, I was trying to find out who else has talked about
+this stuff before because in my mind this was obvious stuff, somebody is bound to have
+implemented this stuff, there was a 2004 talk by Ruan Mire and the guys at sense post where
+they used status codes to slow down appear tackers, there was one line in a presentation.
+There must be more! There was an interesting paper by Gunter Olam, there is a pdf where
+he stops about stopping attacks, and in it he doesn't dig deep in using HTTP status codes
+to do this stuff. So I carried op and I was informed of a mailing list comment where Ryan
+Bonnet said maybe we could retry to a 303 with a retry after header, that was interesting,
+I tried t they ignore retries after headers, bullet this was 2006, so maybe they do now.
+So, yeah, no one seems to have discussed this stuff. . Browsers have to be flexible, you
+get things written in note pads and the browser has to be able to support everything. This
+leads to a certain amount of flexibility on how things are understood and supported. Which
+obviously leads to the dark side. Then of course there are RFCs which some would say
+is the dark side. They're more of a guideline, really. This is the way you should do it but
+we're not going to tell you exactly how so depends how drunk you were when you read it,
+maybe this makes sense. What could possibly go wrong, a 300‑page
+RFC and people who are going to interpret it and you implement it into a piece of software
+and it has to be as flexible as possible, things are going to start to go wrong. So
+I started to do testing. So I wanted to restrict myself to the big
+3, Internet Explorer, chrome, and FireFox. (Laughter.)
+Apparently opera turned bad or there's links, who uses links! One guy. Welcome to the 20th
+century. (Laughter.) And I wanted to take the easy option on testing
+is the man in the middle proxy, it's a python‑based system for man in the middle connections and
+it allows you to set up these interesting proxy, and you write write something like
+this. Okay? That's easy, even I can code that sit! Unfortunately man in the middle proxy
+tends to use up all the memory you have on your machine, and I would highly recommend
+man in the middle dump. Catch into memory. Just a side note there. I also used PHP, it
+allows you to set these specific response codes in a file, the problem is if the web
+server says no this is an incorrect request, the PHP is never going to get to see the request
+so you can't set response codes so it's interesting stuff, for testing it's useful but in production
+it's not going to be as useful as it could be so I used a mismatch of Python and BHP ‑‑
+PHP. You don't need to write this down, but simple testing of browsers, you call up the
+PHP page you code in the URL and you hope no one cross‑scripts your web site. You
+get a response code because with PHP you can set that to 999 if you want, but python is
+just going to say Apache is going to go I don't know where it is, which is the Code
+Section of "they fucked up" so you get to see the headers, and the response code and
+okay, great, I can run off and start testing these browsers, which seemed like an easy
+thing. I started to think, I've got all this data on how these browsers work and how can
+I graphically display that in a nice fashion? Let's just say that I'm not good at charting.
+(Laughter.) Sorry for women in the room I'm trying to
+keep this even across the sexes, and I didn't know how to display this and there were guys
+that said we could do this and that and it was all shit. So I ended up with a table!
+(Applause.) (Laughter.) Yeah, this is the reason why I cut it down
+to three browsers because otherwise the table would be this fucking wide! This is the core
+three. You start to see a lot of conformitity in the section about how the browsers respond
+to things and I run it in three sections, can you load HTML with a 100 response code,
+you can, the browser doesn't support it unless it's an iFrame with Chrome in which case it
+tries to download t because I guess Chrome likes to download sit! What's interesting
+if you have Chrome on an Android phone it tries to download it but it never finishes.
+So you have to restart your Android to get it to stop! Which is fun! (Laughter.)
+I'm sure no one would fuck with that, yeah! (Laughter.)
+So looking at this you're like all the browsers are mostly conforming, except IE which doesn't
+care about a 205 and renders the stuff. You start to see differences in looking at the
+300 codes. For example, FireFox doesn't load Java Script if you respond with a 300 or 301,
+IE ignores everything if you respond with anything in the 300 range but Chrome accepts
+everything because it doesn't give a shit. It's the honey badger of browsers!
+The 400s, you see weird things start happening and if you have a proxy set, then Chrome will
+load the content when it's responded with a 407, if you don't then it won't. Again,
+things are standard, with IE being an outliar on things. So think about this, you have browsers
+that handle things in slightly different ways, what can we do with that stuff? A majority
+of stuff is like, okay, that's content, I don't care what it is, it's loading stuff,
+you get a 400 response and it's like, I see HTML I'm going to run that for you, and mostly
+things are loaded normally but there are weird outliars. With HTML responses almost all are
+rendered correctly, doesn't care. When you try and load an iFrame and it comes back with
+a response there are special cases for IE because IE is special but most of the time
+things are even and if you start look at Java Script there is limited support Chrome being
+the exception because they just don't care. We know what browsers interpret differently,
+so what do they have in common, what are they doing the same across the board? The 100 codes
+retries, confusion, Android, never‑ending down loads and it times out, eventually because
+the browser thinks there is more coming and it thinks you're going to send more data,
+I'll sit here and wait for you. Which is kind of interesting.
+The 200 code you get the no content or not modified you get headers saying no there is
+nothing here so as you would expect browsers ignore the content you're responding because
+it doesn't expect there to be any content within those things. What about headers?
+RFCs quite a lot of the time say in muddy language, if you're responding with a 3XX
+response code, whether it's 301, 302, 303, there should be a location header, okay? Doesn't
+mean it has to. If you respond and you don't have a location header it ignores the fact
+that it's meant to do a redirect and rendered whatever content you give it. Specifically
+no location header, no redirect, this makes sense. It's looking for the location header,
+doesn't find one, it's going to render what you returned and ignore, simple at that. Okay?
+So the 401, unauthorized, as well, if you're not sending back at www.authenticateheader.
+It's not going to send it back. If you're not requesting it's never going to prompt
+you. On the flip side just because something says it shouldn't have a header doesn't mean
+it can't. If you read the RFCs there is this 300 multiple choices. It doesn't redirect
+you, it should come up with an HTML where you can select where you would like to go
+unless you're FireFox or IE in which case if you give it a location header it's going
+to redirect, but Chrome isn't, okay accident and there are so many headers out there you
+can play with, most of them are not particularly interesting, unfortunately, but there is more
+work to be done in that area. There is a load of headers like the retry after header that
+can be played with and a little more research is required there. Each browser is handling
+things a little differently. We know how things are handled the same and we know how things
+are handled differently, what can we do with that? What are the goals? Each browser handles
+things differently, you have the handle codes and the unhandled codes and you get this browser
+weirdness stuff that you didn't expect it to do depending on the headers, so browser
+fingerprinting, you can check user strings and you can easily spoof that stuff but if
+you take the differences you can do fingerprinting work on FireFox and IE. So on FireFox it doesn't
+load Java Script with a 300. The others do. It loads it. With Chrome, without a location
+header it adds the redirect but the other browsers don't so we can do fingerprinting,
+and with IE it loads it with a reload content status, so if we can add all that stuff together
+you can get a nice way of fingerprinting the browsers without using the user agent header
+or you can use the user agent header and you can say I'm going to check that. I'm going
+to do a quick demo, run a video of a demo because I didn't want to connect to the network
+here! >> AUDIENCE MEMBER: Smart!
+>> CHRIS: First talk! All this is doing is loading a PHP page and running through and
+running three individual pages. It then checks the responses and the Java Script and says
+okay this Java Script ran, this didn't, so you must be using this specific browser. So
+if you zoom in ‑‑ well, if I zoom in, there you go. You can see the specific responses.
+You can see that it's loading an HTML, it's come being back with a 300, a 307 and a 205
+which are the three different response codes we talked about for the different browsers
+and it's sending it to a PHP page and it's returning and saying, okay, this is the specific
+browser. So I'm returning this to say this is the browser. In most cases you're sending
+it to the server and never responding back. I know I'm running IE. I have the bar at the
+top. I don't need you to tell me. If you're spoofing a user agent string I can
+say, okay, you're running FireFox but you're actually running Chrome that's suspicious
+and it's something we should be looking at, okay? There is a 300 redirect and a 400 iFrame
+to explorer, if you want to look at the proof of concept, if you go to this site it will
+run the same example that I ran and you can look at the traffic and the code is available,
+I'll link to that at the end. User agents can be spoofed, even script Kitties know that.
+Your browser does things in different ways, so we can fingerprint browsers, what else?
+Proxy detections. We have talked about the way Chrome handles things and if you have
+a proxy set you're going to respond with a 407 if it loads the page then they're using
+a HTTP proxy. It's of limited interest but it's something that needs further, further
+testing. Again as I said, all you do is respond with
+a 407 with a proxy authentication header or without one and if Chrome responds then HTTP
+proxy is set. While I was doing the research I tried a couple
+of proxies and one of the ones I selected was prove proxy. I found while I was testing
+if you respond with a 407 proxy authentication required you get the pop‑up in your browser
+but it doesn't say my web server asked you for a user name and password it says Provoxy
+asked for a user name and password which is interesting. I typed in "test test" and I
+clicked send and my web server gets my user name and password, that's interesting, we
+can use that for malicious stuff but this is a defensive talk so I'm not going to dive
+too much into this but it's interesting, let's say they're not configured as securely as
+they could be. There is a fix for that now and you can download the latest version but
+it's not just Provoxy, things like Burp or Zap do that, Burp Suite will pass it through
+to your browser, so you can screw with people who are doing malicious things on your sight
+with interproxies, of course if you're using Burp Suite and it asks for your user name
+and password and I'm probably not going to do that. But Kitties have some interesting
+passwords! Okay, so let's talk about you have some things
+that are possible. We can play with things, in case there are children in the room! We
+can make people who like RFCs cry into their beer. So let's try to use what we have discovered ‑‑
+let's break some spidering tools, cause some false positives and negatives, slow down attackers,
+one of the most important things we can do, give us time to respond to how people are
+attacking us and block successful exploitation so even if they do manage to exploit the server
+if you're responding with different codes maybe it's not going to work, so let's talk
+about spiders. This is a simplistic Naive spider, if you get a 404 that's true, but
+if you get a 400 that's false and what happens if everything is a 500? Sometimes if everything
+is a 500 then everything is a SQL injection attack. So if everything is a 200 you end
+up with an interesting loop of oh I found another directory, I will keep scanning and
+scanning and you get this never‑ending spider. Unfortunately I couldn't find a picture of
+a spider eating itself so if anyone has one, send it to me!
+If everything is a 404 what web site? I don't know if you can see this in the back this
+is the Acunetix tool, the Script Kitty's tool of choice, it found 0 pages, validated 0 findings,
+so what web site? Skip Fish loves it keeps going and going until it kills itself (Laughter.)
+I'm guessing at this point my test server decided it didn't have enough memory to deal
+with all the responses, if you look closely there are 2,000 low, medium false findings
+on the scan alone. So, yeah. Playing with people's spiders is interesting,
+so false positives and false negatives, we can start to really screw with people and
+waste their time so most scanners use response codes in some way, they have to. You speed
+up detections, you can't use Regex for everything, it's the easy solution. So if we start to
+respond with, again, 200 okay, 400, 500 and if we start to play with them and respond
+with random codes, random being a selection of codes that are handled well by all normal
+browsers so the normal people browsing the web site are not going to be affected. You
+start to see interesting stuff so a quick baseline using w3IF, I didn't pick on these
+people it happens to be an interesting baseline, so 79 points, 69 vulnerabilities, no shells,
+and it took 1 hour and 37 minutes to do a scan. You still get everything! So we're not
+winning on the false positives and false negatives, it takes you 9 hours to run the scan which
+is kinda interesting, it let us win time but it's not really working so 200 okay isn't
+going to do what we need it to do. If everything is a 404 it's quicker to do the scan because
+you're not finding everything but it's missing a majority of the interesting points and the
+vulnerabilities. So you're start to go see interesting stuff if we start responding with
+weird codes they don't find everything, okay? That's interesting. If you respond with everything
+with a 500, wow! False positives, fits a 500, like I said it's SQL injection, 9,000 informational
+points! (Laughter.) Try digin' through that report, you know?
+(Laughter.) 9,000 confirmed vulnerabilities, I can see
+that pin test report, that vulnerability analysis, that's going to be a thousand pages long,
+we found IS vulnerability, it's an Apache server but we found these, anyone use Ness
+in the room? No? Okay. Maybe I had a bad run, it averaged out as
+giving you a reasonable amount of false positives and took less time to run the scan. What I
+found interesting is that the a majority of the things that it did find it didn't find
+the vulnerabilities, it just found weird stuff. So even though it found more vulnerabilities
+you, you get lots of false positives, they're pretty much all false positives, so the real
+stuff doesn't get found? Skip Fish and Random, it doesn't like Random, skip fish doesn't
+like random so the first one took 10 hours and then the next time 4 seconds and it would
+randomly flick between times so Skip Fish is a wonderful tool for web applications,
+and I think in my proxy it send 33,000 requests inside 5, 60 minutes, it will pretty much
+take down everything. So we're not really slowing attackers down so what can we do to
+slow them down? What's our WAF doing at the moment? A naive
+view, oh my God, I'm being attacked, blocked, return an roar, a 404 or a 200 with a nice
+message telling them to piss off! Profit? There is no profit, with my defender hat on
+we've won nothing, we've blocked an attack, they come back, we by‑pass it, game over,
+okay? So why are we doing that? Remember this big list of status codes that browsers don't
+handle very well, specifically the 100 stuff? Scanners don't like them either, surprising
+there because a scanner thinks it's going to be a browser, it's trying to do everything
+that a browser does so looking at the 100 codes we can start to really screw with stuff.
+So anybody in the room a topic, it should be timeless and not "Timless," apologies,
+"Tim"! This was a great idea. Did we forget that? Okay. It's been done now. In our drive
+to find new and interesting research it's been done once so we should ignore it for
+the rest of time? So I had this interesting idea. How about an HTTP tar pit? People have
+probably talked about this a thousand times before but it was interesting to me. Whoa! >> (Away from microphone.)
+>> CHRIS: This is the problem when you run PowerPoint! (Chuckles.)
+>> AUDIENCE MEMBER: Drink! (Applause.) >> Morning DEF CON, it's Sunday morning, you
+know what that means? >> AUDIENCE MEMBER: Drink!
+>> That's right, drink, round of applause for our first‑time speaker, how is he doing
+so far? Doin' okay? Hook us up! >> CHRIS: I am not drinking all of those!
+(Laughter.) >> Whose first time at DEF CON? Firsthand
+up, come on up on stage. (Applause.) >> Fits Sunday morning that means this is
+the hard core you guys all got up, good job, congratulations! (Applause.)
+>> CHRIS: Cheers! (Applause.) That reminds me of last night! (Laughter.)
+So where was I? Oh, yeah, I was in the tar pit! So simple scenario, the WAF detects the
+scan. We're at the oh my God attack section, and it adds the IP address to the "naughty"
+list and starts to rewrite responses. You get the usually 100, 101, 102 status codes
+we randomly rotate between them, depending on how board we are at the time and we could
+use 203 or 204 but it's not fun! Let's do some experimentation. There is no science
+in this, so NicTool, a wonderful tool, I especially like the logo. The baseline scan, 2:18 to
+find 18 findings, simple at that. With the tar pit ‑‑
+>> AUDIENCE MEMBER: Wow! >> CHRIS: We're winning time there, let's
+say that, it's 340‑fold increase in time but it's still finding quite a lot of stuff,
+okay, this is informational stuff like you have an Apache version of your server and
+even if you respond with a code it's going to get that header. Most of the stuff is interesting,
+the findings they disappear and the script Kitty spends 14 hours scanning your web server,
+so we're kind of winning, same baseline, 1 hour, 57 minutes, 65 findings, but wait a
+minute, it 18 minutes instead of 1 hour, 37, weird, that shouldn't be happening but it
+didn't find anything so I'm guessing there was an algorithm that said I'm going to stop
+bothering your web server now because it's weird and I don't know what the fuck is going
+on! (Laughter.) So back to the denial of service Skip Fish
+tool, 18 minutes to find around two and a half how low, mediums, and a couple of highs,
+which were mostly false positives, whatever, each to their own. So 5 seconds! Again, we're
+going to the wrong direction okay but there was no lows and no mediums and only three
+highs. What I thought was interesting was the three highs that it found were not any
+of the 12 highs that it found previously, so not only false positives but different
+false positives to the normal scan. Okay, doin' weird stuff and we like that because
+we're mucking around with automated scanners and scooting the script Kitty so random is
+good. Acunetix, the Script Kitty tool of choice so you get stuff that you probably don't care
+about and, again we're going to the wrong direction, it should be slowing stuff down
+but it's making stuff faster depending on the scanner you're using but, again, that's
+an interesting ratio of complete false negatives, so it's just not finding stuff. Some of these
+scanners are just like, now this web server is playing silly burgers, it doesn't tell
+you it's going to give up, it just says "I'm finished" no, I'm done so you can slow down
+some scanners, things like NicTool, others give up quicker because they get tired of
+getting responses or they time out and say the servers are not there, if you look in
+the script you probably see the web server responding but it didn't. But this can be
+a win for us. Let's move on to blocking successful exploitation so if someone can get past all
+this and find a high criticality in your web server, and people are going to find these
+vulnerability, it's going to take them longer but they're going to find stuff so let's stop
+them from popping shells with Meta Split. How often does it ‑‑ it's about a thousand,
+it's not scientifically sound and depends on how people are using things and wording
+things and using their variables but this searches through response code and response
+code and there is lots of dependency on status codes even the stuff I wrote uses status codes,
+it's bad programming. It's quick and it's what we all do because we use status codes
+to check the response from servers so here is an example of a snip pet of code from the
+checks and all it's doing is check if the response code is less than a 200 or more than
+a 300. Okay. So I can return a 500. That's great. I can return the 500 with the content.
+That's failing. So if it's not anywhere in the 200 range which is the okay then the exploit
+fails, simple at that, great. So if we're spoofing 404 but giving you the content then
+this exploit is going to fail. If you're good enough to go in and edit the code and change
+things and you know what's going on, then you're not really the target of this talk.
+We're targeting script Kitties, all they know how to do is run the code and if it doesn't
+work they run to the corner. Interesting side affect if it is a 401 it starts to print out
+the response coders, like the authentication header. As I mentioned before we don't need
+to send those headers so what happens? You start to get errors because it's trying to
+print out stuff that should be there but it's actually a nill value because we haven't set
+it ought all because we haven't provided at present interesting side affect, no match,
+no shell, no cookie for you, simple as that. Quickly running through what we have talked
+about. We can use status codes to our benefit, it's fun, it's useful, we can slow people
+down with it. But browsers can be quirky so we need to do
+it in specific ways and scanners and attack tool kits are set in their ways. This is the
+way we did it in 1990 and God Damn it this is the way we're going to do it in 2013, get
+off my lawn! Just the way things are, why change things if it's working so my goal here
+is to make it not work. WAFs need to get more Afghan CIF about their defense because they're
+being far too passive, so just blocking a request, providing a ASCII art that tells
+someone to scan someone else's web server is great but it's not going to help us, I
+don't want to start hacking people ‑‑ well, actually I do. I don't want to start
+hacking back people who attack my web servers but I want to be active in fighting back and
+saying to people this is not right if you're scanning my server I'm going to screw with
+you until you cry, just the way things are. Slowing attackers down is good, making life
+harder for Kitties is priceless. I should have put the Master Card logo on that. Current
+tools are just the same as ‑‑ yeah, I said that. They are adequate and they do what
+they do and until someone fights back and says this is not good enough then they're
+going to keep doing what they are doing, they're only as advanced as they need to be, just
+like people attacking you, if they can get you with a phishing attack, why would I bother
+wasting a zero day on you? Skewing with script Kitties is fun, I've had this running on my
+web server, checking the logs it's hilarious the amount of automated scans that hit your
+web server searching for Tim Thumb, it spends days scanning your server for random stuff.
+How can people implement this? There is no point in me talking about it if we don't know
+how to implement it, let's talk about the ghetto option, we can implement it using PHP,
+people wrote it in note pad but that's life you can append a PHP file to say randomize
+a code within a specific section of response codes that are supported by the browsers but
+we're limit by resources, so if your web server starts to error out because people send stuff
+that isn't to be exported then the web server is going to respond back, limited functionality,
+man in the middle dump, a real memory hog, it will use everything you've got so if you
+put it in front of your web server you can have simple scripts that are going to change
+the response codes, that works. It's not the best solution.
+So what's this enterprise‑approved version? Everyone knows 
+Engine X. If you use Engine X lure you can write interesting scripts and response codes
+that are going out of Engine X, so using Engine X you can set stuff and there are a few bugs
+in the nonGit version, tend to get returned is nil, but if you use the version from Git,
+it shouldn't be a problem, but if you do an app get install you're going to run across
+a couple of problems. So what does the future hold? What's the next step? I've been trying
+to get this into mod security to ease the option by implementing into something that
+people are using on a daily basis because no one wants to implement another layer of
+stuff because the more you install you're increasing your attack service so you want
+to change a couple of figures and do this stuff without you having to think about it
+but it's not simple or easy. I've been discussing it with various people for about a year and
+everyone is like, that should be possible, kinda. I'm not a C‑coder. I would appreciate
+the help. So we've told the scanners they're crap, we've told the scanners they aren't
+doing stuff in the right way. Really need a new microphone here. So less reliance on
+status codes. I know it's easy to say but we're going to have to slow scanners down
+in order for them to be more reliable. Because right now they're taking codes and ignoring
+everything else so start paying attention to the content of the site itself and some
+scanners are doing this already but things need to be double checked so you get better
+matching if you do that, problem is Reg X matching is slow, uses more memory, take more
+time, it's not easy but this is the cat and mouse game. Every time we come up with something
+new or increase our security, then people who are attacking web sites or testing them
+increase the productivity and increase the accuracy of their tools. Hopefully we can
+move this to the next level. That's all I've got! Any questions? Yeah?
+>> AUDIENCE MEMBER: (Away from microphone.) >> CHRIS: The question is have I looked at
+detecting specific scanners and how they look when they're attacking web server. Yes, I
+have looked at it not as part of this research, but as part of other research. It's interesting
+stuff. You can detect when this is attacking your web site. The problem is it's the same
+as this stuff. As soon as you start detecting how specific scanners look when they're hitting
+your web site they're going to randomize how they request stuff so it's sort of a step
+in the cat and mouse game. >> AUDIENCE MEMBER: (Away from microphone.)
+>> CHRIS: F5 you can write scripts to do this stuff it's interesting, I'm sure everyone
+here as an F5, yeah? >> AUDIENCE MEMBER: (Away from microphone.)
+>> CHRIS: Different versions of browsers respond in different ways? At the beginning of my
+testing I was using all the different versions of IE, IE6 tends to do things in a weird way,
+you get some weird stuff, like with the 100 codes. It tries to download stuff but it's ‑‑
+between specific versions they don't tend to change the lodge logic. I'm getting the
+wave if you have further questions or comments the code is available on my GitHub sight and
+I would like to leave you with a thought of whatever doesn't kill you makes you smaller!
+(Applause.)

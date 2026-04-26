@@ -1,0 +1,387 @@
+Thanks for coming. I'm going to
+talk a little bit about having some fun with USB and little
+devices namely the BeagleBone Black. What I'm going to talk
+about in particular is a pocket sized device that can be used as
+a drop box, something you can battery power for days, as a
+remote hacking drone you can control from up to two miles
+away. As an airborne hacking drone that you can get by
+combining one of these devices with CR aircraft. As a hacking
+console. Is that better? All right. Now if I have to go to
+the chiropractic after this talk, I'll go to see Mr. Moss
+for some compensation. No, all right. Identify talked about all
+these things at past conferences and tonight I want to talk about
+some new functionality which is in yellow here. In particular I
+want to talk about how you can use devices such as the
+BeagleBone Black which is a USB based attack. And you can write
+protect the flash drive that you might want to use on somebody's
+system. Do some USB impersonation, this is something
+I talked about at DEFCON 20 using a micro controller based
+device and I can show you how to do that and do it better with a
+BeagleBone Black. Using [indiscernible] shell scripting
+using UMC code. And also talked about something new, a script
+able hit device based upon the BeagleBone Black. So why should
+you care about any of this anyway? The BeagleBone Black
+running DEC Linux which is my custom pen testing drill, is
+nice and small. Very flexible. And you can be networked with
+other devices in order to do some pretty sophisticated pen
+tests. You can show up with a small bag full of devices and
+you can do some really cool stuff and it doesn't even cost
+you a lot of money. For less than the cost of your mac book
+you can have your little pen testing army and because these
+are so useful you might have one around with you and today I want
+to talk a little bit about how you might be able to exploit
+some brief physical access that you have to a target and see
+what kind of damage you can do in just a couple of seconds. So
+who am I? Some of you might have seen me around. I'm a professor
+at Bloomsburg University in Pennsylvania. I teach forensics,
+pen testing, fun stuff. Also an author, I wrote a book on Linux
+forensics which was released this morning, a pre-release for
+all the people at DEFCON. We love you. Everyone else has to
+wait a couple weeks and pay more. By the way, if you want to
+get a copy of this book, and a copy of the next hacker gadget
+book, come early tomorrow to the security booth because we're
+blasting through our copies. Also another book, hacking and
+penetration testing with low powered devices. Been
+programming for a while, since about 8. Been in assembly since
+I was ten. Hacking hardware since I was 12 or so. Also been
+known to fly little planes, do other aviation stuff. And write
+courses for pen tester academy and some other places. So what
+am I going to talk about? I'm going to give you a quick
+overview of the DEC clinic on the BeagleBone Black. The BB.
+And we'll talk about how you can export an attached USB drive.
+Talk about how you can write enable that exploited drive.
+This is some stuff that I talked about at black hat Europe in
+2012 and I'm going to talk about USB mass storage device
+impersonation which we talked about at DEFCON 20. And also
+talk about something new, a script able USB hid keyboard.
+DEC Linux. DEC Linux is based on [indiscernible] optimized for
+the BeagleBone Black and other stuff. You can use it as a drop
+box hacking console. And here are a couple of devices running
+it. You can see I have a quad shot running it. That is what I
+call an air deck. So you can fly in and hack people and fly away.
+I have the hack tar. I have a nice little system hidden inside
+a guitar. One of my favorites is the Trojan Dolik (ph.) in this
+picture. He has a beagle bone running the DEC Linux off an
+adapter. It's a USB powered toy which is awesome. You find a Dr.
+Who fan at your target company, and you give them a present.
+That keeps on giving back to you. I have some lunchbox
+computers. I'm doing a demo lab tomorrow at noon if you want to
+see some of these toys in person. So I've added a few
+modules. The mesh deck that uses XP and ZIGB (ph.) networking to
+control your army of devices from up to two miles away. And
+also the four DEC to do forensic stuff. And today I wanted to
+talk about the U deck, the USB based attacks. First of all a
+little bit about USB on Linux. So USB on Linux is often done
+using gadgets. So there's a USB gadget composite device and it's
+a composite device so there are many devices in it such as mass
+storage, audio networking and all kinds of good stuff. If you
+have a version 4 or higher kernel, you can also have it as
+a hid, a keyboard and/or mouse. What about the BeagleBone Black.
+If you have a BeagleBone Black, by default it creates a G
+multi-device, a gadget multi-composite device and
+normally will export the brute partition. The reason it does
+this, is if you screw up the beagle bone, you want to be able
+to boot it some time in the future. So the way this is done
+is they export your boot partition so you can fix it so
+the thing actually boots again. It's also normally configured to
+set up ethernet other the USB. And typically what happens
+unless you change the default, the BeagleBone Black shows up as
+182.168.7.2. And your PC has a 7 dot 1 address. And some Linux
+distributions that you might run also will start a getty terminal
+process as well. Unfortunately the defaults will conflict with
+what we want to do. So another warning I will give you, never
+export a mounted file system unless it's read only on both
+ends. It's not cool to take your root file system or something
+else that you're writing with your OS and export it so that
+somebody else can also write it. So how does this work? In order
+to export a USB mass storage device, here is a little snippet
+of some shell script. First you need to stop the getty device or
+the getty process I should say if it's running. By the way on
+the DEFCON CD you should have all this stuff. So, you know,
+don't think you have to take pictures and type this stuff in
+later. It should be on the DEFCON CD and also available for
+download other places later. And then you have to uninstall the
+module that is the G multi-device using mod probe
+dash RG multi-and set up a couple of variables to store
+what's been exported and have a simple loop that say, hey, if
+there's something called DUB-SD something. If it's on the
+BeagleBone Black, that must be a thumb drive that you installed.
+So I go through there, it's a little bit of shell script
+magic. And if it's there, I unmount it and I add it to my
+list. Then I strip off some commas from that list and export
+it. So I set some variables for a vendor and a product ID. Now
+how many of you are familiar with bash scripting? How many of
+you are gurus of bash scripting? Who knows what the dollar sign
+double print uses these for? I don't see a single -- okay, I
+see one hand, one hand half way. Like I think, no but I don't
+want him to call on me. This is not school. For those of you
+that don't know, this puts bash in math mode. So you'll notice
+that vendor and product have been set up as integers and this
+allows you to do things like increment them. Otherwise these
+things get treated like strings. Just a little tip. Again, you
+can get all this code off the CD. So I echer (ph). Echer?
+Where the heck did that come from? Echo -- the translator
+should have fun with that one by the way -- the vendor ID to a
+temporary file as well as the product ID in case I want to
+mount this again as write able later. And then I run a mod pro
+command where I give it the G multi- and I give it file as an
+argument. This will take a list of comma separated partitions
+that you want to mount. I tell it CD ROM equals 0 which means I
+am not a CD ROM. And I set it to read only. And I give it read
+only for all of the partitions that I'm mounting. Say, yes,
+it's removable and set the vendor and product ID. Although
+honestly for this purpose, just to write protect it, I don't
+need to do that. But we'll see it later when we try to do an
+impersonation why this comes in handy. Let's try a demo. At the
+first every Friday night keynote. Okay. Doesn't look like
+we have any audio. Let's see if I can remember how this goes.
+All right. So here I have a shell. It's an exciting shell.
+Okay. All right. This is the default behavior. I plugged in
+the BeagleBone Black and it exported the root file system.
+And you'll notice that it just connected me to the network. So
+this is kind of what happens by default. I do. Please stand by.
+Is it this? It's not this. First I'm going to SSH into my beagle
+bone. I'm going to run a script. All right. Let's try that one
+again. In this video I want to show you what happens when you
+normally plug in a BeagleBone Black. Here I have a BeagleBone
+Black and I'm just going to plug it into my laptop here and it's
+going to load that USB multi-module. So it will take
+just a little bit. And what you'll see is my computer is
+going to display a message saying that it's connected
+another network device. As you can see it's also pulled up the
+boot partition from my EMMC. And there you have it. It's
+connected to wired connection two and here is my boot
+partition. There's not a lot on it. And it's done again so that
+you can recover a broken system. So you can go in there and fix
+something you screwed up on the boot. So here I am, on my
+computer if I do an LS USB I will notice here is that new
+Linux foundation, multifunction gadget. If I do an F con fig, I
+will see sure enough here is these two. It's statically
+assigned IPs and it will give you 7.1 on the PC side and 7.2
+on the beagle bone side. If I do a ping, there it is. Great.
+That's the default. What if we want to export -- first I'm
+going to SSH into my beagle bone. I'm going to run a script.
+And again, what do you see? You see on my laptop that it was
+disconnected because that device has gone away. And what showed
+up on my other screen today is here is a melt able partition
+from that device. So this all worked. Let me go and open a
+shell on my Linux machine. If I do a mount I'm going to see,
+right here I have a read-only mount just as I want it. There
+you have it, I have exported a thumb drive that was plugged
+into my BeagleBone Black to a PC as read-only. Now one thing I
+should also point out in this demo, I'm running a series of
+scripts. You can very easily set up some buttons and things on
+the BeagleBone Black to do this. But just to make the demos a
+little simpler for this talk, I didn't do that. But it's very
+easily done. So now if you decide that you're ready to make
+it write able, maybe you're trying to exfiltrate some data,
+please do this after you kill antivirus. And I will leave it
+up to you to interpret the acronym DFIU. Those of you who
+have been to hacker jeopardy should know what that means. You
+can easily remount it using another bash script. And
+basically I just look for that temporary file and say, hey,
+let's redo that and make it write able. And it goes kind of
+like this. So now you've gone onto the system and used all the
+tools that you have on your thumb drive which were read
+only. You've killed antivirus, and all those other things and
+it's time to exfiltrate some data. How can you do that? Well,
+you just need to remount your drive as readable and write
+able, like so. Done. I go back to my PC. You'll notice the PC
+popped up this drive. I also will get reconnected on my
+ethernet. Here on my laptop. I mount and you will see that sure
+enough, there you have it. I now have a readable and write able
+partition that has been exported from the thumb drive attached to
+my BeagleBone Black and it was that simple. Let's have some fun
+now. Let's talk about USB mass storage impersonation. So some
+people may think they can block users from mounting unauthorized
+thumb drives. And typically they're going to do this using
+some end point security software and/or some rules such as UDEF
+rules to filter by VID (ph.) and PID (ph.). Now as I said before,
+I presented a micro controller based device at DEFCON 20 on how
+to do this. But you can do the same thing with a BeagleBone
+Black and some shell scripting. Now one important thing to note
+here is you can get a lot better performance through the micro
+controller based device that I showed, was only capable of full
+speed or 12 megabits per second versus high speed or 80 megabits
+per second that you can get with a BeagleBone Black. So basically
+you have a little bit of set up and again all this should be on
+the CD. I've got a usage statement. I declare as
+integers, vend and prod. That is where you get the declare -- I
+and a delay. And I parse some arguments and I snip that as
+just kind of boring stuff. And this is a picture, by the way of
+that device that I presented at DEFCON 20. So step two, you need
+to unmount the drive. So how do you do that. You check and see
+if the getty process is running and if it is, you stop it. You
+also unload G multi. Set up some variables and this looks very
+similar to our previous script with one important difference.
+And that comes upright about here. By the way, hopefully your
+unmounting is more graceful than this lady in this picture
+getting off this horse. So I have a file with the entire
+Linux mid PID database. So what you can do is spin through this
+file and see if it gets mounted or not. And if it gets mounted,
+it's not getting blocked, you just say, great. And there you
+go. So let's have a little demo of this. Now, let's have some
+fun with some USB impersonation. I'm going to go ahead and run LS
+USB and now I'm going to plug in a SanDisk drive. And I'm going
+to rerun LS USB, you can see that it mounted successfully.
+Here it is. So I want this to impersonate something else. How
+am I going to do that? I'm going to do that using my BeagleBone
+Black. So let me go ahead and unplug this and I'll plug in the
+BeagleBone Black. So now I've logged onto my BeagleBone Black
+and we're going to go ahead and run my script and I'm going to
+let it run through a couple of these. And you can see that it's
+mounted -- I'm not actually blocking in this case, but if
+you see my talk about DEFCON 20 you know about how all that
+works and everything. Now if I go back to my Linux machine I
+will see that sure enough, if I run my LS USB, boom, my little
+SanDisk drive has suddenly become a Kingston drive. There
+you go. I was able to do this with a micro controller based
+device and some custom coding and now I've done the exact same
+thing with a little bit of shell scripting in a BeagleBone Black.
+All right. So again, a lot faster, 40 times faster. But now
+let's have some real fun. Let's do something completely new and
+show you how you can make a USB hid device, again, completely in
+bash script. You don't even have to write python, not that I
+don't love python. I'll show you some python script you can use
+with this. But how do you do this? Step one, you have to
+unload that G multi. And this should look kind of familiar by
+now. Now step two, you have to create something called a con
+fig file system. It's a special pseudo-file system, if you will.
+By the way this lovely little picture here talking about how
+you shouldn't mix con fig file system and separate gadgets. I
+didn't make this. There is enough people that know this is
+a problem that I actually found this little picture on the
+internet. So you have to configure a file system and you
+will probably have the base directory where this is mounted
+under CIS (ph.) kernel con fig. And if it's there, you might
+have something mounted. So you want to unmount it and then
+mount a new con fig file system to that place. And then you have
+to create a device. How does that work? You take that area
+and you make a directory for your keyboard device. And you
+echo vendor IDs, product IDs, pick your favorite. And you echo
+a device and a USB version as I've done here. You add a
+configuration. So here I have a configuration, I make a new
+directory. And I echo things like the maximum power and I
+create new directories, hid USB, 0, and echo some more stuff like
+the subclass, protocol, report links, et cetera. And then I
+finalize it. So step five, you need a report descriptor. So
+those of you that know something about USB know that everything
+has descriptors to describe it. So they're used for a lot of
+things and there is something called a hid report descriptor
+that is used to define reports from keyboards, mice, joy
+sticks, et cetera. So you need one of these things. And what
+you have to do is create a SIM link for your configuration and
+activate it. So first you can copy this report descriptor. So
+I have it just as a BIN file and copy it into my con fig file
+system. Create a SIM link and echo HDRC .0.auto to a specific
+place and boom you have a device. So this is the eye test
+slide for this talk. No, I don't expect you to be able to read
+this. I just put this in here so when you get the slide deck you
+can see it. This is the details of what's in that binary file
+and descriptions for every single byte on what this report
+descriptor looks like. So that's boring. Let's have a demo. Now
+we're going to go ahead and create our hid device. First I'm
+going to run my script that we hid. If I go down to my Linux
+system I'm going to do an LS USB and I will see a new device. Now
+Linux is a little bit smarter than windows. For the Linux
+devices, it just comes up and it says 1337, 1337. Because it will
+actually look it up. If you give it a fake vendor and product ID,
+it will say, no, that's not right. I know that that's not
+right. So in general it's a lot smarter than windows. There you
+have it. If I do an LS USB -- V -- D on 1337.1337 you see it
+gives me a bunch of information and here it tells me this is in
+fact a hid and it's a keyboard. All right. So now we have a
+device but we're not quite ready to do anything useful with it.
+So in order to do something useful with this device, you
+have to send some reports. And the format for these reports is
+pretty simple. There is a modifier. So you have a shift
+key, control key, width shift key, et cetera and a reserved
+byte and a bunch of key codes and you're allowed to press up
+to 6 keys at a time. Why you would want to do this? I don't
+know. But it's fun. So how can you do this. Now, I should say
+this, you've created the device and you can just echo stuff to
+the device, again, on the command line. But who wants to
+do that. We like python, right. Python is every pen tester's
+friend. How can you do this in python to make it a little
+easier. Some prelims in the python code. You import a few
+things like Struct (ph.) and time and you define a few
+modifiers to different shift keys, et cetera. And then I
+create this little list of ASCII to key mappings so you can map
+key codes to ASCII codes. Because of course they're not
+the same. Why would they be the same? That would be easy. If
+it's easy then people don't get jobs, right. We have to make it
+hard. You have to be smart to do this stuff and then we get paid
+more money. So the next thing I do is I create a hit class and
+how many of you are familiar with python? Okay. So you know
+how to create classes in python. And here I have a constructure.
+You can pass the hid device file name. And I define a whole bunch
+of nice little helper functions such as send key. If you send a
+key, you to send two reports. Unless you want to fill the
+screen with the same key. You have to send a report that says
+I pressed a key and another report that says I stopped
+pressing the key. That's what you'll see here. It says write
+the report and then it sends out a nice zeroed out report which
+means I stopped pushing buttons. And then of course I defined
+some other helpful functions such as send a shifted key. Send
+a character. Send a string, et cetera. And I didn't show it
+here but I have a whole bunch of nice little hot key things such
+as please left the screen. Please flip the screen upside
+down if you're running windows, bring up a terminal. If you're
+running Linux, et cetera. So let's do a simple Linux attack.
+So here in my script I'm just going to type out your
+environment variables, I'm going to run nano and create a new
+file called hacked. And I'm just going to put in a couple of
+strings, you're so hacked. And I'm going to send some keys to
+exit nano and save the file, of course. And then I'm going to
+pass your password files and then I'm going to clear the
+screen. How does this look? I created the USB hid device. But
+we haven't done anything useful with it yet. In order to do that
+we can run our python script. I'm just going to go ahead and
+run the script I've attached to my Linux computer. And boom, I
+just ran a bunch of stuff. You didn't even see it it was so
+fast. If I do an LSTXT you'll notice that I created a new
+file, hacked. And another one called got your passwords. So if
+I [indiscernible] hacked, I see it says you are so hacked. And
+if I cat got your passwords, it in fact, brings up my password
+file. So there you have it. Pretty simple. All right. Now,
+hacking and attacking Linux is fun, but come on, windows is
+more fun, right? I mean windows isn't good for anything else.
+Might as well be good for an attack target. Let's do a simple
+little windows attack. Sodown, like I said here, what else is
+it good for anyway. Here what I'm going to do is create a hid
+device. I'm going to send the window hierarchy that says
+please run something and send the line, note back, please. And
+I'm going to again, put a bunch of text in a file. I'm going to
+send alt F. And then X which will save and exit. I'll hit
+enter to say yes please, save my file. I will send the line
+hacked TXT when it says what would you like to call that
+file. And I'm going to send the window upside down screen
+command which will flip your screen upside down and I'm going
+to lock the screen. So it's nice upside down locked screen
+potentially. Let's go ahead and run this. Now I'm going to go
+ahead and attack windows. And there you have it. By the way I
+sent a command to flip the screen which didn't work in this
+case because it's running in a virtual box but normally it
+would have. If I log back in and I look at my documents, I see a
+new file. So of course I can do some other fun stuff. But you
+know, I think you guys get the point. And given that it's late,
+just to let you know, if you have any questions, tomorrow at
+noon to 2 I'm doing a demo lab. Also you might find me chained
+to the security tube booth over in the vendor area. So one thing
+you can do there, yesterday I talked about this new device
+that came out called a catch wire. And the manufacturer has
+graciously donated some nice little bundles with their
+devices, running my pen testing Linux that we're giving away. So
+if you drop by the booth you can register to win free stuff which
+-- who likes free stuff? All right. I like free stuff, too.
+So you can get a nice gift set worth over 600 bucks. We have
+two of those to give away. And of course, you can always come
+by and say hello. I'll have all of my toys tomorrow. I'll have
+my lunchbox computers, I'll have a BeagleBone Black that's
+running this stuff. And a couple of catch wires as well if you
+want to see that. So everything that I talked about today,
+everything that I talked about yesterday. If you want to come
+and get touchy feely, it's that kind of conference, I'll let you
+touch my junk. If you want to come tomorrow at noon. Thanks
+for coming at 7 o'clock on a Friday. And I'll see you guys
+around. ...(applause)...

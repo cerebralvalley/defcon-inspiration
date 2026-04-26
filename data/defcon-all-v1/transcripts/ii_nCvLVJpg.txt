@@ -1,0 +1,494 @@
+>> Hey hey hey everybody. I just
+wanted to uh take a second here to announce the section that
+we're going to be talking about today. Abusing smart cities in
+the dark age of modern mobility. This is a a especially
+interesting topic for me as I live in a city that is still
+stuck in the dark ages in Texas. I also want you to be aware of
+the fact that we've got full mateo redundancy in this
+presentation. Not one but two of them in case one of them breaks.
+So I'm gonna turn it over to the [snap sound] [pause] >> So thank
+you everyone for coming. And thank you for your time. We are
+gonna steal you just 1 hour so. Okay um I'm Mateo. Mateo
+[indiscernible]. Uh I work as uh in the security field as a CTO
+of a small company in Italy. And we do offensive physical
+security. Uh that's my Twitter and if you want to just give
+feedback at the end of the talk I'd be happy to resp to reply to
+that. [pause] >> And that's me. I'm Mateo Corrulla and uh I got
+a bachelor just 2 weeks ago. And I'm still a student studying now
+in the field of nano technologies uh for our cities.
+So if you want my Twitter as well you find here my personal
+information. And um [clears throat] starting from May we are
+uh with opposing force a member of [indiscernible] cities which
+is a non-profit organization which helps uh the decision
+maker to consider also security issues when implementing new
+solutions. And um I will give the speech to my friend that
+will start illustrating what we did. >> Okay so that's the
+agenda for today. Uh we start giving a little overview about
+what [indiscernible] is. Then we focus on the transportation
+system. Smart transportation system. And what we want to do
+is like introduce our methodology for our SAAS this
+kind of system. And doing so we are so of a freaky friend case
+studies. One for each uh infrastructure in as much
+transportation system. And we uh we apply our method to this uh
+to this case studies. And then we see what's up next. So let's
+start with uh with what are smart cities. So a smart cities
+is usually composed by several eh critical infrastructure. As
+for example um you know energy measurement surveillance systems
+water management transportation system and waste management. So
+for a city to be called smart usually those infrastructures
+have to be connected in some way. Then can be connected to
+some central system or connected to each other to communicate and
+you know better manage the resources. Eh in this
+presentation we're going to focus on uh transportation
+systems. So [pause] let's focus on smart transportation system.
+And uh smart transportation system itself is divided in uh
+several infrastructure. And we may have traffic control. We may
+have a smart parking system. We may have a street lighting smart
+street lighting system. And public transportation systems.
+So it's pretty complicated to work in this kind of environment
+because we have multiple layers. Multiple infrastructure. Each
+one communicate with the others in unknown protocols. So what we
+are doing is trying to to find a method to assess the system to
+better to easily do it do it so because that's what we do for
+job. So we have to you know do it as quickly as possible and
+the best way we can. So let's see quickly how's a smart
+transportation system is usually composed. We have 2 mantels eh
+sorry 2 different kind of systems. The first one eh in
+which every element so for example eh traffic system
+traffic control systems smart lighting control smart parking
+and transportation communicates with a some central system. Each
+central system then communicate to a more central system. And
+that central system aggregate the data from all the other
+systems and communicate information usually useful
+information to the citizens. Like which what is what is the
+best road to go to work. Where is more uh where is less traffic
+today. And so on. Eh another kind of system is where each of
+the m micro system uh communicates directly to the
+user. And sometimes also directly to each other. So there
+is no need to a more central control system. Eh usually the
+the central point of the smart city is always the citizen. So
+all the infrastructure are thought to be helpful to the
+citizen. Okay let's go even more in details. So smart
+transportation system. We have private transport shared
+transport and public transport. With uh private transport we
+mean like smart parking. With public transport we mean metro
+bus tram trains you call it. And with shared transport we mean
+the new transportation economy like bike sharing car sharing
+etc. [pause until 5:41] I drink a lot so sorry for these
+interruptions. [pause] Okay that's one of the method. One of
+the architecture used to assess the system. So we try to reduce
+every infrastructure to this schema. In which we have net
+domain and inside the net domain there is the edge device. Eh
+that take data from the physical world and send this raw data to
+our cloud domain. The cloud domain is like the brain of our
+system and it know analyze the data and send commands back to
+the to the device or send information to the client domain
+which can be like mobile application for the citizens and
+etc. So the communication is usually is always be lateral so
+the edge devices can both eh send de send cors send data and
+receive commands. So they can act properly about the data they
+send. So for example if there is no traffic the traffic light is
+always green. [pause until 6:53] Okay that's uh our first that's
+a little bit introduction. Now let's go to our first case
+study. Our smart parking meters system. Um we wish
+[indiscernible] about that. [pause until 7:13] Okay that's a
+device. And let's make a little bit of introduction about how
+the device work. Uh so the device is uh bought by the user.
+Eh at some shop. And then the device can be re-charged. So you
+can store credit on the device. And you can do it uh on both
+online uh from your home so you connect the device to your
+computer register on the website of the of the of the company and
+then using your credit card or paypal or whatever you can
+charge credits on the device that can be used later. Or you
+can do the same procedure at some uh con at some shops. So
+you go to the shops. You gave the device. You pay in cash and
+the and the guy can charge you can charge your device. Eh once
+once the device has some credit you you can park your car and
+then turn on the device. The you then have to select the proper
+location. Because this device is available for more than 40
+cities in Italy. Actually didn't I shouldn't say Italy. Okay. In
+more than 40 cities worldwide [laughter] and it can it's
+growing. So we have to select [indiscernible] the correct city
+because each each city has different fare zone. So and once
+the you select the city you have to select the proper eh fare
+zone. And activate the device. For for that for now on eh every
+minute eh every second sorry the device automatically calculate
+the fee yo are paying. And reduce that amount from your
+from your credit. So actually the benefit for the user is that
+the user doesn't have to bring like coins and cash to pay the
+the park the parking and he just get just pay for the exact time
+he's he's parking and not for like half an hour or 1 hour
+over. So this are some of the interfaces we found on the
+device. So there is uh display part which is for uh showing
+some information we we see later. There is the USB port
+which is used to connect the device through the so called
+gateway which is our computer that uh connects the device to
+the cloud system. And then we have our our [indiscernible].
+And all those interfaces uh have some form of [indiscernible]. We
+install them in a few. I just need to drink again. [pause
+until 9:39] At DefCon there is um how say? The first time you
+speak at DefCon they usually bring you shots of vodka. They
+didn't do that this year. I don't know why. This is all.
+[off mic comment] Yeah. Anyway the first analysis we pro we did
+on the on the device was a farmer analysis in which we
+found that there were no integrity checks. The
+[indiscernible] can be easily obtained in 2 different methods.
+We can intercept the communication between the the
+gateway. So our PC and the backend system during an a OTA
+update. So we can intercept the firmware. Or we can extract the
+firmware directly from the NCU. Eh in both cases the the the con
+the unpacking the firmware was easy. And no integrity checks
+were present. No encryption in the firmware were present. No
+[indiscernible]. And no au authenticity is is also
+authenticty checks is present during the firmware upgrade
+[indiscernible]. So the result is the attacker cannot
+[indiscernible] malicious firmware. For example removing
+the reducing of the [indiscernible] part. So you can
+turn on the device. The device acts as uh it has always been
+but at the end of the at the end of the at the end of the day you
+have always the same credit on the device. [pause] As I said
+before there is some debug interfa [cough] sorry. There is
+some debugging interfaces present on the on the device. We
+used the jtec port and the SWE port to extract for example the
+firmware. Eh there are also other [indiscernible] uh for all
+the components. So for each component present on the device
+you can actually un intercept the data exchange it and in
+inject other data. So let's try to reconduce our our device the
+the schema I show you before. So [indiscernible] domain we have
+parking meter. Which is connected to the OSB through our
+gateway and cloud domain. Eh the cloud appliance is used for like
+remote charging the device. To create invoice based on uh where
+you park and how time how time you park. For example for
+expenses for the company etc. and to [indiscernible]. So the
+cloud domain that communicates to a client application which is
+eh gave to the inspectors. Eh the inspector can use the
+application to check if you are paying the correct fee for your
+staying if you are paying correctly. Um another thing the
+inspector can usually the inspector check if you are
+paying correctly just by looking at the display of the device.
+But there is also an [indiscernible] interface eh
+that eh use that the inspector can use to access eh memory of
+the on the device. So we didn't have communications security did
+not exist and the results were the there is no data validation
+between the edge edge device and the cloud domain. So we can both
+modify the data send from the cloud to the to the device and
+to the the [indiscernible] device to the cloud. And
+moreover the all the trust in the if you are paying or not is
+in the device itself. So the inspector can actually check
+only if you are paying by looking the device or accessing
+the memory on the device. It can not check if you are paying
+correctly eh using the cloud the the cloud data. Because the
+device it's not it's not updating it's status in real
+time. [pause] So as I said there is no incre no integrity check
+no encryption no [indiscernible] checks. So this is our sample uh
+request. We we intercepted and from that you can see I don't
+know if you can see but it's there is some parameters which
+are very useful. And this is our configuration file. So every
+time you connect your device to the to the gateway eh the cloud
+appliance send new configuration files for updating like fee
+zones etc. Eh if there are any new cities uh and we can modify
+that configuration file. Okay so reversing the the firmware
+analyzing the communication and using some uh debug interface to
+understand better the data. We finally found with this formula
+used by the device to calculate the fee. That's the formula. So
+you have the price per time unit. Then we have the fare
+frequency. Because in some cities you you may have um to
+pay every half an hour and not an hour. So it's not a
+parameter. Then we have the time the seconds elapsed from when
+you turn on the device. And then you divide every all this for 1
+hour because usually it's 1 hour. And then we have to add
+the minimum fee because in some park uh some parking you have to
+pay at least 1 hour of parking. Even if you stay just for like
+10 minutes. So as I said before when you turn on the device the
+display show you the price you are paying and eh ta time you
+have turned on the device. So those 2 parameters as actually
+displayed so even if we modify the the configuration files so
+we conf for example if we put at 0 the price per time unit that 0
+is displayed it is displayed by the device. So the inspector can
+actually see we are we are committing a fraud. So that's
+not good. The minimum fee in all the cities uh at the moment are
+usu is usually set to 0 so we don't have to care about that.
+So what's the only parameter we have to to change to attack the
+multiplication to 0? That that's what we want. If you set the
+multiplication to 0 then our fee is 0. So if you can change the
+fra the fare frequency to 0 all the q all the formula is then 0.
+So we don't pay anything. Even if the correct configuration
+files is displayed because price per time unit is we just set the
+the correct one. And it's the second we don't modify that. The
+fare frequency is not displayed. So we can change it easily to 0
+from the configuration files. So intercept the configuration file
+change the the value to 0 and then the eh old formula becomes
+0. So that's why we call our formula our central ground. And
+using this vulnerable vulnerability pretty easy to
+exploit. We actually wrote a little script that can allow you
+to like do everything automatically. So you can just
+plug a device to the computer and like I don't know maybe 3 or
+4 seconds uh your device is like every city present in Italy or
+not eh actually you pay 0 for parking. Eh moreover we also
+[indiscernible] firmware which in which eh the the fee payment
+is removed. So we displayed the correct information but we don't
+remove the credits from the memory. So multiple
+vulnerabilities allow you to actually not pay for parking.
+That's a good thing right? Okay I'll now leave my the word to my
+colleague which will talk about the next 2 case study. [pause]
+>>Okay. [pause] oops Okay. [off mic comments] Um we'll go on
+speaking now about shared transport. Shared transportation
+systems and in particular we'll we'll speak about bike sharing.
+Well our case study was was divided into 3 steps.
+Essentially. The first step is the one in which you go to the
+station where all the bikes are located and uh you unlock yours.
+The second step is the funnest. You ride the bike. And the third
+one is when you lock it again. And you walk away. So let's go
+step by step. From the first one the first one um should the
+picture shows that the ways to unlock your bike are essentially
+2. The first one is more physical. You need uh NFC card
+and uh NFC card will be checked. Here we will see how. Uh we will
+checked and unlock the bike. The other way to unlock is by using
+mobile application on our mobile device. So um the station is
+speaking with a cloud or the beacons that out arises the
+unlocking of the bike. Let's see more in detail. This is one of
+the stations. And as you can see on the top there is uh NFC
+reader for the for the card. And uh as I said before there are
+those 2 accessible methods in order to unlock the bike. Let's
+focus on the first one. So the mobile application. So at first
+we we compiled the app. And we found that there is no
+[indiscernible] on the code and so that helped us a lot in order
+to understand how the whole procedure works. But moreover
+one of the critical points is that there are the
+[indiscernible] credentials are coded. And obviously we
+[indiscernible] them here because we don't want to say the
+name of any company here. And um the the critical point is that
+we those credentials you are allowed to create new users. Uh
+charge some credits on those users. Activate the users. And
+unlock a bike in real time. Wherever it is. So it is quite
+dangerous I mean. And moreover uh there are some APIs here and
+that are vulnerable to a [indiscernible] injection. And
+of course for legal reasons we did not make any attempt to
+exploit them. So I will skip this part. An [laugh] >> There
+is a private Q&A session later. [laughter] >> Let's move to the
+card analysis. Okay I hope you don't recognize this city. But
+um it's okay. Let's go on it's in Italy but she said before and
+>> It's not. >> second [laugh] The second mistake. Okay. It's a
+[indiscernible] light um NFC card. So we all know that
+[indiscernible] light does not have any um encrypted uh data on
+it. Well the protocol is not um it's not encrypting the data
+inside. So each one can read it easily. And there is no
+authentication while uh uh reading the card. So mmm if I
+can get one of those cards I can easily read my with my smart
+phone or another reader. And uh the only identification
+parameter in it unique uh unique uh identification parameter is
+the UID. Which identifies one and only one user. So that is
+the sensible all the sensible information realized in the IUD
+to unlock the bike. And uh if you look close to that cart just
+look inside that rectangle. I don't know if you see the that
+number. Uh please raise raise your hand if you guess what that
+number is. Please do. Yes you're right. It is the UID button
+reversed way. So don't know who who decided to put in that place
+the UID button. Of course it is simple to read it by a reader
+but um they if you this procedure. Let's go further and
+analyze the the other steps. Well there is a physical issue
+we found in the stations. Because the only way the station
+um is able to understand if the bike is properly locked or is
+inserted is by um a sensor inside that uh little piece of
+metal you see in the yeah in the hole. And um if you slightly
+remove the the bike as soon as you unlocked but just a few
+centimeters um it feel the distance is short the sensor
+will not well the station is not going to understand that the
+bike has been removed. And so after a minute or 30 seconds I
+don't remember uh the unlocking process goes in time out. And uh
+this station locks again the the bike. The point is that the bike
+has slightly been unlocked so the lock is not locking actually
+the bike. And you can extract the bike and uh station will
+feel uh as if the bike has not uh been unlocked. And um the
+point is that the central system can detect this issue in 2 ways.
+The first one is that uh you you leave the bike in another
+station. So the central system will see okay I have the bike
+number 1 2 3 in station 1 and at the same time in station 2. So
+there is something wrong. And uh the other critical point is if
+there is another bike that is going to be uh left in in that
+station the central system will uh understand that there are 2
+bikes in the same location so it is actually a problem. And
+that's all for the shared transportation systems. And what
+about the public transportation systems? We defined uh 2
+different architectures. Uh the first one we called offline
+system because uh each of the bus metro tram however they um
+they are speaking with backend and the backend is unilaterally
+speaking with uh UID black list or database which is recording
+all the possible mmm tickets that are run out or
+[indiscernible]. And the other architecture is we called online
+system. Because the difference is that the UID black list can
+interact um with the stamping machines that are located on the
+bus metro or whatever. So let's start with the the first
+architecture. We spot out uh [indiscernible] our abilities.
+The first one is called uh lock attack. And um actually it's
+quite easy to be understood because the the sector where the
+rider is located that is [indiscernible] 1 can be made
+read only. If we set 1 bit in the lock byte uh to 1. So it's
+quite easy [indiscernible] let's say. And um no rights will be
+removed when you stamp your ticket because it is a read
+only. So essentially it's quite easy also to be uh fixed this
+vulnerability. But um it will work essentially because
+working. And uh the second one we are talking about is the time
+attack. And um this is nicer because you don't have to make
+any any modifications to the lock secta lock sector and to
+the auto pay. So you leave essentially of the rides as they
+were and you find the place where the time stamp of the last
+validate last validated ticket is stored. So the only the only
+task is to reverse uh to reverse the ti time stamp and find the
+initial time uh when the they start counting the minutes. So
+as soon as we reverse the the data for example here we we put
+our rectangle our red rectangle around the that area. And we
+found the initial date was something around 2005 I don't
+remember. >> First generally >> [laugh] Yeah don't don't don't
+say it loudly. And uh we found that and so that way are able to
+afford our our own uh time stamp and validate our ticket without
+touching the rights. Because the tickets is valid for some
+minutes. 90 minutes or whatever. And so you you will have always
+a valid ticket. And uh what about the online systems? Um
+this those kinds of systems are not uh vulnerable to the
+previous but are vulnerable to the replay attack. Well offline
+systems are also vulnerable to replay attack but I will explain
+now. And [indiscernible] by replay attack you have a lot of
+possibilities and will be a serious problem. Because if you
+use some immulators or clone tickets the one from China for
+example the there are no rules. They act like uh [indiscernible]
+but they are not. Or other [indiscernible] may be plastic
+[indiscernible] etc. but they are not following the standard
+rules and there probably was they are completely erasable and
+changeable. So you are allowed to change the UID. Forge new
+UIDs with a a valid structure because you have uh you can
+clone your ticket with a a valid structure. Even if it is
+encrypted you change the UID and then you can stamp it and bypass
+any software encryption. Because the the validating machine makes
+everything um by itself. And uh moreover you can also use the
+same ticket to you clone it on your clone one you increase 1
+ride and you stamp the clone one and then you come back to the
+the previous ticket the original one copying all the data
+sectors. And whatever you have so it will be perfectly um indi
+indistinc indistinguishable from the the previous one. And it is
+valid. And the pro the problem is that uh implementation of it
+white list would be uh a problem. In our systems. Because
+the white list must be must up be updated on all the stamping
+machine. In real time. Think about uh if you to to buy a new
+ticket from um a shop. That ticket must be useable
+immediately. A as soon as you buy it you buy it. So the
+implementation of a white list is a serious problem. And it
+will mean well you will need to um build a completely new
+infrastructure if you're ready to point one to demand such a
+thing. So it will be a very very difficult task. As regards
+future works what's next. Well [pause] we started um a this is
+the picture we shown we see before. And um we spoke about uh
+energy management. Surveillance systems water management. So
+let's start with uh smart cities sur surveillance. And those kind
+of cameras can be used for multi well they have multiple uses.
+One of those uses can be um for policemen to charge people maybe
+uh going with their car in uh a restricted areas. For example
+limited traffic uh areas. And they can uh snap a picture of
+your of your plate. And uh ss mm sending you fine for entering
+that. But how the how is the connection made between those
+cameras and the main uh backend? Well we we still have to
+understand how. And um then we have something onto water
+management. Maybe there are some counters that are billing how
+much water each one of us is using. And uh um applying the
+charge for each cube meter of water. I don't know if you use
+here those kinds of units of measurements. But eh the amount
+of water >> [off mic comment] >> Yeah imperial is different from
+metric but I hope it is clear the same way. And uh so those
+kind of systems have to be interconnected between a central
+infrastructure that uh eh evaluates the right fee to be
+charged at each user. But what about for example the smart city
+lighting system? And uh this way we're going to illustrate for
+example how the the lighting for uh a street. Maybe or some
+buildings how to uh save money with in turning on or off lights
+when unness uh when it is not uh necessary. So uh what is the
+what is the algorithm a central system can use to turn on or off
+those kind of lights? That it will be uh a center point for
+future works. And finally the smart traffic lights system. And
+some new technologies about uh making the green light last
+longer if the the road is quite crowded. And uh maybe preventing
+from turning it red if there is no car in the crossing road. And
+uh but if those systems are interconnected and badly let's
+say [indiscernible] badly and the connection is not secure
+maybe um [indiscernible] user and turn red often and uh well
+the green on and the green on the other side could be a mess.
+>> Yeah the there was a a paper published by Susan
+[indiscernible] about traffic system. You can check about
+that. >> Yes >> Interesting thing. >> [Indiscernible] >>
+[Indiscernible} >> And finally >> One of the traf okay we can
+test all all those infrastructure but our final
+challenge will be hacking a whole city. >> Yeah >> So as you
+saw we have like material for for you or for DefCon. So
+[laugh] Good will you can see us in the next year probably. >>
+Sure and if you have some >> Yeah >> [indiscernible] you will
+recommend some cities to be hacked >> Yeah we are >> sponsor
+us we are uh >> We just need to play the five a five star hotel
+and then we can work something out. No problem. >> Eh you you
+forgot a suite. >> Yeah five star a suite in a five star
+hotel. Sorry. [laugh] One each. We don't share. [laugh] Just to
+be clear. >> Yeah yeah sure. >> Okay so I figure there is like
+something like 15 hundred people now here. Any question? [pause]
+>> Don't be shy. Come on. >> It is written don't be shy. It's a
+Q&A session. Okay. Uh >> Do we have a microphone for? >> How
+does it work? >> Yeah >> Goons? We need a microphone. [pause] >>
+Right Goons are here >> Ah the microphone is here >> Oh okay
+you have to come here. You have to do work. [pause] >> So on the
+reply attack rather than copy into another device couldn't you
+just copy it make a gold image and then after you've used it
+replay that back onto the original device? >> Yeah you you
+can do that but the problem is uh when you have the black list
+uh sometimes your token can uh can be put on the black list
+because it actually behave now not correct way. So what we did
+is to inject new UID so the system doesn't recognize if the
+every time you stop the token you put a new id. So that this
+new ID is not eh previous behavior so they don't bang it.
+[pause] >> Other questions just stand up and go to the uh
+microphone. [Off mic comments] [pause] >> No questions? C'mon.
+[laugh] Uh we have like Yeah >> [indiscernible] more minutes >>
+Yes so we won't >> Go anywhere >> Please ask. >> You have to
+stay in this side. Close the doors. [laugh] >> Okay. Thank
+you. >> I have a question uh [clapping] >> It's for you not
+for us. [laugh] [clapping] >> off mic - I can talk afterwards
+>> Thank you. >> Um Singapore is having uh real big surge with
+their smart nation. One of the things that they're doing is
+they're having a big push for in the name of elder care
+monitoring in the home. Are you seeing that in Europe? >> Uh
+nope. At least not in Italy. Well we are from Italy now maybe
+you understand understood that but [laugh] not in Italy. It's a
+it's a interesting thing because we actually never thought about
+that. But um we're going to present the same research in
+Singapore uh next month at [indiscernible] yeah this month
+>> two weeks >> at the end of the month. In [indiscernible] so
+maybe there's some like interesting points to to speak
+about. >> Can you Tweet where you're doing this information?
+Because I live in Singapore I'd like to attend. >> Uh okay. You
+can come later and we give you the link >> Yeah >> what up >>
+So on on the on the parking meter charge hack did you think
+to try and making the charge negative? >> Yeah >> Yeah but >>
+and something very weird happened. >> Yeah >> They
+charged us like 10 times what what what we owe. >> Ho >> Yeah
+so there there must be something more in that formula [laugh] >>
+Reversing the firmware there is some like very strange things
+like some weird vulnerabilities in which you can like overflow
+the whole system and crash it. It's >> off mic - more more to
+look in to >> But yes we we tried. >> Hi. So in Chicago we
+have a different bike share system with a different lock at
+the front end of the bike which I believe uh I'm not sure if
+this hack will work or not on it. So I'm wondering if you've
+looked into other hacks for bike share that aren't reliant on the
+locking mechanism? And then also our bikes have GPS. So have you
+figured out how to if you wanted to literally steal the bike how
+do you overcome the GPS? >> So so you have GPS on the bike. >>
+The bikes. >> Okay you there was uh a talk I think last year at
+the Black Hat or DefCon. Both probably. Uh about spoofing GPS
+data with uh SDR. So you can actually bring your SDR and have
+it in a backpack with a battery and like spoofing your data and
+meanwhile stealing stealing the bike legally. [laugh] It's a a
+principal we we are trying also to apply to uh car sharing.
+Because they check your mileage and where are you going? And
+they charge money for that so it's interesting thing.
+[indiscernible] [pause] Anyone else? 3 minutes. No. Maybe 4 or
+5. Okay. Thank you very much for coming. Thank you for your hour.
+[clapping] >> Yeah thanks for >> Really appreciate [clapping] >>
+Also thanks for our sponsors and
+00:38:24.869,00:38:24.836
+yeah that's it.

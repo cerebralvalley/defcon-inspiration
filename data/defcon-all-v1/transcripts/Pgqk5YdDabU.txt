@@ -1,0 +1,1059 @@
+>>Alright we’ve got a talk here
+on weaponizing hypo-hypervisors
+by Ali and Dan uh and we have a little tradition here uh at
+DefCon for those that are new to
+speaking at DefCon and the- does anybody know what that is?
+>>[audience] shots? >>yeah
+[laughter] >>thank you >>thank you >>so this is called shoot
+the noob uh and uh you know
+those of you can cheer them on as we do our shot here for the
+first time speakers. [applause]
+alright, good luck fellas. >>Thank you. Can we start >>Yeah
+go ahead >>Hey guys, thank you
+for coming, uh really excited to be hear uh it’s our first time
+as you saw. Uh I am Ali Islam I
+am the cofounder and CEO of Newman. Uh I have been in the
+cyber security industry for last
+uh 13 plus years. And for a long time I was working for a company
+called Fireeye it’s another
+cyber security company. Soooo, that’s yeah, Dan you wanna?
+>>[clears throat] hey guys my
+name is Dan Regalado um I am so excited to be here because you
+know it’s the first time DefCon
+so so glad and and blessed y quiero agradecer mi esposa y mis
+hermanos y los amigos, esta de
+mexicana de aqui senores [applause] mi- make DefCon speak
+Spanish [cheers] >>haha cool,
+okay let’s uh, let’s get started. So, here’s a quick
+overview of like how we organize
+our talk, so we’re going to introduce some- some of the
+basic concepts. Uh, these
+concepts are really important uh, and kind of a foundation
+upon which we build our later
+detection cases uh and you know other policies. Uh apart from
+that, uh then we’re going to
+explain the enviro- whole embedded environment, the
+journey you know setting up the
+bull and uh you know the environment that they play in.
+And then we’re going to talk
+about the very important VMI on ARM uh I’ll explain shortly what
+VMI is. And uh finally we’ll
+discuss about different attacks, uh use cases and some other
+recommendations um. Okay, so um,
+why is hypervisors so important and relevant? Uh, as you can
+see, uh all of the major players
+automotive grade linux, Renesas, uh DENSO, and ALIBABA NXP, uh
+Perrone robotics, uh you I mean
+there are many, uh Green Hill, Intel, they all have now the
+hypervisor in their
+architecture. And, uh, the traditional use case for
+hypervisor is basically the
+efficient utilization of the resources and uh probably the
+isolation use case, uh, however,
+uh not many people have explored hypervisor uh for security in
+terms of uh you know how you can
+use hypervisor to build a really good security system. Uh,
+isolation is there but not the
+VMI uh that we’re gonna talk about. Okay, so um what the
+beauty of hypervisor is that it
+exposes an interface which is called uh you know the
+introspection interface, it’s
+also called washer machine introspection. What it does or
+uh it allows you to do is um you
+can monitor the whole system from the outside. Uh that’s
+really powerful and uh, we
+haven’t seen many people using it especially on the ARM um so
+you know, we very, very excited
+to start on it and it was a long, very hard journey because
+there’s not much out there-there
+like few projects and papers out there um, so, traditionally the
+anti virus we all know that it
+has a lot of issues it sucks, but um, mainly you know when the
+anagrams malware comes into the
+system uh the first thing uh it does, is basically check if
+there’s an agent inside or if
+some- somehow it’s being monitored. And um, uh if you’re
+sitting outside of the printing
+system you saw that very important problem automatically.
+You so basically you have that
+sophisticated invisibility. Apart from that uh not having
+anything inside the operating
+system also helps with the you know uh the different
+certifications because you’re
+not messing up with the device functionality. Imagine you know
+you’re securing a car
+infotainment and then you know certainly you know there’s a bug
+in your software which kind of
+messes up everything right so you don’t want that. Okay, so
+let’s get started, on the on the
+VMI um what is, what is VMI or what-what kind of interface
+hypervisor expose. Basically
+what you have is raw memory, and um you take the raw memory and
+you use some of the os specific
+knowledge to actually make sense out of it. For example, you
+should really know where kernel
+is doing what and um and then um you know you kind of like build
+your logic around it to really
+make sense out of it. For example, if you-if you uh take
+the raw memory and you know
+where the uh linux task list is stored in the memory you can go
+to those offsets and then you
+can start decoding and you know finally as you can see here you
+can uh decode the task list and
+traverse the task list from the rom memory. Uh, to give you an
+example um, for example if you
+have to read a Kernel symbol value from the rom memory, you
+know it looks like a simple
+thing if you are inside the operating system. However, from
+a VMI it’s a very complex uh
+process. So, what will happen is um, first of all you know, once
+you say hey you know, I- I want
+to read the val- value of this virtual address, first of all,
+vmi by the way we are using
+LibVMI um we highly recommend it’s an open source project, it
+kind of provides the basic
+functionality uh that you need and on top of that we build our
+own functionality. Some of the
+basic functionality might be like the you know I’ll explain
+you shortly like once this is
+done, for like the caching and-and some of those uh
+capabilities so uh we really
+recommend using LibVMI. So, what will happen let’s say if you
+have to read the value. Uh,
+you’ll get the virtual address, LibVMI will first go and check
+with the system map, uh to see
+you know where the virtual address is and then um, take
+that and then um, map it to the
+page directory. Um the page directory will be added uh to
+some of the bytes from the
+virtual address to map the page table and finally to the actual
+physical location in the memory.
+And then, it will come back and give that value back to the VMI
+application. So, that's the-
+that’s the general flow of uh you know can uh get the
+value-value out. Uh, also uh
+here you can see that once you go through this process you’re
+not gonna do that again for this
+particular uuuuhhhhh virtual address. That’s where again
+LibVMI comes it has a very
+efficient caching mechanism, you can do on your own also but you
+know, incase you want to wipe
+some of that work you can just simply use the LibVmi. Okay,
+another very important uh
+concept that is critical to you know what- what we’re going to
+show today as single stepping.
+Uh, because we’re going to show eventually how you can um get
+the system calls out, uh by
+staying outside of the operating system through VMI and the raw
+memory. So, I’m sure you have
+all used debuggers and single stepping in your own use cases
+including reversing, however uh,
+the-the-the-there are other uh single stepping and break point
+mechanism that I want to quickly
+touch on, the hardware breakpoints is basically um-um a
+really useful code that sits in
+the room uh so basically uh when the code is not in the ram you
+cannot overwrite the breakpoint
+instruction so what you do is um, you have these special
+registers provided by ARM and
+intel for example on intel it’s D02D3 um and you store-store uh
+locations uh memory location
+value in those registers and then when a program counter
+comes to that particular
+location or that instruction it just halts execution and then
+you can analyze the whole
+system. Uh another is the software breakpoints um you know
+it’s the most common one CPU
+assisted that we use in debuggers uh for example, you
+will set the trap flag in the e
+flags register and then you’ll uh- uh let the CPU do the work.
+Uh, once the breakpoint hits the
+cpu automatically do the single stepping. But, what really is
+single stepping uh you know when
+we say what happens in the back end? Uh, so in the back what
+happens there’s a special [audio
+drops] for example called entron uh when the breakpoint hits, you
+know you-you do the whole
+analysis however, in the back end that instruction uh the cpu
+makes sure that it also executes
+with original instruction and then move on and then move on so
+that’s very important. And now
+the third one is software breakpoints with no CPUS so
+we’re gonna use that uh, in our
+implementation and the reasons for that um that I will explain
+you once we are done with the
+basic concepts but ju-just keep that the concept the single
+stepping concept in your mind.
+Um apart from that uh in our implementation, as I said right
+you’re playing with the live raw
+memory so you really need to know how the kernel internals uh
+and how the kernel is you know
+organizing the memory how everything is uh working inside.
+So, you ha-you need to have that
+uh basic knowledge. So uh, we all know that um, from quite
+some time we now have the
+paging, the virtual addressing, um since two word six we have
+the real-real addressing mode
+ended um and then this is a depictal two level uh paging uh
+we also call it slat, second
+level address translation or you know the an-and it is
+implemented using the standing
+page table and the virtualization exten-uhhh
+extensions that the newer
+architectures provide nowadays. Um, so to quickly follow the
+flow uh like I was saying, for
+example if you are going to read a value this is how it looks
+like, so basically you take the
+first 10 bytes, uh added to the Cr3-Cr3 is a special register
+which stores the base of the
+page directly, and you add that um 10 bytes of the Cr3 and then
+uh it takes you to the base of
+the page table entry and there you can then depict the next 10
+bytes and then you add them to
+get to the right page table and finally you add the 12-uh 12
+bytes which are the off set into
+a specific memory page uh from which then you fetch the value.
+Okay, this is uh-uh this is
+another view of just what I-I just explained uh two levels of
+translation first, from uh
+virtual machine to the VM physical uh wh um VM virtual to
+VM physical address, and then
+from VM physical to machine physical. So basically you have
+this hardware on uh running
+right on top of the by the way we’re talking about the bare
+metal the type 1 hypervisor
+right so-so you have this uh hardware, the hypervisor sitting
+right on top of it and then you
+know there are there are like different domains of the VMs.
+Um, so the second level of
+translation is uh handled by a table called extended page
+tables and there’s a point of
+EPT uh, for example zen hypervisors stores that uh per
+diem and it is used to uh, do
+the translation. Uh, EPT there's something very interesting about
+EPT. So, what EPT as you guys
+can see what EPT is doing it is eventually giving you the value
+from the memory right. It-It
+points to that eventual physical location where the where the
+value is. And, uh the newer uh
+virtualization extensions uh um for example Intel and ARM uh
+they have um a way where you can
+store multiple EPT uh pointers uh per diem. Now that is very
+powerful because 1) you can uh
+each page table there are permissions right? So, you can
+assign different permissions to
+it and um that way you know for example you know if you assign,
+if you assign permission execute
+to one page and then rewrite to another page, you know, you can
+play with those permissions. Uh,
+and I’m gonna show you um later in our talk, uh some of the use
+cases uh but for now I think
+it’s very uh critical you know what we gonna do uh uh what we
+have implemented in our
+implementation. The second uh interesting fact about EPT is
+like you can as I said you can
+store more EPT pointers apart from uh partition what you can
+do is you can actually point a
+EPT to a different memory location. Now, what that means
+is basically for example if you
+are uh you have to translate one virtual address right? Uh you
+can play with that last level of
+translation, and then you know at one time, you are uh giving
+one value, the other time you
+are giving another values. Basically, you are using the
+same code, you are creating two
+different behaviors eh which is very powerful um, and there are
+many use cases for it and uh you
+can see the cosnippet and the sin where it stores and and the
+permission also. Uh yeah that’s
+the one I was talking about like for example um, second EPT is
+actually pointing to uh another
+uh memory location and uh I-I’ll also talk to some of the
+implementation details uh you
+know it’s it looks, it looks easy but it’s not that easy so
+for example you have to create
+um all of the pages in the memory yourself, uh what xen-
+xen hypervisor for example have
+two have API’s so uh but they’re not very well documented so you
+have to play with them and you
+create for example increased reservation as one that you can
+use to create pages. So, once
+you create the pages you have to maintain all the mappings, but
+you know xen provides the uh
+functionality to switch between different pointers. And um,
+another very uh aspect of this
+is like um you know uh this switching between different
+EPT’s or you can call them the
+memory views because essentially what you’re doing is you’re
+creating different views of-of
+the memory so you can present one view to one user and other
+view to other user and you know
+by user, user can be malware also. Um, the-the-the best part
+is um the VM exit, uh VM exit is
+a very uh expensive operation, uh what-what why VM exit means
+is like when uh you know you’re
+running your domain on top of hypervisor and certainly the
+control has to be transferred to
+the hypervisor. What that means is hypervisor has to st-store
+all of the virtual CPUs inside
+that domain, the contacts of all those virtual CPUs and then, get
+out and get take the give the
+control to the hypervisor. But, uh switching between these EPTs,
+there’s no VM exit so, it’s very
+fast and I-I will explain later like why performance is very
+critical to uh anything you’re
+doing especially building a protection system using VMI.
+>>So okay yeah so, once we
+understand the basics eh we started playing with an
+environment right. When you have
+a board to play with this whole implementation and in our case
+we didn’t have any specific
+board so we went to LinkedIN we used Google eh sitelinks you
+know sitelinks the FBGA graders
+and turns out that these guys has a pretty cool eh board eh
+which is eh MPSoc ZCU 102. The
+problem was that that board is $2,500 just the starter kit. So,
+we talked to those guys, we tell
+them hey you know what we have this product in mind eh Google
+sitelinks they use cheaper,
+ship-ship the board to our house and then eh with other playing
+with with the whole environment.
+So, this is the board, it’s just a pres a standard eh eh input
+and output so we have an SD card
+to put the root up fast we have ethernet, UART, is JTAG eh and
+we have a quad-core A53s that
+are the ARMS CPUs dual-core R5F so, this is the board that is
+very expensive but don’t worry
+the ehh when we’re presenting these, these can be used in in
+any other board. So, the first
+thing that we were learning guys because in in I am like in
+reverser you know exploiter guy
+this kind of board I never played with it but it’s very
+challenging because we are
+running same hypervisor in it and there is no implementation
+in this board with the VMI
+introspection on it so it was kind of hard for us because
+there is no support. So, we
+learned that there is a p-p para linux project which basically
+helps you to eh deploy the whole
+eh, eh information into the board so that you can put it up.
+It’s pretty cool, the only
+problem is that um, it works with a specific images. So we
+have our own xen hypervisor
+custom eh, deployment, so, it was a problem for us. That’s the
+first thing, second thing is
+para linux is for site links right? What if tomorrow we want
+to deploy the same environment
+in renesas, NXP, others, so, we don’t want to just tie to site
+links or regular stuff. So, then
+w-we went to Yocto you know many of you guys know Yocto really
+well- well in my case that’s
+like I don’t have any idea, i-i-it turns out pretty cool, eh
+the only problem was that the
+rootfs at the end was PC box related that was a pain in the
+a** for us because eh once we
+happy everything up and running, we really need python libraries
+to run our machine learning and
+stuff, and it was a pain to just compile a single library like
+tensorflow for example a machine
+learning. So, it was pretty cool, pretty easy to run but at
+the end of the day a PC box
+rootfs it was a-a pain for us. So we end up choosing
+Debootstrap, Debootstrap allows
+you to have a rootfs in this case ARM64 Debian based flavor,
+so you have EPT yet you can
+download all the libraries so it was the way for us to go better
+recommend it instead of the
+previous ones. Now, in the Dev environment guys, so, you don’t
+want to push everything on the
+board right because the board is like the production environment
+so you really want to have a
+test environment. So, in our case, eh w-we pick uh ch-schroot
+we saw wrapper for schroot it’s
+pretty cool because we have uber tool Intel x64 environment as
+you can see in the picture in
+-in the bottom. So, with this eh Intel based environment via
+schroot you can you know you eh
+using camo you can chroot into the environment, you can do all
+your testing install libraries
+connect to internet everything like you were in the board but
+once you test everything then
+you can jump into the board it pretty convenient for us. Eh
+now, let’s boot the board right
+so what do we need to boot the board? Xilinx casts in a
+specific eh debugger which is
+called Xilinx System Debugger client but it basically does it
+reads a tcl file that gives you
+that tcl file jus you guys to have an idea what basically it’s
+doing is gonna boot 4 different
+files, the PMUFW which is just to setup the p-the clock and the
+platform management on the
+board, then, the first uh stage bootloader is gonna initialize
+U-Boot and then U-Boot which is
+gonna allow us to boot the hypervisor in this case same
+hypervisor then the linux kernel
+and finally the rootfs, uh and the BI31 which is ARM trusted
+firmware. We didn’t play with
+these components, eh we just use them with the versions of
+silence and forgot to mention
+that if you combine versions eh it will never boot the board so
+we have a lot of pain eh trying
+to play with different version and it was not booting. So once
+you reach eh this initial state
+of JTAG you get into the U-Boot prompt and now let’s boot the
+board right? So the first thing
+is you know the data device tree blob, eh that’s where all the
+configuration from the board
+is-is located. So the first thing is the root eh location
+right? Where did you rootfs eh
+that you want to boot on in our case it’s a nasty card partition
+as you can see there then, the
+second thing is eh we have our same hypervisor just converted
+into U-Boot format with that
+common line and then you start booting up the assistant. You
+know this is that typical U-Boot
+eh command, so the first thing is U-Boot eh the xen.dtb which
+is the device tree blob in the
+specific eh location then you boot the eh eh linux kernel,
+that linux kernel you see the
+80,000 address, that address will be exactly the same address
+that you have in the DTB,
+otherwise, when it is booting up, it doesn’t it’s not going to
+find the linux kernel address on
+the board is not going to boot eh and then you load the second
+hypervisor and finally you run
+the program which is basically telling you okay so put the
+board in the address you know
+140 eh hundred thousand, which is eh the same hypervisor then
+the hyphen in the middle is
+telling that you need to grab the rootfs direct eh path from
+the DTB and finally you have a
+the xen.dtb with this eh we can boot it to the board. This ta-
+this sim uh specific eh steps
+guys for us eh it took us many days and months because it was a
+lot of issues putting the xen
+hypervisor eh another important point here guys is that those
+addresses that you see there
+loading, if you don’t have it enough space between them they
+are gonna overlap and then your
+board is gonna crash so suddenly we were just you know putting
+up, it was crashing and turns
+out that eh you need to have enough space what every single
+memory address bad there is no
+variation on it so you need to make sure that whatever the same
+hypervisor is load in the memory
+the linux kernel that has enough space so that your not overlap
+eh and you don’t you know
+you-you don’t get a kernel panic or or same hypervisor problem.
+>>okay, so let’s get the damn
+syscalls out um basically, um I know I mean it’s it’s it was a
+it was kind of um almost became
+a dream for us to see this ARM syscalls on the screen because
+we have been going back and
+forth we try different things we always get guards stuck because
+you know as I said it’s not very
+well documented and you know uh there are few research papers
+out there so we were like just
+trying different things playing with the memory and finally you
+know uh we figured out uh um we
+did our own implementation. So, a-a as you guys remember I was
+mentioning about why single
+stepping and you know this why single stepping is very
+important why you know we’ve
+been we-we’re gonna use the um known cpu assisted single
+stepping. Uh the reason is like
+uh since we were using the xen hypervisor, and xen hypervisor
+does not support single stepping
+on ARM so, we have to figure out our own way of doing what
+normally a CPU does. And uh, we
+found a-a very interesting paper online uh we talked to that guy
+also Sergei from Germany um so
+and then we reviewed some other techniques online and we finally
+uh decided to use this technique
+its its a very fascinat-uh fascinating one uh so remember
+EPT helps you create different
+views of the memory right? And so first, the first step is uh
+basically you create two views
+of the memory. By views I mean like um you just take the whole
+memory, take all the pages, you
+create the copy of those pages and then you know you have these
+two copies in your memory of
+those pages and then uh since xen hypervisor provide the
+support to have multiple EPTs so
+you point one EPT, you know let’s just call one your default
+view and the other the single
+stepping view so you have two EPTs now, uh, one is the default
+view, default view is the one
+where you know you’ll y-y-you’re gonna run by default when the
+system starts, that is the view
+where you’re gonna the control will be and the execution will
+happen. And then you have
+another view in the memory waiting uh if you want to switch
+to that one. So, we have these
+two views and uh I’m talking uh remember I now I’m talking in
+context of the- the syscalls.
+The goal is to start monitoring the ARM syscalls um or the
+operating system system calls on
+an ARM platform right? So, so think of it like okay you want
+to monitor a particular system
+call it, the code isn’t in the memory somewhere so you find the
+location of that mem uhhh, um uh
+th- that API uh in the memory so, you for the uh at the first
+instruction you put uh one break
+point. And on ARM its uh sorry. So on ARM, the break point is
+this D4000003, it’s also called
+SMC it’s a special instruction on Intel it’s n3 so you can use
+the same for Intel also. But,
+you don’t have to use the- the the swan for Intel just to
+mention that because uh xen
+actually supports uh single stepping on Intel so you can
+just use that one. Um, on the f,
+the first instruction uh you put one breakpoint in the default
+view. And then, um on the second
+instruction, you put another breakpoint but in the single
+stepping view. Now what will
+happen, uh, in the-the control is in the default view and uh
+you know you just uh once the
+first breakpoint hits, uh what you do is you do your analysis,
+you want to get the syscall you
+know you note down all the parameters what process call,
+the syscall, whatever analysis
+you want to do right? And then, you know, you switch the view,
+you switch the view and the
+control will go to the instruction 1 in the second
+view. Instruction 1 will get
+executed, and then the second breakpoint will hit. When the
+second breakpoint hits again you
+get the control, you’ll switch back to the default view and
+then the second instruction gets
+executed. So basically that’s how you single step uh on ARM if
+you’re using the xen hypervisor
+and not many hypervisor support ARM so xen is probably your best
+choice on or unless you want to
+build your own hypervisor from scratch, that is an option too.
+So, uh this techniques is i-i-is
+very fascinating and you know as I was saying this is one of the
+applications of the views that
+the underlying architecture uh provides to vir- the
+virtualization extensions so
+that’s how we- we single step uh on ARM in our implementation.
+And so, let’s take a look
+overall how do you now um as a detection or as a monitoring
+system using VMI, how do you
+monitor from the outside right? So using all the concept that we
+have uh so far shared right? So
+what you will do is uh uh first of all, you will um put a hook
+on any- every function, or every
+API uh in the memory that you want to really analyze r for
+example you might want to uh
+always analyze sleep, with malware you sleep a lot. Um, so
+the first step is to uh put that
+breakpoint, uh go to the memory location and put that
+instruction eh and in
+combination you have to register an event. Now, a good hypervisor
+always provides event mechanism
+right? So, you wanna you wanna monitor something it provides
+you an even mechanism and xen
+does the same. So you register your event and then you also
+register your call back. So,
+that’s the second most important because with the call back
+function that you’re going to
+register, what it does is you’re telling the hypervisor hey
+anytime my breakpoint hit you
+you know give me the control and execute this function. So, in
+this function you’re gonna do
+everything for example you’re gonna extract once the
+breakpoint hits, you’re gonna
+extract the parameter values of the function, you know the
+function name, process name, or
+whatever you want to do you do in this function. The single
+stepping functionality that I
+showed you uh in the previous slide, you will also do in this
+function. So, that’s the second
+uh most important step. Uh, the third step is obviously, you
+know you need to single step.
+Remember, so, if you don’t single step, what will happen?
+Uh, the breakpoint will hit, you
+don’t single step, the control will stay there, it will
+continue to execute the same
+instruction the system will get into a very unstable state and
+you know imagine you are
+protecting a car infotainment and then you’ll- you’ll crash
+the system. It’s very important
+to make sure you know you properly single step.
+And,finally, you know once
+you’re done monitoring uh make sure you remove all your hooks
+from the memory and uh you know
+you- you know you do a clean exit. So, that’s how you
+basically um do uh the syscall
+monitoring through VMI and uh on ARM especially it was
+challenging because you know as
+I mentioned there was no single stepping, and there was no
+documentation so it took us some
+time but you know finally we really happy that you know we
+achieved this. So, let me- let
+me now show you what looks like uh our moment of uh happiness
+when we first saw this so, I
+hope it. Okay so how do I show >>eh, hit escape and uh >>okay
+>>escape, escape the
+presentation. Yep, yep. >>and then yeah so this is our xilinx
+board. Uh we have our
+introspection framew- we call it Numen introspection framework
+and um uh yeah these are how the
+syscall looks like you know the process name and everything uh
+and all see you know we’re
+typing, and then you see all the syscalls being lo-logged on the
+upper right and then I type top
+and then you can see the process name being tracked. This is
+happening, everything happening
+from the raw memory outside of the operating system. So that’s
+pretty cool. And now finally you
+know we do-we do a sleep and then you’re gonna see the sleep
+being shown and not only shown
+because we have other components uh it-it’s also being monitored
+as highlighted here so uh not
+only we get the syscalls out we also uh send it to our machine
+learning monitor uh to monitor
+it. So, that was our um took us quite some time to achieve that
+one and yeah that was the-
+>>okay guys so let’s get to the fun part because eh uh after
+these whole efforts that you can
+see now we know the basics, we know how to ARM uh use VMI to
+introspect in machine learning
+and it’s already into the machine and now we -we are able
+to have the board everything,
+right? Now, let’s see what we can do eh from attacks
+perspective and detection with
+this components eh in the board right? So, the first approach is
+the typical malware eh coming
+into a car into a medical device right? Can we tackle that
+problem from VMI? So, if you
+have been working on uh anti-virus companies or sandbox
+related companies it’s the
+typical way to do it is very common but keep in mind here
+guys we are out of the box we
+don’t have an agent inside a-and this is totally
+different-different piece. So,
+eh let’s see the first example. The first example eh we have
+a-a-a malware running. So what
+we do, in this specific scenario is u- we’re gonna use machine
+learning in order to detect
+attacks. So what we do is we get let’s say the infotainment from
+the car and we profile it, get
+all the processes running, we feed it into-into our
+autoencoder which is newer
+network eh based approach and what it’s gonna do it’s gonna
+learn how a healthy sys how a
+healthy system looks like, all the processes all the different
+syscalls being executed so that
+once it learns that eh when we when it is running a process in
+the infotainment it’s gonna grab
+that profile which is in the left side, the actual profile
+that is going to be fit into the
+autoencoder and then keep the autoencoder is going to create a
+new profile based on his
+learning experience. Once it generated if the similarity
+between the reconstructed
+profile and the and and the actual profile that was running
+in the in the in the device
+is-is it becomes really low error which means it’s very
+similar is when we know we are
+dealing with a benign process. But what-what happened when we
+have a malicious process. So,
+the same process happens, we have this malicious process, we
+profile it we find the actual
+profile fit it into the autoencoder, the autoencoder is
+going to create his own
+construction of the profile and he’s going to realize that the
+sequence and the syscalls we use
+is totally off is the error label really really high and
+that way it’s easy for us when
+we have machine learning to detect that isn’t normally
+inside the device. That’s uh pre
+eh eh step one. Second approach guys, let’s say that we have a
+an exploit going on right? In
+the left side you can see an application running and the list
+of all the syscalls going on
+there. So, you are gonna see always the way it executes. But
+what happen if suddenly that
+application is compromised? So, you if you see in the right side
+a- a- a at the end in the-in the
+red uh eh bo- in the red square eh you will see that comparing
+the two applications the benign
+one without being exploited is gonna exit the program, but when
+you look at the second one it’s
+gonna it’s gonna call exit b. Why exit b? Obviously because
+it’s gaining a shell. So in this
+case we don’t ne- we don’t really need machine learning to
+realize that the flow has been
+affected right? We call it sequence base, people call it
+control flow- same S-H- S-H-*-T
+so at the end of the day eh eh you just need to measure the
+sequence base and realize if
+there is any alteration and in this case one exit properly and
+the second one called exit b so
+it it is deleted. Eh, now let’s talk about the delay. Eh, you-
+if you guys are familiar with
+anti virus in eh in sandboxes right in one of the techniques
+of-of the EPTs for example is
+through the late execution, so that it executes and then it’s
+gonna wait for execution so that
+an anti-virus take a decision in milliseconds to know if is
+malicious or not right? It
+doesn’t it cannot be a scanning the process all the time so by
+delayed execution, those engines
+are gonna give up and they are gonna stop monitoring it and
+that’s a way to bypass it. So,
+that scenario is a pain always in eh in-in-in the enterprise
+with anti-virus. In our case,
+it’s the same issue but how we can tackle it eh compared with
+them so, in our case for example
+we have this pretty simple delay in ARM eh uh and it’s just a
+simple loop that's gonna you
+know delay execution for 8 seconds, 8 minutes and then
+after that, it’s gonna trigger
+the shell. If you remember the previous slide, in that one we
+have all the execution at the
+end we have the exit b to be called in this case what
+happened is that the exit b is
+never going to be called and therefore, we’re not gonna see
+any anomaly. So that’s a
+pre-pretty challenging cha-challenge that people have
+so, what the people does for
+example in the xen boxes they hook all this asleep or non
+asleep or those syscalls and
+once they see the syscall triggering they say that they
+say that asleep for 5 minutes
+they will change a drone time 5 minutes to zero so that they
+force the malware to execute
+right, that’s one technique but that’s a cat and mouse game
+because today it's asleep
+tomorrow it’s not asleep and there’s gonna be multiple
+techniques all the time so you
+need to keep updating these techniques so that anytime there
+is new way to bypass it, you
+need to update it. I-in this case for example we don’t even
+use a sleep we don’t use a
+syscall so in this case it’s just a code that’s gonna delay
+execution so you don’t, you
+cannot rely on hook in syscall. So, eh this eh challenge for
+everyone. In our case, eh we
+tackle it in a different way eh one way is you don’t wanna eh
+monitor these executions all the
+time right? We were talking about we are in a car we don’t
+want to delay execution can you
+imagine the GPS just slowing down or any application in the
+car so we need to decide quickly
+but if this application is running and it’s a sleeping, we
+can not wait forever. So, we
+have a way to attack the process so that when the process stop
+running so then it goes to
+sleep, we stop executing and then we monitor it in a way that
+eh we cannot eh kn-know when
+the-the malware wakes up. Eh this is our way to do it via
+profile based approach that
+Ali’s gonna explain in a second but from VMI perspective eh same
+challenge but we don’t wanna
+follow the syscall implementation in order to
+understand when they isolate in
+our case we tag it the process we just you are sleeping we
+sleep we don’t do any
+performance issue but as soon as you wake up we wake up. So
+that’s the profile based police
+that we’re gonna explain in a second. Now, Ali was explaining
+us that his technique right eh
+I’m sorry the technique that he was explaining to hook into the
+memory so he was telling us that
+you know you need to put a D40003 SMC hook right? So,
+that’s pretty cool eh uh but
+it’s pretty easy to bypass so, uh I mean eh if I have a kernel
+module I can just go to the
+syscall grab the first 4 bytes and then get the-the-the SMC
+there and for me it’s a malware
+I’m gonna be able to detect right away that I’m being
+monitored right? Yeah a-in that
+moment I’m gonna say you know what man I have this SMC hook
+I’m being monitored so I’m not
+going to execute anything I’m gonna wipe the system or even
+worse I can override if-if the
+memory eh the page allow me I can override that SMC hook eh to
+put it in the-in the original
+state and then I can just totally bypass the hooks in the
+system and then this code
+technique being showed by Ali is totally screwed because it’s
+pretty easy to identify so I
+don’t know how come Ali come up with this technique, but
+anyways. >>ok, okay so, let me
+think how we can uh answer Dan. So, you remember the views
+right? And I keep saying the
+views are very powerful so here’s another use case and
+we’ll we’ll see how we can um
+answer Dan’s question. Um, in this case what we are doing is
+again we’re creating uh you know
+two views actually you know you don’t need to create um um the
+whole the whole memory pages
+what-what we’re essentially doing is we are um assigning
+different permissions to
+different eh EPT’s. So, we have two EPT’s, uh one is going to be
+the execute only the other is
+going to be the read/write only. Now, what will happen? Well,
+let’s say by default we are in
+the execute only view right and the malware comes and tries to
+read the hooks that we have
+placed in the memory. Um, since the page is execute only there
+will be an exception the control
+will be transferred to me and I will see that the malware is
+trying to be smart, what I will
+do is I will switch the view uh which is the clean view by the
+way there is no hooks in ho-hook
+in a this view. So that’s th- that’s the trick. So, I have
+this view where there’s no hook.
+I’ll-I’ll switch the view, I’ll let the malware read the memory
+pages in this view and then eh
+it’s read request will be satisfied. The malware will not
+know you know that there are any
+hooks or it’s being monitored. So, that’s how and then once
+the-the that read request is
+done uh we’ll switch back to the execute view. So, you saw the
+previous application where you
+know we created these views um to do the single stepping. Now
+you saw another one where you
+know we use the same capabilities that you know the
+Intel and the ARM provides to um
+bypass uh or train you know malware detecting us as we
+bypass that. >>Okay guys so
+let’s see another eh other examples. Eh em in this case we
+have an anti VMM you know
+hypervisors are known to be virtual machine monitors it’s
+another name. So, what we have
+here is eh I’m again I’m a malware right. So, I wanna know
+if I’m being monitored if I’m
+I-I’m being monitored so I’m gonna stop at security. So, in
+this case, eh see the square
+switch CPUs as we explain that has a cost, has a time in-in
+terms of performance so what a
+malware can do a-and we use to approve concept here is we
+measure as a baseline
+with-without having the page view switching, we have special
+time in this case it’s 38
+nanoseconds and then, once we do that we then measure the time it
+takes to write into the memory
+and you will see in that red eh color, that the time is highly
+significant so that you will
+realize that eh the time to write into memory is totally
+different with your baseline and
+this is another technique that we can use to detect that we’re
+being monitored just my
+measuring the time that it takes to write into memory we can
+realize it’s taking too much
+time that the baseline a-and this is another way to-to find a
+-a way to bypass eh to
+understand we are being monitored. Now, eh let’s talk
+about process killing guys so,
+when we when we kill a process right eh we all know how it
+works right? Eh, if you want
+implement it on-on code you will just need to call the syscall
+kill and you pass the PID and
+the way you want to kill it right? That’s not if you want to
+force it so that’s the way it
+works normally in a user mode scenario and we all know. But,
+what happens here is eh what
+happen if we want to implement like simple killing process in
+VMI? Keep in mind that we don’t
+have any agent inside so, people o-other companies what eh what
+they do is they just drop an
+agent inside, they code kill in the user mode and then you
+execute the process. But in our
+case guys we don’t have an agent inside an-and we don’t wanna
+have an agent inside we want to
+keep being out of the box. How a simple kill process can be done
+from VMI? So, we have a way to
+do it here it doesn’t need to be the perfect solution the idea
+here is that you guys can see
+the challenge when you wanna just kill a simple process it’s
+very easy to do but from the
+hypervisor. So, what we do is let’s say that we want to kill
+the process id 300. So, what we
+do in the kernel because this code VMI guys is being inside
+the kernel we are not using user
+mode syscalls because it’s to hi-to consuming it’s a lot of
+performance issues so we are
+just hooking in the kernel. So when these 300 processes running
+what we’re gonna do from VMI is
+we-we’re gonna monitor all the syscalls so when the syscalls
+come in from the process, what
+we’re gonna do is w-we’re gonna mess with the stack and that
+i-information that you see in
+the green, is the fullest stacked dumped for n- for al-
+for one syscall. So, what we do
+is you know there is something that is called a saved user
+state registers so when you
+transfer from user mode to kernel mode, those registers in
+user mode are stored in the
+kernel so that when the kernel resumes execution in user mode
+those registers are used again
+right? So, what we do in kernel is that we get that stack
+content, we get those same
+registers which are not being used by the kernel and we just
+modify them. What-what's gonna
+happen guys is that when the syscalls come back into the user
+mode since those registers are
+totally modified, it’s gonna cause an exception and it’s
+gonna exit the process. You can
+see it’s totally a different way, it-it’s not a traditional
+one but t-taking advantage of
+VMI we are able to mess up with the stack then force the process
+to kill. Important to mention
+that eh it’s not easy to do because eh in this example you
+see the yellow box eh if you
+mess with any kernel related information which is in the
+lower addresses you’re gonna get
+a crash in the- in the device. You wanna make sure that you are
+really eh overriding only eh the
+user mode eh erase their information. So, we learn that
+from experience and then we come
+up with these uh specific offset that is calculated dynamically
+that we always override only eh
+user mode registers a-and the way it works guys, is that
+everytime we get a we say to to
+the device hey kill PID 300 it’s gonna grab all the syscalls,
+everytime we grab it it’s gonna
+mess up with the stack sometimes in the first syscall it gra-
+it-it-it get the exception and
+kills it, sometimes in the second and third one so sometime
+it-it sometimes needs to take
+like 5 or 7 syscalls to be code in order to in order to be
+killed. But, this simple example
+guys as I said is totally different beast as you can see.
+It’s not it’s not easy to do it
+a-at the VMI if you want to be totally a in this so let’s see a
+quick example of-of-of eh how we
+kill it eh in-in-in um in the device. So, here we have our our
+eh system eh so what we’re gonna
+do guy eh guys is in the upper left eh we’re gonna run a simple
+like malware mirror right which
+is a very common one in the mirai we have our inspector
+monitoring it here is Mirai were
+gonna execute it as soon as we execute it mi-mirai deletes
+itself and expand the busybox
+process eh pretending to be normal, an-and using the 336
+pid. So, let’s go back to the
+virtual machine that we’re monitoring we search for that
+process 336 and we can see that
+it is there running right? 336 is there, we click on it and
+then we can see that the pc box
+is-is showing up right? There is pcbox now, let’s try to kill it
+from VMI so we go to our eh
+front end, we go and try to find the 336 process we find it there
+and then we click on kill
+button. That’s gonna be from VMI sending the a-a signal to kill
+it, so then we go back to the VM
+and send for the mirai which is gone already you know it is up
+here a-as we said and now let’s
+look for the 336 and you can see that it is totally killed. Eh,
+this is totally ummm eh clean we
+don’t crash the system and this way to do it which is not the
+best way uh it works for us
+a-a-and that way we are able to kill from VMI perspective.
+>>okay, okay, so, so um just
+want to quickly mention that you know once you get hold of VMI
+once you understand it, uh it’s
+pretty cool and you can do a lot of other things uh, other that
+it’s very powerful. So, um one
+of the things that we did additional in addition to
+detection is the policy. So, not
+only um you can do the detection with VMI but you can also
+implement policies. Again, not
+putting anything inside the operating system and still
+maintain these policies. One
+other example that I want to quickly share with you is um a
+lot of uh infotainment or any
+IOT device, for example medical device there are certain
+processes very limited which are
+responsible for going out to the internet. So, what you can do is
+you can you know the task list
+that I showed you, you can continuously monitor that from
+the outside and and since socket
+is a special file you can see if there is another uh socket being
+opened. That might be slow
+because your actively traversing uh alternatively what you can do
+is you can hook a connect or a-a
+network API. And then you know in events that API gets called
+you’ll see if this process is
+allowed to communicate outside or not. So here’s you know just
+a quick view of um how it um it
+looks like in our system. Um, like Dan was mentioning uh
+remediation is another topic
+that we are tackling aspect once we detect something we need to
+kill, it’s not always easy to
+kill from outside we always have the option to put an agent
+inside, but we don’t want to do
+that we want to be completely out of the box. So, you want to
+try I mean the matter that we
+showed you is not one of the I mean we-we figured that out on
+our own but we-we have another
+one you know that-that’s that we exploring right now so you can
+try different things you can
+make the parameters null and try-try tho- some of those
+things. Quickly want to share
+some of the recommendations with you guys for an end to end
+system let’s say you’re working
+with some other hypervisor, like in our case you know xen is just
+the start we are already working
+with some you know another hypervisor. Um, and that’s a
+custom one. So, you really need
+to have good way of putting the breakpoints, efficient single
+stepping mechanism, uh the event
+mechanism now we didn’t talk too much about event mechanism
+because xen provides a really
+good event mechanism if you’re working with some other
+hypervisor you wanna make sure
+you know you have a good event mechanism. Anything that you
+translate using those page
+pa-pa-page tables or the page walk uh you know you want to
+make sure uh you cache those and
+in efficient hash tables. Um, multiple views is awesome as you
+can see, I mean we have few
+other use cases which have patent pending we cannot talk
+about it. Uh we can mind views
+uh you know with other techniques uh to really, really
+improve the performance and VMI-
+VMI monitoring system performance is the key. And,
+finally the permission
+management. Um, finally guys we are uh releasing some tools uh
+for you guys to play with um you
+can see the-the dropbox you can go and check them out so we have
+the ARM and Intel VMI monitoring
+tools that you know you can play with um uh we have all the files
+that we have used to you know
+boot up the xilinx board and finally we have the one malware
+ARM64 based malware that you can
+use to do and and do in scenario. So do check that out
+an and um you know play with it.
+Uh, okay so finally the-the takeaways. Uh, in today's world
+of advanced malware we really
+need to make sure you know we make the hypervisor smart.
+Hypervisor is everywhere so you
+know you want to make sure you know you you make it smart and
+you know eh agentless is the way
+to go, because we know that you know anytime you have an agent
+inside it-it’s a it’s a losing
+game. ARM syscall monitoring obviously was a great
+achievement for us but it’s just
+a start. I mean, we there’s now there’s a lot we can do so don’t
+just stop at the you know
+syscall monitoring you know think of new use cases and you
+know especially switching
+between views is very powerful so you can also think of new use
+cases around that. And finally,
+performance is the key. We have a patent pending uh numan
+adaptive uh monitoring and then
+we-we-we use that um in our system we cannot talk about it
+right now we need another talk
+for that. Okay, finally I really want to thank um Saqib, Matt,
+Stefano, Waleed I don’t know if
+you guys are here uh but still these guys really helped us
+along uh uh our journey and it
+wouldn’t have been possible what we achieved without these guys.
+Thank you guys, thank you
+[applause]

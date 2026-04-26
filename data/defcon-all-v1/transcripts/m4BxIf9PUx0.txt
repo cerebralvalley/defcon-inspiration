@@ -1,0 +1,824 @@
+>>So we’re on our next talk. How
+many people here have uh used
+Apple Pay? Uh. So first time I used Apple Pay was actually on
+an air compressor at a at a gas
+station. Who knew that that was gonna be at the cutting edge of
+technology in mobile payments.
+Huh? Um, then I kept using it in in person, it was like, I was
+like uh that’s pretty cool. Then
+I knew that - I- knew it was on the web and that I we- had the
+opportunity to ge- uh order some
+coffee as you do off the internet. You know cut out the
+middle man, ship direct to me.
+Um and I’m sitting there in bed and I was like Apple Pay uh
+never used this on the web, how
+does this work? Badoop! And it’s like it’s done! Shipping
+information’s preloaded, this is
+magic. Then I started being like, I would rather use Apple
+Pay then then buy from Amazon.
+Um, so much like all things that are magic, we come to DefCon to
+have our hopes and dreams
+dashed. [applause] So. Let’s hear about Apple Pay is a
+severely broken. Probably.
+Hopefully not compromising your credit card information. Let’s
+give our speaker a big round of
+applause. [applause] Good time man. >>Thank you. Alright. So
+I’m going to lay something on
+the table right now. This talk is about software architecture
+and I’m not apologizing for it.
+Now, you may be wondering. How in the world did this guy get in
+here? Software talks are boring.
+And I would kind of agree with you. I’ve been to a lot of them.
+I’ve been a software engineer
+myself. And they can be very boring. Architecture talks can
+be especially boring. But most
+of those are on the positive side. You build something. It
+scales. It makes the client a
+lot of money. So now you’re an expert. But I’m going to go on
+the negative side. This is a ha-
+hacker convention after all. Where does software architecture
+go horribly wrong? Obviously
+when it scales uh where it scatters vulnerabilities across
+the web. So. So first about me.
+A bit about me. Uh I have a math uh background in math. Been a
+web developer for awhile. Uh
+then I get started with bug bounties and that shifted me a
+bit towards security. And now at
+PKC I’ve been doing a lot of security work for clients. We’re
+located in Huntington Beach
+about a 4 hour drive away from here. You can visit us at pkc
+dot io. And now for an overview
+of the talk. First I’ll go over a couple of demos. There are so,
+sorry. First I’ll go over a
+couple of terms. Uh combined for uh which we’ll later combine for
+my criticism of Apple Pay. Then
+I’ll do some demos. The focus is on finding a large number of
+easy to exploit bugs. So the
+demos will be quick and pre-recorded. These demos are
+all against my own
+re-deployments of open source stuff that has already been
+fixed. I won’t be attacking any
+live e-commerce systems. Uh since most of my disclosures to
+those are still private. Uh,
+lastly I’ll have some general principles for designing better
+APIs. I’m going to go pretty
+hard here on an architectural decision made by Apple. In
+discussing the security of
+software architecture people tend to bring up vague
+principles and notions of whose
+responsible for what. But I’m going to go back myself up with
+concrete examples. Better yet,
+these examples should be educational if you want to start
+testing SSRF yourself. The
+payloads are all pretty easy and a lot of them you can find on
+the web. Um, so this should be a
+great expository um place to start. So. On to definitions. So
+there’s this existing concept of
+a class break. It’s the idea that software tends to be
+vulnerable in several places at
+once. Past research has focused on cases where you may have one
+single weak piece of code, say
+Heartbleed or SQL injection on a CMS plugin. And then when that
+vulnerability gets found,
+there’s this huge rush again to ensure its patched. Because it's
+broken in all these different
+places at once. You could frame a lot of the talks at this
+conference as class breaks.
+Currently there’s a lot of tooling to help companies stay
+on top of this. But there’s
+another level that I’ve seen a lot of this year. It’s not new,
+but it’s becoming more common. A
+company will create an API respect of this top level that
+isn’t itself vulnerable but in
+someway induces other people to we- write weak code. Some
+familiar examples of this might
+be the JWT none algorithm or problems in sample
+implementations. If you’re
+looking for sheer volum- volume vulnerabilities, looking at this
+top level can be a great place
+to start. I couldn’t find an existing general term for this
+top level, so I’m going to call
+it inductive weakness. And here’s the definition. It’s a
+design flaw that encourages
+multiple parties to write vulnerable code with a similar
+exploit pattern across differing
+software stacks. For example, we might say that an API induces
+SSRF vulnerabilities or that an
+API has an inductive SSRF weakness. This is wordy and
+might not seem entirely
+justified now, but it should make more sense once we get onto
+the demos. And now for a
+refresher of the other term. It’s been around for awhile and
+stands for server side request
+forgery. A lot of people tend to request this with CSRF or client
+side request forgery. Um, but in
+actuality these the way that you exploit these things are very
+very different, so the naming
+similarity is kind of unfortunate. SSRF is a bit of a
+hot topic right now, because
+it's a lot easier to exploit than it used to be. Um, in the
+past there have been some really
+really interesting talks on SSRF. Um, we’ll get I’ll
+reference those later um but it
+is a really interesting area. But for now we have some really
+easy payloads we’ll see. Towards
+the end of this section. Alright. So. say there’s an
+attacker on the top left, wants
+to get to an internal facing server on the bottom right. But
+the attacker doesn’t have direct
+access, they can only go through this public facing server
+displayed in the middle. So the
+attacker then tries to f- find some weakness in that public
+facing server. In the past
+people have taken the a URL and put it somewhere like a host
+header. Or in the body of some
+XML in order to get this server to hit the desired location. The
+goal is to really uh request the
+server in the middle as if it were a proxy. Even though it’s
+not trying to be. Typically we
+o- we only call it SSRF if the attacker can use the proxy like
+behavior to access or harm
+something internal. Even if it's not true SSRF and you can only
+proxy through, sometimes it does
+make sense to report to companies. Um, although then you
+probably wouldn’t expect a
+bounty. Um. And then, so if you can get back stuff back. It’s
+easier to exploit and call it
+transparent SSRF. Uh otherwise its called blind SSRF. So. What
+can you do with this pattern?
+Turns out it's quite powerful right now because of the
+defaults in popular cloud
+environments. This has been the most fruitful SSRF approach for
+me so far. Google Cloud and AWS
+both expose credentials by default on 169 dot 254 dot 169
+dot 254. Depending on the
+permissions assigned to this instance, this token can often
+access private storage buckets
+or other stuff. This is the easiest sort of approach I’ve
+been talking about. So there’s
+been even some cred- pretty credible speculation that the
+recent that the AWS equivalent
+of this endpoint, was the first step that enabled the recent
+Capital One breach. But I never
+go that far. I just stop here and report it. But you can
+imagine that if you can find a
+lot of cases where you might be able to proxy through a server.
+Some of those are going to to be
+AWS and g- or GCP boxes. And a lot of those are going to have
+the default permissions. The
+other thing to note is that on this, on screen here you see a
+curl command. That in itself
+does not demonstrate an SSRF vulnerability. Because I’m
+already inside the box in this
+case. It’s just demonstrative. It’s when you can externally
+tell the server to hit the URL
+and give you back the token that it becomes SSRF. also, to keep
+the naming straight this slide
+is also not an inductive weakness. AWS and GCP aren’t
+causing people to write weak
+code, they’re just uh widening the consequences if people do.
+What this slide does demonstrate
+is that if you wanted to SSRF on someone using AWS or GPC right
+now, you have a very easy
+payload to start with. So what are some easy things, other easy
+things to try with SSRF. People
+have already been criticising AWS and Google Cloud a lot for
+providing the gooey center you
+saw in the previous slide. There’s even been some
+speculation that er some rumors
+that AWS is in the process of uh hardening this up in response to
+the recent Capital One breach.
+So I’m not going to dwell on this too much. File URL- no-
+oops nope. File URLs are another
+interesting thing to try especially on older secs. You
+may be very familiar with these
+uh from CTFs and stuff like that. The other thing
+interesting thing to try is that
+if you can proxy a few get requests, you can do reflected
+XSS. You just have to point to a
+URL with some mostly html and Javascript. Though then its
+technically not SSRF because the
+attack scenario is different. However, if your goal is to
+collect a bug bounty, this is a
+great thing to keep in mind if you’re hitting a dead end.
+Trying to hit internal servers.
+Because reflected XSS usually is considered within the scope of
+bug bounties. But what if you
+want to dig deeper? This is has been, there’s been a lot of past
+work on cross protocol attacks
+via SSRF. Gopher URLs are interesting because you can
+inject a wide range of
+characters. Uh in that will eventually go in the TCP string.
+So you have a lot of room with
+interacting with other- other protocols like SMTP. There are a
+lot of different ways to get
+there though. Sometimes it might be necessary to setup a server,
+uh that redirects the protocol
+you want. Other times you might just go with an http URL and
+exploit a bug on the URL
+processor. Probably the coolest work on this is the Orange Site
+Talk, A New Era of SSRF.
+However, libraries are getting stricter and there’s a lot of
+easy stuff has been fixed. This
+is a really fun area of research though. AndI expect there will
+be additional chains discovered
+in the future. Alright. And now I’ll combine these two terms.
+Alright. But before diving in,
+it’s important to note that Apple Pay is composed of three
+different technologies under one
+brand. You may be familiar with the Buy With Apple Pay button
+which appears on both in app and
+Apple Pay web. There’s also the upcoming Apple Pay card. But I
+have no idea where that fits in
+fits into all of this. I am only criticizing Apple Pay web, this
+has some problematic
+requirements for merchants. So. Say you have an online story,
+within the nomenclature, we
+would call you a merchant. So what does your website need to
+do to support Apple Pay web.
+When the user first clicks that Apple, Buy With Apple Pay
+button, Safari generates a
+validation URL, which is on 1 of about 30 Apple dot com sub
+domains. It’s really strange. Uh
+then in your client side Javascript, you have to send the
+validation URL to your backen.
+Then your server needs to grab a session, a merchant session from
+that validation URL and return
+to the client. This is all a bit wordy though and it's much
+better as a diagram. Luckily I
+already have one. So this should look familiar. Following the
+typical flow as a merchant, your
+server there in the middle, would take in that URL to know
+which uh which Apple server to
+connect to and grab a merchant section. But depending on your
+infrastructure, if you
+implemented in the way Apple originally documented, this was
+a really dangerous functionality
+to add. The endpoint is ideal for an attacker who wants to do
+SSRF and especially transparent
+SSRF. Because the validation URL is user supplied. They’re
+basically doing load balancing
+in the user’s browser. I’ve asked Apple for some
+justification of this
+requirement and after several months, I still have no idea why
+this is there. In the original
+W- www cd talk, there’s some vague mention of handling the
+case where a merchant is uh
+compromised. Um, but that doesn’t explain why they allow
+the client to choose between
+validation URLs instead of just having one. Um and ultimately
+they’re providing a whole new
+way for hackers to compromise merchants. Google Pay certainly
+doesn’t do this. Some merchants
+are safe for one reason or another, but we’ll get to
+mitigations later. Right now
+it’s time for a demo. Alright. So these demos are not gonna be
+deep attack chains, but besides
+demonstrating breadth of attack surface, it should be
+eliminiating if you’re
+interested in testing SSRF yourself. Just please, if you
+try this at home, only try it at
+sites if- where you have permission. And report what you
+find. Don’t go snooping around
+private storage buckets. Alright. So the first demo is
+against a Google Chrome Labs
+project that was deployed publically via App Engine, but
+not in a production environment.
+I don’t point this out to shame Google or the developer, instead
+I want to demonstrate that even
+talented, qualified people working on modern stacks were
+affected by this design flaw in
+Apple Pay. Alright. Here we go. Ok, we’ll just go with that. Ok.
+So. Here’s my own deployment of
+this project. So we can see what I did against Google’s
+deployment. As you can see it
+has a Buy with Apple Pay button its getting an error because my
+deployment isn’t fully
+configured, but our attack will still work. If we plug it we can
+see re- an a request going out
+to an endpoint called vallidate. It’ll pop up there in red.
+That’s the endpoint I was
+talking about earlier. Normally you might attack this with
+something like burp or MITM
+proxy, but I’m going to go old school with just curl. So. First
+we clean up clean up some
+headers. Then we modify the validation URL so we can refind
+different values. So. First I’m
+gonna try to hit example dot come to see if we can proxy
+through the input I’m hitting.
+It’s gonna take another try. Um. So yeah, just proxying out to
+example dot come, again that’s
+not SSRF but it is a useful first step in testing this
+stuff. Cause now we’re free to
+try different payloads. Cause we know that we have that proxy
+like behavior. So. Let’s try to
+hit the instance by data endpoint. And this is going to
+be yep. Oh. Yeah. So this is
+promising. Well looks like we’re getting through on the Google
+Cloud box. And then by feeding
+in metadata dot google internal we confirm that that’s the case.
+And from here’s it’s just a
+matter of browsing around directories and seeing what
+works. For whatever easy slash
+vbeta1 is less picky about headers than slash v1, I have no
+idea why. But we can keep
+browsing. And now we’re in the directory of the gui center. We
+can see what permissions this
+box has access to. And Even grab a token. This token is long
+expired by now. But don’t worry.
+Er- that for some reason I put a black box on part of it. Um. And
+now onto the next demo. So for
+the next demo we’ll be attacking my own deployment of a page that
+used to be on webkit dot org.
+Because its open source. The issue is fixed, but I deployed
+the vulnerable version from a
+few months ago. On w k dot jmaddox dot com for the purposes
+of this demo. Don’t worry
+though, this demo is offline by now. Importantly, just like the
+previous demo, the code on
+webkit dot org was written by a well qualified developer at a
+large tech company. This may
+even be more convincing because it demonstrates that even
+developers at Apple were not
+immune. In the original eh, du- in the original POC I sent
+Apple, I described an ADBS
+token. However, since I have this deployed on Google Cloud,
+the approach will be a little
+bit different. So we’ll get a chance to see a little bit
+different payload. Alright. Ok.
+So I love this art. But this button here looks promising too.
+Um. Oops. Hit pause. So yeah,
+here you can see my own deployment of the code that used
+to be on webkit dot org. Again I
+like the art, but the button here also looks promising. It
+turns out we can see a merchant
+evaluation request happening here. If we click it again. It’s
+going to go out to this tiny uh
+tiny hex cer- merchant validation dot php. It’s
+different code um, but because
+of the requirements imposed by Apple, we can repeat the same
+attack. Alright so we’re gonna
+go through the same approach. Change up the validation URL. Uh
+then cleanup some headers. Curl
+will automatically append the content length better so we can
+just uh not worry about that. So
+let’s go through the same process. We can try to hit
+instance metadata. But we won’t
+have any luck because the request methods aren’t lining up
+in our favor. Um, but we can see
+like we can we can get tra- taffic out and through example
+dot com so. So from here it’s
+just a matter of trying out different payloads. But this is
+a classic php app. So just the
+classic file URLs will work. Alright. So this is a fairly
+deep seeded arch- deeply seeded
+architectural problem and I reported it to Apple back in
+February. But what has Apple
+done to mitigate this? So far, just documentation changes.
+Importantly the documentation
+used to pretty much walk you through the process of adding a
+vulnerability to your website.
+Now the documentation has this little warning docs. They seem
+really optimistic about how many
+developers ac- actually read those. However, if you do have
+any happen across this warning
+boxes and read them carefully your uh the instructions are now
+valid. But their existing
+clients, I can’t imagine too many developers are constantly
+visiting the documentation to
+check what warning d- warnings were added. And here’s the
+disclosure timeline. There’s not
+much here, the main thing is that I reported this back to
+Apple button in February and
+haven’t seen any meaningful architectural changes. In my
+original proposal, I asked for
+Apple to deprecate the current API and phase in a new one that
+didn’t have these problems. But
+then they tricked me into a discussion on that. They just
+updated documentation and
+removed their bad example code. We’ll get back to this later.
+But for now, how would you
+mitigate this? My favorite mitigation so far has been to
+just remove support for Apple
+Pay entirely. [laughter] This might not work for everyone
+though. For everyone else, it’s
+important to manually parse the validation URL and check it
+against Apple’s list. It’s kind
+of ugly to copy and past 30 domains into some config file,
+but that’s pretty much what you
+have to do. A couple of payment providers actually do this out
+of the box though. So far I’m
+just aware of Stripe and Braintree, so if you’re using
+one of those, they’re safe.
+You’re you’re safe and they’ve actually been the main hurdle in
+collecting bug bounties. Uh even
+though I was able to collect some, a lot of modern companies
+use Stripe uh tend to use one of
+these two payment providers and uh given that it's been a fairly
+big hurdle. Um. But what if you
+want to defend more broadly against SSRF? From my
+experience, very few people are
+protecting egress traffic, but when they do it's a pretty big
+speed bump. This may make more
+sense depending on the size of your organization and just how
+your network is laid out and
+just kind of what your risk uh risk charac- what
+characteristics are with SSRF.
+Um. But that mean be an option to consider. Netflix is also
+does some really great work in
+proactively dealing with uh, with the gooey center in AWS. In
+general though, it's good to
+take a look at what a- what ports are open locally on your
+servers and add passwords even
+when the network layers theoretically protecting them.
+So. On the other hand, here’s
+some stuff I’ve seen that does not, that has some holes in it.
+And this is part of uh, part of
+what makes implementing support for Apple Pay so tricky is that
+there are a lot of, there are a
+lot of potential fixes that might work and might protect you
+from maybe the typical attacks
+that I’ve been feeding in, but that you can kind of poke holes
+in. Regexes are tricky and I
+wouldn’t recommend them as a mitigation for this issue at
+all, but besides the points in
+the slide, I would also discourage against relying on a
+check to start at apple dot com.
+Even if you’re not using regex. Because then if there’s no
+redirect anywhere on any apple
+dot com subdomain, an attacker can use the open redirect to
+circumvent your check. Narrowing
+the check to specifically allow the 30 apple pay sub domains is
+better. Unrelated, but if anyone
+knows of an open redirect on any apple dot com subdomain, I would
+be glad to hear about it.
+[laughter] Um, but really there’s no re- way of getting
+around it. If you have to
+support Apple Pay web, you really should go to Ap- through
+Apple’s updated documentation
+and read through the warnings they have added. The
+architecture is so bad, but at
+least the documentation doesn’t walk you through the process of
+adding vulnerability. So that
+wraps up this spec- specifics on Apple Pay web and our first
+inactive weakness. I’ll have
+more to say on Apple towards the end of this talk. But in the
+next section, I’ll move onto
+another pattern that can induce vulnerabilities. But for, let’s
+see. Yeah. I’ll move onto
+another pattern that can induce vulnerabilities. Alright. So.
+Webhooks are becoming a fairly
+common and useful way to tie the web together. We’ll take a a
+little bit of the heat off Apple
+now. Um, there are a lot of webhooks out there right now and
+nobody seems to agree on how
+they should be implemented. Um and there are a lot of different
+approaches people are trying.
+But what’s a webhook? Here’s an example from Trillio. It’s a way
+of telling a service to call
+your URL as soon as eve- an event happens. Uh here you can
+see jmaddux dot com slash sms
+register. So twilio will send me an htt- https request every time
+it uh has a new SMS message for
+me. But how have people been im- exploiting webhooks so far?
+They’ve gone after the sender of
+the webhook. In this case Twilio. It’s pretty similar to
+how I would test Apple Pay. Uh
+instead of entering your own use server as the URL. You put the
+AWS instance metadata IP or try
+to do some cross protocol stuff, this is just a general challenge
+of implementing webhooks. It’s
+not an inductive weakness, because there’s no central party
+inducing this pattern. There’s
+no central party telling Twilio they have to have a webhook. Um
+or that they have to have a
+webhook to enable this feature. It’s just a really useful uh
+feature for Twilio to pro-
+provide to their clients. Um, but luckily lots of people have
+already explored webhooks in
+this way and webhooks do tend to be implemented by larger
+companies with a lot more lo-
+better footing reg- regards to security issues. Um, so you can
+find a lot of bug bounty write
+ups for people to exactly this and even getting payloads for
+some of the Apple Pay issues.
+Like webhook SSRF write ups were really helpful. But what have I
+been doing with webhooks, I
+apply the same inductive weakness model that worked with
+Apple Pay. Instead of going
+after the sender, I looked for an attack surface, the sender
+might be inducing in the
+listeners. It turns out for Twilio, this approach works. How
+did the receivers of the
+webhooks know that the message is coming from Twilio. Twilio
+providers an HMAC. Similarly to
+how most webhooks are done right now. Not to sug- yeah I’m
+singling out Twilio a little bit
+but a lot of webhooks do this right now. They call it a
+signature and that might make
+the cryptographers in the room cringe, but conceptually, it
+does help to think of it as a
+signature. Assuming that receivers actually check it,
+it’s not too bad. But when I
+took a look, most related open source projects failed to check
+the HMAC. So I had these
+unauthenticated endpoints lying around. And once I’ve started
+poking around, it became
+apparent one reason why. Twilio’s examples didn’t check
+the HMAC either. Then setting
+that aside the bad example code, this is, there’s also an
+architectural problem here. I
+argue, since the easiest way to receive an HMAC authenticated
+webhook is to disregard the
+HMAC. That’s a design flaw and I would also call it an inductive
+weakness. So now it’s time for a
+demo. So. This demo is gonna be slightly different. The example
+code wasn’t on a public facing
+server. So I didn’t get any credentials from Twilio
+themselves and so therefore of
+course, not a bounty. Um, but it’s still worth showing.
+Because it was copy and pasted
+elsewhere. Alright. So here’s where I started just looking
+around at uh the Twilio example
+code. On the Read Me, there’s now a warning to uh protect your
+workbooks, but it turns out the
+example code still doesn’t do that. Going even further, this
+example code takes a mediaURL
+parameter which looks quite promising. And this is even
+quite generous in that this
+example code fetches the contents of that mediaURL and
+puts them in a public facing
+directory. So, you might be able to guess where this is going. In
+the next tab, I’ll have this
+deployed on a Google Cloud instance. It tells us to send a
+text message, but we don’t need
+to do that. This callback is unauthenticated so we can use
+this snippet I have on the right
+and pretend we’re Twilio sending over a csv attachment. But
+because of the URL we sent,
+[inaudible] uh google cloud instance metadata, we can see uh
+the token is now stored in that
+public uh directory. And by the way this token is also long
+expired. Alright. So here’s a
+disclosure timeline, fairly similar to the Apple Pay one.
+But you might be wondering, are
+Twilio’s competitors doing any better, or worse? Turns out with
+Nexmo, it’s worse. Not only does
+the architecture similar but you have to contact support to even
+get them to send you an HMAC.
+And if even if you do contact support, the we- some of the
+webhooks don’t even have that
+option. I don’t have much to say about this, it's pretty much
+beyond hope. So let’s move onto
+another webhook. So Gitlab. Gitlab does something similar to
+Twilio, but with a static token
+instead of an HMAC. So the implementation is a bit
+different, but the same level of
+an optimis- is there. They expect that uh users of webhook
+will register that token and
+then check that token when it’s received. Um, But here’s the
+event that is sent by one of
+their webhooks if you enable it. So you can imagine what I did. I
+simply found a receiver, a
+server that was receiving this webhooks. As usual they were not
+validating that it was coming
+from Gitlab. I won’t name names, but it is a webhook. I can’t
+imagine given what we’ve seen
+this so far that what I found was the only unauthenticated
+one. But in any case I decided
+to tweak the sample push event and send it over. Right off the
+bat I was able to modify their
+repository URL and trigger extra builds for arbitrary repos. I
+don’t have any- I didn’t have
+any success deploying arbitrary code, but this did fi- have one
+nasty consequence. It turned out
+I could store x- xss payloads. The script would execute
+whenever some clicked a
+particular button on their build pipeline page. And you don’t
+need to log into anything to do
+this attack. This really epitomizes the point I want to
+make. So far we’ve been asking,
+what vulnerabilities are in the software? But equally ques-
+important question is what
+vulnerabilities in- does this software create? Once you start
+asking this question, you can
+find a lot of easy stuff that you won’t need particular
+difficult payloads to exploit.
+So. These next few slides are going to be a bit text heavy,
+but I’m making a really
+aggressive claim here, that nearly everyone’s doing webhooks
+wrong. So it’s necessary to
+layout some alternatives. I’ll start with the coolest but least
+practical one. You can encrypt
+your outgoing webhooks with an authenticated cypher. The upside
+is that in the act of trying to
+use the information you give- give them, you’re you send
+people. People will in-
+inevitably be authenticating it. But the downside oh, the
+downside is there aren’t a lot
+of good libraries for encapsulating this, so it’s not
+very practical right now. But we
+can dream. So going a little more practical, you can do what
+Plaid and Square do. If you
+limit your webhook payload to just an event ID and expect the
+receiver of the webhook to fetch
+it. Uh you- you’re really not inducing much attack surface.
+The downside is that this does
+require an extra request from the listener to you. You do also
+have to worry about path
+injection, if that er path traversal if that ID is within a
+URL segment. Since a lot of
+developers like probably most developers will forget to
+actually URL encode the value
+that they put into API call. But I mean things to- this is
+probably a good middle ground
+and the websites I’ve seen using this, I haven’t really found any
+practical ways to exploit path
+traversal um even for people who aren’t uh careful about it. But
+the least aggressive approach
+which works well for existing webhooks is just to be more
+proactive about making sure that
+people use the HMAC. Most webhooks already do one testing
+request to ensure that the URL
+is publically available and live just to make sure that they’re
+not sending data somewhere where
+its just gonna be ignored. Um, so it’s not a huge change to do
+two requests instead. It’s then
+a matter of policy to decide what you want to do if those
+requests have different, have
+the same response code indicating that they’re
+unauthenticated. But even if you
+just warn people once you uh once you get a webhook that it
+does appear unauthenticated,
+you’re still miles ahead of what others are currently doing. I’d
+really to see webhooks start
+doing this uh since it’s low risk and backwards compatible in
+a lot of cases. Alright. So. A
+lot of this so far has been negative and intentionally so.
+But there is an upside. B- by
+designing your API to be defensive from the ground up,
+you have a lot of ability to
+prevent vulnerable code from being written. Well let’s just
+take a look at one API that
+didn’t and one that did. This should also be eliminating just
+um, to get an idea of which APIs
+uh if you’re looking at this from the attack side of things,
+uh which APIs might be promising
+in terms of finding induced vulnerabilities. So. Sales force
+and Dynamodb are very different
+products. But they have an interesting are- area where they
+overlap. They both have had to
+access act as a source of truth with some complicated business
+requirements piled on to the
+point they had to each implement a custom SQL like uh dialect.
+But they each they went about
+that in very different ways. If you’ve ever pen tested a web app
+that uses salesforce, hopefully
+th- this has been on your radar. I’ve gotten a m- a lot of
+mileage out of it. Sometimes
+user endpoint progates out to a place where you can inject into
+this API call. Much like you
+would do with SQL. So how salesforce tried to mitigate
+this? More documentation. This
+is becoming a theme. At first, this might seem inevitable given
+what salesforce is trying to do.
+Uh given what salesforce is required to do. But the when
+Amazon tackled this, they did
+something interesting. Dynamodb forces you to parameterize your
+condition expressions. If you
+try to concatenate a raw type in there, uh, it’ll be treated as a
+syntax error. You have to put it
+in to this e- expression attribute values object. There
+are other ways you can go about
+attacking these calls, but they’re a lot more co- limited
+and more complicated than if you
+can just inject into the syntax itself like you could do with
+this with full SQL syntax. This
+is this uh this the way that Amazon does this is kind of
+cumbersome and you can see that
+there are just a lot of fields on screen here. But I think it’s
+it’s a good tradeoff given the
+strength of protection that this provides. So alright. So let’s
+get back to Apple. Since they’re
+probably the worst offender in this talk. After two months of
+silence they came back with this
+as justification for their architecture. Developers are
+responsible for implementing
+whatever security and networking best practices make the most
+sense for their environment.
+This is true. Sort of. I mean and you looking at it, this
+developers do have a lot of
+responsibility of over the apps, but the implication here is that
+Apple has no culpability in
+this. Luckily I’ve got another great quote. If you’ve built a
+chaos factory, you can’t dodge
+responsibility for the chaos. And you may be able [laughter]
+[applause] Thank you. [laughter]
+So but both of these statements are right, um, I’m not just here
+to hi- point out hypocrisy,
+developers are responsible for implementing uh for not
+introducing vulnerabilities into
+their code base. But if you expect people to add an endpoint
+somewhere, you do have a level
+of responsibility for the attack surface that you’re creating. So
+but that’s a purely ethical
+argument. Let’s look at some of the financial aspects of
+inductive weaknesses. Once
+researchers start hunting for this stuff and I encourage you
+to, especially just if you go
+about it with within ethical the ethical way, um, but I expect a
+lot of people to start hang- uh,
+yeah. I imagine that there will be a large financial incentive
+for API to do- start thinking
+about it. Not just from the perspective of having to payout
+bounties, um but for other
+perspectives. I got some nice bounties out of this Apple Pay
+issues. And none of my work
+needed very difficult payloads and none of those bounties were
+from Apple. Uh so I think it’s
+fair to think that you know once this talk is over that some
+people are going to start
+applying my approach. Also, think of where these people are
+going to report this stuff and
+where I’ve been reporting this stuff. You’re seeing the most
+embarrassing consequence here,
+but what if my talk hadn’t been report- accepted to any
+conferences? There was a lot of
+private embarrassment as well. Apple doesn’t think that was as
+much of an issue, but most of
+the websites I reported to did. They’re like yeah we have this
+SSRF thing lying around, like I
+mean in some cases, just, let’s remove it. But and so I wouldn’t
+be surprised if they held that
+e- against Apple. For another angle there’s in software
+development, there’s this
+concept of technical debt, it’s the idea that cutting corners
+early on has costs that
+accumulate as a project grows. With regular tech debt, the
+fixes reside in your own code
+base, so the g- interest rate and the cost fix is tied to the
+growth of your own code base.
+But within inductive weaknesses, the fixes are in your client’s
+code. So the interest rate is
+tied to how much adoption your API sees. At a certain point, if
+you want to pay down the debt.
+You can’t just push out an update to your own code, like
+you would do with uh you know a
+library or something like that. You have to push out a breaking
+change and contact your
+customer’s and tell them that you had, that they have a
+vulnerability because they chose
+you. Alright. So. Here’s really what I’m asking for, from API
+designers and it should be
+pretty cheap if you want, if you start thinking about this stuff
+early. I’d really like to see
+people, oh-. Yeah. I’d really like to see people start
+scrutinizing their example code.
+Because it gets deployed to a lot more often than you think.
+In the process of scrutinizing
+your example code, you may even discover inductive weaknesses.
+If Apple had done so, I
+certainly wouldn’t have much to talk about. And you know, be-
+beyond auditing your own example
+code, if your researcher like auditing other people’s example
+code is a great place to start.
+Because again, it gets deployed a lot and sometimes places where
+it gets deployed are stuff that
+people care about. But also, keep in mind that a lot of
+developers don’t realize quite
+how dangerous it is to an- externally provide a URL. Uh but
+if there’s one thing I want
+people to take away from this talk, it’s that documentation is
+no excuse from bad architecture.
+And here are the acknowledgments. I’d like to
+thank Jonathan at PKC for asking
+some of the initial questions. Arte at PKC for pointing me to
+the Nexmo stuff. Uh Ken at PKC
+for helping with the PKC and Andrew at the EFF for legal
+assistance. Alright. So.
+[applause] So. Any questions. Um. Oh. In the front here.
+>>[inaudible audience question]
+>>Ok. >>[inaudible audience question] >>That is that is an
+interesting approach. I haven’t,
+I haven’t given that any thought. Uh, oh sorry, I’ll
+repeat the question first. So
+the question was, um, on whether or not uh mutually authenticated
+TLS might be uh a better
+approach to authenticating webhooks, um, I’ve actually
+never seen that. >>Yeah, neither
+have I. >>That might be interesting. I’m not sure how
+defensive it could be, but yeah.
+Um. Any more questions? Oh I see one right here. >>[inaudible
+audience question] >>Would I
+consider- sorry. >>[inaudible audience question] >>Um, let’s
+see so where are some a- areas
+where I’ve seen WAFs uh come into play here. Sometimes I
+sometimes I’ve kind of wished
+that WAFs would just like detect whenever I’m doing something
+suspicion with the validations
+URL, but obviously like this stuff wasn’t public until like,
+you know just yesterday. So um,
+I mean obviously in the future that would, that’s be really
+great for the Apple Pay issue
+specifically. Alright anymore? Alright. Well, thank you.
+[applause]

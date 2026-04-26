@@ -1,0 +1,1103 @@
+>>I'm really looking forward
+to this talk if you if
+you've been to a lot of talks so far you know that
+they have all been pretty,
+pretty technical my understanding is that we are
+going to get some
+entertainment and some jokes and some stories from uh
+from Ben here. So, let's get
+excited, give Ben Morris a big round of applause he's
+going to talk to us about
+AWS. [applause] Have a great time man >>Thanks, very much
+>>have fun >>Thanks very
+much, I really appreciate it. Hey everyone how's it
+going? You guys having a
+good time? [woo] alright so am I, so am I thank you for
+coming in today I know you
+guys have probably been waiting in a lot of lines
+and uh yeah I just really
+appreciate you guys being so excited coming here to see
+this talk. I put a lot of
+work into it so thank you. And uh, we're gonna be
+talking about a lot of cool
+stuff today we're gonna be stealing lots of secrets and
+we're gonna be hacking AWS
+and showing how I did it all and then talking about how
+we can basically help fix
+the issue and uh if you just uh give me one sec to
+actually get my timer
+started cause I am okay perfect. So, yeah, thank you
+very much for coming just a
+little bit of a disclaimer before we uh get started
+here uh please do not arrest
+me FBI uh no post exploitation was performed
+and everything I found was
+basically publicly available already. Um, I'm not going
+to be talking about any AWS
+zero days or any exploits in customer specific software.
+This is just a wide spread
+misconfiguration issue with AWS and uh I'll talk about
+that a little bit more later
+but basically I was just kind of driving down the
+road and I looked out the
+window and said to myself huh a lot of people's discs
+are on fire. I should
+probably you know just call the police and let them deal
+with it and I just kind of
+kept driving so I didn't do a lot of post exploitation
+and I definitely stuck to
+you know the look but don't touch. But, anyway, um so
+what is EBS? EBS stands for
+elastic block store and it's essentially a virtual hard
+disc that you can attach to
+a VM so anytime you spin up a virtual machine inside of
+AWS, it's going to have a
+disc that's automatically provisioned to it. And that
+disc is an EBS volume they
+can vary in size and the default is like 8 gigabytes
+like basically anytime you
+start building an application using uh Amazon
+ec2 you're gonna be running
+one of these EBS volumes. So, they contain your
+application code, your data
+and everything else you would want to deploy. So
+these volumes, they can
+basically be attached and reattached to various
+machines, you can move them
+around kind of like uh network attached storage in
+a way. So, um they can you
+can clone them, you can delete them, you can copy
+them, you can do everything
+with them that you would expect and um they come in
+generally 4 flavors for
+security purposes they come in unencrypted, encrypted
+and public and private so
+you can have a combination of them like a public
+unencrypted, private
+encrypted, public encrypted and what not and we're gonna
+be looking at the public and
+unencrypted ones today. Those are the ones that are
+interesting and uh those are
+just the fun ones that have all the credentials in it so
+if you have you know an
+encrypted uh or private disc they're not really
+vulnerable. And also, these
+discs by public- or by default are private so, when
+you do spin up that
+instance, it is going to be backed by a private volume
+which kind of made this uh
+vulnerability really interesting to me. I wanted
+to know you know who is out
+there exposing their discs to the public when AWS
+actually makes it pretty
+tough you know you have to go into a separate menu
+after you create the
+snapshot and after you create the image to actually
+go check that public box.
+So, I was really curious to know you know who is out
+there doing this. So, what
+could possibly go wrong with an unencrypted and public
+disc? Well, basically eh
+back in January I was at an onsite for a client and you
+know I was just really jet
+lagged and not able to sleep, I'm sure you guys
+have all been there it's
+like you you know you're on the west coast you've got to
+fly all the way to the east
+coast or you're on the east coast you've gotta fly to
+the west coast you get to
+that hotel and you sit there and you're at the bar, but
+there's nothing to do you
+know you're just stuck there and then it's like 1 a.m the
+bar's closed, there's
+nothing there and you basically just say well I'll
+go sit on my computer, fine.
+So, I thought to myself well I'll look at uh this clients
+cloud security controls,
+that'll definitely put me to sleep you know. Um, except
+that it really didn't uh I
+basically found an unencrypted EBS volume that
+was public on their account
+and I really wasn't familiar with this vulnerability so,
+I just did what everyone
+else does and I just googled it. You know and I found
+some blog posts but there
+were only a couple of them and they didn't really talk
+about um this vulnerability
+very much, they basically oh well that's bad but just
+don't do it and it's fine.
+Which is always you know just peaks my interest I'm
+like okay well I gotta know
+more now. Um, so you know I basically took this clients
+disc and I went through the
+27 steps of attaching it to my VM through the console
+and mounted it and I
+realized that this client had made a copy of their
+entire web application,
+available to the public internet and this basically
+had everything to run the
+app including their AWS access keys, their AWS
+secret keys, API keys for
+3rd parties, database credentials, because you
+know of course and of course
+the database was exposed to the internet because why
+not? Of course you'd want to
+do that when you have AWS you know that's totally
+normal. So, after I
+discovered that disc, and basically had this you know
+incredibly critical finding
+um I knew I basically had to investigate more. I needed
+to know you know how how um
+how widespread was this bug, because this bug was really
+powerful. It had you know
+the keys to the kingdom for this whole application. So,
+you know I started doing
+some digging and I wanted to ask myself well why does
+this happen? You know, how
+can this happen um and basically, there's two
+screenshots here you want
+your discs to look like the top screenshot there. I-if
+you can see it says uh
+there's a this snapshot is currently private and that's
+what you want it to look
+like. By default that's what it will be. But if you go
+into that tab, and you
+change it to public or you use the API you have some
+kind of broken API code that
+ends up setting that uh snapshot to public what
+happens is it shows up in
+that nice search box down there at the bottom, and
+this search box is wonderful
+because you type in the word Jenkins and Jenkins servers
+come up and you type in the
+word backup and backup servers come up. So, at-
+basically at that point I
+kind of realized like woah this is really cool, got
+something here and basically
+when you do set that public tab and it shows up in that
+search box if it does have
+sensitive information in it you have to assume it's
+compromised at this point um
+because anyone can go search through it and I don't know
+if you guys have heard about
+um the Capital One stuff that just happened recently
+or any kind of other like S3
+bucket exposures, this is kind of a similar
+vulnerability to that um in
+that it you know it-it's kind of going through
+someone's uh private data
+storage that they think is private but it's really not
+and one cool thing about
+this bug is all of the snapshots are queryable you
+can pull all of the ID's
+back from the API. It's not like an S3 bucket where you
+would have to start guessing
+people's uh bucket names to try to find one and if they
+set something like a goo-ed
+for their bucket name you're not really gonna be able to
+find it. So, this-this made
+it really, really fascinating and really cool
+to me because you could
+basically just start going through all of their stuff
+um in a programmatic fashion
+very easy and you know even if you just want to use the
+web gooey you just start you
+know typing in stuff in there. So, um at that point
+I was just like this is
+awesome um and so let's just talk a little bit about what
+I found because everyone
+likes loot and uh yeah that's what you're all here
+for so what did I find on
+these buckets? I found a lot of stuff. So, I'm gonna
+give, first I'm gonna give
+uh examples of some full exposures that I was able to
+find and then I'm gonna kind
+of talk at a higher level and talk about um overall
+trends and some more stuff
+that I did find. Um, so the first example I'm going to
+talk about is about some
+robots and I like robots, robots are great, there our
+friends and if you think
+about robots and service accounts in your own
+organizations you may be
+thinking about you know your slackbot or you know other
+chat bots you have and think
+about the what those robots can do they can do things
+like push code, or you know
+deploy new builds. They can do a lot of stuff and have a
+lot of access but usually
+there's this you know interface between you and
+the bot like some kind of
+chat or something that lets you, you know that delegates
+permissions. So, um this
+case I was able to find these credentials in this
+user data dot config file on
+this random disc basically and I was robot so, what
+could I do with robot, well
+I didn't have any permission restrictions and you know
+the ability to you know
+deploy stuff seems pretty great and um when I started
+looking at the disc uh one
+more thing uh this uh output right here is basically the
+equivalent of who am I for
+AWS. There's one command you want to run whenever you
+find a set of credentials
+it's called uh a STS get caller identity and that
+basically is like who am I?
+Any time you have a set of any credentials you can
+pretty much always call this
+API in point um no matter your region and it will come
+back with who you are. So,
+this is just a simple listing of you know who I am
+and uh so I started looking
+through this disc to try to find clues uh one thing
+that's interesting about
+this is you always gotta have a scavenger hunt to
+figure out who owns the disc
+and who uh you know who owns it so um in some config
+files that these creds were
+near um there was some database configs with some
+internal urls and uh
+some-some just some domain names and these domain names
+led me to a pretty cool
+company and uh the company ended up uh doing a lot of
+really interesting things
+like uh tracking ISIL social media requests and uh posts
+and they did things like uh
+record border interdictions and they were basically uh
+software as a service
+company that sold pretty much exclusively to the
+government so they're just
+doing government stuff and uh their robots keys are
+just sitting out there for
+anyone to go grab. So, if you guys wanted to you know
+read up on what isis is
+doing uh you know on social media these are the guys you
+want to talk to. So, you
+know at this point I basically s*** my pants and
+it's like you know what am I
+in control of right now um so you know we reached out
+to this company and they
+were of course very grateful and they you know a super
+positive response um and
+they gave us like some remediation steps so uh they
+really liked this and um
+yeah this was this one just kind of highlights this
+problem entirely like it's
+just you know you could find anything out there and these
+accidental exposures could
+contain anything really. Um, so it was really interesting
+just kind of going through
+them all. The uh, the next set of credentials I want to
+highlight is uh something I
+just call w00t w00t and basically there was a disc
+with a docker file and if
+you guys aren't familiar with docker, it's just a way
+to manage your
+infrastructure basically and there was some other code
+around there there was like
+a golang program uh that was compiled and then there was
+some kind of scripts and it
+looked like they were mostly for system administration it
+looked like this thing was
+responsible for a spitting up infrastructure and the
+one thing uh that I couldn't
+really figure out was who actually owned this disc.
+Um, the config files didn't
+really have any clues there weren't any domains it was
+just like internal 10 dot
+addresses so it was just kind of like okay well I
+don't know who owns this
+disc but what I did know was you know which account I was
+and who I was and who I was
+was root! So, just out of thin air I was able to grab
+some root credentials for
+this account and if you're not familiar AWS root is is
+basically God permissions on
+an AWS account it has unrestricted access it's an
+administrative account and
+you're actually not even really supposed to use them,
+you're kind of supposed to
+delegate uh an account or your supposed to create an
+admin account and delegate
+admin permissions to it so that way you're not directly
+using the root account. But,
+these guys thought it was a bright idea to just start
+using that root account and
+they said oh well, no one will ever find this disc you
+know it's just some internal
+thing that uh spins up infrastructure no one really
+interacts with it except me
+you know the you know the- the highlight here is just
+you know you could find
+everything this was actually the only set of root creds I
+found in the discs so that
+was kind of cool. Um, I-I honestly wasn't even
+expecting to find it um just
+because I think everyone kind of knows not to do this
+now. But, this just
+highlights again just the critical nature of these uh
+discs and what they contain
+because a lot of people aren't just expecting you to
+be able to get access to
+these ones. So, um the next one I want to talk about is
+a little it's about a little
+piece of software I love, near and dear to my heart,
+it's Jenkins and if any of
+you guys have you know owned some Jenkins machines out
+there you know why I love
+it, it's always full of credentials it like has
+access to production source
+code and it can like push builds. People do all kinds
+of crazy stuff in their
+Jenkins jobs so you know anytime you come across a
+Jenkins server, it's just
+great you know tons of stuff. So, um, in this case
+I found a Jenkins server and
+it was basically, it looked like a developer instance it
+looked like to me some
+developer was trying to get an internal application to
+work with their um their own
+uh Jenkins set up. So, they kind of like spun up a copy
+of their Jenkins server and
+we're trying to you know get an application to work
+properly with it. Um, so you
+know in the Jenkins server I found some AWS credentials
+and I popped them in to the
+STS sketcaller identity and I found out I was a dude
+named Kumar. And I thought,
+well that's great. I uh I'm Kumar now sounds good. So,
+uh I looked in the users dot
+xml file which is if you're not familiar with Jenkins it
+is just a file that holds
+basically all of your usernames and passwords for
+users on the machine and
+that's kind of assuming there's no single sign in
+place or no active directory
+integration. But, um so this users dot xml file was kind
+of funny because um I looked
+at who made the server, who had the admin account in
+their email address and it
+was definitely not anyone named Kumar. So, you know it
+was kind of funny some guy
+sat there and first they exposed their disc publicly
+which was really bad and
+they exposed their AWS credentials but then they
+like also framed their
+co-worker somehow I don't why maybe they maybe they
+were trying to frame their
+co-worker, I don't understand um yeah, so Kumar
+we got his keys and uh you
+know started looking around um trying to figure out uh
+who this was and from the
+email address we were able to determine it was a
+software company. And the
+software company um I can't name them but I can talk
+about you know who uh who
+they do business with and from their website you know
+these are the people they
+work with. They work with you know Salesforce, Apple,
+FIS um a lot of other like
+fortune you know fortune whatever n companies. Um, so
+you know this is a large
+software kind of consultancy firm and uh they just did
+you know a lot of cool stuff
+but you know these keys are just uh they're just sitting
+out there. And, they're keys
+that could potentially impact these other companies
+who you know I'm sure
+Salesforce and Apple and all of them they have you know
+very good perimeter security
+and they're making sure that they have a tight-a tight
+leash on developers so
+they're not doing this kind of stuff. But, in this case
+you know you could almost
+have a compromise happen because of a contractor who
+maybe you know only has
+indirect access and you know are-are-are you really
+watching that whole supply
+chain of you know your contractors and who you're
+actually doing business with
+to make sure their security is also not weak. Um,
+because in this case you
+know the compromise could you know could definitely
+lead to some pretty severe
+consequences. Um, just with the amount of work this
+company does. So, you know
+overall these kind of 3 exposures highlight the
+critical severity and-and uh
+just the kind of stuff you're gonna find when you
+come across these disks. And
+all this makes sense you know these are just like
+peoples application servers,
+it's just a lot of developers kind of you know
+uh doing whatever and trying
+to just make their stuff work um so, you know overall
+we had uh these are kind of
+the things I was looking for um when uh when you get into
+a disk you find a lot of
+leaked source code of course because they're you know
+mostly application servers
+so a lot of people are doing AWS right and they have a
+set of temporary credentials
+which allows their credentials to basically
+expire. So, you know if you
+don't get access to those credentials within about 24
+hours I think is the default
+um you know those credentials rotate out. So,
+you know that's good, but,
+even if those credentials rotate out you're still
+gonna have that source code
+laying around on someone's disk. So you know we found
+uh source code for some
+government contractors um some large tech companies
+and a lot of these are just
+like boring internal applications but a lot of
+them also give really good
+insight into how these companies operate even just
+having their source code is
+really dangerous. Um you know we got like source code
+for a bunch of internal
+applications to um like host like huge databases for uh
+some tech companies and
+stuff so it's just like a really, really cool uh
+source code even if even if
+that's all you get and at the end of the day it's just
+a medium kind of like a
+medium risk finding. But, um another thing we got was
+tons of private keys I know
+it says SSH up there but just lots of uh private keys
+think about like tls
+certificates and what not uh we're we have just like tons
+of client and server keys.
+And anytime you know you're using one of those exposed
+uh server keys you can be
+man in the middle and some of the client keys we got
+you know just allow SSH
+access you know you're like going through people's bash
+histories and trying to
+figure out well where are these IP's you know who's
+who's running these servers
+trying to figure it out. Um, so you know that was a
+little bit harder to um
+determine if those creds were valid so a lot of the
+SSH keys and what not we
+just directly handed over to AWS and just responsibly
+disclosed it with them to
+make sure they got you know word to their customers hey
+your keys are just sitting
+there uh you should probably do something about that. So,
+um another thing we got a
+lot of which was kind of surprising to me was uh like
+SQL files that contained a
+lot of people's uh personal information and I think a
+lot of these came from
+developers they would uh you know ste- or borrow some
+data from production move it
+down to a development environment and so they can
+play around debug their
+application, do whatever they needed to do but then
+they kind of left their disk
+out there just sitting there and the SQL files contained
+like thousands of peoples uh
+you know usernames, hashed passwords, email addresses,
+phone numbers all of that
+stuff. So, just some like really nasty hygiene around
+uh like SQL files and just
+kind of all that. And um another thing we got a lot
+of were like wordpress
+installations which are pretty cool um they, if you
+get a wordpress uh backup um
+I-I should clarify that you know the wordpress like uh
+some of the- some of the
+things we found were wordpress backups actually
+so uh in the backup you're
+gonna have like the database which will be a SQL file and
+that'll contain all the
+password hashes and also like API tokens for third
+parties which are always
+great to find because they allow you to escalate
+further do uh you know more
+privilege escalation kind of in their own environment.
+You can potentially start
+taking over more and more resources. So, you know
+finding those API tokens was
+also really, really great. Um, and a lot of just kind
+of off the shelf software it
+seemed like a common pattern would be developers again
+kind of like uh just doing a
+bunch of dev debug work, pulling down some stuff,
+like a drupal instance,
+throwing it up there and then just leaving it there.
+So, um a lot of those kind
+of uh credentials rolling around and also VPN
+credentials uh lots of open
+VPN uh creds and some of them were for legitimate
+companies, who you know were
+using it to access their internal network so at you
+know at that point, um it's
+pretty much game over because that's kind of one
+of the big goals of an
+external attacker is to get internal network access so
+uh that was really cool but
+also I found a lot of people had their like hide my ask
+creds and other like VPN
+providers just sitting out there on these disks and
+that made me really, really
+cu- you know curious. Um, just like what kind of
+attacks could you
+accomplish? You know you could definitely just you
+know abuse them but you also
+like maybe man in the middle them when they think they're
+on their VPN's I'm not
+really sure, but um I thought that was really cool
+to find. And also really
+curious you know people are kind of automa- automating
+their hide my a** set ups.
+Um and then also, just in general we just found lots
+of AWS keys, google Oauth
+tokens, you know third party API tokens, email passwords
+think about like your SMTP
+creds, your web apps are using SMTP to send mail or
+mail gun. Um, like one thing
+I re- one app I specifically remember uh very clearly is
+something called uh it was
+just called Surveillanceapp, like that was the repo name
+I found the- like that git
+directory and it's just like Surveillance-app okay and so
+I looked at it, and it's
+just a- a bunch of code that just takes raw RTSP streams
+and just dumps them into S3
+buckets. So, you know whoever or whatever this
+thing is surveilling I have
+all of their keys now you know I can go read their
+buckets, I can go you know
+look at who's uh you know who's being watched and I
+could basically surveil
+their surveillers and uh that one was so hard to like
+not touch. I did not you
+know like it's so hard to just not touch this stuff
+and and want to just
+explore, so that one in particular you know like you
+want to see like web cam
+roulette you know you always want to see what's behind
+that webcam or like a you
+know one of those uh crappy cameras that uh you know
+exist on the internet. So,
+um that one in particular was just kind of funny to me
+it was really hard to just
+kind of bite my tongue there. Um, so yeah so
+overall we just we just uh
+looked for a lot of the easy wins um you know when I ori-
+when I initially started off
+with a lot of this research I kinda had this dream of
+like oh I'll steal
+everything under the sun and then just deal with it later
+and you'll kind of like go
+through it but it just turned out that uh kind of
+prepping for the common
+stuff you'd think uh would be good it wa-was a good
+approach um you know jus-
+this just kind of goes to show we had a lot of success
+there so um yeah just a lot
+of uh great stuff and um you know sad I couldn't do a lot
+more poking with what it
+actually was you know when you do find something, but
+it was still really, really
+cool to uh find all this stuff. So, um, basically I
+want to talk a little bit
+about uh how I did find all of this. Um, the-the
+vulnerability and the
+misconfiguration on the surface is pretty easy to
+exploit and you know my uh
+you know that client eh back in January you know I was
+doing all that manually and
+you can definitely do that it's uh it's totally
+possible but um, I basically
+wanted to kind of automate that process a little bit
+because um, when you talk
+about temporary credentials and things like that it is
+uh a bit tricky to deal with
+those manually like if you if you have some set of
+temporary credentials you
+know those are exposed for a good window of you know 24
+hours and if you get those
+credentials you can basically endlessly refresh
+credentials. I wasn't you
+know i didn't really get like a you know look at this
+too hard but uh it's
+definitely a known technique like if you get those
+temporary IM credentials you
+can just refresh them endlessly until they
+basically rotate them out
+from underneath you. So, it was really important to uh
+have some automation under
+your tool belt. You can exploit some instances
+manually, but a lot of the
+ones you're gonna find are just unlabeled and uh
+difficult to detect. So, you
+definitely want to have some automation there and uh
+there's basically a really
+simple 3 step exploit process here. Um, you know
+you're just gonna pick a
+snapshot and attach that snapshot to uh your EC2
+instance and then you're
+gonna search it for secrets. Um, but the problem is
+there's about 120,000 disks
+that are exposed across all regions and a lot of them
+are just um you-you're just
+not sure what they're gonna be because they're not
+really labeled and a lot of
+them are just garbage. They're just totally
+illegitimate disks um so
+each o- each of these steps has some nuances that are
+you know kind of tricky. So,
+uh, the first step well clicker oh sorry uh clicker
+was malfunctioning uh so uh
+at a high level this is kind of the architecture I used
+um there's nothing really
+crazy here I'm basically just using an asynchronous
+cue to uh send new snapshots
+to workers and then that master in the middle is just
+a just a little application
+that kind of coordinates everything. So, that master,
+he just pulls all the
+snapshots uh about every minute, looking for new
+ones, when a new one is
+detected it just-it just puts it in the cue, and then
+the worker in each region um
+you know that the message is destined for will just pick
+up that message and start
+the scraping process. Which uh you know extracts all the
+secrets and it just throws
+it into the database. So, it's a pretty simple process
+and uh this-this uh this
+asynchronous cue and worker set up gives us the ability
+to scale up and down the
+worker processes as we need, so we can save a little bit
+of money too uh, which is
+always nice. So, um and all of the all of the code and
+all of the um the scanning
+has is within the default AWS API limits. I didn't
+have to um like ask for you
+know I need to scan lots of disks, um they let you do 5
+disks concurrently uh across
+everything so you know within those limits, within
+a default AWS account limit
+I was able to- to scan these disks. So, there wasn't
+anything uh any-any like um
+you know any-anything preventing me from doing
+this uh basically. So, uh
+with the architecture out of the way uh step 1 ex- pick
+an exposed snapshot. So, uh
+what to read? And, there's kind of two ways you can go
+about this. Uh, you can do
+an exhaustive brute force over all of the disks and
+that's totally possible, uh
+you can spend a you know a couple months doing that um,
+or you can kind of do a more
+careful approach and I initially started off doing
+the brute force approach
+like I said, I just wanted to steal everything under
+the sun you know, but that
+just didn't really uh work out. For mostly a couple for
+basically like 3 reasons.
+Um, I was just phishing up a lot of garbage so, uh the
+human genome project is on
+AWS and there's you know genome sequencing happening
+so you get like 20 genome
+sequencing disks in a row and your just like man I
+really want some AWS creds.
+All I'm getting is a ton of garbage. And there's no
+faster way to you know just
+uh thrash your database than just filling it with
+worthless uh worthless files
+from that. So, um so there's that and then each disk also
+takes about 2-5 minutes to
+uh to scan so, at a minimum just the logistics of-of
+cloning the disk, mounting
+it to your image, and then detaching it and force
+detaching it um takes about
+2-5 minutes. So, the more disks you have to scan,
+exponentially you know more
+time y-you kinda spend um not exponentially but just a
+lot more time you spend uh
+doing it. And, also, it just costs money, so you know who
+likes spending the profits
+right? So, um so basically I- I kind of came up with
+a-a-a a way to filter out
+these disks uh if each disk has an owner id and that
+owner id basically uh just
+tells you who made the disk. So, I looked at the owner
+ids, so I just counted them
+and I looked at the frequency that owners would
+publish disks. And, what I
+found was there were a couple of outliers that
+published about you know uh
+like 50 or 60% of the disks there about 4 to 5 of them
+uh one of them is Amazon
+themselves. So, uh these disks were basically just
+kind of worthless. They're
+just deployments of like github enterprise and just a
+bunch of stuff you don't
+care about. So, um I took those and I figured the
+smaller owner ids would have
+a better chance to kind of reel in those credentials
+an-and get them going. Um,
+so, using that owner id I was able to cut down the
+number of disks I had to
+scan to about 20,000 and uh that just made the whole
+process much faster and I
+was able to finish it in time um. So, the next step
+is attaching the volume and
+there's this like nice AWS butterfly effect that
+happens where uh you end up
+wasting a lot of money because this tiny bug in
+your code ended up like
+breaking everything. And um there's some really
+interesting failure points
+that I didn't realize exist. Like, I didn't know the
+metadata url could fail um
+and you know one day it failed, it crashed my python
+script, and I had to uh you
+know just manually k-you know kill those disks, those
+zombie disks that were
+laying around. But, it-it kind of made me think about
+well, if I'm testing for
+SSRF and I have a scanning you know some scanner and it
+throws the metadata url at
+the- at the you know target, and that metadata url ha-
+just happens to be broken
+during that time period you know I just got a false
+negative and it kind of made
+me rethink some of the AWS testing um that I do myself
+um just in simple cases like
+that. And then also your gonna have like a ton of
+file system issues like lvm
+disks that just you know for some reason it just needs a
+totally separate tool to
+unmount and mount, I don't know why but you know that's
+just the way it is. So, um,
+you're gonna run into a lot of those issues and you kind
+of just want to make sure
+that you're uh you know taking care of them. And
+then, searching the disk for
+secrets um, so one thing you can do is you can use
+something like DLP diggity
+or um like gitrob or uh trufflehog to kind of go
+through like specific things
+and that's pretty much what I did, I just uh I stole the
+grips from trufflehog, thank
+you and then I kind of came up with some-some of my own
+to just uh look for the
+private keys and what not so um so th- so this process uh
+was pretty-pretty straight
+forward just mostly uh repping for like really high
+signal stuff and also uh I
+did sniff the MIME type for each file I would attempt to
+kind of only scan files that
+didn't look like um you know binary or images or what
+not. So, uh, so this kind of
+cut down on the number of files I had to scan for each
+disk and led to you know
+faster uh you know faster uh scanning. So, um an-and
+another interesting thing I
+did with this as well is uh because you have access to
+all the default disks on AWS
+I spun up all of the default disks and made like a huge
+blacklist of every file that
+you don't want um and then I manually like added some for
+/etc shadow we always want
+to steal shadow files so we kind of go through this uh
+this white listing and black
+listing process and um all of this uh you know ended up
+uh kind of coming together
+to make it pretty quick to scan these disks you know,
+each disk can kind of go- go
+down in about like 7 minutes. So, that's pretty
+good for uh you know for the
+purposes of my research and uh it- it ended up working
+pretty good. Um, yeah, so we
+just uh end up grepping through everything and you
+know it's just-just uh just
+kind of like s- uh some lessons learned um like have
+tests for your code the AWS
+butterfly effect is definitely real and it's
+going to return things uh
+the a- the AWS APIs will return errors you definitely
+don't expect like the
+metadata url failing. And also, you definitely want to
+design for multi-region up
+front. Um, I made some design decisions that ended
+up kinda you know uh sc
+messing that up a bit because I didn't realize
+snapshot ids are actually uh
+not um unique across regions. So, you could have
+two regions, two different
+snapshots, one snapshot id and uh you know for the
+primary key in your database
+is that id your kinda gonna have a bad time. So uh yeah
+just make sure you uh think
+about all of these things up front before you start you
+know uh kind of looking at
+it. So, we've kinda talked a little bit about um you know
+what this is, how to find it
+and uh we can talk about fixing this problem. So,
+remediation. What does
+remediation look like? In this case it is uh pretty
+easy but there's a couple of
+things that t-to keep in mind. Uh, you definitely
+want to go and search for
+through your AWS account to find any public disks that
+are unencrypted. Um, if you
+do find one that is sensi- has sensitive information in
+it and is meant to be uh is
+not meant to be public, you wanna take town the snapshot
+first of all that should be
+obvious to everyone. But then you also want to rotate
+your credentials and, I know
+a lot of people like to skip this step because it's a
+pain, it's hard oh there's
+that one system you know that someone built 5 years
+ago, we can't rotate the
+creds I'm sorry you know, uh, but you should
+definitely rotate the
+credentials because if you think about the
+vulnerability I'm scanning
+every single disk every minute basically, and as
+soon as you make that
+snapshot public, I'm going to initiate a copy on it and
+once that copy is initiated
+it takes about 2 to 3 minutes to actually finish
+the copying process and from
+that point, the copy is mine. If that copy finishes,
+you can't do anything about
+it and you're not even going to know honestly. Um, and
+that's one cool thing I
+thought that was uh interesting about this
+attack surface is, unlike a
+lot of other attacks um w-with AWS if you're like
+sending a lot of web
+requests to try brute force directories or so-or
+something like that um
+you're going to you know show up in logs. But, in
+this case you're not
+actually directly attacking a-a customer on AWS so
+you're actually not gonna
+log anything, and it's going to be really difficult for
+someone to actually detect
+that you're cloning their disks. There's basically no
+way to do it. So, um, at
+least that I could find you know in my in my uh
+research. There might be
+some some logging set up somewhere, but I couldn't
+find it, so it's kind of a
+sneaky attack you know you're gonna, you're gonna
+have your creds stolen and
+you're going to uh not really even understand how
+it happened because there's
+no logs. So, if I'm stealing your disks every minute,
+you're gonna wanna make sure
+even if it's only a brief exposure of the disks you're
+gonna want to make sure you
+actually rotate those credentials because anyone
+performing this attack is
+almost certainly gonna have a set up similar to mine
+where they're just kind of
+pulling it down all of the time and uh an-and not
+letting you you know kind of
+get away with uh without rotating those credentials.
+So, um and then the last
+step is of course to have a little post mortem. You want
+to make sure that you
+understand how this vulnerability happened in
+the first place. You
+definitely don't want to uh just let your developers you
+know just kind of go and uh
+and just kind of have free rain uh is this an SDLC
+problem or is this like a
+random script that we have that we occasionally use and
+just happens to create
+public snapshots. Um, you just don't really know that
+so definitely check it out
+and investigate how you got there and uh you're gonna
+want to uh you know uh go
+through this process. Uh, you can go through it
+manually, I'm going to uh
+delay the release of the tool just by a couple of
+weeks to uh coordinate with
+Amazon and get some of these uh disks you know taken
+down, give people an
+opportunity to go through their own disks and just
+make sure there's no
+exposures um but after after a couple of weeks I'm going
+to release duffle bag and
+you can you know just go download that and that will
+help you scan disks. And,
+I've written it in such a way so that um it will work
+on kind of any disk you have
+if it's private or public. So, it can help in your own
+organization uh scan for
+disks you know because one thing uh that I find a lot
+is um you'll run a scout
+suite report and then you'll get a bunch of EBS volumes
+that are unencrypted and
+sometimes there's like 1,000 of them and you're like how
+do I go through all of these
+and figure out if any of these are actually i-if
+anyone should care about
+them. So, this tool should work with public and private
+disks as well as like a wide
+variety of file systems. So you should be able to use
+this to kind of help uh sift
+through uh that pile of hard drives you do need to go
+through and uh in your own
+organization. So, definitely check out that in a couple
+of weeks that will also help
+remediate it and um we also uh just kind of wrapping up
+here, some more loot that I
+thought was pretty funny um so I always like to look at
+my favorite password you
+know I always like when I crack passwords I always
+like to you know pull out my
+favorites, so I found like nuglovers password and that
+was for like a docker
+account um so thank you nuglover and if that's your
+password you should probably
+change it. Um, yeah, and another thing uh I was
+looking at some disks and I
+found some creds on there I was super excited I was you
+know going through
+everything and uh super- super jazzed yes creds and
+then I realized oh my God
+this is a capture the flag box, I just captured the
+flag on a disk I didn't even
+on a CTF I didn't even know I was playing you know it's
+just [laughter] it's like
+yeah [applause] it was it was it was pretty good,
+thank you, thank you. Yeah,
+so, so that was a great find uh, and uh another thing I
+found on there was wallet
+dot dat and uh if you don't know what that is, that's
+your private key for your
+bitcoin wallet um and I found some like z cash
+wallets too and everything
+so. Basically when I found those I mean my heart rate
+went up so much you have no
+idea I thought I was about to be crypto rich and you
+know like go live on my
+island uh yeah um it didn't turn out that way, I'm here
+and not on an island so, you
+can definitely know that uh I didn't really get any
+money from that but it was
+mostly just people toying with uh crypto currency
+which is great but um you
+know didn't get crypto rich unfortunately with this bug
+um but that would have been
+nice. So, you know, maybe in the future maybe someone
+will throw their wallet dot
+dat up there with a couple hundred bitcoins, whatever
+um and another thing I found
+a lot of was SSH keys on Windows machines. And I was
+really curious about this
+because I thought a lot of people using AWS and and
+what not would be um just
+using linux or some other disk and it just turned out
+there was a lot of windows
+disks that I wasn't expecting and I had to go
+and make better black lists
+and what not. But like every time I get an id_rsa off of
+a windows box, I just kind
+of smile a little bit because you know it's kind
+of like this cool. Um, so
+there was like a surprising number of Windows machines
+uh out there and a lot of
+them were misconfigured in this matter to uh you know
+to to facilitate uh all the
+secret exposure. So, um lots of Windows disks just some
+really cool stuff there and
+uh yeah I'm sure that you know there's a lot more out
+there you know I was only- I
+was pretty timeboxed on this research cause you know it
+started in January and then
+I kind of put it off and you know uh you know just said
+oh well you know noone noone
+is really going to worry about this, but then I
+realized like how spread
+this is and wanted to start looking at it more and more
+in detail. So, you know
+there's still a lot out there I was only able to
+look at like text files and
+what not there still could be like database files and
+lots of other interesting
+information. Um, and I also only you know I kind of
+limited myself to uh disks
+that were under about 100 gigabytes. So, there's still
+like more attack surface and
+the cool thing is new disks pop up everyday, there's
+about 5 or 10 disks that pop
+up every single day. So, it's like everyday you get a
+nice little chance like a
+present uh you know like treasure hunt every single
+day. Um, which is just fun
+you know. Uh, you get you get those uh emails back you
+know like ooo found found
+some creds. So, um just kind of have some conclusions
+here, um I manually
+validated about 50 you know sets of credentials and then
+after that I was like
+alright dude I can't do this anymore like my eye my eyes
+are bleeding you know from
+like grepping out uh creds and testing them on like a
+million different things so
+I would just kind of give them to uh Amazon and let
+them deal with it um, I kind
+of estimate there's about uh 750-1250 you know high and
+critical exposures across
+all the regions um and this is just kind of a direct
+extrapolation from my uh you
+know my region and the disks I was able to look at in
+this time. And, there wasn't
+really a pattern for uh you know who was impacted it was
+just kind of like random um
+software, uh government contractors, health care,
+everyone uh everyone was
+just kind of random so not really a whole lot of
+patterns there. Um, and
+overall it would cost about $300 plus R & D time. Um, so
+it's a very cost effective
+attack which is not my assumption it would not it
+would not have been my
+assumption and it wasn't my assumption when I first
+started this um because I
+thought you know spinning up these hard disks would
+actually be pretty expensive
+but it turns out if you destroy them pretty quick
+after you scan them, it just
+doesn't cost that much. So, it's a very cost effective
+attack and because you can
+kind of do it passively you know over time and when a
+new snapshot pops up you
+just go scan it really quick and turn it off um it's
+pretty cheap to do which I
+thought was great you know getting a set of root keys
+for 300 bucks it seems like
+a pretty good deal you know along with all the other
+stuff so um you know the
+research and development time of course and uh yeah
+and that was basically uh
+you know just uh really cool aspect of this I really
+liked uh just super cheap,
+free creds what could go wrong? Um, yeah so that's
+pretty much it uh you know I
+just want to thank you guys again for coming and I want
+to thank these people as
+well and uh thank you so much for coming here today
+um and that's pretty much it
+so. [applause] yeah, yeah, enjoy the rest of your
+Defcon guys I'ma hit the bar
+and I'll probably field some questions outside if you
+guys want to chat with me I-
+I would love to talk about this stuff and uh any ideas
+you guys got um so yeah have
+a good one, enjoy.

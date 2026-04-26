@@ -1,0 +1,212 @@
+> SOEN: All right. I guess we'll get started.
+Hi everyone. My name is soen, and I'm talking about Evolving Exploits Through Genetic Algorithms.
+So before I jump into genetic algorithms, though, I want to just give you a little background
+of who I am. I'm a CTF player for DEF CON for many years. I do programming. I love viruses,
+worms. And I've been trained as a computer scientist, and I do penetration testing in
+the daylight hours. But, you know, I'm still a n00b.
+But this talk was focused mainly off of kind of my computer science interests and my job
+and my inner laziness wanting to come out. And I was looking at my job. And I go, what
+I do on a day‑to‑day basis, I exploit web applications. And there's a number of
+problems associated with, you know, performing this task.
+And the major ones are it is driven by the customer, so you have to provide them what
+they want. There's a small scope. You're only allowed to hit a tiny portion of the site,
+so you have to have like a scalpel‑like efficiency. You can't hit the whole web server
+with a hammer. You only have a limited amount of time, usually very short, as in a day,
+two days, three days. And it's all report driven because it's based off of giving a
+report to the customer. And so these problems is what has been driving
+me to look into this area. And there's a number of ways that I approach trying to solve these
+problems, and my methodology was usually run as many scanning tools as possible against
+a web application and then mainly poke at the areas that come up as suspicious. And
+from there, if it does turn out to be exploitable, I write an exploit for it.
+But there's a couple problems inherent with that approach, because the code coverage is
+inherently small because I'm trying to limit the code that I view on a day‑to‑day basis.
+So I ‑‑ I want to have myself view less code and make sure that the code that I'm
+viewing is actually potentially vulnerable instead of just what have you.
+And also they ‑‑ the inspection of suspicious areas that are discovered by say web scanners
+or manually testing is also time consuming as well. And then additionally, the development
+of a working exploit for site takes time as well because there might be additional blocking
+mechanisms in place like a WAF, a web application firewall, which you can see you have SQL injection,
+but all of a sudden, you don't really have SQL injection because there's an additional
+layer you have to break through. And there's a number of really good tools
+out there for exploit discovery and development. And I ‑‑ I use Acunetix or ZAP and SQL
+Map very frequently, and they're all fantastic tools. But I realized running, you know, some
+of the other tools like Nessus, Nmap, other scanning tools that there's this problem.
+There's this very similarity ‑‑ there's this very big similarity with an existing
+industry, and it's a fundamental problem with web application scanners as we know it today.
+(Applause) >> SOEN: So ‑‑
+>> SPEAKER: Stand over there. What up, bitches? It's funny. He thought you were clapping for
+him. (Laughing) He's like, well, I said, SQL map, what? Okay.
+All right. You know why we're here. Wow, this first time. There you go. That's what I'm
+talking about. At the very back, in the gray. No, in the hoody, man. Bring your skittles
+up here. Oh, what is this called? >> AUDIENCE: Shot the n00b.
+>> SPEAKER: Thank you. Oh, my God. That was awesome. The Price is Right. You are here.
+All right. Thank you, sir. Wait, what's your name?
+>> AUDIENCE: Conner. >> SPEAKER: Conner. Conner represents all
+of you who are first timers. And DEF CON. >> AUDIENCE: Cheers!
+(Applause) >> SPEAKER: So foundational problems with
+current techniques ‑‑ sorry. That's all I knew. I think he was talking about scanning.
+Oh, scanning. >> SOEN: Scanning and software and stuff.
+>> SPEAKER: Oh, my God, look. He's got a countdown timer.
+>> SOEN: Yeah. >> SPEAKER: Oh, shit, you only got five minutes
+to go, dude. Four minutes. Wow, that sucks. >> SOEN: Well, thank you for the alcohol.
+I appreciate it. >> SPEAKER: You're welcome.
+>> SOEN: So back on track. The foundational problems that we have with web application
+scanners is that the current main technologies are built around a signature based system.
+They have an understanding of what a potential exploit could look like. They throw it at
+the web server, and then if they retrieve favorable or unfavorable result, they mark
+it as a finding. (Cough) (Laughing) (Applause)
+>> SOEN: And so, okay. So I thought, you know, hey, why not take genetic algorithms and apply
+them to web applications. Why not take your average basic SQL injection and go from something
+that a web application firewall can easily protect against and a programmer can easily
+defend against to something that is more, more hard to stop. And so this whole process
+of evolution is something that was really fascinating to me.
+And so ‑‑ so for this talk, we're going to use genetic algorithms to make exploits
+for SQL injection, command injection and our attack surfaces, HTTP and HTTPS. So it's web
+based parameters. And we're not going to cover anything else. This could be applied to a
+number of different things, another JSON, Ajax, what have you. But just for the scope
+of this talking, we're talking about SQL I and command injection.
+So the two I wrote for this talk is called Force Evolution, and it takes this concept
+of I'm going to use genetics to write exploits for me so I don't have to do it myself. It's
+the inner lazy programmer. So what is a genetic algorithm? Well, a genetic
+algorithm is essentially you create a large number of things, and in this case, they will
+be exploit strings, and you look for a certain solution that these things will provide. And
+in this case, it will be an exploit. And then you score all the strings' performance using
+some sort of vague, ambiguous fitness function. And this fitness function ‑‑ in our case,
+we'll get into that later, but there is a way of determining, okay, using numbers, this
+is a better injection string than the previous one.
+And so our algorithm here is we have this loop, while we haven't found the solution,
+we score, we kill off all the low performing strings. We breed the strong performing strings,
+the ones that are more efficient or they bypass or they exploit better. And then we also mutate
+the strings randomly. And then once we have a ‑‑ found a correct exploit, we display
+it and show it. And so the tool, Force Evolution, does exactly
+this. We create a large number of pseudo random strings. We are playing upon the history of
+all previous ‑‑ well, all that I could find SQL injections and command injections
+and using them to influence the population of creatures that we breed so we're not losing
+evolutionary progress. We're progressing forward. So we're ‑‑ we create a large amount
+of strings, and we breed in what we know has worked in the past, but we use that just to
+influence the population. We don't actually say, okay, we have a set of signatures because
+then we're back to the original problem. And we go through the exact same process as
+a generic, genetic algorithm. We send the string as a parameter value, either a post
+or get, what have you, and then use the response from the server to determine the score. And
+this could be many things. So we have a good deal of granularity on how we can score a
+string. And then just like the rest, we cull, we breed, we mutate. And then when we find
+a string that successfully exploits an app, we display it.
+There's a number of things we also had talked about, like what is this fitness function?
+Like how do we define, is this string better than another string? And there's a couple
+of things that we can look at and say, does it cause weird behavior? Is the string reflected?
+There might be a potential for XSS in this. Does the string cause an error? And if so,
+is our SQL injection or command injection displayed inside that error? That gives us
+additional information as well. And also, does the exploit string cause goal data or
+sensitive data to be displayed so that we can see, oh, potentially this is, you know,
+a good exploit. So once we've ‑‑ once we found out what a creature score is, then
+we breed the top scores and then we kill the underperforming scores.
+And the majority of ‑‑ well, I can't really say majority, but a good chunk of genetic
+algorithms use this geno cross‑over, and this works really well in our domain because
+we have these variable length SQL injection strings that we need to breed against each
+other. And so the ‑‑ this breeding process consists of cutting a string in half and then
+mixing halves and then mutating them. And the current implementation that I have in
+the tool is two parents create four children and also survive themselves so they pass on
+their genes and they also live to see another day until one is better than them.
+Now for the next step, what do we mean by mutating strings. Mutating our exploits?
+So (coughing) yeah, that whiskey. The mutation rate, I found to be usually it's best to have
+it variable. And there's a number of operations that we can use, but it all boils down to
+three essentially operations. We have mutation, changing a single byte in a string. We have
+adding information and we also have removing information as well. So it's somewhat like
+natural evolution. And so say, say for example, if the premutated
+string ABCDE or ABCD, the mutations that have been applied to it are the X has been prepended
+to the string, the B has been deleted and the D has been mutated, so hopefully, that
+will give you some idea of what we're saying. We're not doing anything crazy. We're just
+picking a random part of the string and we're changing it a little bit. So that's how we
+mutate the string. There's a couple things to keep in mind as
+we go throughout. Because they have this algorithmic process of breeding, killing, breeding, so
+our population is going to vary. And the mutation rate versus search speed is very important
+because if we mutate too quickly, if we say every single part of the ‑‑ every single
+attack string that we have is going to change, it's essentially throwing random data at the
+web server, and it's really not efficient. It's not worth doing. It's taking a bunch
+of dice, throwing them in the air and hoping to get all sixes. So it has to be tuned down
+to a point to where it is efficient search. And there's also the string cull rate versus
+the population speed. If you cull more than you breed, your ‑‑ the amount of strings
+in your population will decrease and vice versa. If you repopulate too quickly, it will
+be like rabbits, and they will denial of service run machine. So.
+With these things in mind, I went ahead and I compiled a couple statistics on the leading
+edge tools. And I did Acunetix for ZAP, the Olys, the ZAP and SQL map as well as Forced
+Evolution, and this is just the raw data, but I'll go through the charts to show how
+it compares to them. The number of requests sent to server is very
+significant amount. Forced Evolution sends on average maybe ten to 30,000 requests to
+a server, so this is not exactly a stealth attack tool. But we'll get into some of the
+pros later. And the time to exploit is usually dependent on network blatancy and so these
+will fluctuate a little bit. But Forced Evolution does perform well compared to some tools but
+not very well at all to others. And the same for SQL injection. I also did
+the same statistics for SQL injection, and the total number of requests for server decreases
+dramatically because SQL injection has a finer way of expressing the score associated with
+the fitness function. There's a better way, and it's easier to score one string higher
+than another because you have more information to do so. And so, it's naturally more efficient
+because it depends on that fitness function, that scoring mechanism to determine who lives
+or what string lives and what string dies. So it reaches a solution faster. And the time
+to exploit as well decreases proportionately. So hmm, with that, let's go ahead and try
+a demo. May the demo gods be gracious because this does depend on Python import random so
+let's hope everything works. There we go. Okay. This is terrible. I'm sorry.
+Okay. So we have a generic web application here with a log‑in form and it is vulnerable
+to SQL injection as you can ‑‑ I'll just type in some random characters, and it does ‑‑
+it doesn't bring back correct input, and there's also other problems with it as well. So we
+know that a vulnerability there exists, and we can discover this vulnerability or this
+suspicious area like we talked about previously through other scanning tools, and now all
+we have to do is point Forced Evolution at it, and it will go ahead and exploit it for
+us. Let me see. All of a sudden changed size. Sorry.
+There we go. Okay. So and Forced Evolution will be up on GitHub in about 15 minutes after
+the talk. So the command line options. Wish I had my glasses are. We have a target for
+this. We'll just do a local host. And we have an address of the vulnerable web page, so
+in that case, that will be SQLindex.PHP. And then we also have the vulnerable variable,
+which I believe is password. I believe both should work. And then the method. The method
+previously was displayed as post, or I'm sorry, get. But the tool has both options. And the
+other variables we'll just include for completeness. We'll just include the user name.
+>> AUDIENCE: Typo. >> SOEN: Typo? I would be dangerous without
+my glasses. >> AUDIENCE: No.
+>> SOEN: User name equals let's just say DEF CON. And then we also have what will constitute
+a valid exploit. So in this case, we want to get to the administrative area of the site,
+and so we'll put in our goal text will be administrative ‑‑ we'll just put admin
+because the tool will search any request or any response that it receives back, parse
+it and then determine if it has that string in it.
+So and on the right‑hand side, I have a tale of the current request coming into the
+web server, so as we start naming the tool, that will jump up.
+Wish me luck. Here we go. All right. Right now it has created a large number of strings.
+Well, actually not that large. It's only about a thousand. But it's running them against
+the web server currently, and it's scoring them based upon what the response it receives
+back. And it's taking the top performers and it's breeding them so right now we're at generation
+two, three. (Laughing). >> SOEN: Nothing crash. Okay. Five. And because
+this is based upon random ‑‑ random strings. Sometimes the solution is found extremely
+quickly and sometimes it takes a while. But because of the influence of the previous database,
+this will become much, much factor. Come on. (Applause)
+>> SOEN: There we go. All right. Drag this back over to my side. So the pros and cons
+of using genetic algorithms. The cons, there's a couple major ones. This is not a very stealthy
+attack tool. As you can see, this generates a large amount of requests to the server,
+and this is inherent in genetic algorithms as a whole. And there's a small potential
+to inadvertently destroy the database in an operating system, so I wouldn't run this against
+production environment. Job security? I don't know.
+Yeah, and it is a slower process to develop and test exploits, at least from the front
+end, because I'm sure anyone in the audience, when they see that SQL injection, they write
+it down. And ‑‑ but see the program, you know, 20, 30 seconds to do it. And genetic
+algorithms will always be suboptimal to source code analysis because there's just more code
+coverage you can do. But the pros ‑‑ the pros for genetic
+algorithms and using these to create exploits are fantastic. They're really cheap in CP
+ram and hard drive and human time. You can run that on Raspberry Pie. Your only limiting
+feature or factor is the network speed like how far away are you from the web server.
+And as far as my time goes, I can just turn it on, and it runs. I don't look at it again.
+It's good. And I feel it has more complete code coverage
+than other black box approaches because not only does it have the signatures that the
+other black box approaches has, it also isn't bound by a box of thinking. This is ‑‑
+someone is saying, this is what we know a good SQL injection to be. It doesn't have
+that definition. It's limitless in its approach to the solution and so that ‑‑ that takes
+us to the ‑‑ yeah, right now, the tool will break web applications in the future.
+It might not do it efficiently, but as the database of SQL exploits grows, it will do
+it more efficiently. And another huge pro to this is automatic
+exploit development. I don't have to invest my time into sitting down and figuring, oh,
+okay, I got SQL I. Oh, okay, there's a WAF. Oh, okay, there's something else. Oh, okay,
+there's filtering rules. This doesn't need to know about those. It just cares about that
+question response, and so it's really fantastic in that regard.
+And the last biggest pro for this is emergent exploit discovery because since this isn't
+bound by what we know as okay, this is a valid exploit, this will create new things, new
+ways of approaching problems that we haven't seen yet. And for that reason, I think it's
+absolutely fantastic, and I think we should pursue this. So in conclusion, if you can
+download the tool, give me about 15 minutes. And there's my contact info. So ‑‑
+(Applause)

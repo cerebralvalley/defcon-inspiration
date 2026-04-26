@@ -1,0 +1,499 @@
+>> FRANCIS BROWN: Welcome everybody to RFID,
+live free or RFID hard. My name is Fran Brown. I'm a
+partner at Bishop Fox, formerly Stach & Liu. We just rebranded
+it. There's going to be some exciting stuff to show you guys
+here today. I'm just going to get right into it.
+Basically, what I want to go over today is to cover practical
+advice on successfully performing a penetration test of an RFID
+physical system. A little bit of background behind this. About
+a year ago, I was doing an assessment of the electric utility
+and I needed to get to that network which was only accessible
+from two buildings so I needed to break into a building is how
+it all started. And that was my goal. So I -- so I started
+looking into, you know, different RFID presentations that have
+been in the past. Unfortunately, there was no hacking exposed
+RFID. (Coughing.)
+>> FRANCIS BROWN: That just let me know what I would need to
+be able to know to break into a building. So I saw the past
+presentations I could find, anything I could find and after a
+couple days, I realized I was no closer to achieving my
+objective than I was when I started. Most of the presentations
+in the past discussed tools that weren't released or were nor
+theoretical. They didn't give me exactly what I needed to know
+to be able to break into a building. So that's what I hope to
+cover here today. And I'm going to finish up with practical
+defenses as well so you know how to protect yourself.
+So bringing it down -- it's a pretty simple methodology when
+I would to do an RFID penetration test it just boils down into
+three simple steps. First steal somebody's badge information
+without them realizing it, while walking by them. Two, taking
+that information and making a clone of their card and then,
+three, going into the building that I want to break into. And
+possibly planning a back door so I don't have to stay there very
+long. It seems pretty simple. But the thing that I -- that I
+soon realized that step one was a little bit difficult because
+most of the tools out there required you to get within a couple
+centimeters to be able to successfully steal someone's badge
+information out there their pocket or their purse or, you know,
+what have you. So that kind of led to what I like to call the
+method of RFID hacking. (Laughing.)
+>> FRANCIS BROWN: Are all from different presentations, YouTube videos, things I've seen in the past
+where, you know, the people go on and on about how insecure
+it is and how easy it is to steal somebody's badge information and
+then they have something like this they're walking up and
+grabbing people's asses with Proxmark running on their sleeve
+with a big CD sleeve antenna walking down S scribing.
+I don't know -- you see Jonathan up there -- I don't know how
+many times you could potentially do that, walk around and, you
+know, our target facility and started grab-assing before you
+actually get caught. I would imagine once or twice. This was a
+unrealistic thing for me. This is not going to work. I'm not
+sure what I can do at this point but there's really any tools
+that were out there to allow me realistically be able to pull
+this type of attack off. So I started looking into my own
+custom solutions and with that I'm going to do a couple quick
+videos that I think demonstrate the eliminations as well as our
+tools for stealing for step one there and making a clone of a
+card just to show how easy it is now to be able to pull this off
+and steal someone's badge number and then break into a building.
+Can you guys see that okay? By far the most popular -- okay. In this first
+one it's -- how many of you are familiar with the Proxmark.
+It's probably the Number 1 tool you could buy. It's really
+great for a lot of important purposes.
+(Feedback.) >> FRANCIS BROWN: Sorry about that. It's too
+much for the microphone.
+But as you'll see here, it also has the problem of distance.
+This is the Proxmark. This is an RFID hacking tool you can
+buy by far the most popular we have. It's plugged into my
+laptop here. A USD and the antenna. We're running the Proxmark
+and we have it in listening mode and it's trying to listen right
+now. As we can see it still does not see the card even at this
+range. So I'll keep coming down. Keep coming down. Getting
+closer to the antenna until -- there we go. 6339. We had to be
+probably an inch right here before it actually starts picking up
+the badge information, 6339. So this is about how close you
+have to get to somebody on their person to be able to
+effectively use this tool to steal their information, which is a
+little too close for comfort if you ask me. So -- I mean, how many people have pulled
+off successful penetrations with the Proxmark or whatever
+existing tools that are out there? A handful of people? I mean,
+I guess you could, but you saw the antenna. It's about the size
+of a CD and typically people would run it down their sleeve
+and have this CD, you know, and try to go up and guess where
+the person has their badge on to begin with. If you don't
+know which pocket it is and start, you know, feeling around.
+(Laughing.) >> FRANCIS BROWN: So I -- I saw a few things
+where people posted custom solutions that they had done.
+They didn't really release code or , you know, practical advice
+on how to put it together. So I kind of had to do my own thing.
+It will be up on the website tomorrow, but my goal here
+was to make it so that I can create a tool that security professionals
+who, you know, don't know a lot about RFID or have an electrical
+engineering background or, you know, are going to build
+their own custom antennas, this is your average security professional
+who wants to be able to perform this kind of pen test
+so they can get up and running realistically quickly.
+So -- >> Wouldn't it be great if there was a tool
+that took that step one that allowed us to secretly steal
+this information without having to go up and grab somebody's
+butt. So as a crazy random happenstance we do have such a tool,
+6339 again. We look to my left here. This is what I'm calling
+a long-range RFID stealer.
+(Talking Simultaneously.) >> FRANCIS BROWN: You see the --
+So we'll go ahead and pull it up here the 6-bit card moving
+in. And card number 6339. So it puts to the screen nice as
+well. A few feet away right now. And with this, I can steal
+the information without having going and grab somebody's butt.
+So we'll take a look actually what this tool is doing and how
+the circuit board comes into play. You turn this off. And we
+can see that it is a foot by a foot and only --
+(Inaudible.) >> FRANCIS BROWN: And have a missile switch
+from the back here as well as using to the alarm and things
+like that. It's completely self-powered and portable so what
+we would do is take this and put in your message bag or backpack
+or briefcase; walk around with it. Walk by somebody from up to
+3 feet away and pick up their badge information, which is
+much better than, you know, grabbing butts up here. It's to the
+right of the screen where we actually see where it's easy to take
+apart here. Just a simple scrim at the front. Something I can
+just twist off. And take the lid off and this is a long distance
+commercial badge reader, the kind you would find in parking
+lots so that you don't have to get out of your car. You
+can just roll down the window and put your car out of the car
+window and hold the badge up and so it's meant to be picked up
+several miles away. This was all to begin with. All you do is
+add the LCD screen, the batteries are self-powered and we will
+recognize this circuit board here which you have without
+all the things that are installed. But it has other logic the
+code and it will be on our website for you to download as well
+and this is just an ID number control that you can buy online
+on Amazon, Radio Shack as well as just some resistors and a few things
+there you can pick up there anywhere. We'll have detailed
+instructions on the website to recreate this, which is our main
+goal here. And finally you'll see the micro-SD card. I was
+running it in the SD card in a text file.
+So pretty cool. (Applause.)
+>> FRANCIS BROWN: Yep. Thank you. Thank you. So, you
+know, for those who are really attached to it, the ass-grabbing
+methodology is still at your disposal if that's what you want to
+do but this, I think, is a much better solution and so you could
+see it's super light. It's got just self-powered, completely
+portable. Picks it up from a couple feet away as opposed to a
+centimeter or two. And, yeah, so effectively this was my
+attempt at solving that step 1 of those three steps.
+And then I just have one more video, which shows you step 2,
+which I mentioned -- I like the Proxmark. This is the ID card. The output.
+I put it to my laptop. It should come up over here. So we
+should see the SD card came up that I pulled from our long-range
+RFID viewer. Check that out and we see that there's a single
+file, a simple text file. I click on that. And we see here --
+when you scan it a few times, it's a 26-bit card. Here is the
+notation information for that badge information we actually
+decode it for you. It's facility code 113. And badge number
+6339. We actually have the binary as well. So we've
+successfully completed step 1. We took the badge information
+where we can from 3 feet away casually walk by you and steal the
+information. Now that we have that we can use tools like the
+Proxmark to create a clone fake version of your badge so we can
+go ahead and use that and that's extremely easy. It's a single
+command where we have the Proxmark set up here. So what we're
+going to do here is -- I'm going to go ahead and copy that
+version of this badge, 6339; copy and come back to our Proxmark
+here. Now, the Proxmark is in read mode now and by hitting this
+button I'll stop that. So now we have the badge information
+from our tool, just the value and what we're going to do is take
+this programmable T557 card which is a programmable card that
+doesn't read anything right now, and we can turn this -- this is
+just a sticky note. It's clearly not the 6339 badge. It's for
+a post-it on it. It's programmable. I just lay that on top of
+the card here. And if we look right here, all I'm going to do
+is type in LF for low frequency, HID clone space and then I'm
+just going to paste in my value we took from our cards that text
+file and click N and we see cloning tag, it's done. So right
+now this card is functioning as an exact duplicate of the card
+we stole, 6339. So let's test it out. So we have our original
+badge number 6339, the original card 6339. And it's a Prox card
+too. 6339 still. Now we take our cloned card, this card which
+is clearly not that same card. It's my third -- badge 6339. 113, 26-bit card
+so now we've successfully stolen and now made a fake copy
+of this person's badge.
+(Applause.) >> FRANCIS BROWN: So pretty easy now, right.
+Hopefully you guys can get up and running with this kind
+of tool. At this point I've been able to train some of our
+consultants to do it now in about 10 minutes. There's the on switch
+which is also the off switch on the back, you know, go forth
+and prosper so -- what we're talking about here is low frequency.
+I saw with some of the articles that came out people were
+posting links to high frequency long-range antennas and things like
+that. But we're talking the 125 kilohertz low frequency technology
+for physical security systems. And in looking at that,
+people have known about these issues for quite some time. But
+the interesting thing to me was that no one's really done
+anything about it yet. This came from HID Global directly from a
+post they had recently saying 70 to 80% of physical security systems
+out there still use this legacy low frequency technology that
+we're exploiting here. Despite us having known for quite some
+time and they admit there's no security. They've been hacked,
+we know this. They're not resistance to any of these kind
+of common attacks and yet they still persist. And one of the
+motivations in doing this talk -- I'm actually after creating the
+tools was I noticed that, you know, we've seen Chris talking in
+2007 it couldn't be any simpler if you're using this information
+technology for your doors you're highly unsecure. That's a big
+bullet that's in 2007 and this quote came out of this blog
+post in 2013. So from 2007, to 2013 we've made about zero progress
+in terms of upgrading these physical security systems.
+And that blog post is actually pretty interesting to talk about
+some of the reasons why the physical security product lifecycle
+is about 20 years they estimate so most of the things they made
+was bought in the early '90s. HID offers more solutions, but
+people have bought and stolen products from 20 years ago and
+are more than happy with it. So to some extent it's ignorance
+on the part of the people making the purchased decisions. They
+just don't realize that these things are this insecure, as well
+as there's budget issues.
+So what we're looking at here is a basic breakdown of what's
+happening for a badging system for a door. There's four main
+components and coincidentally if we're thinking about doing a
+pen test this is the four areas that we'll want to target. So
+with this attack, we're targeting the card directly. We're
+going to local Starbucks in your building that we want to break
+into and hang out in the smoke area and something like that and
+targeting the cards that are on somebody's person.
+These cards -- basically when they come within a near
+distance of a reader like this, the reader powers it and it just
+singing out 26 to 3710s. That's it. As soon as it gets powered
+it starts singing this out depending on what they have and then
+the reader just reads these off the air and then encodes them
+and we can protocol which I'll talk about in a little bit and
+just forwards them on to the controller to make the decision
+about whether to open the door or not. And then you have the
+host PC where physical security guard will be sitting at new users
+and monitor, you know, cameras and things like that.
+So in breaking this down -- in doing this initial research,
+it was like pulling teeth. I mean, just trying to understand
+what was going on with these things. What's written on the
+card, how far away can I be? Every question that would jump to
+your mind if you didn't know RFID it would be the 130th Google
+hit or some random product manual that I found the answer in.
+So I tried to compile as much as I could here to make it easy.
+But one of the questions that come up, if I saw somebody's
+badge -- if I looked at the number on the back, is that enough
+information for me to make a fake copy of it? You'll want to
+Google images and somebody took their picture and you have their
+badge number could you take a copy of that? The short answer
+is, maybe. So basically there's 26 to 371s and 0s it sings out
+when it comes near a reader. They eventually get interpreted by
+a controller the way they get interpreted -- this is what they
+call the card format which typically breaks down into your ID
+and facility code. What's written on the card is the card ID
+which is part of what you need. If they're using a standard
+26-bit card then there's only 255 possible facility codes so
+technically with that, I could just try that card number and
+facility code 1, facility code 2, facility code 3. And pretty
+quickly be able to do basically what you see on the card. A 35-bit
+card or something, then it wouldn't be as easy to
+do. There's also -- you'll typically see on these
+cards one number and then a space and then a longer
+number. That longer number is just a sales order number. I found
+it in a product manual. If you want to buy more cards, when
+you call the sales guy you read him that number. It has nothing
+to do with authentication or getting you in the door
+or anything like that. So good to know.
+And this is what I'm talking about with the -- so in reading
+this as well, it's -- I saw things from your standard 26-bit
+card or your corporate 35-bit card and then you hear there are
+44-bit cards. And in the Proxmark, you see typically tools that
+are accessing them are 10 hexadecimal numbers which are 20
+digitals so what's exactly going on with the card is a little
+confusing to me 'cause people didn't really make it clear. So
+just to make it clear what's actually going on, it sings out 26
+to 37 bits in the air. It's always 44 bits on the card. And
+when you see here -- I scanned this in from a product manual and
+put the notation there myself. Typically, the -- always the
+first hexadecimal would be zero which is why it gets dropped
+which is why you see it's 10. You see 11 hexadecimals but it
+starts with a zero. Always 44 bits on the card which you see
+out there. The standard 26 bit is what you see on the right and
+then it starts -- come on, man! Everyone look at that guy with
+a stare. (Laughing.)
+>> FRANCIS BROWN: So it's -- it's always -- every single
+card it starts with six zeros and a one on every card. Six
+zeros and a one. And there's a buffer of 10 zeros and then a
+parity -- or a sentinel bit and then you're 26 bits so if you
+have a 35-bit card or anything up to 37, all it does is extends
+to the left using that buffer of those 10 zeros and that's the
+four full 44 bits on the card. So mystery solved.
+This is on low frequency stuff and mainly for breaking into
+buildings, but these type of attacks and the techniques that
+we're going for here are only going to become more applicable as
+we go on. We're starting to see them in credit cards in the
+U.S. now. Passports and my favorite -- who here is a Disney
+fan? Anybody? Disneyland, Disney World? Yeah, so Disney is
+going over to RFID for everything. So that's going to be fun
+experiments some field research. (Laughing.)
+>> FRANCIS BROWN: Get some fast passes to get to the front
+of the lines and things like that. So you see the band there on
+somebody's wrist. Everything from getting in the world to
+Disney World to getting your fast passes to the rides to paying
+for things to your hotel room are all going to be -- it's all
+RFID-based. They're rolling it out right now. So these things
+are just -- people are finding more and more uses for RFID
+technology that will be fun to do pen tests for.
+A couple of the tools that you want to have in your arsenal
+besides our tool here -- I would definitely recommend the
+Proxmark. You can get cheaper versions but the nice polished
+version is 399. You can use it we saw in the video for making
+cloned cards. It has all kinds of purposes that are great for
+doing RFID hacking. It does have a single button on it. You see
+that -- one crazy work flow for the single button on top
+of the Proxmark which is a little fun. It's like stand on
+one foot and hold the button for 4.5 seconds until it blinks orange.
+That's literally the one button's work flow which is pretty
+cool. Another cool thing with the Proxmark there's
+a tool called ProxBrute. Has anyone ever heard of ProxBrute?
+It's custom firmware that someone from McAfee that you
+loaded on the Proxmark that you can use brute force. Once
+you have like a valid badge, if you stole maybe, you know,
+just a normal worker's badge information to get in the front
+door, but you want to get in the data center and that person
+didn't have access, well, the card numbers themselves
+are sequential so you could use this tool and the Proxmark will
+simulate being a badge and try that number and the next badge number
+so it will allow you to brute force a different badge number
+to get into a different data center or more secured area
+than the actual badge that you stole which is great. And it has
+a similar crazy work flow for that one button which is altered
+there that you see. Also there's the RFID-idiot -- Adam Laurie
+has done a different talks over time, and compiled different
+python scripts for doing RFID hacking and he just keeps adding
+to them so for all different sorts of purposes so I definitely
+recommend checking that out as well as one convenience
+is that the software -- it all comes loaded on backtrack
+so all you need to do is get the equipment, plug the USB in and
+fire up backtrack and you can be up and running stuff pretty
+quickly. These are extremely -- essence anyone see
+these tools before from RF ideas? I don't typically -- I don't
+think I've ever seen this in a security presentation on RFID.
+I just happened to stumble across it. And basically it's just
+two little USB sticks about that size. It requires no software.
+It's for field testing for people that install this
+type of equipment and basically one of the things I wanted to answer
+what if I don't know what kind of card if this? What if I
+don't know what technology is using? Take the Disney, for
+example. The Disney stuff doesn't have -- it has all Walt Disney
+stuff on it. It doesn't tell what kind of card it was. If
+I wanted to figure out what type of technology it was, I had
+use these things. This would have a high frequency and a low
+frequency USB stick. You open it up and open up note pad and you
+lay a card on top of it and print screen and a note pad it will
+tell you not only what the batch information is, but what exactly
+technology it is, which matters for being able to understand
+what kind of tools you're going to need to break into it.
+So pretty cool. And then, again, this is our tool again which
+you saw the demonstration of already. I programmed in
+there -- you see a 35-bit card. Basically, you'll be able to
+get one of the certain versions that I'm about to go out
+or go to our website and download the code that you could send
+away to anyone that makes circuit boards. And for about 30 bucks,
+they'll send you a copy and then you buy the parts that you
+need, load the code that we have. It will be on our website, and
+be up and running. You essentially plug this in to any RFID reader
+that there is for any of the technologies. So as we'll see,
+simple missile switch in the back easily from 3 feet away.
+I designed it -- what I've been releasing I designed it in
+fritzing. Anybody familiar with fritzing. I'll be releasing
+that and you can actually explore it to send it away to get
+the board. That's a picture of the board that I'll be giving away
+after the talk. And essentially you could -- you could take
+this board and just basically has two inputs and two outputs.
+It's taking out the output of the reader like this one here. It's
+taking in the batteries and it's outputting the badge number
+to the screen and to a text file on the card. That's as simple
+as you could think of how the board is working. And it's output
+of the reader is we can output that I mentioned earlier which
+every single badge reader has this output that they typically
+use. So the 26 and 371s and 0s there's data one and data zero
+on each one it sends a pulse on data one and we're just tapping
+into that so essentially you could use this for any type
+of batch system. So the two main ones for physical security are
+HID Prox and Indala Prox for the low frequency which is both owned
+by the company HID, if I held up a HID reader to an Indala
+reader it wouldn't do anything. So between these two long distance
+readers, one of which you see here you're pretty much covered
+with 99% of the badges that people would have out there. So
+you could take my board, plug it into the HID reader which we
+have here and if you noticed it's not working you can plug it into
+the Indala reader and walk around and grab people's Indala cards
+as well. You see the proven securitized there written for Indala
+claims to be more secure and they have a lot of people
+convinced that it is. Instead of just singing out the 1s and 0s
+it does a little bit of obfuscation which doesn't even matter because
+if we're using an actual reader like we are it does all the
+coding for you. (Laughing.)
+>> FRANCIS BROWN: So it's very easy to do, and, you know,
+we've made fake versions and so both of these are just as
+susceptible. And finally I just plugged in an SD card and
+running it into a text file for ease but there's plenty of
+add-ons you can imagine. We play around with an ad next adding
+Bluetooth capabilities so I can see the badges on my
+phone as they're being read and even cell phone capability
+to have a text message. Every badge that it says if I leave
+it everything else. They would be easily added on to this
+particular technology.
+Basically, if you guys are aware of any tools that do this
+attack, you could let me know. I've heard people talk about it
+in theory in some Ph.D. papers. But the distance limitation
+that we're now getting with 3 feet on the west centimeters we
+saw before is due to powering the card not reading the 1s and 0s
+that is singing out. People talk about if you're leave
+something front door of the building and you let the real reader
+power their card you can listen for those 1s and 0s from further
+away, and I know that Chris Paget's talk he had mentioned being
+able to get up to 10 feet in this, in this passive mode letting
+someone else powered it. This was never released due to legal
+reasons I believe and I haven't seen any other tools
+successfully do it but it is something to be aware of in terms
+of getting further distance still. A copy of the card, I
+mentioned this in the video. What you would want to get are
+these T55X7 cards. They're like a dollar. You could buy them
+online. Just a note, all these slides, my note sections
+are white papers links to everything you'd want for
+each topic are in there. But these things are not blank cards.
+They're programmable cards. So they'll simulate the
+data and behavior of any type of card and what I meant -- when
+I mentioned a HID card wouldn't work with Indala wouldn't work
+with HID these cards behave like an Indala card or HID card
+so they can simulate any type of card and the data on
+them. They'll definitely want to have in your arsenal and
+you could reprogram them as much as you want to be your fake versions
+of cards. Finally, if people start, you know, using
+RFID blocking with a little stuff like that we have to move down
+the line what we're attacking, there's things where you
+can pop up the lid of the reader and start dumping things off the
+readers and attack them directly. There's a man in the middle
+tool called Gecko where you plug in the reader and as people
+badge in it's writing them to something as well. I didn't really
+designed my circuit board to be used that way but I realized afterwards
+with a little minor alterations, you could use this
+circuit board. All I'm doing is tapping into the output of a
+real reader. You could take the circuit board go to the front
+of the building that you're trying to break in open the lid,
+insert it and have it sit there and record all the other real
+badges that are coming through that reader so you could use
+it in this way as well.
+And this Brad -- I'll butcher his name, the guy from McAfee.
+He made the brute software I'm talking about he has a product
+where he's come up with tons of scripts and things to attack the
+readers and attackers directly. It's really cool. I would
+recommend checking it out. Lastly, once you get in, you'll want to not
+be in the building any longer than you have to be. So
+I recommend -- are you familiar with that poem plug? So it's
+just going to be your own personal VP back door into their network.
+It's $1,000 for the regular plug and 1500 for the Power Pwn.
+It's pretty cool licking it's a little hefty. I would recommend
+people are coming out images for the Raspberry Pi to
+do the very same thing even from Pwnie Express you got the Raspberry
+Pi and instead of $35 instead of $1500 you could create your
+own little back door to be on the network and you see people used
+hollowed out old laptop chargers with the Raspberry Pi with
+the back door which works pretty cool.
+I think we're just about out of time so I'm going to skip the
+to defenses. Avoid being probes. I don't know if this will
+help you out but it's very fashionable. So I would recommend
+upgrading your systems if possible to the contact smart cards
+the high frequency stuff. These things can do challenge
+response, authentication, encryption. If you're a company that
+has 100,000 employees placing everybody's badges and, you know,
+every single door out there might be not that realistic at least
+in any kind of good time frame. So in order to get around that,
+what I would recommend is, you know, changing -- using things
+like detection software so if I badge in at 8:00 in the morning
+every morning but all of a sudden I'm badging at 4:00 in the
+morning in a building I never go to, you can have it generate an
+alert and flag you. Also you have the protective sleeves that
+I'll talk about more in a second. But you want to not wear your
+badge in prominent view so I can't make a realistic looking
+picture of it. Security screws that prevent people from easily
+popping the lid off your reader on your door instead of just
+normal screws. And there's also ones -- some of your readers
+you have to check with tamper to detect systems that will send
+an alert if somebody is messing with the systems. And finally
+the protective sleeves you would get some of them work and some
+of them don't so before you buy 100,000 of them for your
+employees, make sure it works. This is a green card protective
+sleeve which one of our employees is from Scotland very charming
+fellow and he has his green card which has RFID in it and it has
+this sleeve that you should keep in it all times to prevent
+communication with your -- with your card. It doesn't work at
+all. It's probably just a piece of paper I don't know how they
+got over selling it to the federal government for every single
+green card and it doesn't work at all and my experience there's
+no rhyme or reason. Half of them work, half of them don't so
+get a sample; test it out before you buy them in bulk for your
+company. And that's it.
+(Applause.) >> MODERATOR: Okay. So here's the thing: If
+you want to get one of these awesome little boards or
+ask questions for that matter, we're going to do a little Q & A and
+distribution of these in the chillout lounge now.
+>> FRANCIS BROWN: See you guys over there.

@@ -1,0 +1,1254 @@
+It's my pleasure. You're getting
+a real stack of attorneys today. We had alley in here and he was
+a attorney and then a panel of a bunch of them this is going to
+be a really interesting set about the weaponization and
+regulation of security research. Something that is pretty
+important to a lot of us here. I'm not going to introduce
+everybody individually. I'll probably let Jim take care of
+that. So, let's give our panel a big hand. (Applause) >> JIM
+DENARO: Thank you for coming to our panel. This is licensed to
+own. The weaponization of security research. We appreciate
+you taking the time to explore this important issue with us.
+This is a unique time for the entire information security
+community. And shear why. The U.S. government is implementing
+rules that could change the way that information security is
+practiced in the United States. And more than that, it could
+even affect the way that we talk about information security. The
+way information is exchanged among us here. And if that
+sounds like a big deal, it is. And that's not an overstatement
+at all of the situation that we are currently looking at.
+Specifically, some new regulations are being proposed
+by the Bureau of Industry and security, also known as BIS as
+what we will refer to it here. That's within the U.S.
+Department of Commerce. Stated mission of BIS is to administer
+and enforce dual use export controls on various
+technologies. Such as body armor, bulletproof windshield
+glass, encryption, most relevant to what we're doing, and those
+charges are now being expanded to cover some technologies that
+we are seeing more often here in this room, even. So this is an
+opportunity for us to organize and to present a coherent
+explanation of our concerns with respect to the regulations that
+are being proposed. So, with that, let me introduce our
+fantastic panel that we have here. In alphabetical order, for
+the folks that are here at the table first. Dave Aitel is an
+offensive security expert whose company, immunity is hired by
+major companies to try to hack their computer networks to find
+and fix as a result vulnerabilities that hackers and
+adversaries could use. The company is well-known for the
+developing several advanced hacking tools used by the
+security industry such as Swarm, canvass, Accomplice, Spike and
+Unmask and Innuendo. >> Matt Blaze is a Professor at the
+University of Pennsylvania and his research focuses on
+architecture and design of secure systems based on crypt
+graphic techniques and finding new crypto graphic techniques as
+you surely mist know, he discovered a serious flaw in the
+U.S. government's cliprer encryption system. He is
+interested in the use of encryption in various security
+systems and controlled an attack against virtually all mechanical
+blocks. Nate Cardozo is a Staff Attorney with the Electronic
+Frontier Foundation. He focuses on the intersection of
+technology privacy through expression. Defended the right
+to blog and sued the U.S. government and lobby Congressed
+for American surveillance flaws and in addition he works on the
+E if. F Coder's Rights Project counseling hackers academics and
+security professionals at all stages of research. Mara Tam is
+a researcher and historian of policy justice, culture and
+security authored and coauthored and contributed research for
+technical policy papers in arms control and security. After
+earning a degree in art history, she works in bilateral
+negotiations between the United States and India and has been a
+panelist academic conferences and language and history
+including the security initiative convened by NATO and
+the European Science Foundation. And today we have with us also
+by remote presence, very special guest, Catherine Wheeler of the
+Bureau of Industry and Security. We are momentarily challenged
+with the AV. We'll see her later. But she is with us and we
+can see her and she can hear us and she will be able to hear
+you. So, I can tell you about her. She has served as the
+Director of The information technology control division of
+the Bureau of Industry and securities Office of National
+security and technology transfer control since 2006. She is in
+charge of this. This is great. She was detailed to serve as
+acting Chair of the Operating Committee, reviews agencies. And
+her experience here is incredibly relevant for this
+task that we should here of trying to get to rules that our
+community can live with and that also is also forward missions of
+the BIS. So, we can't thank her enough for taking the time to be
+with us today. And I'm Moderator for this lovely panel, I'm Jim
+Denaro, data security and intellectual property attorney
+and advise hackers in how to stay out of trouble or get in
+less trouble. So, with that said, let's dive into the meat
+of this. This is really about export control. And it's a
+really kind of in the weeds subject. And to really
+understand the significance of the rulings that are being
+proposed and how they would affect the community in such a
+fundamental way, is worth taking a moment to explore what is
+export control? How does it apply to you? How could it apply
+to you and why does it matter? So a few notes of background
+before we get into the meat of this particular situation here.
+So, the U.S. government controls the exports of sensitive
+equipment, software and technology as a means of
+promoting national security interests and informed policy
+objectives. This controls achieved by requiring people and
+companies to apply for licensing before exporting articles that
+are covered by the rules. So the question is, what is covered by
+export control? That is really what the debate is here. So, at
+a high level, we can break it into two categories. Favorite
+additional defense articles that is not at issue here, but they
+have their own licensing regime. Things that have no commercial
+application. They are covered by the International traffic and
+arms regulations. These include for example, armored combat
+ground vehicles, tanks, as well as something more relevant for
+us here, computers that are specifically designed or
+developed for military applications. Second, our space
+here, we have items that are considered to have both
+commercial and military application. These are
+considered to be dual use items and that is a term of art. And
+they are controlled by the Export Administration
+regulations for software and technology. Including things
+such as high performance computers and encryption which
+many of you have probably come across already. Infarcux the
+schedule of controlled goods has a schedule titled, information
+security. So you already kind of in range here. But those rules
+are really about photography and that's what you see the most.
+So, for these dual use licenses, the U.S. Department of Commerce
+receives somewhere between 12,000 to 14,000 applications a
+year for this type of export activity. And compliance
+matters. For these dual use export control violations,
+criminal penalties can reach a maximum of $500,000 per
+violation and an individual person can get up to 10 years in
+prison. They can also be the subject of civil fines up to
+12,000 dollars per violation and denial of export privileges. And
+some cases both and I have criminal cases can be brought.
+So -- both and I have criminal cases -- so the steaks are
+fairly high at this point. So far, in the world we live in,
+nobody in the community has been concerned that exploits or zero
+days or even things like the hacking team system, were the
+subject of much export control if any at all. So, there was no
+concern there. But, that is changing. That brings us to
+today and what you may have heard of as the Wassenaar
+Arrangement. The Wassenaar Arrangement is 41 countries that
+agreed to control certain dual use items. The U.S. participates
+in this group and the list of controlled goods is updated
+every year. Here is where it gets interesting N2013, the
+Wassenaar Arrangement agreed to add certain things to the list.
+And this is the text of the Wassenaar Arrangement. You
+wouldn't expect you to read this now and it's too small anyway,
+but the key here, the language is that intrusion software will
+be regulated as a dual use item and as you can, I'm sure 1000
+questions occur to you. What is intrusion software? And so on.
+So that is really the item here that we are interested in. So,
+the U.S. has committed to implementing Wassenaar
+Arrangement agreement at the national level here in the U.S
+so, rules will have to be written and enforced here for
+all of us in the U.S. that regulate this. And on may 20,
+2015, the VIS published the proposed rules for implementing
+this Wassenaar Arrangement locally and most notably and of
+particular concern to those in the information security and
+research community, these rules seemed to go beyond the Barry
+acquirements of this -- bare requirements of this simple
+statement here, and that is cause of much concern that we'll
+be addressing in particular here. So comments were taken on
+the proposed rules and in light of those comments, some things
+are happening and we'll hear about what the response to those
+comments has been. So that is the broad outline what have it
+is we are talking about and why we are here today and why it
+matters. So, here is the plan. We are going to go forward on
+the panel, each panelist here comes from a different
+perspective and has some brief opening remarks. So, we are
+going to hear those remarks by various panelists and then we'll
+dive into some more questions and hopefully things will get
+pretty engaging. So with that, Mara is going to kick it off >>
+MARA TAM: So this is a quick and dirty introduction to dual use
+export controls. What are they for? Basically to avoid this.
+They are controls designed to monitor and regulate the
+ecosystems around weapons of mass destruction or at least
+that is where we get our modern export control regimes from.
+Here is some of the stuff that export control is supposed to
+regulate. Weapons of mass casualty, weapons of mass
+destruction, which probably doesn't mean what you think it
+means. Disruption means something a lot worse than the
+Uber definition. A puppy. So, the core logic of export control
+is nonproliferation. It is controlling the spread of
+dangerous technologies and this is done through a couple of
+mechanisms. One of them is through knowledge, which is
+deemed export this is going to be of concern to a lot of people
+in this room and then the transfer of stuff or required
+stuff. And this is where we get into dual use. And we identify
+choke point technologies for this. We want to find something
+where if you control it, you can control further progress in the
+development cycle. These are difficult identify. They have to
+be rare and conspicuous because you need to be able to control
+every iteration of it or close to it. So you can see why for
+intrusion and surveillance software, that principle sort of
+falls a part immediately. Command and delivery platforms
+just, they are too ubiquitous they don't -- that doesn't work.
+So here is a short history of the sort of dual-use we have to
+work with and the International agreements for export control
+that have happened sort of in the modern era. We started off
+with the OEC, which this was an off shoot of marshal plan and,
+they turned into the OECD. And their counterpart is the council
+for mutually economic assistance, CME, because we are
+adults, decided to call ComiCon. So arms exports to ComiCon
+remember controlled under CoCom. These are the original CoCom
+countries. So this is what he we had from about just after the
+second World War until the Mid 90s. And successor to CoCOm is
+the Wassenaar Arrangement which mashes together Comiconn and
+OECD in this lovely mix and this is what we are stuck with now.
+And these are all of the U.S. task force agencies tasked with
+export control reforms like all great bureaucratic disasters,
+this one was inherited from the Cold War and this is one of the
+issues that we have right now is that there are so many people
+involved in this process that getting good regulation is
+really hard. So, the question I want to leave you with is, why
+is a bug like a bomb? What is it about intrusion and surveillance
+software and exploits that lends them or does not lend them to
+regulations under a dual-use export control regime? >> With
+that, we'll switch to Randy Wheeler. So let's see how we are
+going to take this. >> Randy can you say something? >> RANDY
+WHEELER: Yes, I can say something. Can everybody hear
+me? >> She doesn't look like a dog. She is a human being. >>
+RANDY WHEELER: I can hear lots of people. (Applause) What just
+happened? >> MARA TAM: We finally got through to you >>
+RANDY WHEELER: Me personally or both? >> MARA TAM: You,
+yourself. >> RANDY WHEELER: Oh, my goodness. >> MARA TAM: I
+realize you can't see everybody but wave hello to DEF CON. >>
+RANDY WHEELER: Hello DEF CON 23. >> Don't turn it around. Bad
+idea. (Laughs) >> So, technical issues, we cannot see randy and
+her slides at the same time. So now that we all had a chance to
+or at least you had a chance to say hi to her, we are going to
+have to switch over to her slides so you'll hear her.
+You'll hear her but not see her. >> This is a two-hour meeting
+for obvious reasons ( Laughs ) >> RANDY WHEELER: All set? Thank
+you very much for inviting me to participate in this panel. I
+really appreciate the opportunity to address folks at
+DEF CON. And I'm going to give a very, very brief overview of the
+proposed controls on intrusion software items and IP network
+systems and the Export Administration regulations that
+Nate mentioned earlier. Next slide. So, my next slide isn't
+working. So as Nate mention the in the Export Administration
+regulations, we have national security controls on computers,
+telecommunications and information security. These
+listed items appear in the commerce control list, which is
+part of the Export Administration regulations. And
+there are other categories as well. The category 4 by part one
+and two controls are a responsibility in my division,
+information technology controls division. We process
+approximately 2500 export license applications and also
+2000 commodity classification requests per year. To date, most
+of our work has been in the encryption area in the category
+5 Part II. Partly because over the past several years, as
+everybody knows, everything has encryption in it and so, items
+that would have been in the category 4 or category 5 part
+one, have moved over into the encryption control section.
+Within each category, as Nate mentioned, for commodity, test
+equipment and software and technology. The information
+technology controls division comprises 9 licensing officers,
+including myself, and we have three electronics engineers on
+the staff and six export policy analysts. Next slide, please.
+The new control entries, the subject of the proposed rule,
+are three related list entries in category 4, Nate said system,
+equipment, software, components, especially designed modified for
+the generation or operation of or communication with intrusion
+software. We also have a separate technology control or
+technology required by the development of said intrusion
+software. And then, the proposed rule also includes a definition
+of intrusion software. There is also a separate entry for the
+network communications surveillance system in category
+5 part one, telecommunications. Next slide, please. As Nate
+noted, the control list entries were proposed in the Wassenaar
+Arrangement in 200013, and they were adopted by the Plenary in
+December, 2013. It is worth noting that the category 4 and
+category 5 proposals were submitted by two different
+countries aimed at covering two different types of products. And
+the interesting thing about them that was they both had an
+element of human rights in the purpose of the control, the
+category 4 controls were aimed at offensive systems that are
+being sold not on the commercial market but directly to
+governments, potentially repressive regimes to be used
+against their citizens. And the same element was present in the
+proposal for the category 5 part 1 monitoring surveillance
+systems. Once the Wassenaar Arrangement agrees to a new
+Creole list entry, it's added to the multi-lateral Wassenaar
+control list. And then it is up to each member country to
+implement the control in its own list pursuant to its own
+statutory and regulatory authorities. In the United
+States, the dual use list for national security product is
+implemented in the commerce control list so the process is
+to draft a rule and to issue the rule, usually as a final rule
+usually in the may or June timeframe in a year following
+the adoption on the Wassenaar list. Between December 2013 and
+may 2015, there was a great deal of interagency discussion on how
+to implement these new control list entrees. In the
+administration regulations, we have a reason for control for
+several reasons for control for the same item. We need to
+determine the licensing policy, license exceptions that may
+apply, and in this case, we needed to consider that there
+was overlap with existing encryption controls. As I
+mentioned earlier, a lot of products moved over into
+category 5 Part II over the past years because they have added
+encryption N this cases, we already had controls on
+penetration testing products that included encryption and at
+times cryptanalytic functionality, and have been
+licensing them under category 5 part 2. So part of the question
+was, what do we do with those products? Do we change the
+treatment of them? And in the proposed rule, there is a much
+tighter restriction on the export of all products that
+could be described under the new control list entrees, including
+the penetration testing products. We published the
+proposed rule in may 2015 with the request for public comments.
+And boy did we receive comments. We had received almost 300
+comments totaling some almost 1000 pages. Many of them were
+very thoughtful. Before the comment period was over, we
+received many requests to meet with various groups and industry
+coalitions and so forth. We were very, very grateful that there
+was such interest in talking to us and explaining the issues
+that the proposed rule raises. There are three areas that the
+comments have greatest. The first was the implementation in
+the proposed rule and as I mentioned, the restrictive
+license requirements and no availability of license
+exceptions which places expert license requirement on all
+destinations except Canada, and all government and
+non-government end users and would require an export license
+for intra-company and internal use in companies for technology
+and software, and it would also impose a license requirement on
+deemed exports, as Nate mentioned very briefly. The
+release of technology or source code, to a foreign national in
+the United States is considered to be an extra to the home
+country of the foreign national, and we do receive a fairly large
+number of deemed expert license applications each year by
+companies who want to release technology to employees who are
+not U.S. nationals. And these export license requirements
+would apply to the new control list entrees without any
+exception. The proposed rule also is set forth a very
+restrictive licensing policy with approval only to poor
+countries and case-by-case to all other destinations, in
+addition to the national security reason for control, it
+imposed a regional stability reason for control, which is
+very restrictive and it set forth a licensing policy under
+the regional stability provisions of regulations.
+Finally, the proposed rule set forth a denial policy for
+products with zero day or route kit functionality. These terms
+did not appear in the Wassenaar text. This is in addition on a
+licensing policy basis in the proposed rule. Second, and we
+were expecting the comments on the restrictive proposed
+implementation, but we also received a very large set of
+comments on the text of the Wassenaar control list entries
+as well, in particular the definition of intrusion software
+raises many questions and issues and the other panelists will
+address some of those and their many concerns about the scope of
+control on technology for the development of intrusion
+software as defined. Finally, there were other issues raised
+even beyond the Wassenaar text that are very important to
+consider. The likelihood that the imposition of these controls
+would achieve the purpose of addressing Human Rights and the
+likelihood that they would even cause more harm to security
+research generally. In addition, there are a number of comments
+that noted that the restriction on sharing of technology on
+cybersecurity research appears to be at cross purposes with
+other government initiatives, including pending legislation to
+encourage the sharing of such information. I forgot to tell
+you to change the slide. I'm sorry. So, we are now at the
+very last slide that says, next steps. The next steps in the
+regulatory process, we are in the process of reviewing the
+comments and again, we do appreciate all the time and
+effort that all types of companies and researchers and
+industry representatives and industry coalitions took to put
+their thoughts down on paper. We are planning to discuss the
+comments, the issues raised in the comments in a series of
+technical Advisory Committee meetings in the rest of the
+calendar year, and although Mara mentioned that there are so many
+government agencies involved in export control, we found that in
+this process, there were a number of government agencies
+who are working with expertise in the cybersecurity area who
+were not involved in the development of the rule. And we
+hope to have them participate with us in the open discussions
+with the constituencies who are interested in the issue in the
+open meetings in the text call advisory committees for the rest
+of the calendar year. Also, given the issues raised, we will
+consult with our Wassenaar partners a number of the other
+member countries have already implemented these control list
+entries from their national control lists and apparently,
+without some of the reaction that we have received when we
+published the proposed rule. So, we would like to talk to them
+about the entrees and find out how the implementation is
+affecting their industries and research communities as well.
+Following these three steps, we intend to draft a revised
+proposed rule and again we would have opportunities for public
+comments before we would publish a final rule that would go into
+affect. Thank you for inviting me to participate and I look
+forward to hearing the other panel member's presentations.
+(Applause) >> Thank you for that. That was a helpful
+explanation and thank you to the members of the audience also for
+staying with us for this explanation of what if is we are
+talking about and what the rules are and how this process moves
+forward this is a back and forth process between research
+community and many other stakeholders that are interested
+in how the technologies that are used in surveillance software
+may be regulated on a global scale. So this is the framework.
+These are the parameters that we are working with and with that,
+we can take a deeper dive into how the proposed rules are going
+to potentially have some very significant impacts on the
+various interests. So with that, Nate, take it away >> NATE
+CARDOZO: Sure. Thank you. I'm a Staff Attorney with the
+Electronic Frontier Foundation. As Jim mentioned earlier, I love
+technology so I'm going pull up my notes a phone and do the
+slides from the computer. Because we can't do both. John
+Gilmore in 1993 or there about, told us that the net interpret
+censorship and damaging routes around it. That statement is as
+true today as it was more than 20 years ago when Gilmore told
+us and it is far more true today than it was then. Back in the
+90s, the export of -- and this is a gross over simple
+indication of the expert of cryptography was controlled
+under itar, under the United States munitions list. As a
+weapon. So this slide could not be exported from the United
+States. Nowadays, we are left with the Wassenaar Arrangement.
+EFF sued on behalf of Dan Bernstein in the 90s. We won. We
+got a ruling that said, code is speech. And cryptography was
+moved out of I tar and into the EAR. Export Administration
+regulations. Now of course we are dealing with Wassenaar. Why?
+This is the problem that Wassenaar was designed to solve.
+That is enigma machine designed to protect German banking. It
+was a commercial encryption device that was of course
+repurposed during the war at first to great affect. This is
+also the problem that Wassenaar was designed to solve. Not
+really of course. The maker bot is not controlled under
+Wassenaar. But guns are. Not guns, per se but nerve gas and
+precursors, et cetera. But what about information? How do you
+control the export of information? And I would propose
+that it's not going to work any better this time than it did the
+last time. Because we have things like this. I can export
+information very, very easily. But what do we do? There is an
+actual problem smear it's a significant one. What do woo do
+about things like this? Packing team, these are pieces of
+software that I really don't want in the hands of repressive
+regimes around the world. What do we do about it? As Randy
+said, one of the things about the way that export controls
+work especially in the United States and the way the proposed
+rule that we are talking about today works, is that it controls
+exports period to anyone talking to your coworker who is not a
+U.S. person, that is controlled it doesn't matter if you're
+selling thin fisher to the government in Ethiopia or
+selling medicine to a pin tester in Chile. Those are both
+controlled. One of those uses I'm fine with. The other one,
+I'm not so happy about. But there are already tools
+available I would suggest that going to end use or end user
+control is a lot better, right? This is an actual Cisco slide
+talking about how Cisco is going to help the Chinese government
+build a golden firewall to combat evil religion and other
+hostilities. This kind of thing is what we should be worried
+about. We should be worried about our technology companies
+building the tools as Human Rights abuse. The Wassenaar
+Arrangement is intended to control things like this but it
+ends up sweeping way too much. Because it doesn't take an end
+user control. Here is another thing that I'm worried about
+this is a hacking team e-mail talking about sales to the
+government in Ethiopia. I feel - Electronic Frontier Foundation
+and representing Ethiopian suing the government for wiretapping
+his Skype calls. So I would propose to you that there are
+other tools besides a blanket export control regime that are
+better suited to holding companies responsible for doing
+things like building the great firewall of China in the
+specific evil religion plug in that Cisco built or thin fisher
+selling to the government of Ethiopia with full knowledge
+that it was being used against journalists activists,
+dissidents and -- so that is where I come from. And I'll turn
+it over to -- who goes next? Matt? David? (Applause) >>
+DAVID: I'm going to start off real quick with, I guess, a bio,
+in case you forgot who I am and why I'm here talking to you
+guys. And the reason for that is that my first employer out of --
+well, during college, was the National Security Agency. And I
+since started immunity, which is a company many of you know of
+because we have a free debugger, which is surprising to me but
+that shows how awesome my marketing skills are. I also
+have a mailing list called daily Dave, which is discussing a lot
+of this Wassenaar. I can't pronounce it properly. Activity.
+And we became very concerned when we first saw it coming down
+the pike. In particular, because we sell to the general public 3
+or 4 major tools. We have canvass, which competes with --
+and core impact and I assume many of you have used one of
+these tools to do operational penetration testing, which is
+something that is required by PCI or required by HIPPA or
+almost everything that is security related. Of course we
+also sell Silica, which does wireless penetration testing
+which qualifies as a crypto analytic tool under the BIS
+regulations. We also have a conference called infiltrate
+which focuses on offensive and attack technologies and offers
+people a way to be very honest about what it is we do. And so,
+my whole life has been spent building command and delivery
+platforms essentially and that is the exact sort of behavior
+that these people, some people find uncomfortable which is a
+necessary part of our existence in order to understand and
+secure ourselves. It's been said that pressie won't come up on
+his laptop but also been said that defense is the child of
+offense and so, for those of us in this room who work on
+offensive things, I think we can all spend one hour of our time
+to reply to the simple to use website and it surprised me more
+than anybody, that BIS has an amazingly easy to use website
+for submitting comments. You can read the regulation about 15
+minutes. You'll never understand it so don't even try. But you
+can read it and then you can write comments on it that say
+what or how it would affect your daily life and it will take but
+an hour. You can do it during Simpons reruns or something. So
+make it funny. Just don't include curse words or anything
+crazy. And I think the next round for comments should not be
+1000 pages. I think it should be 100,000 pages. I think that
+Randy would very much enjoy having everyone at this
+conference, everyone here is impacted by this rule in a major
+way. The only reason I'm involved is because we pay our
+lawyers a lot of money to keep us out of trouble. But no one in
+this room wants to pay these lawyers all that mon-- they do.
+The lawyers do. I'm not a lawyer. But the lawyers would
+enjoy that. And I don't think you should have to. And I think
+it's a uniquely-unAmerican thing to control the export of
+information, which in a sense, the human voice is the original
+export technology for information, and I think we
+should try to keep that voice free from any kind of
+overbearing regulation as a matter of course. We almost have
+pressie. It's amazing. I can go on for hours. So here is my per
+suspect. And it's your perspective at the end of my 5
+minutes. Which is that export control is a bad idea for
+anything in this area and we are talking a lot about the
+intrusion software part of it. Let me say it is already trying
+to frame the discussion because when they say intrusion
+software, they mean anything that does anything useful in
+security. When they say surveillance software, they also
+link in anything that does intrusion detection and
+anticrime wear on any scale. And I'm going to talk more about
+that. But this, I believe, it should be and is difficulty --
+Randy can't see it. I'm sorry. It says here, you can see it?
+No? She seen it already. Okay. So Thomas Jefferson, among many
+things should be our guiding light when it comes to
+protecting ourselves against attorney and we should avoid
+ourselves becoming the form of tyranny. And that is what they
+are doing us to do. And if you read the definitions in the
+thing, it should scare you not that the definitions are there,
+but that they were ever allowed to be put into the regulation at
+all. Something went horribly wrong with the whole process.
+And I'm going give you an example that no one talked about
+yet, which is carrier grade. Forever those who have ever
+worked in telecommunications, which is a lot of you, carrier
+grade by definition means reliable. It's a marketing term.
+And how I think it got in the regulations is that I think
+privacy International used it in a random report. They are like,
+we are scared of anything carrier grade. But carrier grade
+is not a metric for speed, yet if you -- if I made you zoom in
+on this thing, in the actual defense of the regulation that
+BIS had, they said, well, we think it's anything fast enough
+for a city or a country but we won't put an actual number on
+it. And the reason for that is because there is no number. And
+if you did put a number on it, it would have to go up
+exponentially over time. I love in south beach. Not that I'm
+recruiting because my company awesome. But you shouldn't move
+to it for south beach. But south beach has like every apartment
+can get 500 megabytes your door via a mesh network someone set
+up. You can do the same thing in New York and San Francisco. And
+at what speed is carrier class? We are a small city. So, I don't
+understand what the bar is. There is no bar what they mean
+is, we mean what we mean when we say what we mean. Right? And
+that is, this should scare you because the penalties are so
+high for all of us, for breaking these regulations, that you're
+guaranteed to break them and you're guaranteed to be under
+that own us. What is a route kit? The it's not in there. This
+was a program -- if this was a program, this document would
+have never compiled. Support zero to exploitation. First of
+all, zero day is not a term you can define because it means
+something you don't know. And everyone has different amounts
+of knowledge so things that one of you knows may not be a zero
+day to me. They may be something I have sitting around that I
+don't think is important. And so to support zero day, simply
+means you can run a program. So everything that qualifies as a
+command and delivery platform can in fact be modular and run
+programs this is an extremely low bar and yet it is under the
+default denial section of the regulation, which means that at
+some point, they thought this will be fine. And that is just
+the beginning. Here is what is going to happen with the next
+regulation they come out with. There will be a million more
+examples just like this. We have a process that is creating
+programs that cannot compile and making them with laws with hew
+ming us penalties. That's what is broken here. And the
+overreach in this area has massive, massive dangerous
+implications. Deemed exports alone means those who have H1Bs
+are cast out of our community as per eyas. Technical data is
+something that you, as a human being, cannot understand but the
+lawyers among us will argue about for years at 1000 dollars
+an hour to tell you if you're allowed to open your mouth and
+talk not person next to you. Required for -- again, some of
+these phrases should scare you because if you as a person,
+can't understand if what you're creating and exporting is
+required for the building and delivery of command and delivery
+systems, then you're at risk no matter what you do. And that is
+what this regulation does. It puts all of us under this giant
+sword so the people who knock on your door, can say by the way, I
+noticed you were violating the law. We love to you cooperate on
+something else. That would be awesome. I can make this stuff
+go away. And there was a very bizarre section in the
+regulation when they went to defend it on their phone calls
+as they started getting some heat, which said that if you
+release it to the public or vendor you're okay. But if you
+release it to just private industry, you're not okay. And
+we are talking about some value decisions in the disclosure
+arguments that don't reflect this community at all and don't
+reflect the industry at all. And again, just to nail this point
+down, penetration testing software, which is this current
+regulation would have been restricted as much as a nuclear
+bomb, is a required operational practice for every company in
+America. And I think we talked briefly, especially Mara did,
+that export control if you're going to apply it, should at
+least have some hope of accomplishing the desired goals.
+I don't believe that the desired goals are worth accomplishing
+but I want to run this down here. Here is how you protect
+those poor journalists and activist against thin fisher and
+gamma. Give them an iPad. Because neither can attack
+unpatched iPads. So that is cheap. I'm willing to donate
+iPads to these people to avoid regulation because I think it is
+a cheap way to do it. Here is what you don't do. Ban all
+software that makes you uncomfortable at great costs to
+the rest of the world. And I think we should talk a little
+bit about licensing because even permissive licensing kills sales
+and retards innovation. Because in order to go through the
+encryption controls, you currently have to wait one month
+after developing your software and this is almost all software
+because the rule is, anything that links the live SSV under
+this rule. And if you do anything to your crip tow that
+changes your crypto or how to use your crip tow, you're
+supposed to send them a note and explain it and describe it and
+wait 30 days and then you can do a release. And so if you
+wondered why core impact and canvass are on a monthly release
+cycle, this is why. And it's extremely difficult to innovate
+under this kind of condition. And of course, anyone actually
+malicious f there was a malicious Ethiopian person that
+Nate doesn't like for some reason, then they could always
+get a account. That's what they are going to do. Even at the
+best chances, there is no way export control could work even
+if it was meant to work, which it is not. So, I think this
+community, all 700 people in here, are largely of the opinion
+that code is not a weapon. Code is speech. And I think part of
+the reason of that is, we understand something at a much
+more basic level, which is that you can break down any fact into
+an infinite number of smaller facts, which you can then
+combine in combinations to produce the original fact. So
+for example, if I was going to write a paper on if you have the
+extended instruction pointer, then you can use a certain
+technique to by pass ASLR and then I would write a separate
+paper on, here is how I would get the IP using adobe reader
+and a particular technique. And if I could bind those things up,
+those are controllable. But if you I don't, they are not
+controllable. That's the key problem with regulation in any
+space where we are trying to regulate speech in this way. And
+of course, the irony in this is that when you see people who are
+privacy activists, a spousing these kinds of controls, they
+are not looking forward to the obvious next step, which is to
+enforce them, you need a global surveillance network, which is a
+horrible thing to have to put in to their hats. So in summary,
+their idea is bad and they should feel bad. And in the end,
+what is going do happen if this stuff goes through as is, or
+even close to as is, is it that all of you are going to feel
+bad. So I'm hoping that everyone takes that hour to comment on
+the next one and we can further influence it by means of killing
+it. And that's what I have got. And hopefully everyone agrees
+with me and we can all go. (Applause) >> So, I'm Matt and I
+should say in spite of the introduction, I'm not a lawyer.
+Though I do occasionally impersonate one. I'm a Computer
+Science Professor. And one question is, what am I doing
+here? I am working in this abstract field and I'm not
+directly a target of these regulations in the sense that
+nobody thinks that what I do and what people like me do is bad
+and needs to be regulated. I mean, the worst people say about
+what I do is that it is useless and stupid. But I don't think
+anybody says that what I do is harmful. And I don't think even
+the Wassenaar advocates think that academic published research
+in this area is something that is supposed to be regulated or
+at least that's not a particularly common feeling. So,
+it would be very easy for me as an academic to say this is
+something that I should sit out and watch and let people with
+the vested interest like Dave, fight this out for their
+interests. And in particular, the work that I do, when you
+look a little closer at how it actually gets done and how these
+regulations to be implemented, particularly over time I start
+to become a lot more worried. And one reason is that, my job
+is to think of things and publish papers for the greater
+good and I publish things and fundamentally that's a defensive
+activity. The more we learn about what to do, its more
+robust systems we can build. But at the level of work that we are
+doing, the distinction is meaningless. We can't study
+defense without studying offense and in fact if you look at the
+papers that we publish, we tend to flip around between defense
+work and overtly defense, overtly offense back and forth.
+Somebody publishes defense, and then attack and at the end of
+that arms race we end up with something a little bit stronger.
+So fundamentally, I'm in the offense business as much as I'm
+in the defense business. Another thing that should reassure me is
+I don't produce products or export things or sell things.
+But it is true that fundamentally what we are doing
+is not producing in the academic research world. We are not
+producing code that we are selling to people or code we are
+incorporating into attack products. But when you look at
+the process, there is quite a bit of code exchanged and there
+is quite a bit of exporting going on. About half depending
+on your institution, will go up or down but it's certainly in
+the ballpark. About half of our graduate students are foreign
+nationals and that's generally true at any research oriented
+University. People come to the United States to study this
+stuff. We have colleagues in another countries that we
+collaborate with and the process of producing research is often
+involved with a process of experimentation exchanging code
+and working on things. The export regulations, effectively
+limit what I can say privately with my colleagues prior to
+publication, and that means essentially it's not regulating
+the output of my work, it's regulating the process of doing
+my work in order to produce that output. So people who say, you
+don't have to worry because you're papers are published by
+the first amendment, you don't have to worry because this only
+affects attack tools and you're not selling attack tools. And
+you're not exporting things over -- that's true about the output
+but not true about the process necessarily. So even though
+there are many reassuring reasons to think that this is
+work that shouldn't or that I and people like me shouldn't
+worry about, when we drill down to the actuality process, this
+is something that me and my colleagues have to be worried
+about every day. Now I'm lucky that I work for a big fancy
+pants institution that can afford lawyers. And fortunately,
+at my institution, the lawyers that we employ generally, see as
+their job finding ways for me to do my work instead of finding
+ways to stop me from doing work. And as soon as -- but as soon as
+I talk to them about export rules, that flips. The answer
+tends to be, you're taking some risk here. You need to worry
+about that. We better go and get a license to do this before you
+do that. Unfortunately, I have the support where they will help
+me with this, but these are extremely difficult rules to
+comply with even in the easy case where you know that you
+don't have to make an argument, where you just have to go
+through the motion. Many people who are doing research of the --
+at the same caliber or higher than people like me at
+universities, aren't affiliated with universities and don't have
+that kind of institutional support. So for me, with
+institutional support, it's hard. Somebody without
+institutional support, it becomes kind of a death nail.
+Now the last thing I worry about is, as a Veteran of cryptowars 1
+in the 1990s before we needed to number the cryptowars, the
+primary thing we were talking about was export law.
+Cryptography was covered under ITAR and the lever the
+government had to regulate cryptography was not that there
+were rules about using cryptography domestically, but
+that there were rules about using cryptography
+Internationally. And that was what we were talking about in
+the first cryptowars. Now we won that and now we -- largely
+deregulated most consumer-grade and research-grade crypt oh, but
+what that illustrates to me is the way that regulations that
+are intended to accomplish one set of policy goals here when
+they are implemented, in the future, can be used to
+accomplish other policy goals that weren't even on the table
+or being considered by the people proposing them. And I
+worry here, that today we look at this and we say, nobody is
+meaning to regulate academic inquiry into computer security.
+That may not be true 10 years from now under the trump
+administration or what have you. And, these rules may change in
+the regulatory tone may change later. So, this is something
+that I find worth engaging in and I think you need to consider
+whether it is something that you need to engage in as well. So
+thanks. (Applause) >> So I also note that we have these little
+buzzers that make funny noises and we were supposed to press
+them if anybody disagrees with each other. And nobody seems to
+disagree with anything any of us said. >> I disagree we won the
+cryptowar. I think we actually lost. So two of you said we won.
+But when you sell software, anywhere, in the country
+externally, bays every piece of software uses crypto in some
+way, you're under very strict regulatory frameworks and as
+much as like you're going to get a license, the fact is, you're
+sales process is going to be pretty messed up. You're sending
+away to the government a list of all of your customers, which
+some of you may feel uncomfortable with and many
+other regulatory issues with even understanding. These are
+not simple. These are some of the most complex convoluted laws
+on the planet that you, as a simple researcher, are now being
+required to understand or else be under severe penalty. The
+same thing true of kepto. I think we lost. That's my
+personal opinion >> Let me jump on something that Dave just
+said. The rules are very difficult to understand. And I'm
+a lawyer so I'm going to look at this through a U.S.
+constitutional law perspective. And this is again, going to be a
+gross over simple indication. In constitutional law in the U.S.,
+we have a doctrine called, void for vagueness. If a criminal law
+is vague enough that an average person of ordinary intelligence
+can't tell whether their conduct would be criminalized or not,
+that law fails constitutional scrutiny. We have seen that it
+is most common in hate speech or in excitement context. But it
+works here too. If an ordinary person of average intelligence
+reads the Wassenaar control list and can't understand them, then
+the implementation of those control list would be denial of
+due process and unconstitutional >> And that gets to one of the
+sort of core issues about export control which is like I said
+earlier, you can't control something if it is -- you can't
+choose a choke point technology if it is ubiquitous. So when
+something is omnipresent liken corruption like the command and
+delivery platforms, you run into the same problem. You don't
+know. And therefore the control fails. >> I think it is telling
+that in fact, BIS has on their website web applications that
+run you through an expert system to determine if certain phrases
+apply to you. Such as required for, or as needed by. There are
+little phrases in the regulation that you cannot understand. Only
+the expert system can understand. And I think they are
+minute to help you but they design -- meant to help you but
+they demonstrate the design of the arguments is already vague
+and if you talk to your local export control individual, which
+unfortunately immunity gets the privilege of doing a lot, they
+will tell you as well that even the lawyers underbuys don't
+really have a clear understanding of it. That they
+can explain to you, for example, what soft swear meant to be old
+and what is not. Because these issues are so complex and they
+are rarely going to court it's been really rare to see the
+crypto stuff result in a penalty against a company. But that's
+not as important as whether or not it is used as a hammer in
+general, which I think should scare you more. >> It's pretty
+well established that the rules are intended to prevent the
+availability of surveillance software to repressive regimes.
+But there are questions about whether or not these rules are
+effective in doing that and whether they would also sweep in
+lots of legitimate software at the same time, if we could use
+that term. So, I'd like to give Randy an opportunity to respond
+to that and sort of give more context into how the rules are
+being tailored to cover just what the original intent was. >>
+RANDY WHEELER: I think the comments are right on point,
+that the Wassenaar control list attempts to describe particular
+products, particular functionalities, and the in
+stent to narrowly define what was going to be controlled, but
+in fact, what we have learned from the public comment process,
+is that either the language is not well stated so that
+reasonable people with potentially different
+vocabularies are reading the language differently, and as
+well a number of unknown or unexpected products or
+activities are being swept into the control and that's we want
+to address going forward. Is there a way to capture only the
+products that we are interested in captureing and only licensing
+those exports that are of concern. Certainly from an
+administrative law perspective, and as a regulator, I think it's
+poor use of government resources and a very poor use of company
+and industry and researcher resources to -- (Broken audio)
+>> She is gone. We lost her. Network resources, too. >> Who
+wants to say something controversial? >> I think she
+might be back. Hold on. Are you back? >> RANDY WHEELER: I'm back
+>> You said resources and then you disappeared >> RANDY
+WHEELER: Sorry. I just meant that I think it is a poor use of
+everybody's resources, both the government resources and
+industry or researchers resources to spend time worrying
+about transactions, export transactions, or deemed export
+transactions, that are subject to a policy of approval. There
+is no point in requiring licenses for those types of
+activities and so we should work to only cover those transaction
+that is would be of concern >> So in order to cover just those
+certain transactions, it seems like it is a project of
+definitions. And, a lot of what the concern is, how intrusion
+software is being defined and I think there is a bigger question
+as to whether or not intrusion software is -- of any kind of
+meaningful definition. So, I'd like to open that up to Randy
+first, and also I'd like to hear from the rest of the panel about
+if there is anything to be had there. >> RANDY WHEELER: I would
+quickly agree with you from the comments we received. It is
+problematic definition. Again, the people who are in -- we have
+government regulators trying to define this and then when people
+who actually deal in the products and technology that
+look up the definition, it either doesn't -- they don't
+understand it what it was intended to do or they used the
+vocabulary differently and that is up for regulation then if
+there is lack of understanding of what it covers. And
+particularly if it is understood to be broader than it was
+supposed to be, then it needs to be revised. The frequently asked
+questions were an attempt to address that but we got to the
+point where even in the answers to the questions, that we posted
+our website, we were referring back to the regulatory language,
+and we just kind of got stuck because we didn't have the
+correct vocab layer tow address the issues that were being
+raised. So that is what we hope to look into in the next step of
+the discussions. Thank you. >> So one of the things that we
+asked in our comments to BIS, which was also echoed by Google
+among others, is that congress department and I guess, the
+State Department, go back to the Wassenaar Arrangement itself.
+The next meeting is at the end of this year and work on
+clarifying Americans through BIS but working with the 41 member
+states of the Wassenaar Arrangements to add clarity to
+the control list there. Software that modifies the standard
+execution path of a program. What does that mean? Why are we
+focusing on that? And that is not something that BIS can do
+alone. That is something that needs to go back to the
+Wassenaar Arrangement itself. So that is our best case scenario
+if BIS didn't just do a revised proposed rule and open it back
+up for comments but that BIS and State Department go to Wassenaar
+and change the control list there to make it better and then
+do revised proposed ruling >> And by make them better, he
+means let's just remove this. Because there is no good way to
+do this. What you hear from people -- he doesn't agree but
+he's wrong. If I agreed with him we would both be wrong and that
+would be terrible. And here is the thing. They would say
+regulation in this space is inevitable so you might as well
+as an industry feel free to come up with language you're willing
+to be bound by. And I will tell you this, that is a fool's
+errand. And it is a trap you should not fall into and I think
+even if you could describe all of today's software you found,
+the reality is, you're also describing software that in the
+next generation is going to be required for normal operational
+business. Because is this say community that moves far faster
+than regulation and always will and always should if we are
+going to survive. And I think that when they say please
+describe some language that works for us today, you should
+say, I need language that works for us forever and it's not
+possible and therefore we should not do it. >> MARA TAM: Also
+worth noting the convolution actioner rising from the
+Wassenaar language is due in large part to the fact that
+Wassenaar was never designed for Human Rights purposes. I mean,
+this was a - auto export control regime that Wassenaar inherited
+was all about controlling arms. And several advocacy groups,
+namely International end cause, decision E. decision to get
+these category 4 and 5 entries added and they were successful.
+One of the irritating things about that is they knew that
+Wassenaar was not fit for purchases. They knew that export
+control would not work for these items. But they persisted. And
+unfortunately, we are dealing with that right now and goods
+intentions and all of that but this was not the right way to go
+about it. >> From my perspective, it's not the
+software that is a problem. What hacking team does, what thin
+fishy do, it's a standard remote administration tool. You can use
+any of the remote administration tools would have worked just as
+well to spy on my client in the Ethiopia lawsuit. What we care
+about, what matters isn't the tool itself it's the service
+support and most importantly training that comes along with
+it. Thin fisher doesn't cost very much but getting your
+intelligence agency all strained up to use it and the ongoing
+support contract is what gamma makes its money on. That's the
+problem. These tools -- it's not the tool. It's what goes -- it's
+the infrastructure surrounding it. The Wassenaar Arrangement
+was -- sort of designed to take that into account. Intrusion
+software is not controlled under the Wassenaar Arrangement it's
+the infra structure around intrusion software that is
+controlled. Technology required for this et cetera. But without
+tailoring it specifically to state uses. And it is those
+state uses that we see causing significant harm out there in
+the real world. >> Keep in mind, under U.S. law f I'm correct,
+anything that is designed specifically for U.S. government
+or military use would be controlled under ITAR and the
+same -- this is something that no one mentioned is that
+actually half of the team was perfectly well regulated under
+the Wassenaar and they went to the government and said can I
+have a license? The government says yes you can for anyone you
+want. So even if under the most strict interpretation of thieves
+regulations, the reality is those chomps operated out of
+smaller countries, which would be every company in this
+business if U.S. decides to implement these regulations, can
+easily go to their government and ask for an out anyway. So
+even if there was a perfect language that applied only tow
+really bad things, which we don't know what are, but if
+there was perfect language, it still wouldn't work because you
+would have every company going to their government saying, I
+want an out >> An alternative you have to worry about pushing
+these governments into capabilities developments and I
+think Nate raises a good point which is it is the back end
+support which leads these technologies to be so harmful in
+those context. But if these states surveillance agencies are
+no longer to buy off the rack, they will move to capabilities
+development for themselves and that is a very serious problem.
+There is no unwritten law of cyber cyb that says Bahrainian
+engineers couldn't come up with an equivalent of packing teams
+RCS especially now the source code is leaked. So controlling
+this from the Tom down simply will not work. >> Especially
+when we are talking about activities that are done by 10
+people with computers you can buy off the shelf. I think that
+is -- the inefficiency of regulation in this space can't
+be overstated. >> So we are getting a good sense of what the
+objectives are. It would be great if you could fill us in on
+where these objectives come from. I think a lot of people
+might make the criticism that it may be -- or ask the question as
+to whether or not it is properly within the scope of the mission
+of BIS or commerce or the government to be taking the
+position as to what types of software should be made
+available to any particular regime. So the question is,
+where does these regulations of course don't say on their face,
+you can't sell to a particular repressive regime and doesn't
+define who they are. It defines the thing. So if you can give us
+insight into where the input on these particular sets of
+regulations are coming from within the U.S >> >> So, there
+isn't an export control of community involved with the
+Export Administration regulation prescribed by statute. State
+Department, defense department, and Department of Commerce. And
+we all provide expert group members to attend the Wassenaar
+discussions. The consensuses? 2013, that -- the consensus was
+in 2013 there was a set of products that was of concern
+within the scope of the Wassenaar man date, that
+addresses dual use products that can be used by the military or
+by civilian agencies for civilian uses and so that is how
+the language was added to the Wassenaar list. And then I think
+that it is fair to say that immediately, even though we have
+the understanding at the time, what the products were described
+in the language that that was not perhaps a good understanding
+and the public comments certainly born that out that
+there are many products in this space that could be considered
+to be described in the language that were not intended to be
+controlled under the controllist entrees. So we don't have a
+disagreement here. There was an intent to control certain
+products but a good number of products were then swept in the
+technical description and that is what we are dealing with now.
+And all of the comments so far have echoed the comments we
+received in the public process and we'll be certainly taken
+seriously under consideration going forward. >> So speaking of
+-- thank you for that answer. So, speaking of the public
+process, we'd like to open up the floor here just to audience
+questions. So they'll have to -- we don't have a mic for the
+audience so we'll have to make do and repeat the questions and
+we would love to hear your input and of course panelists, feel
+free to jump in. Line up behind Joe. >> AUDIENCE MEMBER: (Off
+mic) >> So the question was, is the only reason we control crypt
+oh, the Wassenaar Arrangement? And then the second part is, is
+there any good reason to control the export of crypt analysis? So
+the answer to the first question is, no. We have controlled
+crypto since -- that's a pre-Wassenaar thing. And then
+the second half of it is, why do we still? >> MARA TAM: So
+cryptography was controlled under CoCom, the predecessor to
+the Wassenaar arrangement and it's worth noting when
+encryption came first came under export control, it was not as
+sort of insane as it sounds now. I mean, encryption was a big boy
+toy. It was something that nation states did. It was not --
+in the era before personal computing it was not ubiquitous.
+So, export control might have made sense at some point. I
+don't think it still does. >> And that was another thing which
+I, in the comment section after the Electronic Frontier
+Foundation said, is before we attempted to do anything more in
+surveillance software, let's decontrol encryption entirely.
+I'm not sure they will do that but that was what I asked for >>
+And crypto export controls are perfect examples of one policy
+goal when the regulations were originally enacted to keep
+crypto boxes out of the hands of military adversaries. Perfectly
+good public policy goal if there are crypto boxes and military
+adversaries that might be able to exploit them. And then
+software got invented. And suddenly, we are now worrying
+about law enforcement domestically and these
+regulations that were enacted for a purpose completely
+different from what they are being enforced for >> So Randy,
+just quickly on the crypto subject, that is obviously not
+part of Wassenaar, crypto has been regulated more tightly in
+the past and the regulations we have now are relatively now more
+relaxed. Can you give us insight into any trends that BIS with
+respect to how crypto might be regulated going forward >> RANDY
+WHEELER: Certainly a lot of changes to the encryption
+entrees T is a Wassenaar control under category 5 part two. I
+have been involved in the program, unfortunately we had a
+series of de-controls in the encryption provisions. But in
+the same way that we have the technical description issues in
+the proposed control list entrees, we have them in the
+encryption provisions as well. For example, I would point to a
+couple of new decontrol notes, L and M, that we just implemented
+in the regulations this May and again, they are technical
+descriptions that are not exactly product descriptions and
+we are in my office still trying to work through exactly what
+product these de-control notes cover and don't cover. And these
+are decontrol notes L and M so that means there are several
+others starting with A. And we go through all of this and it's
+a very broad control with many different carve outs and notes
+and so forth. We have limited the encryption controls to
+products whose primary function is communications computing
+networking or information security, which makes
+refrigerators not subject, that have the alarm system that is
+have encryption. And that is a good thing that didn't happen
+until 2010. We are still working on that. We still would like to
+have a positive list. We would welcome public participation in
+that process as well to try to make the rules more concise, and
+more understandable. There are many permissive provisions in
+the encryption area. Many license exceptions that is very
+broad and for example, it applies to almost all deemed
+exports of technology. So, we have a very permissive regime in
+the end but a lot of text to get there. And certainly it could
+use a lot of improvement. I could talk about the encryption
+controls all day. I have a day-long seminar that goes from
+soup to nuts. And we would like to continue to improve them and
+again, we welcome public participation through the
+Advisory Committee process for that purpose >> Perhaps one day
+there will be day-long seminars what intrusion software is. So,
+we have got -- we have a line up of questions. So we should take
+the next one. >> AUDIENCE MEMBER: (Off mic) >> I think the
+question is -- sorry if I'm paraphrasing. I didn't hear the
+whole thing. I think you're getting as, technology changed
+and the sues of technology changed, are the regulations
+still relevant or are the regulations following the
+technology in an appropriate way? >> I think he is almost
+saying as well that did we tell the NSA. This metadata might be
+more important than data by allowing people to export crypto
+because PGP uses rare. Anyone using PGP therefore needs to be
+looked at. And when we deregulate a little bit but not
+too much, it's not everywhere, it's not omnipresent so you can
+do a sort and select on people just using crypto for targeting.
+That's a good question and no one here has the answer >>
+That's not why crypto moved out of ITAR. Because we won our case
+>> Or he has the answer >> We got the stronger crypto controls
+that resulted in export grade encryption back in the 90s. We
+got those controls deemed unconstitutional. That's why it
+was -- that's why those controls are slightly less. So the
+question is, was the value of meat data part of the reason
+that national security establishment in the United
+States was okay with that? I think that they weren't quite
+thinking along those lines at that time. >> Next question,
+colin? >> AUDIENCE MEMBER: (Off mic) >> Someone has to repeat
+that >> Let me just paraphrase into a couple -- how did the
+crypto regulations affect you, me, in my daily work? And the
+short answer is, the crypto regulations probably don't hurt
+my daily work that much because I have already spent enormous
+investment in figuring out where those boundaries are and I'm
+really comfortable with where -- knowing at least where some of
+the bright lines are and how I do my work without crossing
+them. When it comes to intrusion software, those lines are
+inherently a lot more blurry and I think what it will sheen I
+spend a lot more time talking to our lawyers at my very generous
+University and less time doing my day job, which is filing
+grant applications. >> So for Randy, I think the question -- I
+don't know if you heard all of that. But I think there is -- we
+have a lingerie question as to what kind of exceptions are
+there or would there be for research use perhaps, on
+unintrusion software and those technologies required to build
+intrusion software? >> RANDY WHEELER: We are starting at the
+point with everything being controlled under the proposed
+rule. The possibilities going forward are from my point of
+view, endless. They could be certainly a broad license
+exception this could be changes to the control language. So it
+really depends how the discussion proceeds over the
+next few months. >> Thank you >> I'll just add a quick -- even
+academics occasionally end up finding themselves on the wrong
+end of export control investigation. And it doesn't
+happen that often. But it does happen in very significant ways.
+In physics and in bio and to a lesser extent information
+systems. I don't think you can paint it with that specific a
+brush. >> Colin is the one person on earth who likes this
+thing. So if you want to know more about that position, I
+recommend you listen to his Twitter. I think we have time
+for one more question. There is two. Two more questions. >> Make
+it quick. >> AUDIENCE MEMBER: (Off mic) >> Colin is speaking
+on a different Wassenaar panel tomorrow, I think. Tomorrow?
+Tomorrow morning. >> You might want to ask why they didn't
+invite any of you guys to comment before they put this
+regulation down your throats. >> AUDIENCE MEMBER: (Off mic) >> I
+don't know if you noticed the presence of Randy Wheeler on the
+panel. So the question was, are any of us in favor of regulation
+at all? And if not, why don't we have a balanced panel and of
+course we have Randy who is the Director of Export. >> But there
+is a long discussion about this stuff. Feel free to post to
+daily Dave column if you wish to propose things. >> I think that
+the point is a valid one that as the software industry continues
+to mature, and as a world where we transition more towards a
+future cyber war, these technologies are going to or
+will become more and more relevant on the battlefield and
+there will be increasing government interest not just in
+the U.S. but increasing government interest globally in
+setting up some kind of regulatory regime. So it
+shouldn't come as a surprised we are here today and I think this
+is probably the first of quite a few discussions like this we
+will have >> I'll say I'm not -- I'm not sure that I would make a
+broad statement saying that no, none of this should ever be
+regulated in any way. I can imagine all sorts of bad thing
+that could be done with the kinds of software being
+discussed here that may well deserve regulation. I don't know
+how to draft regulations without enormous collateral damage. >>
+And I would be in favor of regulation that controls the
+provision of support for these kinds of technologies to
+government end users. That would be a regulation I would get
+behind. So, I don't care about -- I don't care about a remote
+administration tool. What I care about is the provision of
+support to the domestic version of NSA all across the world.
+That should require a license. The tool itself, the technology
+behind it, you just go and get that >> Maybe not an export
+license. Maybe it should just be something you can sue people in
+U.S. court about like we're doing already and it shouldn't
+be done in export control at >> so with respect to who is for
+regulation. It's worth pointing out as Randy noted earlier,
+there will be another round of proposed rules and another
+comment period. And I know that the BIS is very interested in
+hearing comments from everybody who may be interested in
+submitting them and she referenced the number of them
+earlier today. So, I'd like to hear her advice on what kind of
+comments are most helpful to BIS in figuring out how to do this.
+But with the comment about who is for regulation, BIS is not in
+the business of making value judgments about whether or not
+certain things should be regulated or not it's there to
+fulfill the mission and do the best job it can so comments in
+general that are directed to, this is really horrible, go
+away, you're idiots, this is dumb. That kind of thing is not
+really helpful obviously. So if you could provide something more
+helpful than that to guiding us how to move forward with the
+comments. >> RANDY WHEELER: Well, again, the public comment
+period for the proposed rule has closed. We certainly will accept
+additional public comments but they won't necessarily be in the
+record. But we do want to identify specific issues from
+the comments that we received the most important ones, and to
+try to flush those out and have all interested parties issues
+the ecosystem, the constituencies, including
+government agencies, that are involved in cybersecurity, to
+weigh in and help us, the inner agency, go forward as
+appropriate. Beyond that, I'm not sure that there will be
+another proposed rule. It will not be a final rule based on
+this proposed rule so there will be an opportunity for more
+public comments. We do have the technical Advisory Committee
+meetings which we will advertise published in the Federal
+Register and we can have open sessions where interested
+parties can discuss the issues that have been identified and we
+do hope to have broad participation in that process
+during the rest of the calendar year. Thank you. >> I have one
+more question. >> Hi. There seems to be pretty good
+consensus among the panelists on the definitions being not the
+best, and ubiquity of some tools and so forth. I wanted to
+follow-up on the issue of service being a service provider
+and support and the sort of customer that you're selling
+these tools to or people selling the tools to. Nate, one of his
+first slide, is it a government enduser or somebody else? Is
+there a different regulatory approach that would conceivably
+work to focus on who are the buyers and what are they doing
+with it? Or do you lose it because if you sell to like an
+Ethiopian small businessman that eventually -- would be in the
+hands of the Ethiopian government? >> That's a good
+point. >> So I think it's a good question for Randy. If I
+understand the question correctly, under a licensing
+regime, how do you discern who the end customer is as part of a
+licensing process? So if someone is selling to a oppressive
+regime or just selling to random interested perhaps researchers
+in that same country? Is there any way to distinguish that as
+part of the process? >> So the answer is, yes. And we have a
+white paper on how to do it. Companies should Intuit a know
+your customer policy. We saw this illustrated very nicely in
+the hacking team document from metro guard sold to a hacking
+team and we saw an e-mail from him to hacking team saying, I
+know who your customers are and I'm okay with it. So, that's the
+sort of thing which I would love to bring a lawsuit about. But
+yes, a robust know your customer scheme, I think is the best way
+to determine it. >> Flowcharts are magic. Have magic powers. >>
+Randy, do you have any further comment on know your customer?
+>> RANDY WHEELER: That's just right that is certainly a
+provision already in the regulations, the know your
+customer, in a licensing process. The end user at times a
+statement is required and certainly in a license exception
+situation or no license required situation, the know your
+customer requirement still applies to ensure a license is
+not required. Thanks >> Just one more thing there. I think
+honestly, the EFF is going down the wrong path. I'm going to get
+him drunk and we'll correct it. And I'll tell you why. And it's
+pretty simple, which is that the Wong Wong technology corporation
+calls you up and says they want a copy of a random thing, some
+gadget ear widget. Now under the current rule set, you're
+supposed to find out if they are owned or mostly owned or
+controlled by the Chinese government. But in reality, no
+U.S. company can ever really know. There is it no way to
+know. So even if you have perfect, and I think immunity
+has perfect know your customer abilities, and you have a
+flowchart on your wall which explains it to your admin, keep
+in mind it's not a lawyer figuring this out. It's your
+admin. The same person who answers the phone. And they go
+through the flowchart and they go, you have a web page. Your
+web page looks good. It's all in Chinese but I don't know.
+Whatever. So I would say dividing a regulatory framework
+against this when anyone in China is very difficult to
+determine if they are a government-owned,
+government-controlled corporation or not is probably
+not the right direction to go. >> But the tools we are
+concerned about are tools that are sold only tow Governments.
+Hacking team and gamma only sell to Governments. So they
+certainly know who their customers are >> With that,
+unfortunately, we are out of time. The next panel is dying to
+get in and play with the AV equipment. So, just want to
+extend some recognition here to Mara Tam who did some amazing
+things behind-the-scenes to make this panel happen. And also
+thank you certainly to Randy Wheeler for really this unique
+opportunity I to discuss these proposals with you. And thank
+you to all of you for coming in to this talk today. (Applause)

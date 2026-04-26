@@ -1,0 +1,1019 @@
+>>And you're at Hacking Hotel
+Keys and Point of Sale Systems
+>>Sweet >>Can you guys see the slides all god? Can everybody
+hear me good? Perfect, perfect.
+So I'm Weston Hecker, I'm going to be hacking hotel keys and
+point of sale systems. I had
+backup videos just in case if anything went south so. So hey,
+uh- funny story uh- starting out
+uh- a little bit- uh- after I go through a little bit about
+myself. I do a lot of talks, uh-
+I did Hope this year, I did Blackhat, uh- this is my third
+year at Deacon. It's a privilege
+to speak here, so. Yeah, I basically do pen testing for a
+living, I do a lot of research
+on the side. I'm an ATM enthusiast and like some of the
+other stuff, I just like playing
+around with technology, so. And I've got a couple side projects,
+um- I was working on some car
+hacking, point of sale system hacking, hotel key hacking, and
+just exploits in property
+management software. But uh- funny story, uh- so when you do
+a- uh- hotel hacking talk at a
+hotel, it usually involves the staff, pulling you, your PR
+person and your boss aside, and
+taking you to the bowels of the hotel. And I've seen Casino one
+too many times because I was a
+little nervous and uh- you know so. but it was something where
+it all ended really good. They
+just wanted to know if they were vulnerable to this attack, and
+it is not. They tokenize their,
+they set it up properly, they follow the best practices, so
+your guys's hotel room keys are
+safe at all the Caesar's properties. So. Just wanted to
+throw that in there, so. So, I'm
+going to explain uh- the actual Mags- uh MagSpoofer, which is
+Samy Kamkar's device, uh, this
+one is a modified version of the MagSpoofer. Uh- this one is not
+the one that is setup for brute
+forcing, uh but I do have demo of the actual brute forcing
+going on. And then we're gonna
+actually infect this point of sale system with malware, using
+human interface device injection
+so. And uh- yeah I'm gonna explain a little bit about the
+point of sale systems and the
+actual uh- process of how the keys are actually made on some
+of them that really on night
+audit and batch services. Uh- they have to do some some very
+insecure things to make sure
+that their database is posted and they get charged, so. Uh-
+I'm gonna do a privileged- uh
+show you how the privileged attacks work, uh- fireman keys,
+uh- service keys, things like
+that so. And it's uh- yeah. Some of it's uh- I thought it was
+pretty duty heavy encryption of
+some kind in uh- most of it is just uh- encoded so. They
+definitely skipped some steps.
+And the point of sale talk, it's gonna go from how I led from
+doing hotel research into
+actually attacking point of sale systems. Cause like the- i don't
+know, anybody else when they saw
+Samy's video, like they thought of every single thing that has a
+uh- magstrip reader on it as now
+an attack surface and I just want to give him a shoutout
+because that was amazing
+research and he saved me many many hours of reading manuals,
+so. And yeah, I'm gonna
+basically go through how it uses the magstrip readers, uh-
+whether- where the fail was in
+that. and uh- I'm gonna actually go with triggering events on the
+readers and see what it's
+listening for. Because some of the newer uh- point of sales
+systems, like, they will only
+power up the reader when x happens, and uh, actually I have
+a tap that you can attach to
+bypass some of that stuff. So, and I'm gonna go over some of
+the management uh- cards, brute
+forcing management cards, you can actually you know, do
+refunds, stuff like that. You
+can actually refund to other credit cards uh- using one or
+the other attacks so, or, yeah,
+I was- it was one of those conceptually doing and it uh-,
+and it would have been a pretty
+decent attack, because I never knew that you could actually
+refund to a credit card that it
+wasn't originally charged on and that's something I came across
+while doing some of the uh-
+other research I was doing this year, so. I do have somebody do
+a cash tend, check tend attack.
+So that basically, uh- when you inject the F8 key it literally
+just pops the register open and
+I'm gonna go over that in a little bit here. [laughter]
+Because everybody pays with
+checks still, right? And uh- attacking OS injection, I'm
+gonna do a- pop a command shell,
+and then I'm also gonna demo a drive-by attack, as long as the
+4g holds up, so. I might have to
+get Steve Jobs on you guys, have you turn your phones off but. No
+we should be good, so- I had the
+4g working earlier, so. And uh- some of the actual restaurant
+attacks and other mag research,
+like some of the rewards programs, uh- I wrote a- one
+version of it where it cycles
+through ten cards so, say some of those places where you can
+collect points. They're on to
+employees, you know, just giving the points to themselves, so
+that actually cycles through
+like ten accounts, and I'll go through that in a little bit
+here, so. I'm going to go
+through uh- who here in the room knows what a magspoofer is?
+Who's built one, they're fun.
+They're very fun things to build and uh- yeah. So basically, uh-
+you guys are gonna see there uh-
+that's what actually happens when you put iron oxide on the
+uh- credit card. It's gonna
+actually mag- it has a little magnetic uh- field to it so
+that's when the actual card is
+swiped through, its actually generating a magnetic field and
+speaking binary data, so 1s, 0s,
+things like that. So basically what Samy Kamkar did was he
+actually, you know built a
+version- I think the uh- patenting and all, goes back to
+like 2008 with the LoopPay,
+which was a system which was bought by Samsung, and so
+basically you just need- all you
+need to know is that there's a EM field being generated that is
+the same- pretty much the same.
+Some of the timing is different. Uh- but as far as that goes,
+when you swipe the card it's
+basically doing the exact same thing. So it's able to speak to
+magnetic head readers uh- using
+a small little uh- magspoofer, so. And uh- how's the- yeah it's
+secure mag strip transmission,
+so it's like I said, it's uh- something that's been around
+since 2008. So, back in 2002 and
+1997, you know people didn't think that this kind of thing
+was possible. So that's uh- why
+a lot of these vulnerabilities- there's no reason why this
+keyboard should have a 102 key
+functionality that you can actually inject through the
+magnetic head reader, so. And
+yeah, it's not- it's not RFID. Um- A lot of people ask me that,
+like you know, the hotel
+attacks, like is it on the RFID, actual keys? And no it's not.
+It's actually uh- basically
+turning a magnetic card into a wireless card, so uh. Any idea?
+How do you handle the
+overheating. So, basically, uh the first thing you did after a
+bur- uh- got my first
+magspoofer, built it, ordered all the parts from China, waited
+like a week and a half, and the
+first thing I did was burned it out. Because I tried injecting
+multiple cards, I pushed like 5
+or 6 cards uh- I did my first modification just to increase
+how many cards I could store on
+it. And then I start actually, you know, seeing how many I
+could do, and after about 18
+cards, uh- it burned out, so. So I waited another week for all
+the parts to come from China,
+and yeah. I basically made uh six- six magspoofers in one,
+with a little bit of a
+controlled arduino, then it has a 3800mA battery instead of a
+100mA, so, that thing is heavy
+duty. I call it big bertha cause it is just- it's like a hug coil
+on an arduino. And I'm going to
+go into a little bit of what property management software is
+uh. Its a- when I refer to it
+from PMS- PMS from now on, it is not what everyone would think it
+was. So, it is property
+management software. And that is something where uh- it has
+actually where your folio data
+is. Everybody's seen the checkout where it says folio.
+That's basically where the hotel
+keeps all of your records, uh, that's how it actually, you
+know, what's to charge when they
+do the night audit process. So when they do- run the night
+audit, it's gonna charge under
+your bank account. Now a days, like, when they're properly
+proceduralized, it's something
+where there's lots of security mechanisms that people can
+actually put into place, so. I'm
+gonna go into a little bit of an explanation of what the actual
+uh- proprietary card readers and
+the security behind the hotel. Uh- so basically, there is your
+folio number, actually the one I
+found the weakness in was um- after I uh- unencoded the actual
+cards, I read it in a raw using
+an MSR605 which is a mag strip reader. Basically read the raw
+data, unencoded it, and it was
+literally the same as my folio number and my room number and
+the checkout date, so. If you
+make an assumption that somebody is gonna check out in the next
+week, your space just went down
+a little bit, and if your hotel uses a very- not very old
+process actually, um they
+actually weaned away from it in 2007/2006. So if they do
+incremental folios and you're in
+a 50% hotel, it's not a very big space, you have 918 options in a
+50 key- or uh 50 person hotel so
+it's something where, yeah that's not many options to try,
+especially with a modified
+magspoofer, you can actually inject 45 cards per minute so,
+that goes through that space
+pretty quick, so. And yeah, collecting the information, as
+you can see the, also instead of
+injecting full credit card numbers, your actually injecting
+uh, just some of the track- most
+of them is the track 3 data, a lot of the track 2 data. So
+credit cards are broken down
+into track 1, 2, and 3. Uh track 3 is the one that hotel chains
+use mostly. So, and if you've
+ever noticed, you can put your card in upside down. That's
+because that half of the actual
+magnetic stripping is only used, so. They only use a portion of
+track 3. And as you can see, I
+put uh- iron oxide on this one also and it just shows that it
+is actually not, yeah, its not
+using the full card. Because I covered the whole thing, then
+wiped it down and, yeah. So and
+then- and- that's one of the things too, I travel a lot when
+I go pen testing so I have like,
+an entire suitcase, not an entire suitcase full of it, but
+it's got about three layers of
+actual hotel room keys and as I was wondering what was on them
+so I just got bored one day and
+started pulling information off of them and, yeah. And there
+were several of them um- that
+actually were, you know, pretty easy to actually break the
+encoding on them. Because they
+were using uh- non- uh it was I think base64 but a little bit
+less. Because it was very very
+simple. I wrote an actual script and then uh- most of that script
+actually worked for like 3 or 4
+different kinds of keys, so I'm guessing that they are using the
+same PMS software, so. And yeah,
+so, how do you uh- how would the bad guys go about interacting
+with uh- say for example, if you
+were going to brute force that 918 space, say Weston wanted to
+get into Hecker's room. Now I
+know the folio number, I assume he's checking out in the next
+week. I can actually go to an
+elevator or a pool area and it'll actually tell me once I
+get that uh- when I get valid
+card numbers. So you don't actually have to be sitting in
+front of the person's door,
+which is kinda- you know that would raise a lot of suspicion,
+you know, especially if you had
+to sit in front of his door for 18 minutes or something like
+that so. They actual- yeah, that
+gets kind of creepy, the guy in the hallway for 18 minutes, so
+that's something where, yeah.
+Uh, I was- like one of the cons- that I- I was with permission on
+this property. It was uh-
+actually testing it out by the pool area, and the actual hotel,
+cause, it, I also found how the
+floor restrictions in elevators work this way, so. [chuckle] So
+it's kind of cool, like if uh-
+somebody wants to go up to the 26th floor, you can literally
+just change the room number just
+change the room number, it doesn't actually validate the
+folio on that, so. And as far as
+getting maid service keys, um, on that property I was on I
+literally attached my device to
+the back of the door, and I did that from the privacy of my own
+room. And when people walked by
+it was uh- you know, just randomly beeping here and there,
+but uh- it was something where
+it took about 33 minutes to actually get a- you know the
+domain admin of the hotel pretty
+much. It was one of the maiden keys. And you can literally-
+like, it is crazy the amount of
+access, especially with some of the service keys. And uh- I feel
+dumb for brute forcing it cause
+it was uh, pretty much all zeros for the maid's keys. And I'm
+sure you know, some of the guys
+out there, like, they'd have been right away, let's start at
+zero, instead of you know, the
+folio numbers. So it's something that, once I understood that, I
+tried all 9s and that was the
+service keys, and yeah, so. Then uh- some of the actual issuing,
+they issue them monthly, so the
+folio, once I found out that that was the way that they were
+issued, it was something where I
+was actually, you know, pretty much able to do that. So, and
+yeah. And yeah, a lot of the
+elevator and fireman keys, like there's some states that are
+looking at actually uh- luckily
+they're hid behind metal, so there's no way people could
+interact with them. You know, so
+that's what I'm saying, that heavy duty magspoofer, it can go
+a pretty good distance, so even
+if they're blocked off for law enforcement or fireman usage, it
+can actually reach some of
+those, so. Yes, so the- I'm gonna go through some of the raw
+dumps. Uh some of the tra- uh.
+The other facilities, they actually use like, say for
+example you go to a theme, theme
+park, they'll have on track one and track two, they'll have
+other information. Um, track
+two, on some of the properties, keys that I was looking at, they
+actually uh- basically had my
+name, and I was like ah, how I am I gonna brute force you know,
+names and stuff. And luckily it
+wasn't validating it, so. And that's one of the things too, is
+like I always wondered about
+that, like how often, you know because that's one of things
+like, people always hear in news
+stories about personal information. There's no personal
+information on any of the keys
+that I came across. The ones that could decode at least. Uh,
+with the exception of like a
+name, um and, yeah, to me that's not that identifiable i guess,
+so. And uh, there are
+limitations to characters that can be entered um, due to the
+limitation- limitations of
+encoding of the keys only, once you introduce the magspoofers,
+you actually start injecting
+some illegal characters, which I actually found out when uh, I
+was running pretty hot, like uh-
+because I was actually measuring like uh, how hot it could get
+before it actually started
+garbling the messages and stuff like that and actually, some of
+the bit error percentages, like,
+they would go through the roof. If it started overheating, and
+you know to actually figure out
+what was safe to run the device in. And uh yeah, there were some
+characters, I'm guessing some
+bits flipped and thats what led me to believe that, you know,
+some of the research, which uh
+actually, we'll be demoing at the end here, so. And with some
+readers, they also, yeah, they
+automatically inject a return character. So after a certain
+amount of digits are entered,
+there's a way to actually stop that automatic return character.
+So, and I will go, that's with
+the modified version of the magspoofer only. Cause uh, after
+it does like 46 digits, it will
+do an automatic return character. And, yeah, other than
+that, um, you just need to know,
+literally the, your own folio number, if you want to uh- when
+I was actually going to a- like
+actually uh, breaking the encoding, it was something where
+I actually just had to get my
+own key issued, and stuff like that, twice. And um, yeah. And
+that gives you a sample to go
+off of and you can pretty much- uh, other keys that are
+collected, you know, there lots
+of them where they have the return things, I didn't get
+those ones, but I pretty much
+just got my own keys. So breaking the complex encryption,
+yeah that was pretty simple. You
+know I had to rent an Amazon server for you know- I literally
+just booted up my computer uh,
+wrote a script to- this one was actually, this version of it was
+actually just base64 encoded, so
+that was kind of irritating. I thought it was going to be a lot
+more harder than this one but...
+And some of the uh- kiosks, I started uh, playing around with
+some of that stuff. Any time you
+guys go to a security conference, that's always the,
+you know, first thing they shut
+off, for good reason, for this kind of stuff, so. Cause uh,
+this is a really good way to
+issue your cards and uh, if you're the bad guy obviously.
+Uh- it's something where they
+will, you know, able to get like 7 cards without being
+suspicious, so. Cause, yeah,
+unless, yeah, so. So what led to the research after the hotel
+keys, um, that pretty much was
+my next step. I was thinking everything with a- um pretty
+much mag reader on it is now a
+target. So and I actually noticed that once I started
+buying some of these devices,
+that they were generic HID re- HID. And I had done a lot of
+stuf- uh, HID attacks, human
+interface device attacks, which are basically keyboards, um,
+with teensy and payloads in the
+past so it's something where now that I was looking auth, the
+attack surface of point of sale
+systems, it was, yeah uh naturally the next step, so. So
+how does he use a mag strip
+reader. This one up here is a 102 key keyboard, generic human
+interface device. So basically,
+anything you can type, you can now inject through uh, the
+magnetic head reader or- card
+reader, so. And uh, that's one of the things too it's like, why
+not just hit the keys uh, and
+there are some of these things out there literally like, you
+know, it's this long of uh, text
+string, like say for example, I'm going to be demoing a drive
+by attack, because uh, yeah.
+Point of sale systems are a little out of date sometimes,
+so. And, I'm going to actually
+go through um, yeah, some of these methods here in a second.
+And triggering events like
+that's one of the things too, like, some of the newer ones,
+they have actual uh, you can
+test if they are being USB fed, so that's something once they're
+powered on, you can still do
+some of it, but they have to wait for a trigger event or for
+the remote cable to be toggled,
+so, uh yeah. So basically you can figure out when they're
+listening, and it's not
+something where you have to tap into it, you can literally just
+look and see if the green light
+is on. So that's like one of the indicators of it, and I would
+definitely, if you guys want to
+start playing with some of this stuff, get the MSR uh- the
+little mag strip reader 103s, I
+think they're like 15 bucks, so. They're really really fun. And
+you can basically dump anything
+you want to it into a notepad. And uh, yeah. So management
+keys, that was one of the
+biggest things too, uh, where I was looking for a really hard
+challenge, and the actual first
+point of sale system I bought which uh, was pulled out of a
+taco restaurant, and it, when it
+was disbanded and it was auctioned, and uh, yeah, it came
+with the management key. And
+that management key, worked on the other two point of sale
+systems that I bought from
+separate lots. [laughter] So I was like ahhh. There's nothing,
+you know, nothing deep. No
+crazy, no techno, no chain-smoking, it literally was
+just, pretty much the same admin
+account used across several point of sale systems. So now,
+uh I'm guessing, uh, cause I
+know, you can't turn this off when you go out in the wild.
+It's something where uh, I
+started noticing every single point of sale system and I'm
+like, I wonder if you know, that
+key would work on that, key would work on that. And I
+actually, one of my buddies owns
+a restraint that happens to have one of those and, you know, you
+can literally inject the actual
+management key into it. So that's something that is pretty
+crazy. And like, you can mess
+with inventory. You can throw off inventory you can, yeah some
+of them need management
+overrides. You know, for some of the electronic check outs and
+stuff like that, so that's some
+scary stuff. And here's pretty much, what you guys probably
+can't read, but uh, yeah.
+Everybody knows how uh, for the most part, how keyboards work.
+And, I think we deal with them
+on a daily basis so we pretty much know all the character
+sets. So, quite literally
+anything that you can type on that keyboard that I showed
+earlier, you can pretty much
+inject. Uh, like I said, sometimes you have to strip some
+of the uh, uh, auto return
+characters. The enter characters, so. And yeah, one of
+the first attacks I did, uh, was
+I saw the cash tend button, or check tend button. And that was
+uh, injecting, I was like, okay,
+I wonder how hard this could be. So you know I started uh,
+playing around with it, and I
+was getting to the F keys functionalities, and I was
+rolling through and testing it,
+and, this basically is like, a way to like, uh like, for a bad
+guy to actually, you just walk
+in and literally rob a store, they could literally just put
+this device on there and that's
+what kind of made it scary, like it's, now people can rob stores
+that way, so. With the F8 key.
+It's uh, pretty bad. And uh, yeah, behind every strong man,
+is a strong woman. As you can
+see I wore my I love my wife t-shirt, so. And behind every
+point of sale system, there is
+an outdated operating system, so. Not every point of sale
+system, I can't speak for them
+all but uh, every single one that I bought, or I could
+afford, and that's, kinda the
+way it goes. So basically what you want to do is exit out of
+the point of sale system and uh,
+yeah. The next step will be popping a command shell and uh
+injecting the payload. And what
+kind of payloads would one want to run on a point of sale
+system. Uh I did a talk last
+year so I had uh, a couple malware uh- memory scripting
+malware lying around, and I was
+like hey, I will see if I can load these o a page. So, it's
+gonna do one distribution and I
+uh tested it this morning so it's actually gonna do a drive
+by attack on a actual web server
+that I have uh loaded, so. And this is uh, it's a neutered
+version of it, uh, it just talks
+to itself. So it's not gonna actually be doing anything
+illegal. And it's just going to
+literally visit the webpage and uh has a vulnerable version of
+uh some software running on it
+Then also you can literally uh through the command shell 'cause
+most of them run uh deprecated
+operating systems, some of them still have functionalities that
+where you could literally just
+put URLs and uh downlaod from pretty much any source you
+wanted so. Again like I was
+saying uh this is the payload that the bad guys would use um
+like the actual memory script in
+malware so in the past you know people had to do these
+ridiculous supply chain attacks
+or they had to you know breach a vendor account and now it's
+literally uh you know the bad
+guys it'd be as easy as you know walking up to one of those point
+of sale systems and actually
+infecting it so and yeah and some of them are devved
+environments so like they're uh
+custom they have uh they pretty much have their proprietary key
+functions, they don't have a
+classic layout but they still have magnetic card readers in
+'em and I actually uh you know
+was expecting to have to you know map these keys out and do
+all this crazy stuff but uh they
+actually we- uh [chuckle] if they have the generic driver
+loaded, they will accept the
+same ke- key key commands even if they don't have the keys on
+the keyboard so that was like
+another huge fail so [chuckle] Which as first limitations of
+mag injections uh making a
+physical card attack limitation uh could you make the waiter do
+the dirty work? Could you like
+give him your credit card to pay and actually have him walk up
+and do some of that? That's
+something that was kind of my, you know next step after all
+this was kind of finished up and
+uh, yeah that's some like I was saying there was some illegal
+characters that you can't
+actually encode on it so it wouldn't work as good but I
+think that it's something that
+some people have explored in the past, and it's uh definitely
+something I will be, once I have
+some free time now that you know all the talk and conference
+season's are done with I'll do
+some more checking into stuff so. But yeah that was kind of
+the one thing too, it's like,
+you know how much of a payload could you actually put on the
+credit card? So on track three
+and uh yeah these devices are everywhere, this was literally
+me me flying to Huntsville uh
+when I was speaking at uh Take Down Con and yeah these mag
+strip leaders are everywhere
+like quite literally everywhere and uh one of these uh one of
+the other things that I started
+looking at, I was like okay, aside from being able to you
+know just pop the register,
+installing malware, that's not bad enough I guess [chuckle]
+yeah actually attacking player
+rewards uh systems like say for example the- whosoever played
+slot machines and like you just
+kind of were bored and just wanted to go back to your hotel
+room so you were going to go
+play the twenty dollar slots or the you know fifty dollar slot
+and just get it done with?
+That's one of the things like uh every si- every time I went to
+those higher end uh slot
+machines, people would always leave a card in there and I
+thought it was by accident at
+first like I'm like hey this person probably left their card
+there, and I tried to turn it in
+and they're like no, the people do that because they try to
+squat points, 'cause uh some guy
+who's just literally you know waiting for a plane or
+something's gonna you know play
+twenty five hundred dollars worth of slots, and they get to
+collect the player's reward
+points so they kind of squat some of those accounts and uh
+that was like one of the attack
+methods that I was thinking of it's like, now that you can
+eject magnetic data uh it's like
+you can, you can could squat on one of these devices and it's
+another one is like I was saying
+uh uh like I think when I was in high high school I worked at uh
+uh a actual company that they
+had like a player's reward program and they they told me
+they were like, yeah, you can't
+use your own card, people have been fired in the past for that,
+so it's something where they're
+on to it and uh they'll actually have flags go off if more the
+the same cards used more than
+once in you know x amount of time uh but some of the actual
+uh like grocery store chains, or
+there's uh certain electronic companies, where you know every
+five hundred dollars you spend,
+you get five bucks, or a hundred bucks, so this is one of those
+other methods like uh some of
+the rewards programs that actually be susceptible to this
+kind of attack so and like I was
+saying the one about refunds like where you can actually
+refund onto a prepaid card, that
+should not be [chuckle] possible to happen, eh eh- especially you
+know if it wasn't the original
+transaction, so, and sometimes it has to post overnight, but
+that was like one of my uh
+additional attack vectors, I didn't have time to wean out all
+the kinks on it, but it's, it's
+something that uh seemed feasible so. And yeah, injecting
+into actual uh like what I was
+saying when you could actually tap into the remote signal uh as
+long as you hit the right wire
+uh you basically could [chuckle] overfill like prepaid cards like
+that, stuff like that, so, so if
+a bad guy wanted to get an unlimited phone calling card, he
+could be injecting his own card,
+and having time added it to it, so. And uh not only that but
+some of the you know gift store
+cards, stuff like that so and uh some of them do lock once they
+have the original amount loaded
+on them so they're not reusable, but the reuseable prepaid cards,
+that say reuseable prepaid cards
+on them you know [chuckle] those are the ones that obviously they
+would attack after, so. And
+yeah, like I was saying um, these actually triggered events,
+attacks, uh so you'd have to
+sniff out the actual um powered up readers, like som- a lot of
+the modern ones they don't
+actually, they send a remote signal that hear there's a
+transaction going on or hey
+we're going to ta- do some kind of interaction, and I don't know
+if that's because of this kind
+of attack, or if it's just because uh you know they kind of
+looked into the future of what
+people might actually be doing with these and it's not a good
+idea to have something not only
+powered on, some of these things are low energy, so yeah, it's
+something where you can actually
+uh for some of the rewards programs also you have to hit
+the enter key to accept that
+it's your account, so yeah, that's one of the things too, I
+was wondering if you know if
+it'd be possible to actually inject that? So and it uh on the
+actual point of sale system that
+I tried on that, it worked perfectly 'cause that's one of
+the biggest things is uh there
+are customers always stealing peoples uh you know points uh
+say somebody didn't have a
+rewards card they weren't actually letting them inject it
+so. Yeah and uh who's ever used
+a clock in system? [chuckle] yeah who uh you can never be
+late to work again now so
+[chuckle] yeah that's one of the uh uh as far as the hardware
+goes, I bought like a hotel key
+for the back door, I bought a couple key boards, I bought a
+couple point of sales systems,
+um and I bought a clock in system and uh a lot of people
+are going to the finger prints
+or some of the actual newer method ones so but yeah this is
+one of my last attack surfaces
+that I actually looked at so. And yeah I'm going to go over
+the uh video of the brute
+forcing uh it was on uh just a couple times when Windows uh
+stuff popped up while I was
+actually doing the demo like when I did the video so uh there
+was actual Windows 10 upgrades
+'cause it was like a fresh install 'cause I was uh, I lost
+my original driver disc for my
+uh MSR 605 and I had to download it from a untrusted web page so
+if you guys wonder what the
+dialogue boxes popping up all the time are so and I'm also
+going to go into the uh
+installing actual credit card skimming malware off of a web
+server as long as the internet
+is still working so and if not uh you'll still be able to see
+that there are injections so.
+And I'm going to go set up the demo and while I'm setting up
+the demo I'm actually gonna if
+people want to step up start stepping up to the mics too uh
+you can ask questions while I'm
+doing the demos so yeah thanks for coming, it's Stay Legal and
+I'm uh going to go into the
+demonstration portion right now so let's see here [applause]
+thank you [chuckle] let's see
+here >>Have you messed with any of this on uh airplane mag
+readers on the back of seats?
+>>Did you uh mention uh if I messed with them on airplanes?
+>>On the back of seats, you know
+how they have the mag readers to like? >>Yeah I've uh I've
+learned from other people that
+have messed around on planes that it's uh [chuckle] it's not
+usually uh go- uh one of the
+things that you guys want to do like uh some of the I saw that
+mag strip reader and I even felt
+bad like taking a picture you know of the MSR that was on the
+keyboard thing so yeah I haven't
+tampered with planes any [chuckle] and I hope everybody
+knows that 'cause yeah that was
+like one of the I see I've saw I've seen those and I thought
+the exact- 'cause you can't once
+you start doing this kind of stuff, you can't like turn that
+stuff off so. Yeah >>How about
+the uh like the new like Square and uh Paypal and all those
+things >>Oh Yeah, yeah, the uh
+some of the I had or- some of the original and right now it's
+actually in I'll I'll come back
+to your question uh some of the Square readers and some of the
+remote ones, yeah, yeah a lot of
+the, and that's not a vulnerability in them it's
+anything that uses a mag strip
+but yeah quite literally everything that is affordable
+that has a mag strip in it, I've
+bought, and injected stuff into, so so yeah yeah that's pretty
+pretty crazy, that's what I'm
+saying like if you're making your own payment you could be
+you know presenting a different
+card I I see where you're thinking, that's some clutter
+thinking, so But uh basically
+right now it's actually injecting the the folio numbers
+and I'll roll the video back
+here a little bit there's the first Windows 10 upgrade sorry
+about that and if you guys want
+this video is online on uh youtube already so and so
+basically I'm gonna read the raw
+data 'cause it has like I said it has uh custom encoding so you
+have to have a specific reader
+to actually do the and uh yeah you're gonna be reading the you
+have to switch it to high co and
+then redraw so yeah there's the first transaction and then it's
+actually you can if you can't
+see on the actual video it'll show because my phone wouldn't
+focus, but it's actually uh some
+of the numbers are changing because it's rolling through the
+actual folio revisions. They
+have the same check out date so it's like the end of the
+conference is happening or
+something so everyb- I knew that they were checking out at that
+date and uh it literally took
+about like six minutes but it if you guys want to see how the
+actual device is over my MSR 605
+it was actually injecting folio data then uh think the end of
+this I'm gonna let roll again
+here for you guys so and then after this I actually used a
+chinese made mp3 player to
+inject a credit card number which is kinda cool and it burns
+the mp3 player out so don't try
+it at home so [chuckle] go ahead, yeah what's your
+question? >>Um did you ever uh
+try using the magspoofer as a jammer to perhaps like jam uh a
+transaction that's in place and
+then play after it's done? Anything like that? >>Yeah that
+was actually uh oh sorry when
+people ask me like how do you protect against this kind of
+stuff and that that's kind of
+the exact same thing is you can put one of the magspoofers
+injecting random data on the
+back of your door and it'll actually deauthenticate anybody
+from uh from actually using it
+so like it would be a really good defense mechanism and you
+could have like a two form
+authentication, have it when your bluetooth phone comes in
+it'll actually shut off the
+jammer so could add two form authentication and it might
+actually drain the battery so
+you'll get locked out of your room if they don't have it
+hardwired though so [chuckle] so
+you might actually DDOS yourself out of your own room but yeah,
+what's your question? >>Uh so
+how might someone defend from one of these attacks? >>Uh like
+I was saying the uh um updating
+to the latest versions of the mag strip readers and the actual
+uh point of sales systems uh
+that would be my recommendations uh where they send remote coding
+'cause that shut off mag strip
+reader is a one that is not responsive to this kind of
+attack so that would be my
+biggest recommendation is uh get updated to something that is USB
+3.o and uh push the latest
+versions of the actual point of sale systems so yeah and yes
+what's your question? >>So I've
+seen, I've seen something that says you can go around the ship
+and pin cards by reactivating
+the mag strip? Or how does that work uh? >>Yeah uh uh Sa- Sam at
+CamCard did a really good job of
+explaining how magspoofer can actually modify some of the flag
+details on the actual um
+magnetic card readers >>Uh huh >>uh he didn't release it in his
+code because he's the same way I
+am, I don't want people to use these for illegal purposes but
+you can actually tell, you can
+basically send the command that hey the pin's damaged on this
+let me just use my mag card uh
+some of the magspoofers they're modified, like this one has uh
+two payloads on it and uh I have
+like I said I had the six magspoofers in one was my actual
+uh big bertha which is like a
+huge magnetic coil and I uh let press take a bunch of pictures
+of it but that's like my brute
+forcing one and that thing took me like six hours to build
+[chuckle] so I didn't want it to
+break but yeah this one's basically a modified version of
+uh a magspoofer here and I'm
+gonna actually how much time do we got for demo? We're doing
+really good? Okay if you want to
+ask some more questions do. >>Did you write any fuzzers for
+any of the embedded systems
+hooked up to these mag swipe readers and did you find any
+memory corruption issues? >>Ha
+ha yeah that was actually my next uh I was kinda kind
+thinking some something along
+the same lines but I uh literally ran out of time 'cause
+I got kind of obsessed with my
+ATM attacks that I was doing and some of the uh actual relaying
+portions and stuff so I'm gonna
+actually I'm gonna get get the actual mag strip demo kicked
+off, if anybody has any
+questions at all uh feel free to come up to the podium so. So can
+everybody see the point of sale
+system? Two, on the screens? Awesome. Here we go and I'm
+gonna check to see if I have
+internet connectivity here [chuckle] ... Here you go, one
+second ... And it is now
+visiting the right page, so I have to, I'm going to try the
+second payload, I'm going to try
+to pop the command right now, so ... And if anybody has any
+questions, I can answer these
+while I'm doing this, so. >>Hey Weston? >>Yeah? >>Obviously
+Samy's done a lot of research in
+siri also have you, have you done anything with with uh BLE
+using like the coin to rewrite
+or done any track uh research on how coin rewrites the data or in
+elastic? >>Uh no, no I haven't
+actually >>Using it- that as an attac- attack method? >>Uh no,
+no I haven't I was looking into
+some of the other research that Samy had done then like I said I
+I did shift ah about half way
+through this 'cause this was done like very very early in the
+year >>Right >>And, yeah that
+was something that I I thought some of the stuff that Sam was
+doing is amazing and I was
+wanting to read some more of his research so >>Okay, cool >>But
+yeah no I didn't look into some
+of that but I did uh get some of the NFC working but I burned my
+original uh a uh HTC phones uh
+near failed communication out trying to do stuff with it so
+>>Was it radios out? >>Yeah
+what's that? >>You burned the radios out on 'em? >>Yeah burned
+the radios out on it so, so that
+was like the end of it 'cause I had like just broke a six
+hundred dollar phone so that
+ended my curiosity pretty quick so >>Cool, thanks >>Just one
+more second, I'm gonna try to
+unplug in the hit >>I know it's very different approach [cough]
+but uh do you have any interest
+in looking into NFC and other technologies that hotels are now
+using? 'Cause a lot of hotels
+are phasing out the mag strips? >>Yeah those are um most of the
+ones that use RFID ones are
+actually tokenized so they reflect the folio number instead
+of having uh actual data in
+there so you can do some of the classic attack methods, but it
+wouldn't actually, uh wouldn't
+actually work so as good so and that's why I was saying if
+you're root fuzzing those that's
+something where your key space would be a lot bigger and like
+you're able to and it's a truly
+random sixteen digit number so ... same page... I well I
+apologize the demo blew up on me
+but I will put a Youtube video up uh of it actually working and
+if you guys want to come and uh
+I'm going to try to demo it here until I actually get kicked off
+stage but I'll still answering
+questions so if you guys have any questions, feel free to ask
+too so >>Yeah I was just curious
+if you'd done any uh playing around with the new tabletop
+devices that are in restaurants
+and stuff have you looked at any of those? >>Yeah everytime I sit
+at uh one my favorite
+restaurants down the street that's like my first thing that
+I would love to but I don't have
+access to them I think it would be kind of breaking the law, but
+I would love to actually order
+some of those >>right >>because I've seen a lot of fun things
+that people do with the- some of
+the pager systems and stuff so >>Nice >>Yes >>So a bit of a
+comment on uh running on old
+operating system I ran uh um around with a war driver down
+town and I found a lot of uh uh
+WEP wifi and uh went into the the the restaurants that are
+using that, asked permission of
+course, because we all ask permission and um got the
+handshake from WEP real quick
+you know with wifi, did- did some sniffing and found out
+they're all running old XP, 0867
+gets to it old uh POS on there uh dump memory and I found even
+on there a uh admin account with
+back door back door so I wasn't the first one there but I found
+that they provided WPA2 to the
+customers but because the uh the uh old point of sale couldn't
+authenticate 'em the old XP
+couldn't authenticate to WPA2 they even run on WEP and so you
+don't even have to get very
+close at all I wanted to know if if that's been your experience
+or not as well? >>Yeah no that's
+what I'm saying like uh for as far as actual using uh third
+third party inputs on this kind
+of stuff >>Yeah yeah and and I mean like don't even have to get
+that close to it that if if
+they're already networked with with WEP then you know, it it it
+goes in there, but yeah, all
+that default cred and and uh old OS uh I've seen the same thing
+>>Yeah there's tons of other
+ways that I could see people actually attacking these yeah
+this is like my main attack
+surface on this so >>So shifting gears a little from mag strips
+to chip readers have you ever
+gone into something like that? As chip readers start to get
+more and more popular and maybe
+hotels start to use that instead of mag strips? Do you think this
+attack factors that you have
+kind of really researched might be able to shift and transition
+into the same way you could you
+could apply it to chip readers? >>Yeah some of the chip readers
+uh they'll still be using some
+of the uh like uh magnetic track data for the most part on some
+some of the stuff but some of
+the challenging in the encryption they can do, I could
+see it being able to block a lot
+of it so >>Okay >>What about uh looking into the serial
+programming on the actual door
+itself? >>I yeah I haven't dug too deep into some of that stuff
+like after I got some of this
+attack service and then I broke my phone like I said it kind of
+disheartened a little bit so but
+yeah that was like uh I I was I'm still curious about a lot of
+attack surfaces that was out
+there but I just yeah didn't have the some of the stuff to to
+get it into it so >>'Cause >>As
+far as, especially time was my biggest constraint on that so
+>>'Cause if you have a key to
+your door and you're able to reprogram the lock to your door,
+or you could spoof your key,
+>>Yeah >>Then you >>Yeah that's uh the biggest thing too is like
+uh are you asking about if you
+can ... I'm sorry I might've reask the question >>So a lot of
+the doors have uh like a barrel
+serial connector on the bottom, uh two point one jack >>Oh yeah,
+yeah >>And then if you could
+reprogram that door over serial, and if this is the kind of
+security that the keys are using
+are the locks really using that kind of security? >>That's what
+I was saying like even the the
+most recent hotel attack like where they had the little uh
+bing er the not the dinglehopper
+but the actual marker at the bottom, those are newer systems
+those have two way interfacing
+so they can blow the keys away uh so a lot of these low energy
+old ones, or older ones like as
+old as in like 2008, 2006, those ones uh have two two way
+functionality but it's in
+fifteen minute increments so some of the full blown ones uh
+they're they're got a little bit
+different method of actually you know protecting themselves so.
+Thank you. >>Did you have to use
+any kind of proprietary um reader for your mag strips? I
+noticed a lot of like credit
+cards, driver's licenses all used uh normal standard one two
+three tracks but a lot of hotels
+that aren't readable by those standard readers, did you have
+to use anything special for that
+or? >>I did have to modify the MSR like a little bit to be able
+to read some of the raw data at
+the same time as the uh other information 'cause they use like
+a portion of the card and uh
+actually raw read it I to to read their proprietary format
+you do need an actual driver
+from the property management software but if you can rip the
+raw encoding, like uh a majority
+of them you can actually reverse it from the raw encoding it just
+takes it a lot of extra time if
+you do the the raw read through the property management software
+if you were to get the property
+management software you would be reading entirely different
+character sets so >>Right. So
+that's how you did it for most of what you're showing here was,
+was it to dump it to actual
+keys? Was it to dump it to raw and then >>Dumping to raw then I
+had to reencode it as raw like
+if if you went up to your room and did a MSR and just read it
+in raw and then copied that to
+another card that raw would work across the board so >>Alright
+thanks >>Yeah, thank you >>Just
+curious if you looked into you uh trying to do SQL injection
+into like POS systems or other
+systems using this method? >>Yeah, I was actually, the demo
+that I had was literally going
+to do a uh a java or a flash drive by attack so I and there
+as far as SQL injections that's
+something that would definitely be possible uh especially for
+some- yeah quite literally if it
+would be able to get to something as back end or
+internal, that would be a huge
+attack surface so, yeah. >>Thanks >>Uh some of the card
+readers that are slide ins
+either have a mechanical or an optical sensor, does how does
+that is that just an- >>Slot
+machines? >>Yeah >>Like the slot machine ones, yeah, they
+actually turn green when
+something's inserted into 'em and you could use a very low
+profile piece of seventy pound
+paper and it will actually trigger that event so. yep! ...
+How we doing on time guys?
+[chuckle] where's my goon? Oh we're- two minutes? Okay
+awesome, yeah, any last
+questions? I really do apologize for this, I'm gonna try to get a
+demo going in the hallway I
+guess it- I need to check on some of the connectivity issues
+uh should- shoulda still popped
+the command shell and injected though, so. I'm having some kind
+of interface issues so if
+anybody wants to see this if not I'll actually put a uh camera
+demo online so and I'll make
+sure that my camera focuses this time but if you guys want to
+look into the actual injection
+with the m- chinese mp3 player, if you want to burn out a six
+dollar mp3 player injecting
+credit cards you can feel free to uh and then also a lot of the
+uh actual payload injections,
+I'll be putting uh demos up online so quite literally as
+soon as I get back to North
+Dakota, which I have to drive, so, but yeah, if there's no
+other questions? I just want to
+thank you guys for staying [applause] thank you.

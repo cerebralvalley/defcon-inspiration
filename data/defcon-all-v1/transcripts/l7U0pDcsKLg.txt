@@ -1,0 +1,728 @@
+>> Hey guys. Uh so this is a 2
+o'clock Weaponizing data sites through social engineering. And
+these are the guys. And we wanna gonna kick it off. Say
+[applause] >> All right so DefCon goons are no longer
+allowed to drink in red shirts. Nor are the allowed to do shot
+the newb. I'm gonna keep this short. It is Phil first time
+speaking at DefCon. John spoke last year but wasn't able to get
+his shots. So let's do a shot with him and have a good time.
+[applause] Don't fuck it up. [cheering] >> All right. Hey
+guys. Um my name is John Seymour. Um so welcome to our
+talk on weaponizing data sites through social engineering. Wow.
+Dude that was strong. Um weaponizing data sites through
+social engineering automated end to end spoof phishing on
+Twitter. So uh we think this talk is actually pretty good fit
+for this conference right? Every year uh Black Hat you know does
+this attendee survey and every year social media you know
+phishing spear phishing social engineering is near the top of
+their lists of concerns. Um we wanted to try our hand and see
+how effective using AI to actually automate spear phishing
+would be. And so uh things like social engineering took it
+actually automates the backend of uh you know social
+engineering right? So da uh creating a malicious payload.
+Things like that. We're actually interested in more of the front
+end sort of stuff. So actually generating links that users will
+click. Um traditionally there are two different types of
+approaches to this. There's phishing which is very low
+effort you know shotgunning tons and tons of messages. But it
+also has very very low success. Between like 5 and 14 percent.
+Um there's also spear phishing which is highly manual. It takes
+like tens of minutes to actually research a target and create a
+message that's you know uh um hand crafted to that actual
+person. Um but uh it also has very high success. The social
+media pen testing tool that we released today actually combine
+the automation of phishing campaigns with the effectiveness
+of spear cam spear phishing campaigns. And with that said uh
+I'm John Seymour. My hacker handle is delta zero um I'm a
+data scientist at Zero Fox by day and by night I am a PhD
+student at the University of Maryland Baltimore county. And
+in my free time I like to research malware data sets. [mic
+noises] >> Alright and my name's Phillip [indiscernible]. I'm a
+senior data scientist at Zero Fox. And in a past life I was a
+PhD student at the University of Edinborough in the Royal
+Institute of Technology in Stockholm. Um so in that past
+life I've studied recurrent neuro-networks artificial
+intelligence but in a much more biologically oriented way. I was
+trying to figure out how you could combine neurons together
+and connected them up to synapsis and simulate networks
+of their own to try and get some storage and recall of memories.
+Um but nowadays instead of combining different patterns of
+spikes to create some biologically represent
+biological representation of of a memory um combining text to
+try to uh u u using [indiscernible] and similar
+techniques to try to generate text. Um this is this is not
+necessarily anything new. Uh the field is known as natural
+language processing. It's been around for a really long time.
+One of the kind of uh fundamental examples happened
+over 50 years ago with the Eliza chat box. So this was a this was
+designed by psycho therapist named Joseph Wiezenbaum. MIT.
+And he used it in a very clinical setting. So he wanted
+to try to have his patients who were either on their death bed
+or close to death um be able to interact in some way with a with
+a computer. So it was very kind of naive very ad hoc um it was
+based on parsing the keyword replacement. It would it would
+simply do something like give the input to the program was my
+head hurts. Uh it would output something in response like why
+do you say your head hurts? Or how bad does your head hurt? So
+something like this. Uh and these kind of very early
+examples were uh inspiring for people uh because they they
+passed some very simple versions of the Turin test right? So um
+using these kinds of questions and this very ad hoc feedback
+goes was able to uh um not really or or fool people into
+believing that they might be talking to a human rather than a
+machine. Fast forward 50 years and we have Microsoft AI which
+came out with a neuro-network that was based uh or it was
+called Tay Tay and You. Um and so if you've seen this in the re
+in the news recently it was kind of a dynamically learning bot
+that was released on Twitter. Uh and it was a really cool idea.
+So each time a user a Twitter user tweeted at it it would kind
+of learn from that tweet. Uh and then reply to it. It was a chat
+bot. And you see this a lot popping up now in Facebook and
+other kind of social media services uh for more of like a
+marketing twist. But uh what they didn't foresee was the fact
+that Twitter tends to be a cesspool sometimes. And tends to
+be filled with porn and sexually explicit content and overall
+kind of [laugh] bad stuff. So uh what it actually turned in to
+was a porn written race uh racists nazi bot. And it turned
+into quite a like a [laughter] PR disaster for Microsoft. And
+they had to shut it down. Um so indeed we view info second
+machine learning um as kind of prioritizing the defensive
+orientation right? So um you setup perimeter or you try to
+detect incoming threats um or you try to remediate it once
+it's already happened. The adversary has to do something in
+order for you to react to it. And defend your network or
+whatever it may be. Um so you have some examples here. These
+are historical Black Hat talks over the last 10 or 15 years .
+Um you have some machine learning talks. One or two per
+year usually. Um and they cover anything from spam filtering to
+bot net identification to network defense to intrusion
+detection. Um but what we wanted to [indiscernible] to propose
+here was rather that you could use artificial intelligence
+techniques um and machine learning not only on defense but
+you can use data to drive an offensive capability. Uh we call
+our tool Snapper. Um it's the Social Network Automated
+Phishing and Reconnaissance tool. And it's split up into 2
+separate phases. The first phase takes as input a set of users
+who you want to target. Um and it takes this set of users and
+extracts a subset of them that it deems as high value targets.
+So it prioritizes them. We'll get in to more about this later.
+Uh and then the second phase of the tool takes those users and
+crafts a Tweet uh directed at them based on the content that
+they have on their historical Twitter timeline. Um and the end
+result of this is a Tweet with an at mention and the crafted um
+machine generated text and then a shortened link which we
+measure uh success using click through rates. Um so with that
+if uh if anyone wants to partake in the demo we're going to do
+later on in the talk please tweet at the hash tag snapper.
+And that's hash tag s n a p underscore r. Um we're not going
+to target you with any kind of malicious payload. It'll be a
+shortened link that just redirects to Google dot commers
+and like that. Um but if you want to have your timeline read
+dynamically and then have a tweet spit back out at you uh
+please do that in the next 20 or 25 minutes. Uh so the talk will
+go I'll I'll hand it off to John to talk about machine learning
+and offense and then we'll go into the 2 parts of the tool
+target discovery and spear phishing and talk in more detail
+about how to generate the message content. That's kind of
+the core of the tool. And then we'll talk about how we evalue
+the tool and that evaluation compares to other techniques uh
+that have been found in the literature. [pause - mic sounds]
+>> Alright cool. Um so the first question is like so why is
+social media such a great place for spear phishing people?
+Right? Why Twitter in particular? Um there's a lot of
+answers to this and we put a few on this slide. Uh first thing it
+a lot of these social networks have very bot friendly APIs.
+Right? Um whenever you post something on Twitter um then uh
+um people can go and scrape your timeline your activity records
+things like that very easily. Because they are python uh APIs
+for all the social networks just straight up available. Another
+thing is there's a very colloquial syntax on Twitter and
+social networks. Um for example uh when when [indiscernible]
+actually posted this tweet I really quick snapped her and
+said hey can we use this for our talk? Uh 20 years ago you
+wouldn't have any idea what this meant. Um so the idea here is
+like basically machine lea learning tools especially
+generative models tend to be pretty bad. If you've ever seen
+like [indiscernible] simulator and things like that. Um but the
+fact is that the bar on Twitter is so low to have a good you
+know tweet uh that people will be interested in. Um even even
+generative models can do pretty freaking well. Um some other
+things are like due to character limits. Uh there are a lot of
+shortened links on Twitter. I don't know if you've ever used
+it. Um so basically if you're trying to obfuscate a payload or
+something like that um people don't actually think twice about
+clicking links on Twitter. You know that are that are
+shortened. Right? Because everything's actually shortened
+there. Um then there's also the fact that like people sort of
+seem to understand even now or at least some people do at this
+point. Um like Nigerian prince scams. You know things like
+that. Uh a lot of people actually like can tell you hey
+you know you get an email check the link before you click. Um on
+Twitter and social media you know social networks people
+don't actually think about what they click on. You know it's
+it's you don't have that sort of years of awareness built up yet.
+And that's one of the things we're trying to actually bring
+about with this talk. And then finally um people actually want
+to share content on these social media you know networks. Right?
+Um for example Reddit like you want to get up votes. Twitter
+you want people to share and like your content. Right? So
+there's sort of this idea of like incentivizing data
+disclosure. Um if you're you know um on Twitter you're
+sharing a lot of personal information about yourself about
+things that you like things that you enjoy that can all be used
+against you. So we wanted to give a quick shout out actually
+um at SchmooCon there's a really really cool talk about uh you
+know phishing the phishers using mark off trains. And that was
+actually a huge inspiration for this talk. So we just wanted to
+give a quick shout out. But getting right in to the tool
+itself um basically there's some things built in to the tool
+directly. And there's some things that we also add on top
+of the tool. Right? So things that the tool does directly are
+it pre-pens tweets with an app mention. And on Twitter this
+actually changes what the tweets are categorized in their uh in
+their process. Right? Um tweets that start with an app mention
+are called replies. And only people who follow both the
+person tweeting and the target can actually see those tweets.
+So if our bot doesn't have any followers that means the only
+person who can see the tweet is the target self. Which actually
+is is very useful in determining whether or not an individual you
+know target has clicked. Um another thing that's actually
+built into the tool is it shortens the payload uniquely
+per user. And we'll get into that in a bit. Um so that way we
+can actually go through and each of our shortened links that we
+generate we can check whether or not that particular link was
+clicked and map that back to the user who clicked it. Also uh we
+triage users with respect to value and engagement. So we have
+a machine learning model that we'll talk about in a bit. That
+actually goes first before it actually phishes the person uh
+checks to see whether or not they're a valuable target.
+Whether they interact a lot with the platform for example. Um a
+one reason this is useful is for example a lot of people have
+whats know as egg profiles or profiles where they haven't
+changed the default settings. These people tend not to post a
+lot. They don't they're not very engaged. And we don't want to uh
+waste API requests or you know waste like possible um awareness
+of the bot. Right? By trying to phish these people. Um so we
+just go ahead and actually triage these users out so that
+we don't have to worry about them. And then finally the tool
+itself obeys rate limits. Um this is because we sort of
+wanted to release it as an internal pen testing tool. Um
+obviously you know people can get around that but we hope you
+know you guys don't. Um that's all I'll say about that. Um some
+things that aren't actually built into the tool that are
+very very useful. Um first off um Twitter's actually pretty
+good if you post every single post of yours has a link in it.
+Um they're good at finding that and shutting you down. So one of
+the things we recommend is post a couple you know non phishing
+posts in there or get ready to make a lot of accounts. And then
+another thing is um if you yourself the bot have an egg
+profile you know um nobody's going to actually click on your
+links because obviously um they they like to see believable
+profiles before they click links. So a very high level of
+uh design flow of the tool. Um first we have a list of Twitter
+users that we pass into the tool. It goes through each user
+and asks whether they're a valid you know whether they're a high
+value high uh um engagement user or not. And if they are it
+scrapes their timeline to a specified depth. Um so for
+example 200 or 400 tweets that they've sent. And uses that to
+either seed um [indiscernible] model or a euro-network model.
+And that generates the actual text of the post. After it's
+generated the text then it you can either have it schedule the
+tweet for a later time when they're most engaged and it
+actually uh calculates all that for you. Or you can post the
+tweet immediately and have the uh the tool sweep to obey rate
+limits. And that's actually useful if you're doing an
+onstage demo. That yeah. >> Cool so lets get into the tool. I'll
+talk about the first phase here automated target discovery. So
+this is what Twitter looks like if anyone's been living under a
+rock for the last 10 years. Um Twitter is full of interesting
+information and personal information like John said. You
+have this incentivization structure for disclosing
+personal data. Um and by that I mean it's not necessarily just
+the content of the posts. So the last tweets that were made you
+also have super value [indiscernible] information
+present in the description. People on Twitter tend to like
+to post about what their job title is and what their
+interests are generally. Um you ha you get different kind of
+data not just text. You have um integers like how many followers
+and how how many followers you have. How many people are
+following you. How many lists you belong to. Um you have a lot
+of kind of boolean fields like have you changed your background
+profile image? Have you changed any of your other default
+settings uh from the original instant [indiscernible] of your
+registration? Um it's filled with different dates like your
+created at date and URLs within the text that you post. So this
+is what the the raw API call call looks like from Twitter
+when you when you grab uh when you grab it. So I'll I'll use
+the example for for this section of Eric Schmidt. The former CEO
+of Google. Um so we we implement a cluster algorithm so it's
+based on machine learning we go out we grab a bunch of Twitter
+users and we extract features from these uh from these API
+calls. Across these different users. Uh and here I list a few
+of the most most interesting and most relevant features that we
+grab. So like I said in in the description if you have words
+that tend to correspond to a job title like CEO CSO CISO uh even
+like recruiter or you know engineer or something like this.
+This is probably going to end up being someone that you might
+want to target. Right? Um they might have access to some
+sensitive information company information or whatever. If you
+belong to some other organization. Um also your level
+engagement. So how many people are following following you and
+how many you're following. Um you can imagine you don't want
+to you don't want to target somebody who's not very active
+on the platform. Uh you wanna make sure that someone who is
+actively engaged and is likely to click on links and is getting
+updates on their phone. Um the account age is a good piece of
+information too. Uh the created at date of the Twitter profile.
+You might want to target you don't really want to target
+somebody who's just made the account and is just trying to
+get started up with the platform. Um same thing for hash
+tag my first tweet. And then also a good indicator is uh the
+default settings. So it um people who tend to engage a lot
+in the platform um will will kind of make it fancy. They'll
+change all the default settings and they'll make it um more
+matching to what they're interests are and what they
+like. Um so in a nutshell this is how it works. If we take the
+clustering algorithm uh and we start out with our our target
+Eric Schmidt. Um you can imagine now that each Twitter user is
+represented on this 2-D plot as a single point. Um again it's
+I'm projecting it in 2 dimensions. Originally it was a
+very very high feature high dimensional feature space. With
+all those different settings like the description uh number
+of followers etc. Projected into 2-D and Eric Schmidt falls on
+this 2-D plot somewhere there. Uh great. What do we do with
+that? We pass it through the clustering algorithm that we
+have. Um and I'll talk in in the next slide about how we choose
+that. Um but once once you do something like that then you
+actually get to extract a subset of these users that you might
+deem uh as a relevant target or a high value target. So up in
+the left hand corner of the plot of red red points there might be
+a group of people that you deem as high value targets. And the
+the users who belong in the blue and the green points you wanna
+throw them aside. De-prioritize them. Um so in the machine
+learning world uh there are many different clustering algorithms
+so you can choose from. Uh and each of those algorithms have a
+certain set of hyper parameters that you can tune to kind of
+optimize your technique and optimize your clusters. Uh how
+do we chose this? We throw a bunch of clustering algorithms
+uh into into kind of like a grid search more or less. Right? So
+we have Cayman's and a parameter for Cayman's clustering
+algorithm is the number of clusters that you choose
+[indiscernible]. Um for example. And you take those and you fit
+the models for each of these different set of algorithms and
+their set of hyper-parameters. And you choose the one that
+maximizes the silhouette score. Um so the silhouette score is
+bound behove between negative 1 and 1. Uh and anywhere fr a
+positive number the more positive the better. And
+anywhere from kind of point 5 to point 7 and up is is considered
+some kind of reasonable structure. Silhouette score kind
+of measures how similar that data point is to it's own
+cluster. So the cohesion within that cluster to uh to how how it
+compares with data points outside that cluster. The
+separation of those. Of those data points. So on this plot
+each individual data points of each individual Twitter users is
+represented kind of as a as a horizontal bar. And the
+hyper-parameters are on the y-axis. So if you look at the
+first the top top there. Um you have 2 different sets of
+hyper-parameters for [indiscernible]. One might have
+2 clusters one might have 3 clusters. Uh so you've you
+[indiscernible] silhouette score for each individual data point.
+And you calculate the average of that which is to which is shown
+here by that red dotted line. And basically you want to choose
+the algorithm that pushes that red dotted line all the way as
+far right as you possibly can get it to. Um right. [pause]
+right [pause] >> All right cool. So uh before we actually get
+into the cool machine learning models and stuff for generating
+text. We're gonna tease you guys a bit with some of the boiler
+plate that goes around the tweets. Um so one of the first
+things that we actually ran into was we wanted to choose a url
+shortener right? And uh we want the url shortener with a lot of
+different qualities. One of them being you know can actually can
+shorten malicious links. And so the first thing is we went out
+we found a malicious link we verified using virus total that
+it is indeed malicious. And we actually went to it too in a
+sandbox and all that. And we tried it through a lot of
+different link na shorteners and apparently google gl let's us
+shorten it. Right? And so actually several others also let
+us shorten it. But goo dot gl gives us a lot of cool other
+things. Um first off it it gives us sort of like a timeline of
+when people click. And apparently this link is already
+been shortened before and people of clicked it. Um that's you
+know a tale for another time. Um goo dot gl also gives us a lot
+of cool analytics like who referred the link? For example t
+dot ceo. Um what browser did the target use? What country were
+they based in? Or at least you know did there uh um like actual
+machine say they were? And uh what platform they so Windows
+Chrome you know those sorts of things. Uh Android um and all
+that. Um so yeah. So goo dot gl actually looks pretty
+legitimate. I ran it by a few guys in there and they were like
+hey yeah like it comes from Google it's gotta be safe.
+Right? And no. Um it can link to malicious sites. So we verified
+that. Um it also gives us really cool analytics which is very
+useful if you're you know trying to spear phish internally right?
+You want to know which users clicked. Um but some other cools
+things that it gives us is it you're able to actually create
+shortened links on the fly using their APIs. So you can actually
+say hey here's this you know general payload www dot google
+dot com. Let's shorten it uniquely for each individual
+user. And see you know which end of those real users actually
+click on the link. And then you can also obtain all of these
+analytics programmatically. So there's really like no manual
+you know uh uh process that you need at all um in this this
+entire process. And uh we'll we'll go ahead and give the the
+note that we never actually posted any malicious links to
+any targets. We just verified that you can actually shorten
+malicious links in here. Um so please don't get mad at us about
+that. And then finally another thing that the tool does uh in
+the box is it does some basic recon and profiling. Um so 2
+things that it does is it figures out what time the user
+is uh likely to engage the platform. And it um looks at
+what topics that they're interested in and tries to
+create uh a tweet based on one of those topics. So for actually
+figuring out the scheduling the post the what time the user is
+active we just use a simple histogram for tweet times what
+uh which hours that that user tweets. And over on the left
+you'll actually see my own uh tweet history uh timings um so
+you can actually see that I'm most active at 11 pm at night.
+Take that what you will. Um but it's it's actually very easy to
+find this data. Right? And uh for topics we actually started
+like when we first started this project we were thinking really
+really complicated like you know super lda and all the things and
+what not. Um but we found actually pretty early on was
+just a simple bag of words and counting frequency does really
+well for finding topics as long as you remove all of the stop
+words. Um so with these 2 things we can actually see the models
+and sweep you know the tool to uh tweet at a time when the user
+is likely to respond. And also tweet on something that they're
+likely to be engaged with. [pause] >> Great so so at this
+point now we've taken a bunch of input users and extracted a
+subset of them that we want to target. Uh and we calculated
+what they like to talk about. The topic. And we've also
+determined that at which time are they're most active with
+with Twitter or with the Twitter platform. So now how do we go
+about getting um getting them a tweet that they might be more
+likely to click on than your your normal uh any random
+question. So we do we do this in 2 separate ways. And the first
+way is we leverage markup models. Um so markup models
+they're populated for text generation like John said the
+subset simulator or in the info [indiscernible] talk title bot.
+But how it works is um using Twitter API you can go and grab
+the last x post on someone's timeline right? 200 500 1000 um
+however many you want to grab. And we call this the corpus. So
+you take your corpus and you want to learn um pair of y
+frequencies of um of likeliness between these words. Right? So
+uh for example you might you might have the word I that
+occurs a lot within this corpus. Sometimes it might be followed
+by the word don't. Other times it might be followed by the word
+like. So based on the relative co-occurance of these words in
+your corpus you can then generate a model that
+probabilistically determines um how likely it is to create kind
+of this string of sentences. I like or I don't. And you can
+continue this uh for the length of the entire tweet. So it's
+based on purely transition probabilities from one word to
+the next. Um on the other hand we trained the recurrent
+euro-network. Um and this is called LSTM. And LSTM is an
+acronym for Long Short Term Memory. And so this is a bit
+more cumbersome. It's less flexible than the markup model.
+Um we took five and a half days to to train this neuro-net. Um
+we had to do it on an EC2 instance using a GPU cluster.
+And the training set was comprised of approximately 2
+million tweets. We didn't go out and just grab um your run of the
+mill any 2 million tweets. Um because like I said Twitter
+[laugh] Twitter is a veritable cess pool. So we had to go and
+find kind of legitimate looking tweets. Uh to do that uh Twitter
+has an account called at um at verified. And that account in
+turn follows all the verified accounts on Twitter. All the
+ones with that blue check mark next to it. And so our idea was
+that this the people that are uh that are verified accounts are
+probably more legitimate. They're probably posting about
+some kind of relevant information. And so we trained
+it on this huge corpus of tweets. The network properties
+we used 3 layers of this euro-network and approximately 5
+legit layers per [indiscernible] uh units per layer. Sorry. And
+the idea here is that neuro-networks are or at least
+this neuro-network in in particular is is much better at
+learning long term dependencies between words in a sentence. So
+LSTMs are often deployed when people want to learn uh
+sequences of data. Un and in this context you can imagine a
+tweet or a sentences being a sequence of words. Right? So as
+the in in contract to the markup model which just care about the
+[indiscernible] frequency. The word that follows this word. The
+recurrent neuro-network on the other hand considers long longer
+term dependencies. Because what I talk about at the beginning of
+my sentence might also relate to something that comes later on.
+Uh this is common in all all languages and English uh and
+most common in German actually. You have these long term
+dependencies. You might not know what the context of the sentence
+is until someone finally finishes the word at the end of
+it. Um so what were the differences between these 2
+approaches? The LSTM as I mentioned took a few a days to
+train. Uh so it's a bit less flexible. Far as the markup
+chain uh markup chain you can deploy it uh and it can learn
+with within a matter matter of milliseconds. And that kind of
+scales depending on how many tweets you choose to train it
+on. Uh the accuracy for both surprisingly was super high. So
+even thought the LSTM is a bit more generic um and by that I
+mean it learns like a kind of a deeper representation of what it
+means to be a Twitter post. And I I caution myself not to call
+it English because as John said this isn't English this is kind
+of twitterese. It's filled with hash tags and and different kind
+of syntatical auto ease and um abbreviations. Uh so the
+availability of both of these tools uh is public. You can go
+out. You can download um a LSTM model using different python
+libraries or other otherwise markup chain as well. Uh and the
+size of these LSTM is much much largest around dick uh disk
+compared to the markup chain. Um but like I said the markup chain
+tends to over fit on each specific user. The idea being
+let's say you're posting today or in the next week about the
+Olympics. Or something like that. Maybe 2 months from now if
+I go back and I read your historical timeline posts and I
+I tweet back at you with something about the Olympics uh
+it might raise your eyebrows because the Olympics have been
+over for a while and you don't really care about them anymore.
+Um the cool thing about markup models that [indiscernible] is
+that you don't need to retrain it every time. Like I said it's
+very flexible. You can deploy it very fast. Um what this means is
+that it generalizes out of the box to different languages. It's
+it's language agnostic. Uh so if you're posting on Twitter and
+you're you're posting in Spanish or even Russian or Chinese
+entirely different character sets um because it's based on
+these [indiscernible] probabilities it's gonna
+dynamically learn you know what word likes to be followed by the
+next. And you're then able to post a a tweet back at somebody
+based on the language they're typing in. So here's an example.
+Um that's in Spanish. And if anyone is from a foreign country
+here with a lot of foreign language tweets um and while
+it's a volunteer for the demo. Again please tweet at that hash
+tag snapper. Um so we don't like to think of this necessarily
+also as a Twitter vulnerability so to speak. Um this can be
+applied to other social networks as well. But it all has pretty
+accessible APIs. But the idea here is that um kind of like
+with the rate with the rise of AI and the rise of machine
+learning and the democratization of this as it becomes more and
+more possible to do this without a PhD for example and the
+technology grows and grows and becomes more available um th
+this is gonna be become more and more of a problem. Right? So uh
+the the weak point here is is a human this is uh classic social
+engineering. [pause] >> Cool yeah so before we get into the
+evaluation results and demo. I just wanna say um the tool is
+public. So for example there's a version on your conference CDs.
+And there will also be a get hub link that we'll tweet out uh as
+soon as we get back home to Baltimore. But uh we first uh we
+first trained our first couple of models and started wild
+testing it. And we were surprised it did really really
+well. Um I don't know if you can actually see some of the
+pictures but uh for example we got uh a guy on the top right um
+the first post is what our bot posted. And the second is like
+the guy responding saying hey thanks but the links broken.
+Right? Um we actually saw this quite a bit. And uh on the
+bottom you can see some of the example tweets from the first
+models that we made. Um so we we used these first couple of
+models and we did some pilot experiments. Um we grabbed 90
+users from hash tag cat because cats are awesome. And uh we went
+ahead and tried to spear phish um all these users again with
+benign links. And uh we were actually surprised at how well
+the model did right out of the box. Um after 2 hours 17% of
+those users had clicked through. And after 2 days we had you know
+between a 30 and 65 percent um 66 percent sorry click through
+rate. And so why that range is so huge actually? Is because
+there are a lot of bots crawling Twitter clicking on links. Um so
+we actually don't know exactly how many actual humans click
+through. If we use the actual strictest definition of what a
+human might be so making sure that for example [indiscernible]
+dot CEO. And the location matches up with the location
+listed on their profile and those sorts of things. That's
+where we get that 30% number. Um if we if we use a little bit
+more relaxed uh criteria for judging whether it's a human or
+a bot. Um we actually can get up to like the number of people
+that we think clicked might be up to 66%. And so uh actually uh
+funny story um with these initial models also we saw how
+well they did. And um an information security
+professional who will remain unnamed tweeted at us saying hey
+proof of concept or get the fuck out of here. So we went ahead
+and used him as a guinea pig and it did actually he did click the
+link. So we will say that. [laughter] [clapping] Cool. So
+uh so then we iterated on the model some. And we uh decided we
+wanted to test this against a human. Right? Um see how well
+the human could spear phish or phish people. Um versus how well
+that the tool could. And uh so we had 2 hours. We uh scheduled
+on our calendar. And the person was able in these 2 hours to
+target 129 people. And he did so mostly by just copying and
+pasting you know pre-made messages to these different hash
+tags that we talked about previously. I think they were
+pokeman go info sect um and uh something about the DNC. And uh
+so we uh he was able to tweet it um 129 people in these 2 hours.
+Which comes out to be 1 point 0 7 5 tweets per minute. And he
+got a total of 49 click throughs. We used 1 instance of
+our tool. So 1 instance of snapper running. Um and in those
+same 2 hours snapper tweeted at 819 people. Which comes out to 6
+point 8 5 tweets per minute. And 275 of those people clicked
+through. And we sort of want to emphasize that this is actually
+arbitrarily scaleable with the number of machines that you
+have. The major rate uh the major limiting factors are
+actually rate limiting and the posting mechanism. [pause] So um
+sort of a TLDR. Um this tool that we've made um they're 2
+traditional ways of you know creating tweets or or messages
+that people will click on. The first is you know phishing which
+is mostly automated already. And has a very very low click
+through rate. Um between 5 and 14 percent. There's also this
+other method called spear phishing which takes tens of
+minutes to do. It's highly manual. You have to actually go
+out research your target. Find out what they enjoy doing. What
+time they're interested in posting at. Things like that. Um
+you get the best spear phishing campaigns actually get up to a
+45% accuracy from what we've seen. And uh we actually kind of
+split the difference. We actually combine the automated
+um um characteristics of actually phishing but we still
+get pretty close to what the actual um effectiveness of spear
+phishing. And with that demo gods willing we'll do a live
+demo of this. [pause] Cool. Right? So [pause] I just want to
+see so about 151 of you have actually tweeted. So this is the
+actual command to uh uh run the tool. And we're gonna go ahead
+and run it. Hopefully. Cool. Um I'm actually the first person on
+the list. Cause I actually you know wanted to make sure that
+something worked right. [pause] Let's see. So what it's doing is
+actually it pulled down the users timeline and generated a
+tweet for that person. And c'mon c'mon. Cool. Actually. Okay so
+here it's starting to come out. Um so here's that actual post
+that it generated. And it uh posted you know at my hash tag
+the text that it grabbed from my profile and the shortened link.
+And um so you can see that that actually works. And we're not
+just saying things. [pause] So notice that um on my actual you
+know timeline you can't actually see that post. Right? And this
+is because it's actually called a reply. [pause] But hopefully
+yep so here's where it actually shows up. It shows up in your
+notifications. Not your actual Tweet history. And so you're the
+only one who can actually see that. And so uh as you can tell
+um yeah. I just got spear phished if I click this link. So
+it's actually running thorough all you guys now who tweeted at
+the link and generating text for you and posting them. Um so
+we'll leave that running as long as possible but it'll probably
+won't get through all of you guys while we uh wrap up the
+talk. [pause until 36:22] >> Cool. Thank you demo gods. Um
+right. And just a few words to wrap up. Um why did we do this?
+Uh we wanted generally just raise awareness and educate
+people about the the susceptibility and the danger of
+social media security. Um like John said people usually think
+about email uh very cautiously. You would never open a link in
+an email from somebody that you never interacted with before.
+And we want to have that same culture be instituted on Twitter
+now and on other kind of social networks. Um another way that
+you could use this tool is to if you belong to a company um or in
+some other kind of organization you wanna do some internal pen
+testing to see how susceptible your employees might be to some
+kind of attack like this. This could generate good statistics
+for you and help you refine your kind of educational awareness
+programs. Um you could also use this for general social
+engagement staff recruiting. Reading stuff off people's
+timelines and then crafting a tweet geared at them. Might be a
+good way to recruit people or even for advertising. The click
+through rates here we have are are pretty huge compared to your
+general uh generic advertising campaigns. Um so like I said ML
+is becoming more and more automated. Data science is
+growing. A lot more companies are hiring data scientists. And
+the tools in the tool box are becoming a lot more uh
+democratized. You you can you can easily go out there's free
+software you can use to train these models. Um including the
+one that we'll release today. So the enemy will have this so the
+adversary will be able to use this to leverage this technology
+sooner rather than later. Um one way you can try to prevent these
+kinds of attacks is to enable protect the account on your
+Twitter uh on your Twitter users. So if you protect your
+account you can go out through the public APIs and grab your
+data. Um there might also be ways to detect this stuff using
+as I said at the beginning of the talk automated methods like
+machine learning classifiers or whatever have you. Um and also
+if you're ever unsure always always report a user or report a
+poster um if you see a tweet like this maybe. Twitter is
+pretty good at actually responding to these reports. Um
+and we we use google dot com as our shortened link that that you
+redirect to so feel safe to click it. Um because if we if we
+did something more funny like redirect to our Black Hat talk
+people might get pissed and try to report us. We don't want our
+bot to get uh our bot to get bend. And so in conclusion ML
+can not only only be used in a defensive way but you can use it
+to automate an attack. Um Twitter is especially nice for
+this kind of thing because the people don't really care if the
+message is in perfect English. It's slang laden. It's
+abbreviation laden. And these things actually help the
+accuracy of our tool. Uh and finally data is out there. It's
+publicly available and it can be leveraged against someone to
+social engineer them. And with that we'll take some
+questions.[applause] So just step up to the uh microphone. If
+you have a question. [pause until 39:48 - off mic comments -
+pause until 40:00] >> Hello ah so do you I can hear it >>
+Alright if you come >> Yeah >> if you just say it we'll repeat
+it >> oh >> So have you tried implementing anything like
+change point detection? For cause I know that some research
+has been done in using Twitter for like thread analysis as
+well. It's like trying to pinpoint users who say work for
+like ISIL or ISIS. And have you done any research using like
+markoff chains or prior distribution detection systems?
+>> You wanna take that one? Uh [off mic comments] >> Alright so
+um we haven't um done any research for the purpose of this
+talk into that. Um but it's definitely a cool thing that
+we'd like to look into. So if you wanna talk to us a bit more
+after the talk about it. We can uh get some you know information
+and trade some ideas. [pause - off mic comments] >> Great
+presentation. Uh quick question pertaining to the environment of
+a mobile platform as this applies. Cause I know you guys
+touched on mobile. You mentioned phone or smart phone per se. Can
+you kind of just give me any additional thoughts on that
+area. >> Um sure so we haven't actually uh measure like the
+differences between how many click on mobile versus how many
+click you know from uh a PC or something like that. Um but it's
+it's something that we can definitely do. So if you're
+interested in it you know tweet at us and we can crunch some
+numbers for you. [pause] >> Okay you were mentioning that your
+neural network uh version of the text prediction performed better
+than the markoff model in terms of like temporal accuracy. Um
+what about the neural network causes that? Uh over the markoff
+model and what would prevent that from talking about the
+Olympics some month from now? And admittedly a new bend on
+neural networks? >> Yeah sure. Um you know I definitely
+recommend looking at some documentation about LSTMs. Um
+neural networks in principal can kind of replicate any any kind
+of arbitrary function. This is a special kind of neural network
+that has different gates in between each um each layer of
+the LSTM. And these gates kind of turn on and off dynamically.
+And so it allows you to uh remember words at like um a
+certain depth back in time. Uh and it learns these connections
+on the fly. And it's able to turn it off and on and because
+of that you're able to like lear learn longer contextual
+information in these words. [pause] >> Hey great preso. Uh
+just have a question I wanted to see what kind of considerations
+you had for trying to prevent bias in your training set. And
+what were some like time biases or even just using the approved
+Twitter handles might introduce some bias in terms of the data
+you're looking at. Could you discuss some of that? >> Yeah
+that's that's definitely some valid criticism. So you want to
+avoid you know common defaults like overfitting to specific
+users. Especially in the in the clustering thing. Um yep. We we
+didn't do any kind of uh formal evaluation of the LSTM. We have
+a loss that we tried to minimize over time. Um but in terms of
+the markoff model we just kind of tuned it until it looked good
+enough and then and then worked in in terms of like you know we
+we had several different tests in the wild. And as soon as we
+started getting pretty high click through rates we got
+pretty confident that it was working. >> So fascinating work
+with some pretty ground breaking implications. I mean given the
+fact that your intent is to fake people out to believe that these
+are real. How do you sort of pass the Twitter touring test if
+you will? >> Yeah that's a really good question. Um so the
+the turn test now is um it's really interesting I think
+there's even conferences dedicated to um having machines
+try to bypass or try to pass the turn test. And so there was kind
+of the much simpler version that was introduced much like 50
+years ago or 40 years ago or what how ever long ago it might
+be. And nowadays you actually have to check a lot more boxes
+in order to get past it. Um yeah I mean given our click through
+rates it seems like Twitter is uh is super super easy to do
+this kind of thing on. I mean I would argue that each kind of
+positive results here in our statistics is more or less
+passing of the touring test. Right? Um the Twitter turning
+test as it as it were. Um yeah. >> For training the transitional
+probabilities on the markoff model did you only use bi-grams
+or did you consider using a bigger window? >> Uh right only
+only biagrams. >> Only biagrams. >> Yeah. Thanks. [pause]
+Alright. Thanks again. Thank you. [applause]

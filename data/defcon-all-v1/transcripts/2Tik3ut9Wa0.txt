@@ -1,0 +1,619 @@
+>>Without further ado, I’m gonna
+let Sheila take- it is Sheila?
+Yes. Man it’s been a rough morning. I’m gonna let Sheila
+take it away. [audience claps]
+>> Hi, it’s alright? Can you hear? >>No! [from audience]
+>>Hi. Okay I don’t want to wreck
+something. It’s okay? Okay? Uh hi everyone thanks for being
+here despite being Sunday
+morning umm I’m really happy to be here sharing this moment with
+all of you- a little bit sleepy
+too. But uhh let me introduce myself briefly my name is
+Sheila. I’m a offensive security
+researcher because I love wrecking stuff. I come from
+Buenos Aires, Argentina a city
+10,000 kilometers far from here, near the end of the world.
+[laughs] And also a developer
+and assembly for microcontrollers and
+microprocessors C, C plus plus,
+Python, and Go. And as a speaker this is my second time giving a
+talk at DefCon. I shut the
+[inaudible] last year, and was also a speaker at Black Hat,
+Ekoparty, Hacking the box and
+other security conferences. But let’s go to the important thing.
+Uhh in the last month there were
+many many news about backdoors inside hardware wars. We all
+know that this kind of backdoors
+exist and they could be inside smartphones, computers, routers,
+BMT’s and so on. So backdoors.
+Backdoors everywhere! Uhh and the year having published many
+research about different ways of
+factoring devices through their own hardware components.
+However, most of those resource
+focuses on the devices based on powerful microprocessors like
+RM, Intel or AMD instead of
+microcontrollers. So let’s see some technical differences
+between them. On one hand we
+have microprocessors which are entirely CPU. All the components
+that the microprocessor needs to
+work, like memories, input and output uses um are physically
+separated. They are also bigger
+than a microcontroller and have greater processing capacity
+because of their size and
+separated components. Umm most microprocessor have a
+Modified-Harvard memory
+organization with 32 or 64 bits of architecture. And in the
+other hand we have
+microcontrollers. They have inside a little CPU and all the
+necessary components to get it
+working. I mean inside a microcontroller we have the CPU,
+RAM, ROM, input and output uses,
+as well as other peripherals. And the fact that
+microcontrollers are putting it
+all together in a very tiny space makes them with a less
+processing capacity and are
+slower than microprocessors. There are other technical
+differences too, um micro-
+microcontrollers have harvard-memory organization and
+16 bits of architecture. They
+also have a little stack. For example, big a team, having a
+stack able to store up to 31
+memory addresses, and it is kept overflow, the big will reset
+itself. Just some information.
+So after seeing some technical differences between
+microprocessors and
+microcontrollers, a question that could arise is, what sound
+would use a microcontroller
+instead of a powerful microprocessor? Well usually
+microprocessors are implemented
+on multi docking devices that need to run an entirely
+operative system. On the other
+hand microcontrollers are used for doing a specific task.
+Usually the same work dealing
+with the same kind of inputs and output like automatizing our
+routine. It’s a lot like
+comparing our raspberry pie which has a ARM microprocessor
+to an Arduino which has an atmel
+microcontroller. Both are useful devices but they are used for
+different purposes. Uh
+microcontrollers have evolved a lot, and microchip will be our
+example. Too many years ago, pic
+12, very simple pin out with basic input and output parts,
+and a few peripherals. Pic 16
+umm they have more peripherals, it’s more friendlier for us
+maybe, some of us have to learn
+to program in microcontrollers using these devices. They have
+more peripherals including user
+communication and CCP modules. Pic 18, also called high
+performance microcontrollers,
+are my favorite ones, they have a lot of peripherals supporting
+different communication
+protocols like, USB, GAM, as some. As well all common
+peripherals such as timers, CCB
+modules and [inaudible] converters among others. And
+finally we have the 72 bit
+microcontrollers, they are the most similar thing to a powerful
+microprocessor, uh even they use
+a cortex MTBU, but we still need a microcontroller. So after all,
+targeting microcontrollers worth
+it for? Um, nowadays they are responsible for controlling a
+widespread of systems like
+physical security system, somes car’s ECU, semaphores,
+elevators, sensors, components
+of industrial systems uhh some home appliances, and even
+robots. This an example, it’s a
+car’s ECU that handle the fuel injection and is fully
+controlled by a Pic 18
+microcontroller. So, very interesting devices to target
+into. [speaker coughs] Eh, all
+microcontrollers need to be programmed, otherwise they will
+do nothing. So as I said, there
+is a little CPU inside them, which is able to ex- to execute
+every assembly structure of a
+program loaded in the microcontroller’s program
+memory. These are the steps for
+programming microcontrollers: um we can level up the firmware in
+assembly or C, after compiling
+in assembly we’re going to get the hex file, which is the
+firmware to load such hex file
+into the microcontroller, we have to use the programmer’s
+software and hardware, usually
+provided by microcontroller’s manufacturer. And similar to the
+world of microprocessors, umm
+every microcontroller manufacturer has their own
+assembly instruction set for the
+CPU of the devices. This an example to turning on a a LED in
+a pic microcontroller. I love
+programming them in assembly, but you can use both uh assembly
+or C. For microchip devices we
+can use the MPLAB IDE, which is free to double up and compile
+firmware. By building the
+project, we are going to get the hex file, which is the firmware
+ready to be written in the
+microcontroller’s firmware memory. Um as I said, it is
+necessary to use the programmers
+software and hardware to to load the firmware into the
+microcontroller. These are the
+microchip official tools- we can use the MPLAB ID or IT or
+together with the PIC free and
+together load the firmware into the microcontroller. Uh the
+interesting is that, as well as
+these tools can be used to read- sorry to write the program
+memory from microcontroller,
+they can be used to read the program memory. I mean we can
+write the firmware or we can
+dump the firmware. So, let’s see how we can dump the program
+memories- more interesting for
+us. Uh first of all, this is the memory organization um for
+microchip devices. We have the
+program memory where is the firmware is located and it’s the
+memory that we will dump, but
+there are other two memories: the Ram memory, which contains
+the SFRs special function
+registers and GPR, general purpose registers, and the ROM
+memory where the program can
+store data that won’t be lost after I reset. So, the ROM and
+program memory are non-volatile,
+while the RAM is, is RAM is volatile. Uh to make a memory
+dump, the first step is
+connecting the target microcontroller to the Pic 3.
+There are other tools for doing
+this process, but I prefer to use the official tool because it
+works very well, umm it’s cheap,
+it costs the RAM for 2 dollars. So, this is an example of
+connection. We had to match the
+beams of the target device- the target microcontroller, with the
+beams of the Pic 3 connector.
+For example, the VPP pin of the microcontroller must be
+connected to the VPP pin of the
+pic 3 and so on with the other pins. It’s, it’s very easy.
+Then, we connect the Pic 3 to
+our computer and then we can use the MPLB IDE to write the
+firmware. The first step is
+creating a stand alone project inside the MPLAB IDE, and
+specify what microcontroller has
+our target device. Fortunately it is very easy to get this
+information because uh the pic
+model is printed on the microcontroller. And then we
+must set the parameter hardware
+in this case the Pic 3, and finally we can use this option
+in the MPLAB IDE to read the
+firmware and dump in into our hex file. The MPLAB IDE has a
+dis-assembler, so we can uh load
+the hex file and go to the target memory views, program
+memory, and there we will see
+the disassembly view, all the assembly instruction of the
+firmware, together with their
+respective out codes to be executed by the CPU. And also
+the memory address is the memory
+address where each one is located. Let’s compare, and on
+one side we have the source code
+and in the other side the disassembly view. Um this
+program after the start has file
+assembly instructions, and we can find them in the disassembly
+view. The only- it’s, it’s very-
+it’s almost equal, the only difference is the access word
+that is after some instructions.
+It means that uh data memory access is performed because
+ports d and tres-D are special
+function registers located in data ram- that’s why the access
+word is present. Umm the
+observing the out codes, we can match the assembly instruction
+in the, in the hex dump. They’re
+gonna be better because of the [inaudible] formats like most
+microprocessors,
+microcontrollers use [inaudible] to be restore bytes in memory.
+Okay and now that we learned how
+to dump a firmware, let’s see how we can modify the hex file
+and reload the firmware with
+something infective uh in order to alter the original behavior
+of the target device. When
+instructing a payload into a binary process, it’s necessary
+to find a place where our
+payload gets executed at least once. In this case we need the
+same, so the next step is to
+find a place inside the firmware where we can inject a malicious
+code or a payload. I will
+explain three different instruction techniques: The
+first one is about injecting at
+the entry point. I mean when the program starts. But where is the
+enter point? Well, this is the
+standard instructor of a program for microchip devices. The first
+four sections are selif plane,
+and they are not important for us at this moment, so let’s
+focus on the recent vector. This
+always present in every microchip device of the memory
+address 0000 and is followed by
+a go to start, which is a jump to the first assembly
+instruction of the program,
+basically the entry point. In the middle the interrupt vector
+is present, at the address 8 or
+18, but we’ll go deeper on that later. And here we can observe a
+a jump through the entry point
+in the source code as well as the disassembly view. Um this
+little program does not use
+interruptions, so the goto in the receipt vector is making a
+very short jump, but in large
+programs, uh like this other one, the jump gonna be quite
+longer. So remember there is a
+vector e- will be always at the address 0000, it’s the first
+line in the disassembly view.
+There we gonna find a a go to to the entry point. Ummm in the
+first case, the entry point is
+of the address 06, and in the second case is at 7F84. Those
+are the memory addresses where
+we should inject our payload to get it executed when the program
+starts. So the next question is,
+what payload we should inject or how can we build a payload for
+these kind of devices? Well we
+have to use the specific assembly instruction set for our
+target device. This an example
+to turning on two different LEDS on a pic microcontroller.
+That’s- we need to get the out
+code of these instructions. And I’ve tried to get them is by
+writing all the assembly
+instructions of our payload in an assembly file inside and
+start up project in the MPLAB
+IDE and then compile it. So we can see the disassembly view and
+get the out codes. Those gonna
+be the out codes of our payload, but remember the little ending
+formats, so that’s gonna be our
+final payload. With the bytes in barter. So we need to make an
+injection, in this example the
+entry point is at the address 28, so we have to locate this
+address in the hex sum, and we
+can look for the base memory address first, 20 in this case,
+and then count until 8 bytes.
+This is where the entry point is located and where we should
+inject the out codes as our
+payload. But there is something we should keep in mind, is the
+check sum. It’s at the end of
+every line, and if we modify something we must recalculate it
+for every affected line. But
+first we gonna inject our payload at the entry point and
+the original byte in that part
+will be shift to the right, but remember not to move the byte of
+check sum because we’re gonna
+recalculate it. This is the math that we should do to recalculate
+the check sum- for example, if
+we have this line, we should make a sum of all the byte of
+the line, and then make uh not
+plus 1, and the last byte of the out code gonna be our check sum.
+But there is always a lifesaver
+[laughs] we can use this website to calculate the check sum
+quickly. So remember for every
+affected line after payload injection we have to fix the
+check sum- if we don’t we gonna
+get an error at the moment of loading this modified firmware
+into the target device. Okay so
+um we already, we can use the MBLAB IDE or IP to load this
+modified firmware into the
+target device- in the, in the microcontrollers program memory
+of our target device. And what
+is our result? This is the target device with the original
+firmware, and this is what
+happened after loading the modified firmware. And the first
+light is on because it’s part of
+the original program, but there other two lights on because of
+our payload. So the proof of
+concept worked, this is like pop a calc but hardware version. So
+let’s see a real case umm this
+is a dashboard for observing the behavior for a car’s ECU. Um the
+car’s ECU is um for handling the
+fuel injections, so we have four blue led for the four petrol
+injectors, and other four yellow
+led or light for the CNG or CMB injectors. In normal behaviors,
+the ECU starts injecting petrol
+and then switches on CNG. in the fuel of this car ECU, the entry
+point is at the address 15, 2,
+8. I’d place a little payload there to modify the right
+behavior and continue injecting
+petrol after switching. I mean the ECU will be injecting both
+petrol and CNG at the same time,
+does match not, not match the code for the car. So let’s see a
+video. Uhh this is a car’s ECU
+uh we we start seeing the [loud clicking]I will kill the sound,
+cause it’s very not good. So. We
+start seeing the normal behavior, the blue lights are on
+because the car starts using
+petrol and then it switch to CNG, so the petrol injectors
+stopped working and the car just
+using CNG. Now we are loading the modified firmware into the,
+the microcontrollers of the ECU
+and it will repeat the process. The car starts using petrol, I
+speed up the car to reach now
+the condition to automatically switch to CNG. But when it took
+your- the car is, is using both,
+the ECU is injecting both petrol and CNG at the same time. This
+is just an example, something
+bad for the car. Okay, let’s talk about the second injection
+technique. Uh maybe we’d prefer
+to get our payload executed not when the program start, but when
+a specific action occurs. It
+might be associated with an interruption. Uh in big problems
+we always interruption because
+the microcontroller can’t perform interruptions to alert
+us. For example converter
+transmit of different communication protocols [speaker
+coughs] execution flow when
+matter what is doing it will enter a vector located at the
+address A or high priority
+interruptions and 18 for low priority interruptions. Once
+there, a procedure known as is
+used to detect who triggered the interruption. It’s [inaudible]
+the analog to ditch the
+converter or who it was. After detecting who was, the
+corresponding code routine is
+executed. The red file instruction at the end program
+at the memory address
+immediately after they execute before the interruption
+occurred. There are some special
+function registers that’s aimed interruption handed. When a
+program is using interruptions,
+the bits GIE and PEIE after intcon register, will be set to
+one. In assembly it looks like
+this: the B, the BSF instruction is used for sets to one bit of
+our register. So when we dump a
+firmware we can look for these two instructions in the
+disassembly view. In order to
+know with interrupts are enabled in our target device. For every
+peripheral that could trigger an
+interruption, there are two bits inside a special register. The
+interruption enabled bit, and
+the interruption flagged bit. As example, we can quote the timer
+zero, these interruption bits
+are located in the intcon register. When a product wants
+to use this timer, the TMR0IE
+which in the intcon register must be set to one. When the
+timer triggers an interruption,
+the TMR0IF will be automatically set to one. When not, these
+flags will be to zero. Uhh due
+to in the latest microcontrollers, there are too
+many peripherals the special
+registers pie one, pie two, and even pie three have interruption
+enabled bits. While pier one,
+pier two and pier three have their respective interruption
+flags for different hardware
+peripherals. So as I said a procedure known as polling is
+used to interrupt vector to
+detect who triggers an interruption. Uhh this process
+is done using the BTFSC
+instruction for testing the value of the interruption flags.
+In this example we have four
+peripherals that could help trigger an interruption. The
+polling process will start
+testing the flag of one of them. If the flag is set to one, the
+code below will be done. Jumping
+to a core routine that must be executed every time there is a
+specific peripheral trigger sign
+interruption. If not, the polling will continue testing
+other flags and find the flags
+set to one. This is how the polling process looks in the
+disassembly view. By inspecting
+the polling we are able to know what peripherals are being used
+for our target device. Remember
+that the polling will be always located at the address 8 for
+high priority interruptions, or
+18 for low priority. [coughs] If we do some in one of the
+interruption flags, we’ll serve
+that the bit 5 is being tested of the pier one register. But
+what is the bit 5? Umm in the,
+the machine that is our target device, we found that the bit 5
+corresponds to the error C
+interruption flag. This is used by the communication
+peripherals, when, when the
+microcontroller receives data from any communication protocol
+it will cheer an interruption
+that will set this specific flag to one. In the polling process
+if this flag is to one, the call
+will be executed, jump into a core routine that must be
+executed, in this case located
+at the address 48. Such core routine will do something with
+the data received by this
+peripheral. So uh by inspecting the polling, we not only know
+what peripherals are being used,
+but we can get different memory addresses where we could inject
+our payload. For example, if we
+want to do something when the microcontroller receives data
+from that communication
+protocol, we should inject our payload, at the error’s
+interruption routine. Umm in
+this case it’s located at the address 48. Or if we want to do
+something when the timer zero
+triggers an interruption, we should inject at the address for
+e, and so on. The idea is being
+able to modify the, the original behavior of the target device
+when the microcontroller is
+using it’s different hardware peripherals. So let’s see an
+example of factoring the user
+communication using this technique. The first step is
+locating where the error’s
+interruption routine begins. By inspecting the polling we go to,
+in this case the memory address
+is 48. So we have to locate this memory address in the hex dump,
+so we can look for the base
+memory address 14 and then count until 8 byte. And there’s where
+the error’s interruption routine
+begins and where we should inject our payload. But what
+payload? What- we cook a payload
+that makes or relying of the received data to a transmission
+port that we are able to monitor
+strongly. I mean, the microcontroller will receive
+data from anywhere, and if we
+trigger an interruption, at that moment, our payload will be
+executed to catch such
+information and relay it to us. This is the payload. And first
+we got the received data and we
+move it to the W register. Then the the transmission is enabled,
+the operation mode is set as
+asynchronous and the TX pin is set as an output. And finally we
+move the received data in W to
+the TXREG. Anything written in such register will be
+transmitted through the TX pin
+to a USB interface or wireless module. In my case I will use uh
+a um USB interface because it‘s
+easier to show you what happened, but it could be a
+wireless module. This
+instruction vary a little depending on the target device.
+These are the out codes of every
+assembly instruction and our final payload. [coughs] So we
+are ready to make the injection.
+Um we have to inject the payload factor when- where the error’s
+interruption routine begins, so
+in this case it’s at the address 48 and we’ll place the the
+payload in the same way that we
+did in previous examples. So let’s see a demo. In the next
+video you will see hardware
+receiving information from a smartphone, that’s when the
+interruption occurs and the data
+is relayed to our computer. Mmmhmm Ok umm the vector
+firmware has to be loaded in the
+target device and we are listening to the USB interface.
+So we send a message to the
+hardware bar. That’s when the interruption occurs and the
+information is relayed to our
+computer. So as I said, I’m using a usb interface in this
+case but it could be replaced by
+a wireless module for multi-connection and it’s gonna
+work in the same way. Oh. Nice.
+Okay umm, at the moment of injecting a payload at wherever
+place, we are making a shifting
+byte that could affect the call and go to instruction of the
+original program because now
+they are jumping to memory addresses who’s original bytes
+had been moved. In large
+program, this is a real problem that we had to solve. For
+example on the left we can see
+call instruction jumping to the address 10 while after payload
+injection it should be jumping
+to the address 16. We have to fix this to avoid overflow
+corruption. These are the out
+codes, so GOTO code and NOP instructions. In Pic 18
+microcontrollers their assembly
+instructions are 16 bits in length. So 8 bits are used for
+the out code and 8 bits for the
+memory address where you have to jump to. But two more vital
+reserve in case of needing
+jumping more than two two thousand- uhh sorry, two hundred
+fifty five position. Uh this
+this here we can see an example with GOTO code the first jump is
+to the offset six and the second
+one to the offset 467. Um in the disassembly view we’re gonna see
+the memory address, so we have
+to make uh, we have to divide it by two, to get the offset, and
+then be able to locate the jump
+in the hex sum. To fix it, we have to keep in mind the memory
+address where we have injected
+our payload, and the payload then. Umm we have to fix only
+those jumps to memory addresses
+located after the one where we have injected. For example, if
+we inject our payload at the
+address 48, and we have a call at 56, we have to recalculate
+the jump, by making a sum of the
+original memory address plus the payload land. So in log in log
+programs we’ll probably need to
+fix some jumps. In this case I have to fix three call
+instructions. And make the
+injection fix the jumps and check sum BT views, especially
+in large programs and that’s why
+I’m working on a little tool for automating this process. The
+tool receives this parameter the
+hex sum, the payload the offset where it has to be injected and
+the name of the output file. And
+basically the tool makes the wanna fix all the necessary
+things. I hope to be able to
+publish this tool on my github in this page. So it stayed too.
+Oops. So let’s talk about the
+last second- last, sorry, the last injection technique. Uh I
+will explain how we can alter
+the microntroller’s stack, and take control of the program
+flow. In microchip device there
+are 4 TL function registers to manipulate this stack. The first
+one contains the stack pointer,
+and the TOSU, TOSH and TOSL compose the top of the stack. In
+the graph we can see an example,
+the stack pointer is pointing to the second entry of the stack.
+Uh which is why you is 0001834.
+Impractical implantation of these registers, uh first we
+should increment this stack
+pointer and then write the TOSH registers with the memory
+address where we want to jump
+to. And finally we have to execute our return. This is how
+it looks in the in assembly.
+First we increment the stack pointer, and then we write all
+the necessary values to the TOSS
+registers. In this case we jump to the address 00-06rnt2, and
+finally the return. In the
+disassembly view we’re gonna see something like this. When, when
+the return is executed, the
+program will jump to the memory address 24 in this case. From
+this example we can get the out
+code of these instructions, so regarding payload instruction at
+this moment we have 2
+alternatives. And what have we could inject our payload
+anywhere inside the firmware and
+then write the TOSH registers with the corresponding memory
+address. Or well, we can do a
+ROP chain right in the TOSS with memory addresses part of the
+call that we want to execute. I
+mean create a payload with assembly instructions already
+written in the original program.
+[coughs] This is an example of ROP. Um at the left we see all
+the memory addresses of our ROP
+gadgets, that means the memory addresses from part of the call
+that we want to execute, and in,
+in the other side we see all the necessary out codes to write the
+memory addresses in the stack.
+All, all those out codes including the final RET, will
+compose our payload. Uh
+microcontrollers use a lethal stack too, so the first ROP
+gadget executed will be the one
+located at the address 28 in this case. It’s the last one
+injected in the ROP chain. This
+an example of ROP gadget. It starts at the address 40 and
+ends at 46 with our RETLW. All
+gadgets must end, or RETLW to continue executing the other
+gadgets in the right way. So
+let’s see a demo start, um in the next video you will see a
+light turning on for every ROP
+gadget being executed. It’s a nice way that I found to view
+what happened. Hmm hmm hmm Okay.
+it’s mounted but you can observe 8 gadgets being executed, of
+course there could be more or
+less, but it’s just an example. So finally, let’s talk about uh
+memory protections and from a
+security point of view, we cannot avoid if someone
+overwrite the whole program
+memory of our microcontroller. But we can protect it against
+memory dumps and with that avoid
+payload injections. And at the beginning of the whole program
+before the main code, it’s
+necessary to set some configuration bits for microchip
+devices. Among them is the code
+protection bit, but by enabling only these ones, the memory
+dumps will work, so if you
+assemble your program with this specific protections, umm as
+anyone else will be able to dump
+your program and disassemble it. So to preventing memory dumps,
+we have to use the boot
+protection, which is the CPB bit and also the data protection is
+useful too. If we enable these
+two bits, umm program memory dumps won’t work, and if someone
+tried to dump your firmware, the
+hex file while contain only zeros. This is an example of
+protection for microchip
+devices. Really I don’t have- I didn’t have time to, to get VPN
+in protections, but it’s
+something that you can do. Uh conclusions. Vectoring
+microcontroller is possible, and
+there are a lot of interesting devices that are fully
+controlled by them. Umm I
+explained three different injection techniques I wrote a
+white paper explaining each one
+of them in details. Um and though I focus on microchip I
+think that most concepts can be
+extended to other vendors. And finally, I want to thank to Saul
+and Nico Wiseman for their help
+while I was writing the white paper, and also to the people of
+Dream Lab for all the support.
+And thanks to you! [applause]

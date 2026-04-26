@@ -1,0 +1,219 @@
+- Hello, and welcome to
+DoS: Denial of Shopping, Analyzing and Exploiting Physical Shopping Cart Immobilization Systems. In this talk, we'll be talking about shopping cart security wheels, as well as the basics of
+RF reverse engineering and some of the tools and techniques that you can use to capture
+signals in the wild, analyze them and replay them
+later for fun and profit. Before we go much further, I want to give a brief disclaimer, this is a personal project. There's no reflection here on my employer or any other organization unless explicitly stated otherwise. That out of the way,
+you might be wondering, who are you and how'd you get in here? Well, my name's Joseph Gabay
+and amongst other things, I am a hacker, a maker, flat
+moon conspiracy theorist, collector of silly domain names
+and random certifications. By day, I build robots. By night, I hack shopping carts. And really this is just
+an example of something that caught my interest and I decided to go
+down the rabbit hole on because I think as you'll
+find out in this talk, there's some pretty cool technology that you really take for granted
+every time you go shopping. So for those of you who aren't familiar with shopping carts security wheels, and they're not everywhere, usually you only see them in pedestrian accessible parking lots where there's a risk
+of somebody walking off with a shopping cart. What it is is basically an invisible sense for shopping carts, no really. When you take a shopping cart outside of an approved
+boundary, usually a parking lot, one of the wheels will
+sense this and lock itself using an internal mechanism and you can't take the cart any further. You might be wondering
+why shopping cart wheels? Why was this a rabbit
+hole I decided to go down? And really the first time
+I saw one of these signs, a warning that these devices were in use, I got real curious, how does the wheel know that it's outside an approved boundary? How does the wheel actually
+lock and stop itself? How does the wheel get power? And all of these questions
+were turning over in my mind until I eventually started
+doing some research and that led to more questions and that led to a Defcon talk. But I really think it can be summed up by Terry Pratchett's quote, it's not worth doing something
+unless someone somewhere would much rather you weren't doing it. Fundamentally, I see this as a challenge, just like someone can see a
+particularly difficult lock as a challenge in the locksport community. A bunch of very smart people
+spent a lot of time and money designing a system to prevent people from doing something that
+they didn't want them to do. And this is a technical challenge. And for me, I was curious
+to see whether or not I could overcome it and dissect it. And that's what this talk is. So how does the system work? It's a magnetic loop system where there's an
+underground perimeter wire that's sending out a signal. Now you might recall from physics class that when you push current through a wire, it produces a magnetic
+field in a radius around it, according to the right hand rule. So there is a buried wire around the perimeter of the parking lot and that's sending out the signal. When the cart crosses over
+this signal, it senses it, and it uses an internal
+mechanism to lock up the wheel and the store employees have a remote that they can come by later and unlock it and bring it back into service and we'll get into that
+in just a little bit. So I was actually fortunate enough to have a grocery store nearby
+me replacing their sidewalk, and you can actually see
+this buried wire in action and let me zoom in a little bit, and you can see highlighted
+where that wire is. And I don't know, it's rare that you get
+to see how this works cause it's usually cut into
+the asphalt and buried. So that's the wire right there. That's how the magic happens. How does it work inside the wheel? Well, let's take a look at the anatomy of a shopping cart wheel. There's two main parts. There's the outer housing and you'll notice that on
+the inside diameter here, there's pairs of ridges and that becomes very important later. And down on the bottom, you have the whole internal
+assembly and that houses all the electronics, the motors, all that, but the thing to note here is that ring going around the outside. That's a flexible ring and
+it can expand or contract as that plunger goes up and down. Here's a closeup of that mechanism here and basically there's a motor that drives that little plunger up and
+that causes the ring to expand and if it drives it down,
+it causes it to contract. When the ring is in the expanded position, the ridges on the inner
+diameter of the outer housing and the outer diameter of
+the inner ring interlock and prevent the wheel from rotating. It's really a clever mechanism. I've got to give gatekeeper system some major credit for that. Taking a look at the other
+side of the inner assembly, we can see what also makes it tick. We have a lithium battery here. That's just a three volt
+non-rechargeable lithium battery and assuming it's in standby mode, that should last for a good long while. Obviously running a high current
+application like that motor a whole bunch is going to
+reduce the life of the wheel, but modern microcontrollers
+can sip on a few microamps of current and do stuff
+like monitoring RF systems. So I can really see this
+lasting for quite a while. Below that, you have the PCB assembly that houses all of the electronics, as well as the antennas
+and other radio equipment. And then you have a motor
+which connects to a gearbox that drives the mechanism
+we saw on the last slide. Taking a closer look at the PCB, we see a few interesting things. First of all, there's
+two separate antennas. Up top highlighted, you can see a PCB trace
+antenna for 2.4 gigahertz. We'll talk more about that later. And on the underside of the PCB, you can see that little black cylinder. What that is is it's
+just an inductor that... And that's the element that
+senses the magnetic field from the buried wire. These systems generally
+use a very low frequency. And in this case, as we'll find out later, this is running at 7.8 kilohertz. Going back to the top view,
+we see a couple other things. You see the microcontroller, which is a Texas Instrument
+CC 2510 microcontroller. It has a built-in 2.4
+gigahertz transceiver, and is designed around the
+idea of low power standby modes for the radio to maximize the life and that makes sense in this application. To the right of it, you can
+see there is a whole mess of what looks like amplifiers
+and transistors, and I'm not entirely sure
+what's going on there, but I'm fairly sure that
+that's the amplifier circuit that turns the signal from
+the inductor that it picks up from the magnetic field
+and turns into something that the microcontroller can reliably use. Below the microcontroller
+are a couple more transistors and that is the motor driver
+circuit that actually drives that DC motor to lock and unlock it. And to the left of it, it's kind of covered up
+by one of the arrows, you can see a 10 pin JTAG port and you can do plenty of fun
+things with the JTAG port. You can try dumping firmware, you can load it up into a debugger. You can do some pretty interesting things, but all of that's outside
+of the scope of this talk. So let's say we want to learn more about how this works at a signal's level. There's a couple of good places to start. The first one is of course fcc.gov, any consumer product that
+is going out into the wild that has RF systems has
+to be approved by the FCC. You basically have to undergo
+some pretty rigorous testing and submit a test report, proving that it's not going to
+cause any undue interference to nearby devices or pollute the airwaves. All of these documents
+are public record though and you can see from
+the screenshot up there, there's a lot of juicy things. You'll generally be able to find out what frequency something uses, sometimes information about
+the modulation method, as well as in this case, the user manual for the
+wheel and the remote system, which had a lot of good information. So when we go on, we can see what we learned
+from these documents. The two big things we learned is that the low frequency is below nine kilohertz, which provides a bit of a problem that we'll go into on
+capturing that signal as well as the 2.4 gigahertz
+ISM band which we already knew. An interesting tidbit that
+we learned from it is that it uses either MSK or FSK
+for modulation on the 2.4. And we'll see later that it uses FSK, which is frequency shift king. Let's talk about the VLF signals, the sub nine kilohertz signal and why it's so difficult to capture that. So generally speaking
+in radio applications, you want your antenna to be a... You want your antenna's
+link to be a multiple of the wavelength of the
+signal you're trying to catch. For high-frequency signals, this is usually fairly small, it's in the millimeters
+or centimeters range, fairly easy to do. As you get to lower frequency signals, that wavelengths gets big. Below nine kilohertz, you're looking at something
+in the tens of kilometers, which is a little bit
+outside of my capacity to build an antenna for. And further complicating this, most software defined
+radios and RF amplifiers are designed to work with
+frequencies above one megahertz because anything below that and you're running into the
+problems I just mentioned. Now some wonderful hackers
+out of France at templab.org were also playing around with these shopping
+cart wheels around 2008. And they had a very
+interesting observation, which is nine kilohertz
+is in the audio range. We can use regular audio amplifier and audio processing equipment
+to work with these signals. Before I go into that, I
+want to give a brief apology to any RF engineers in the audience. I'm about to do some pretty janky things to capture this signal. I'm sure there's better
+ways I could have done this and I'm sure there's worse ways, but if there's something I missed or an approach that I
+could've taken, please, my contact info is at
+the end of this talk, shoot me an email. I'd love to learn how I
+could have done this better, but let's move on to some abominations. So right here is a
+homemade antenna I made. It's called a loop stick antenna because it's a stick with
+a whole bunch of loops of conductor around it. This is a ferrite core with a bunch of magnet
+wire wound around it. And that's wired into a 3.5
+millimeter headphone jack. I included a little resistor
+there and that actually tricks a phone or audio device into thinking that what's plugged into it
+is a microphone line and not a speaker line so it'll let you record
+audio from that antenna. And with that, I plugged it into my phone and took it to the local shopping center that has one of these,
+plopped it on the buried line and hit record in a spectrogram app. And I was actually very
+surprised to see that we see a signal and a fairly
+clear signal so I'm in. Loading this into a spectrogram app, we can see that there is indeed a very low frequency signal
+there at 7.8 kilohertz as well as one at 15.6 kilohertz, but that's just the resonance
+of the 7.8 kilohertz signal, and we can fairly safely ignore that. Zooming in a bit and we
+loaded this into Audacity because as far as anything is concerned, this is just a regular audio file. So we load it into Audacity and we can see the wave form of the signal
+and start diving into it and see what's going on. Zooming in a bit further,
+we see that the lock signal takes about an eighth of a second and is followed by an eighth
+of a second of silence by another lock signal and
+this signal just gets repeated for infinity and beyond. Zooming into an individual
+one of these signals, we can see that it is an eight bit signal composing of 10 parts. You have a start bit that
+signals microcontroller that's starting to send the
+signal and you have a series of long or short blips that
+correspond to ones and zeros. And after eight of these,
+you have another longer blip. That's the stop bit and
+tells the microcontroller we're done transmitting. And from that, that's all you
+need to lock a shopping cart. What about unlocking a shopping cart? Unfortunately, in order
+to get samples for this, I needed one of the actual CartKeys to take samples from. Thankfully eBay is a
+magical, magical place and these CartKeys are available on eBay. So I went ahead and bought one and I played around with a bit and you can see that's the CartKey model two up there. I purchased both a CartKey
+one and a CartKey two. The big difference is the
+CartKey two implements the 2.4 gigahertz signal for unlock only. The CartKey one only
+uses the 7.8 kilohertz. So let's go ahead and see
+what these signals look like. So I used the same loop stick
+antenna and phone set up here and just sat it next to the CartKey as I hit the lock and unlock signals and this is what it looks like. You can see the unlock signal looks slightly different
+from the lock signal just in terms of how
+many times it's repeated and the spacing between them. But when we zoom in and
+compare them directly, we can see that for both devices, the lock and unlock
+signal is the exact same. If we compare the lock and unlock signals and decode them, interestingly enough, we see that the unlock signal is just the inverse of the lock signal where there's a one and there's a zero and when there's a zero, there's a one. Interesting, but let's go a bit further. Let's see if we can use this. So we're trying to perform
+what's called a replay attack. And for those of you who
+aren't familiar with it, a replay attack is when
+you capture a signal and replay it back, trying to pretend you're
+the original device. There's lots of ways to
+protect against this, various authentication
+schemes or incrementing a number that's sent. Being shopping cart wheels, they don't implement any of this. It's the same signal all the
+time, which is very good us. So another interesting thing of note is you can perform this
+attack without an antenna. You can use either a pair of headphones or even your phone speaker
+as a really crappy antenna. Because if you think about it, what a speaker is is a coil
+of wire attached to a membrane with a magnet on it and you
+send signals through the wire and it causes the membrane to vibrate back and forth producing sound. And because you're sending
+current through a wire, you do get a bit of a magnetic field. Now generally, this is
+undesirable and its parasitic EMF. But in this case, that's close enough to
+the very loop of wire for the original signal where it works. So you can take an MP3 file of those signals, play
+it on your speaker phone, hold it up next to a cart
+and it'll lock or unlock. Also big shout out to the
+folks at TempLab again. They gave this idea and
+they have a couple demos of doing just that. Please go check them out. So here's a video of
+me doing exactly this. In this case, I didn't use
+the speaker or headphones. I just plugged my antenna back
+in and instead of receiving, I'm using it to transmit. So let's take a look at
+what this looks like. Here I go locking it,
+playing the lock MP3 file. When I play the unlock MP3 file, you can see the roomba contracting. And this is literally just off screen, but that headphone jack is plugged directly into
+that loop stick antenna. So it's fairly short range as it is. Loop stick antennas aren't
+particularly good transmitters and that was a pretty small one. And I was curious to see how much further I could get it to go. So I picked up a large
+solenoid coil at the MIT Flea as well as a 10 watt audio amplifier. I hooked it all up and played the signal and I got it to work and I was getting a range
+of maybe two to three feet at 10 watts. And that's not great, but pretty good. Unfortunately, we're hitting an area of diminishing returns here because we're fighting
+against the laws of physics. Magnetic signals, the K, according to the inverse square rule, which means to double the range, you need to quadruple the power. It gets kind of tricky
+to pump a lot of power through a small bit of
+magnet wire like that, not without things getting hot and melty so there is an upper limit
+to how far you can lock or unlock a cart using this approach. So let's take a look at the
+2.4 gigahertz signal now. Much easier to work with
+and we can use a HackRF, which is a software
+defined radio that operates in the range of one
+megahertz to six gigahertz, which is a fantastically large
+range and will be pretty good for any signal you might
+encounter in the wild. So using Gqrx, I played around a bit and I found the frequencies
+that it was transmitting on it. You can see the unlock
+signal being broadcast here. Loading this into ultimate radio hacker, which is another great program for this, you can see that it is
+a series of three pulses and down here, you can see that it uses frequency shift key modulation. If we zoom in on that, we can decode it and we can see that it's 010, and then a bit of space, 010. And all of this is happening
+on a center frequency of 2.417 gigahertz and it's
+using a frequency shift king. There's two frequencies. One frequency is a zero,
+the other frequency's a one. Pretty basic, pretty easy to implement and pretty fool proof. So let's try replaying this. The HackRF can act as
+a transmitter as well, and URH can export files as WAV files, which means we can import
+them into Audacity. It results in a absolutely
+insane sample rate of eight megahertz, but it works. You have to get a little spicy with some of your settings
+to make everything work, but it works. So from here, I was able to
+slice and dice the wave form that I just captured as
+well as make new commands from pure tone. So say I want a tone of
+this frequency for this long and duplicate how the
+original unlock signal worked. And I can export this as a wave file. And don't you know, URH lets
+you directly play wave files through HackRF, it's great. This is the reconstructed signal I made with some of the length data, but this is just made
+from scratch in Audacity. And if I play it through the HackRF through this interface
+here, this is what we get. And it takes a bit longer to do it and they're up close right now just because I want it for the video, but this will work from across the room. So a much, much better range. Now you're probably wondering
+because you're all hackers, can you lock it from a long range? Is there a lock signal on the
+2.4 gigahertz spectrum end? The answer is unfortunately,
+I don't think so. It'd be a lot easier to transmit, but I tried all the different
+combinations of three bits, ones and zeros and none
+of them triggered a lock when I broadcast them. It's likely that gatekeeper
+systems did this on purpose so you either don't accidentally
+lock a whole bunch of carts or people like us don't go out there and lock a whole bunch
+of carts all at once with nobody knowing what's going on. So what can we do with this knowledge? Yeah, not a whole lot. We can lock carts that
+were within a few feet of. You can unlock shopping
+carts that have been locked, but if your goal is to walk
+off with a shopping cart, there's a lot easier ways to do it than pulling out a software
+defined radio and MP3 files and being a hacker. At the end of the day,
+don't be a dick with this. The only persons whose
+day you'll make worse is the random grocery store employee who has to go around unlocking carts and that's just not cool. Very briefly, here's the references and some of the software I used. And I'd also like to
+extend a special thanks to the Electronic Frontier Foundation and its Coders Rights Project for giving me advice and
+guidance as I prepared this talk to make sure I didn't
+cross any legal lines and get myself into trouble. They're a fantastic resource for hackers and are happy to work with the community for answering questions
+about responsible disclosure and the intricacies of computer law, which is not a simple field. So huge, huge, thanks to them. If you're ever in a spot of
+questions, give them a call. So thank you for coming to this talk. If you have any questions,
+anything I missed, please feel free to reach out to me. For projects and hobby contacts,
+Joseph@begaydocrime.com. For any professional
+inquiries, Joseph@tethys.cc. You can check me out on
+Twitter, I'm @stoppingcart. Real pleased with that. I post yearly thereabouts
+so follow me if you want. And any files I'm able to share will be up on begaydocrime.com/carts. Thanks for coming.

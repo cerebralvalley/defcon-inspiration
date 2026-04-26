@@ -1,0 +1,907 @@
+I'd like to introduce Ryan
+Lackey. Talking about Ephemeral
+Communications: Why and how? >> Hi everyone I'm Ryan Lackey with
+CloudFlare. And I'm pleased to
+be back after a long time. I'm introducing my panel which is
+Jon Callas with Silent Circle,
+Elissa Shevinsky of Glimpse, and Nico Sel of Wickr. So we're
+going to talk about Ephemeral
+Communications Apps or applications that are short
+lived, very short duration
+storage and messages. The funny thing about this is it used to
+be the default. It used to be
+that storage was incredibly expensive. Disks were in the
+multi‑tens of pounds, hundreds
+of pounds range, big rack mounted devices. You were really
+careful about what you saved,
+you wouldn't just retain everything. And the fault was to
+erase all of content.That got
+solved I guess in the 80s and 90s to the point where it wasn't
+about deleting text information
+and it got to the point where video and everything else was
+sort of persistent. Then there
+was too much and you had all this content and you could never
+find anything. So until pretty
+much search engines, web, ultavista,Google came about,
+even if you had all this
+information it would sort of disappear and you could pretty
+much hope if the information
+existed about you anywhere people wouldn't find it. At
+least it wouldn't come
+immediately to mind when you typed something into a web
+browser. There's another
+advantage that pretty much everybody using the internet
+like a professional user,
+academic people like that. That was actually true even through a
+lot of the early two thousands.
+You could assume people were using the internet for specific
+purposes. Either finding
+information or using it to do various things, but they weren't
+using it every second of their
+lives. But something changed. That's pretty much what
+happened. Now everybody carries
+around a super computer in their pocket constantly connected,
+constantly storing data, and
+using it to talk to everybody all the time. It makes it easy
+to store everything, store
+everything by default through Facebook, Twitter, all your
+history, email lives everywhere.
+It's crazy. And some people started to notice this a little
+while ago. Fred Wilson from USC
+had a great quote. Pretty much privacy by being the default was
+the State of nature by the
+internet then it went away due to technological change. Then
+people started to think what
+would it be like to go back to the day when everything wasn't
+logged. A new generation of
+users every day. There's always new people using the internet
+and they have a different
+perception of what things should be. So I'm going to let the
+panel get started on what they
+do and come back to this stuff later. Maybe start with Jon with
+Silent Circle and let him
+describe his application. >> Sure. Thank you very much, Ryan.
+You can see up there is a screen
+shot of how things work on Android and IOS. We started
+building the chat system that
+does silent text. As we were building it and already thinking
+about this sort of thing, people
+that we've been talking to had requests. One of the things I
+thought was compelling was that
+someone said that they had been texting with a co‑worker stuff
+about work stuff. And the
+co‑worker says can you come over to my office and talk about
+something. So they come over to
+the office and the co‑worker's phone is sitting on their desk
+unlocked, texts up with someone
+else. And the person said, so I can't really trust this
+co‑worker with the rude comments
+I might make about someone else. Because, you know, we all say
+things that are intemperate. And
+texting makes it really easy to sound a little more emotional
+than you are. And, you know, to
+have the tongue in cheek there and just enough Emojis to get
+the right Emogian down. The
+request was can you make these things go away. That's how we
+got to burn notice. We said
+yeah. Data destruction policy. There's no problem with data
+destruction. It's one of those
+things that is enshrined in WA and you make it so when you text
+there is a default delete on it.
+And there is, for example, a guy that I do an awful lot of
+texting with who just started
+texting me out of the blue. And I keep, like, a one‑day burn on
+everything. So that, you know,
+we talk about security and this, that and the other thing, and I
+know that in general things will
+get deleted after a day. >> So, maybe next, Nico can talk about
+Wicker. >> Sure. So I like that
+you brought up Snap Chat. A year ago at this conference Stros
+Freeburg did a great assessment
+of Snap Chat and Facebook, "poke". At that time, you could
+Google and find Snap Chat's
+masterkey online. Facebook didn't have any security on
+there at all. Just looked like
+they deleted it, I guess, and they left the stage saying
+indeed Wickr leaves no trace. We
+were really proud about that. We were founded before Snap Chat
+had launched, but we came about
+it from a really different place. And we essentially said
+hey we've made this seamless
+security protocol and we think that everyone in the world
+should be using encryption. And
+so how do we get everyone to use encryption? Let's give them
+something that they've seen in
+the movies, right. Everyone's wanted self‑destructing
+messages. So that's how we got
+to that equation. Wickr is the fuse from Mission Impossible and
+that's where it came from. I
+think its important to remember here that the use case here is
+spy to spy. If you are sending a
+message spy to an enemy, I don't care how good the tech is it's
+not going to disappear. That's
+kind of what's happened with Snap Chat. There's a lot of
+education that needs to be done
+that this is about trusted parties. Otherwise it's DRM. We
+all know how that is. It's more
+about betrayal generally happens after the fact and more just
+about cleaning up your messages
+on someone else's phone is really how I think about it. >>
+Great. Maybe now Elissa will
+talk about Glimpse. >> Glimpse was founded when Pat Stickinson
+and I really just fell in love
+with the idea of Ephemeral Messaging. We thought that it
+was really fun and we also
+really believed in the threat model of, like, people you trust
+now. You know, like you trust
+people now but you don't necessarily trust them in three
+months or in six months. You
+want things to disappear. But we didn't trust Snap Chat. And that
+was proven out later with the
+hacks and the various, you know, legal actions that have been
+taken against them. So they
+built Glimpse to make really easy to use privacy. And we did
+it keeping in mind that Silent
+Circle and Wicker were already in the market doing really,
+really solid work on encryption.
+Jon actually was kind enough to take time and meet with me
+before we launched. Helped us
+craft our privacy policy and were using Wicker to chat when
+along with Silent text and we
+were really just getting the company started. We wanted to be
+in a really different place in
+the market that wasn't directly competitive with them and was
+more competitive with the
+classic social media. So we're really, really proud to be I
+think one of the only encrypted
+networks primarily used by high school and sorority students.
+And they don't necessarily care
+that we're encrypted but they care we're private in the ways
+that are meaningful to them.
+Their model is they're hiding from their parents and teacher
+and from drama on Facebook. So
+we really work closely with high schoolers and with people in
+sororities and other very
+tight‑knit college groups to figure out features they really
+love. So we have upload from
+text which you can't do, I mean, upload from camera which you
+can't do on Snap Chat. Like if I
+want to send a cute picture of a bunny with his face in a tiny
+little shopping cart full of
+baby carrots I can't do that on Snap Chat unless I have the
+bunny in front of me. But with
+Glimpse I have send photos of bunnies and ghosts and all
+things that are fun to me in an
+ephemeral way. So that's the been the engine that's really
+helped us take off with young
+people. They have a really low switching cost. And something as
+simple as being able to upload a
+photo from camera and write a full screen of text has been
+enough to get them to start
+using glimpse. What's up next will be group messaging. So,
+like, really, really easy to use
+encrypted messaging. The one other thing that is really worth
+mentioning, as you situate
+Glimpse in contrast to Silent Circle and Wicker they are like
+spy to spy. They really are
+encrypted in this unique and special way. With Glimpse we
+make security compromises they
+wouldn't make. So we're able to have usability that wouldn't be
+present otherwise. So we don't
+encrypt your social graph. It's not a secret on Glimpse who you
+are talking to. It is a secret
+the horrible thing that you have said. (Laughter). >> And that's
+exactly right because we don't
+know who our users are. We have no idea. You can imagine trying
+to talk to investors and giving
+them to give you money and they're, like, tell me about
+your users. >> Similarly we
+don't require contact information. Which is one of the
+interesting things we've talked
+about Snap Chat a lot. I tried to get them to come. They
+weren't willing to show up. They
+don't really have a long history of engaging with the security
+community. But they've done a
+lot of great things. You can attack them for maybe making
+some mistakes in how they
+implemented things but they really did move the industry
+from log everything again like
+the mid‑two thousands to creating this new sort of
+concept or going back to very
+old concept of being able to chat with people directly. For
+the users they have, which is
+sort of a weird bi-model distribution of kids using it
+for evading their parents then
+people who should know better using it for things they
+shouldn't really be doing, it
+mostly meets with the first threat model. Maybe not so much
+with the second. So you can't
+pick any of these tools and say they're perfect for everybody.
+You have to know what your prep
+model is. And maybe you are willing to make sacrifices on
+security for convenience on
+certain applications. People don't have 50 character pass
+code to unlock their phone every
+time. People. Maybe I do but maybe other people don't. >>
+What I think is really
+interesting here too about it is the kind of minimal viable
+product that's happening right
+now. And with Yo for instance and Snap Chat and some of the
+others coming out, is I wonder
+if you can survive doing minimal viable product when you are
+hosting massive amounts of very
+sensitive customer data. Will be interesting to see as it goes on
+taking a longer term view here
+is you haven't ‑‑ to see who wins in the long run. But I
+think we'll be left standing. I
+want to know if others will. >> I don't think it's a minimal
+viable product issue with Snap
+Chat or Yo. The moment where Snap Chat had that massive hack
+this past New Year's they had
+enough money and time because the hackers had given them
+plenty of notice to have solved
+that. And they simply didn't because it wasn't important
+enough to them. And with Yo
+people think that Yo is just a really small app but actually Yo
+had gotten in front of Robert
+Scobal well before it got in the mass media attention. And as
+anyone who has used Yo knows, Yo
+was subject to a hack where all of your cell phone data ‑‑ it
+was subject to really awful
+hacks. I can't figure out how to delete Yo from my phone like in
+a meaningful way, not just
+delete the app but, like, to where my account is gone. This
+isn't because Yo isn't well
+funded at this point. They raised a million dollars. This
+isn't because it isn't starting
+to mature as a company. It's because they really don't care.
+The investors, the founders
+don't care. And, you know, where does that leave us in the
+industry? >> I think that's an
+important thing. Because most of the mistakes that we have seen
+have been they don't care
+mistakes. They didn't delete the files. They didn't ‑‑ they
+renamed the files they didn't
+actually delete them. You got told about a problem on your
+network and you didn't do
+anything about it. It is a negligence thing not even a
+beginner slash competence thing.
+>> I think glimpse is a really good example of what Snap Chat
+could have done if they cared.
+We had a much smaller team. We've only raised $200,000 to
+date and we've had, like, four
+of us, three developers and me. And we built something very
+similar to Snap Chat but not
+subject to any hacks they're subject to. And it didn't take
+us all that long. Like, it took
+us about two to three weeks to really securely build in the
+system that uploads your
+contacts, you know, and helps you find your friends through
+contact. And we use rate
+limiting and also enable you to be hidden. It's that simple.
+Snap Chat would have just
+improve their rate limiting and allow users to hide themselves
+then Mark Zuckerburg wouldn't
+have had his phone number leaked. >> It might be
+interesting to bring up some of
+the other ways to compare the applications. Security is one
+and competence and negligence
+but there's also how you use the things. The other applications
+like Secret, Whisper, Tech
+Secure, I mean, we can talk about how those applications fit
+into some sort of category
+system in what you used different ones for and what the
+characteristics of various
+applications. >> As a mom I worry about secret and whisper.
+The whisper that's one of the
+top in the app store right now. Because kids think that those
+are anonymous. And my daughter
+knows how to tell who secrets those are. >> Which I think is
+perhaps part of the learning
+experience. They aren't anonymous apps. I use both
+secret and whisper and I like
+them both. They have different feels to them but they're
+un‑attributed. They aren't
+anonymous at all. And in both cases, part of the fun is
+guessing who it is. >> Do you
+think they planned it that way? >> Yeah I believe they planned
+it that way. Absolutely. >>
+Yeah? Whisper was started as a suicide help. >> Yeah. >>
+There's something interesting of
+course how people behave when they have anonymity as we've
+seen. If you go to any internet
+forum where stuff is essentially anonymous or at least
+un‑attributed you see different
+emerging behaviors. You can have some where people very civil
+conversations and just sort of
+the setting and the context. It's not ‑‑ it might be informed
+by the level of anonymity and
+the kind of technology but it seems to be a community driven
+thing as much as anything else.
+>> That's part of what all of these have to do is figure out
+what sort of community they
+want. When I first started doing collaboration apps, I spent a
+lot of time talking to Randy
+Farmer who is definitely one of the real pioneers in this and
+knows more about communities
+than anyone else. It's interesting on Secret they've
+now limited things so that only
+friends of friends can comment on a thread. Anybody can see it,
+but you have to be one hop or
+two hops to be able to comment. And they say in the little box
+that you type in "please be
+civil." So they are limiting the amount of trolling that can go
+on. And creating a social
+environment where it's highly likely that the person you are
+commenting on is someone you
+know. >> I think the community that you are going after is
+really important and really what
+should define us. And I'm founder of Roots, that's at
+DEF CON here as well and work a
+lot with kids all the time and that was really one of the
+reasons that we founded Wicker.
+Was I felt like my daughters deserve the same level of
+encryption that the spies were
+using. Because in my opinion data brokers are way greater
+threat to my friends and family
+than Snowden. You've got the worst data breakers out there
+like Experion that are selling
+lists of rape victims and erectile sufferers and dementia
+sufferers for seven cents a
+piece. There's thousands and thousands of those out there.
+And with our apps we've now, you
+know, my crypto team was killing me because we made them add
+graffiti, and there are stickers
+in there. Why are we doing this? Because my daughters say it's
+really important. Now I use all
+those features myself every day. There's really something to it.
+It's part of what Snap Chat
+really did show is it is a new kind of messaging and
+picturing and writing on
+pictures is definitely a new way of communication that I've just
+learned myself. >> We'd be
+interested in bringing in the audience if you have any
+questions for the panelists.
+Things we can discuss. We've got more things to discuss so just
+as you are getting ready. >> We
+can chat all day. >> Yes. >> Go ahead. >> Sort of a two‑part
+question having to do with not
+knowing who your customers are. What happens when somebody who
+has perhaps used the service for
+a while decides or, you know, they lose their credentials and
+they say, well, you know, I am
+really unhappy if you can't reset my account. And you don't
+have an email address or
+anything like that. How do you handle that? Also, the question
+of do you really not know who it
+is when you have information about who their ‑‑ I haven't
+used your app so I don't know,
+but I presume there's some sort of social graph there where you
+kind of know who these people
+have in their address books, if you will, in your app. >> If
+nothing else you have the IP
+connection. >> Well maybe you don't have ‑‑ hopefully you
+don't have the history with it
+being an ephemeral app. >> Yes. >> I mean, in our case, what we
+want to do is to permit you to
+have as much privacy as you are comfortable with. It's something
+that we have worked out and
+tested that you could go get a gift card from a department
+store. You know, a $100 gift
+card will pay for one year of the account and we'll accept
+that. And we test that to make
+sure it continues to work. So you can create an amount of
+unattributedness that you want.
+We don't keep server logs on those things. That's one of the
+things that is a commitment for
+us. Particularly because I believe on the privacy end of
+things, the less that you as a
+service are keeping, the more that you will get dragged in to
+fights that you really don't
+want to be dragged in to. So your defense in these things is
+to make sure that everything is
+on the end points and you don't have it. Creating something
+where people opt in is
+different. If you create an account and you don't give me a
+contact email address and don't
+do anything and you lose your password, I'm terribly sorry,
+you're stuck. Because you could
+have done things to give yourself a safety line and you
+chose not to. That's part of the
+service that I am offering. Is that I am giving you a coil of
+rope and you can tie a noose
+with it if you really want to. >> I think that's right. I mean,
+users don't want us to give
+their accounts to other users. So we have to take, you know,
+appropriate actions around that.
+With glimpse, if you want to set up an account on a phone, a
+second phone, then we're only
+one phone per account right now because of the way our
+encryption works. Then we say
+you can log in to this device and you will lose everything
+from your old account or you can
+create a new account. And I think that's important if people
+care about privacy they
+understand that comes with certain usability issues around
+things like making accounts too
+easy to fake or too easy to recover. >> I would say this is
+one of the beautiful things
+about having an ephemeral messaging app. We don't have a
+password reset. That would be
+absolutely unacceptable on E‑mail I think. That wouldn't
+work. But there's no password
+reset right now and what do we tell people? You might have lost
+five days of messaging but just
+get a new account and start over. There's a password reset,
+that means someone has your
+password. If someone has your password, then bad guys and the
+FBI and lots of people can get
+your password. If we would have had passwords when the FBI came
+to me and asked me for a back
+door I wouldn't have been able to successfully say no. So as we
+move to the future and we'll
+have messages that live forever, we're really looking at
+solutions there and how do we do
+a password reset and things like giving people USB drive with
+their password on it. Legally
+speaking, if someone else has your password they are not
+legally protected with it. They
+must give it up. That's something that's really
+important to think about as a
+legal ramifications here. >> Also something with the way that
+we built our system. It is a
+zero knowledge system. So it took us a long time to figure
+out how to connect people
+together without us knowing who you are. And I think my tech
+team came one a brilliant
+solution. Instead of viral growth I say we've invented
+bacterial growth. So more like
+yogurt than a disease but it's beneficial to society. What we
+do is if you allow us to, what
+we'll do is do a crypto graphic hash of your address book to
+send up to our servers. If
+someone has you in their contact book we'll match the two of you
+if you have opted in but we
+still have no idea who you are and who is in your servers.
+Growth is a little slower this
+way because we're not forcing everyone into our system and
+automatically uploading
+everyone's contact. So one of the biggest complaints I get is
+I can't find my friends. But we
+think it is a better way to do it but definitely makes things
+tricky. >> We do something
+similar at glimpse we hash the user IDs. We do it for Facebook,
+Twitter and for contacts. We do
+the same thing where if both parties have opted in and we can
+match you. But, again, we're
+really different from Wicker and Silent Circle because we really
+do have the social graph. And
+that lets us be a lot faster and do a lot of things we otherwise
+couldn't do. Like sending
+messages is faster. Again, because on our app we're not
+hiding the social graph. I
+understand that metadata can be really useful and important.
+It's not to say that metadata
+doesn't matter. But it is to say that there has to be some kind
+of privacy space and privacy app
+in between Facebook and Snap Chat and in between apps
+designed for spies. >> I don't
+know PC magazine just did an extensive review of all the top
+messages in the world and we
+beat What's App and Snap Chat on features alone because we have
+more filters, stickers I don't
+know why, but maybe it's because we have more filters, stickers
+and doodles than they do.
+(Laughter). >> I don't think it works that way. It doesn't work
+that way. I mean, you look at Yo
+and they went to a viral and people loved it. It was just one
+click. I used Wicker and I like
+Wicker. And I respect you a tremendous amount. But users
+want things that are easy and
+simple and if adding more features was enough to make
+users more happy, then, like,
+Facebook and Snap Chat and all those companies that have tons
+of developers, and money and
+research would just be more featureish. It's not that
+simple. >> No it's just that
+we're a text messaging app. And by the way we're secure and
+respect your data and don't
+abuse or lose your personal information. >> Okay. Let's move
+on to the next question. >>
+Yeah. >> So this is I guess a different type of technical
+question. You mentioned Snap
+Chat and these other companies not fixing these potential leaks
+because they were negligent. But
+what if it isn't negligent but rather an economic misalignment?
+They don't have the, sort of
+impetus to actually fix this. How does your business model,
+your economic model create the
+drive to make sure that you maintain your security? >> Well
+one answer is three letters FTC.
+>> I think that's a really hard problem right. Like companies
+aren't properly incentivized to
+do security because it's cheaper to just apologize later and
+because consumers aren't
+necessarily making choices based on that. So I think you need to
+be really initiative driven.
+It's really obviously Silent Circle and Wicker are mission
+driven. Glimpse is too. We find
+ways to make the business models work really well. My perspective
+is this is obviously a problem.
+I'm going to are a long term business model instead of a
+short‑term model. Here is one of
+the tricky things. We've got a million dollar budget we spend
+on hackers. And the largest bug
+bounty in the world. I'm going to do hundreds of thousands of
+dollars of pin tests constantly
+while companies like frankly that compete with me instead
+take that million dollars and
+buy fake user downloads and look like they have a lot more users
+and it pushes up the rankings
+and that gives them more users. So it will be interesting to see
+in the long run which of those
+wins. But yeah there's a couple of different ways of doing it.
+>> Okay. Next question. >> This
+has to do with law enforcement security and privacy against
+those people. When I created the
+idea for the warrant canary I was hoping that it would find
+kind of broad acceptance
+especially by internet service providers, ephemeral, you know,
+service providers, and that
+hasn't happened. It especially hasn't happened even in the
+companies that have adopted it
+in the sense that they've only made sort of a broad blanket use
+of the warrant canary if they've
+received a warrant. Where my original idea was it could be
+individually targeted so people
+could inquire using the canary whether or not they were the
+target of a particular warrant
+or national security letter. So my question is why hasn't in
+your opinion on the group really
+found a home or use? >> I have no idea. >> I didn't hear it
+either. >> The warrant canary
+system where you post a posting on your website saying I've
+never received an NSL >> We're
+actually the first company in the world to do that. It was a
+really stressful day. This is
+when a lot Lavabit was having its issues. We were wondering
+what to do. What if we get
+served with a national security letter? Well we've got a zero
+knowledge system to nothing
+would really happen. We said let's go ahead and put in a
+transparency report that we've
+not received a national security letter and any other secret
+orders and we do not have a back
+door. Since then, Apple followed us and now there's a 11 other
+companies they have identified
+that have done this. It's unprecedented ground. Who knows
+if it will work or not. But it
+came from a really great place which was librarians in the
+1970s. The FBI was going and
+looking at book records to determine who was subversive and
+who wasn't. Librarians take
+privacy seriously. When you check out a book, when you are
+done, they get rid of your
+record. So what they did, they started hearing that the FBI was
+doing this and all the
+librarians that didn't have a gag order started putting a sign
+outside their library that said
+the FBI has not been here. And it seemed to work really well at
+that point. Another part of that
+actually is after I started Wicker my mom received notice
+that the federal government had
+accessed her library record. She called me up and said I don't
+know, this is really strange and
+I just got this letter and I wonder why that is. And talked
+to librarians. They said if you
+are checkbooks out online it is not ‑‑ it does not have the same
+protection as if you are at the
+library in person. Good thing to know. >> So there are a lot of
+things you can do like warrant
+canaries. The biggest thing you do is don't keep any data. Part
+of that is also to make sure
+that you have servers set up well. We have ours in Canada and
+Switzerland intentionally
+because of their history of respecting privacy and having
+government officials who are
+there to help you do this sort of thing. But having good
+relationships with them where
+you explain to them before they get upset about something that
+this is what we do, this is the
+service we're offering. This is the sort of data we have and no
+we don't have that is one of the
+ways that you don't get one of those is, you know, they don't
+want to waste their time giving
+you a subpoena for data that you don't have. So having a
+relationship with people where
+it's well‑known that you do things a certain way means that
+you are extremely unlikely to
+get a request for the data that you don't have. >> Exactly. And
+actually one of the things I've
+noticed with zero knowledge systems is the amount of
+requests actually goes down over
+time. So, if you are seeing transparency reports where the
+requests are going up over time,
+then that means they're giving the data. >> Right. >> Exactly.
+>> I noticed when I ran an
+anonymous emailer for a long time am I got a few contacts
+from the secret service and FBI.
+I told them what I had, exactly what I could do, what couldn't
+be done technically and they
+were pretty friendly and they stopped harassing me after that
+point. It was pretty much the
+right solution. So definitely spend your money on technical
+solutions. >> And a lot of it's
+very simple. If you put up a privacy policy that says, this
+is my policy dealing with
+disposal of logs, dealing with this, dealing with that, and you
+can show that's what you have,
+you have a contract with your customers that you are supposed
+to do a certain thing.
+Ironically the federal trade commission that we talked about
+on the previous question would
+punish you for handing things over or keeping those logs after
+you said you weren't going to.
+So this is also your best defense. You've made a
+commitment to your customers
+that you will behave in a certain way. And you are
+contractually required to do
+that. And that becomes your greatest defense. >> I think
+that's right. I chatted with Jon
+when we were setting up our privacy policy and it seems to
+be the best defense of your
+customers, right, if you have a privacy policy where you stated
+your obligation to them and your
+server architecture that supports that, then government
+officials, you know, there's
+only so much they can do. >> On the other end of it, Snap Chat,
+Twitter, What's App, all of the
+services, Skype, if you read their privacy policy pretty much
+what you are granting is the
+free transferrable worldwide license for eternity to your
+contract. >> Snap Chat deletes
+after 30 days and there's utility with that if they want
+to deal with moderation issues.
+I understand why they're doing 30 days and not zero given,
+like, their priorities and their
+customer base. But, you know, if you are sending really sensitive
+material 30 days is probably too
+long for them to have your data. >> Maybe the next question. >>
+Hi. So quick question.
+Hopefully. Have you found any commonalities in user bases and
+conversely have you found any
+users that have surprised the hell out of you? >> Jon and I
+don't know who our users are so
+they're very common. >> I didn't hear the question. >>
+Commonality in user base. I
+mean, I know a lot of people who use both Silent Circle and
+Wicker. I think we have a good
+deal of overlap. But that comes from the people who are using
+it. The real people who are
+wanting the real anonymity are actually few and far between.
+Remember these are communication
+systems that you are using to talk to people that you know.
+And no matter how you set it up
+you are going to give yourself some sort of identifier, slash
+handle and you are going to be
+telling that, distributing it, whatever to people that you
+know. If you go down the line,
+Elissa is doing something that is very nice because she is
+being upfront with her people
+and saying this is the way we behave. We are making it so that
+you and your friends can create
+a social group where you can chatter among yourselves in a
+way that is conducive to things
+that you might do if you were in the same room. >> The other
+direction to go would be
+something like secure drop where you've got people submitting
+anonymous content, focusing on
+anonymity too. A third party. That's a totally separate kind
+of system. >> With regard to
+Snap Chat, there will always be the analog hole where people can
+take a photograph of what is
+being sent. Is there any technical solution for a screen
+shot on the device preventing
+those? >> I think your best solution is really a social one.
+It's called plausible
+deniability. Because a picture of a picture can always be
+faked. >> That's true. >> I, you
+know, there's no such thing as plausible deniability. There is
+reasonable doubt. But there's no
+such thing as plausible deniability. No. There is
+nothing there. You have to have
+a certain amount of trust of the person that you are sending
+something to. Because most of us
+now are carrying around four or five devices that's all have
+cameras and they can be pointed
+at each other. So really look at it like a data destruction
+policy. Look at it like
+something else. A constructed, fake looking message that
+somebody made and lied about
+that you had done might actually be more believable than the real
+thing. >> I have a surprising
+answer. Just that users don't care about screen shots. Glimpse
+built a tool that worked really
+effectively to prevent screen shots. It was an animation layer
+that ran over your photo. So any
+screen shot would capture a water mark on top of it. Because
+of the way the frames work, if
+you took a video of the animation it was really fuzzy.
+Like the words were not readable
+and the image became very hard to make out. But when you see
+the image on your phone using
+glimpse you would be like that's a naked person that's a really
+interesting gossipy message. We
+thought we just built like the world's greatest sexting app. We
+were so proud. And we were
+really surprised that discover that users didn't really want
+this. It's interesting to talk
+about screen shots. Intellectually interesting.
+Because I'm not sure ‑‑ it's,
+like, a feature people want to use day‑to‑day. >> We use to
+have an anti‑tampering solution
+that made it really difficult to take a screen shot because if
+you moved the pixel it would go
+away. And it worked really well. But it was a usability issue and
+people didn't care. So we took
+it out of there too. It wasn't that important it seemed. >> We
+took out our screen shot
+protection and no one noticed. >> Us too. No complaints. >>
+Next question. >> I didn't know
+you did that. That's cool to hear. >> So I'm actually not
+familiar with the three
+applications but from what I've gathered from the conversation
+it seems that the development
+teams behind them are relatively compact. So this is a bit of a
+layered question. I guess, well
+no I'll just jump right to it. How have the three of you
+approached insider threat? >>
+Very good question. I think again it comes down to, you
+know, the social engineering
+contest that happened here. It is 100 percent of the target,
+100 percent of the time. This is
+the number one threat we all need to look at. You can't have
+any one person in charge of core
+code. We've got several people that would have to change the
+core code to do things. Because
+for instance, you know, we don't want the threat of someone
+kidnaps your child and says
+change this. Or let me give you $100 million under the table to
+change this. Those are all very
+key threats you need to think about. >> There's two simple
+tools that we use. Get and get
+hub. That our developers are all checking things in and we know
+who did them and periodically we
+take a snapshot and put it up for review. So an insider who
+made a change would end up going
+through internal review and we know who is working on what. And
+ultimately it will end up where
+anybody can go and see it. So the idea that an insider can do
+something insidious is greatly
+limited. Well do something insidious and not get caught is
+greatly limited. And so
+publishing your source is what I would say. >> So the counter
+argument to that, of course,
+would be for instance true crypt. I am not saying there
+have been any problems but, of
+course, how long has it been before somebody decided to go
+through a major audit of that
+code base? >> That's a very long other debate. And, you know,
+it's a very interesting one. But
+it's not clear that it has anything to do with insider
+threats. Which is what you
+asked. >> Right. >> Thank you. >> Thanks. >> All right. Just
+going to ask a question related
+to the previous one. Are all three of your applications open
+sourced. >> The EFF would say
+they're not open sourced though. >> Depends on what you mean by
+open source. If you mean, you
+know, if you mean ‑‑ there are people who think they own the
+word "open" and my source is
+published under a variant BSD license that says you can do
+anything with it except make
+money. You can compile it yourself. You can use it. You
+can give it to your friends.
+But, you know, you can't build a competing system. This is not an
+OSI compatible license. But you
+can download the source and compile it and do whatever you
+want with it except make money.
+>> I think that's what glimpse is going to do. We're a really
+baby company. You know, it's
+actually like I'm really honored to be on stage with Wicker and
+Silent Circle but we only
+launched in March and we're only available for IOS. It's going to
+be a good three months before we
+market ourselves as a security app. We just need to spend more
+time on that first. So we've
+been thinking about how we want to handle this. We are not open
+source but I think following
+those models is what we'll want to do. >> We're wondering about
+that saying do we do part open
+source and part not. The main reason we haven't opened sourced
+our code is we don't want a
+bunch of copycat apps out there that have done interesting
+things with it. There's also a
+threat model there. But it's something that we continually
+think about. But I think it's
+important, I think within this community a lot of times people
+equate open source with secure
+and closed source with not secure. And that's a dogma. And
+something that I think, you
+know, there's a lot of ways to add trust and transparency. And
+I think that's what we all need
+to get better at every day. >> Well you can do code audits
+right. >> Just today we actually
+announced two more code audits from I tech and aspect. So we've
+had the best groups of hackers
+in the world. And months and months looking at our source
+code every day. And two of them
+today verified that indeed we use the strong crypto that we
+say we do. It's been properly
+implemented and they indeed found no back door. >> Let's try
+to get the last two questions.
+>> As a developer, do you have any advice for someone that's
+looking to build ephemeral
+communication apps or at least applications that have some
+elements of this type of
+communication? >> Advice? Well the first bit of advice is
+actually care about what you are
+doing. Because really the things we've seen that have gone wrong,
+everybody makes mistakes. Fix
+your mistakes, look at what you want to be your threat model.
+Look at your privacy policy.
+Look at how you are going to handle some of these things. And
+genuinely live up to what your
+own ideals are. That's the really big one. The technology
+is relatively easy. It's the
+execution that's hard. >> It is a really crowded space. When I
+first decided to do this it was
+a year and a half ago and Snap Chat wasn't on Android and
+Facebook hadn't yet started to
+get into the market. And line which is IPO in Japan is going
+ephemeral. Facebook wants to do
+this. It's becoming kind of normative. So I think if you
+want to do an ephemeral app the
+question is, okay, like, everyone is ephemeral now. How
+are you different? >> There's a
+communication sub strait company called Prodia and they let you
+do a lot of programing in Java
+script and they have a how to make ephemeral communication
+system there. It really is
+normative. >> Could we have the last question? >> So if
+everyone's ephemeral and we
+aren't protecting screen shots, what sort of features do you
+think these apps should have
+that they don't currently have and what are the most important?
+>> In our apps? Right now. Sorry
+I didn't understand the question. I'd love to find a way
+to do password reset. >> I think
+community is what is really interesting now. When I look at
+new apps that come out. Because
+there's so many communications apps out there and what can make
+an app different surprisingly is
+like what is the ethos on there. What kind of modernization is on
+there? Who else, you know, which
+friends of mine are on there. That's actually what's most
+interesting to me right now. >>
+So talk to me about password resets. That's easy. (Laughter)
+There are ‑‑ the idea is what do
+you want to solve? What sort of communities do you want to
+support? What sort of
+communications do you want to support? There are a lot of
+things that a bunch of people
+are over thinking. And if you don't try to do everything, say,
+in the security layer, you do it
+in the user layer, are a lot easier than if you try to prove
+that you can always do these
+things. I mean, for example with ephemerality as we've said you
+are not going to get
+100 percent. You are going to get something that is completely
+and utterly usable and solves
+99.99 percent of it and that's actually easy. The last nine,
+you are not going to get that.
+>> I'd like to thank the panel for contributing and working on
+these great applications that I
+use myself and there's a lot of people that use. And I'm really
+excited to see where they're all
+going to go in the feature. >> Thank you, Ryan. (Applause)

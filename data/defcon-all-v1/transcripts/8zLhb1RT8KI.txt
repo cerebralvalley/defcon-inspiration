@@ -1,0 +1,491 @@
+>> ALEJANDRO CASERES: Thank you, mistress. So that all just happened.
+(laughter) where do we even go from here, really? All right. Let's get started with
+the talk. Let's talk approximate some computer security and not wooden paddles. Who asked
+that? >> Are you nervous?
+>> ALEJANDRO CASERES: I can't even see who is that? I'm in pain, but thank you.
+>> You are welcome. >> ALEJANDRO CASERES: Oh, it's the girl that
+spanked me. Oh, no, I think you got me good. Thank you, though. No, I'm good. Thanks. Appreciate
+it. That was great. So that's like a little hidden perk that they
+don't tell you about for the speaker's package. You get a nice cool badge. You get access
+to the speaker's room and a little bit of ass touching.
+Anyway, let's go ahead and get started. So welcome, everyone. Thanks a lot for coming
+to my talk. I hope everyone's enjoyed the conference so far. This talk's on massive
+attacks with Open Source distributed computing, and obviously I'll tell you all ‑‑ what
+all those words mean together here in just a minute. I hope you guys enjoy it.
+So who am I? Just so you know who is up here talking at you, I'm Alejandro Casares. You
+can call me Alex. I'm the owner/founder of Hyperion Gray. It's just a small R & D and
+Open Source start‑up. We are completely focused on the nexus between distributor computing
+and offensive security. So I think there's huge potential in the field. Hopefully after
+this talk you guys agree with me. So I studied physics back in college. Most
+of my research was focused on kind of distributed computing with scientific experiments. Now
+I'm really hoping to branch out into breaking shit with that. That's where I'm at.
+I'm also the founder of the PunkSPIDER project. Anybody heard of the PunkSPIDER project? Oh,
+sweet. More than, like, five people. More than I expected. Awesome.
+So I won't say too much about it because we are going to get into it here in just a couple
+slides. So don't worry about it. So as a little background, came up with this
+talk after I presented PunkSPIDER at ShmooCon. Word got back to the CEO at the time that
+I was building a cyber weapon, PunkSPIDER is a community. So after laughing about that
+for a minute, kind of got to thinking, you know, what would it take to actually build
+a distributed attack platform, right? So different examples that I'll show you here today are
+just kind of what came out with tinkering with that idea. So there's also three demos
+in this talk. It's really highly demo focused. So stick around. It will be a lot of fun.
+My ass hurts, too. Anyway, so let's get into it. To start off,
+distributor computing is really big right now. You've heard a lot about it. There's
+all kinds of IBM commercials and stuff like that. You hear big data lot. It's a nice little
+buzz word. So big reason for that is that we've seen some really cool stuff that comes
+out that makes distributing processing things really, really easy. The short of it is pretty
+much what folks are doing with this is lots of powerful analytics. Kind of cool. Analytics
+are cool. We all like that. But I'm not really into that kind of thing. It bores me a little
+bit. So I've been looking for more interesting use cases for distributor computing.
+A couple of technologies that have come out are Apache Hadoop. We'll get all up in that
+in a few minutes and I won't go too far up into that right now.
+You might ask, you know, if analytics bores you what is some fun stuff we can do with
+distributor computing. The answer is massive attacks with Open Source distributor computing,
+which you might notice is the title of my talk.
+So what's the high level idea behind distributed attacks? What exactly do I mean when I say
+something like massive attacks; right? So what I'm talking about here is conducting
+really well‑known, often effective attacks, stuff that has a relatively high rate of success,
+and then doing that hundreds ‑‑ hundreds of thousands or even millions of times even
+in a really coordinated and effective manner. So what I found in my research into this so
+far is that ‑‑ hopefully this isn't too much of a spoiler ‑‑ is you'll break
+into so many things. Part of the problem is what do I do with all this broken shit? What
+do I do with all this information from the stuff I've broken.
+We're not going to get into far with what we do with that information afterwards. We'll
+be more interested in the breaking of things, if you will. Everybody with me so far? Cool.
+Some head nods. All right. So let's define what we mean by
+a distributed attack. By this I mean an attack that uses various computing resources in an
+effective and coordinated manner. So why do we want to do this, really? Why is this going
+to be to our advantage? The time required to attack a massive amount of things, again,
+remember I'm talking about hundreds of thousands or millions of things all at once, is that
+it could take a really long time to do this. So you don't want to be waiting months, even
+potentially a year or years for an attack to finish. It's not just annoying and just
+impractical, but it also allows for response teams to the particular target to respond
+in lots of different and complex ways. So you kind of want to bang out the attack, get
+in and get out, sort of thing. So just to give you an example, picture a
+target of, like, 250,000 web applications, for example, associated with a particular
+target; right? So this could be every web application associated with a country, for
+example. So let's say you try to run basic web app fuzzing followed by an automatic SQL
+kind of thing. With an optimistic estimate doing this in a nonparallel way, it might
+be something like a minute per target. That's pretty optimistic. You end up with 173 days,
+174 days to actually finish that attack. We don't want to wait that long for obvious reasons.
+If you think that is unrealistic, you heard me mention PunkSPIDER, we've done checks on
+1.3 or 1.4 million sites so far. Our target is 250 million sites. It's a completely realistic
+target when you're talking about really large attacks.
+So why else? So sometimes you need a little bit of coordination between your computing
+resources. To illustrate this, again, picture a large scale attack on a massive network,
+maybe a fairly significant portion of the Internet, for example. And let's say that
+you realize that in order to conduct that attack on a large scale you'll need more computing
+power. Like I said, we don't want this attack to take too long. In a noncoordinated manner,
+spin up some Cloud servers, sort of in a dumb way how you would expect, have a little script
+that runs and executes a few shell commands on each machine, for example.
+You start running into a whole bunch of problems with that; right? If anybody's ever tried
+an attack like that, you know this. So you might want to know, like, when an attack is
+actually finished on one of those nodes; right? So once a node has finished its part in the
+attack, you have just freed up some computing resources. In order to make it as efficient
+as possible, you'll want to run more stuff on that node. That's really not going to be
+possible in this way. You could hack something out, but it's not gonna be ideal.
+So another issue that you run into is how do you actually make sure that your computing
+resources are kind of pushed to the limit? You might have lots of different types of
+servers. Maybe you're running this out of your basement somewhere on commodity hardware.
+How actually know that all these resources are being pushed to the limit. You could hack
+out some threading code, something that monitors the resources on a particular machine and
+ensures it's using them all at once. Again, it's not going to be ideal or you'll spend
+a significant amount of time on that felt we want to be able to do this relatively easily.
+If all of this sounds hard to you, there are advances in the field that makes this not
+hard to do to solve every single problem associated with using large numbers of nodes to conduct
+a coordinated attack. You'll get into talking about some of these
+and then move right into the three examples and three demos that I talked about. So for
+the most part we'll be talking about one of the best and most popular tools out there
+for distributor computing, which is Apache Hadoop. How many of you are familiar with
+Apache Hadoop and know all about it already? That's way more than I expected.
+We need to go over some background on what Hadoop is. Bear with me if you know all this.
+I've used a couple different protocols for message passing, for distributor computing,
+like MPI, which mainly has support for Fortran and C. I had to deal with Fortran MPI and
+it was a pain in the ass, even Fortran 77, which is ancient stuff.
+If we get into how Hadoop works, which is through map reduce, what I'll show you, if
+it's implemented right, if it is in Apache Hadoop, really easy code to not have to do
+that much work. I'll show you how you would do that.
+I've mentioned map produce a couple times already, but what exactly is it; right? How
+many of you guys are familiar with map produce, parallel programming concept? Cool. Awesome.
+Pretty good amount of people. Awesome. Let's say you have a problem that you'd like
+to distribute across the node. This is how map produce works. You would start out with
+what's called a map function. So I'm actually going to go very in depth of what Map Produce
+is. It might appear a little bit of confusing why we are doing things the way we are. There
+is a couple more slides on this that will illustrate all of that for you guys. Also,
+a couple really good examples. Just bear with me if you don't get all this all at once.
+So first thing you do is you write a map function. Map function is really simple. It takes in
+data as key value pairs and outputs a set of key value pairs as its result. That function
+is written in that it's a single operation on a single key value pair for you. So as
+the person writing it, you're just writing this for one input at a time. You don't have
+to worry about all that massive amount of data. You're writing it for one input record
+at a time only. This is automatically distributed across the cluster in Hadoop, this operation
+for each of your key value pairs. Each machine in the cluster has the map function and it
+has a set of key value pairs that it's responsible for doing whatever operation it is that you'd
+like your map function to do. I like to think of the map step the part that generates somewhat
+processed big data, if you will, in a distributed manner. It's usually not the solution to your
+problem, although sometimes it can be. It's pretty simple. All it is is input key
+value pairs, run a map function leveraging, all the machines in the cluster, and then
+outputting key value pairs after that. Pretty simple.
+After the map step is done, you move on to the reduced step. There can be some intermediate
+steps for the processing, but generally you would move to the reduced step. The input
+of the reduced step is really simply just the output of the previous map step. So a
+partitioner is going to take the value of the map step with common keys and distribute
+them such that one note in the cluster is responsible for running the function on all
+the values with common keys. So this is, again, distributor across the entire cluster. The
+reducer is usually the part that gives you the solution to the problem. And I know that
+was, like, a lot of words that I just said at you, and it might be a little bit confusing.
+There are a couple slides that might clarify this if it's not completely clear to you yet.
+I'll actually shut up for second. I'll read through this and read through it myself. This
+will clear it up, along with the example after it. Here is all that's happening in summary
+of what Map Produce is. You have inputs to map function. Map function is, the list of
+results is the key. So that can be something like case of two, values of three, case of
+two, values of four, and so on and so forth for each value pair. All the values with the
+same key, key sub two are logically grouped together. Our reducer function would be applied
+to this group in parallel so that for each group and then yield something in return.
+So these would usually be what we would call our results. So a common question when you're
+kind of first dealing with Map Produce is why do we do it that way? What's the use of
+having the values with the same key group together? I'll show you why we do that here
+in just a minute in the next slide. So a few things to keep in mind: Once you
+write a map and a reduce Hadoop will write it to the node and slaves automatically. Anything
+that's distributing things and dealing with where things happen or why things happen in
+those places that they do happen. Hadoop takes care of a lot of compute distributing, automated
+partitioning through remote nodes, automated assurance that the job's going to get done.
+If, for example, you have a node that goes down, Hadoop just very seamlessly detects
+that. It takes it a step further in dealing with nodes that go down that actually expecting
+nodes will go down. You can run it on really shitty hardware I do all the time and get
+really solid results from it. So what else? There's also a few configuration items that
+you can set in Hadoop that are really useful. I mentioned before that you want to be able
+to push your resources to their absolute limit; right? You can do that very easily with Hadoop,
+and just a couple lines of configuration. You don't have to deal with going to each
+of your nodes and figuring out some kind of code to make sure your resources are all being
+pushed to the limit. Hadoop will do all of that for you with just a couple of configuration
+items. Pretty cool. So let's get into the specific example. First
+off, I have very few complaints about the distributed computer committee and a Apache.
+If you look up Map Reduce and just Google it and find some examples of it, the only
+freaking thing you'll find is a word count example. So that's really annoying, because
+once you start seeing the same example again, if you don't quite get it at first, you want
+to see another simple example that will kind of help you out with that. So it always seems
+to me like with Hadoop you're either reading a word count example or you have to pour through
+hundreds of lines of Java code. Also, word counts are really, really boring. It essentially
+counts the instances of a word in a particular piece of text. So that's kind of lame.
+This example is a tool called PunkSCAN, free, that Hyperion Gray released. We'll get into
+it of the picture a situation where you have a list of URL's. You have a ton of URL's potentially
+like a few hundred thousand or even a million. So we want to be able to perform a Map Reduced
+job in Hadoop to fuzz these URL's quickly and search for vulnerabilities on the pages.
+Another constraint we'll place on the job is we want all the vulnerabilities to be focussed
+at the same time. You don't want a bunch of disparate on their own and not who they belong
+to. This is where you will see the way that Map Reduce works by grouping the specific
+keys together during the reduce step is going to help you a lot.
+So are we still good? Everybody still good? Could I get some head nods from everybody?
+Cool. What's the job flow look like within something
+like PunkSCAN. As I mentioned before, we start with the mapper step, inputting key value
+pairs. We care about a list of URL's in this case. Our input key will be none. We don't
+really care about a key in this case. Our URL will be the value. Essentially what this
+does is it makes it just a dumb list. We're not associating any keys with the specific
+URL's that come in. Not yet at least. We apply to each URL in parallel E the mapper just
+essentially fuzzes the URL's using a really simple fuzzing library that I wrote and then
+determines the domain of the URL. That's it. That's all the mapper's going to do. So after
+that, it yields its output in which it's output is going to be the domain of the URL fuzzed
+as the key and the list of vulnerabilities for that URL is the key being the domain,
+value being the list of vulnerabilities. All this will be get distributed across the
+cluster for you. The URL's are going to be fuzzed in parallel as much as possible. Completely
+in an automated way using Hadoop. We don't have to write that logic ourself, which is
+really, really useful. Now because the domain of the URL is fuzzed is the key of the mapper
+as well as the input of the reducer. So keep that in mind. The reducer functions for each
+URL for with a common domain will be single processing. Each group of parallels with the
+common domain. All that, of course, is going to get distributed across the cluster as well.
+What you're seeing already is that each domain is going to get handled by a particular node
+at a time in a specific reduced step. Now, why is that actually useful? The reducer
+function is just a combined ‑‑ just outputs ‑‑ it does ‑‑ sorry ‑‑ all the reducer
+function does is combine the list ‑‑ I think that vodka is hitting me like right
+about now, by the way. I'm all fucked up. Anyway, all the reducer function does is combine
+the list of vulnerable pages in the one big list for a specific domain. Then it will index
+them to a back end search end. PunkSPIDER we're using Apache Solar as our back end,
+which wasn't that tough a choice because we were running a search engine Apache Solar
+back end. Over all that's pretty simple; right? But how easy is it to code, really? I keep
+mentioning and it's still kind of an track to you guys. I mention it's easy. What do
+I mean by easy? A hundred lines of code? What is it?
+I wanted to show you this of the don't worry about actually reading all of this and doing
+a thorough code review or anything like that, but just take a look at it. If you notice,
+it's about 12 lines of actual code. It's written in Python. So that's one. This is our mapper
+right here. And up next is going to be our reducer, which our reducer is just like ridiculously
+simple. It's like six lines of code. You notice a couple things in the mapper and
+reducer. First off, as I mentioned, they are written in Python. What we have done is used
+Hadoop streaming, standard in and standard out to set up the job properly. I don't want
+to get into how exactly you would use that, but suffice it to say it's a batch one‑liner
+to run a job in Map Reduce after you've run your mapper and your reducer. If you're the
+kind of person that wants nitty‑gritty details, follow me on Twitter, I'll be giving you the
+particulars and the blog, if you want to keep in touch.
+Another thing I wanted to point out is that the mapper and the reducer that I showed you
+are really the only part of PunkSCAN that's distributed computing focused. In other words,
+if you were to actually download PunkSCAN, which you can off of Bit bucket, it's pretty
+standard stuff. We're not doing anything too crazy to distribute this code. It's standard
+fuzzing library, some solar indexing stuff, some other fairly simple things, but then
+you see also a mapper and reducer, which, again, is the only part of it that's really
+distributing computing focused. What I'm trying to get at here is there is nothing too mysterious
+about writing your own distributed focused code. It's all ‑‑ if you understand the
+base concepts, you'll really be able to write distributed attack code relatively easy. This
+guy is falling asleep, by the way. That's killing me.
+Hopefully that will prevent that from happening: What's that? Drink me or him?
+>> Both. (applause)
+(laughter) Drinking will keep him from falling asleep; right?
+(laughter) Great idea.
+(laughter) So demo time. I keep mentioning that this
+talk has a bunch of demos, but all I've been doing is talking at you. We need to stop that.
+All right. So first off, the first demo I'll show you, this is PunkSPIDER. Obviously, first
+thing we want to do here is read the banner. We're providing a lost vulnerability on stuff
+we tonight own. The goal is to provide free information to website users and owners regarding
+website security status. If you go on the site and look for vulnerabilities, what I'm
+looking for is if you're a site owner or site user, you want to know the vulnerability state
+of that site. If you're giving the credit card number or personal information, you want
+to make sure that's not being leaked all over the place. That's really what the site is
+being used for. Don't be a dick.
+(laughter) So a couple things you can see here. Can everybody
+see that okay? Does that come out all right over there? Perfect.
+So a couple things we can do here. We can search by a particular URL or by the title
+of a site. So we'll just go ahead and search by URL. Down here is where you specify the
+specific vulnerabilities that you would like to search for. So we'll go ahead and check
+all of them. And this changes it from an end or we'll see any site with the search term
+that I type in with any type ‑‑ any of these types of vulnerabilities. These are
+blind SQL. >> Google.com.
+>> I'll do you one better. We'll search for every single site that has vulnerabilities
+in it. It supports wildcard characters. You can go in and type a little star and you get
+absolutely everything in the database and it will be dumped back to you. It will take
+it just a second to search, because that's actually a large query right there, but not
+too long. If we scroll down, you'll start seeing sites
+that are essentially a mess; right? These are vulnerability sites that if you were a
+user giving your personal information to any of these sites you would be pretty pissed
+off; right? Let's go down to the bottom. We actually see the number of pages of vulnerability
+sites is 6,166. Just to be clear on this, a lot of articles on PunkSPIDER on this after
+we presented it at ShmooCon. But this is 6,166 pages of vulnerability domains. So within
+each domain we can have several vulnerable websites and vulnerable pages. We have ten
+domains per page. So that's 61,060 vulnerable domains of the within each domain, if we go
+ahead and expand it, searching for more than one, within each page for each domain we have
+several vulnerabilities. Anyway, long story short, what I'm trying to get at there's a
+lot more vulnerabilities than 61,166. It's right up at about 300,000 or so so far. This
+was all made possible by using PunkSCAN. As I mentioned, PunkSCAN is what powers this
+on the back end. And making it distributed over actually a relatively small Hadoop cluster
+and pushes our resources really, really hard is what allowed us to get this level of data.
+Actually, the main issue that we've had with PunkSPIDER is terms of service. We tried to
+run it on Cloud servers and we run it through a bunch of proxies and stuff like that. I
+guess they have some kind of monitoring, we get kicked off of Cloud providers all the
+fricking time of the anybody work for a cloud provider?
+>> Rack space. >> I love rack space. I won't say too much
+more because we have cloud providers here. (laughter)
+Sort of see the picture of Map Reduce job returning here. Look at ajaxa.cnn, maybe something
+with AJAX. You can see us attempting to inject into parameters and reading the output. So
+here you see that this one's looking for, let me zoom in a little bit more, cut ID over
+here, and then we see it moving to the next parameter page over here. Then we see it kind
+of moving down. This is our map step that I was talking about. We're essentially taking
+a URL, attempting a few basic, basic, really safe, by wait, injections, and reading the
+output. We're not doing anything else with that. We're not exploiting any vulnerabilities,
+obviously, or anything like that. We're just providing this back to the user in order to
+be used for good things and not bad things. Somebody's laughing over there for some reason.
+Anyway, so this is PunkSPIDER. What made all of this possible, what allowed us to basically
+target the entire Internet is to distribute this job; right? This actually would not have
+been ‑‑ we probably would have 10,000 sites done here if we hadn't been distributing
+this and using Hadoop to help us push our resources as well as coordinate all this stuff
+in a really simple manner. So that's PunkSPIDER. What do you guys think of PunkSPIDER?
+(applause) Thank you, guys. All right. So I've shown
+you some stuff. Now I want to get into specific use cases of that. That was just an example
+to kind of whet your appetite. What you'll see is me showing you or explaining demos.
+We'll see tools related to each one. The one is distributed recon. I'll talk about this
+really, really quickly. Essentially you want to greatly speed up repetitive tasks. A lot
+of network or application reconnaissance on targets is repetitive tasks when you're dealing
+with massive targets, so we're not getting into really low level complex attacks here.
+We're getting into common stuff that succeeds a lot is our goal.
+The only thing I really did want to say about distributed recon and writing your own Map
+Reduce jobs and things like that is to always be careful to consider your problem. Are you
+in need of CPU, memory, bandwidth, what exactly is it you're trying to solve. So with PunkSCAN,
+we had the issue, we just needed faster fuzzing. We had to figure out what would help us fuzz
+faster. Are we going to need bandwidth, CPU, memory? We actually had to do a little bit
+of pre‑research to figure that out. If you're interested in the details, and this was committed
+at ShmooCon this year. It goes into a lot more detail. CPU were far more important than
+any kind of bandwidth. This turned out to be useful to us because distributing the job
+we knew would help us. It turns out it did. It helped us a ton. So just always consider
+your problem and be really careful before you write these things.
+All right. The next one is the really fun one. So just to be clear and just as I've
+mentioned, don't misuse PunkSPIDER and don't attack the sites on PunkSPIDER. That's really
+not what it was built for. I would be kind of pissed and I found out that people were
+actually using it for that. But now we'll look at what we could do with
+that type of information if we were complete dicks. Mostly because it's fun, and that's
+off and on thing to do, and we like writing distributed computing code, but also for the
+same reasons that I've been mentioning all along. We want to speed up our attack and
+we want it to help us coordinate our resources. Demo is a distributed version of SQL map.
+How many of you are familiar with SQL map. Essentially an automated database take over
+and stealing tool kind of thing. Really, really cool. It was presented at DEF CON about four
+years ago or something like that. That's probably completely wrong. It was presented at DEF
+CON at some point. I have no idea when and I made up that number on the fly.
+The demo and example I'm going to show you, all this stuff is the source code is going
+to be available online immediately after the conference. So definitely take a look at it
+if you want to know more about it. It's in the proof of concept phase right now and not
+what I would call a real tool just yet. But if you're coming to Derby CON, I'll be working
+on a refined feature. The name of the tool is called Mr. Injector. The reason for this
+is MR equals Map Reduce. So injector because injection, obviously. MR injector turned into
+Mr. Injector, which I think is kind of funny. Literally nobody else has ever thought that
+this was a funny name for anything, but that's kind of just how I work. Also, in my head
+I picture it as, like, across between Mr. Donut and Mr. Peanut. And it gets amazing for me.
+But nobody else really thinks that that's entertaining in any way. So we'll just move
+on. So let me set the stage for you here. This
+is the next demo. The screen you're seeing is divided into two parts. So the left‑hand
+side is SQL map owning targets in a nondistributed manner. This is written how you would expect
+it. You have a simple Python or shell script, runs SQL map on targets in a row. You go one
+after the other exactly how you would script it if you didn't want to spend much time on
+it. Right‑hand side uses distributed using Hadoop
+cluster for the attack. This is a real attack running on a test bed of servers. It's an
+actual attack that we conducted. What you'll see is a series of ‑‑ you'll see those
+shells run, but you don't have to read that too much. Under them you'll see little red
+squares pop up each time a target has been owned. By "owned" I mean we're stealing the
+system hashes. So take a look and what I really want you to pay attention to is the rate at
+which these things attack. It will actually be pretty obvious what I want you to look
+for. But again, this is not a simulation. We didn't just do a bunch of calculations
+to see if this would work. We actually ran this attack and recorded it to show to you
+guys. We're also kind of jumping in the middle of the attack. The whole thing was barely
+too long to make a good demo. But the important thing is the rate that you're seeing here.
+So you're starting to see targets get on. This is actually real‑time. This is not
+sped up in any way or anything like that. It's real‑time targets being owned. You
+see that obviously the right side is much, much, much faster. Even though when I look
+at the left side I'm always kind of pulling for it; right? I'm like, come on, little buddy,
+let's go. Come on. Hey, hey, there's another one. All right.
+(applause) One point. And it will continue to run. I'll
+stand here awkwardly while I let that run. I'm feeling that alcohol even more now.
+(Off microphone) >> How many mappers? I believe we were running
+something like ten mappers per node, ten nodes. Yeah. So that's what it's running in parallel.
+So already you see that just with the relatively small cluster, small nodes, greatly, greatly
+speed up the attack. Right? Gotcha. It greatly speeds up the attack. That was
+61 targets in 45 seconds. So we have under a second per target. What makes this really
+possible, it's not just the fact that you have more computing resources. It's really
+not. It's the fact you're able to push those resources to their absolute limit with really
+simple code. You don't have to get into complex stuff in order for that to happen.
+So my goal with this, what I really wanted to show you is these techniques actually work.
+So maybe there's some skeptics out there that think oh, well, bandwidth will be your limiting
+factor, you're at the same gateway, that's just not gonna work and you suck. So I don't
+suck, first of all. And next of all, it actually works. So shut up, imaginary person.
+(laughter) This is an example of the mapper that I wrote.
+Actually, this is a really, really early version of the mapper that I wrote. It's really simple;
+right? It's Python code. All we're doing is running a simple subprocess that runs a shell
+command and replacing it. If you this through Hadoop screaming, we refined this with the
+help of my friend Mark right there in the red shirt. We refined that a good amount.
+But this code actually works and runs really, really well. So as you can see, that's, what?
+Ten lines or something like that? Really, really simple.
+All right. So the output gets output into the Hadoop file system. This is something
+else that will make all this stuff even easier for you. So the Hadoop file system is a virtual
+file system that's distributed across all the nodes. It's fully accessible on absolutely
+any node that you have out there. So you don't have to worry about what node you're on in
+order to retrieve the output. You can actually be on any one of your distributed nodes and
+just grab it from anywhere and you have that information right at your disposal for whatever
+it is that you're into with that information. So it's really, really convenient. So what
+do we end up with? A punch of password hashes. We need to do something with these. What else
+would we be here for? So we just owned a large amount of targets. What would be really cool
+is if only we had a really fast distributed password cracker.
+So I'll tell you about a really fast distributed password cracker that I wrote. We conducted
+reconnaissance on a bunch of attacks; right? We exploited a number of targets and stolen
+a bunch of password hashes. This could take a long time to crack. We're impatient. We
+want something quick and not any specialized hardware. We don't want anything ‑‑ we
+don't want to have to go out and buy a bunch of GPU's. We want to be able to click a few
+things and crack some hashes; right? So you might notice in the previous examples
+I made the assumption that you can build or have access to enough machines to actually
+run a Hadoop cluster. That's actually not that hard. For anybody that seems intimidated
+by that stuff, that's really a simple process. There's a bunch of guides out there. You can
+get a decent one running with eight to ten nodes running a couple hours. So it's really,
+really simple. Let's say that you're just really busy. You don't want to deal with all
+that. What you want to do is be able to click a few buttons and have an instant cluster
+to use. So I'll show you how you can do that, and
+then crack a password over the cluster by using Hyperion Gray's tool which is called
+PunkCRACK. Admittedly this wasn't a simple tool to. The job of actually distributing
+the stuff was not trivial. You actually have to worry about how exactly you'll partition
+this stuff. I mean, to me when we started this, it seemed really simple; right? Each
+operation you're just hashing a string and then comparing it to another hash. It seemed
+simple enough. It's easily "parallelizable." What you run into is I am ‑‑ is that
+a word? It's a list of things. We don't have that massive list in any way. If we would
+just try to compute all the hashes and input a list from a file that would crash for any
+reasonable password, so it was a little bit complicated. We had to write our own little
+language that could represent a series of characters in order to distribute this job.
+So I think I'm actually getting close to the end here. But what I'll show you is spinning
+up a power cluster over Amazon, a point and click, run this Hadoop job and get me on my
+way. Really cool. Last thing, I know there are lots of ways to crack passwords. I'm not
+claiming this is the best way, the fastest way, the most efficient way, anything like
+that. Just saying it's an option and something you can have in your tool belt. If you don't
+mind spending some money for convenience for a cracker, this is a really good technique.
+This is actually a really long video. There we go. I start out ‑‑ there we go. I
+start out by showing you a really screwed up screen. There we go. I go here. Can everybody
+see that okay, by wait? Sort of? I'll walk you through it anyway. Don't worry
+about it. I'll walk you through it. It's okay. Full screen. How do you full screen Windows
+Media player? That didn't work. (laughter).
+That's the last time I'll listen to anybody at DEF CON. This is the job flow, setting
+up your specific job configurations. I'm telling it the location of the jar and a few basic
+arguments on the jar. I'll skip forward. This is a cool screen. I'm specifying the instance
+types and instance numbers. How large do you want the cluster to be? I want an extra large
+machine for the master node, which is a pretty big machine on Amazon's EC 2. For my one slave
+machine I set a cluster compute 8 extra large, which is a 32 processor machine, which is
+pretty big. Then at the bottom over here where you see this 17, I'm setting it to, again,
+really large number. So I have about 19 nodes here. I really wanted to show you this demo
+with some extra zeroes, so that would be like 170 or even 1700, and you could pretty much
+crack a password like that. It does get a little bit expensive and you have to be careful
+how you use that, because you need special permission from Amazon. They already kind
+of hated me. Anybody from Amazon here? No. Okay.
+(laughter) They have some really powerful stuff and some
+really cool stuff, but they hate me. So what we're doing sheer we're configuring the node
+to ‑‑ what? Sorry. Kind of skipped around a little bit.
+Anyway, what we're doing here, if you see down here where it says one bootstrap action
+created. It specified ‑‑ one minute. Okay. What it did was specify one particular
+action to do on this across the cluster, before your job actually starts. What I did there
+is set the number of mapper tasks. So that's the number of parallel tasks that occur on
+each node. And that's what I'm talking about where I say you can push your resources to
+their absolute limit with really, remand simple configuration items.
+Long story short, because I'm running out of time, in case you can't predict what's
+going to happen, you crack the hash and it's done. And you it that in a completely distributed
+manner pretty quickly. And that's PunkCRACK.
+(applause) I hope you guys have enjoyed it ‑‑ you.
+>> No, you can't finish yet. Give it up. >> I need your time. Just stand there.
+>> Rebecca, are you a first time speaker at DEF CON?
+>> ALEJANDRO CASERES: I am. But I presented earlier today.
+>> Oh, right, you were the guy with the thing. We're not here for you because we already
+shot you. However, we learned Rebecca, please come up, did anybody see Rebecca's talk? Come
+on. Clap: Rebecca did not do a shot. So we'll fix that right now. Rebecca is going to start
+a new tradition. She's going to take Tylenol with her shot. That's awesome.
+>> I had a shot last night. Didn't go over so well this morning.
+(laughter) >> ALEJANDRO CASERES: So ridiculous.
+>> This one is yours. (Off microphone)
+(laughter) >> No. Don't touch it.
+(laughter) >> You're not done yet. All right. Thank you.
+All right. Here is to Rebecca. (applause)
+>> Thank you. Now you can finish. >> ALEJANDRO CASERES: Thank you.
+>> Sorry to interrupt. >> And thanks for coming.
+(applause) >> ALEJANDRO CASERES: It's like the fourth
+shot I've had to do today because of this whole thing.
+>> And we're out of time. I'll give you another minute. We hazed you enough.
+>> ALEJANDRO CASERES: Thanks. I appreciate it. The spanking was worth at least another
+minute. Definitely enjoyed this whole thing. Short of it is, distributing computing is
+awesome. When you need to run extremely ‑‑ I'm freaking hammered at this point.
+(laughter) When you need to run massive attacks ‑‑
+>> More. >> ALEJANDRO CASERES: Can I do another one
+and take another minute? (applause)
+(Cheers) >> ALEJANDRO CASERES: This one is for you,
+I assume? >> Oh, yeah.
+(laughter) >> Considering I'm not going to have time
+to go home and shower before I get on an airplane, the person ‑‑ the people on both sides
+of me on the southwest flight will love me. >> ALEJANDRO CASERES: There's very little.
+We're out of liquor. Liquor? More booze. >> More booze.
+(applause) (Cheers)
+>> Not you again! >> ALEJANDRO CASERES: I'm actually mixing
+the vodka with the rum. (laughter)
+>> ALEJANDRO CASERES: That's disgusting. And I'm doing this for you.
+>> You're welcome. >> ALEJANDRO CASERES: All right. Cheers!
+(applause) >> ALEJANDRO CASERES: So distributed computing.
+(laughter) ‑‑ shit. All right. So where do you even go from here? What do I even do?
+Where am I? ‑‑ did somebody say drink again? So definitely enjoyed presenting the
+concept to you here. What exactly does this mean for you; right? Leveraging distributed
+computing from an offensive perspective let's you run really powerful massive attack scenarios,
+all using Open Source technologies, commodity hardware, shit you can say to your friends
+I need a bunch of hardware, give me your old shit and run it on there. Really, really cool
+stuff. Imagine pentesting massive targets with this. So something like pentesting an
+entire freaking country would be awesome. I really think the security implications of
+this are broad. If we can feasibly simulate a massive attack scenario we can better study
+it and better prepare for it and see what exactly that's going to mean for massive targets
+like an entire country. Follow me on Twitter. I'll answer all your
+questions. Anything, almost anything at all, definitely see more about us and check out
+some more details on the presentation at www.HyperionGray.com. I don't even know what last one says. Thanks
+to everybody. Thomas, who is the dude, when I say "we "write that, it's usually Thomas,
+if it's not Thomas, it's Mark right there. Thanks to Amanda, my girlfriend, SQL foundation,
+and Apache software. Thanks a lot. (applause)

@@ -1,0 +1,391 @@
+>>Please help me welcome to the
+stage Truman Kain [applause]
+>>Thank you. And I just go my uhh, hacker tracker
+notification, so thank you to
+the hacker tracker people as well. Had to subscribe to my own
+talk, I mean, come on. Uhm my
+name is Truman Kain I’m a-a- Pen tester at a- Tevora we’re
+located in Southern California,
+we are based in Southern California and I conduct a
+social engineering pen test
+there fishing, phishing physical a- so. We’re gonna get into the
+a- TLDR which is that Autopilot
+cameras are good for a lot more than driving. So are Teslas
+that’s the end of my fanboy
+rant. No its not. a- and the next slide is gonna be my
+referral code. No, [audience
+laughter] not. So the huge disclaimer on this is use your
+own risk everything I’m going to
+talk about is for educational purposes only. Of course check
+your local and state laws to
+make sure you’re not breaking any laws if you decide to check
+out this framework. Last year a-
+Psy and Agent X had a talk on a surveillance counter
+surveillance surveillance
+detection route that is somewhat of what inspired me to submit
+this talk I spoke with Psy after
+ahm..a-a around the closing ceremony last year about the
+potential possibility of using
+phones or something like that uhm to basically in real time a-
+do some kind of license plate
+detection or to aid in SDRs and it just didn’t really seem
+possible but a- with a- Tesla
+and Sentry mode is just kind of a natural fit and I’ll get into.
+Uh- why Tesla a- for this kind
+of framework. So why Tesla, there are three cameras built in
+and really there are eight in
+the newer vehicles potentially all of them uhm- but Tesla gives
+you access to three feeds. The
+front camera, the left basically what the left right mirrors see
+as well. So if you plug in a
+flash drive you’re able to get essentially all that video uh-
+so that’s uh- that built in you
+don’t have to mount any dash cams. Uhm- second is the
+detailed vehicle and owner API.
+Basically we can Ping roughly every second, we can do it more
+but you probably get- get-
+really limited or potentially blocked so I’m not really taking
+any chances with that but every
+second I can get vehicle location data, heading data, how
+fast I’m going, and so that’s
+really well you can even, you can even program it to honk at
+people if you want to. Uhm- but-
+I don’t want to make anyone angry. So using that data we are
+able to correlate with the video
+makes person uhm- interesting use cases. The other part is
+that its an electric vehicle,
+sentry mode is uh if you have it enabled means that the car is
+always on. Its not really gonna
+be using too much extra battery uhm- to keep that on. Uhm- so
+that’s awesome because with a
+gas vehicle you have to either keep the car running if that’s
+powering your devices or you
+have to have huge battery pack that you have to worry about
+switching out and charging that
+type of thing. Uhm- the next part is the in car web browser
+which makes it extremely easy to
+see these real time notifications if uhm- I a follow
+vehicle is detected. Uhm- of
+course that’s not completely necessary uh- but uh- it
+definitely helps. So again the
+basics of what surveillance detections scout is, the
+real-time license plate rec- uh
+recognition,f- face detection those are pretty self
+explanatory so I’m not gonna go
+on to those but on the next slide I’ll get into what real
+time it means in this context.
+Uhm- recon and pattern of life querying is essentially just
+rejecting or just u-using some
+operators on that data that’s found and of course this is uhm-
+open source and locally
+deployed. I was very tempted to use S3 or AWS service for this
+type of thing but I definitely
+decided that was a bad idea uhm- because I just feel like its
+going to end with people getting
+their uhm footage dumped basically. So, highly recommend
+running this locally and that’s
+why its not you know what natively integrated with s3. So,
+let’s get into what real-time
+is. Every minute Tesla is writing three mp4 files to this
+flash drive and so you have a
+san- and and they’re ro-roughly three megs each so every minute
+you have roughly ninety- ninety
+megs of video to search through as soon as those mp4s hit the
+flash drive which its not a
+flash drive we-were using like a computer type device to act as
+the flash drive in this case
+we’ll talk more about that in a second. But as soon as the
+device hit this disk, I know its
+not disk its solid state drive inference is gonna start uhm
+right before that we’re just
+pulling just the I frames to get us down from what is the uhm-
+thirty six frames per second on
+a normal uhm- video as soon as it's written to four frames per
+second and so we’re getting rid
+of a lot of those blurred frames that we’re not gon- most likely
+we’re not gonna get anything out
+of anyway uhm- in you settings you can adjust that so. It’s not
+gonna you know, it’s gonna take
+longer to run the inference but you’re going to have more
+accurate detections and and more
+detections so that’s all adjustable. But that’s what we
+might real time to find as soon
+as the you know files hit the disk we start running the
+inference and then it ends up
+being pretty fast if you opt for the higher quality hardware so.
+Then it just come down to uhm-
+to uh- cost uhm- savings persp- perspective. So let’s talk about
+some of the counter surveillance
+scenarios. If you’re parked you wanna know, you know, which cars
+or people uh- er- which cars or
+people are loitering near my house or my car uhm- you’re not
+really gonna see any faces while
+you’re driving, the cameras just aren’t on that level yet and I’m
+sure you could if you use third
+party dash cams and this sof- the software components of this
+could be modified to work with
+third part dash cams absolutely. But its just not gonna be as
+natural of a fit. Uhm- during
+your drive, things like how long has been the car behind me or
+have I seen that car before and
+the last one is one that I really want to highlight. Is the
+fact that this device isn’t
+going to take the place of an actual standard surveillance
+detection after someone is
+running and someone is still is gonna have to remain highly
+vigilant if they’re in a
+situation where they’re seriously ru- running a
+surveillance detection routes
+daily. Uhm- But the computer is not gonna forget for months,
+years or decades. And not to say
+that cars should be following you for year maybe I’m the only
+one I don’t know, but the
+computer is not gonna forget and that’s what makes it ahm- really
+helpful ahm- to look at it from
+a like a big data perspective. Later on we will look into that
+ah- in a demo. So some recon
+query scenarios this basically means so from a physical pen
+testing or red teaming
+perspective. You can essentially park outside of an office that
+you’re gonna run a physical pen
+test on. Leave it there- for a day later on ge-the and-and you
+can put them on hotspot there if
+you wanna build a you know- like a wifi some type of myfi thing
+to real time remotely access the
+data that’s there or you could just pick it up later and run
+these recon queries to see when
+the first person arrive in the moring, when the last person
+leave at night. You could scrape
+linked in for like a company that you would be running
+physical pentest on, get these
+photos load them into your database and then run facial
+recognition again for such
+photos. Ah so its somewhat scary but ah- definitely extremely
+powerful tool from a physical
+ah- and in just perspective as well. So the Web Stack is not
+super important ah because you
+could modify this however you want. Vue is just a framework
+that I prefer ahm- and then
+Mongo DB again because I wasn’t to put this on fire base ah- I
+just, I’m not, I just want to
+keep everything local, specially when I’m testing this with all
+my drive data. The computer
+Vision Stack I expected this might change a little bit but
+I’ll give you a little bit of a
+back story. I tried to initially build this out myself, I was
+like, ok, AI, computer vision
+I’m gonna train these model. So I just started labeling them
+left and right and probably
+spent close to 20 hours just going through gigs of ahm- video
+footages and just cutting out
+frames, dragging the little boxes of the license plates, I
+even rope in some of the interns
+which I appreciate you guys. Did not end up using it. I will,
+ahm- the off the shelf
+frameworks er- so there’s a L -eh- a -uh Github repo ahm with
+a name ALPR dash unconstrained
+that’s the one where I looked through a few and just right -a
+right out of the box it was able
+to classify ahm correctly half of the, the license plate images
+that I gave to it. So that was
+huge. And you can- you can, modify or fine tune this setup
+with those labeled images. So I
+will be making use of any manually labelled ahm- ahm- you
+know- training ah- images. But
+the short story, the short version is that, I’m not a some
+expert in AI, I took off the
+shelf tools that are freely available online and just
+knowing Nest or Ring Cameras
+that have facial recognition, there are faciu- facial
+recognition software and open
+source software out there is becoming a lot easier to use and
+I know there’s a license plate
+recognition software out there as well and just putting the
+two- two and two together. Let
+me get a drink of water. So, I’m- I’m using ahm YOLO V three
+which is based off Darknet to
+run the ahm- the license plate ahm- detection and then I’m
+using face net for the ahm
+facial recognition ahm- features. With the devices I’m
+gonna get to, next, I’m making
+use of tensor RT which is a way to use TensorFlow on these ehm-
+video devices so they run super
+fast. And again, this potentially will change, I’m
+just gonna be fine tuning
+testing if you submit a poor quest in its just better than we
+would implement. Here are the
+hardware options, now this ahm- one of the things that
+originally inspire this was
+github repo that was a, that’s a Tesla USB basically a-a- a guy
+took a pi zero W and- and- and
+uhm- modify or scribed it so that the Tesla, which treated as
+a flash drive ah and so when you
+pull then to your garage at home connects to the wifi you will be
+able to move that video over
+extremely slowly, so very happy to move off the Pi Zero W. But
+with the Pi four coming out, you
+could potentially run inference on this but really the top two
+options are going to be for if
+you just want to be capture all of the video by default Tesla is
+only gonna be able to, is only
+gonna give you saved events where you either have to
+manually save an event by
+clicking a button on the screen or when a sentry mode event
+would ahm- was detected.
+Basically when an enhanced car alarm would would go off that’s
+when you get an event. Quite a
+few false positives in there as well. Ahm- but, you’d use either
+of these top options if you want
+to save all of that video. So, the- the bottomline two options
+are the Jetson Nano which is its
+only under a hundred dollars its extremely affordable. That’s
+this one here, and the Jetson
+Xavier, which is this one here, are going to be ones you’re
+gonna wanna run ah, use if
+you’re running inference if you want to be notified in real time
+with the other two you’re just
+gonna upload that a- video or data to your computer, run
+inference on it later. So
+really, for all my testing I use the Jetson Xavier. Ah- as far as
+the benchmarks, the Xavier is
+gonna be almost double as fast now is definitely double the
+price but seven hundred dollars,
+I think is still affordable especially if. I just think its
+,I just think its, worth it. But
+a- you’re gonna get things, its not, its not really gonna be
+real time if you go with the
+Jetson Nano, so if you want real time you, you need to go with
+the Xavier. And again I expect
+these uhm- fps benchmarks to ah- to change as well. Alright let’s
+get to the demo. Okay, so ,
+here’s basically the recently detected dashboard. This is when
+you, what you, what you see
+first in. As you can see, a lot of plate detector this is a very
+small sample but a lot of plate
+are detected in them in a very short amount of time. And you
+can search by the car make or
+model which is pretty cool, but this isn’t really gonna help
+tell you if you’re being
+followed. You can’t really make use of the data in this way so.
+We can click to on all detected
+plates, those are fake license plates by the way, and click on
+detected plates and now we can
+start make better use of these plates and now we can start to
+make better use of the data, we
+can really study the data here uhm. At the top, you’ll see this
+link to friend, basically we are
+able to tag something as a benign finding. Uhm- if we
+notice like maybe, we, we’re
+looking at the video later maybe, we now think its a, its a
+coworking neighbor friend
+something like that. You know why is this high risk with only
+four detections down here. Well
+if you wanna see a ahm- a video of the real time, live, in car
+notification, there’s a wired
+article and or just youtube video that I’m just gonna post
+that will have a link to that
+video. So basically you’re able to set your settings on your
+notifications you’re able to set
+your thresholds do I want to be notified when a car is detected
+x number of times in x number of
+minutes do I want to be notified when the, vehicle, the same
+vehicle is detected over a
+number of days, ah- maybe within a geographical area and the
+outside of that geographical
+area. That’s what you ca- what you can do from a threshold
+perspective and that’s why this
+high risk rating is here when there where only four detections
+its because I had set something
+up to where if a car is seen, the same car is seen over four
+days ah- over four days like you
+know if its seen everyday over four days let me know,
+essentially. And it was. We’re
+gonna go on the next part here. So we can click in this range
+rover to figure out what the
+deal is, we, we know an alert was triggered and I wanna know
+why. You can turn on satellite
+mode if it makes it easier to see. Basically here we see in
+the search bar that we search
+this license plate, the place marker is gonna show the photos
+of the actual ah- detection took
+place. We can click into one and we can see at the time at this
+detection took place, the speed
+we we’re going the power usage of the car, what gear we’re in
+and we can click into play video
+if we want a- to a- be back on time to when is this actually
+incurred. On the bottom left you
+see the car driving by, that’s the front camera there in the
+middle, and we can fast forward
+a few seconds here. And now we can see in real time how fast we
+are going along with this video
+and with along with this ahm the place marker map data so out
+put. You were able to get it
+together in a really cool way ah- that’s makes it useful. Ahm-
+to, to examine. Now let’s see
+what’s next here, so we’re gonna get into the ahm- face
+detection. Essentially we know
+that this is a male late twenties is the same male, we’re
+able to click or unclick, we are
+able to train the model basically, you see the video of
+the detection. This is very
+similar with a Nest camera or Ring camera if you’re familiar
+with. Fill out the name of this
+person, save it. And now we can search for this person’s name
+and we see Truman has been
+detected. Snooping around my car. And that is essentially it
+for the demo. [applause] So
+what’s next. Remote live view again this is gonna come down to
+the whole real time thing I’m
+try- I’m working on a way to start running inferences on
+those frames as being written to
+them before if anyone want to help with that that would be
+awesome, that would be greatly
+appreciated but that would take you down. It will take you from
+zero to sixty seconds if you’re
+waiting to start the inference to rest soon as the the frame is
+written essentially. Third party
+dashcams are another, well its not much of a natural fit so its
+uh- its not gonna be uh- super
+high priority but I could definitely see why people want
+to make use of the software side
+of this. Gait recognition is something that I think is really
+cool and we just add just from
+it because its interesting. I would like to point that and ah-
+more objects to actually might
+have seen that little button of filter there which is for pets.
+I took aie- I took oh- google
+open images uh- data set and I made it only see license plates.
+So, so it will be faster. So I
+removed, thousands of different objects that already could have
+been detected there and I just
+thought it would be interesting when I was you know, starting
+with this project. Like what,
+just to see okay, cat, black cat, how many black cats has my
+car seen like you can do that
+with any object in any of these data sets, it’s just really
+interesting to me that you can
+make use of the data that way. And then your request here your
+submit or request your issue
+with if- if you think on a- on Github if you think something
+else should be added. I wish I
+can spend more time on the privacy implications of this
+haha but basically Teslas are
+out there there are a lot of cars that are starting to
+implement self driving ffe-
+features and uhm- almost all of them are making use of cameras I
+mean, essentially, the amount of
+cameras out on the road is just exponentially increase, very
+very quickly, uhm- private
+corporations and governments are gonna wanna make use of this
+data, insurance companies,
+everyone is gonna want this data uhm- market research firms, so
+if you think about breaches in
+the next few years, I, I feel like a lot of them are going to
+include these type of data.
+Because it I- I- think its gonna be extremely valuable. And a-
+that’s it. Thank you very much
+[applause] you can check out the link there if you want to see
+the code. Uh- the build
+materials is on there now, the code uhm- for all of this is
+gonna be added later today.
+Thank you very much, thanks. [applause]

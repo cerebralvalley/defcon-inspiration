@@ -1,0 +1,410 @@
+GOON 1>> This is what happens when the math
+on speaking doesn't really all add up. (inaudible)
+Goon 2: >>Hello Speaker:>>Yeah, I'm ready to do this. Let's
+do it. Speaker>> Should I stand up? Goon 2 >> Absolutely. (inaudible)
+(Crowd Laughs) Goon 3 >> All-right guy's, it's up to a vote, Pants on or off? (Crowd Cheers) (Crowd Cheers)
+Speaker>>: No, Fuck you guys. Do it. (Crowd Cheers) Goon 2 >>21, one for every year right.
+(Goon 2 Spanks Speaker with Paddle ) Speaker >> OWWWW
+(laughter) Goon 2. >> That's TWO. Alright, Alright Speaker>> For science....   (Goon 2 Spanks speaker, counting out loud.)   suck, I thought I would like it, I liked it
+for a little bit. (Counts to 21) >> All right science time!
+>> No spanking. No fucking around. We're going >> Anyone else?
+>> Oh, Lord. Science. So I'm a PHC student from Columbia University. And this is my research.
+My butt hurts. And this is terrible. Okay. So the name of my talk is Stepping P3wns:
+Adventures in Full Spectrum Embedded Exploitation. This is what I really want to talk to you
+guys about and here's why. And oh, by the way, the slides are not on the DVD. It's on
+our website and it's like a hundred megs. Because Unicorns are magical creatures and cannot be compressed, at all. So, sorry about that. This is what I typically do. We say, hey,
+look, we find this bright shiny thing we want to play with and be it a router, a car, or
+a phone or a printer, whatever it is. We talk about our motivation for wanting to do this
+sort of thing. (laughter)
+Then we spend a lot of time figuring out all the different ways ‑‑ ouch ‑‑ for
+owning these devices. We fail and we fail. Finally we succeed. We find one vulnerability,
+build that one exploit that works and we're excited and we spend some time during the
+presentation talking about it. And then comes the bad news. The bad news is this thing is
+everywhere. This fix is hard. It runs our lives and it can have very big impact that's
+terrible for the world. Then we feel bad for saying that. So we say well, it's okay, actually.
+We have this thing called duct tape. So we'll duct tape this thing by unplugging it from
+the network or let's not use it in the way it's intended to and hopefully your house
+won't fall down tomorrow. Then, you know me, I usually have pictures
+of cats and things I find on Google image search at four o'clock in the morning for
+harmless copyright infringement. During the last two minutes of the talk, right, we always
+have the slide that says wouldn't it be great if we had a real solution, a solution that's
+not just duct tape, that actually fixes the problems, the reasons why we have the problem
+that we presented on. Then we say, okay, good‑bye, have a nice day and we do it all over again.
+The real solution is never really presented. We worked hard to make this talk different.
+I'll spend about 47 percent of the talk on the offensive side. You will see malware propagation,
+malware on embedded device that propagate from one type of device from another, like
+a printer from a phone, to phone to router, and full mesh, etc., configuration. And then
+we'll spend a lot of this time, as much time as I can, on the defensive that we are commercializing
+Red Balloon. It's called Software Symbiote. You're about to see it on stage in your typical
+modern office. We'll spend some time showing you pictures of unicorns and other things
+I find on Google search. Human cast, this is my PHC and we haven't
+seen him since Black Hat. Michael Costello, designer by day and scientist by night. This
+is Jonathan who is also research, and here is me, getting spanked on stage and such.
+Special guest appearance by Mikey Droptables, who is the mayor of P3wnTown, in New Jersey.
+We have a lot of gear in front of you. We have the cache of machines. You may or may
+not see them on your desk, but we all use it in our modern offices. So we have the 2821
+Cisco router. This is probably something you'll find in the closet somewhere. You'll have
+one of my favorite printers, the HP 2055 LaserJet and the Cisco phone, 7961.
+Today we'll see you a O‑day that we'll drop at Black Hat and show you today. It's called
+the Cisco 8961. So this is the bright new shiny, sexy new Cisco phone almost twice as
+expensive, but really nice. It also has an O‑day that's fun to talk about.
+We'll show you something on the 1841 Cisco router and we'll talk very briefly about the
+work we have been doing on the Avaya IP phone as well.
+This is an image we know. You have your big bad Internet. You have the firewall. Inside
+you have the Internet where you're supersafe. And P3wnTown is on the right side of Internet
+with Mikey Drop Table lives. He doesn't know anything about your Internet. To him this
+is a mystery, because you can't really send any packets to do reconnaissance from the
+firewall from the outside in. This is how we set things up. But you can make an educated
+guess that you probably have a printer somewhere in your organization.
+So this is what he does. Very clever. He's going to make a fantastically impressive resumé.
+Someone in your organization will be so compelled by the resumé that they'll print this out.
+This is a vulnerability that we talked about a year and a half ago, which has since been
+patched by the vendor, where a print job can change the entire firmware on the printer
+itself. It's because you can pack firmware update files in the print job and the printer
+will interpret the firmware update and flash its firmware.
+Okay. So that's been talked about. That vulnerability has been patched in theory. But once you get
+onto the printer, now he has a physical stepping point into your Internet from the outside.
+What he does is he will then ‑‑ oh, so why am I talking about this vulnerability?
+It's been fixed. We talked about the chaos two years ago. But it turns out we scanned
+IPv4 looking for publicly accessible vulnerable LaserJet printers on the Internet. After 14
+months after the initial security patch was released by the vendor, and I think they released
+something like three dozen patches for every single LaserJet model they made, we found
+that only seven and a half percent of the Internet has been patched against this vulnerability.
+So if you find a O‑day on something like Firefox or Chrome, you have maybe a week window
+where that vulnerability is useful. On the embedded side this is absolutely not the case.
+We don't have the same update infrastructure that we do on general purpose computers. So
+the vulnerability I found on this LaserJet printer a year and a half ago will still be
+something that your organization will probably be vulnerable to today. That's just because
+people don't patch the firmware on their printers. It's difficult, cumbersome, and nobody likes
+to do it. So with this vulnerability what he'll do is
+we'll create a reverse IP tunnel out the firewall so he can get control through this tunnel
+from outside from P3wnTown into the Internet. From there he'll send a couple of commands
+to do reconnaissance on the network to find other devices there are and seeing the exploits
+he has on those embedded devices. We'll show how you can propagate through the network,
+without ever touching a general purpose computer where you have host‑based defense of any
+kind. All right. So we've done a few of these. We
+looked at the printer. We looked at the router. We looked at the various phones. It turns
+out if you just sit down with an embedded device, if you focus on the one thing, finding
+vulnerabilities isn't all that difficult. I have to put that in air quotes. It's not
+easy, but you have the physical device, you have all the time in the world. You can take
+it apart. You can figure out how it works. So the idea was, and this is the page I put
+in the first page of candidacy at Columbia. It's certainly coming. We have the offensive
+capability to exploit. The next logical progression would be to take one device and own another
+one. It turns out it isn't just trivial. There's some challenges that have to be solved to
+really work in the real world. My goal is to own the router and from there
+put malicious implants in every single one of these devices, embedded devices on the
+network. There are certainly some challenges. In order to get this to work, we'll talk about
+that. Here is the reason why: If you look at the
+cache of machines, we have Cisco, HP, and Avaya, different proprietary devices. You'll
+not get the source code for any of this stuff. The hardware is all specialized, on top of
+that, the architecture, MIPS, all sorts of ISA's. And after that, we have different operating
+systems. We have modified Linux, iOS, full of mystery, and CNU, kind of like Linux, but
+not really. Complete mysteries. Did you see this thing even have a kernel. Completely
+unknown. We'll show you solutions to these challenges
+that we found for the offensive side. But we're really ‑‑ when you solve the offensive
+problem, you're solving the dual defensive problem. We're taking the inside. We're building
+from the Software Symbiote to do an offensive demo. We're using the same type of technology
+for offense and defense. So the very first challenge here is a generalized
+way of modifying binaries. Once you have a device, how do I get it to run? It's not like
+I can install .exe on a router. I installed FRAK from a reverse analysis console that
+we presented here last year. I definitely recommend you check that out. We've been building
+on top of it, and it seems to have worked quite well. So that challenge is more or less
+solved for us. The next part gets a little tricky, and here
+is the generalized execution problem. So once you have modification, you can put whatever
+binary in whatever devices. What do you want to execute? By "execute" I don't mean single
+instructions, but I want to run payload equivalent payload on environments that are vastly different,
+like Linux, VH works, and have it do exactly the same thing without a full understanding
+of the operating system at all. Right? I'll show you ways of doing that.
+Once you solve that, there is the even trickier problem of getting input and output to these
+targets, so you have OS and hardware agnostic payload of some sort. How do you communicate
+to it? How do I send traffic and receive traffic from this device without understanding how
+the network subsystem works? Typically you figure out I'll hook this specific
+call and that's the way that I can see all the traffic that are coming in. But in the
+operating systems that you really don't understand, this is very difficult. So let's talk about
+generalized execution first. Forget about everything you've ever learned about any operating
+system. That's why we have this black box down here.
+This is XYZ computer. You know that the memory is roughly organized in this way. You have
+some code, and then you have some data, dynamic data. Somewhere in that dynamic data region
+you have what's generally referred to as iOmem. The firmware is really bloated. It's got a
+whole bunch of code not necessary for the operation of that device. By that I mean debug
+strings, IPv6 if you're not using it, syslog and a lot of dead code and whatnot.
+In fact, Mike and I looked at Cisco iOS, and it turns out if we wanted to repel BGP and
+AGP server, it looked like we were able to take out 40 percent of the iOS binary and
+have the router come up and be fully functional if you didn't want to use the web server or
+BGP. A lot of room to play with. There are points inside the code that we know
+will be executed at a high frequency with high confidence; right? Regardless of the
+operating system. Here is a real good example. Every time the e‑wrap instruction is called.
+If we just mapped out all the e‑wrap instructions and hooked that, we'll be in control of the
+CPU. A bunch of other places, popular functions, mem copy, etc.
+So put these two things together. We replace the dead code that's not necessary for the
+operation of the device, whatever it is. We replace it with our own payload. This payload
+is capable of restoring state between itself and host program. So think about this as a
+binary scheduler. We use some other dead code for dynamic memory
+region, stack, heap, scratch area, and the last thing we do is we hook a whole bunch
+of intercept points to guarantee that our payload is perfectly invoked. Then that's
+really the solution to the generalized execution problem. You can compile the code for a specific
+architecture and inject it into the environment regardless of the operating system that you're
+working inside. Now, how do we solve the input and output
+problem? And I'm gonna say that we can actually take the solution from the generalized execution
+part of this and at least solve the generalized input problem. The output is still a little
+bit more difficult. This is what we do. The payload in this case
+we choose to run is the packet scrubber. We're doing an Easter hunt, essentially. Linear
+scan through the memory of the device regardless of what the operating system is. We'll hook
+a whole bunch of points that's gonna guarantee that the packet scrubber will be hit periodically
+all the time. And as the device received network traffic, packets are going to be copied into
+iO memory. In that region we'll detect known patterns that we define ahead of time that
+we'll call command and control patterns. As the device operates, we pick out the patterns
+in memory and then we service them accordingly to our command and control scheme. And how
+do we get these patterns inside the iOmem range? It turns out it's really easy. Even
+if you send a malformed packet of some sort, as long as the device doesn't have the lost
+hardware acceleration, the entire packet is copied into the memory range and the processor
+will analyze it and decide whether to discard it, quote/unquote, or copy it. As long as
+it's copied into iOmem, our packet scrubber will find it. We send the command and control
+into an IMP message or through the content of a JPG picture, as long as that is copied
+into iOmem, our packet scrubber will identify it.
+So take a step back and think, is it specific for ARM? It will work for MIPS, whatever architecture.
+Now, is this something that will only work for VX works? No, it will work for Linux,
+iOS, big iOS, little iOS, the Linux kernel inside a program. This is hardware agnostic.
+For completeness this is the command control and the command and control acknowledgment
+packet that we define for this demo. You have an envelope predesigned, in this case I have
+ACSC, my initials, followed by some metadata. At the end we have magic pattern so we can
+validate that it doesn't understand about how iO memory is manipulated, command arguments
+and various payloads, how both the offensive and defense demo work.
+As these packets are hit, we identify it. We service the command and control, and that's
+how it all works. We have it working on MIPS. We found about Barnaby Jack a few days before
+the presentation. We wanted to do something as attribute to him. We've actually implemented
+the Barnaby function. It takes embedded device input and puts his face into the working memory
+of those devices. (applause)
+We're not done. We made a modified Barnaby prime that does the same thing but in a permanent
+way. To show not only can we do this through command and control, we can affect real permanent
+construction through our command and control. Here is Barnaby Jack's face right past the
+loader, physical destruction F prime. Now I want to talk a little bit how our demo
+will go. Owns the printer through this reverse IP tunnel, through this resumé, establishes
+the reverse IP tunnel, sends command and control down to the printer to do recon. We'll do
+a whole bunch of fingerprinting to find out the devices you're actually looking at. Once
+we have, we figure out whether this is a Cisco router or an RP printer or Cisco phone, etc.
+Using what we find there, we'll start dropping exploits onto these things and putting our
+malicious implants that will give us the same command and control capability on all of these
+devices. Before we jump into the demo, I really have
+to say I'm not allowed to say what we have done with Avaya, but the JTAGulator, the superawesome
+sauce. This is the coolest piece of hardware I've seen in a while. If you see Joe, get
+him a latte or something, buy ten of his boards. This is really cool. His board made our work
+really possible. So big thanks to Joe Grant. Now, without further ado, Michael will start
+running the offensive demo. >> MICHAEL COSTELLO: All right. I just wanted
+to say I really love this community. It's one o'clock, 1:30 now on a Sunday afternoon,
+the last day of the conference and the room is packed. I mean, this is great. You should
+all give yourself a round of applause. Please. (applause)
+And there is going to be a little bit of audience participation here. So when that happens,
+please everybody just shout out the obvious answer.
+>> ANG CUI: So we're going to P3wnTown. >> MICHAEL COSTELLO: Everything we're doing
+here on stage right is P3wnTown. So this is where we'll put our offensive payloads and
+then after that's done we'll come to stage left over here and do defense. So I'll bring
+up my server. We've already ‑‑ we've already sent our resumé to the printer. It
+has been rebooted and it's going to build. It's reverse tunnel connection out through
+the firewall out to where Mikey Droptables is living. We bring up our counsel sole. All
+right we see that we have the printer in here. And so everything that we'll be doing here
+and all we see at the beginning, but every command that we're doing or almost every command
+that we're doing is we're sending commands through the command control tunnel to the
+printer to have the printer instructed to do different things.
+So what might be the first thing we want to do? So we've got our printer. We know about
+this on the network. But we want to find ‑‑ we can to do reconnaissance on the rest of
+the network. So we'll do a scan on the printer on port 23. And we're instructing the printer
+through the tunnel to do a syn scan. We spoofed the and they're packets are coming back to
+us. We seat number of devices on the network. We see a number of IP devices. I apologize
+for the formatting, for the screen size, but another thing that you'll notice is that the
+printer now has a fingerprint. This is a memory fingerprint.
+So when our rootkit is on there, we can check some memory and then use this fingerprint
+as a key into a database that we have precomputed offline a number of information on these devices.
+Here we notice an HP LaserJet 2055 DN running from March of 2010. And this might be another
+good time or this might be a good time to note that this work that we're doing on the
+printer is nothing new. This is not a new exploit. This was presented at 28C3, Print
+Me If You Dare. There was an NDSS 2013 modifications attack paper. Read that and watch that. We
+were making the printer do a lot more things during this presentation.
+So now the next thing that we want to do now that we have an idea of some devices on the
+network, is that we want to find out a little bit more information. We want ‑‑ we have
+some Layer 3 information. We want to get some Layer 2 information because that will help
+us in the next stage of our attack. So we'll ask the printer to give us a IP to Mac address
+mapping of these various devices. Looking at the first six bytes of the Mac address
+OUI, we can see who the vendors are. We have an HP, a couple of Ciscos on here.
+We also have one target on here, recon 4, which is the Cisco. For the purposes of the
+demo, we know this is an IP phone. So we're going to rename recon 4 to Phone 2. What we'll
+do is we'll try to SSH into this phone. We're going to try ‑‑ because we know that
+the phone is going to be running SSH. We're not going to try to log into the phone by
+guessing a user name and password. We'll take advantage of a feature on these
+phones is that every single time you attempt to SSH into them; they ask their preconfigured
+TFTP signature for an authorized key file. What we'll do, though, is instruct the printer
+to ARP‑spoof the phone, making it think it's a device we control on the network is
+in fact the TFTP server. That's going to be the printer. So one of the things that the
+printer does in addition as part of the packet scrubber looking for these magic patterns
+of command and control packets, it looks for TFTP‑authorized keys request files. It has
+in memory a nicely formed one packet TFTP file. It has to populate a couple of fields.
+>> ANG CUI: Which key are we going to use? >> MICHAEL COSTELLO: A key we built ourselves.
+>> ANG CUI: So we would be able to authenticate. That's nice.
+>> MICHAEL COSTELLO: Uh‑huh. So we're going to poison Phone 2 with the IP address of the
+TFTP server that we learned through reconnaissance. First before that I need to bring up a proxy.
+The proxy already connected. Very good. And we're going to ‑‑ so we'll ARP poison
+it and do it again for good measure. >> ANG CUI: Mike is going to SSH through the
+local host in P3wnTown right through the proxy, through the printer, to the phone, and spoof
+the authorized key file as it's being requested and then get console access to the phone from
+the Internet through the printer. >> MICHAEL COSTELLO: If this works, we should
+get a shell log‑in prompt and not an SSH prompt.
+(applause) >> ANG CUI: You typed in a supersecret password.
+How do you know? >> MICHAEL COSTELLO: Cisco documentation informs.
+(laughter) >> ANG CUI: Can you not just change that password?
+>> MICHAEL COSTELLO: No, if you change it, the phone resets itself.
+>> ANG CUI: And the password comes back to the way it was before?
+>> MICHAEL COSTELLO: Yes. >> ANG CUI: That sucks.
+(laughter) >> MICHAEL COSTELLO: Okay. So we find out
+it's a Cisco 8961. It's running 921 software. This is not ‑‑ this is recent, not the
+latest software on it. There has been a release or there will be forthcoming a release that
+kind of puts epoxy on some of the holes, but here we notice this is a phone. A general
+purpose computer, disguised to look like a phone that's running a Linux kernel.
+We'll cut right to the point. After looking at how the phone boots up that it uses NAN
+devices. One of the things that we noticed, and this is just one of the devices, does
+anybody see a problem with the permissions on this device?
+(laughter) >> ANG CUI: There you go. Question this before,
+talk about NAN vulnerability. We could have done this in a lot more elegant way. He didn't
+send the slides and we did it in the most monkey way possible.
+>> MICHAEL COSTELLO: What we could do is if it has world right nonprivileged user, we
+could write to this device? In theory, we don't have any tools to do that. We'll have
+to download it. That will be a lot. How are we going to do to do this? Actually, it's
+really convenient that Cisco had already packed for us a number of Flash utility, so we could
+erase the device. >> ANG CUI: No way. The tools to do it that
+allows us to do it. >> MICHAEL COSTELLO: Flash erase info, but
+also a number of mantles that we can ‑‑ >> ANG CUI: That's really useful. This file
+system will be megs and megs large. How will we ship it to the phone? Sounds all very complicated.
+>> MICHAEL COSTELLO: You can do all of this stuff offline. And you could pack one file
+in a very small file system, fit into one 4 K block and using TFPT.
+>> ANG CUI: This is also on the phone. All the tools are there. So there is the O‑day.
+When I found it, this was a little disappointing, almost, because we've gone from the CNU kernel,
+which is proprietary thing, to a much more secure environment, the Linux with all the
+security patches backdated to the thing, yet only this phone has become somehow easier.
+So something is wrong here. It's just human error, really.
+>> MICHAEL COSTELLO: So what we might want to ‑‑ what somebody would want to pack
+into one of these files, a little root popping, a root popping program, so if we look at who
+I am now, I'm default. But 
+I really don't type this slow. Everything is going over this proxy. We're root. Tada!
+>> ANG CUI: That's all it took. We didn't have to compile anything, log into the phone,
+look around and build this 4 K file system and there you go. You have it. Now we'll switch
+over to our command control demo. For good looks, we promised that this is gonna be a
+command and control infrastructure. Going from a Linux phone to compromising the printer
+becomes all of a sudden very simple. Now we'll load up all the devices we have
+in command and control implant on. For good measures we'll add two other devices. The
+Cisco 2821 router and Cisco 1841 router to show it will work on phones, printers, and
+all sorts of routers. >> MICHAEL COSTELLO: We'll see if our rootkit
+is listening. >> ANG CUI: Of course, we're also doing this
+through the printer tunnel. >> MICHAEL COSTELLO: Everything responds and
+says we're here, again, with the memory fingerprints that we're able to take, we can look up a
+bunch of info on these things precomputed offline. So for instance, let's instead look
+at the 2821. We see that we know that it's running MIPS 4 NDN. We can find the addresses
+of various functions. Here we've decided to redact to the fact.
+>> ANG CUI: We've got lawyer p3wned and we couldn't show you the actual offsets, but
+they're there in our database. Sorry. Let's rock out the Barnaby function.
+>> MICHAEL COSTELLO: Before running the Barnaby function, in case anybody doesn't know typical
+Cisco router behavior, if you type in "enable" and you type in the password wrong three times,
+this is bad secrets, you're just a regular privileged user, if you do a show version,
+you just get to see what the router is running. If we run the Barnaby function, this is doing
+a number of writes to memory. Let's do it on the 1841 as well. If we do enable bad secrets
+but notice that the prompt has changed. >> ANG CUI: Oh, wow. How is that supposed
+to happen? (applause) that's not all. So we'll do the
+show version. >> MICHAEL COSTELLO: Yeah. If we do the show
+version. >> ANG CUI: Oh, look at that.
+>> MICHAEL COSTELLO: We've got Barnaby's face now.
+(applause) It's in the 1841 as well.
+>> ANG CUI: Right. This is because the command control works the same way on different architect
+users, different operating systems. We're given an arbitrary memory write command and
+we're writing it to the specific location. And the reason why we know the specific location
+of the string is because we have precomputed this assembly of the specific iO version that
+we found that we know this is running through the fingerprint that we have exfiltrated through
+the heartbeat. We can do this from all the other devices that we have under CNC.
+>> MICHAEL COSTELLO: Let's move on. >> ANG CUI: So let's do the defense demo.
+We're running a little bit short on time. As promised, I'll spend as much time as I
+can on the defensive side. Population P3wnTown without six. Another fun fact, the HP printer
+is really quite a capable piece of device. This thing can send about 15,000 packets per
+second. You can send terrible things and yack, yack, yack, all day long. It turns out if
+you want to DOS a 2821 router using a single printer, you can. You can peg it. That's one
+printer; imagine what I could do with two printers. We'll show you that if we have some
+time. Now I want to show you the defense determine.
+This is what I've been spending the last five years of my career developing. It's Software
+Symbiote. It's used to develop dynamic firmware integrity and arbitrary legacy devices, on
+ARP, Cisco phones, routers, and on HP printers. This is really not something that ‑‑
+oh, and we require absolutely no vendor intelligent property. We take the binary that comes from
+the vendor, no source code, no hardware modification. This is not a timing‑based attestation method.
+This is not proof carrying code in any way or inline monitoring. This is something very
+new and very flexible. You will see a demo of this thing working right now on exactly
+the same hardware that you saw the offensive demo on. We'll get out of P3wnTown and go
+somewhere else. Then as Mike is setting up, we'll run through
+the first phone exploit that does kernel memory modification and we'll bring up the Symbiote
+alerting console to show us dynamic updates to the checksums of the static region. Any
+piece of code that's modified within static code of these devices will be detected in
+approximately a hundred milliseconds, depending on the speed of the CPU. The routers will
+have a hundredth of a millisecond or so. The phone will have a much faster CPU, so we can
+detect it much, much faster. >> MICHAEL COSTELLO: We got in here. We added
+our routers in again. I apologize for the formatting. Again we have the phone, the router.
+There is a printer at the bottom. We'll try to add that in individually at the end. But
+for right now we'll show you the phone and the routers. So these are routers that are
+running or Symbiote code, this is all work that's been funded by DARPA the DHS, all these
+things are packed together with a utility we built called FRAK funded by CFT, thank
+you very much if you're in the audience or wherever you are.
+>> ANG CUI: All right. >> MICHAEL COSTELLO: So what we'll do is we're
+going to go through exploits that we've demonstrated before, shown before. There's not much new
+here. The first one ‑‑ but what is new here is the Symbiote defending all this stuff.
+The first thing we'll try it on is the Cisco IP phone. We'll SSH into this thing. So the
+exploit that we'll be showing here is the same one that we showed 29 C 3 hacking Cisco
+phone. So if you want the details on that, please watch that video. You can find it on
+YouTube. >> Don't walk in front of the speaker.
+>> MICHAEL COSTELLO: And then the way that this demo works is that we have a file called
+p3wned in. It's the way we set response and we get access. The Cisco phone, we have one
+checksum is secure. But after we go through the phone, we run p3wn bin. We can then log
+into the phone. Please watch the video to seat details. We see the Symbiote detected
+the change we made. >> ANG CUI: And the checksum is changed. You
+can see the alarms coming periodically. We actually had to slow down the alarms coming
+from the phone, otherwise it would flood the screen. The alarms can come faster but for
+the sake of the demonstration we had to slow down the refresh rate a little bit.
+>> MICHAEL COSTELLO: Here we're just going to show the 2821 router because of the screen
+fore math. We're not going to be demonstrating that today. We made a small show to the show
+CDP neighbor command, in addition to showing our CDP neighbors, it makes the memory modification
+change that was part of the Barnaby function to bypass the authentication. If we run that
+here, we could see that the router 2821 checksum is changed and it's states p3wned as well.
+Let me see if I can bring up the printer quickly. >> ANG CUI: Do the 2821.
+>> MICHAEL COSTELLO: It's off the screen and can't see.
+>> ANG CUI: What you're looking at functionally equivalent devices, but these are very unique
+devices in the sense that the phone and the printer and the routers you've seen are literally
+the only ones of their kind in the universe that actually has host‑based defense in
+real‑time as the device is running that would allow you to have alert to tell you
+whether the phone, the printer, the router, has been exploited with approximately a hundred
+millisecond legacy. This is something that's never happened before. You folks are ‑‑
+well, the very first people to actually see something like this. This is not something
+we developed specifically for a specific model of Cisco or a phone or a printer. This is
+generic technology that can be injected into legacy‑embedded devices without requiring
+any source code, any hardware modification. This is something that you can see in a car.
+You are speaking in a control that controls predator drone or the Mars recovery, the same
+operating system as the printer. >> MICHAEL COSTELLO: Okay. So here with the
+printer that has a very small proof of concept Symbiote running into it, we can use our command
+control rootkit that we had demonstrated earlier. If we write an image of Hello Kitty into it,
+the state should change. Sorry. There. So we made a change in memory to Symbiote to
+pick up on the checksum change. >> ANG CUI: Tada!
+(applause) >> ANG CUI: We accepted host‑based defense
+on desktop servers for a very long time now. We haven't really started thinking about ways
+of seriously defending embedded systems against this type of attack. So you've seen in the
+last few years that exploitation of these devices no longer a myth. It's no longer that
+hard that people aren't looking at it. Now, hopefully you saw here that the polyspecies
+propagation is also not a myth. You saw it live on stage. You saw a printer own a phone
+and malicious implants on routers, etc. so I think this is the real‑time that we need
+think of ways to getting this out, host‑based defense on the defenses that we use every
+single day in our offices, right, in our defensive networks, etc. So we have a few more minutes.
+I'm going to take Q&A in the pool. So we'll have some time for that. Before can we run
+the DDOS? Who wants to see a printer peg a 2821 router?
+(applause) Let's do it. This is a lot of fun. So right
+now Mike is going to send the service attack command to the printer. What the printer will
+do is send as quickly as it can, a when the router sees that, it doesn't know what to
+do, and it gets all scared and the CPU goes all very high and bad things happen; right?
+>> ANG CUI: Tada! That's not good. You shouldn't have your router running at 98% CPU utilization.
+This is happening from a single printer. Imagine a printer and a phone. We show that next year.
+(laughter) That's our presentation. If you want to know
+more about Software Symbiote or our presentation, check out Red Balloon Security. We have all
+the academic papers that discuss exactly how this works, the performance constraints, the
+security promises and limitations of our technology and some demo videos, and of course the slide.
+I don't know if I have time to take questions. But Q&A area in the pool.
+(applause) >> MICHAEL COSTELLO: Probably it will be about
+30 minutes. We'll pack up and go to the pool. Thank you very much.

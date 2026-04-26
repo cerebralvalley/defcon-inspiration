@@ -1,0 +1,449 @@
+Thank you all for coming. So
+shall we begin? Of course a legal disclaimer. Use words and
+representation and not my previous current or future
+employer saying I have creative ideas and that should not
+reflect upon others and other ideals. Once again you guys are
+Awesome, scooching down and making room for everyone here.
+Thank you. I have this personal rule for myself where there are
+more than 10 people who show up, I am ecstatic. So I am overly
+ecstatic and joyful and I'm going to celebrate after this
+talk. So what we're covering today is Backdooring Git. We'll
+talk to how to backdoor it. How to prevent backdoor for the
+white hats, black hats. Here are a few techniques that did work
+or did not work based on the perspective. We're not going to
+cover the entire SDLC or how to distribute and create beautiful
+eloquent code with integrity and security. I don't care how you
+guys publish it or build it into your chains of integrity.
+Nah...it's more of how does this code get into the repository and
+how does it leave it. I'm not going to be talking about the
+myriad of source managements tools that are out there, I.E.,
+SM and they're still out thereto from the dawn of computeers to
+new tools to scratch a developer's itch. Some
+proprietary certainly and many open source. Another thing we
+should clarify in the beginning is what a backdoor versus
+functionality. So for instance here we have an open DSD
+political ship storm that happened a long time ago where
+this person alleges, you know, hey my NDA with the F.B.I. came
+up. I just wanted to let you know the F.B.I. and other
+entities paid for us to introduce backdoors into some
+functionality for site-to-site and this was an allocation. By
+the way you should check these entities who committed all these
+changes and verified that they didn't introduce anything. So
+some people might view this as a bookdoor. Others might view it
+as where it says implemented or functionality. So I'm not going
+to get into that debate. Let's just all agree back doors are
+evil. People can still write horrible, ugly error-prone code
+and that's not good either. Now, hopefully there are none of us
+in the audience here who think, yeah, I don't need source code
+management. Just me, myself, some DIFs, pass around to
+friends. That's the case. This talk is probably not for you. In
+fact, you'll probably get pretty bored. But kind of set the
+stage, let's start at the beginning. Unfortunately I'm not
+going to be able to help you pick which SEM tool you should
+use, maybe Tom Cruise might be able to tell you but I'm not
+going to tell you which one is done better. I'm not going to
+harp and allow those...but there certainly is something called
+revision control. There's something called source code
+change management and they are very different from each other.
+You want to think so like imagine if you were to have a
+large amount of documents and you wanted to say hey I have a
+new pin test report to implement the version and use Git or some
+source control software, it will break horribly or vice versa you
+will go through a lot of pain and suffering. Or if you want to
+use binary files, a lot of the algorithms and techniques, they
+don't appreciate these tools. Imaging or anything like that or
+movies or ex{TRAEPL}ly large object -- extremely large ons,
+they'll just choke and die. As I like to say to myself, with
+{TKWOERP}s pick up a hammer, you know, everything is a nail.
+Well, here we see Jeremy Clarkson with that same
+mentality of hey I have this cool, nifty little tool that
+demines fields, let me use it to take down a house. Not only for
+inter{TAEUB}ment, but, you know, that looks like a nail.
+(videotape) >> Special fun little feature called the remote
+which later on he goes in there and hilarity ensues but the
+proper method for taking down a house might be explosives such
+as what we see here. So once again really find the tool in
+the SEM that really works for your work flows and processes
+and think about it you have two fundamental gaps. You either
+have the traditional model where there's...everyone interacts
+with and not with each other. And you have more of the
+distributive model where everyone can interact with each
+other and there is no authoritative source between
+each other. And we look over the history of SCM tools say Google
+trends, tell me what's popular, what's not, what we see is Git
+since 2007 just rising far and above and beyond and SCM peaks
+just kinds of dribbles down and sort of stays low and it just
+dies slowly. But it's interesting because Git seems to
+be the hot, cool new thing. I hear about it all the time. What
+about Git and since we're here to talk about Git, let me
+transition into there. So the problem that I had from the very
+get-go is what is Git? Well, it came down to two fundamental
+moods. If you're happy with Git, it's called the global
+information tracker. But Git does break or the processes may
+break or may just destroy your tree and in case that happens
+you think it's a truckload of Shit. And I mean people are
+ignoring the security consequences, think about the
+functionality, hey, you can't use your rePoe. All of your
+magic cancer cure, the recipe that's in there. It's broken,
+you can't access it. So imagine, it's very popular internet about
+I, think about how Hitler feels when Git breaks on him.
+(videotape) ( LAUGHTER ) >> So imagine if you're that... (
+LAUGHTER ) >> So imagine if you're that mad, it's
+functionally broken, wait until someone hatch your repository or
+is able to introduce unauthorized code. I don't want
+to imagine how people would react to that. So the
+interesting part about Git, it's not your traditional system.
+It's very distributed in nature. People can work with each other.
+You don't have to continue to have access to the source of
+truth. I can work with say Chang Ki and Chang Ki can work with
+Aliceson Bob and it's a very powerful technology that allows
+processes can be warped around it instead of always have access
+to say the main repository and oh, I can't do any work unless
+I'm online it's a pretty nifty thing but the interesting thing
+about the distributive nature is that there is this ring of trust
+where now you're forced to trust someone and the decisions that
+they will make. Not the decisions of the people that
+they trust will make and transitly goes down but the
+interesting part of it to quote, if you have ever done any
+security work and it does not involve the concept of network
+of trust, it was not security work. It was Shit. I don't know
+what you were doing. But trust me, it is the only way you can
+do security. It's the only way you can do development. This is
+only one perspective, but it's a rather influential perspective.
+So can anyone here tell me who said this? And to help entice
+you guys, here is a party invite badge for the D.C. 503 party.
+Who said that back there? Come on down. Yeah, so Lenis Torvalt
+said that. He has some pretty choice quotes, how do I say,
+blunt. Because the interesting part is you fundamentally end up
+with this graph of trust where you're at the center of it and
+then you have all these people trust each other. Some people
+trust others. You end up with this ugly graph so you end up
+seeing this code from someone and you're like what? Where did
+this come in? Like I don't get it, should I trust them? And
+we'll get into a little bit of that later. Very important to
+understand this because you end up with another interesting
+choice quote where since you don't want everybody to write to
+the central repository, because most people are morons, you
+create a class of people who are ostensibly not morons and most
+of the time when that happens is that you unfortunately make
+these nonmoronic people too small because it's really hard
+to know if a person is smarter or not and even if you make it
+too small, you will have problems. Admit access issues of
+who is allowed to push to the source of truth or who has
+authority at any one time. Go ahead and ignore it, separation
+of privileges, things like that just give everyone commit
+access. It's a huge psychological barrier where no
+one trusts me or also cause endless hours of politics and
+especially in the open source community. So can anyone, once
+again, tell me who said this for yet another -- yes. Correct.
+Lenis Torbolt. One of the thought leaders behind Git
+itself and some interesting design decisions within Git,
+we'll see which benefits security as well and the morons
+and the -- the interesting part is when you end up typically
+using Git repository in a more mature fashion you'll end up
+with this blessed source of truth that everyone can pull
+from, developers, and others but they're only able to push to
+their Dev leads or whoever else will go through checks and
+balances code reviews, they'll just quick look at a code review
+two seconds and then might push it to the dictator or some other
+higher authoritative source where yes, everything looks fine
+or push it back into main line. So go ahead, dictator, they have
+the ability. The other thing is this introduces opportunity for
+backdoors, inadvertent or not because people think it's not my
+job, let someone else do it and it's quite fun because when I
+started to look for where have people backdoored repository.
+Let's look at Git, over the history, unfortunately there is
+not a lot of data out there in public domain. I'm sure
+commercially there is. But in public domain there isn't a lot.
+Back in 2003, anyone remember this fun little Linux backdoor
+someone tried to introduce. It wasn't in the main repository
+serverss if Linux but CVS server for people who wanted to use CVS
+and as we see here in green, it may be hard to read, some
+option, zero, and return some value. Okay. That doesn't mean
+much to anyone. Just like okay, what the hell does that mean?
+Well, what this code would introduce is if your program
+land on Linux and they had the appropriate flags it would have
+administrator or I.E. route privileges just on the fact of
+running so it could modify critical systems files, add or
+review users, it was effectively God. Oops. Now, look at the
+change history, at the bottom it's hard to see, you know,
+Torvals, if I cans zombies and then the next one is empty.
+That's odd. Another empty one and another empty one from the
+same guy and says oops, I worked with the wrong file. Hey,day,
+what the hell happened? This is not legit. So if anyone can help
+forward and claim responsibility, that would be
+nice. So end up filing this spread through the mailing at
+least and well, guys someone just tried to do this through
+the backdoor server and let's take care of this immediately
+before it catches on. Too late. Already got it and then it blew
+out. So fast forward along, let's look at all the cloud
+repository, Git hub, bit bucket, others, there is a part about
+these technologies is that they're being built with newer
+technologies, tech {TPHAOEBG}s that may not be necessarily
+proven or battled hardened. You know, your data will be safe.
+Well, some of you guys might remember this...this interesting
+vulnerability that discovered where you could change
+attributes and the rails community and pretty nasty
+default behavior, you should like, ah, no, twice, really, you
+should change it. Ah. Like, okay, I know how to change it.
+Besides, hey, the Git hub and the -- and their service and
+take some keys that allow me to...and hey, guy, look, see, I
+can do this. It's vulnerable. So all we really did was hey,ly's
+give me some special users, got some privileges to be able to
+modify that repository and say hey, give me that key and then
+push it and they were like oh, okay, and then rails community
+decided to accept that and said okay, quick, push the fix and so
+on and there was some blow back. Plenty of stuff online if you
+want to read more about that. So story time...sit back, take a
+drink. Kind of settle in and I'm going to tell you guys a fun
+story. So imagine my manager comes over to me and says, hey,
+John, your TCS reports, you have those done? No. It's a waste of
+time. I'm just going to do my job and you'll end up promoting
+me anyway. Thanks. I will promote you but you introduceed
+a pretty nasty buffer vulnerability in your -- and I'm
+like, no I didn't. I actually don't hate my job that much.
+Well, let's take a look...and then yeah, that's a
+vulnerability. Yeah, let's look at the log. Yeah, introduced by
+me. Introduced by me. Calculator C. Simple program, okay, sure.
+Finish time traveling. What? Steve Jobs@Steve.apple.com.
+That's not right. June 27, 2008. What...time traveling from
+beyond the grave. What? That wasn't me. And they're like no,
+well, you committed it. You accepted it. That was you. No.
+So maybe it was my friends who decided to pull a prank on me.
+Maybe it was my coworkers. Or maybe it was the evil hacker
+with their ski masks standing behind my computer. So, you know
+the security team, product security team will come over and
+say hey John let's figure this out. Keep calm. We're here to
+help you. So since you're using Git, who do you trust? Who are
+you set up to inherently trust? And I'm like, ah, everyone...no.
+There's a saying in God we trust, all those X1509
+certificate but Git handles the integrity. Let's use
+C.R.Y.P.T.O. because it solves everything. So they end up
+adopting the trust model. Now, kind of complex to explain but
+effectively you can somewhat trust someone. You can fully
+trust someone. Or you can just absolutely not trust them
+and...so let's say I trust Chang Ki fully and I'm going to trust
+everyone by default I trust everyone there. Let's say I have
+this person called Alexander and I don't really trust her or the
+decisions they will make so I'm not going to trust her signing
+anything or accept our signature. So there's some that
+I kind of trust but I want to verify and do some additional
+due diligence before I do anything and this goes on and on
+and on but effectively it's all based on the GPG capability and
+build the PKI but go for it. But when it comes to commit, you
+only get one signature. You have two people sign it, yes, we both
+agree. And the signature like you see Jake with their -- and
+these signatures can be embedded in the repository or you can
+kind of extract them and do all other controls around that which
+we'll discuss for another time. But by default they will be up
+in the repository, but you end with four fundamental ways that
+you can sign the statement. You can sign every single commit
+that you're going to change and they say yes, yes. I authorize
+this. It's...pick up the things that you like and you can say
+yes, I reviewed each and every one. Sure, five. But sure when
+I'm deeming with a few hundred thousand lines of code because
+Red Hat released their version, oh, God, that is a hassle so you
+can't -- what you can say instead is yeah I'm only going
+to sign the merge. I don't know everything else, but I'll sign
+it. It's quick and dirty but you'll still have police coming
+at you, hey, have deuce the backdoor and your manager may
+come over and bother you more about TCS report or you flatten
+all of the change you're going to look at and say give me all
+the changes and I am just going to say I did it all and throw it
+in there. The problem with that is you lose the history of how
+all that code before was generated and if you try to
+dissect it, pull it out, oh, God, it's kind of ugly or you
+can do a version that does a scale...so imagine we have two
+people, hey, this is me and I did this, you know, here is a
+picture -- and you'll see Google engineers use this from time to
+time and you'll see it post up on -- more Google plus failed to
+do this. Yeah, this is me. See look my Google plus identity and
+this is...as you mike imagine that doesn't really work. But
+the interesting part is if you decide to destroy the
+history...by the victors so if you want to do a...go for it.
+But if you really care about the history but you want to live on
+the wild side, take a chance, yeah, go ahead. Just sign the
+merge commit. Or if you sign every single...technically the
+most secure from an integrity perspective but I don't know
+about you but I'll be lazy probably automate it like yeah
+all these look good. Go ahead and automatically magically sign
+that. So you want to prevent that, to give some assurance
+that hey I ago actually did this. But one against danger
+zone, because what does it mean to {ABGKHRL} sign is this a
+beautiful lay -- or is this a very not beautiful lady? So what
+does it mean when you sign? This message was authorized and
+metadata such as hey, tracer YouTube...or does it also
+snapshot and message was Authored as designed and what
+led up to that were legit and hey, here is the DIF and, yeah,
+everything is fine because as we see here, modified the suiters
+file, yeah, evil hacker use all privileges and password this
+pseudo because it's hard to use password when you have to
+continually enter in a password but don't worry in the metadata,
+security said it was okay. So it must be authorized. Now once
+again I'm still trying to figure out okay, how did they hack me,
+how did they take over use that simple defect? Well, one thing
+that I personally love to do to others especially at work is hey
+I noticed you left your computer unlocked. I also like to live
+dangously too. Sometimes change their background to My Little
+Ponies or in this case, Nicholas Cage, make them feel at home. Or
+in this case what one could do is pull up their IDE and
+probably don't want to enter in their credentials each time they
+push something, just go ahead and open up and enter in your
+bookdoor and try and push it and see what happens, you never
+know. The script way to hack is very well known. It's not fair
+to call this a hack, but you can change your e-mail and username.
+So just say hey global, my e-mail is X. My name is Y and
+just operate that way. And as far as the repository is
+concerned, that e-mail address and username is that. You didn't
+have to prove that you owned that e-mail address. You didn't
+have to prove that you were that identity so at least some
+interesting behavior. In this case here we see just simple
+evil backdoor, tracer...lead hacker 101, create some stuff.
+Change this over to DT.com. Once again, just this is behavior, so
+you really can't take anything that you see in a repository if
+you're really concerned about who created it...just based
+on...name alone, signing. The hacker team new exploit or
+someone found a leaked repository and compromising your
+computer and wait until you walked away and then went into
+the system. But from that perspective, it doesn't matter
+which tool you're using. You have to rely on other IT
+controls to really lock that down. There's nothing inherent
+that will protect you from that. But the interesting part is a
+shell 1 hash. They do a little bit more of that but effectively
+you need to find a Shaw 1 collision to introduce your own
+malicious backdoor obliterate something previously. So imagine
+if I were to send you up to the moon free of charge of course I
+would have you search through every single atom of the moon
+and compare two of them that you find exactly the same. More than
+likely you will find a hash collision. Or another way of
+putting it and I love this...the higher probability member of
+your programming team will be attacked by wolves completely
+unrelated all in the same night. So if you're really, really
+tight, I worried of everyone getting killed by wolves all at
+the same time, you may want to get them built for wolfs. But
+this is built by design. Say up here this red liquid was my
+original artifact or my original configuration and if anyone were
+able to modify it, doom to the end of the world and let's say
+my entire development team was killed by wolves and here the
+red liquid coming in. Heying I see this new object you're
+trying to give me is the same as the old one. I'm just going to
+ignore the new one. So it's okay if you find it. It's going to
+look like gibberish but even then ignore the new ones and
+continue to track the old ones. So not entirely useful there.
+But if you're a bit tighter one way to do it is to get someone
+to apply a patch and when that patch is applied, then it causes
+the collision and that would work, but the reality of that
+happening academically is that that patch would look like
+gibberish and it would look like -- common sense, I don't know
+what this is. Let's get rid of it. Eew, so unfortunately Git is
+vulnerability to prefixes to X. Brad Fitzpatrick works at Google
+now, he wrote a fun little ghost script that would be like hey, I
+want to prefix of DEFCON in the hash because you know developers
+are kind of lazy. Maybe they didn't decide to use the full
+hash. Let me introduce my own prefix and hopefully they'll
+pick up my malicious instead of the prefix down below. Take more
+than five seconds to at most maybe a minute to modify to get
+your prefix of choice, but it's a fun little script and it
+works. The fun part is I have looking after this is now I'm
+being told to sign all of my commits and a new PKI
+infrastructure, going to do this right. Well, okay, cool but let
+me get some data about it. Hey, Git hub, serge API and your
+progresss that have over 9,000 stars. That's about 140 to 160
+repositories at the time. And it's interesting what we see
+here -- let me get it out. Oh, Awesome. So it's kind of fun. So
+top and to the right is good. That means a lot of commits and
+a lot of signed commits. I would love to but this is called
+demo/fail so I'm going to try and -- so see up here top to the
+right way at the top, no surprise. Rails and a few other
+popular projects that we're familiar with up there. And the
+scales logs in rhythmic scale so as I change this to a much more
+linear fashion, you'll see that Linux is way up there. Way up
+here to the right and then far down here is everyone else. (
+LAUGHTER ) >> So your take away from this is not a lot of
+projects out of those 140 were even signed or even had any
+attempt to provide the authenticity that I'm a
+preMadonna developer and I committed this and then those
+that do, they're relatively small number. even relative to
+the number of commits they had. So it's interesting when you
+look at that. Now, the fun part is this is DEFCON, right? And
+what's a talk without Odais. So I hundreded around for a --
+hunted around for a few months. Which SCS do I want to poke
+around and find some decent Odais and not scientific at all.
+Hey, let's go to some database and put in these names and see
+what pops up either for the tool or products that have that name
+and they only had seven interesting. CVS had 566. Git
+had 2,000. Because it's popular. I'm not going to try and do --
+like I said, this is not scientific by any means but
+maybe I'll find something over there. Let's take CVS through
+static analysis. It came up squeaky clean. Dammit. I was
+hoping to find some really old defect from the '80s or '90. Git
+had its own challenges. It's not that great but unfortunately a
+lot of those vulnerabilities I can't imagine how they would be
+exploited or they're so esoteric that I gave up after trying to
+reproduce and develop an exploit after a week. Like I threw my
+hands up in the hair and said done. However, let's look at Git
+lab because there's something I can do. It's ruby. It's fun. It
+had some issues in 2014. So unfortunately I tried the food
+coloring. One of my coworkers brought it for me. It tastes
+like -- so we'll just have to rely on this image. But here is
+an Odais for Git lab. Now this one, it's almost asinine.
+Somehow you would have to modify a configuration...and if you're
+able to inject your malicious OS command in there, then sure, I
+will happily run it. But how about we give you guys something
+a little...so how about your good old hey give me a file from
+the file system. Well, hey, wiki, find me a file with this
+completed trusted parameter called ND version and hey if it
+exist, send it to me. Sure. So for OS controls such as improper
+permissions for the rails app or OS, yes, give me an ESI
+password. You'll probably get the walk around the file system,
+find improper permissions, global read, global write. Fun.
+Now the interesting part about this is you guys need some
+tools, either hack or to defend. A lot of the tools that have
+cure rated and put on Git backdoor are more for the
+defensive such as...or when a commit is pushed to actually
+review it automatically trusts the authoritative source. It's
+kind of interesting because a lot of us rely on this concept
+of I'm going to trust the client. And I'm going to put
+this control such as verifying all the commits and everything
+on the client because the client will never lie to me or the
+client won't disable that check. Just moreless a network of trust
+fail. So -- more or less a network to trust fail. So to
+kind of bring this to a fail, one doesn't backdoor this stuff.
+Oops, I created a defect. Honestly in all my years I never
+met a developer, anyone who ever wanted to introduce a
+vulnerable. Who ever wanted to write error prone code. I mean,
+some of it is certainly a Vin debt ta, but hon necessarily
+they never wanted to and pretty cool and nifty features are
+built into it but it still relies on this trust model and
+sure you can set up a very expensive PKI but as we see with
+Git hub and many other technologies they kind of ignore
+that and implement their own authorization and authentication
+model. Is it better or worse? I'm not going to sit here and
+tell you but they decided to go down a different route. So I
+would like to thank you all for coming. [Applause]. >> So two
+more things...imagine if you're this rock star Stanford
+professor or you're this amazing rock star game developer, this
+Awesome python module, you can say rock star, import rock star,
+activityment rock star, give it a parameter such as days and you
+give it a number and then you're like hey, make me a rock star.
+What it will do is modify the current repository and make it
+look like as if you workeder that many days. Pretty Awesome,
+right? So I through this up on Git hub, create a few
+repositories that goes back to 1950 because that makes sense.
+Git hub and a few other graphs and models and tools and bit
+bucket kind of handle it and go back to FD and others say no I'm
+not giving you all that data but I got an e-mail from Roman and
+he's like dude, that's crazy and I'm like yeah and an interesting
+hack...he did an interesting way where he was able to harvest all
+the SSH authentication mechanisms for Git hub, was able
+to pull all those public keys and start looking at their
+strength. Are they weak, are they secure? And he told Git hub
+and not a problem, we don't generate these keys. They are
+given to us by the user. We don't really have a shared
+responsibility. I don't know...the data set. You see a
+lot of RSA keys, bit strength, 256, 512, you know, already
+known to be just wait, what, when were these generated? And
+bit hub was like yep, hey, guys, you need to change it so once
+again, I cannot recommend more than enough ProGit book. A great
+source to know where to avoid pitfalls and that sort of thing.
+But thank you all for coming and that truly is all. [Applause]

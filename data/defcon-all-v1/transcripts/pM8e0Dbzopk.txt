@@ -1,0 +1,726 @@
+I'm Chris Soghoian, I work for
+the ACLU. Yeah. I feel you! I've
+been thinking about this talk for a while. Many of us have
+been trying to convince people
+and companies to encrypt their communications for a while. And
+the last few weeks and few years
+have been a really good time. There has been a lot of positive
+movement in the right direction
+and I'll talk about that today. But I want to get us all the way
+there. I really want to talk
+today about how we start to get default encryption for
+everything and how we really
+start to do damage. As a reminder, I work for the ACLU,
+the American civil liberties
+union. Last summer when I came and gave a talk, we have a table
+in the vendor area where you can
+get T-shirts like this and someone came up and said why
+aren't you going anything for Ed
+Snowden. Why aren't you helping him? My boss, Ben, who is a
+Snowden employer smiled and
+couldn't say what was happening. We've been helping Ed for some
+time. And I don't think it's
+overestimating to say -- just to say really we wouldn't be where
+we are now were it not for his
+disclosures and bravery. The amount of changes in the debate
+and the pressure on companies to
+encrypt is staggering. He couldn't be here. We don't have
+the Snowden 5,000 walking around
+the halls at DEFCON but we have it in New York. And Snowden made
+this a lot easier. This woman is
+Diane Planstin you can boo her if you like. Only at DEFCON. So
+she is the chairwoman of the
+senate intelligence committee. I'm going to read you a quick
+quote of hers from last year.
+This is after the first few Snowden story broke, as the
+administration and the defenders
+of these surveillance community really started to go on the
+attack and defend everyone's
+communication this is what she said, it's necessary for the NSA
+to obtain the haystack of
+records in order to find the terrorist needle. They need to
+do bulk surveillance, not
+because they care about our communication but because they
+care about the bad guys. There
+is a problem with this analogy and this drives the talk today
+and drives a lot of the work I'm
+doing. We are the haystack. We have the hay stake whose
+communications are being
+monitored and it's not right. We can fight in the courts which
+the ACLU is doing. and other
+organizations are doing, We can fight in congress which the ACLU
+and other organizations are
+doing. And we can also fight through technology and make it
+more difficult for bulk
+surveillance to take place. thats what this talk is about
+today, How do we use math and
+technology to prevent them from collecting the whole haystack. 
+Going back in time to 2009. A
+long time ago in a galaxy far far away. If you cared about
+encryption on the web, 2009 was
+a really bad time. Things weren't good. With the exception
+of some banking websites that
+you used, most of your communications over the web were
+not protected with basic
+encryption built into all web browsers. Even your
+authentication could be easy for
+someone to steal your information. In 2009 all the big
+cloud computing companies and
+social networking sites and email providers none used SSL by
+default. Everyone was vulnerable
+to surveillance. Not just by individuals but by the state.
+There is a slide that I haven't
+included in here from GC-HQ slide deck 2009 in which they're
+cheering and patting themselves
+on the back because so many services are not encrypted.
+Without SSL, surveillance was a
+question of how to do the tap and how to process the data
+rather than how to break any
+technology or security. This is a blog post from Google in 2009.
+When they first announced the
+availability of an option, a configuration setting to force
+SSL in the future. This was an
+option that wasn't turned on by default. You had to go in and
+set it. SSL can make your mail
+slower, your computer has to do extra work to decrypt that data.
+And encrypted data doesn't
+travel across the internet as efficiently as unencrypted data
+and that's why we leave the
+choice up to you. this was a false choice because this was an
+option that was hidden from most
+people. If you clicked into the advanced settings in G mail it
+said use HTTPS question mark.
+Nothing to indicate that this was important. It was the 13th
+of 13 configuration option after
+the vacation auto away message, after unicode settings. Most
+people don't know what unicode
+is. The user interface of G mail screamed to users this isn't
+important. It doesn't matter. So
+say this is a choice for the user, it's false. What you're
+doing then is allowing a system
+to ship in an unsecure manner and blaming the user for not
+seeking out the option and
+enable it themselves. That was Google in 2009. That meant that
+for the people that work in this
+building or at NSA, life was good. Bulk surveillance is easy
+in a world where everything is
+going over the network without any protection. For the NSA in
+2009, the internet was an all
+you can eat buffet. We know what happens when a society is
+dominated by all you can eat
+buffets. The NSA gorged themselves. They gorged
+themselves until they got sick,
+actually until one person got sick and blew the whistle. Now
+it's time to put the NSA on a
+diet. Sorry for the analogies but they make sense. We need to
+starve the NSA of the data
+they've come to depend on. That is because of people like Ed
+Snowden that we now have an
+understanding of what is taking place and how they're collecting
+information which means we have
+an understanding of what we can do to stop them. In the last
+year there's been a number of
+disclosures about bulk surveillance targeting internet
+communications. And these it's
+fair to say, set the internet on fire. The first slide that
+galvanized the tech community is
+this slide that says the NSA is monitoring the links between
+Google's data centers-- Google
+believed -- after 2010 Google turned on SSL. Google believed
+they needed to encrypt the links
+between the user and the servers. google thought that the
+privately slime cables that they
+were renting from companies like level 3 could never be tapped so
+even though they had data
+centers in other countries they didn't feel they needed to
+protect the links. Google is
+wrong. The NSA and their GCHU partner tunneled into the
+private network and got
+information that wouldn't have left the internet otherwise. The
+Washington Post revealed that
+the NSA has been monitoring the address books of many popular
+communication services, Yahoo,
+Google, Facebook. The NSA is interested in instant messenger
+lists. They show communications
+and patterns and who you're interested in talking to. On
+this slide the thing that is the
+most interesting and damning for the tech companies is the news
+that Yahoo users are being
+targeted by the NSA in the order of magnitude and more time than
+Gmail or Facebook. Why were
+Yahoo users having their address books collected an order of
+magnitude more? Because they
+weren't using SSL. The fact that Yahoo is using it now is
+directly as a result of the
+Snowden. We've seen the tech companies beef up security.
+Companies embracing SSL. weve
+seen them tightening their choice of encryption algorithm.
+The adoption of perfect forward
+secrecy of HST browser headers. making sure that you always go
+back to the secure version of
+the website. you never go to port 80 We've seen instant
+message platforms all migrate to
+user, to server encrypted links. We just saw yesterday, Yahoo
+announced they -- by 2015 will
+be offering encrypted e-mail to all their users. encrypted end
+to end email, Not by default but
+they're offering it. We're at a point where there is this
+movement. There is a movement to
+encrypt all the things. And it's working. We're seeing Yahoo,
+Google, Facebook, twitter and
+Microsoft, we're seeing the technical teams within these
+companies finally have the power
+within the organization to get what they want. For sure their
+security engineers within Google
+and Yahoo who for years wanted this stuff. I'm sure that the
+people in the paranoid team at
+Yahoo were embarrassed by the fact that the website wasn't SSL
+enabled. At the end of the day
+they don't choose the resources they're given and it's difficult
+when you're a company thats not
+doing well, losing users to justify the expense, both in
+human resources and equipments
+to make that kind of shift, change. What pressured Yahoo and
+got the powers that be to
+allocate those resources was to hire CISO like Aleck Stamos was
+major negative publicity. Front
+page stories in newspapers around the world showing that
+Yahoo was successfully targeted
+by these intelligence agencies. The stories in the newspapers
+help. Naming and shaming also
+helped in a big way. Earlier this year Google released data
+on websites that do and do not
+use encryption for e-mail. We can all visit our bank and
+e-mail service and look for the
+lock icon in the URL. You can see whether the website is
+encrypting the data. It's much
+more difficult to see whether the e-mail that you're sending
+is going over encrypted links
+the whole way. And earlier this year as recently as January of
+this year the answer may have
+been 25 or 30 percent of servers on the internet were encrypting.
+Google started releasing this
+data a couple months ago and it's really, really useful,
+because it's allowed us to name
+and shame. And the fact is there isn't a performance reason not
+to have encryption, server to
+server encryption. No reason at all. It's because no one ever
+did it. For the last few months
+I've been calling up the general counsels, the chief privacy
+officers, the chief security
+officers of the companies and one by one explaining why they
+need to do this. And having this
+data online has made it easy. I have now something in URL form
+that I can include in an e-mail
+and say why are you not doing this. why you have an F letter
+score Over the past few months
+we got Comcast and apple and Microsoft and many, many
+companies are slowly doing this.
+It makes a big difference. To be clear start CLS is opportunistic
+encryption and not resistant to
+active attacks. but if the name of the game is protecting us
+against bulk surveillance this
+is moving us in the right direction. So naming and shaming
+is one technique. Another one
+that I know a lot of people in the tech community think is
+stupid is gamification this idea
+of badges. And it's stupid but it works. That is why every app
+built badges into their system.
+We've seen two really, really useful and successful examples
+of gamification that thrive the
+adoption of encryption. The first is SSL labs. You can go to
+the website and type in any
+other website's name or URL and they will run a bunch of tests
+and tell you how good the SSL
+configuration is. And more importantly they give you a
+letter score. And it's for
+things like configuration options and algorithm and and
+perfect forward secrecy and
+resistance to the beast attack and other things. In the last 6
+months to a year we've seen
+server operations changing their configurations because they want
+an A plus score. This makes
+surveillance more expensive. Perfect forward secrecy reduces
+the risk to users when ket are
+compromised or stolen or compelled from a company. A
+couple Norwegian guys started
+start TLS info. You can type in any domain name and it gives you
+a letter score for the SMTP
+encryption options. The NSA still has not got the best score
+in the world. And this also has
+been really, really useful in getting people to turn this
+stuff on, So we've had naming
+and shaming. We've had gameification. And another
+method that worked well is
+bribery. For the last six months I've been offering whiskey to
+administrators of servers to
+turn on SSL for their websites. It started as a joke but it's
+actually working. So the first
+major site to go SSL by default was tech dirt citing the whiskey
+offer. I need to send them three
+bottles of whiskey to say thank you. I cant released the secret
+yet but I got an e-mail from an
+engineer at a very, very large website yesterday telling me
+they will be going SSL by
+default and specifically asking for whiskey. They didn't even
+say please. This stuff works.
+Then of course yesterday Google announced a huge move in which
+they're going to give a boost in
+the page rank scores to sites turning on SSL by default. This
+is a really big deal. When you
+think of all the scummy SEO people )search engine
+optimization and the tricks that
+they will pull to get their websites one step higher on the
+Google result, this is going to
+be huge in terms of getting websites to do the right thing.
+The combination of the carrot
+and the stick is definitely moving in the right direction.
+So that's where we've been in
+the last couple years. How we've gotten companies to turn on SSL.
+How we've gotten companies to
+flip these options. In many cases our messaging can use some
+work. Not just around SSL but in
+interacting with policymakers in D.C. Some of the messaging that
+we use in this community is good
+for us but scary to the outside world. its so scary that it
+hurts us down the road when were
+litigating cases I'm going to give you a few examples of that.
+It's really sort of funny in
+some case bus it's funny in a private way. We need to clean up
+our act and use a little bit of
+marketing. To spin some of these technologies in a better
+sounding way. I'm sure in the
+last year many of you have seen companies touting their NSA
+proof technology. Of course this
+stuff isn't NSA proof. And there's a debate to be had about
+the merit of this and whether if
+this is false sense of security. For the purpose of this
+discussion, the problem with
+saying that your stuff is NSA proof is that it strikes fear
+into the hearts of policymakers.
+Members of congress, they don't want NSA proof technology. They
+think the NSA is doing their
+job. They think that police wiretaps are a good thing. We
+can quibble about how often
+they're used. But members of congress mostly support some
+kind of surveillance. If we tout
+surveillance proof, FBI proof, what they see in their minds are
+technologies that that help the
+bad guys and that's not good. This is Mushadin sectrets a
+largely ridiculed terrorist
+encryption app online. No one uses this thing but every couple
+years there is a story about how
+there is a different version of Al-Qaida encryption app. This is
+really, really scary to people
+in D.C. and policymakers and they really believe this stuff
+exists and that it's used and
+it's preventing the FBI from capturing the next terrorist.
+When we use language similar to
+this stuff. Maybe you don't have an AK-47 as the logo for your
+app, but when we use this it
+looks really, really scary to the people in power and to the
+courts. This is an excerpt for a
+case from the ninth circuit called the cotterman case where
+a guy brought a laptop back from
+Mexico. this is a foot note in a majority decision From the court
+saying we do not suggest that
+password protecting an entire device as opposed to files
+within a device can be a factor
+supporting a reasonable suspicion determination. This is
+a really long winded way of
+saying that the ninth circuit thinks that disc encryption is
+okay but per file or per folder
+encryption is suspicious. thats laughable but These are judges
+that don't know a lot about
+technology. They think that the encryption that comes built into
+your operating system, the whole
+disk encryption is reasonable. its a legitimate Cyber security
+technology that protects data
+breaches, but they think if individual people choose
+particular folders to encrypt,
+that is a sign of something suspicion. so that were just up
+against We're up against judges
+that think a file or a folder level encryption is inherently
+suspect. When you're app or the
+program you're using is a wiretap proof technology, that
+judge freaks out. You look like
+a bad guy just for using it in the first place. The message I'm
+going to give you is we need our
+technologies to be as boring as possible. We don't want to be
+exciting. I know it's great to
+have a DEFCON person on stage with flashing lights and talk
+about how you hacked this and
+that but that is really scary to judges. The security and
+encryption technology that we're
+pushing now that we want the public to use, they need to be
+non-threatening. Not to the user
+but the court. The members of congress, the FBI. They need to
+be as boring and standard as
+possible. Another example. There was a supreme court oral
+argument about O'Reilly about
+whether police need a warrant to look at your phone. You are
+arrested for something, can they
+look at your phone and download all the data from the phone.
+It's an exchange between the
+lawyers and the chief judge of the court. I'll show you the
+excerpt in a minute. Chief
+justice john Roberts thinks that someone with a single cell phone
+is okay but someone with two
+cell phones is a drug dealer. Roberts himself says that people
+with two cell phones are
+suspect. And when a lawyer says no, he says what's your
+authority for having people with
+many cell phone on their person. He never met someone with two
+cell phones even though the
+majority of the lawyers in the court have multiple cell phones
+on them. In D.C. where I live,
+people are forced to use blackberries and they also have
+a second phone because they want
+a useful smart phone. Having two cell phones in our world makes
+you a bad guy. How do we push
+back against the court when two cell phones are suspicious. If
+you have an app on one of your
+cell phones that lets you make wiretap proof calls, you're a
+really, really bad guy. and i
+dont want you to be a really really bad guy, And when we end
+up litigating one of those cases
+I don't want our defendant to be a really, really bad guy. with
+two phones and an NSA proof
+calling out. which means don't talk about the NSA. The services
+that you're building, the cool
+apps and protocols you're designing need to be boring and
+not involve nations, state and
+intelligence. You can do what the Tor project does and talk
+about your threat model and
+global pass adversaries. but don't talk about the NSA. It
+doesn't help anyone. This is a
+really good example of this point. This woman is Pamela hash
+boar Jones. A Federal trade and
+commision- commissioner. She left in 2010. And she was the
+first U.S. government official
+to ever give a public speech in which she mentioned the word
+SSL. She worked at the FTC, an
+agency that I worked at. And in March 2010 she gave a speech and
+asked all cloud computing
+companies to turn on HTTPS. she said; Today i challenge all of
+the companies that are not yet
+using SSL by default that includes E-mail providers, et
+cetera, step up and protect
+consumers. dont do it some other time, make your website secure
+by default. This is really
+powerful language. Really good language from a senior
+presidentially appointed U.S.
+official. She is calling for something we all want. We all
+want widespread encryption. She
+doesn't talk about the NSA. Like wise this guy. Chuck Shumer.
+super super law enforcement
+friendly senator from new york, He loves law and order and
+surveillance. This is him in
+2011. Providers of major websites have a responsibility
+to protect individuals who use
+their sites and submit private information. It's my hope that
+the private sites put in secure
+HTTPS sites. again we have a pro Law enforcement senator calling
+for companies to deploy
+technology that make network based wire taps more difficult.
+How do you get a senator to do
+that. how do you get a senator to call for a technology that
+makes life more difficult for
+the police? Bribes are one way. Whiskey is another way. Or you
+don't talk about the police. We
+didn't talk about the NSA. These folks didn't talk about the NSA.
+Instead they were talking about
+hackers. Sorry, that's what hackers look like to people in
+Washington, D.C. You guys have
+your ninja masks in your bags. They were both responding to a
+tool called firesheep released
+by Eric butler. This was a easy to use graphical interface. a
+Firefox plug in that captured
+authentication cookies by going over the wire and let you log
+into the accounts of other
+people that were sharing the the same wifi network as you. This
+was the wall of sheathe in
+browser plug in form. What made it a big deal, this was a plug
+in that anyone could download
+and in fact, several million of people downloaded it, then it
+made it to The New York Times.
+There was a story about the firesheep and then a month or
+two later Chuck Shumer is
+sending letters to Yahoo and Amazon and Twitter telling them
+to hurry up and turn on its SSL.
+The way we get this encryption stuff deployed is by making it
+palatable for the people in
+power, making it it seem like an anticrime technology. Antitheft
+technology. In 2009, I and 37
+other researchers signed a letter to Eric Schmidt back then
+the CEO of Google in which we
+called on Google to turn on SSL for Gmail. in this letter we
+said we urge you to follow the
+lead of the financial industry and enable SSL by default. This
+is because of the huge threat
+posed by identity threat. We didn't mention the NSA. We
+didn't mention the police. This
+was criminals at Starbucks. Of course Bruce Schneider know
+about the bulk government
+surveillance. But you don't have to advertise it. Right. Make it
+easy for the people in power to
+do the right thing and take advantage of the boogie men that
+we have which are identity
+thieves. The other thing to note is that in the United States we
+don't have a privacy
+commissioner. In Canada and European countries they have
+privacy commissioners that are
+responsible for all things privacy. We don't have that in
+the United States. We have the
+federal trade commissions that regulates accepted business
+practices and goes after tech
+companies for lying about privacy. The FCC that goes after
+obscenity like Howard stern on
+the air. We don't have a national privacy regulator. If
+we want the two regulators that
+we have to do thing that we care about we have to portray in
+language that they understand.
+We have to make it seem like it's consistent with their
+mission. so the federal trtade
+commission cares about identity theft, The FCC cares about the
+radio and phone networks. If we
+want them on our side and want them to pressure companies and
+give speeches, we need to help
+them to do so and that means not talking about the NSA. We can
+talk about it in this community.
+But when talking to the outsider we can't use that language that
+isn't scary t them That means we
+need to talk about cyber. I know that there are many people that
+think the word cyber is stupid.
+It's ridiculous that people in suits talk about cyber as
+something serious. When you hear
+the word cyber you think of something that looks like this.
+It's really difficult to find an
+image that captures cyber sex that is funny but not too
+offensive. It took me hours to
+find this. Most of us when we think of cyber we think of
+awkward conversations in AOL
+chat rooms with people who may or may not be the actual age
+they tell us they are. And we
+don't think of something that is serious. We don't think of
+cyber-security. For many of us
+when we hear the word cyber we think of age, sex, and location.
+But the fact is that for the
+people that matter, the people in power, right, for them ...
+For them cyber is real. Cyber is
+the real deal for people in D.C. Cyber-security is the only part
+of the defense department budget
+that is going up. The only part of the DHS budget that is going
+up. One of the things
+legislation actually moves in D.C. so by us ridiculing cyber,
+we're not part of the debate
+around cyber. We're absent. We let them set the agenda around
+cyber because we think it's
+silly because they're using the wrong words. This is the
+director of national
+intelligence. Famously lied before congress. And so James
+Clapper in March of 2014 said
+when it comes to the distinct threat areas, in their annual
+threat assessment, this year
+leads to cyber and it's hard to overemphasize its significance
+here we have the top national
+security official in the United States telling the senate that
+this cyber thing is the biggest
+threat this country faces. Bigger than terrorism. These
+cyber threats put all sectors of
+our country at risk. Again, with this language, the average
+non-tech savvy senator or member
+of congress, they're thinking oh my goodness this cyber-security
+stuff is huge. It's a huge
+threat and we have to do something and we're not present.
+We're not present in that
+debate. And we really should be. So you may think, okay, well the
+reason these people are talking
+about cyber-security all the time is because of money. And
+that's entirely true. Right.
+They're a defense contractor that are advertising zero days,
+on the sub way in D.C. You the
+ex-director of NSA that leaves and offering himself at a
+million dollars a month to
+clients. Cyber security business is big business in D.C. But so
+what. What matters is that
+people care. What matters is if you're talk about cyber-security
+you get in the meeting. People
+listen to you. People think it's important. Cyber-security is
+important in the eyes of
+policymakers which means we should be using the language of
+cyber-security for all of the
+stuff we're doing. Every technology that we're building
+we should be pitching as
+cyber-security. And the reason for this, cyber security is
+moving through D.C. whether we
+like it or not. Let me explain how this works. You have these
+ex-generals and ex-government
+officials who go on and work for defense contractors and every
+week they go to a meeting with
+congressional staff to pitch how big of a threat cyber-security
+is. On one side of the table you
+have this ex-general or ex-senior government official
+that doesn't really understand
+technology. And on the other side of the table you have a
+member of congress that doesn't
+understand technology or a 24 year-old staffer with a science
+and technology degree that
+doesn't understand technology. They never get into the detail
+of saying this particular
+technology is a threat to our cyber-security. If the meeting
+is a success, the best possible
+outcome is the member of congress leaves with a feeling
+that China is attacking us.
+Cyber-security is a massive threat. We need to dedicate more
+money to this and maybe the
+company that had the meeting, their technology might be
+useful. That is it. We had one
+person that lives in D.C. who is laughing. This is true. This is
+actually how it works. What that
+means is this is happening every day, every week, these meetings
+are taking place in hearing
+rooms and committees, every week someone is coming in ask saying
+that cyber-security is a huge
+thing. Now if we try to stand there and say, in fact this
+cyber stuff is bull shit,
+they're going to ignore us. There are too many people saying
+that cyber-security is a
+problem. We cannot push back against that. But what we can do
+is say that these other things
+are a cyber-security problem and the technology that we're
+building protects us all from
+cyber threats. We're not telling them the briefings they got from
+ex-generals are wrong, we're
+just saying there are better things to do to keep us safe.
+The average member of congress
+doesn't understand technology. This is Ted Stevens for all of
+you that don't recognize the
+face. He became famous for this internet as a series of tubes
+thing. My guess is the way that
+meeting went down is you had some tech person come into a
+briefing and he was describing
+the internet as a bunch of pipes. And pipes is like a
+fairly accurate description. We
+talk about pipes in the tech community. And Stevens is
+sitting there drawing on his
+note pad and that one word sticks in his head and then he
+gets to the senate and gives a
+speech and pipes become tubes and he becomes a laughing stock.
+He retained from that meeting
+that the internet involved tubes. All we need to do is
+convince them that our
+technologies protect cyber-security. We don't have to
+go very far because they don't
+go too far into the woods. Traditionally those of us who
+work in this space, the lawyers,
+the law, the advocates, those of us that work in this space, we
+have a real uphill battle. We go
+into a meeting with a member of congress and say you shouldn't
+pass legislation requiring
+backdoors in encryption technology. You shouldn't pass
+laws requiring companies to
+retain records of everything their customers do. you
+shouldn't pass laws prohibiting
+what people do with the technologies they buy, We find
+some people who are sympathetic
+to this message but there are a lot of people in congress whose
+first priority is public safety.
+And in their eyes there is a trade off between public safety
+and privacy. There are some
+members who really care about privacy and civil liberties and
+are willing to go gun hoe down
+the privacy and civil liberties path path. But there are many
+others care a little bit more
+about public safety. They're worried the next time there is
+an attack, their vote no on a
+bill will come back to haunt them. that they will loose
+election No one wants to vote no
+on a piece of legislation that will make it more difficult for
+the police to catch the bad guy.
+That's the reality of the world. We can only convince so many
+members of congress to put
+privacy and civil liberties ahead of national security. What
+if it's a security versus
+security debate? What if instead of trading off privacy against
+national security, there are
+different security threats that the members have to weigh. What
+if adding back doors to
+communications network opens those networks up to compromise
+by hackers. It's a security
+versus security debate. What if you retain large amounts of data
+that data becomes an attractive
+targets for criminals. oh suddenly data retention is a
+more complex issue. By embracing
+the language of cyber security we can shift this from a debate
+where we lose to a debate where
+we might win. Many of you may have heard of the four horseman
+of the information apocalypses.
+There are trump cards in political debates. Pedophiles
+and drug dealers, it's tough to
+push legislation when members or pro-law enforcement people say
+this bill or this technology
+helps terrorists hide their stuff. And traditionally those
+of us on the public interest
+side of the table have always had a bad set of cards. We've
+had the bad facts. All the case
+law, all the fourths in the case law is drug dealers and
+pedophiles. Everyone's fourth
+amendment rights come from really bad cases with really bad
+attacks. Traditionally the four
+horse men were not good for our side. But now there is a now
+horseman. And he looks like
+this. His name is Wang Dong. This is a real FBI wanted
+poster. this is one of the
+chinese military officials who was indicted by the U.S.
+government. Foreign nation
+hackers are a huge threat and a threat that policymakers take
+seriously. Chinese cyber hackers
+are just as big of a boogie man as pedophiles and drug dealers.
+Now members of congress have to
+way decisions that pit things that may help the police against
+things that help the nation
+state attackers. Suddenly we don't get steam rolled. What
+that means is we need to reframe
+the debate around the technology that we all care about. For far
+too long Tor has been a
+technology to help citizens protect their privacy online
+where the internet is paralleled
+and censored, that is not the case. TOR is not about
+journalists or dissidents. It's
+a cyber security technology. Silent circle or signal, two
+voice apps that encrypt your
+communication that goes over the carrier's network. These are not
+wiretap proof telephone
+communication acts. These are cyber security technology that
+protects you from nation state
+adversaries using MC-cachers. see how this works? Tech secure
+is not an anti-surveillance
+technology. It's a pro-cyber-security technology to
+keep you safe where the phone
+companies have not employed strong security technologies. We
+need to embrace this language
+that everything we're doing must be cyber. Even if you think it's
+silly, just keep saying it.
+Cyber, cyber, cyber. It sounds silly, but in a few years we're
+going to have a face that the
+ACLU will almost certainly join in some way where the government
+will say that encryption, a
+particular form of encryption is a devil's technology used by
+drug dealers and bad guys. Now
+we can see that -- then we'll be able to say that most of the web
+is using HTTPS and government
+agencies are using PGP, well be able to say that govt agencies
+are using TOR to protect our
+data from bad guys. When that happens the courts will not be
+able to demonize these
+technologies. suddenlu sing TOR or voice encryption or full disk
+or folder encryption will not be
+suspicious and the way we get there is through cyber. its a
+war lets fight this cyber war...
+Thank you very much. "This text is being provided in a rough
+draft format.  Communication
+Access Realtime Translation (CART) is provided in order to
+facilitate communication
+accessibility and may not be a totally verbatim record of the
+proceedings."

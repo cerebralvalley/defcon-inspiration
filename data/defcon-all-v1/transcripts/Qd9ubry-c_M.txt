@@ -1,0 +1,771 @@
+>>Alright so the first
+announcement we have to make is
+uh that we are running CTF challenges and those challenges
+actually started yesterday
+because we ‘re doing a workshop uh for some reason nobody really
+wanted to do anything
+interactive in the workshop and that means the challenges are
+all three still unsolved. And
+those are smart contracts on Ethereum main-net so if you look
+at those and then this is
+actually a little bit funny because somebody tried to solve
+the challenge but in the process
+of doing so he failed and he added even more ether to the
+complex so now you can add you
+can win a little bit more. And, and this was his second attempt
+which also failed. So if you’re
+quick enough you can win a total of one point five ether which
+would be around three hundred
+dollars worth. Uh and you find this here, uh on this data
+repository. Sure hope you can
+read it, it’s uh smashing smart contracts workshop or just
+google for it. Alright um, start
+this. [inaudible other voice] So we are going to talk about
+automated exploitations of smart
+contracts on the Ethereum doctrine. Um we are both from
+ConsenSys um I’m chief hacking
+officer, whatever that means, at MythX. Daniel is an Auditor and
+Researcher at ConsenSys
+Diligence who do uh security audits for smart contracts. Um,
+so uh normally we uh, have
+developed a tool to create more secure smart contracts we also
+do some offense research because
+we want to stay on top of our game. Uh there’s a lot of other
+people who contributed in some
+way to this talk. Uh and the code we are going to show, so we
+are going to show four tools
+today, three of which are, um introduced for the first time.
+Uh and there were a lot of
+contributors involved so all of this is open source uh the MythX
+Core Team, the ConsenSys
+Diligence guys, um Sam Sun who is a very famous researcher who
+contributed some of this uh bot
+research and the Ethereum security community general which
+is small but really awesome. So
+uh what we’re going to cover is uh first of all symbolic
+execution of automatically
+detecting bugs in EVM bytecode. And we’re going to focus on
+instances of bugs where uh the
+attackers steals ETH, ETH is the native currency of the Ethereum
+block chain from other
+contracts. So the goal is always to increase your own balance in
+some way. Uh we are then going
+to show how to automate this exploit and uh, basically write
+a script kitty tool that you run
+against the contract and we load everything out of the box and
+then we’re going to show how to
+exploit people who are using these tools by tricking them
+into sending your ether because
+they don’t know what they’re doing. And then on the next
+level we’re going to show you
+how to exploit people who exploit people who use these
+tools. So it’s kind of um a
+layered approach. A very brief intro into Ethereum. Ethereum uh
+is a block chain network and
+it’s a distributed state machine so you have to uh so-called war
+state and there’s a huge network
+of nodes and they all agree on the same state. Which includes
+uh, account balances so uh there
+are, there’s includes an account and every account has a balance
+and each time a transaction gets
+accepted into the block change this changes the state in some
+way so it might decrease one
+accounts balance and increase another accounts balance. And
+the network is commissionless,
+anybody can send transactions but they have to follow the
+consensus rules of the block
+chain. So what um makes Ethereum different from bitcoin is that
+uh you have a lot more
+flexibility of how uh transactions can change the
+block chains so you can deploy
+small immutable programs called smart contracts which are
+basically um chunks of byte code
+in a, uh written in a simple stack based language. What’s
+special about them first of all
+is they are immutable so once a smart contract is deployed to
+the chain and you have consensus
+that the smart contract exists it can never ever be changed. So
+it’s much more like uh real
+world contracts where you have a set of rules that everybody
+agree to uh adhere to then like
+an app that you can update anytime data. From the view of
+symbolic execution, a couple of
+things that’s interesting. First of all executing an instruction
+uh on the Ethereum publishing
+costs gas which is maid in ether’s Ethereum’s native
+current Ether uh and that’s a
+spam protection because uh computation is expensive because
+every node in the system needs
+to run the same code, right. And that means that in a single
+transaction you can only do a
+limited amount of uh computation which is good for symbolic
+analysis because it mitigates
+the space explosions so there’s only limited amount of states
+you have to look up. But on the
+other hand the bold state can be mutated over subsequent
+transactions so you can
+basically split up your computation into little chunks
+and uh that makes symbolic
+execution challenging again because you run into the
+traditional problems of state
+space explosion and so on. So brief primer on symbolic
+execution uh here you will see a
+very simple smart contract that’s written in solidity which
+is the most popular language at
+the moment. And the smart contract represents at cat, in
+this one function. And this
+function either extends the cats live or it kills the cat. And
+there’s a very interesting
+instruction in solidity calls self destruct. What this, uh
+instruction does is um, so it
+was originally called suicide, essentially the contract is
+going to kill itself, it’s going
+to delete it’s own code, uh and free it’s storage and um, send
+it’s remaining balance to an
+arbitrary address that you specify here. In this case, uh
+this zero address. So if you
+look at this program there are two outcomes that can happen
+right if this put in variable is
+true then grant survival is false, uh sorry is true. And the
+cat will not be killed, will
+reach no more stop state but on the other hand if it is false we
+will reach a self-destruct
+instructions so these are the two possibilities that can
+happen. So what we do in
+symbolic execution now is that we uh every time we reach a
+condition of jump we follow them
+both paths and we annotate each test um so if-if you look at
+this as um, control flow graph
+we annotate each path with the path constraints imposed by the
+jump condition. Right so we can
+say that uh, if the first function argument is true and
+this is actually looks a bit
+complicated because that’s why uh solidity compiler produces
+but it ends up meaning, if it’s
+true then the cat survives, if it’s false the cat dies. And so
+y-you could think about the cat
+being in both states simultaneously and what that
+allows us to do now is uh we can
+ask if we want to reach the state where the cat dies what
+are the input variables we have
+to supply to the program and we can do that by passing this uh
+path formula or this proposition
+to uh SNT server, uh we use set three in this for example and
+this will give us the correct
+input values that we need to send. Uh and this uh proposition
+can be arbitrarily complex right
+so we can look at very complex programs that have many input
+variables but we will always get
+the correct result. So I’m not going to into much more detail
+um because we actually practiced
+this talk a couple of days ago and it turned out to uh take
+about three hours to do
+everything so uh we have to cut things down a bit. But if you’re
+interested, there's a good
+execution uh um a good summary by my colleague Joran talking
+about symbolic execution and
+then there’s a paper I wrote last year called Smashing Smart
+Contracts, it goes into a lot of
+detail. I can also recommend uh this paper, Gnawing at Ethereum
+and there’s a lot of other stuff
+you can just find on google, we have a few more references at
+the end of the talk. Right so
+our symbolic execution tool is called Mythril and it’s designed
+with simplicity in mind. So if
+you want to use it you can install it python three and you
+can either analyze solidity code
+for us or contract addresses at either the main net or a test
+net or um whatever you’d like.
+And I’m gonna show you a very brief game of what it looks like
+so, this is a killable smart
+contract and it has a kill function that uh calls self
+destruct and this one
+prerequisite that we have to fulfill so you need to be in the
+mapped of allowed addressed that
+are allowed to kill the contract right so you have to call a
+sequence of transactions, the
+first one is set allow to set this mapping to true and then
+you need to set kill. And so
+this might look like a very simple demo but it’s actually
+something that happened in
+practice so I, in two thousand sept- seventeen uh there was a
+heck of the parody wallet
+library that in principle was very simple so there was an in-
+initialization function that was
+exposed and by calling that function you could kill that
+contract and that lead to I
+think uh one hundred fifty million dollars being vaporized
+basically so the owner is stuck
+in this contract forever and nobody can ever access those
+ether again. So just gonna show
+you a small video of how Mythril, so you run uh myth
+analyze against the source code
+and the output will be a sequence of transactions that
+leads you to uh the kill
+instruction, but it will also compute the instructions in a
+way that the remaining ether
+gets sent to your account. But so if you call set allowed and
+in this case dead beef, dead
+beef, dead beef represents the attackers address you would
+replace that with your own
+address uh in the second transaction you call kill to
+kill the contract and then you
+can see that this first argument specifies where the remaining
+ether should be sent. And that’s
+also the attacker, that dead beef, dead beef. So if you just
+replace this with your own
+address you will get the ether out of that contract. So that
+was a very simple example but um
+Mythril can also solve more complex stuff, that, that goes
+deeper into, into the contracts
+and so if you get started in Ethereum security uh a very good
+idea is to check out um CTFs and
+challenges and some of the best ethernaut uh open zeppelin,
+capture the ether by Steve Marks
+and the block chain ctf, dot security innovation and I just
+put a couple of examples to show
+how our tool can uh solve this challenges out of the box. So if
+you look at this code here. Uh
+you can see that this little bit more evolved, so we have a
+withdraw function that withdraws
+the contract balance to the ether and we have a contribute
+function where somebody can
+contribute a little bit of ether and then uh some mappings will
+be set and you will be added to
+uh um this mapping here. And then there’s a fall back
+function fall back function
+means a function with no name that gets called when none of
+the function signatures matches
+and this may override the owner with your address. And there’s
+several ways of how you could
+exploit this but there’s one was that’s more profitable right,
+send the least amount of ether
+for the most output and Mythril can compute it for you so, so I
+will not show the video now I
+will just tell you what you have to consider when running Mythril
+here. So the first thing is that
+these um, vulnerability is three transaction deep and by default
+Mythril only symbolically
+executes 2 transactions and so the thing is with symbolic
+execution the state of space
+that you need to investigate grows exponentially so the more
+you set here the longer the
+analysis will take and for like more real life complex contracts
+it can be quite a while, up to
+many hours or even days. Um, so the default is two, and if you
+run it with a with a default you
+will not discover anything here. So here you would have to set
+three transactions and execution
+time out if you want that will abort the execution uh if it
+goes over the time lot because
+you might not be willing to wait a couple of days for a result.
+So what you get here again is
+the correct transaction sequence to maximi- maximize your profit
+and what you do is, you
+contribute exactly one way which is the very smallest uh
+denomination of ether, basically
+like a billionth ether so and then you call code back with one
+way and then you call withdraw
+and this will give you the whole contract balance. Alright. So I
+briefly mentioned the state
+space explosion problem so look at this contract there, there’s
+a lot of functions with
+dependencies on each other and what Mythril does is it uh
+executes smart contract code in
+iterations and once you find out where the stop state is it will
+use for a starting state for the
+next transaction so you can see that the space of states to
+explore grows uh very fast. And
+for something like this that you need six or seven transactions
+it can be quite a while. And a
+couple of ways that we used to um address this problem uh the
+main way is pruning algorithms.
+So what we’re trying to do is figure out which path is
+actually relevant to explore,
+that means for instance, uh if you exec-execute a transaction
+and the machines state at the
+beginning is complete identical to at the end, like if you
+execute a pure function of U
+then you can safely discard its state because running another
+round of simply execution will
+not get you any new results. You can also do reachability checks
+so at each basic block we can
+check whether the constraints can actually fulfill or not,
+this also gives us a nice speed
+up. And the probably most advanced thing we do is uh to
+look at dependencies in between
+transactions. So once we execute the first transactions we build
+a map of state reads and writes
+and as soon as we come to the second transactions uh we have
+some rules uh that allow us to
+discard a lot of the path that we encounter. Uh for instance if
+there was a state where was
+modified in the previous transactions that was accessed
+some will allow that path, uh we
+know we need to execute the path because we might be discerning
+new pieces of code or new
+behavior but i-if none of these things are fulfilled we will
+just not execute the path. Just
+to show you um, how this looks like, so this is a state space
+graph of a typical three
+transaction execution and you can see execution here started
+at push zero uh and as we get
+further down we will reach several stops and one of these
+for example is here. Sorry for
+that. So a, uh, if you look at th-this basic block here you
+will see that um execution
+starts from a program counter at zero again and, and then you get
+this tree of exponentially
+growing states. And that’s not a good thing because it makes uh
+execution really slow. Alright
+[laughter] so with pruning enabled you can see we can
+reduce the number of states
+quite considerably uh an example I showed you before it’s down by
+sixty two percent and this gives
+us a nice speed up and we run some benchmarks on uh the SWC,
+smart contract weakness registry
+and you got speed ups that compound over time with number
+of transactions as you reach
+less stop states its uh it gets quite fast but that doesn’t mean
+that it doesn’t still grow
+exponentially so you’re still look a lot of other things you
+can do. Including um,
+parallelization, so obviously we could use uh modern one core to
+run analysis. Sate merging which
+is one of the techniques used by Manticore and function summaries
+means uh instead of executing
+functions over and over again, uh you create summaries by uh by
+looking at the constraints
+exposed on memory and storage by each functions and just um
+reusing those instead of um
+re-executing the code and uh yeah this creates more complex
+server queries but also speeds
+up execution and reduced amount of states you have to look at.
+Sorry, we already um a little
+bit over time so we very quickly show you a demo of Scrooge
+McEtherFace which is the next
+two. So what this do is, uh it creates the exploit transactions
+uh creates from Mythril and it
+just sends them to the block chain and it gives you uh
+interactive CLI, you can tamper
+around with the transactions a bit. So this is gnash which is a
+local test node, you can see
+here you have several test accounts and the attackers
+account is the second one here,
+it starts with a hundred eth, so I’m not gonna deploy to this
+test block chain uh version of
+wallet library which is actually the library I mentioned it was
+exploited in real life before.
+And I’m gonna give you a little bit of balance, five ether. So
+you can see it was created and
+that balance was deducted from the creator account now I’m
+gonna set up scrooge with the
+config he needs to connect to my local node. And so now it, it’s,
+this is really really script key
+friendly so the only raw data it takes is the Ethereum address,
+it will automatically detect the
+exploit. So in this case you can see the contract can be killed
+by anyone and what gave the two
+is uh sent this exact sequence of transactions. And you now get
+uh class interface that you can
+interact with. Uh you got a list of raids and each raid is
+represents an attack and this
+raids have stops that you can uh either first manipulate or
+execute one by one. And uh yeah,
+so call function one with this argument, call function two with
+another argument. And then you
+simply call execute. So transactions have been sent and
+actually also checks if your
+attack was successful and if your balance has increased and
+in that case it gives you a
+Boolean true back. So you can see the attacker now has gained
+five ETH. Which is um a thousand
+dollars I think at the moment. But, so that’s our tool. Full
+screen. Demo. So, n-now that you
+have this tool you could imagine it would be very easy to use it
+and steal stuff but
+unfortunately the Ethereum main-net is a very tough
+environment and it’s not all
+that easy. So i-if you may use these tools there will be uh, a
+lot of people uh out to exploit
+you. One of them is uh, Frontrunning Bot. So it will
+actually monitor the main net
+for exploits being executed and uh Daniel’s going to talk about
+that a bit and it will try to
+preempt you and steal your exploit and execute it faster
+than you and actually make your
+exploit fail. And then there’s also fake exploitable contracts
+called honey pots that for
+example might know that all truths have some false positives
+and they might make it look like
+they’re vulnerable but if you actually execute the attack they
+wont and they’ll just re-fire to
+send a bit of ether and then make your attack fail. It’s
+super dangerous. So I’m going to
+hand it over to. >>Okay so uh once again I’m Daniel Luca you
+can find me online at clean
+unicorn. Uh kind of felt like I have to be a white hat with
+clean unicorn, dirty unicorn was
+taken. But anyway, okay so I have two tools I’m going to show
+you. Um t he first one is Karl,
+it’s purpose is to um mass scan Etheruem network and find
+vulnerable contracts. It will
+generate like uh local reports that you can reuse then and the
+second one is a Theo. It’s more
+specific because after you find the vulnerable contract you will
+actually um find a way to, it
+will actually enable you to exploit that contract. So um,
+Karl. It, it does mass
+continuous recon, so that means it watches the block chain all
+the time so you can, you can um
+start it, it will scan all blocks, it will scan all
+transactions and see if any of
+the transactions generate new contract on the block chain and
+if they do that it uh pulls up
+the, the code uh it pulls up the, the state and finds and
+tries to find if it’s um tries
+to find out if it’s vulnerable. It uses Mythril for that,
+b-because it’s written in um
+python. You can use the Mythril libraries directly. It does
+exploit generation and it also
+does uh exploit validation because sometimes there are
+vulnerable um, false positives
+but it has a way to reduce that number of false positives. So um
+this how like the, the main the
+core of uh Karl. It uses as I said it uses the Mythril
+libraries so we can, you can
+build this yourself if you know a bit of python you can uh
+import libraries uh start up the
+Mythril disassembler, you uh point it to uh Ethereum node and
+then you tell it to um load from
+the address, the contract address so that means it knows
+who to scan. And then you start
+the Mythril analyzer, it has some parameters that you can
+play with. Um for example uh the
+timeout, the number of transactions um what, um what
+modules to test so for example
+the uh default module that I’m using is stealing ether and self
+destructing contract, you can,
+you can create others and they’re already others available
+in Mythril. And it generates or
+reports something like this. So for example with this report uh
+we have unprotected ether
+withdraw so there’s the smart contract , um ID, problem IDs
+like one oh five, I always for
+this um, this um thing so the severity is high because you can
+extract ether and then it tells
+you some other uh information like what’s the contract address
+but you kind of already know
+that because you were uh scanning for it, the uh
+estimated guest usage and it
+takes description just so you have an idea of what you can do
+with it. At the end of that you
+can see the transaction sequence so what transactions do you need
+to send in order to get ether
+out of that contract so it makes it really easy for you. The
+problems sometimes is that you
+find the transaction sequence but it’s kind of hard to make
+sure that that indeed works. As
+I said sometimes there are um false positives. Um its, it
+helps if you know assembler, if
+the source code is available, if um if you have a-all of that
+available but even then it’s
+still kind of hard. So there, Karl always has implemented the
+technique to help you validate
+the exploit. So it uses uh it still uses gnash, so just to gn-
+a small intro, uh gnash is uh
+local Ethereum development node. Um, and it just generates a
+local network for you. Nobody
+else can connect to it, but it behaves exactly the same as the
+Ethereum network. So that means
+you can simulate all of the transactions and see if that
+works. So how it actually does
+is that it forks the main block chain and uh it sends a
+transactions to that, but when
+people usually hear forks, it’s something like there is
+contentious forks, like people
+are fighting, there are two communities and they want to
+develop the um the network in uh
+two different directions. Something that one feature would
+be the best, others think that
+another incompatible feature will be the best. So what
+usually happens with forks is
+that the community splits into two and then you have two
+different uh networks. Uh if you
+know for example bitcoin and bitcoin cash or Ethereum and
+Ethereum classic these are two
+very popular examples. But what I actually use is like the
+technical part of forking the
+block chain. So in this example on the top part, you, you see
+the real block chain and let’s
+sat that Karl identified that in block one hundred there was a
+contract that was deployed and
+then I need to make sure that this actually works. So what I,
+what Karl does is that it starts
+gnash and then it creates different future for that block
+chain. So for example, block one
+oh one is local, it’s only on my machine, the, the top one is a
+real and the bottom one is
+local. So then in block one oh one I can add my own
+transactions and see in the next
+block if indeed I exploited that contract. So this is uh pretty
+safe because you’re not sending
+the transactions to the main net you can actually see if you did
+a good job and exploited the
+contract and nobody else can see the transactions, nobody could
+front run you, nobody could do
+anything to you. Um so I have a demo for Karl. So um, in this
+example I start Karl, I point it
+to Inferion main net, which is uh public Ethereum node if you
+want you can use, and also ask
+it to start from a specific block. Um, I do that because I
+already deployed a block, um
+contract there and I know it’s vulnerable. Otherwise most of
+the time you wouldn’t see
+anything. I enable sandboxing which is the forking technique
+um which um, uh creates the
+local block chain and tests uh th-the exploit generated and I
+also e-enable uh the output to
+the folder. Just so in the figure I can have a list of
+files with the exploits
+available. So it’s scanning this block, it found a contract, it
+finds one issue but it's also
+firing the sandbox tester. So it, in this case it’s quite
+fast, you can see that you have
+an initial balance of one hundred and you have a final
+balance of one oh one point one.
+So that means uh that the exploit is uh, is valid and you
+could use this and um, exploit
+the contract. This contract, I think it still exists on the
+main net and nobody, a-actually
+exploiting it so I’m, I’m super sad about that. So what Karl
+does next is that, it takes the
+next block it checks uh the contract and scans everything.
+So it goes through all of the
+blocks. And you could just leave this over night and come back in
+the morning and see if you found
+some, some vulnerable contracts. So the next tool is Theo. Theo
+picks up where Karl left off, so
+Karly just generates a list of contracts but Theo can actually
+exploit them. So um, it is kind
+of on exploitation framework because it helps you do some
+kind of recon. Uh you can check
+somethings on the main net, um you can run the exploit and we
+also have some uh features that
+are front running, back running or sandwiching transactions and
+I’m going to go into detail
+about that. But first you need to understand what the Mempool
+is. So um miners exist on the
+main net and they have a list of local transactions that were not
+added to the block yet. That
+means that these transactions, if they will be added to the
+block they will actually start
+to exist, it will actually happen. Before that, they’re not
+real. They are pending
+transactions. So this miner has the list of um, a few
+transactions and then they
+receive from the network a new transaction so that means that
+they will add it to their
+mempool list, what actually happens in the network is that
+you have all of these miners uh
+people who want to send transactions through the
+network, send to one random or
+less random node and then everybody sends the transactions
+among each other. In the end
+they k-all kind of have the same mempool but not exactly. The
+idea is for everybody to have
+uh, as many transactions as possible just to have them
+mined. The cool thing is that
+you don’t need any permission to be part of the network. So if
+you look in, in the bottom part
+you can see a hacker who can listen to the mempool and see
+what transactions will happen on
+the network but were not mined yet. Another important part is
+transaction ordering. So the
+miners every time they find a block they get reward they get
+some ether, but they also get
+some fee, each transaction has a fee attached to it. And uh when
+they add the transaction to the
+block, they also get that fee. So there incentivized to add as
+many transactions as possible
+and to the transactions as profitable as possible for them.
+So the transaction fees get
+created by gas and gas price. Um the gas part is for each
+instruction there is a number of
+gas added so you need to pay for uh complicated computation for
+example if you do some
+cryptography, if you do some um square um operations, you will
+pay more than compared to uh a
+simple addition or a simple subtraction. So you have gas
+time gas price. And the gas
+price is set by the sender. If they want to their transaction
+to happen faster they will have
+a bigger gas price otherwise they will have a lower gas
+price. So w-when the miner um,
+creates the list to add the transactions in the block they
+will usually sort the
+transactions descending by gas price. And they will add as many
+as possible until they fill up
+the block. So in this case we can see that the first
+transaction added um has gas
+price five thousand, The second one is two, two thousand and
+one, the third one is two
+thousand, s-and so on and so on. So frontrunning happens, like
+the idea of frontrunning is that
+you have an information about what somebody’s going to do in
+this case you see what the
+mempool is going, is, uh, has uh in there but didn’t happen yet
+and you raise them and you do
+that action first. So in this case the hacker can see the
+transaction, they see that um,
+a, a specific contract uh is called the gas price of that
+transaction is five thousand, a
+specific method is called and once they do that once they see
+that they can add their own
+transaction. So we know with frontrun the easiest way is just
+to take the transaction add one
+to the gas price so that means that the miners by sorting,
+sorting descendingly the
+transactions by uh gas price yours will be ahead of theirs.
+So I have um an example but
+first I need to go with you for um through the contract. So we
+have a contract with two methods
+they are uh the two important methods in this example You can
+claim ownership but the
+important part of claiming ownership sh- uh you h- uh this
+transaction does two things. It
+accepts zero point one ether and you need to send that and if the
+contract was not claimed by
+anyone it will make you um the player of the contract. The
+second transaction um, checks if
+you aren’t the player of the, of the contract and if indeed you
+are they send you all of the
+ether available in the contract. The cool thing is that if you’re
+the first to do this you will
+become the player but if you are the second, you just add more
+ether to the contract. So I can
+show you a demo and h- um you can um what we did is that we
+made uh honey pot off this. And
+um, this is how it works. So in this screen I have uh local
+guest node which his the
+official Ethereum impl-implementation so it’s just
+mining, it’s just creating
+blocks at the moment. And in this screen I have um a local
+ID, to web ID that people can do
+to deploy contracts and test contracts. So I already have
+this, um contract deployed, it
+has uh, I think ten ether attached to it. And it needs
+zero point one ether from the
+attacker to claim all of those ten ether. Okay so now I tart
+Theo, I provide Theo uh the
+accounts private key because Theo needs to have an account in
+order to send transactions so he
+needs to be able to sign transactions and send them to
+the network. And then I also
+need to provide the contract. Um, what it does now is it uses
+the mythril libraries it scans
+the contract and it finds uh the exploit back. You can also, uh
+add your own transactions so it
+found a vulnerable path, uh it’s very similar to what uh Karl
+does, to what scrooge does. So
+let’s say for example um scrooge is trying to exploit this
+contract. So what I do now is
+that I just extract the first exploit. And I start
+frontrunning so what does now
+its just scanning the mempool for new transactions. So it just
+looks at the mempool, it queries
+the Ethereum node every second or so and it sees, it, it checks
+if any interesting specific
+transactions is added to the mempool that will be added in
+the next block. If that happens,
+we will see what, what it does. So Um, now I’m simulating th-
+attacker or scrooge so I’m
+changing to uh zero XSC, this is the attacker or the script keyed
+in. he needs to add zero point
+one ether, he needs to call claim ownership so he’s trying
+to uh extract that ether, he’s
+trying to become the owner or the player of the contract. And
+what immediately happens is that
+Theo sees that transaction and it adds uh, it’s own
+transaction, it increase the gas
+price just make sure that uh Theo’s transaction will happen
+before the script kitty’s. The
+script kitty will also try to retrieve the ether out of the
+contract Theo also identifies
+that and it’s uh sending its own transaction and um hopefully at
+the end we will have, we will
+see more ether in our um, in our account. So Theo’s account is
+zero x one the F the one that we
+see now, it’s um a hundred and ten ether so it successfully
+exploited that um, that script
+kitty. So um this was all done locally and then we thought what
+if it actually works in the
+wild? And we had to test it and um, what we see here is that we
+deployed a very similar honeypot
+and this is the victim’s transaction about an hour later
+somebody tried to exploit the
+honey pot. We also added this contract source code to make it
+easier for them to exploit. They
+didn’t know that something was up and they added they send the
+transaction with um, a h- very
+high gas price, I think they were trying to make sure that
+their transaction will get
+picked up really quickly and so in this case you have two
+hundred sixty one point twelve
+gwei. And the nonce and the uh the position in the block is
+one. And Theo’s transaction was
+um, two hundred and sixty one point thirteen gwei which is
+like the minimum necessary to uh
+frontrun the transaction and the nonce was zeros and because
+we’re, I, everything starts zero
+it was just before the attackers uh transaction. So that means
+that uh they became the owner
+and they also got the attackers ether. So there are cases when,
+when this actually works. You
+have to deploy your own honeypots and you have to design
+them in a specific way to make
+them vulnerable for front running. In your case it also
+helps if we share the source
+code. And a very interesting example that might um have a
+bigger impact is with
+decentralized exchanges. So decentralized exchange is
+something like uh normal
+exchange but it, it exists on the block chain so what you can
+do is that you can sandwich the
+other peoples transactions. So for example you see that they
+will buy something, you buy just
+before they do and you sell immediately after they bought so
+you just, you earn some money by
+doing almost nothing. And there are some cases where it fails.
+Um, it’s kind of hard to see
+what a transaction does if they use a proxy contract so they use
+an app in between them and the
+contract that they’re going to exploit. It’s impossible to
+frontrun if the miner uh is the
+attacker and they add their own transactions, so that means that
+they don’t need to add the
+transaction to the mempool first. Um, sometimes the
+Ethereum client decides to be
+unresponsive but there are ways to defend against Theo. So you
+can create a contract yourself
+and make sure that at the end of the contract you have more ether
+than what you initially started
+with. And if you know that you can also create the honey pot in
+order to not be uh to to beat
+this too. So there’s, there’s a lot of where, i- it you, you can
+fight a lot on the Ethereum
+network and this is just like, there, there are a lot of
+layers. So um what I really want
+is that I think we need more hackers. I think there are not
+enough people that are hacking
+on the Ethereum network. I, I might regret this but at the
+moment I feel like we need more
+of you guys to um, exploit the network and find more problems
+and just have fun. Um so we have
+links, some links here so, these are all the tools they are all
+open source. Maybe one important
+thing to say is all of the ether that we stole from the people,
+we gave it back. Um and uh, I
+think that’s it. We’re um open for questions I know there are
+microphones but we can, we’re,
+we’re available immediately after this.

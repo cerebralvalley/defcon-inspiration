@@ -1,0 +1,803 @@
+Thank you so much for being here
+this early in the morning. A lot
+of people think there are no mornings in Vegas. We're proving
+them wrong consistently. And
+anyway we're going to talk about measuring the IQ of your threat
+intelligence feeds. If you are
+from the internet and you do the Twitters we have, like, a
+hashtag so you can hash tag the
+talk and making fun of us. Please do because I want to
+laugh at everything later
+because I can't check Twitter here. It's kind of lame but
+that's the way it is. I don't
+like talking about myself. I just brought here a very special
+guest. This is Wendy Nader. She
+going to do the introductions for us. >> You didn't bring my
+fez and my cup of rum. All
+right. Good morning again everybody. I want to introduce
+these awesome guys. I am a
+little annoyed with them because in my analyst role I cover
+threat intelligence and in this
+talk is just something that I wanted to do. But they probably
+did it a lot better anyway. We
+have Alex Pinto otherwise known as the brain from Brazil. Is
+that right? He's been giving
+talks in all three conferences this week. And people just can't
+get enough of him. And his
+hacker spirit animal is decaffeinated Kathy Barra. Kyle
+Maxwell, on the other hand, is a
+math smuggler. His spirit animal is the axiomatic armadillo. I'm
+here to tell you he is a
+fugitive time traveling Karl Marxs and there's a reason why
+his initials are KM. Sorry. I
+had to out you like that. So enjoy the talk. (Applause) >>
+Thank you so much. Anyway, we're
+going to cover a bunch of stuff. We're just going to give a brief
+introduction about threat intel
+and really go into what is the crazy idea about measuring
+threat intelligence. Anyway I'll
+just ask Kyle to do his magic. >> Good morning everybody. So
+we're going to talk real quick
+about threat intel. We didn't want to do threat Intel 101 for
+those who have thought about it
+before. Honestly the stuff we talked about today, talk about
+that what that really means.
+When we talk about threat intel, or intel in general there's two
+things we really actually care
+about. It's not IP addresses. Its capability and intent,
+right? What can your foes, I
+hate the word "adversaries" and all of that. So I'm going to
+bring it back Viking style. What
+are your foes able to do and what do want to do? That's what
+you really want to know so you
+can prepare on your end for whatever it is that you need to
+do. So that's the core idea that
+what we're trying to measure, honestly most of the time what
+we look at threat intel is
+capability. What are they doing? What are they able to do? We
+don't spend enough time looking
+at what they can do or rather what they're planning to do. So
+we'll talk about that a little
+bit. There are a couple of key concepts that I want you to be
+able to take away where there
+are some dichotomies within this field. So we're going to talk
+about kind of these cage match
+between things that oppose each other. One of them signatures
+versus indicators. So Dave Vital
+for example has made the point very correctly that a lot of
+times the way people use
+indicators or indicators of compromise sounds like
+signatures, right. But that
+shouldn't be. If you are using them that way, you are doing it
+wrong. 	The idea is that
+indicators rather a signature says this is definitely
+something that happened here.
+It's, like, a fingerprint, right. You have a very, very
+high degree of confidence that
+this means X. Whereas an indicator says look over there,
+there's something fishy going
+on. And you may have different levels of confidence. You may
+even have a pretty dang high
+level. But the reality is that it's not supposed to be used for
+blocking. It's not to be used
+for complete confidence. It's supposed to indicate something
+that you need to go look at. The
+other thing I'm going kind of deflate a little bit here is the
+difference between threat data
+and threat intelligence and data and intelligence in general. Now
+we talk about threat intel feeds
+here because that's what vendors typically label them as. But
+they're generally speaking
+they're doing it wrong. It's not threat intel because it's data.
+Data without context is UGH. If
+you want Intel you need to do a lot of things, right. You need
+to be able to establish some
+context around it. You need to be able to add some of that
+intent and capability understand
+and we talked about it a minute ago. And as we're going to see
+you kind of escalate up the
+abstraction of what you are looking for. But since this is
+what vendors sell it as we want
+to make sure people know at least what we're coming to talk
+about. There's also a difference
+between tactical and strategic intel. Tactical you can think of
+as the how and the what. Like
+what they're attacks, how they're going about it. Whereas
+strategic intel and this is a
+continuum not a binary either or, towards the strategic end,
+you have the who and why. Who
+are my foes? Why do they care? And why do I care about them?
+This continuum is important to
+understand what type of Intel you are getting. And then very
+briefly we talk about atomic
+indicators versus composite. Atomic indicators are an IP
+address. A packet stream you are
+looking for. A hash And composite is when you pull these
+things together and now you
+start to get some value out of them because I really don't give
+a SHIT about the IP address but
+I do if I see it combined with other things. 	A colleague of
+mine has a concept he calls the
+pyramid of pain! And I always use it because I like to say it
+like that. The pyramid of pain!
+And the pyramid is basically this idea. At the bottom of the
+pyramid and you can quibble and
+Alex and I do, about what is easier and what's more trivial,
+IPs or domain. The honest truth
+is it really depends on content if you are talking about domain
+generation algorithms versus
+phishing. or what have you, but the idea is Either way they're
+kind of at the bottom. It's
+pretty easy to get a lot of IP addresses. Right? It's also easy
+for foes to change their IP
+address. As you move up this pyramid of pain you get network
+artifacts that are a little
+harder for you to analyze and figure out what to look for. And
+a little bit harder for the
+attack to be able to change on his end. Whereas now when you
+start to get to specific tools
+of TTP whic are tactics, techniques and procedures, how
+these guys go about what they're
+doing, that's much harder. It's much harder to change your
+process than it is to flip a bit
+and have the hash come out completely differently. Now,
+that said, we talked about
+simple, easy.and trivial We're going to see it's not always
+they're simple and easy. But
+relative to these other things, right. With that said, I'll hand
+back over to my brother here to
+go into his analysis. >> So, I mean, just a side note. I think
+if you did like do the pyramid
+of pain in a falsetto voice it would be much more funnier. But
+that's just me. >> That would
+hurt my throat. >> Okay it's your throat. I guess the point
+here is like Kyle was talking
+about, I mean, should we care more about the IP addresses and
+domain names if that's all you
+got? Ideally all of our intelligence would be a bunch of
+contacts in it. We'd all have
+animal names attached to all of them and it would be awesome. We
+would really understand what
+we're up against. I really want to work with IP addresses here.
+They have a bunch of interesting
+stuff we can look for. And the thing that is interesting for
+me, it's finite resource people
+are always bitching about iPv6 stuff like that. The fact is
+there is an intrinsic cost of
+getting and changing an IP address. Some places it's easier
+or less easy for you to get an
+IP address to do that stuff. Right. So people are quite on to
+it. Some data centers, some
+providers, if you try to do something a little weird they'll
+shut you down almost
+immediately. Others you like to have to talk to them we've been
+here for three months while
+they're ignoring you and stuff stay there's forever. Maybe
+there is some structure, some
+patent there. I'm actually proposing that if we're getting
+a bunch of these IP addresses
+why don't we try some experiments in them to see if we
+can learn a little bit more
+about what thus threat intelligence landscape is, I
+don't say that in the threat
+intelligence landscape like all capital letters like what the
+world is doing against the world
+in cyber war. But who is actually trying to get to you.
+That's the thing you should be
+most concerned about. 	Anyway let's try to do some science
+here. Can we measure how much a
+specific feed is going to help? How it's going to help us in our
+strategic defense of practice
+we're trying to do in our organization. Can we actually
+get something out of them. Are
+they just a bunch of numbers with DOTS in them? How can we
+actually measure? I have some
+ideas and I wanted to share those ideas with you. 	 So
+actually I put together all of
+this is GPL3, a bunch of statistical tests and data
+visualization that you can do,
+You do have to use R. I almost did it on purpose so you guys
+start to get to know some
+statistical languages. Get with the times. In five years it's
+all going to be data. I'm sorry
+but that's pretty much it. There's some phyton dude beside
+me who is just going to be
+bothering me the rest of the talk. All the code is there. The
+sample data that i used for the
+talk is there. So you can rerun everything and say there is a
+bug here youre such a stupid
+guy, and stuff like that. But look how I know how to use this
+library much better than you.
+You can do all this awesome stuff. Also, all the graphs and
+all the data that I show here is
+in the mark down file. So it's pretty much here is blah, blah,
+blah. Here is the code, the
+results. you can actually follow thru if you like It's all in the
+repository. There's a link to
+everything. Let's get started. I think. 	Just for you to have a
+general idea how did I structure
+this data, how did I try to, like, create a sample database
+or something like that? First of
+all, I was trying to extract what I am calling the raw
+information from this feed,
+right. And I extract both IP addresses and host names. Just a
+side note, all of this data is
+publicly available, right. So all this stuff that I've
+gathered, and I'm going to show
+here, you might as well just gather. And we actually have a
+treat for you by the end of the
+talk that we might just need to help you a little bit with that.
+But the point here is, okay, you
+got your iPv4s you git your FQDNs I did this weird thing. It
+may sound weird at first when I
+am calling stuff inbound or outbound. And it's pretty much
+I'm just trying to differentiate
+very broadly between the types of threats, let's say, that
+these IP addresses and domain
+names provide me. not so much domain names for inbounds but
+uuhhh So think about the way the
+data flows from your organization or your IP or your
+dingly tingly internety thingy
+think about all the direction as things go in and go out, right.
+So, if it's someone that is
+spamming you I am calling that an inbound feed. If you have to
+access this website to download
+this malware or it's a dropper or CNC I am calling that
+outbound. and thats pretty much
+the list of the feeds that i am harvesting, There is a mistake
+in this slide so you are free to
+call me out on the internet if you figure it out. But the point
+is, and all of this is
+documented which feed is which but if you guys have been
+playing around with this you
+should recognize most of them almost immediately. How did we
+prepare this data for the
+experiments we're going to talk about? First of all, we I only
+wanted to work with IP
+addresses. First because there's more interesting topological
+stuff that you can work with as
+opposed to domain names. I do plan to do something similar to
+this using who is data in a
+future installment of this specifically for host names. But
+I was only willing to work and
+frankly only had time to work with IP addresses. So I just ran
+all the domain names through the
+passive DNS database. Particularly the far sight. For
+that day that I got this
+indicator, what were the IP addresses active that day,
+right. Assuming you had the data
+and were taking some measure of that data, that would be the IP
+addresses you have been flagged
+as weird, malicious or suspicious or however you take
+this threat intelligence. So we
+also removed non-public IPs we dont care if the IP address
+results to local hosts that's
+obviously a parking technique but it wasn't really conductive
+to what we were trying to do
+here. Anyway, we got this domain names and IP addresses and we
+made them a bunch of IP
+addresses. After we do that we went to do some enriching on
+these guys. So we want to make
+sure we were able to identify what were the ASs that was
+associated with the IP addresses
+on that specific day. So there's a period of time that we have
+the data for and that's when we
+did those, we did those enrichments right. Also country
+from geo occasion databases. We
+also resolved the remote host also using passive DNS at that
+time. And I had some plans for
+it but we didn't wasn't really interesting. The data was too
+sparse. There was not a lot of
+cool stuff to be shown. Just a side note as well. Although we
+are doing geolocation there will
+be no maps at this presentation. Maps are not a good way to look
+at data. Please, stop doing
+that. (Applause) I mean, if the country is big you think they're
+more of a threat. That's how the
+brain works. They look at stuff that's bigger and more
+important. Stop using maps. Okay
+let's move on So, yeah, this is a sample, right. And you can see
+exactly how easy or not it is to
+actually use the code that I put together to actually okay I'm
+going to load in from my
+database and I want to see it and see what data is in it, et
+cetera, et cetera. You can see
+there some examples of things that people thought to be bad in
+a specific moment and time. All
+right we got our data. So what are we going to do with it? I
+propose three different
+experiments here, right. I'm calling them novelty. It is a
+pun because it has both
+meanings. You can use it because that's how much this feed is
+refreshing itself as time goes
+by. Or maybe it's just like I am going to add a bunch of stuff
+and take a bunch of stuff off.
+and make it look really active But anyway you got to know how
+your feeds are updating
+themselves. You want to make sure that whomever you are
+getting them from be them open
+source or commercial, the guys actually putting some work into
+it. Because, I mean, things move
+around. There's an overlap test which is one that I mean, it's
+the most simplest thing ever.
+Just, like, let's compare everyone against everyone and
+see how much they have the same
+indicators, right. This is specifically useful if you are
+trying to buy something, right.
+Just get all the open source feed that you can handle,
+compare them against the
+commercial feed, and how much am I actually getting for X. I
+completely lost it. But like
+this ridiculously amount of money I am paying for this. The
+one that is much more
+exploratory there a little bit more math than the other ones
+which I'm calling the population
+test. Which is can the data we're getting actually teach us
+something about our adversaries?
+Can we actually learn something from them? Sorry. Sorry. Foes.
+Foes. Can we actually learn
+something from this? Can we actually find some patterns on
+this attacks? Anyway, population
+is tricky. I'm doing some examples here where I'm
+comparing against the whole
+population of IP addresses where they should be at least. And
+also should ideally mean your
+data. So get your data and compare how are the IP addresses
+that your companies accesses or
+accessed by your company against actual threat intel feeds.
+Anyway, we'll get there. I was
+looking for an IQ. I wanted a grade. No we're not going to get
+there. Specifically, I want to
+make sure that you guys understand that the idea here is
+to make sure that you guys are
+able to reach your own conclusion, right. Whatever I
+think is right for my company as
+far as the specific mix of threat intelligence or i should
+be focusing on this or that is
+going to be very, very different from whatever you are doing at
+yours. I just want to make sure
+that you understand, feel free to publish your own Metrics.
+Feel free to tell X Y X sucks.
+I'll try not do this because I kind of like data and I don't
+want to piss of everyone at the
+same time. I try to get on their good side. if you wanna meet and
+do this work for you i can help
+you out >> youre so nice. >> Well I don't know. Anyway, I do
+intend to--I will do more
+private research on this because there is all of this comes from
+the other researching that I do.
+So I actually had to go through all of this. I'm explaining
+which were the threat intel
+pieces I would use in my models. Just thought it would be
+interesting to share. Anyway,
+novelty test. So we're measuring pretty much added and drop
+indicators, right. So how much
+stuff is being added day by day and how much stuff is being
+removed day by day, right? And
+if you run this kind of thing you will get something like
+this. This is specific for
+inbound. So alienvault is actually divided because they
+got both stuff in there. It's
+majorly inbound. There's a lot of inbound stuff. And it's
+because it's fairly easy to get
+like you just run a couple of honey pods and suddely you are
+like threat intelligence all the
+way to the bank. That sounded worse than I meant it to sound.
+But anyway. The point here is
+you want to make sure that the stuff that you are doing is
+actually refreshing itself with
+something. So you can see there just like a 20 percent refresh
+in one of them. Sometimes 50
+percent. You definitely do not want the guy on the lower right.
+I mean, they're not dropping any
+IP addresses, right. The red line is how much it's being
+dropped. So it's an upside down
+and the blue graph is how much is being added. This guy is
+adding a minimal ratio of stuff.
+this is only percentage, this is not an absolute values And it's
+not removing anything else. I'm
+not sure the guy is doing the work. It looks abandoned to me.
+So it might not be a good one to
+actually keep using as you go forward. But not updating every
+time does not mean it's bad,
+right. So this is an example from outbound. Also you got
+stuff moving up and down. You
+got something adding or not. And as a rule of thumb if something
+is being updated hourly or being
+updated daily there's a lot of out related stuff going on there
+and it's potentially getting
+information from other sources as well. And it's being
+presented to you with little or
+no human interaction. If it's something that's more like
+weekly or something like that,
+maybe there's some people actually doing the work and
+computing and everything. Of
+course when I say all of this I mean specifically about open
+source, right. If people are
+getting paid to actually deliver this to you, they might as well
+give me hourly. humanly created
+feeds all the time otherwise i should not be paying for them at
+least thats my opinion It's cool
+because it can see patches. How malware domain list. and malware
+domains they actually have a
+huge spike in a specific day, If you guys are wondering that's
+was right about the time we had
+that no IP thing with Microsoft and people got to know, like, a
+bunch of new domains and
+everyone started sharing it. So you can actually see when stuff
+happened in a way. It's kind of
+cool. Anyway, do this test. Run this and see how much your feeds
+are updating and see if yeah
+does it sound right for the sizes of the company or for the
+kind of data that your reading
+that they are actually looking at it It is a lead indicator of
+quality. It's not the last one.
+We can talk about overlap, right. More data is better but
+there's so much you can give
+your hadoop vendor to actually store all the data. So let's try
+to keep it only add data that is
+not the same or it's useful. I mean, it's easy for me to say
+that because I don't really
+care. I do lot of summarization for people the way that i
+consume threat intelligence some
+people use the fact that something appeared in multiple
+feeds as a quality issue. A
+bunch of people read it. They might not have all done the
+research. Or just want to leave
+it out there. But I don't know. I honestly don't know. It's just
+that you have to make sure what
+you are looking for. So when you look at inbound you get stuff
+like this. So the brighter the
+square there's more overlap between those specific feeds.
+And this was a specific day in
+time. And you can rerun this test for all the 30 days that I
+have on the data set. And you
+can take your conclusions about, I mean, who is potentially
+drawing this information from
+the same kind of honey pod or some kind of research, right? I
+have no idea what's going on in
+the sense that this guy did that. And honestly I don't
+really care. I just want to make
+sure that if you are ingesting this and if you are working with
+this you are not just, like, oh
+yeah I got two minute indicators here. All the IP addresses in
+the world. But it's, like, yeah
+a bunch of duplicates and that's not really helping your bottom
+line. Something that was
+actually I found was very interesting and it actually
+relates to information I heard
+privately. Is that when you look at outbound, there's much,
+significantly less overlap,
+right. So it seems that peoples aren't doing their research or
+work on some specific issues.
+And specifically some people they will specialize in specific
+threat. Oh yeah I'm specific
+whatever hunter. And but okay. Sorry. And what we get here is a
+little bit of the domain only
+you do get a little bit of overlap. I just wanted to point
+out that specific day that we
+had that spike. On that day there was actually a 25 percent
+of overlap of potential
+indicators between malware domains and malware domain
+lists. Because they all updated
+quickly to add all that information. Which is very good,
+very positive. Then you see that
+result also represented here, right. Because you can measure
+the overlap those feeds have.
+And also you can also from this graph you can very easily see
+that a lot of the stuff that the
+WCH guys put on their Zeus feed is also being used by alienvault
+as well. Which also I think is
+good. I know a lot of people who use it and a lot of people who
+use WCH stuff. Anyway let's get
+to something which is a little more interesting I think which
+is the population test. And I
+guess it's interesting and this is kind of a cornerstone of the
+research that I started doing a
+couple of years ago. Which is, you know, maybe, maybe stuff
+isn't random, right. Maybe it's
+not like maybe we can actually track. There's some sort of
+likelihood that some specific
+corners of the internet are more likely to be targeting you or
+not. And all the different
+information that you get are from the providers, they will
+give you different information.
+And there is some sort of alignment that I believe that
+you should be trying to reach
+when you are talking about here is my data, right. These are all
+the IPs address that im
+communicating to. Potentially the threats that I have, the
+people who are targeting me or
+the people who maybe have already reached me, that are
+exfiltrating data they are
+probably from that pool. It's not going to be like an IP
+teleporting thing. I am not talk
+about which type of animal web or from the from the zoo you
+come from. I am talking about at
+the end of the day does it really matter. But there has to
+be a way that the data is being
+exfiltrated the IP address is there. The guy who is out to get
+you, who is potentially messing
+around with your data is on that list. So why don't you try to
+tailor the threat intelligence
+and the research you are doing through the specific countries
+ans ASNs that actually make more
+sense to your data, right. So then we start doing some
+comparisons and doing some
+tests, right. And we've come up with some interesting things. I
+specifically separated the
+domain, the outbound and inbound stuff here. Of course on the
+inbound China all the way,
+right. And I can see some people smiling here. Yeah. And at least
+in my perspective the actual
+penetration of those kind of things are people who are doing
+SSH scans or they have, like,
+this three year old joomla or exploits they're running against
+the whole internet. I don't
+think those guys are really going to get in. I mean, if they
+do you shouldn't be in this talk
+you should be in, like, 101 or something. But the point I am
+trying to make is when you start
+looking at the outbound data it's not that different from it
+is different from some but the
+fact that China wasn't the first one and the first one was the
+U.S. actually made me chuckle.
+Actually, if you squint you can see that the actual proportion
+and I'll get there. The actual
+proportion of Chinese IP addresses which are actually
+distributing malware is less
+than the actual Chinese proportion of IP addresses on
+the internet. So, I mean, maybe
+they're less likely to be posting malware than other
+countries which I think is kind
+of funny. Anyway, you can play the same game with ASN, right.
+And the prevalence of Google
+there obviously startled me. At first I was looking at that and
+was, like, okay this is a bunch
+of punk domains. Everybody knows that. When this stuff, domain
+names they are they're not being
+active and used, like, they're changing their infrastructure.
+Someone just took the BOTnet
+down and put something else together. just spark it all like
+8.8.8.8 or 1.1.1.1.1 or
+something like that and those are all owned by Google. So at
+any moment in time like a very
+high percentage of your domain names from these open threat
+intelligence feeds will be
+pointing at Google. Be aware of that. But, even so, I don't
+know. dont be evil and all that,
+im with them The thing is I guess the point I'm trying to
+make here is this kind of
+population test, they can also help you to key weigh your
+feeds. Right. I'll get to the
+specific of that. I just wanted to show you the graphs and now
+I'm going to get to the math.
+I'm sorry about this. But the point is I don't like to squint,
+right. So let's do some
+statistical entrance testing. Let's compare the proportion,
+right. So, if I know the exact
+proportion of IP addresses on the US, right, just get any geo
+IP database and make sure you
+are, like, keeping with it, make sure it doesn't enrich in one
+database and use another one we
+can do an exact binomial test which would be okay assuming
+that the I can just choose
+randomly the IP addresses that are going to attack me, is that
+consistent with how the IP
+addresses are distributed? Even if I don't have the full
+population, right, and I'm only
+like comparing my sample of my data against the sample of the
+threat intelligence feeds, I can
+use something that's the chi-squared proportion test
+which is similar to the
+independence test. Which pretty much ask the questions these are
+two different samples of stuff.
+Do they look like they came from the same population, right. And
+it's a little bit more fuzzy and
+fidgety than the other one. That's why the other one is
+called exact, right. But it's a
+statistical tool that you may have. So I really wanted to get
+an idea of our error measures. I
+wanted to get confidence intervals and say it's something
+along this line. But at least I
+can tell you I'm messing it up here in this calculation but
+this is pretty much how much I
+am messing up. I can also use p-values. I personally apologize
+to Alex Hutton for using P
+values and not like doing some bayesian evil shit. But he said
+it was okay. So I'm allowed to
+do this. Some people have to clear it with their lawyers I
+have to clear it with Alex. 	So
+the point is, if we're doing p-values we're being very
+conservative. So for the number
+of tests we do, so what does that look like? we're assuming
+95 percent because it's pretty
+much what everybody does. If we're doing multiple tests we're
+actually dividing our critical
+value or the value that we use to oh there's something
+interesting here by the number
+of tests that we do. So what does that look like? It looks
+like something like this. So I
+have this I'm using this functionally extracts the
+population from a threat intel
+feed. It's all there. And I'm comparing it to my known MMGU
+database. And lo and behold, it
+seems that Thailand is a winner right now. Which maybe the
+proportion is five percent more
+than the number than their actual proportions on the IP
+addresses there, right. Followed
+closely by the US. Russia is there. I'll give you guys that.
+But you should go to China.
+China is the second least likely to be hosting something.in
+comparison to the random
+proportion, I don't know maybe it was not these feeds. Maybe
+these feeds were not tracking
+specific addresses for there. But that's not the point. The
+point is if that's the data that
+you have and the data we should be comparing, that's what you
+should be analyzing. You want to
+add something? You were just gasping. Did I say something
+wrong? >> No you are good. You
+are good. just keep presenting knowledge bombs >> Co-presenting
+is hard. The guy is judging me
+right beside me. I can't really see you because of the lights.
+Like, why did I get into this?
+If the feed value is higher than critical value which is the last
+one here it's pretty much we
+can't really say anything. It looks like it's on par with the
+randomness that we would get. A
+challenge we got when we reached this conclusion is that hold on,
+I don't know what to call these
+countries yet, right. Come on. I mean, we do not have, like, ugly
+animal names for all of them. So
+we propose a guide. So as you are trying to create your own
+and you are creating your own
+threat intelligence with those statistical techniques you can
+actually call people and
+actually view people to what you are doing. Just clarification.
+Capybara. is like south south of
+brazil and toucan is more like the amazon part, its very very
+different hacker spirit animal
+just be consious about that. Where are my Texas people?
+(Applause) >> This is not an
+exhaustive list. So feel free to tweet your own suggestions at
+the hash tag of the talk. We got
+to catch them all. Anyway, then we get to the not exact test.
+And this is just a little thing
+that I did trying to compare how this feed evolved and changed
+from the 11th of July to the
+12th of July. Those are the same feeds. What did change from the
+one day to the next? You see a
+bunch are pretty much the time on the bottom side. Thailand
+again, there's actually a trend
+from this information you are getting from your threat
+intelligence feeds. That
+Thailand is getting more likely to attack. Based only on the
+data and geo location. So, if
+you got I can see some of you guys have got, like, the brain
+thing going on and that's
+exactly what I'm hoping for. There's a lot of interesting
+stuff and a lot of interesting
+conclusions you can get from your own data. Not so much the
+threat intelligence feeds also
+trying to do something like this. While you are at it at the
+animal thing, we do need some
+for Thailand. Because they're everywhere on this presentation.
+theyre obviously up to something
+bad Tweet it. Tweet it. We can't really hear you. So then I
+wanted I was bothered by this
+Google thing right and I wanted to make sure that I could
+understand if this is all
+(inaudible) or something different. So I ran the same
+test, the same exact proportion
+test on the AS information as well as the population
+information. And yeah Google's
+like ten percent proportion increase. That's crazy. That's
+too much. That's way, way too
+much. And then, what? >> (Inaudible). >> Okay. Where is
+he? What we get there is if you
+actually look into the data you will find that maybe not so
+much, maybe it's not just park
+data, there's some cleaning that needs to be done. I am not the
+biggest fan of chrome but I'm
+pretty sure it's not malware so probably we shouldn't have
+chrome.google.chrome in our list
+but Its alright, it happens sometimes. You just got to be
+sure if you are consuming this
+you need to look out for information like this. And maybe
+they can help you do a little
+bit of triage because no one is going to look through the whole
+thing all the time. I am talking
+about a bunch of stuff and I talked about my data. What about
+your data? How can you get your
+data to use those? For that I'd like to invite back my good
+friend Kyle Maxwell. (Applause)
+>> Oh my God thank you Alex. So as you are pulling in these
+feeds you want to be able to do
+this yourself. You want on going data in addition to be able to
+run these analyses for
+yourselves you may have other uses for the data. In this case
+we did a lot of the work for
+you. But ongoing we need something to help you with that.
+So what we did is we are
+releasing this week a tool called combine. You can get it
+right now. its a TPO ver. 3 And
+what it is, it is a tool for harvesting and processing these
+types of feeds. >> I just want
+to point out at the ML sec project we're very serious about
+our needle in a haystack joke.
+so this is why this is a combined harvester I am not
+implying, well maybe I am,
+that's all hay. >> So there's a few different components to it.
+reaper pulls it in We really,
+really like this metaphor here. so we reap it in that just pulls
+in the data directly, We'll
+normalize it to a very simple data model. we do a little bit
+of validation We throw out all
+the RFC 19, 18 shit stuff like that. Do the AS numbers, the DNS
+look up. We transform the data
+into CSV or J song. We haven't released the SY box or sim for
+splunk As this is an open source
+project, help us help you. Feel free to submit full requests for
+it. That's another output form
+that you want. We're constantly trying to feed more data into
+it. This can be your own data
+sources. There's a number of tools to bring in. CSV,XML,
+parsing HTML, what have you. We
+have a number of feed sources bundled in in terms of the URLs.
+We're not saying clearly based
+on the last half hour that any of these feeds are good or bad
+these are just the ones that we
+have and we'll add more as time goes on. When we do the
+enrichment, if you are not
+familiar with the term think metadata and metadata
+accessories. So we're pulling
+the autonomous system and geo location only down to country
+level from the maxline database.
+We do DNS resolution from the far site passive DNS database.
+That requires an AP IP. If you
+have one fantastic. Plug it right in. If you don't. Ask them
+for one. Tell them Alex Pinto
+sent you and he'll get you hooked up. >> Alex, really good
+folks at far sight can help you
+out with that. Again, all of this is open source software.
+This is not commercial. This is
+not us trying to make a buck off these tools. This is, you know,
+us trying to make thing as
+little better and help you pull in these feeds and pull in your
+own data as well. >> And,
+honestly, I don't think that's where the cool stuff really is.
+And I we had to build a lot of
+this as we were building out the research we were doing for MLSec
+project. We just figured out
+yeah but this is very commoditized stuff. or at least
+it should be very commoditized
+stuff, So we want to make sure that we are replacing our stuff
+our internal stuff is being
+replaced by open source versions and we will continue to support
+them as we actually need to use
+them in dot coding and all of that. Talk to us about the
+project if you are interested.
+If you like the specific TIQ-test you want to test your
+data against it. oh but i dont
+wanna publish my feed We can totally help you out. Either you
+setting up your own stuff to do
+that or we can help you out and do the test for you, right. And
+I just want to very quick
+takeaways before we are kicked out. Look at your data. That's
+all I'm asking, right. That's
+all you should be doing right now. And I will try and as much
+as I can to keep banging this
+point forward and actually providing helpful tool that
+people can use for that, right.
+i Also feel very strongly about the asymmetry of information.
+So, if people tell you something
+is good, don't take their word for it. Just try it, right. Just
+test it. And make sure that it's
+appropriate for what you are doing. Anyway, if you just got
+data lying around, you know, we
+can pick it up for some exercise. We can play some
+games. >> Think about, like,
+data sitting like with dot sitting. We can totally do some
+data sitting for you guys.
+Anyway, thank you very much. (Applause)

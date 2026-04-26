@@ -1,0 +1,726 @@
+>>Let’s get started, uh please
+give Gerald and Roger a very
+DefCon welcome. [applause] >>Hello DefCon, um, hello
+everybody. Um, today we going to
+um discuss the current state of uh DNS rebinding including
+attack recent attack and
+prevention technique. And we also discuss um all uh tool uh
+singularity of origin its a DNS
+rebinding attack framework. And how its incorporates this new
+um, technique and how you can
+use them today. So our contribution in a domain of DNS
+rebinding um, are twofold. Uh,
+the new tool singularity uh it has everything y- you need to
+perform DNS rebinding. It is
+reliable, it is performant. It has built in payload for um
+command services. It can perform
+uh automatic service detection and exploitation. Um, the second
+area of contribution uh is uh in
+the research of uh, technique to improve the speed of rebinding
+and how to bypass command DNS
+rebinding protection. So um, I’ll are talk will be
+articulated around um, uh, the
+new tool and the the techniques uh it incorporates and the we
+will a- include a customary um
+uh, refresher on the basic of uh uh DNS rebinding. We will also
+discuss um uh, an architecture
+we have implemented in singularity. Which allow you to
+indirectly interactively browse
+uh, um, a hooked browser internal network. So who are we?
+We are Gerald Doussot and Roger
+Meyer. We are security consultant at NCC Group. Uh we
+are attached the San Francisco
+office. And uh we are the authors of a Singularity of
+Origin. So why should you care
+about DNS rebinding? Most developers understand the when
+they bind their application to
+all interfaces, that they expose themselves to remote access and
+this is not a good idea. So what
+do they do to fix this? They bind the application to a local
+host. They think only trusted
+users can access its a trusted environment, they don’t need
+authentication, right? And then
+all these DNS rebinding issues happen. The eos cryptocurrency
+wall that is vulnerable, Google
+home, Roku, Sonos speakers are vulnerable. The get ethereum
+client is vulnerable. Redis,
+Memcached, the Elasticsearch, the Kubernetes dashboard on
+Minikube is vulnerable to DNS
+rebinding allowing RCE and VM Escape. The Raids Webconsole was
+vulnerable. We see more more
+applications exposing uh ah web ah http server on the localhost.
+Especially through the
+popularity of framework such as Electron. The rise of IoT
+devices exposing sensitive
+interfaces on internal networks without authentication will make
+this even worse. We would also
+like to clear up certain misconceptions such that DNS
+rebinding is slow and can be
+solved by out of the box DNS filtering products or services,
+which is not the case. We would
+like to start with a quick refresher on how DNS rebinding
+works. The origin is consists of
+the scheme, host and port. To documents share a same origin if
+they have the identical scheme,
+host and port components. The same origin policy is an
+important security concept
+implemented in browsers, static dates hold two different sites
+with different origins can
+interact with each other. Certain interactions are always
+allowed between all origins such
+as forms submissions, links, redirects, content embedding.
+The cross origin reads are
+typically not a lot. This is important for example if you’re
+logged in to gmail dot com and
+browse to an attacked controlled website, you don’t want the
+attacker control code to be able
+to read your gmail messages. DNS rebinding permits us to bypass
+the same origin policy. We like
+to show you a visual walkthrough to make it easier to understand
+the concept. So on the left
+side, we have the victim, which is the browser. We have a target
+service, which can be a service
+on the victim’s local host or on the eternal network. We have an
+attacker which consists of a DNS
+server and the web server on this public IP. So on the right
+side is the internet, on the
+left side we have the intranet. The victic can access the target
+service without authentication
+and the attacker cannot directly reach the target service,
+otherwise we wouldn’t need DNS
+rebinding. So step one, the victim browses to the attacker’s
+website hosted on rebinds dot IT
+that domain in. We respond with a DNS A record of the public IP
+address and load some Javascript
+which keeps running in the victim’s browser and waits until
+the DNS record expires. Once it
+expired, we make another request in the same origin. This time we
+respond with a different IP
+address. The IP address of our target service 127 0 0 1. Notice
+that the origin rebind the IT
+did not change. We did not violate the same origin policy.
+The browser will make this
+request and when will allow the Javascript to read the response
+and where we can exfiltrate it
+back to the attacker. All of this is possible because we did
+not violate the same origin
+policy. It’s still pointing through rebind on IT only change
+the IP address. This was a high
+level overview, which omitted a lot of details. There uh a lot
+of previous good research, which
+you can look at if you want to know uh how a more about the
+details. We would like to show
+you first demo on iOS using Safari where we can achieve DNS
+rebinding in just 5 seconds.
+Using the cache flooding technique. In this case we will
+be exploiting a home router on
+router dot asus dot com, um and we will be just reading the
+index page and displaying the
+results in a Javascript alert box for demo purposes. So this
+is Safari we’re going to router
+that asus account to target we are trying to exploit. So now
+we’re setting up the attack.
+We’re going to the single RT manager web interface. We are
+setting the target host to
+router dot asos dot com. We’re leaving the target port at port
+80, we’re setting attack payload
+to a simple fetch get. We’re using the first then second
+strategy. And interval of 1
+second and we’re enabling the cache flooding technique. We’re
+starting the attack. This only
+takes uh about 5 seconds and we display the results. Uh what we
+see here is the return of the
+index page, which is just a redirect to the main login that
+ASP uh webpage, but it shows
+that we were able to read the response from an internal system
+to home route. [applause] Thank
+you Roger. Now that we have a grasp on the basics of uh DNS
+rebinding, uh, we are going to
+explore how we made an a DNS rebinding um more reliable
+within singularity. So lets say
+you have to you are fond of uh horse riding and uh you are
+trying to pl- plan your ne- next
+vacation and you found a website that just tell you how to do
+that, um, there’s nothing with
+this website, um displayed permanently, uh, is a Trojan
+Horse picture in fact, uh the
+website was compromised and is running um, a hidden high frame
+with singularity. So you connect
+to the website and you um don’t know it the malicious JavaScript
+from Singularity and uh uh the
+code it makes its first DNS query. So what is in a query?
+Um, as you can see, the the the
+query is made of several components. These uh components
+and codes, uh everything
+Singularity needs to perform an attack. So first you have a
+start tag um, then you have to
+attacker host IP address where we run Singularity. Then you
+have to target IP address or it
+can be a name as well followed by a session ID, uh session
+allow for the uh use of
+concurrent uh users and and uh, targets. Then uh you have the
+DNS rebinding strategy
+Singularity uh incorporates uh a number of uh de- uh different
+DNS rebinding strategy here you
+can see uh uh fs uh first and second also known as a time
+varying attack. Uh this is the
+simplest uh and most reliable uh DNS rebinding strategy you can
+implement. Then you have the n
+attack, then you have the attacker domain. The one which
+I’ve ever purchased or uh uh
+compromised. So um, to improve reliability, you want to remove
+uh any uh http performance
+enhancing technique that may impede DNS rebinding or stop it
+completely in its track. So um,
+we try to do the http caching uh in uh all browsers
+implementation and uh
+intermediate cache to ensure that the browser uh get a fresh
+copies of folder resources. Uh
+we also instruct singularity to drop uh idle connection from
+browsers. So when it is time to
+uh rebind against uh target IP address, then uh browser doesn’t
+maintain a connection to a
+singularity. What about TTL Value, um, mostly try to and
+other tools, uh, use uh a value
+of uh one second uh we tried zero in the hope that um, it
+sill break stuff, it didn’t. Uh,
+zero second is a valid TTL value so we just stick with that. So
+how do we know that we have uh
+successfully rebinded against the target service? Um, its
+directly uh singularity use an
+index token in the html body. Um so is this index token present?
+Um, then the Javascript code
+knows uh its still pointing against Singularity. Is this
+token is uh just appears on the
+nex- next fetch? Uh, then it means that you have successfully
+rebinded. We recently moved to a
+custom http header. Uh however the index token is still useful
+in a a one specific DNS
+rebinding strategy. Uh, where we uh advertly uh terminate the
+connection uh from singularity
+to the browser. And the browser get confused, we will uh going
+to moditize uh on this later.
+Something you need to consider as well is that uh you may uh
+encounter an environment uh
+where there is an IPS ni- uh IDS um, and uh this IPD/IDS may
+admit their own uh various uh
+DNS queries, when the C uh request from the uh the the
+target browser. So it it means
+that you may receive uh, uh, uh, IP address uh out of sequence
+when you make your DNS query. Um
+um, which um, um means that um, the target browser will never
+see the IP address of
+singularity. Only the targets. So we’ll never be able to know
+the code and uh perform DNS
+rebinding. So to address that we um have an implemented a random
+DNS. Ran- um rebinding strategy.
+Where um, um, uh, we respond over with the attacker IP
+address or the service um, IP
+address uh which is a much slower technique in general, but
+you could get lucky. So um,
+we’re now going to explore we um improve the speed um, um, of DNS
+rebinding and uh Singularity. So
+the first to know is that implementation details matter.
+Um, the DNS uh rebinding speed
+will vary uh depending on the host implementation. Whether you
+use uh a Windows or Linux link
+environment uh Operating System such as um, Linux or macOS, the
+browser vendor, uh IE/Edge uh
+Firefox, uh Chrome and all uh it’s spinoff. Uh and Safari. The
+target specification matters um
+whether you use uh uh service, you you targeting a service
+that’s bound to the loop back
+interface or um, a on the private network or a remote
+public IP address. Obviously we
+just uh solve at a um external factor main practice piece such
+as the presence of an IPS and
+IDS. so just you’re straight, DNS binding may take 40 plus
+minutes uh when uh a using Edge.
+Uh and down to three seconds depending of what strategy you
+use. Uh Singularity can
+automatically uh fingerprint to optimize for speed um in some
+conditions. We’ll discuss this
+later. So the time-varying attack uh uh Singularity’s first
+then second is approximately 60
+seconds on all browsers except uh IE and Edge. Um, we um,
+there’s another technique called
+multiple answers that we didn’t believe would work uh, however,
+uh one of our colleague, Michael
+Roberts, from NC Group, uh, created a a small proof of
+concept. Uh demonstrating that
+it was working on Windows when specifying an IP address 127 dot
+0 dot 0 dot 1 and that we were
+achieving rebinding time of uh uh 3 second once we implemented
+that. However it didn’t work
+with um the same technique didn’t work with Unix like
+machine uh such as Linux or um
+macOS. However, after a big of digging, when we spec- specify
+if um uh target same as IP
+address of 0 dot 0 dot 0, uh we achieve uh approximately 3
+second um rebinding time. So now
+we have a solid and fast uh DNS rebinding against all loop back
+band uh services. Just
+illustrate that the high level of the multiple answer rebinding
+strategy work, so the target
+browser will emulate its DNS query to rebind dot it, uh were
+we ran Singularity as usual. Um,
+instead of responding um, with the IP address of the attacker
+then, uh the IP address of the
+service uh, as we do for the time varying attack. We respond
+with both recorders and time. So
+then target browser is going to keep um pulling uh the service
+um and um but determine wherever
+its pointing against Singularity or the targets. Uh, ve-
+Singularity is going to then
+implement a sub-stage a uh firewall uh uh firewall rule
+that will uh advertently block
+the traffic. This will force the browser uh to um, a connect uh
+to the target service using the
+second IP address we provided earlier. So the multiple answer
+technique um strategy work very
+well for loop back bands type of uh services so it just service
+uh uh for instance, for
+instances listening on the 127 dot 0 dot 0 dot 1. But we were
+getting inconsistent results for
+other target specification. For instance on the uh private
+network. Uh where a one attempts
+out of 5 would uh succeed. Uh we implemented another technique
+called DNS cache flooding. Uh
+this worked very well in uh Google Chrome and uh, Safari and
+iOS platform uh, basically,
+basically uh floods the cache of the browser with dozens of
+queries um and uh, a you can
+reduce DNS rebinding time from 5 to 40 seconds. Which is a great
+progress over the average of 60
+seconds. Uh our other demo was using this technique. Uh when
+we’re using iOS and we got a
+rebinding time of 5 seconds. Um, flooding the cache is performed
+in a separate web worker. So
+here you have a Chrome uh uh console and in blue uh you have
+your regular uh attempts to
+fetch uh uh resources to determine whether um, um, we
+were printing against target
+service or not. And uh, uh in between though this uh request
+you have thousand of query but
+still the cache of the browser DNS cache. Uh in attempt to a
+fix the IP address to the
+Singularity server. Forcing then the browser to point to the
+service for instance 127 dot 00
+dot 1. So we have a illustrated in this table some configuration
+and uh what can you expect. Uh
+uh from a a DNS rebinding time perspective. Roger. >>Let’s talk
+about DNS rebinding protection
+bypasses. Using Singularity we can bypass all known DNS
+rebinding protections such as
+those implemented in open source DNS servers, unbound or DNS
+mask. We would like to emphasize
+that common recommendations and default configurations do not
+provide complete protection. How
+do common DNS protections look like? Most solutions block
+certain DNS responses at the
+parameters. So when they enter your internal network. Some
+tools block of RFC 1918 private
+IP addresses, such as 10 slash 0 192 dot 68 slash slash 0. Some
+tools block local host IPs. 127
+slash 8. Some tools can be configured with which I- ch- IP
+addresses you’re using
+internally. Such if you’re using public IPs in your internal
+network you can get those
+blocked. Some tools block the 0 slash 8 range. DNSmasq and
+Unbound are two widely open
+source DNS servers. They are used in tools such as pfSense,
+OpenWRT, and certain home
+routers. There are also free public DNS services such as
+Ciscos open DNS which advertised
+that they have uh rebinding DNS rebinding protection implemented
+for open DNS. It’s called block
+internal IP addresses and that just blocks private IPs. DNSmasq
+has a setting called stop DNS
+rebind, which blocks private IPs. The 0 slash 8 range and the
+127 slash 8 range. This does not
+block local host. We will talk about what we mean by a local
+host in a minute. The unbound
+DNS server has a configuration setting called private address
+where you can configure internal
+IP address range and this will then be blocked. This is not
+blocked at 0 0 0 IP. The 127 0 0
+1 or the local host. Our first protection bypass is using this
+0 dot 0 dot 0 dot 0 IP address.
+This is a non routable or invalid IP address, but it works
+very well on Linux and macOS
+using Firefox and Chrome to access the local host. This
+bypasses protections that block
+DNS responses containing the IP address of 127 0 0 0 1 or the
+whole 127 slash 8 range. When we
+query Singularity. We can specify the target here, so we
+can use the 0 dot 0 dot 0 target
+and then the DNS response will be an A record pointing to 0 0 0
+0. What if the DNS protection
+solution blocks all internal IP address? Then we can use C
+names. Canonical Name records
+are DNS records which map one domain name to another domain
+name. We can return a DNS C
+record instead of an internal IP address. So just wiki dot NC
+Group dot come or jenkins dot
+internal dot corp dot com. Whatever the target is. This
+bypasses protections that block
+DNS responses con- on of private IP addresses. The local internal
+DNS server will then resolve the
+CNAME for us. And you don’t want to block internal DNS resolution
+if you want to use internal host
+names. When we query Singularity we specify the target here. So
+instead of an IP address, we
+specify wiki dot nccgroup dot com. And then the DNS response
+will be a CNAME pointing to wiki
+dot nccgroup dot come. Our third bypass is a variation of the
+previous technique. We can use
+the CNAME of local host. This bypasses protections that block
+DNS responses containing 127 0 0
+1. This works well in Linux and um, macOS. We query Singularity,
+we specify local host here and
+then in the response we just return a C name pointing to
+local host. >>Ok. Now we going
+to uh discuss uh technique to implemented in um uh Singularity
+uh to uh browse the um, a victim
+internal network after a DNS rebinding. So tools such as BeEF
+the Browser Exploitation
+Framework and FireDrill a DNS attack tool uh can use a hook
+browser to uh uh access uh
+targets uh which are not typically available directly
+from an attacker. Such as your
+home appliance or a corporate environments assets over via uh
+cross set scripting or DNS
+rebinding. So we know that uh BeEF uh required to the attacker
+to configure uh its uh browser
+or operating system to use the BeEF application server, uh, to
+uh uh to uh available
+functionality. Uh we don’t know how FireDrill uh does it since
+the code uh and the binaries are
+not available uh. We imple- implemented the services in
+Singularity without requiring
+the attacker to uh uh setting up its browser to use an http
+proxy. But instead just to uh
+point to Singularity via uh using no more http requests. So
+the hi- to high level, once your
+um, browser uh has been hooked, um, or the victim browser’s been
+hooked, uh the browser will make
+a websocket connection uh to the Singularity um, application
+server and await for
+instruction. The uh attacker we use is a browser to connect to
+Singularity and uh uh display
+the list of a um a victim that’s been hooked and select 1 to
+browse. So uh lets say you want
+to connect to the home directory of a server bound to 127 dot 0
+dot 0 dot 1 uh the attacker
+browser will emit a normal http request to obtain this
+directory. The Singularity
+application server will translate this into a websocket
+operation uh to fetch the
+resource. Um, then the target browser using the Singularity
+Javascript code will translate
+its websocket fetch operation into a normal uh fetch API call.
+To uh the home directory. Then
+that will be sent back all the way. Uh, back to the attacker
+browser sorry. At the load value
+we just customize the Golang RoundTripper interface and we
+use uh websocket plain text
+protocol to package uh each fetch request and response, um,
+since we use a base 64 encoding
+uh the size of the message is increased by 4/3 of the original
+length of the message. Please
+note that you don’t have to use a a browser, you can use any uh
+user agent. You can use CURL,
+http uh inspecting proxy such as um Burp PortSwigger, OWASP ZAP
+or SQLMap and and so on. So when
+we implemented the sock injector and Singularity we uh we
+encountered a number of change,
+but the first assumption we made was that we did not care about
+the cookies exchange between the
+victim browser and the victim service, the target service. Uh
+however our first uh, test case
+was Duplicati, a backup solution uh that was vulnerable to uh DNS
+rebinding. And uh as you can see
+the code snippet here, uh, Duplicati is extracting xsrf
+token from the cookie. Uh to
+generate length value to browse the Duplicati application and
+perform a number of action
+including running a backup. So Singularity didn’t work uh with
+that. So um, we had to uh uh
+consume this cookie, so we um, we read them from the target
+browser and we transit, transmit
+them to Singularity server over websocket and then the
+Singularity application server
+set them uh on the attacker uh browser for the target domain uh
+that uh Singularity uh has
+constructed. Um, for httpOnly cookie uh we don’t really care
+about them. Um they cannot be
+read by Javascript. Uh so they cannot be used by Javascript on
+the attacker um, browser. So we
+let the target the target browser handle them um for us.
+Another challenge uh is that to
+be able to read uh cookies uh when you perform a fetch
+request, a fetch API, you have
+to pass the credentials. Includes option to the fetch
+requests and if your application
+require um, um http authentication this is not going
+to work. And a why is that? This
+is illustration this slide um so let’s say you have a service
+that require http authentication
+and you issue the commands uh fetch uh http 127 dot 0 dot 0
+dot 1 with the credentials
+includes, then authentication dialog box appears. Uh that will
+uh warn the user that something
+is amiss. So we don’t want that. Um, however, if you type the
+same command but we you pass a
+different argument credentials omit, then there’s no, there’s
+no uh authentication dialog box,
+so the victim is non the wiser. So uh when uh we have cookie and
+http authentication uh required
+then we forget about we actually don’t transmit the the cookie to
+uh uh the attacker. >>Ok now
+that Gerald introduced this, to this hook and control feature,
+we would like to show you how
+this works in a demo. For this demo we will have two browsers.
+One is the victim, the other one
+is the attacker. In this case they will be both on the same
+machine, but in the real world
+attack, this does not have to be the attacker can be anywhere. So
+the victim will have a Jenkins
+instance installed on the local host and the attacker will try
+to access this. So this is the
+victim, Chromium browser uh which has this Jenkins instance
+running listening on the local
+host. Now we’re switching to the attacker. This is the hooked uh
+victim client , which will show
+up here, so you reload the page and showed its currently empty,
+there’s nothing there. Switching
+back to the attacker, sorry to the victim browser. We’re going
+to the Singularity manager
+interface. We’re setting the target to 0 0 0 for local host.
+Target port is 80 80. We’re
+using the hook and control attack pay load. We’re using the
+multiple answers attack
+strategy, we’re using 1 second interval. We’re starting the
+attack. It only takes 3 seconds.
+The attack was successful. We’re now we’re switching back to the
+attacker, we are reloading the
+page and we can see this new victim session. So we click on
+it and we can now browse the
+victims’s Jenkins instance over the internet. [applause] So the
+attacker browse this cr-
+credentials endpoint. We’re going back to the uh victim to
+show the requests. The first
+request is this slash credentials which the attacker
+is browsing to to show you how
+this looks like. And we can see slash credentials, the remote
+address is 0 0 0 for local host.
+And the request URL is the origin still points the
+attacker. We like show you how
+we exfiltrate our data back to the attacker. So this soows
+endpoint is how we send and
+exfiltrate the data back to Singularity. Uh using websocket
+messages and that’s how we can
+how the attacker can then browse to a Jenkins instance. >>Ok, now
+we’re going to discuss how to uh
+scan for vulnerable hosts and and services. So in the past
+theirs been uh many very smart
+attempts to replicate uh and map uh behavior in the context of uh
+the browser. But we’ve had the
+power of raw sockets, so many of the solution uh we have looked
+at uh are are very not
+completely reliable or do to much for our purpose for
+instance we don’t care where
+ever SSH port is open or not uh. DNS rebinding is concerned uh
+with uh exploiting uh issue with
+http uh resources so far. Uh so the only thing we care about is
+uh does it speak http? So we
+implemented a very uh simple solution about leverage uh
+modern API and um and uh so its
+uh uh including sorry, fetch, abort, uh for uh a implementing
+a time out. So um, we distribute
+the the listed target we want to scan uh, it- uh includes IP
+address and uh a ports a across
+uh 4 web workers. We only fetch uh the resource setter uh we
+don’t bother with the the
+responsibility and we have a hardcode limit of 300
+millisecond uh before we move on
+onto a next target if you don’t get se- uh sufficient results.
+Um, so the time out we obviously
+drives how fast a scan a host or network. It is fast for http
+open port obviously and fast as
+well for closed ports because if you if, you immediately send a
+packet to a a close port the
+TCP/IP attack of the targets will respond with a reset packet
+if nothing is listening on this
+port. Uh it is slower for firewall ports but because here
+typically a firewall will drop
+any response, so you don’t know what’s going on. Uh so the scan
+will uh wait to the millisecond
+and then move onto another target. Uh and so as well
+possibly for slower http service
+and uh over protocol that are not handled by fetch. Um so uh
+we want to use a lower timeout
+when you’re scanning a LAN or fast HTTP service or you can use
+ht- uh higher timeouts when you
+scan uh over network uh and um I can do one but I have uh higher
+densities such as VPN. Other
+interesting bits and pieces, uh we use the classic webRTC IP
+address leak to obtain uh the IP
+address uh the private IP address of the uh victim when
+available it works on Chrome and
+uh Firefox. And when we use this IP address to derive a subnet uh
+we can use to uh scan. We
+obviously pass the credentials omit to fetch, so uh the victim
+uh is no- not made aware that uh
+a scan ongo- ongoing. And uh we currently considering performing
+a second pass scan uh to
+identify uh slower http service that we may have missed. So we
+have learned how uh we um, made
+Singularity more reliable uh faster, how we can uh, uh, find
+uh vulnerable uh targets. Uh and
+services. Um now we going to uh show you how uh you can
+implement all the above,
+orchestrate all the above and uh uh perform service detection and
+auto exploitation as a bonus. So
+Singularity provides a sample autoattack dot html file.
+Automation file. It is fully
+customizable and uh permits uh to leverage all the features we
+have discussed uh so far.
+Including, but not limited to uh, you can specify uh specific
+uh exploitation payload. For
+instance, targeting a service like Jenkins or you can ask
+Singularity to auto select the
+the payload based on the service it detected. You can hard code
+your targets uh and ask y-
+Singularity to optional detects more target on the network. Uh
+same thing for ports. You can
+specify a DNS, a default DNS rebinding strategy and ask
+Singularity optionally to auto
+optimize and find the best strategy for you. And uh
+obviously you have all your
+options such as flooding the DNS cache uh visibly hiding activity
+and so on. Uh in the future we
+intend to uh implement more auto optimization. So you don’t have
+to read the extensive wiki. So
+when you’re designing your attack, you want to mix and
+match uh different specification
+of the same target. Uh for instance, uh for local uh uh,
+hosts bounds uh service. Uh
+specify 0 dot 0 dot 0 dot 0, local hose as the CNAME uh 127
+dot 0 dot 0 dot 1. This will
+improve reliability uh the uh permit you to bypass um security
+controls and a full speed. Uh
+you can instruct Singularity to find and use the external IP
+address to exploit the internal
+interface um, of wifi uh access point um and routers um uh for
+uh device that choose the weak
+and system model can only encourage you to refer back to
+the DefCon presentation. DefCon
+18 in that regard, to see how it works. And uh you want to do
+some homework using uh uh our
+print source intelligence try to figure um, uh what does the
+naming convention for asset in a
+corporate network or even use a dictionary of service name and
+specify specify them as CNAME uh
+in your target. Uh list for instance jenkins dot internal
+dot corp dot com. This is likely
+going to pay off because they are a tough uh uh service or a
+still are not authenticated in a
+corporate environment. So we mention that Singularity can do
+uh service detection as well. So
+um, Singularity comes with a number of attack payloads um uh
+with target services such as
+Ruby on Rails, the admin console uh Amazon uh AWS instance
+metadata and so on. And uh we
+recently added uh uh service detection routine uh that allow
+you to detect what service is
+running uh behind and uh uh try to deliver an appropriate
+payload, so for instance if uh
+you find that a service responds with a http header contains the
+value x Jenkins then Singularity
+uh will figure out that’s more well, automatically is using uh
+uh uh is facing Jenkins
+application instance. So when you select a automatic uh uh
+attack payloads, Singularity
+will try to detect the service and uh deliver the appropriate
+payload it has. So um, with that
+tool, we were trying to blur the line uh between origin and uh uh
+I think we have achieved that.
+Hence the name Singularity of origin. So how do you protect
+from um a DNS rebinding attack?
+Uh you often hear uh commands on blogs or um recommendation to
+use DNS black lists or to you
+use tentatively to use DNSSec maybe. Or to use this DNS
+service provider or one of your
+colleague or friend uh bought this uh appliance that uh uh or
+or router but a a state but it
+perf- it provides DNS binding protection. Well, as we learned,
+common wisdom is not enough.Um,
+it is hard to understand all the subtleties of DNS rebinding. And
+no DNSSec won’t help you there.
+So Roger how do we protect from DNS rebinding? >>There are three
+proper ways to protect your
+service, one is to use TLS on your application, including the
+service listening on local
+hosts. You can require authentication if the attacker
+doesn’t know the credentials,
+they can’t make a valid request. Or you could validate the host
+header for all incoming
+requests. Using a white list of trusted domain names such as
+local host or 127 0 0 1.
+Remember when we showed the origin in our last demo, it was
+still pointing to the attacker,
+which won’t be white listed. There is also a proposal called
+course RFC 1918 which would re
+require a pre-flight course request for websites host in a
+public IP address. When they
+make a request to a private IP address. This is currently a
+draft and not shipped in any
+browser. But it, this may prevent DNS rebinding, in the
+browser. We have one last demo.
+Where we show you how to automate this whole process. So
+previously the victims browsing
+through the Singularity browser interface, where they had to
+configure everything, which is
+uh not very realistic. So in this demo we’ll show that the
+victim only has to browse to
+Singularity. We start with a port scan to detect services
+listening on the local host. You
+rebind to these discovered services in three seconds
+already detects the service
+listening for the payloads we have and launch the exploit
+right away. For this demo we
+have a Rails console listening on the local host, port 3000.
+And a Jenkins instance listening
+on port 80 80. So this shows the manage web interface which we
+are not going to use. What we’re
+going to use is this um, auto attack demo as page. So browsing
+to the page we see that we
+detect the port 8080 and 3000. And we launching DNS rebinding
+right away. The rebinding was
+successful. It eh t- detects already detects the services. We
+uh um, that’s not showing. Uh,
+lets go back one more time. And I didn’t update quite well. It
+detected Jenkins right away. Um,
+and it should detect alright. Launch. And detected Jenkins and
+here it’s still rebinding. Auto
+detecting, but it doesn’t seem to update quite well. So for
+Rails we have our remote code
+execution which launches the calculator error for Jenkins, we
+just dumped the plain text
+password stored in cred- stored in credentials to the console.
+We like you show how the how the
+script looks like. The configuration script. It’s very
+simple, the auto attack script.
+So we can cr- define, the rebinding strategy as here we
+use multiple answers. We use the
+attack payload automatic. Which automatically tries to detect
+the service. We specify the
+ports, port 80 80 and 3000 this case only. And we can specify
+which address to use. There are
+a few more settings, but uh which we we don’t need for you.
+You can get the slides including
+our notes on this URL. You can get Singularity or tool on our
+github page which these all uh
+features and let us know if have any questions. Thank you.
+[applause]

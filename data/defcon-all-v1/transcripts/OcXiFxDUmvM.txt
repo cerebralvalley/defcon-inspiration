@@ -1,0 +1,509 @@
+>> All right so, as many of you know I am
+Renderman and I have the distinct pleasure of moderating this panel introduction to Microcontrollers.
+I cannot believe that there are -- like every seat seems to be filled.
+>> Pressure is on. I mean, I'm not wearing pants so this gets
+more interesting. >> And your crotch is right at the level of
+Joe's giant red fist. Excuse me a moment. It's going to be one of those panels.
+>> You don't want to know what's going on behind the podium.
+>> On my left we have FirmWarez. We have LosT who everybody should know. And I have a personal
+grudge against for number of years of mystery torture challenge, Smitty Halibut on the end
+and custom made hat and vest and Joe Grand. >> I'd like to correct that RenderMan. That's
+TV's Joe Grand. Discovery channel. Please, no applause, please. So we're basically here
+talking microcontrollers. I'm elated because I get to pick these guys' brains for an hour
+here. That's something I would have killed for at any other time. So basically, we're
+just going to go down and just sort of have everybody sort of introduce how they got into
+micros and just sort of their history. And we'll go from there. So FirmWarez. I started
+hacking code on an ATH800B. And a lot of you guys loved writing software but I wanted to
+do hardware stuff but I ended up in the day of 8051 microcontrollers and that was all
+for fun and ended up being an embedded systems near making my way to being VT for contract
+design house I love making hardware that does something and some of it has blown stuff up
+and some helped people live  so a good balance.
+>> A 50/50 there. >> First foray was Motorola. We just dated
+ourselves, right. >> '80s called. They want their street cred
+back. I've just always been interested in how things work not just electronics but just
+things in general. I was always taking stuff apart and occasionally being able to put it
+back together. Usually things hacked to have different functionality. I've had numerous
+jobs over the years. I've worked for Parallax, I worked as a design consultant for companies
+doing embedded systems and specifically embedded systems security because that's where my interests
+lie. >> And you have experience with badge design.
+>> A little. Not as much as Joe. >> Yeah, so I'm Joe Grand.
+>>TV's Joe Grand. >> JOE GRAND: Thank you. I got started with
+computer in 1982 with Atari 300. My brother was interested in this stuff and he threw
+electronics and tools at me. Didn't literally hit me but I was exposed to a lot of electronics
+at an early age which was cool. So I first started getting involved in kind of nonmicrocontroller
+development. So making boards for red boxes and blue boxes and various phone phreaking
+stuff. >> The state of limitations is probably up.
+>> I got involved in embedded development in teenage years, I was Motorola HC05 guy
+and got involved with microchip picks and stayed with those. Motorola scaled off into
+free scale so I started using that. But, if you notice for DEF CON 14 badge was a microchip
+pick and 15‑18 was all free scale. That's because they would talk me out to dinner more
+than microchip did. So. >> Fastest way to Joe Grand's heart is through
+his stomach. >> JOE GRAND: Free food. So remember that.
+So yeah, I sort of specialized in embedded system development of low end consumer and
+household devices. And then of course I do hardware security break stuff once in a while,
+too. >> Interesting side note, Joe, did you notice
+that some of the stuff you submitted to parallax for sail I was looking at them with Joe bare
+man. >> I know.
+>> That's how Joe and I met so before we met through DEF CON, I was looking at his products
+and I think it was the GPS module. When we were having ‑‑ before GPS was easy to
+deal with. And we were standing outside and was it John Williams busting your balls about
+something? I just remember the interaction we had and you were going to ‑‑
+>> I think Ryan was at DEF CON and I was at DEF CON but I don't know if we knew each other,
+you work at Paralax, weird. Embedded world is a small community.
+>> And Ford for the record I do not work for them any more.
+>> The first question for everyone ‑‑ >> The funny thing is Smitty put this whole
+thing together. >> MARK "SMITTY" SMITH: I'm not sure how I
+convinced these people to do the panel with me. I'm Mark Smith or Smitty, I'm the only
+one who does not use microcontrollers professionally. I'm a lobbyist. I spend most of my time at@mail
+and not. >> Thank you for saying that and not the other A word. Got a bad reception on that one. But
+I got a start at I very I don't think age. Older sister got a TS80, I think the 8800
+beats that. So I started on that doing basic. I didn't get into assembly until comment in
+the early 90s, my first micro controller work was on 801 but I didn't spend a lot of time
+on Intel because that assembly sticks. I'm a lobbyist. I'm network engineer and system
+administrator by trade and I do this on weekend for fun and I like making stuff and thing
+that work. I've been into electronics for a long time and then once microcontrollers
+started getting really cheap in the 90s, that's when I started add being programmability to
+my projects. >> And thanks for putting this panel together
+by the way, Smitty. (Cheers and applause)
+You're welcome. >> So everyone who is not playing with microcontrollers
+or just starting like I am, initially it's the question of where do you start? Because
+it is such a huge field and so many platforms, so many development tools out there. How the
+hell are you supposed to know where to begin. Some of you teach classes on this. What is
+a good place to start and learn this? >> Should we go down the line?
+>> Let's just talk. >> I think that's definitely like people come
+up to me and ask the same thing. There's so many different choices. And the good thing
+about nowadays is that there are so many choices. Back in the day if you wanted to get into
+the micro controller development, you had to get the individual microcontroller, deal
+with the development environment, add a bunch of external stuff just to get the platform
+up. And then you were writing like assembly. So now it's like you have Arduino platforms,
+you have propeller processor, Raspberry Pi, beagle bone. And all these things it depends
+on what you want to do with that device, because there's so many different flavors and so many
+different levels, if you're doing something basic, maybe use a basic stamp or Arduino,
+maybe raspberry pie which is Linux based so you can write Linux stuff. You don't have
+to be a hardware guy. You can just write code and have it work on the stuff.
+>> I agree it depends on what you're doing, but for somebody who's new, it depends on
+the tool chain for me. I can't take a n00b and drop them into certain tool chains that
+are like slamming your nuts in a door. Certain PGA development software packages, for lack
+of a better word, are not exactly user friendly. >> I think a lot of engineering tools suck
+anyway, so you have to find the one that sucks the least.
+>> Yeah, you mentioned the A word. But the one thing I think Arduino has above many of
+the other platforms it is meant for artists not engineers. So the thing that Arduino did
+that made it so popular is that they made everything so incredibly simple and trivial
+to use. You don't have to buy a programmer. The programmer is on the board itself.
+>> The only problem I had with the Arduino and the Arduino zealots. I don't have any
+problem with AVR. >> To be clear I'm not a zealot.
+>> I get that. The thing that frustrates me is they talk as though it's the first time
+it's been done because there was a lot of money, 0'Reilly and the maker crowd started
+backing it and processing and environment. But they're not doing the basic stamp, yeah.
+So I mean I think really, as far as going that route, the stamp was really the first
+chip to do that. >> Yeah, that's true.
+>> The problem the stamp has had and I'm so are people out there, they haven't grown with
+the pay that user space has grown. And they're still charging 50 bucks for a basic stamp
+too. And you can't compete at that price point and actually have talked to Ken Gracie. I
+love the basic stamp. I do. On a number of occasions I've heard Joe say when I'm prototyping
+I grab basic things off the shelf but it's ridiculous to charge 50 bucks for that chip
+these days. If you're going to stay competitive as far as the stamp is concerned, you're going
+to need to lower the price on that. I don't mean to be airing dirty laundry but that's
+the kind of stuff you want to hear. >> People bash on Arduino on hackabay, Arduino,
+lame. There's a religious war just like open source and Linux versus whatever. But Arduino
+for what it is it's good. If you want to get something done, there's lots of example code
+out there. There's lots of support from the community versus something like the basic
+stamp. You have community support you about you have support directly from parallax but
+the community support tends to be okay. My only problem with Arduino is that a lot of
+the open source stuff that's out there, the modules people write, nobody's validating
+that stuff. You don't know if it's good. Paint by numbers, plug stuff together. Great for
+prototyping but once you're done if it's a one off project, that's fine. If you want
+to move it forward, that's when you have to start going through and making sure it's actually
+good. >> But with the subject ‑‑ on the subject
+of how do you get started, though, I would rather have somebody who is new to the hobby
+get an Arduino for 30 bucks, plug it in with a USB cables, load up the blink code, get
+it functioning and go that's fucking awesome. >> Look at the blink code for Arduino and
+OS2. I can put my mom in front of a OS2 and she'll understand it. Am I mom did not do
+computers. >> Or the board of education stuff.
+>> So I'm not trying ‑‑ like I said, I'm not a zealot I'm not trying to put the Arduino
+in instead of basic stamp stuff. Definitely not doing that. So I guess we need to make
+two categories of the simpler consumer targeted microcontrollers versus the industrial I work
+on this shit all day, I have the programmers and the ‑‑ you know, I can write together.
+>> Smitty just as a matter of confession, I've sold Arduinos at DEF CON before. I'm
+not anti‑Arduino, what I'm anti is the attitude of this is the holy grail come down from high
+to save me from my microcontroller ignorance. >> Or the idea that anything else is way too
+difficult. You know, I don't know how many guys think Arduino is great because I don't
+need an in‑circuit programmer until it blows up. What's an in‑circuit programmer, a piece
+of hardware you plug it in and say program. Not that hard for people who is used to pushing
+packets around a network to use that. >> TI's MS3 chain is getting perfect easy
+good in terms of being usable. >> But you can't have her load up MSP30. Arduino
+is good for that. >> One of these days we'll let Render ask
+another question. >> I don't want this to be me asking all questions.
+There's a microphone. >> Ask us questions or we'll just keep bitching
+all day RenderMan one. >> One of the biggest difficulty I've had
+getting meeker into it is you get the idea and you want to build it now I've got to do
+spark phone Ikea order and you have to wait weeks ‑‑ I'm in Canada.
+>> That's your problem. >> I'm cheap and don't want to pay FedEx.
+>> One of the things I used to tell students you can get engineering sample from microchip
+than just about anywhere. >> That's the question. Inevitably you end
+up with parts bins. But the problem is sinking a huge amount of money into that. Is there
+shortcuts or ways like engineering samples to get base stuff.
+>> Constantly harvest. Pretend you're a squirrel and just start gathering stuff. If vendors
+think they're going to make money, they'll give you free stuff. But, if they think you're
+doing something cool they'll also give you free stuff because it gives them something
+they can promote and write about on Twitter or whatever. To Geoff a few samples out to
+a lobbyist isn't going to kill them hearing. I live in San Francisco and there's a weird
+cycle of people put stuff on the street and you can take stuff and put other stuff on
+the street. It's weird. Sometimes it makes neighborhoods look really shitty. Sometimes
+it's awesome if you get there before the city comes and picks stuff up. Oh, a printer. Go
+into local surplus stores. You don't have to pay full price for things but even if you
+do, full price is like pennies or a few dollars for stuff unless you live in Canada.
+>> And make friends with engineers because all of my engineers had desks that were filled
+with sample. Oh, this part is so cool I can call up the distributor and get it. But scavenging
+parts. That's how I learned how to solder. It's harder these days with the service mount
+stuff. Back in the day that's how I got parts. >> Worst case Radio Shack. I know they've
+had ‑‑ I'm dead serious, they've got a really bad reputation over the last 5 or 10
+years when they got rid of a lot of their electronics stuff but they kept that one little
+section where you could get resistors and capacitors and stuff. Now it's like 9/10ths
+of the store is selling cell phones but there's that one drawer. Last resort. So 8:30 at
+night my DSL modem just died and I have an exploded capacitor. I could still go down
+to Radio Shack and buy that 660 micro capacitor to get my Internet back online so my wife
+can watch game of thrones. So Radio Shack. They're also getting into sell things ‑‑ I
+got a fan out here. They're also getting into selling microcontrollers like the A word and
+basic stamp and a lot of modules. >> I totally didn't mean for you to start
+saying the A word. (Laughter)
+But they're not the cheapest around, but when you need it right bloody now, they're there.
+>> The fact they have modules. >> That's recent and I love it.
+>> Hardware has come full circle. We built heathkit and it died out when computers got
+big. Computers nearly went away as a hobby. Why do I want to do this hard stuff and get
+chloride on my hands when I can write code and compile and compile. It fucked up. It
+didn't cost you anything it's moving more with the advent of FPGAs coming down in price.
+>> Just recompile the hardware. Electronics as a hobby, more of a system level hobby where
+some of us still build our own boards. There's so many modules you don't have to do that.
+>> It's true, like LEGOs. >> AUDIENCE: What do you do whenever you're
+up against a particularly crappy tool chain? What's your method of attack to get past that?
+>> Cry. >> A lot of mountain dew.
+>> I think it depends, I've had crappy tool chains. Sometimes you're stuck. If that's
+all vendor offers you, mile have contact and say you're tool chain sucks but most of the
+time I'm dealing with the crappy tool chain and when I talk about crappy tool chain what
+I've encountered is the tool crash or it will disconnect from the debugger or something
+annoying that you have to restart. And that's I think the nature of engineering tools because
+they're designed for engineers and they're not designed for the mass public so they don't
+go through the testing as like a normal piece of software would. And yeah, I mean, they're
+just annoying and sometimes crappy, but as long as they end up compiling properly and
+working properly, sometimes. >> On the hardware sigh I don't use Kai cat
+any more, they crashed too many times. Same guy. I'll buy you a beer afterwards.
+>> Same guy. >> Did you hear when I was doing stuff for
+this year I used the free version of eagle because I wanted everyone here to be able
+to recreate the badges with free software and I found an error in eagle that says too
+many pixels in the Y direction and it says it in German on the bottom. So I took the
+work and rotated it in the other direction and it doesn't exist in the other directions.
+Now everyone can make their own black badges. >> If they can do that, they deserve a black
+badge. >> Next question?
+>> Yeah, so I wanted to ask you guys what do you think the best chip is for, like, DSP,
+like, audio D. >> Religious war. Start.
+>> DSP audio. >> Not the best but the best to start with
+for DSP and audio stuff. >> I got nothing.
+>> The one you already have code for. I mean, you know, from a professional's viewpoint.
+Oh, this one is cheaper. This is faster. But how does that equate to a few hundred hours
+of engineering time. If you've got code, if you can code what you want to do, that whole
+project, where do I start? Find a project that's similar to where you want to go.
+>> Or find a vendor that has reference code or application note for where you want to
+go. >> Make really good friends with the FAEs.
+>> The only experience I have with DSP stuff is the DEF CON 17 damage had a controller
+so it was a microcontrollers that had DSP functionality and that's all I know of. The
+tool said it's not open source but it's free. And ‑‑ which is to me, fine, good enough.
+It's even better than open source if it's free. There was one thing called the processor
+expert and you could select modules and say I want to implement an FFT and you double
+click and there's a GUI and set it up and that will configure the DSP side of things
+and you can do mode um old school 1200 baud so that's a good place to start but I'm sure
+there's a reference design somewhere or project that does something similar to what you want
+to do. >> I do a lot of audio work, audio electronics
+stuff as well as digital and that's generally where I'll start out. I look for different
+chips and look for they'll have the application note in there of this is a typical application
+for this chip and I'll try to find one that matches closely what I try to do.
+>> Do you have to do that standing behind me? That looks awful.
+>> It sounds like render is peeing. >> AUDIENCE: Is there like a resource that
+I can go to to kind of, like, browse through all these different chip examples and --
+>> Google. >> There's this thing called the Internet.
+>> Each of the different vendors have going to have their own site and list of things
+and they're going to talk about why they're chip is awesome. They don't necessarily say
+better than the competitor because they don't want to acknowledge that the competitor exists
+but they'll say we're awesome because we have all these things. And the competitor will
+say we're awesome because we have the same things, you look at the list and they're 90%
+overlap. >> See which one takes you out to dinner more.
+>> Have you used octo part? >> Yeah, it gives you data sheets but it's
+not as easy as like a parametric search on a vendor site. Octo part will tell you which
+distributors have stock of the current part you're I searching for and give you data sheets.
+But, if you search for DSP, you might see stuff, but go to digikey and do a search and
+organize by price or ‑‑ >> Mousers is much better.
+>> So other than the big dogs,Ikey, mouser, Janeco and places like electronics are there
+any other major houses you order from? >> I use Ikey primarily.
+>> They just started doing first class mail shipping so you can pay 2 bucks and depending
+where you live get it within a day or two. >> Doesn't work for me.
+>> You guys don't count. >> The fun thing about digikey for the longest
+time. I key, right? I complained and it got bigger
+and bigger and it used to come with stickers so you could tag the pages because there was
+so much shit in there. >> When they stopped making the catalogs I
+complained because I'm against the trees I like something I can flip through and look.
+>> I used that catalog. >> That's the only way to find a connector.
+Try to find a connector on a damn parametric search. Next question?
+>> I'll out myself. I love my Arduino. I'm sure most of the people here are here because
+they got started on Arduino. Show of hands. Yeah. Who used Arduino. Who's going to admit
+to using the A word? >> I will.
+>> How many people their first experience was a basic stamp? How many was like pick?
+Really quickly, I want to interject this before you ask your question. My first experience
+with a pick was hacking your hex code from the DEF CON 14 badge. I was the only one who
+successfully reprogrammed that badge and I did not get picked.
+>> I'll have to review the contest entries. >> The guy with audio, this was cool. I'll
+admit. >> I'll review the notes.
+>> No, I've got MSP launch pad on tomorrow. I started on M bed 32 bit. That thing is awesome.
+Going back to the Arduino and lobbyist artist thing. Spark fun, ate A fruit.
+>> Love spark fun. Good stuff. >> The drop in hardware. The LEGO I can drop
+the code in and compile it, run it there, do you think that's devaluing the industry
+at all. >> Not at all.
+>> I love the ‑‑ I'm sorry. I know the guys at spark fun and they love their stuff.
+It shows up all the time. I think it's great. I think it's happening. People who wouldn't
+be able to accomplish certain projects because it's making it LEGO slap the pieces together.
+Especially thinking the lilypad with the folks doing the clothing hacks and stuff like that.
+I think it's opened that world to people who otherwise couldn't get throughout barrier
+in the same we the Arduino and stamp both made the pick and ABRs accessible to people
+who weren't otherwise. >> If I can interject a question on that,
+one of the big things I've always found is tinkering with stuff with the goggles you've
+built it with basic stamp or Arduino or whatever. Taking it to that next step, I no longer need
+all the accessories, I just need the chip. My problem has always been where the hell
+do I figure out how to do that? >> Are you trying to make a product or stuff.
+>> Just one off stuff. >> Like a more refined things.
+>> Not a stack of shields. (Talking simultaneously.)
+I want to answer that but I want to say with ‑‑ with respect to fruit and spark fun
+and all these places, it doesn't only help the people getting into it and the hobbyists.
+It make break outboards and saves a ton of time. It definitely doesn't hurt.
+>> It's great for prototyping as well. I want this particular chip with this troller and
+see if I can make this product work. I'm going to do it first with these shields. Slap it
+together and say now I'm going to proof the concept. I'm going to design and fab a board
+that has just the components I need instead of a stack of shields this tall.
+>> That's what Render, you're asking. >> How do you distill it from all the crap.
+>> Render, you hire me. >> But, if you don't want to pay money ‑‑
+>> at that point you need to look at schematics of every individual model, see which pieces
+you're using and I have a big prototype of all the crap and I identify which parts are
+useful. Create a smaller schematic and just get a board layout package that whatever you're
+familiar with. If you're not, use Kai cat or dip trace or whatever. Eagle. I use Altea.
+>> There's a trial version. >> Use OS8 park.com to get your boards fab'd,
+it's a dollar a square inch or something. >> FM I going to get kicked off the panel
+if I admit I use express PCB. >> No, for a lot of people for prototyping
+purposes there are some not ‑‑ so the way PCB express and a lot of those guys work
+is they'll release their own proprietary server with you they don't give the Gerbers. I know
+two different groups writing stuff to take the stuff that their software produced and
+give you your real Gerber's. >> Yeah, it's like jail break in the design
+process. >> But express PCB is a great service because
+they have their own software that is not nearly as complex as eagle or Kai cat or anything
+else. It is so incredibly dead simple to use to do circuit board layouts. They can do silk
+screen on the top, not on the bottom unfortunately. But once you have the design, if you can keep
+your board to 2.5 inches to 3.8 inches, you click a button and give them ‑‑ I
+think it's up to about 60 bucks right now if you don't need a soldier mask or 60 or
+80 bucks if you weren't a solder mask or silk screen for three boards. And they'll get them
+to you in a week. It's incredibly cheap way of prototyping. That's not a tiny board, not
+huge but you can fit a lot on that amount of space. It's a great way of getting in.
+And I'm going to draw traces from here and inspect the pins. You don't have to worry
+about making it nice and clean, you're not making a product. It's just a prototype. Service
+is great. Orb park is a great way of doing it expensive, but they have a lot of lead
+time. >> He runs boards every other day. Laying
+outboards is a completely different discussion. But for the most part if you're doing a prototype
+and it's not something that as a specific board layouts. It's an example tool. I want
+to mention for Canadians there's AP circuits. Someone is like A. You can use it. Alberta
+circuits. There's similar type of prototype quantity simple board type of house.
+>> They're expensive but they're fast. >> They're Canadian.
+>> They ship to the U.S. >> AUDIENCE: I'm not afraid to ask dumb questions.
+>> We're not afraid to answer this. >> AUDIENCE: Excellent. I bought two boards
+a week ago, one was the beagle bone and the other was I think I just went to YouTube and
+searched on embedded program and found guystatemachine.com who did a 9‑series lecture on use, the TI
+Solisis launch pad walking you through a CIDs. I guess the first question is are those microcontrollers
+or bigger ‑‑ >> The beagle board is a great board. I like
+the beagle board stuff. I don't know if you guys have any thoughts on those.
+>> I would consider those modules, there's microcontrollers on them.
+>> But the distinction I think he's trying to make is they're not microcontrollers, they're
+CPUs. There's a very subtle distinction between where you're writing assembly or a C that's
+running on a chip timer. >> Intel considered there was an 8186. They
+interested it a microcontroller because it had a timer on board.
+>> I thought a microcontrollers had on board peripherals. So memory and stuff on board
+you don't have exposed busses going to outside stuff but a microprocessor was a CPU you needed
+to have mapping and data bus. But when you're talking about things like the beagle bone
+and the raspberry pie, the main difference is you're not necessarily writing code that
+has 100% control over the CPU. You're writing an application that runs inside an operating
+system. So it's a different in development environment and I'm not trying to make a religious
+distinction here. If they both have their place. You know, if you're a software guy
+and you don't need to worry about ‑‑ you don't want to have to worry about how to write
+a boot loader and you want something that does stuff and you're comfortable with GCC
+and you write applications in Linux all day, then put Linux on your chip or put Linux on
+your embedded environment. That's fine. It's gotten cheap enough that you know, Dr. Moore
+solved that problem for us. The reason we had microcontrollers is because they were
+smaller and simpler and cheaper when a full CPU was so much more expensive. That is no
+longer the case. We can now throw transistors at these things and it is ‑‑ the cost
+is no longer the problem. So we can put an entire Linux operating system
+on the thing and it's still 35 bucks. Costs about 30‑35 bucks about depending where
+you buy it. Raspberry Pi is 35 bucks? What's the difference? The Raspberry Pi has a shit
+ton more resources but it needs it because it's running a full operating system. It's
+no longer a matter of which is better. They both have their place. It's a matter of which
+suits your application better. So the answer comes down to what you're trying to do.
+>> A lot of is that comes down to high performance timing. If I need to get down to the hardware
+level on something like ‑‑ that's when it becomes more important to be able to get
+down to that level and have control. >> Most of you guys don't say interrupt latency
+as much as we do. >> Would you rather write a custom application
+that runs natively on the hardware as opposed to a device driver.
+>> Depends on the application, what you're trying to do with it.
+>> Think about robot. Do you really want an OS to control your motors on a robot, or do
+you want something that's very simple and predictable where you know exactly what you
+can do to take control. I'm not waiting on this to message that and for the OS to decide
+to come around and then turn the robot off before it drives off the cliff.
+>> But, if you have a good deterministic Artos, that's fine for embedded. You could run Windows
+you. I wouldn't but ‑‑ >> I've got friends at willow garage who would
+shoot you for that. Depending on product. Surprised nobody brought him before now. Like
+in the robot example, I would put con tolls on mike low controller but I would use a Raspberry
+Pi to do the route processing and high level process and taking in video stream data and
+doing analysis of what's going on around me but have it send a signal to the microcontroller
+and say turn wheels around going my speed this long and have the control the motors.
+So that's the kind of decision making process you have to make at design time of what is
+it I'm trying to do and which platform is better for that particular task.
+>> If was just briefly mentioned here. The dreaded word that nobody likes to deal with
+is dealing with interrupts and interrupt timing and I think that's why we're now breaking
+into this point where we've got even, what I would call a microcontroller with multiple
+cores and stuff like that. Like the propeller is because you don't have to deal with time
+slicing and interrupt problems and loop timing and I think we're starting even further than
+that I think the real future for all of us is going to be what we see coming from the
+FPGA world. Thank you? >> AUDIENCE: Hi, oh, I'm happy to see the
+embedded stuff and I think Smitty for putting up this panel, really. My question to you
+is I'm a systems student and being ‑‑ I want to be in the field professionally like
+you know, not hobbyist but professionally. But earlier it was like if you're in microcontrollers
+you should know interface and you should know basic control logic design. That was the basic
+thing, stereotype in my mind. But now the time has changed a lot that the programming
+part, the controlled logic part has evolved and it's reached such a high level you can
+do software system, database systems, you can do control like all the systems.
+So designing and schematics and you know, sensor is still there. My question to you
+all is as a base ‑‑ as systems engineer, what are the basic things that at least I
+should know firmly? I hope I'm clear. >> I guess you're just asking what is a basic
+skill set to enter into that world as a professional? Is that correct?
+>> Yeah, the basic skills, yeah. And what later on I can decide on my own where I'm
+interested >> Well, I'm not the professional. You guys
+are. I'm never professional. Go ahead >> Well, I almost feel like that's asking
+how do you become a hacker. To me it's a natural progression of hobbyists building stuff and
+then oh, wait, helping out at the a company and now they want to hire me and they're paying
+me to just do this stuff? So a lot of it is once you get this foot in the door, you already
+named off a lot of the things that are important. Once you find a company or a project that
+you're in love with, you just start doing it and you will gain stuff and I don't really
+know what the best thing to know. Especially if you get company, hands on real world experience
+you get whether it's a product development company or a specific product. Not consulting.
+That's where you get the best experience. As long as you love what you do and you learn
+more about the things you already said, it's a natural thing. I don't know if there's any
+better way to explain it. >> You know, I've been giving this answer
+a lot but it depends on the application. Obvious skill sets electronics if you're going to
+be doing microcontrollers as well, programming. Lower level the better, understanding of how
+assembly works is going to be important. >> I second that.
+>> Here's the big difference between embedded guys and you know, pure software, speaking
+as a hiring manager, here's a skill set I would list if I was doing the official thing
+and I'll tell you the kind of I people I really hire. But big difference, physics. Because
+‑‑ okay, you're going to be turning motors and interfacing sensors and talking with people
+about this frequency of whatever or this coming in and I need to turn it in ‑‑ this real
+world thing and I'm going to turn it into software, understanding the physics is going
+to be more important than pushing packets around. When it comes down to hiring people,
+we had a kid what did you do last summer? I rebuilt this Chevy 350 just to understand
+it. Shit, you're hired. I want somebody who does hands on. In the embedded world you've
+got to touch the hardware. (Applause.)
+>> The one big question: Have you ever brought up a new system? Because ‑‑ again, it
+goes back to what I said earlier about doing hardware. If your code doesn't work, you recompile.
+You've got a board, spent all this money. You laid the board out and put all your parts
+up there which is a fucked up mistake. You've got this board and turned it on and it doesn't
+work. Now what? You've got to understand what's going on on that board. It could be something
+like, again, physics, it could be you laid it out wrong and it ain't going to work. It
+could be chips not running, traces left off. Hands on. Being able to troubleshoot circuits
+is a huge skill that ‑‑ and like when I was teaching at the university, it used
+to frustrate me to no end, I was really honest with some students if they come to me and
+ask a question, I would always say have you tried it? Have you gone out ‑‑ tinkerers,
+we need more tinkerers. If they haven't tried it, you don't have the mindset to be doing
+this kind of work. To be blunt, we need more tinkerers. Right now we call them makers but
+we need more tinkerers, we need people putting their hands on stuff. I'm always championing
+in the embedded systems we teach kids that electronics are dangerous, expensive and breakable.
+In our community, just look at the participation in the badge stuff here at DEF CON, we have
+orders of magnitude more people involved in badge stuff if it's not electronic because
+people just have that intimidation factor that haven't made that first step. That's
+where we have the hardware hacking village. That's why DEF CON kids is doing electronic
+badges this year. We need to propagate and keep that momentum moving forward.
+>> AUDIENCE: Cool. Thank you. Just one thing, one more thing. When you're discussing about
+forgetting stuff for a beginner, we're discussing with Arduino or the thing which I wanted to
+know is I ‑‑ when I use Arduino, I have us used, I have got things done. But by doing
+it by using it more and more, getting deeper into it, it will give me the basic concept
+of you know, like which makes me if I get any new programmer, any new microcontroller
+in the future, I'll be able to hook up a programmer into it or something like that? I'm looking
+for some to get started in that way which makes me able to later on work on my microcontrollers
+and not just Arduino. >> Pick one. They're all different in little
+ways and they're  all  the same. (Audio difficulty)
+>> I have a barn full of that shit. I think one advantage of Arduino, I think
+the question was going from sort of like vendors going if one to ‑‑ the module down, you
+want to start working with more at a lower level. And that one thing with Arduino is
+and you see this a lot. The Arduino is the code working on the Atmel. You can start with
+the platform board and if you want to try to go a level down, you can take an Atmel
+LVR and load Arduino software on it and that ‑‑ you know, use that so it's slightly
+more refined. And then eventually you're going to want to get to the point where you have
+a microcontrollers or maybe you don't need to get to that point but you have a microcontroller
+with just the stuff you want and it's not a module but it's a refined product that's
+stuff you want. >> You can go the other way for those running
+the dark net game this year, the badges software was written in the Arduino IDE even though
+it's not Arduino itself. It's just a front for AVR GCC so it takes C++ code and turns
+it into Atmel code. And if you give it the right hardware files, you can find them online
+for the AT tiny 85, then you can use the Arduino IDE just because it is so incredibly simple
+and program nonArduino devices. >> By the way, if you haven't talked to the
+dark net guys, they did an amazing job this job and it's a great program.
+>> We have five minutes left and I want to bang through as many questions as we can here.
+Come on up. >>
+>> AUDIENCE: Hi. I started on the propeller and I'm still on it because I'm pretty addicted.
+So I've built a whole bunch of stuff. And they're all unique, they're all completely
+digital circuits. But I have a problem on one of my specifically where if I run it at
+3.3 volts I get data corruption but when I drop it down to 2.8, everything works. So
+how would you go about starting to debug something like that.
+>> When you drop it works? >> AUDIENCE: Yeah, it's bizarre.
+>> That's fucked up. >> Look at the signals on the scope and see
+if you're actually getting noise outside the chip or if it's something being caused by
+overvoltage or something else inside the chip and make sure it's noise versus parity issues.
+Maybe there's some other weird configuration thing.
+>> It has an RF modules on it so noise is possible.
+>> Even something as strange as battery placement. >> AUDIENCE: Physics.
+>> It goes back to exactly what he was saying welcome to the world of hacking your circuit
+or troubleshooting. That's really one of the greatest skills that I think some people are
+‑‑ >> As soon as you start talking about RF,
+Ryan was mentioning one of the things you should mention ‑‑ learn is physics. I
+bet you have a trace somewhere that is exactly the length of your RF ‑‑ a quarter wave.
+Your quarter wavelength trace somewhere that's picking it up.
+>> You'll be able to visualize that on the scope.
+>> Scoping. Trying to troubleshoot a board without a scope is like trying to troubleshoot
+code without a debugger. >> It happens all the time. There's startups
+I've seen in San Francisco that kids have dropped out of school and move to California
+to start companies and they don't have a oscilloscope to do basic things.
+>> I brought a logic analyzer with me but that ain't going to help me.
+>> Yeah, probably not? >> AUDIENCE: Thank you.
+>> That's old school. >> AUDIENCE: Yeah, one question for one person
+up here. We'll just kind of keep the discussion going and ¯.
+>> What's with the porn music. Are we done? Is that the get off stage music? Nice.
+>> I've got three more. Just keep going. >> One person one question. Lightning round.
+Go quickly. >>
+>> AUDIENCE: When you're making a decision designing an RF signal processing board, which
+point are you drawing the line between saying I'm going to use DSP or FPGA for this solution.
+>> Not me. >> I would lean toward the DSP just because
+FPGA when I think of FPGA, I think of hard care digital side of things and DSP might
+give you more ‑‑ I don't know, may be easier to kind of manipulate if that makes
+sense, you could always maybe port FPGA but I would tend to go with DSP first.
+>> AUDIENCE: I have an 11‑year‑old boy who is come of age, what can I do to introduce
+them to this world? I don't have a lot of experience.
+>> Go get the -- what's a microcontroller kit. Get it at Radio Shack.
+>> The what he said. >> It's a parallax microcontroller.
+>> It comes with a huge book that was help move you forward and that's the difference
+between that product and any others is the supporting documentation is a no kidding book.
+>> Free sample. >> No, I don't work for parallax any more.
+>> But I still think it's a great way to introduce people to.
+>> I have a long list in my Palm Pilot. I'm a system engineer at mission critical embedded
+systems and I got started on 8080 in '76 so I'm an old fart. Two things I'd say is the
+tool chain, the Atmel and the Arduino gives you a solid reliable tool chain. Stay away
+from the CCS compiler. It should be checked into the heart of the sun I lost 60 hours
+of my life on a professional project because of the figuring CCS compiler. The other thing
+I'd say is learn C. >> Yeah.
+>> Yes. >> I second that.
+>> And keep your cold simple. >> I would say learn see and then learn assembly.
+And, to be fair, the CCS compiler is good for certain things. I found bugs in that too
+but when you do, you get free subscription. >> The natives are getting restless, they're
+going to start throwing spears at us. >> One comment. Tell everyone who is just
+a programmer do embedded systems stuff. It will change the way you program.
+>> Yeah, you know what the fuck the machine is doing.
+>> This one is awesome. Thank you. (Applause.)

@@ -1,0 +1,882 @@
+>>Without further ado, let’s,
+you wanna get started? >>Sure.
+>>Alright. Take. >>Well, thank you for coming to my talk. I
+appreciate it. I was kind of
+worried there would only be like two people, so I’m- I’m really
+happy that there’s at least 20
+people. [laughter] So yeah, um, who am I? Alright, so my name is
+Bill. If you didn’t know that.
+Uh I turned 18 this past July. Uh I love breaking applications
+um, I graduated in uh from high
+school back in June and I’ll be attending RIT this fall.
+[applause/audience cheering] So
+what’s my research about. Um so over the past 3 years in high
+school I’ve really wanted to
+look at my uh the different software that my school uses. Uh
+just because I think that it’s a
+very valuable learning lesson. Um and I’ve thought it was a
+really fun way of learning
+different aspects of web application testing. By testing
+it on a real target like my own
+grading system. [laughter] Uh yeah so I I kind of found um
+more than I expected. That
+wasn’t great. Uh so yeah, let’s quickly go over the different
+types of software I researched.
+Uh the first piece of software I researched, was the Follett
+Student Information System. Uh
+but this usually goes by Aspen. Um, my school specifically used
+them for you know grading,
+schedules, transcripts, pretty much everything that my school
+needed to use a school uh
+software for. Um and my research into Follett Corporation was
+primarily done, you know, maybe
+a little bit in 9th grade, but mostly in 10th, 11th and 12th
+grade. Uh here’s a map of
+Follett. Um and spec- espec- specifically these schools that
+were uh that were impacted by
+any vulnerabilities I found. Uh so they primarily you know have
+a lot of schools in
+Massachusetts and Rhode Island um, but they did have a few
+other schools uh in the United
+States. I just didn’t think it was um worth you know pulling up
+an entire map, um just because
+there’s so few. So uh the second piece of software I researched
+was blackboard community
+engagement uh and so it was advertised of being capable of
+delivering news, academics,
+lunch balances, athletic details. Uh our school only used
+the notifications portions of
+the software, but I knew pretty fast after some basic research
+that other schools, you know,
+they used the entire suite. Of capabilities. Uh and the
+research into Blackboard was
+done in two parts. Uh first during 2017 to 2018 and then
+again near the end of 2018. So
+blackboard does have a so called bug bounty, um, where you can
+they provide some sort of safe
+harbour uh for reporters. Um, but this didn’t really workout
+as expected. Uh, so here is a
+map of the Blackboard schools. Um, this might not look as much
+as Follett, but it definitely
+is, I think it’s about 10 times the schools uh Follett Aspen
+had. So it’s pretty it’s pretty
+prevalent in the United States. Uh there were some schools
+internationally, but it was
+again only a few so, it wasn’t worth putting them into map. So
+to start off with um it starts
+with Aspen, you know Follett Student Information System. Uh
+so for most users to applied
+parameters uh Aspen filters them for malicious input. Uh the
+filter took the approach of
+sanitizing and removing malicious input rather than just
+dropping the request as a whole.
+Um, so what would happen is if you gave it a malicious payload,
+it would reflect back, um, the
+payload stripped, uh of any you know malicious components for
+example a script tag. Uh and
+then this was an interesting opportunity because if we could
+find a way to bypass the filter
+since the request still goes through, um it would allow us
+maybe to do some attacks. Uh,
+yeah, so it had a very big flaw by design. So if you took you
+know a basic string like script
+prompt Hello world, uh Aspec removed removed the script tags
+because they black listed those.
+And just print out prompt Hello world. Uh, but the flaw was that
+they only did this you know,
+sanitizing run once. So what would happen is, if I included a
+black listed tag inside of a
+script tag and then you know did prompt, Hello World and did the
+same thing with the end script,
+it would actually reflect back as script prompt Hello World.
+This was a pretty simple
+vulnerability, I mean, cross site scripting vulnerabilities
+are found you know all the time.
+Uh the interesting part about this one, was that this filter
+was used throughout the entire
+site. Uh so if for example, if you were able to bypass your
+little filter, you could pretty
+much reflect any XSS payload into a significant amount of
+parameters that were reflected
+into response. Uh, but also it was because this was like my
+first ever vulnerability in my
+school’s grading system. And so it was really motivating to me
+to you know after finding one i-
+really encouraged me to look more, because it just felt like,
+you know at when I was first
+charting, I I would never be able able to find s- a flaw and
+someone you know with a
+Bachelors degree in sci- computer software uh- computer
+science. Uh it just you know I
+kind of felt hopeless. But then after finding one it really made
+me motivated that hey, if
+there’s one mistake, maybe there’s more. So the next
+vulnerability was improper
+access control. Um Aspen runs on a spring framework. On Java and
+so for those uninitiated um,
+there it- Java Spring Framework has these things called beans.
+Uh from I interpreted it- it to
+be it seemed like there were structs or classes. Um, but for
+example, you know students have
+their own bean. And there is instances of that bean um, so in
+Aspen, a student bean has a name
+of sisStudent and I think this stands for student information
+system. Uh, student. But the
+issue again was that they had a security design flaw. Uh so they
+had a servlet called blobedit
+dot do. And this servlet was available for any logged in
+user, so including students, so
+you know, I was able to access myself. Uh it took in three
+parameters, it had a read only,
+whether or not you wanted to edit the blob. Uh it had an
+object ID specifier where you
+specify an object. Uh that you wanted to get the property from.
+And then propertyasstring is the
+property name you actually wanted to get. Um and so what
+would happen is when you um, you
+know access this blobedit, with for example a sisstudent bean,
+uh you could read properties of
+that bean. And you could do this for other uh, bean instances as
+well. So when reading another
+student’s uh bean instance, I was expected to c- be greeted by
+this insufficient privileges
+exception, uh I saw before you know when I was trying to do an
+action, that I probably
+shouldn’t be doing. It would uh just raise this exception
+saying, by the way, Bill, you
+you can’t do this. Uh, but when I tried it on, you know, my
+friend’s bean instance I was, I
+was saw that I actually could access his properties, you know,
+the properties of his bean. And
+so after doing some investigating, I found out that,
+I can edit and write to my own
+objects. You know objects I own. And that I can read the
+properties of any other object.
+Um especially any other student object. So most of the
+properties of the SisStudent
+being um were incremental in the form of like Std field it would
+be A through D and then a number
+between zero to 110. Uh and so this made it really easy to just
+write a simple utility to dump
+all the fields. Uh of a bean. Uh especially a student bean. Um
+and the key thing is to remember
+is that if I had someones’s student object ID, I could get
+all these properties and these
+student object IDs were um, they were easily brute forceable. You
+know it’s like, I actually
+predicted, like it it’s very um, it my personal student ID was
+bean ID was std and then 7 0s
+and then it was just NTASN. Uh but you know the unique part of
+that was only the NTASN, which
+is 5 characters. So it wouldn’t be that difficult to predict
+someone else’s um, student ID um
+student object ID either. But um, you know I was able to
+access plain text passwords. Um,
+my uh birth city, birth country whether or not I can speak
+English, whether or not my
+family was in the military. Whether or not I had like
+financial problems and I needed,
+you know, assistance with lunch, whe- whether or not I was
+suspended. Um, my special
+education status, my GPA. Uh the funny part was that I could
+actually a for my own objects,
+like I said, I can edit it, so like I can edit my own weighted
+GPA. Which was pretty cool.
+[laughter] And um, so the next vulnerability was external XML
+entity inclusion. Uh so there’s
+another servlet they called student recent activity dot do.
+And it took in a parameter
+called preferences. Now preferences for some reason were
+supplied with xml. Um, I don’t
+know why they did that. But a basically you know there’s be a
+preference set that that would
+be passed in and different preferences you wanted to
+update. Uh for example one of
+them was a date range and it was an integer, um, and you’d pass
+in you, the date range you want
+to see recent activity for. Um, and Aspen did use Java’s
+SAXParser to parse it. But the
+issue was that um, they didn’t again, they had a flaw by
+design. Uh so in a secure
+system, the SAXParser would actually da- not allow da- da-
+document types or you know XML,
+external entities. Uh, but the Follett Corporation forgot to do
+so. So I was able to send my own
+XML payload, where I could you know, grab file content from a
+system, you know, file path, I
+could say like file colon slash, slash, slash ATC slash password.
+Um, and it would reflect back in
+the date range um, what I’d be setting for the date range
+preference. Uh, so Aspen
+actually had very verbose error messages. Like whenever you uh
+trick the server into doing
+something. It would like print out a full stack trace of what
+happened. So um, it was pretty
+simple when like I inputted file content for date range, it would
+try to parse it as an integer,
+but you know file content’s probably not gonna be just a
+number. And so what would happen
+is it would say, hey, I can’t parse this thing thing as an
+integer and end up actually
+reflecting the file content in the response. Uh so this was
+nice because you know I didn’t
+have to send my data, uh sorry, file content over to like a
+remote server, uh, which was a
+little bit complicated because of their internal firewall they
+had. Um, but eh you know I made
+a small utility that allowed me to dump files and I found out
+that the Tom Cat user you know I
+had access to anything the Tom Cat user had access to. And uh
+having this you know file system
+access was really dangerous for them. Because it seemed like a
+lot of instances of Aspen were
+running on this w- one server. So the next vulnerability was a
+pretty straight forward local
+file inclusion. And um how this worked was, whenever you, um,
+whenever you uh processed result
+of a tool, like a schedule tool or grade tool, you’d be
+redirected to tool result dot do
+and this servlet took in a get parameter filename. And another
+parameter called download. So
+after running a tool so you say like um, uh by or attempting to
+download a file using you know
+something that was generated by a tool. You’d be redirected and
+so what you could do is actually
+um, use the relative path escapes to escape you know the-
+the filename would be something
+like student schedule dot pdf. And you can do you know dot dot
+slash dot dot slash. A- couple
+of times to get to the root directory of the server and then
+you can do slash ATC password.
+And this really well complimented the previous
+vulnerability because what it
+allowed me to do was access binary files. Uh XXE you know
+has some trouble doing that, ya
+ya you can send it to remote servers, but it gets a little
+bit complicated there. And this
+allowed me to get access to any binary files too. So it was a
+really neat vulnerability to um,
+compliment the previous one. So transitioning to blackboard, I
+found some interesting pages
+while doing some subdomains scans. Two of them the app
+manager and msupport subdomain
+looked interesting. Because I found out that they were running
+a little bit outdated version of
+Django. But nothing too serious like critical remote code
+execution. But whenever I went
+to a page that didn’t existed, I saw this neat a verbose message
+saying that, the page was not
+found. And it also told me whatever you know what reg exits
+I could use to match uh a page.
+Ah on that root directory. And so I noticed that it said at the
+bottom, you’re seeing this
+because debug is set to true. Uh, so what blackboard had done
+is you know, conveniently left
+debug set to true on subdomains, the appmanager and msupport
+subdomain. Um, and so went I did
+some research into Django debugging, it apparently turns
+out that leaving this enabled is
+quite a serious issue, because of how much Django prints out.
+Uh so it turned out you know
+whenever you have an exception by code, it’ll be uh really nice
+and actually print out the
+metadata for that code. So it would print out you know, uh,
+whatever server you know
+settings that are running for that server instance. So the way
+I actually caused an error by
+code would be by using these two brackets and what it would do is
+it would tell the server, hey
+I’m passing an array and since it was expecting, you know, not
+an area, just normal value. It
+would throw an exception, because it was trying to read a
+value that was an array. Uh and
+it wasn’t expecting that and so when an exception occurred, it
+would print out, you know all
+the metadata and I found a lot of interesting stuff inside of
+that metadata. And the
+appmanager subdomain, the metadata included the Jenkins
+instance URL and active API
+Token to this Jenkins instance. This Jenkins instance was
+accessible to the public.
+Meaning that you know I didn’t have to go through their
+internal firewall or network to
+get to it. Uh I had unrestricted API credentials to Blackboard
+community engagement. They had
+an API user that I think had access to pretty much all
+schools that were on the um
+Blackboard instance. And um, I got admin credentials for
+msupport subdomain and
+interesting enough, I found 27 credentials to Apple’s
+Provisioning service. And you
+know these were 27 different districts. I think you know, the
+subdomains suggested that, you
+know appmanager. Um, that these were school apps and school
+accounts for publishing apps to
+the app store. And so it was interesting to see though all
+this stuff just returned by
+metadata uh and the settings for the server. From the msupport
+subdomain I found out that the
+metadata included database credentials for pretty much
+every database Blackboard
+Community engagement had. Admin credentials for the appmanager
+subdomain and Jenkins
+credentials. Not an API key, but an actual user credential. Uh
+fortunately for Blackboard, the
+databases were behind an internal firewall. So you know
+an attacker couldn’t just go and
+connect with directly. But it was really interesting to see
+the passwords because um, let’s
+just say they weren’t very secure. One of them was like
+Romania, but with an at for the
+A. So going on to SQL Injection, um back in April of 2017, uh
+when I first learned that
+Blackboard Community engagement was l- uh used by our school, I
+found that y- again it was for
+used for emergencies and notification and when I logged
+in I could see that I had my
+cafeteria balance on there. So I knew that my school didn’t use
+it at all. You know just very
+small stuff. Maybe some notifications or some cafeteria
+stuff, but I I researched a
+little bit into other schools using it and I found out that a
+lot of schools use it as a main
+driver. So at the time I actually started looking at
+Blackboard I think was, mid to
+late 10th grade, um, it was um, you know I barely knew anything.
+I knew a little bit of SQL
+injection, a little bit of cross site scripting, but I was so uh
+very much a beginner. Uh and so
+I I want to try to find a vulnerability on this, because I
+knew that there was a lot of
+schools using this software. Uh my method of finding
+vulnerabilities was you know,
+really um inadequate and unprofessional. It was just
+looking at pages I saw on Chrome
+Web Tools and trying to mess the parameters. I saw this error
+message a lot, but unlike Aspen,
+Blackboard didn’t have verbose error messages, so I didn’t know
+what was going on, whether or
+not you know it’s an SQL error, or was just some random code
+error, like maybe it was
+expecting i- a type of input that I didn’t give. But what I
+tried to do is um, uh for
+parameters that responded to characters commonly used in the
+SQL injection, like I don’t know
+apostrophe, uh double quotes. Um, what I tried to do is I
+tried to put them through SQL
+map, uh so for the two people in here who don’t know what SQL Map
+is, um, it’s basically a tool
+that you can use to automate SQL injection. Uh and you give it a
+parameter in the raw, it will
+actually test the website for you automatically for that
+specific URL. You know it won’t
+scan an entire website for you, but it can really help you um,
+actual write data and find any
+vulnerabilities that might not be as clear to manual injection.
+Um, yeah so I was just starting
+in InfoSec and I barely knew anything, but I actually struck
+gold and got an SQL injection.
+In this case it was Boolean Based blind. Which actually is
+pretty good because um, time
+base blind takes forever you know to exfiltrate data, but
+Boolean based actually let me,
+you know go mildly quickly with some multi-threading. So here’s
+some very fun facts. Um, in
+total, I found over four SQL injection vulnerabilities. Um,
+most of thes SQL vulnerabilities
+were basic blind SQL injections and parameters related to user
+ID numbers. One of the SQL
+injection vulnerabilities I found in late 2018 was on the
+same URL I reported and um and
+patched in early 2018. So what happened was in late 2018 um,
+and early 2018, what happened, I
+reported a page where there was a parameter vulnerable, but I
+guess I didn’t look at the
+parameters for that page. Uh, they patched that vulnerability,
+but then you know, in the second
+set of research, late 2018, uh I found that another parameter on
+the same page was vulnerable. So
+they basically patched this one parameter and like didn’t even
+look at other source code that
+was on the same page. Before we can see what I was actually to
+you know, the impact of the
+vulnerability of the Injection. Uh, I need to do some recon. Uh,
+so 6 databases were accessible
+um I found that that were the two interesting ones were a
+primary one and a backup one.
+And the other one seemed to be you know my SQL data, default
+data, databases and there was a
+temp one that had nothing in it. Uh, the primary database had
+over 250 tables. Uh and they had
+very concerning names for sure. Um, so you know, the basically
+what it seemed like was that I
+could access whatever the uh the web server itself could access.
+You know, what it requested. It
+didn’t really seem to be that many restrictions. Uh,
+specifically the table’s exposed
+includes uh school attendance information, you know uh whether
+or not students showed up at
+class, you know bus information. How they get home. Uh cafeteria
+status and payment history.
+Enrollment, enroll courses and course history. Uh whether or
+not they’ve ever been
+disciplined before. Their grades um their progress to graduating,
+their photos uh some
+immunization and vaccination information. Uh library balance
+and history. Course schedule, uh
+whether or not they linked any social media accounts. But I
+don’t know any student that
+would you know, do that. I don’t know why you would ever think
+that’s a good idea. Um, their
+birth date, their hashed password. They used Shaw1. Um,
+[cheering] Yeah, um crack
+station really helped with that. Uh, pin numbers, the school
+uploaded documents and contact
+information. So there’s some more fun facts I’d like to
+share. There’s over 5 million
+students and teachers in this system. I did this by counting
+the number of rows in the main
+you know account table. Uh there’s over 34 thousand
+immunization records. Uh
+Blackboard wanted me to say that um, that apparently that in
+their terms of service, they
+don’t actually, they tell you not to upload immunization table
+information. But um, it turned
+out that um, you know they they dedicated a specific spot it in
+the database. But they say in
+the terms of service not to upload anything. So I I don’t
+know how exactly that works,
+but. Um, there’s over 5 thousand schools impacted and you know in
+the map I showed you earlier.
+Those are schools impacted. And the database user’s password is
+um the lowercase version of the
+username. So it wasn’t very nice to see that. Uh because it was
+my data too in there and uh
+seeing you know, bad practices like that made me concerned. You
+know what else was there. What
+else did they do wrong? Uh, to clarify though this is from
+Information accessed in 2018, so
+I’m sure there’s some more students in there now. But um,
+or more immunization records.
+I’m not quite sure what’s going on today. But um, this was the
+status back um in March 2018,
+when I first you know, right before I reported it. So I think
+it’s kind of important to
+clarify, you know what I accessed and what I didn’t
+access. What my boundaries were.
+Uh, so I never any accessed any other student data, besides my
+um, besides any authorized use.
+For example, my own records I did check to see that my
+information was in the account
+table. Um any other information I gathered, was that, was either
+metadata like number of rows,
+that’s how I found out there was over 5 million students and
+teachers in the database. Or it
+was not related to anyone’s personal data. Like database
+password hashes. Uh the primary
+reason I kept investigating is because, you know, these guys
+were keeping my records as well
+and I didn’t really feel comfortable until I knew how bad
+the situation was, just sending
+it over and saying hey, here’s the vulnerabilities. Um, you
+know it just felt like this was
+pretty crazy stuff that I was starting to see and I needed to
+see how much they really messed
+up. So disclosure time. I had a very very interesting time
+trying to disclose
+vulnerabilities to Follett Corporation, uh I when I first
+found the XSS filter bypass
+vulnerabilities in 9th to 10th grade, uh I tried to reach to
+Follett through my then school’s
+distric- director of technology. Uh that pretty much led nowhere.
+You know they they weren’t able
+to get a clear answer uh back from Follett. Um as I you know
+discovered the improper access
+control vulnerabilities. One of them stuck out to me. Uh there
+was a vulnerab- vulnerability
+that allowed me to add a group resource to the group resources
+section. So Aspen has this group
+resources section where the school can upload helpful links
+and information. Maybe the
+student handbook or you know, back to school information. And
+uh, so I found out that part of
+the i- improper access control vulnerabilities was that I can
+add more own group resource. So
+this meant I can add you know, text and share it with what I
+thought was All Students. So
+being an immature 11th grader, uh, what I immediately did was I
+made a group resource and sent
+it out to everyone saying, Yeah, Follett didn’t really care about
+security. Um, haha and um, yeah,
+so I did just you know, I did lear- learn prompt a document
+dot cookies there. Down there.
+Uh and what would happen was whenever you logged into Aspen,
+you’d see uh this on the bottom
+of your screen. Yeah. [applause] So I set my name in there
+because I didn’t want to make me
+look like the bad guy, you know, oh yeah, this student hacked
+into our systems and you know
+compromised student data. How bad of person is he? Uh and so
+what I did was you know, I
+included my actual name and a message and I told them, you
+know, if they want to take it
+down, just come straight to me. Uh but what happened was I
+thought it would go to all
+students. It actually went to everyone in my district.
+[laughter] So, yeah, apparently
+like the director of technology got pulled out of their meetings
+and uh wasn’t that good.
+[laughter] I I, this is a screenshot from my own phone and
+I actually got a notification
+saying, hey from me. [laughter] So the school wasn’t really
+happy about it. I can
+understand. [laughter] Um. Ha. I only got off with a 2 day
+suspension and I was able to
+convince them that I I didn’t violate the acceptable use
+policy, yeah, that’s a big.
+[applause] Um, I got suspended for creating a major disruption.
+Um, Yeah, so. I- you know, 2
+days off of school, I think it’s a pretty win win. Um. [laughter]
+Uh, so looking back at it though
+now you know, a few years later, it’s I understand it probably
+wasn’t the best thing to do. Um
+and for one of the biggest reasons I thought it’d be good
+idea, was because at the time
+you know, I was just getting into the industry. I didn’t
+really know, so what do you do
+if a vendor doesn’t have contact information. Or what do you do
+if a vendor, you know, doesn’t
+even want to talk to you at all. So, you know I wasn’t aware of
+organizations like the CERT
+Coordination Center and so I took the mildly immature route
+of making a global message. So
+after tweeting images about what I had done on Twitter. Ha.
+Mentioning uh Follett learning
+in an attempt to get their attention, I actually got a
+reply. Uh they’re really helpful
+through direct messages and I’d set up a message with um,
+actually someone from the Aspen
+technical team. Uh, but then my school heard about this and they
+actually told them directly,
+don’t talk to Bill. Um and I kind of feel bad for Follett,
+because you know my school was
+the one paying some of the bills. So they couldn’t really
+be like, no but we need to fix
+these vulnerabilities. Uh but it was kind of you know, shooting
+themselves in the legs because
+you know, I was trying to help here and I was trying to get
+these vulnerabilities patched
+and they kind of delayed it for another semester. In March 2018
+after speaking with my
+principal, I actually coordinated with the district’s
+director of technology. And to
+setup a meeting with Aspen. Uh so one thing I do have to note
+is once I um, uh reached out to
+my director of technology, uh Follett actually had a meeting
+setup, I think within a week. It
+was pretty impressive response time. Uh when I disclosed the
+bugs they had to fix, you know,
+I think three weeks later in mid-April of 2018. But um,
+overall the disclosure process
+was painless and they handled it pretty prof- professionally. You
+know they weren’t like
+threatening me, uh during our meeting. They’re pretty chill
+and they- they’re thankful for
+me disclosing these vulnerabilities. So fast forward
+to 2019. After I discovered and
+turned the impact of the XXE and LFI vulnerabilities uh the
+disclosure process was a lot
+different. Um, so you know school relation, me and the
+school, it wasn’t that great of
+a relationship. You know they were kind of p****d off that I
+was doing this security research
+into software that they were using. Uh they weren’t really on
+board with that. Um ha, and um
+so I was able to coordinate with uh Carnegie Melon University’s
+CERT Coordination Center. And
+they actually helped me get in touch with the director cyber
+security and privacy at the
+Follett Corporation. Uh, after a quick call, uh things were
+looking good, you know he seemed
+happy to help and wanted to to disclose these, wanted me to
+disclose some vulnerabilities to
+them. Uh he’s told me he was going to setup a meeting with
+the Aspen development team. It
+might take a little bit, but um, and I told him that
+specifically, I didn’t want to
+work with my school because like I said, our relationship wasn’t
+that great. Understandably. So
+for a month all I got was delays like, still working on the
+process, trying to coordinate a
+time, please stay tuned. Um and before hitting a month of
+delays, I sent like a serious
+e-mail like dude, what’s going on. Uh and I had critical
+vulnerabilities to report. Um,
+what thing I didn’t really understand was that my school’s
+own district tech eh- de-
+director of technology was able to get a meeting with Follett
+within a week, but that was
+through like a customer success advocate. But now you’re telling
+me the director of cybersecurity
+can’t get a meeting in a month? That just seemed like a bit
+weird to me. You know, like
+what’s going on here? And so, what does the director do when I
+tell them, you know what’s going
+on? Well he tells my school everything and he tells them,
+hey Bill’s trying to report
+these vulnerabilities with them to use. Uh and luckily at this
+time it was like, a few days
+after I graduated, so I already had my diploma and they couldn’t
+do anything. I was really happy
+about that. [applause] And so he contacted them even though I
+told him not to. Uh and the
+school basically banned all my accounts, even like unrelated
+e-mail accounts. They were
+really unhappy about it. Um and so I was kind of tired of
+working with Follett there. I
+just sent a .pdf with all the vulnerabilities and said here it
+is, if you want to fix them, fix
+them. Uh if not, that’s your deal. Uh and so it actually you
+know, after I sent that pdf,
+they actually started paying attention and started working on
+fixes. Uh this was fixed back
+si- back in the end of July t- uh 2019 actually, uh right
+before a DefCon. So going to
+Blackboard. Uh back in mid 2017 when I found my first SQL
+injection vulnerability, uh I
+sent a report to Blackboard’s um security e-mail. Uh and their
+initial reply was good, they
+were like, yeah we’re, thank you so much for reporting this to
+us. We’re going to do an
+investigation. Uh, we’ll get back to you when we’ve completed
+it. After a month of no replies,
+I sent a follow-up saying. Hey guys what’s going on? Uh how’s
+the investigation going? No
+response. A half a month later after that, I sent another
+e-mail. No response. Um, so yeah
+I wasn’t sure if I was just like losing it. Maybe I wasn’t
+e-mailing the right e-mail. This
+was 10th grader me and I wasn’t really used to vendors like
+leaving me Unread, so um, yeah I
+didn’t really take it well. So what I did was I said, ok,
+here’s I can tell if I’m crazy
+or not. What if I ta- attach a mail tracker. And so that’s what
+I did. And it said, Learn
+Security read your e-mail 7 times. Um, and so ha. What I got
+really mad at this, right? Um,
+cause this is 10th grader me, like I think I was 16 at the
+time. And these guys were
+ghosting me. It didn’t really feel good. It hurt my feelings
+ok? [laughter] And so now
+looking back at it, I was like, wow am I really that bad back
+then. Uh and this was definitely
+one of those moments uh and so I just wrote an e-mail completely
+calling them out. Like guys, I
+know you’re reading my e-mails. Please respond to me. Um and
+yeah, go- it was kind of bad too
+because you know this wasn’t a paid bug bounty program and it
+was kind of just wasting my time
+doing my research. Et cetera. And of course, they read that
+one too. [laughter] So when they
+heard about this, uh, they wanted me to include a um, fun
+statement. So they wanted their
+response to this entire thing was uh, we’re always working
+hard to improve, um, sorry for
+ghosting you Bill. Uh and this is their wonderful, wonderful
+little statement they had me
+say. So I never heard back from that e ma- e-mail again, but I
+didn’t give up. After disclosing
+the full vulnerabilities, I decided to try to continue my
+disclosures and I wanted to work
+with my school uh back in March 2018. Uh and I wanted to work
+with them to try to report the
+Blackboard vulnerabilities. Uh so the issue was, you know, a
+few slides again when I was
+talking about all the databases, all the tables, you know how
+many rows there were, et cetera.
+I kind of was worried that you know, how are they going to take
+this? Did I break the CFAA? Uh,
+you know I didn’t really know the law, but um, I knew that
+probably wasn’t that cool what I
+did. Uh in th- in the eyes of the court. Um, so I said hey
+guys, how about we negotiate a
+contract, uh something that would protect me from you know,
+hopefully prosecution. Um and uh
+so ha. They sent me an initial contract within a week. But then
+I read the first thing it said,
+you know it said, as of effective date, student agrees
+not to discuss wi- the
+vulnerability with any third party. Uh and this was
+definitely a no go for me. Uh
+because you know, by the way this didn’t go through cause I
+couldn’t be here if I signed
+this. Uh and so their own security policy said that after
+the vulnerabilities were
+patched, you can talk about it. So this was pretty crazy for me.
+I was under a lot of pressure
+from both my the school and my parents, because my parents had
+to cosign the agreement. I was
+only like 16 at the time. And um you know they were like getting
+worried as well, like what are
+you getting me into Bill. Um, haha. And so, I compromised for
+the second revision. Uh where it
+says that I tell Blackboard everything accessed uh and
+vulnerabilities themselves. Uh I
+don’t disclose the vulnerabilities until they’ve
+been patched. Uh I send any
+publication 10 days in advance and comply with edit requests
+that can be so called,
+reasonably deemed as exposing Blackboard clients or end users
+to security threats. Uh and
+Blackboard agrees not to pursue legal action as long as I um I
+don’t disclose personal data
+about other students or other confidential information. So
+Blackboard ND did read some of
+the slides you’ve seen today. Uh specifically they saw the SQL
+injection galore slides and they
+saw the disclosure part. Um and they didn’t see the other set of
+vulnerabilities like the sub
+domain stuff because that was in the second set of research that
+I was doing. So after signing uh
+disclosure was really stressful because um, the school, they
+weren’t like, they didn’t want
+to be in the middle of negotiations. I was kind of
+making you know a big deal. I
+was like, guys, this is not a fair contract. Apparently the
+school’s lawyer said, oh this is
+a fair contract. And it was for the school, but it wasn’t really
+one for me. You know he wasn’t
+really representing my interests. Uh and you know th-
+like I said, it wasn’t, they
+weren’t really happy about it, but um, after we signed a
+contract and my parents signed,
+uh it was pretty painless. You know I I disclosed the
+vulnerabilities in the meeting.
+Uh the school grilled them a bit on why they ghosted me. Um and
+the vulnerabilities ended up
+being patched in the end of 2018. April of 2018. And so the
+next set of vulnerabilities
+including even more SQL injection and the information
+disclosure bugs that we leaked
+important credentials was done with the help of the CERT
+Coordination center at Carnegie
+Melon University. Their software engineer institute. Uh and they
+got in touch with Blackboard
+through their secure- security e-mail. And we were able to work
+with them to patch the
+vulnerabilities. Uh something kind of fun was that um, I
+actually reported it anonymously
+and uh Blackboard didn’t know that I would, you know that I
+was gonna disclose this third
+vulnerabilities about until a week ago. [laughter] Um, so,
+let’s see what they think about
+that. Ha. [laughter] Um, it took a few months uh but at the end
+of the day, the vulnerabilities
+were patched. The process that does uh isn’t that difficult and
+if you guys ever have any
+problems trying to contact the vendor, I’d strongly suggest you
+reach out to them because I
+think they might be able to help. So something kind of
+strange I noticed was that, uh
+in October la- of 2018 I was trying to get a CVE for the
+vulnerabilities I found. Uh and
+so I was trying to get uh trying to contact the CISO at the time
+and when I e-mailed her sh- it
+it said that this e-mail didn’t exist in their system anymore.
+So I googled, I thought you know
+maybe someone got a you you know, new CISO or something and
+then I saw this job offer from
+Blackboard. Uh and so the interesting part about this was
+that the CISO apparently left
+right after my vulnerabilities were disclosed. And fixed.
+Something kind of interesting.
+[cheering] Um. [applause] Uh but you know a f- few friends said
+Bill you should apply for it. Um
+I decided not to. Uh I don’t I don’t think I have the
+qualifications for it yet. Maybe
+in a year or two. Um, but um it was so interesting to see that
+they left the company after my
+vulnerabilities. Um, so to wrap up. A couple of suggestions for
+what we should do to prevent
+future incidents. First of all, no matter the company, schools
+should enforce companies to make
+sure that the products they use are safe. You know schools have
+the most power here, because
+they’re the ones actually paying, you know, the st- school
+software vendors. Uh and so they
+can they have a lot of control about what the schools do and
+what the uh sorry what the
+companies do and what the companies don’t. Uh and schools
+I think that they should require
+third party auditing of software. Uh where sensitive
+information is stored. Um it
+just you know feels like, when we take health data so
+seriously, but then we don’t
+want to take the data of our own children as seriously. It just
+seems crazy to me. Because we’re
+the next generation. Uh I think we should hold companies
+accountable when negligent uh
+actions are taken. I hope the public does this with the
+revelation of my findings. Uh
+and I think that we should understand where sensitive
+information is stored and not
+fall for marketing talk. Know that just because a company
+says, yeah, we take care of your
+data. Doesn’t actually mean that they take care of my data. So
+the reason I think this is such
+an important thing to take care of is because, the next
+generation should be one of our
+number one priorities. You know, me included. It just feels like
+children can’t defend
+themselves. You know they don’t know secure practices. They
+don’t know how to make sure
+their data is being held in somewhere safe. And so I feel
+like parents and schools should
+be the ones making sure that ch- children’s data are actually
+being stored in a safe
+environment. You know I just can’t believe we have so much
+regulation around health data
+and we don’t have nearly as much regulation around you know,
+school data or student data.
+Especially because you know, it’s the data of minors. You
+know. We shouldn’t expect them
+to um, have their own data. Be in control of their own data.
+And so my my question is that,
+if a 16 year old can find a breech affecting millions of
+student and teachers, what can a
+nation sec find? Do you feel comfortable with foreign nations
+having the data of your
+children? I wouldn’t. So some thanks and their very massively
+deserved is to the electronic
+frontier foundation. Uh they’ve been incredibly helpful
+throughout my entire research
+process and they offer m pro-bono legal representation
+throughout the whole thing. Uh
+the second thanks goes- [applause] The second piece of
+thanks goes to the CERT
+Coordination Center. Uh they helped with finding points of
+contact for both Follett and
+Blackboard. Uh and assisting with disclosure in every step of
+the way. [applause] So I think
+we have a few minutes if anyone has some dying questions they
+want to ask me. I think we can
+ask them. Uh. So I don’t know if my goon is here. The one running
+my talk, but um, uh that. Ok. He
+left. That’s that’s sad. Yeah. Do you, do you we could uh, if
+anyone has some questions, they
+can come up and ask I guess. Alright. No one has questions,
+that’s always great.
+[laughter/applause] Alright come on. >>What uh what were your
+parent’s views on what was going
+on during this time. [laughter] >>Um, they told me not to do it.
+[laughter] Uh, they were really
+unhappy with the contract, you know, they didn’t feel they
+wanted to be involved in
+anything like that. So um, it was a mixed feelings definitely.
+>>What are you going to do next.
+>>Start college. Maybe break their software.
+[laughter/applause] >>Did you
+ever get around to changing your grade? [laughter] >>I can’t
+answer that question. [applause]
+Alright, well, thanks again for everyone coming out to my talk.
+[applause][cheering]

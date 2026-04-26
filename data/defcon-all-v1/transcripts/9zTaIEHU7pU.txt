@@ -1,0 +1,277 @@
+>> HUNTER: Today I want to talk about security
+and cognitive radio networks. There are a lot of companies now spending
+a lot of money on a prediction and the prediction is that over the next ten years the number
+of connected devices and the amount of data that they're going to use is going to increase
+very fast. So new protocol and specifications and hardware
+is being developed to deal with this engineering problem of how do we add billions of more
+devices to networks that are congested, especially wireless networks. A lot of times when these new protocols are
+designed it's important to think about how we make sure data integrity is maintained. In the networks I'm going to talk about today,
+a lot of thought has gone into it. The way research works is we start out with
+a system that's deployed and someone discovers a problem with it and we talk about it and
+everyone freaks out and it's up to the vendor or whoever is responsible to repair it and
+everyone relaxes until it happens all over again. So we had this cyclical band aiding of almost
+everything that we interact with and in cognitive radio networks it's far enough along to where
+there are deployments in the field but not so far along where if we discover problems
+with it we can actually make suggestions to how things should be changed and it's not
+going to affect billions of people yet. But to understand how we can make the improvements
+first we have to understand the system we're talking about. Initially we had radio, you have a transmitter
+and receiver and if you want to change how the radio operates you have to turn a nobody
+and you have to be standing physically and the knob turns only so far one way or the
+other. Now we can turn those nobodies in software
+and do it remote and we can control how far the nobody one way or another. The next logical step is cognitive radio which
+is adding a feedback loop into the radio itself and it's capable of observing its surroundings
+and changing itself, its own parameters to optimize whatever it's trying to do and we
+have a bunch of these today, and we have cognitive radio network. So not only are individual radios talking
+among themselves trying to understand how they can increase their performance but they
+can talk to each other and they can talk back to a central base station somewhere and inform
+each other about what's going on so another word for this might be adopt active network
+where they're teaching each other. To actually send information in the layer
+it's important to understand this. To actually send information over to a wave,
+we can define it by three parameters, the frequency, how often a certain point reappears,
+amplitude and its phase. By fiddling with one or more of these parameters
+we call that modulation so that's how we represent information in a wave. There are lots of ways you can do modulation,
+of course, if we start out with a wave like this, the top is the time domain and the bottom
+is the frequency domain, if we frequency modulate this, we see the frequency is changing with
+time and in the frequency domain we can see the frequencies. There are more complicated ways to do this,
+too, for instance, this is amplitude modulation and it's difficult to see how this is going
+on but there are lots of different ways and each form of modulation has different trade‑offs. So by changing individual parameters in each
+form of modulation we can trade off things like how fast it will go versus the bandwidth
+it will take up and stuff like that. So it's the "hyped" up word for what you might
+describe as something that controls and commands individual cognitive modes. These are examples of some of these. You will notice that these are all in different
+layers of abstraction so some of them are in the physical layer and some of them are
+higher and some of them depend on each other so the cognitive engine is trying to accomplish
+a task, let's say minimizing interference and maximizing data rate. We would call that its objective function
+and these are examples of inputs it would have. When I change those inputs it's going to change
+the output of this function and it's going to minimize or maximize this function. This is a three‑dimensional example, normally
+you would have way more than three dimensions, so it would be impossible to view it like
+this, but something it might use is gradient decent or other simple machine learning techniques,
+and this works relatively well but there are dangers of hitting local maximums and minimums
+instead of global and there are other techniques it can use, another one is game theory and
+this works well because spectrum is a resource that is being fought over by lots of people
+and we can model this in game theory easily. One of the ways we can do this is to try to
+achieve Pareto optimality. Which means if you've got a single cognitive
+radio network in a room by itself and there is no one else there, there is nothing it
+can do, no change it can make that will increase its performance without decreasing the performance
+of another node. So this is the idealized case where you win
+every time. Now in real life, of course, this is never
+true. You're always competing with other people
+and maybe there are malicious users on the network in that case you can attempt to do
+a Nash equilibrium and you're basically trying to not lose ally time. As long as everyone is using the same strategy
+there is no change that any player can make on their strategy that will not tea increase
+the strategy of another player. This gets difficult to achieve in real life
+so you can a‑approximate it. But the point is there are ways that a cognitive
+convention can optimize this. Back in the 1800s when wireless telegraph
+was showing up. It was really, really spectrally inefficient. So when operators were trying to talk to each
+other they would have to listen to see if there was anyone there and if there wasn't
+then they could start talk. As you could imagine this ended up not working
+very well at all and in fact one of the more of common messages people sent was "GTO, OM,
+QRT, which stood for go to heck old man I'm trying to transmit. They would quell at each other until someone
+gave way and someone can transmit and this was a big problem when the Titanic started
+sinking, because the shore transmitters were interfering with the ship rescue efforts so
+in 1912 the FCC was created and this created licensing and now people realized to make
+sure that no one is interfering with each other, we need to have licenses, everyone
+is responsible for their own chunk of spectrum and you're not allowed to transmit where anyone
+else is ask this worked well and especially in the 80s and 90s when cell phone companies
+started becoming big and they aggressively started lobbying Congress to divide more of
+the spectrum it was divided up and rudimentary sharing began because as long as you're not
+obviously in the same physical location or operating at the same time then you're not
+going to interfere with each other. Now recently something interesting has happened. Back in the 90s when people started seeing
+this problem of, okay, maybe we should figure out how to ration the spectrum, people began
+setting up spectrum observe to hers, a spectrum ‑‑ a 
+lot of the spectrum that people are buying isn't actually used or at least not efficiently,
+so recently several years ago, the FCC after being petitioned by Google decided to make
+unlicensed the old analog TV channels so this is called TV white space and Google was the
+primary push of that. So the problem is because the licenses are
+not the same where every, the availability of stuff like white space isn't available
+everywhere so this is a plot of one channel across the United States and all the blue
+is where it's available and the green is where it's not available. So as you change channels the availability
+of the frequency changes as well. So this is the entire United States. It's a little deceiving on this plot because
+it's not plotting defensibly, it's plotting channels and colors, and you can see it's
+mostly around big cities but in the rest of the United States. Like in the middle of the desert there are
+no TV channels out there so why not use it? And there are several companies that have
+begun taking advantage of this. The FCC has set up specific databases with
+Microsoft and Spectrum Bridge and Google and you query these databases, and you tell them
+where you are and they will return to you a list of the frequencies you can use without
+paying for them. And Microsoft and Google have started using
+this in something called "super wifi" which is basically taking 80211 and shifting it
+down to these frequencies down ‑‑ it's in UHF, so it's 500 and 600 megahertz
+And they're doing trials ‑‑ there are 40 installations in the United States, and
+they have trials going all over Africa, Kenya, South Africa, Tanzania, Singapore, Senegal,
+everywhere. This is really interesting, but there are
+other uses for this as well. There is a company in France called Sig Fox,
+rather than use this as another way to do wifi are trying to use this for long‑range
+wireless sensors that are really low power. So rather than connect people in a traditional
+network; they're connecting, for instance, farmers who need to measure the moisture of
+their field, and you've got a large area, this is the stuff they're working on. So especially for these low power devices,
+we need new protocols and new ways to deal with these interesting physical and political
+properties. So there is another company in England called
+Newall that is developing a protocol called "Weightless" and it's interesting because
+it's set up as a special interest group, but as a private special interest group. Blue Tooth did the same thing so if you want
+to contribute to the spec, you have to pay a bunch of money. And in the case of Blue Tooth you paid a bunch
+of money to contribute, and once they released the spec you can download that for free. Weightless is working different and if you
+want to read the spec, they have now released version 1.0; it costs almost $1,000, and they
+claim it's an open spec so I'm not really sure how that works, but I hope they perhaps
+take a turn because I'm sure there would be people interested in knowing how this works
+and poking around at it. Now I briefly want to talk about the kinds
+of attacks that specifically apply to cognitive radio networks. A lot of traditional network attacks will
+work on cognitive radio networks but they work in different ways. I'm not going to numerate every single attack
+but give you the kind of things you have to think about what dealing with networks like
+this because it takes different thinking. I'm sure one attack everyone in here is familiar
+with is a replay attack, you take traffic off the network and store it and play it back
+at a regular time. In a regular network that can be bad if you
+don't handle it right. But in a cognitive network it can be a good
+thing because it's constantly deciding how it can optimize and make better improvements
+and not interfere with others. So if it sees traffic returning to it that
+it is already seeing it may assume one of two things, there is a routing problem, especially
+if it's an ad hoc network or there is a weird RF thing happening, perhaps it's seeing a
+reflection off a large surface or something and it may adjust for it. So taking advantage the assumptions that the
+cognitive engine makes is a large attack surface. One of the more obvious methods you may think
+of is changing the observation that individual nodes can see. So if a legitimate node can observe an incumbent
+on some channel and the way it would do that, several different ways, it can use something
+as simple as energy thresholding. So if there is a power above a threshold that
+decides there is a person there, or it can use more complicated ways, for instance, cyclostationery
+analysis or wave load analysis and it can characterize the signal more. I'm not going to go into this work because
+the math is hairy but it discovers there is a person there, and it will forward the message
+along the network until it hits a compromised node in which case the message can be changed
+and once this is forwarded along to the base station this can cause different decisions
+to be made and this can do one of the two things. First of all it means the real incumbent is
+going to be ignored and you can turn the network into your own jammer and the other advantage
+is that you don't have to transmit anything to make it work. So rather than setting up your own radio and
+potentially be try angulated or something, you can simply change traffic to change what
+happen to be observations. A simpler version would be routing disruption,
+another attack that is well documented in traditional networks but if a node starts
+dropping packets or completely drops off the network, then this can be really bad for the
+cognitive engine because if that particular area physically where the node is located
+is collecting valuable data then it's now blind in that part of the network. So that can drastically change how the entire
+network will behave. By the way you don't need a complicated exploit
+to make a small node especially the kinds that are typically used in sensor networks
+to act like a black hole, a baseball bat will work to take the node off the network. The civil attack, another originally designed
+for peer‑to‑peer networks, another idea being if you have a trust relationship between
+individual nodes or the base station that you can take advantage of that by taking over
+additional nodes or adding more to the network. So especially in these cases it's really important
+to know who you can trust information from and when you can trust that it's real. So keeping track of individual nodes and whether
+or not they're being suspicious is important. So if you get enough of your own nodes on
+the network, then you now have basically voting majority and you can vouch for compromised
+nodes on behalf of each other. In this way you can indirectly control the
+decisions that the network is going to make because you can feed it whatever you want
+it to hear and then you can get a pretty good idea of what it's going to have to do in response. A priority attack is another interesting attack
+that ‑‑ another interesting attack that is perhaps unique to this network. The idea is that you've got sensors in different
+places, like, let's say, you've got a sensor in a laboratory that's measuring, you know,
+the moisture of a fern or something and then you've got another sensor in the same network
+that is measuring toxic fume levels in the lab. Clearly the one that's measuring fume levels
+should be much higher priority than the one measuring moisture in the plant. So by exploiting ‑‑ by telling the cognitive
+engine that you're a higher priority than you are, you can derive resources away from
+places that really need it. Especially in these cases where you're sharing
+spectrum there is a finite amount of resources to go around and it's easy to clamp those
+off. Whenever people are designing hardware, especially
+these networks, it's really, really easy when you're designing small nodes to Rationalize
+weak crypt toe and the reason this is because if you're working on a micro controller and
+writing an assembly and you're trying to squeeze every cycle out, it can be easy to say, who
+is going to try to break into this? Or, it doesn't really matter if someone is
+able to read this traffic, and a lot of it comes down to speed versus security because
+in a network like this you have more overhead so understanding what trade‑off to be made
+is hard but it's important and it's easy to screw up. Data privacy on normal networks is important,
+but on these networks is give us you more information about the nodes themselves than
+perhaps on a regular note work. For instance, location can be easier to discover
+for an individual node because the spectrum its observing is specific to where it is. Individual trees and buildings and stuff around
+specific nodes can drastically affect the spectrum they're observing and you can characterize
+that and you can figure out where they are and this can be bad if you're trying to keep
+that secure. So this, I think, primary user emulation is
+the most challenging attack we're going to have to deal with in these kinds of networks. I should plain a primary user in the context
+of the FCC. What they talk about is a TV transmitter who
+owns the license, they would be the primary user and everyone sharing the spectrum is
+the secondary user. So normally you look up the database and that
+tells you the primary users and you go, okay, if they're want on this list they may be a
+primary user so this is an exploit of technology and policy because the problem is as the law
+stands there is no way to authenticate a primary user so if you set up a radio and broadcast
+episodes of "Happy Days" in the milled of network you can dos the network off the air
+and even though the network may suspect you're doing something bad there is nothing they
+can do about it because they have to get out of your way. So figuring out how to deal with this is tricky
+and there are papers written on special cases of this but no one has figured out how to
+deal with it and I think it's going to require algorithms for characterizing real primary
+users and policy change on how you are able to did he text them and what you can do once
+you discover they're there because at this point once you are dosed off, it becomes a
+jamming problem and you can use a spectrum to get around that but it's not ideal. Those are not every possible attack, those
+are general ideas and similarly these are general ideas on countermeasures for how to
+deal with these things and not all of this has been enumerated yet but there are key
+important ideas that we're going to have to think of when trying to solve these issues. The first is using cooperative intrusion detections. Traditionally we see a single intrusion did
+he techs system but in the case where you've got a budget of nodes that are all talking
+to each other because they can inform each other, they should be able to inform each
+other about each other. So not only are they observing the spectrum
+in general but they should be observing each other's behavior and keeping each other accountable. If they observe strange traffic they need
+to adjust their functions accordingly. Device reputation is another important thing. By keeping track of the quality of the spectrum
+that each individual node is receiving again as well as their traffic, then you can build
+the trust function and you can sort of weight your decisions based on that and this is not
+only something malicious, if there is something physically wrong with a node and it starts
+reading a weird spectrum that's another reason why you need to know, okay, we should factor
+these observations less into our decisions. And device location, again, is another important
+aspect for this, because physically ‑‑ physical security on nodes like this is a
+big deal. Having physical access to them, even a single
+node can significantly affect the network and change the decisions that are being made. So why does this matter? Why should we work on these problems? This plot here has been probably seen by I
+would guess every major networking executive in the entire world and this is showing, of
+course, the mobile data predictions over the next couple of years. Cisco is predicting insane numbers, they're
+saying by 2020 there will be 50 billion devices connected together on the network, right now
+there are 10. There are a lot of companies that are predicting
+and freaking out and preparing for what they think is going to be a really big deal so
+it almost doesn't matter whether or not this actually happens, because they're sort of
+self‑fulfilling prophesy, so I think this is relevant either way. You can see the fragments right now, 3 kilohertz
+to 300 gigahertz so this is the solution, chopping it up into smaller pieces and we
+can't keep doing this and eventually we're going to have to figure out how to deal with
+this so this is another application I think of cognitive radio specifically is cell phone
+towers. As the density increases and we see the proliferation
+of femtocells, they're getting closer and closer together and if you've got one in every
+house you're going to have problem and manufacture these are beginning to do simple cognitive
+aspects to them where they will try to avoid each other and I'm only seeing that as continuing
+to increase because it's going to let them be more efficient. So to sort of do experiments with this and
+play around with this we need tools. If you've ever done work in RF before, what
+comes to mind is the USRP which is this neat little radio and it's a little expensive,
+the down side. I've written some experimental cognative engine
+code in a new radio and I have a link at the end to it if you want to play with it. This is good for acting like sort of the base
+station that will make decisions and command smaller nodes. However if you're trying to do experiments
+with the network then you typically need multiple nodes and maybe you can afford one USRP but
+you probably can't afford five of them. So the other end of this is the really, really
+cheap XB type thing which is a wireless module, you put data in one side and it comes out
+the other side and it's cheap so you can buy a bunch but they're not frequency agile and
+they're not customizable, you can't control them very well. So I wanted something in between. There wasn't really anything at the time so
+I built something. So I built this board that I called "level"
+and it goes from 30 megahertz to 400 megahertz and it outputs minimal Watts, uses a chip
+MI, and it's compatible with PI's really cool off‑the the‑she will mesh networking stack
+called Simplicity. It fits on the shield and they cost about
+$100. This is what it look like. I will go over the topology here. This is the CC 430 which is micro controller,
+by Texas Instruments, it's got a core in it, 110 CC 1 and it's good for doing low power
+stuff, this is an analog devices, this is a wide ban VCL. Those are mixed together in this ADEX 10L,
+a passive mixer and because it uses a single antenna, it has two RF switches controlled
+by GPO on the MS 430 so you can switch from transmit mode and it runs through filters
+and ample fires. I added these two things that are optionally
+populated, these are directional couplers and these basically let you tap into the signal
+directly and these ADF 4351 without going through the mixer and filters and amplifier,
+and I thought it would be cool if you could interact with other devices. Your wifi can't do stuff in 500 megahertz
+and I was working in TV white space and I wanted to play around with this, and I realize
+they have break out boards for pretty much everything and it fits right on there and
+once you've depacketized whatever you're receiving on the top board then you send it over serial
+to a shield which would typically do all the hard parts for you and turn it into 8211 or
+whatever you want so this is on a wifi shield and this is on an ether net shield. This board by the way is still ‑‑ I would
+consider it a prototype. I don't have a way to mass manufacturer them
+right now however, code and schematics are all on GitHub and I will link that at the
+end and if there is enough interest we can see what we can do. The hack RF, launched a few days ago, the
+Blade RF, on Kick Starter this year earlier, and there is another board called the myriad
+RF which is a neat little board that ‑‑ it's not as frequency agile as the other two
+boards but it's really neat and so all three of these are good tools for playing with this
+and all three of them didn't exist when I was designing my board which is why I didn't
+use any of them. So what's next? The spectrum crunch things, people will say
+it's I am meant and some will say we have more time than we thought, there are new techniques
+that people are using that may buy us more time. But here is what we know. We know that a lot of these companies that
+have a whole lot of money are investing a lot of money in cognative radio networks. They've been doing experiments in turning
+cell phone towers into cognative nodes and I think that we're at a unique time because,
+like I said, these are deployed to the point where there is actually real networks in the
+field right now. In France with Seg Fox they have at this point
+thousands of devices connect to paying customers and there are dozens and dozens of installations
+in the United States right now, West Virginia University just a couple of weeks ago started
+serving wifi to their dorms over TV white space and we're at this cool time where the
+networks exist but they're not used by so many millions of people that it's too late
+to change fundamentally how they work. So I think by attacking these problems and
+by trying to solve these ‑‑ I mean nontrivial issues, be it either technological or political,
+we can really get ‑‑ we can be on our way toward making sort of the next generation
+network. Making sure that we are able to deal with
+whatever the result of these predictions ends up being, thank you. (Applause.) If you want code, or schematics or slides,
+then there's where you get it.

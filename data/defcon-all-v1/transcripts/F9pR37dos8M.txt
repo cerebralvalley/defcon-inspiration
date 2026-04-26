@@ -1,0 +1,1058 @@
+>>Let’s get going. >>Yeah, so
+with no further ado, I give you
+your speakers. >>Good Ok. [applause] [inaudible mumbling
+off mic] >>Hello everybody,
+thank you for coming at our session. Um I’m Masarah
+Paquet-Clouston. This is Olivier
+Bilodeau, we’re both from GoSecure Research in Montreal.
+And we’re gonna talk about
+behind the scenes, the industry of social man- media
+manipulation driven by malware.
+We have a lot of content, so we’re just gonna dive right away
+into it. So this is a 4 year
+long investigation and it started in 2015. At that time
+Olivier was working at ESET with
+Thomas Dupuy and they were both working on a malware called
+Linux/Moose that was using
+infected devices to proxy traffic and go to social media
+sites. Then I came in and he
+switched jobs to GoSecure and I came in as an intern and we were
+looking for research project to
+do all together. And that is that is when ESET shared to us a
+second version of the malware
+Linux/Moose and we partnered up with my prof at that time at the
+University Prof [1:10], a the
+universe- from University of Montreal and my Mitacs which is
+a non-profit organization in
+Canada focused on research. And we decided to study that second
+version of Linux/Moose. First,
+you must be wondering what Linux/Moose mean, right? Like
+what, why are we calling this
+botnet it this way? Well, when Olivier was studying that botnet
+in 2015 they found in the
+binaries the string elan and elan is moose in French and
+since we’re Canadians, they
+wanted it to give that botnet a Canadian touch. Although
+probably these guys are not
+Canadian or we don’t know and that is why they called it Linux
+because it’s targeting Linux
+embedded systems and Moose for the string. Linux/Moose is an
+IoT botnet that conducts social
+media manipulation. What is social media manipulation? Where
+basically its just the process
+of creating fake accounts online and then using them to go and
+like and follow other people. We
+have a good story of an example of social media manipulation uh
+that was done by a journalist in
+Quebec called Emil- Emilie Bilodeau. So she decided for her
+investigation to become an
+influencer by cheating, so what she did is she created that fake
+account called the pretty runner
+and started to take pictures of herself running. And then she
+used various techniques to
+increase her following online and we met with her uh after she
+published and she told us what
+she did, so she did follow, unfollow, unlike for like, she
+also joined pods of influencers
+that liked each other to give themselves more visibility and
+she said that she had to bot
+fake followers to give her some sort of a base of visibility so
+once you have like 10,000
+followers, then you’re more credible and then afterwards you
+start and you try to these
+different techniques I just mentioned. Today what we’re
+going to focus is on this
+technique, buying fake likes and follows, so it’s the process of
+creating follows and then
+selling them so influencers can get popular uh with fake
+visibility. So this presentation
+basically is based on its it aims at sort of mapping the
+ecosystem of social media
+manipulation its a four year long investigation that started
+in 2015 uh it uses various
+investigative techniques. So we did traffic analysis, reverse
+engineering uh we also went on
+forums. To sort of understand what was going on with these
+actors and what they were
+talking about and we sort of create that map of all the
+actors that are involved and the
+ground basis is Linux/Moose. Which is what Olivier’s going to
+start with. >>Yeah, so uh again
+like Linux/Moose has been something we talked about for
+awhile uh its an IoT botnet. Now
+let’s map it into our ecosystem. So it’s, its fits right in the
+ground you know far away from
+social media cause it’s only proxying traffic to them. Uh
+we’ll see that, you’ll see that
+map evolve as our talk goes on. Uh so basically Linux/Moose we
+say routers and Internet of
+Things what we mean by that is embedded Linux systems with a
+busybox userland. So its a
+subset of an of IoT, but it’s still clearly a big subset of
+it. It has a worm-like behavior
+so it it does its spread through creden- uh telnet credential
+brute forcing and its main
+payload or the the reason why it does social media manipulation
+is its offering a proxy service,
+which means that it leverages the the IP repu- repute table IP
+of people who are infected. So
+ISP IPs are more you know credible to Instagram or social
+net work than data center or
+enterprise IP space. So the the the proxy is a good way for the
+malware uh operators to kind of
+you know separate themselves from uh the intent is not clear
+in the malware itself because
+its only a proxy service, you need to detonate the malware and
+look uh what its doing to get an
+understanding of what the bad guys are after. Classic malware
+uh technique of deception. Um in
+order to to uh catch it and I’m going to really go quickly
+through this cause we have a lot
+of content, but we deployed custom honeypots. They were
+basically like one side an ARM
+virtual machine where we could run or detonate the real malware
+uh on the other side we had the
+fake uh frontend that would look like uh IoT or router in our
+case. Uh so we kind of did both
+so that if the operator scanned us he would think that he’s that
+this is legit infected device.
+We deployed them all over the world and uh it yielded nothing,
+it cost me money and it was time
+consuming cause it didn’t change anything. We did this uh uh an
+HTTPS Man-in-the Middle cause
+all that traffic was HTTPS. And so we uh we we we uh we
+redirected the flows to um an
+MITM proxy uh project which is an amazing project uh for that
+kind of work. Cause of that work
+uh they do good raw lugs uh of the HTTP traffic once you break
+the HTTPS. And what this slide
+is about, like we didn’t break or invent a new technique to
+break HTTPs. The thing is we
+anticipated or expected that they would uh ignore uh
+certificate errors, which they
+did. So we were kind of like glad about it. And so at that
+point we had the raw traffic.
+We’re really nice and so Masarah what did we do with the raw
+traffic. >>Yes, so at that time
+when we were studying we had was several infected hosts used by
+operators, HTTPS traffic in
+plain text. Yay. And C and C traffic and publicly available
+seller market. So that is when
+we presented in 2016 at BlackHat Europe in London. And we’re not
+going to go more into details of
+the analysis that we done there, because there’s documents there
+that are published online that
+describes everything. But there’s one thing that we hadn’t
+talked about at that
+presentation that sort of led this presentation. And its a
+feature that was within the
+infrastructure of Linux/Moose. So Linux/Moose had 7 whitelisted
+IP and we say whitelisted
+because these were IP that had the right to use the botnet. So
+they had the right to push
+requests through to infected devices onto social networks. So
+at that time when we noticed
+that, we were like hmm, what are these whitelisted IPs for?
+Right. So our hypothesis was to
+think that it was a reseller model. So that one whitelisted
+IP that was just you know a
+server somewhere that had access to the botnet could have been I
+don’t know, sellers of Twitter
+fake followers and you know when they would sell it they would
+just connect to that IP and push
+the request through the botnet. So we thought that uh well we we
+wanted to find out what these
+IPs were meant for. So we decided to conduct several
+traffic analysis. So we used
+Jupyterlab. Its an awesome open source tool that allows you to
+sort of pcap data along with
+proxy logs, like correlate them together and just use them for
+data frames and graphic. And we
+sort of developed that methodology of various variables
+that could have help us
+understand what these whitelisted IPs were meant for.
+So we looked at honeypots used,
+uh per whitelisted IP, we looked at websites targeted, TLS
+fingerprints, but all of these
+didn’t yield anything. It was a lot of analysis for few
+findings. Except from two. So
+two um variables told us what it was. It was acc-, so the
+variables were account created
+on social networks and accounts followed on social networks. So
+basically for each whitelisted
+IP we had uh we could find that it had their own lists of fake
+account, but they were actually
+all following the same accounts. So the potential buyers that we
+call. So we sort of figured out
+that these IPs, these servers meant for fake account
+management. So where do we
+stand, right? At that moment. Well, we knew that each
+whitelisted IP addresses have
+their own list of fake accounts and that was the meant, that was
+why they were there. And
+additionally what we did was we scanned them and we saw that
+they were running Windows
+servers and uh that they we talked to somebody at OVH who
+confirmed to us that they were
+using uh remote desktop protocol was actively used. So we
+wondered, right, what kind of
+piece of infrastructure could glue all of this together? So
+you have Windows servers, RDP
+open so people connecting and we know that they’re managing fake
+accounts. And that’s when
+automation software appeared. >>And so uh automation software
+is uh like we we started looking
+at it like what would fill that gap, right? And we found out
+about software that exists that
+kind of turns social media around and the fact that what
+you’re looking at when you use
+such software is you have a grid layout. You have like th- an
+Excel spreadsheet. Where your
+fake accounts are there, and you, they’re mapped to a proxy
+and we’re gonna go through this
+and you’re gonna see this. But now I just wanted you to have an
+image in your head and we’re
+gonna map it to our ecosystem. Which we love by the way. So its
+in the tree, near the moose,
+because automation software uh enables uh the moose which is
+the you know the pro- basically
+a a botnet of proxies that it will leverage. Um, so we try to
+find uh the software that would
+be powering a Linux/Moose and we base this research on
+user-agents. So both, they were
+both using the the fake accounts and the interaction with
+Instagram were both using mobile
+and desktop user-agents. And we uh the although Linux/Moose
+supported many proxying
+mechanism, we uh, we knew or we saw that socks proxying was the
+one that was used. And so uh we
+found different features uh from these vendors uh ska- uh you
+know do they manage thousands of
+accounts or a few accounts, proxy-type usage and can you
+customize uh uh browsing
+patterns and all that that stuff. Uh and also we found
+different business models. So
+they all charge money for their software. By the way their
+software is heavily protected.
+As we as you’ll see. Uh some of them supported the unlimited
+accounts, some of them you would
+pay with one time fee, et cetera. Uh the first one we
+looked at was Gram Dominator, so
+uh Gram Dominator and all the Dominator names are like very
+common, they have a so- for
+everything. And so you know legitimately, you can pay with a
+normal credit card. This is
+really foreign for me a- as a malware researcher where
+everything is like bitcoins or
+you know really shady or hidden. All of the social media stuff is
+still like paypal accounts, they
+probably d- e- ch- they probably declare taxes and all that
+stuff. Which makes it more like
+interesting and at the same time, sad and you know. We
+should do something about it.
+Uh, but uh it has a the features that we needed here. Here we
+highlighted like proxy support
+which, in which they mention public, private, socket you- you
+these are clearly not you know
+that technical but anyway. Uh, they uh also s- uh support
+several instagram accounts. So
+diving into the binary I was looking for user user agent
+strings. Right. And so I di- I
+found that they were using, they were generating user agents uh
+on the fly. And so looking at
+the code, they were really combining like Android versions,
+dpi resolution and this is
+exactly like what instagram looks like fr- from when you use
+the Android app. So they mimic
+that portion, but with a generator so that you would, a
+single fake account would get
+its user agent. This would be put into a database and and then
+for that fake account always the
+same user agent would be reused. So we found like another pretty
+clever. And so we looked at it
+uh through powershell, we kind of you know loaded the library
+and asked a few names to see
+what it looked like. And this was really similar to what we
+saw, uh, from Linux/Moose. Uh
+let’s look at another one. So Social Dominator which is again
+under the umbrella of the
+Dominator uh trademark. And uh what uh what I want to highlight
+here is like that grid layout.
+Like this we only have one account, but uh its because it
+was our own and we didn’t have
+many accounts to put in there for this screenshot. But so you
+see that the like username,
+proxy and then and it will gather the friendship count and
+stuff like that. You de- you
+also have like uh import capabilities, export
+capabilities, so its really
+meant for scaling. Uh and you have a log of everything that’s
+going on uh at at down. Uh this
+software supports like Reddit, Tumblr, Facebook, Instagram,
+Twitter, Pinterest, Cobra and
+even Google Plus. RIP Google Plus. [laughter] But so you know
+you see that they’re into this
+business for for for real. Eh- I think this one uses the Chrome
+embedded framework. A lot of
+them use Chrome embedded framework. We have a little uh
+table that was summarized all we
+found about the different software that we analyzed. Uh
+I’m going to go really quickly
+through it cause we have lot of stuff to cover, but you’ll be
+able to get the slides and look
+at the at the table on your own time. The other one that me-
+that is interesting and needs uh
+you know cause it’s kind of a story in its own. Is Follow
+Liker. So Follow Liker uses a
+weird discontinual packer called Jet. It eh uh, Jet compiles Java
+into native code. But still uses
+a JIT engine so we have like a hundred ya know, or thousand of
+function and then a big data
+block and when you like at it, its binary and its loaded by the
+thing. So its really hard to
+reverse engineer. Uh when I loaded it in Ida Pro, it gave it
+gave me 267 megabyte of native
+code and I was like, oh my God, there’s no way I can go through
+this, but the packer costs
+something. Do bad guys pay for packer? Of course not, right?
+And so when you you you try to
+use the software without the launcher, you get an error like
+its an evaluation version and
+expired. So when I looked at the in the strings I see that they
+packed it with an evaluation
+version that was valid for 3 months. Right? And so I was like
+ok but, why when I use the
+launcher, this thing works? It’s because they embedded in it and
+they UPX packed it, the
+runasdate, uh program, so what they basically the launcher does
+is it’s it’s unpacking or
+loading uh, uh runasdate and then param- giving ya like
+inputs to fake the date, but
+only for that process, so your operating system and everything
+is ok, right. And so this
+completely bypasses the jet uh limitations that they can use
+evaluation version. I found that
+really funny, but I lost a bunch of time looking at it. And so
+this gave us uh Follow Liker
+running, but its still like the same grid layout, nothing new,
+nothing learned, so yeah. Too
+bad. Uh so we looked at many of them, we cut them for these
+slides. But uh here’s the table
+that I mentioned earlier. But the the jist of it is we didn’t
+find the one for Linux/Moose. No
+there was always something off and so eventually we hope that
+we might be able to fi- find it.
+And by the way, like, all the binaries I found, I uh we have a
+you know a company account for
+virus total. I put in the domain name of the of this business in
+virus total and I was able to
+download the binaries and analyze them. So Virus Total
+thank you, you’re like a binary
+distributor and this is really good cause otherwise we couldn’t
+have those binaries. So now
+where do where do we stand? We found several automation
+software vendors which we
+analyze. The reseller model clearly now is not at the botnet
+level through the analysis that
+Masarah told us about earlier. So where is the reseller model?
+This what we’re looking for. So
+Masarah. >>Yes. Ok so at that time when I was investigation
+the the decrypted traffic, I was
+trying to find um in the traffic some accounts that would for
+example, an Instagram account
+that would advertise follows and likes. So in that case I would
+be able to say oh see that
+account was followed by our botnet and its advertising
+selling a fake likes and follows
+so that must be a our botnet providers or something like
+that, right? So I started to
+investigate a traffic and I was looking for keywords like social
+media, panel and all that and I
+ended up finding reseller panels. Just like this one
+called medianesia panel. So
+reseller panels are basically just panels that sell fake likes
+and follows in bulk. When I told
+the de- when I told this to the journalist, she was really made
+because she paid a high price
+for the fake follows that she bought, but she could have then
+had them at a very lowest price.
+If she would have gone through the reseller panels. So we sort
+of uh decided to illustrate them
+as spiders and webs and where they are in the ecosystem is
+just a little bit above the
+automation software. And next our Linux/Moose our IoT botnet.
+So reseller panels look a little
+bit like that. So just you can login with a fake account easily
+and just create a password and
+they all sell fake likes and follows in bulk and most of them
+offer the services on all social
+networks. So Twitter, Facebook, Instagram. What’s interesting
+are the prices are lower than
+other sellers that we’re going to see later, but the lower you
+go and the more the shadier the
+payment process is. So I tried about to buy a million followers
+for myself for my fake account.
+At 1 point 8 dollars for poro- for 10,000 dollars and the only
+way I could actually pay for
+that was bitcoin, so its kind of interesting because as the price
+goes down, the payment methods
+become more and more shadier. So what was specific about the
+reseller panel that was
+interesting is the fact that they were selling popularity in
+bulk, but also that they all
+look alike. So when I was investigating them, starting to
+look at them, it was like oh, it
+looks like its the same group behind these panels, because I
+mean, it just seems like to be
+coded by the same person. So with that simple investigation,
+we gathered information on 343
+reseller panels and we gathered information on the fingerprint
+of the web application, domain
+registration information, html content and IP address. And we
+started to do clustering
+analysis. Like it did yield some results, but there was just one
+big result that we couldn’t
+ignore and it’s the fact that the it was the IP address. It’s
+that the fact that 68- 6 percent
+of our sample was posted on the same IP address. So here we just
+did a simple passive DNS query
+uh and then we found that this IP hosted Indian it housing
+other domains and all these
+domains are related to uh the resell of SMM. Social Media
+Manipulation. So for example you
+have extra like, easy boost gram panel. And why investigating
+that we found a specific actor,
+perfect panel dot com and what this perfect panel does well,
+it’s a panel as a service
+provider. So that sort of answers why all the reseller
+panels looks the same. It’s
+basically that there is a provider that allow you to sort
+of have a panel without having
+any technical knowledge. So they will provide you with the panel
+and you can start reselling in
+bulk. So that sort of added another actor that we weren’t
+expecting. An actor um that we
+added in our little forest behind the webs and the spiders
+because they enable the reseller
+panels sellers. Yeah. So basically panel as a service, we
+found five of them. Uh what they
+offer is a ready to go software, they even provide web hosting,
+obviously all on the same IP
+address and some of them even include the domain names. So you
+don’t even have to buy that.
+They have specific features like API to receive orders and API to
+send orders, so what you could
+do is just connect to a panel and then uh to receive orders
+and connect to another panel and
+then just act in the middle. They also uh allow you to track
+your workers so if you wouldn’t
+want to automate everything and you were in another country
+where you would want to have
+workers then that would be something possible to and you
+could do it manually. So here I
+just give you an example of it’s not perfect panel, its uh
+IndusRabbit, so we could
+actually just login through the demo and see that you have a
+dashboard with all the user
+names and the people that are actually, that would be your
+customers in your reseller
+panel. You also see that you can select an API and just like
+connect your panel to another
+panel so you wouldn’t have to have a link to Linux/Moose, you
+would just have to have a link
+to a cheaper panel and sort of play in the middle. So we looked
+at uh so we were wondering
+right, ok so there’s so many reseller panels, but how do they
+connect to Linux/Moose, right?
+How these two actors are linked, I know Linux/Moose advertises
+them through the accounts, but
+but that wasn’t clear to us. So what we did is we went on
+BlackHat World, this is the
+forum for social media marketing. And sort of found
+lots of discussions that were
+from reseller panel. Owners. And they were looking for the main
+provider. So here I give you an
+example of somebody saying, well, mostly all panels use the
+same provider. The only
+difference is price if anyone knows this provider, he is
+welcome to contact me privately.
+So you see that’s somebody that would have an efficient reseller
+panel would actually want to
+connect directly to Linux/Moose, wouldn’t want to connect to
+another panel, right? But then
+this guy Dealtonmediastudio sort of shows well how the game
+plays. He says no one will
+reveal the main provider, for them he is their hidden ghost.
+So it makes sense right, when
+you think about it. If there’s a malware provider a malware
+author who’s actually detonating
+uh Linux/Moose, that person would probably not be interested
+with dealing with all these
+reseller panels right? It would just deal with one or two t-
+trusted party and then these
+trusted parties would deal with the reseller panels, right. And
+SS- SSMSnab here is really well
+showing this. So he says, guys unless you sp- spending a
+thousand dollars a day on SSM
+panels, you don’t need to search for the original supplier. A, he
+wouldn’t be interested in your
+volumes and b, you just need to find the most reliable reseller
+for the most cheap reseller and
+get on with it. That would be enough. In this market you have
+to put your efforts not in
+buying cheaper but in selling more. So you do like we we sort
+of concluded from that that
+potentially a Linux/Moose and these providers at the bottom
+would be hiding behind a few
+trusted parties. However, it seems odd to see one main
+provider, right? There should be
+many ways to sort of provide fake likes and follows and this
+guy says it. He says there
+cannot be one provider, they are several and there are several
+methods too and while we were
+thinking about that, we found a new method that was possible.
+And that’s what Olivier is going
+to present. >>And so where are we at right now? There’s a
+system of resellers and a panel
+of as- as service providers and of course there is shallow
+people wanting to buy fake uh
+fame, you know. We have the automation software that can
+create and c- orchestrate those
+fake accounts. But then when you try when you when the bad guys
+try to you know f- uh, uh
+manipulate Instagram, well, they are getting blocked. And so,
+with Linux/Moose the botnet
+provided to them was repute table, IP addresses and you know
+a set of proxy a services. But
+what if there was another way, a more legal way, not breaching
+CFAA. And so what we’re gonna
+talk about here is there is this ecosystem of residential proxy
+providers. And so, you can work
+around blocks using proxies and there are 2 types of proxies
+basically that you can find
+online. There’s a datacenter proxies, which are easy to block
+because they’re all together you
+know, it’s clearly labeled and uh uh Netflix or you know
+Instagram can block slash 24s
+like huge amount of IP addresses in one shot without impact. But
+when you try to block
+residential proxy this the story is different right. You have- IP
+addresses, they can someone can
+be really legit and if you block an IP, you might legitimate
+account and false positive are
+really a pain in that context, right? You don’t want to p**s
+off Kim Kardashian by blocking
+her because her IP was flagged. And so you ne- need to be really
+careful. And so uh we even have
+like this guy an- next gen ledz which is a junior VIP on
+BlackHat World. Who says,
+basically stop using datacenter proxies period. Right. At four
+page you know comment on a on
+BlackHat World and so basically we understand what you mean Next
+Gen Mister. So a new actor
+enters the game basically. So we had this botnet before, but now
+we have a parallel system which
+would mimic the the uh botnet uh so you could do things
+differently and its the
+residential proxy services, which we, you know present to
+you as uh a cabin cause we tried
+to have this thing be Canadian somehow, cause we’re crazy about
+Canada. And so what we have here
+is a cabin sitting on the floor, so the floor is kind of proxying
+and whatever and so automation
+software right beside it and it’s on the other side of the
+tree cause it’s parallel
+mechanism to achieve the social media manipulation. We- we put a
+lot of thought into this we kind
+of made it a bit crazy maybe. But so um, the ones that we
+looked at were high proxies uh
+storm proxies uh RSocks and the glorious Valar Solutions, which
+is a Game of Throne reference
+which I don’t understand, but I appreciate nonetheless. Um, the
+Valar Solution product that we
+purchased was uh, called Comet USA Static Proxies Residential
+IPV6. This was a our only IPV6
+uh proxy and Valar I I I d- d- uh no I had I need to see this
+later actually. Anyway, and we
+looked at li- Luminati. Luminati is very different an a it it
+needs a bit of of your attention
+and its kind of side tracked from what we’re doing today, but
+this scary as h**l. But Luminati
+is use case has clearly says that account management is part
+of what they’re doing. And so uh
+uh here what I lay I uh highlight here is like it
+basically says, use our service
+to manipulate uh social media, right? But what I, what I want
+to highlight right now is like
+their business model. Cause its completely different than the
+other ones. And let me like the
+have a video about it. And let me show you. This is completely
+crazy. >>Add revenue without
+hurting its user experience. Grow your app revenue without
+hurting its user experience. By
+joining Luminati’s developer community. Embed RSDK and earn
+5,000 dollars per month for
+every 100,000 of your daily active users. Luminati is the
+world leading peer to peer
+business proxy network. We help fortune 500 companies collect
+web data through residential
+IPs, so they’re never blocked or misled. We do that by partnering
+app developers and inviting
+their users to be peers in our network. When users download or
+upgrade your app- >>What. >>they
+will see this screen. Allowing them to join our network and get
+your app for free. You can offer
+your users other options. Like watching ads or purchasing your
+app. Users who choose to be
+peers would not feel any change as their device resources will
+be shared only when their phone
+is idle, connected to internet and has enough power. Allowing
+you to earn money from your
+inactive users. Implementing your SDK is quick and easy. Grow
+your revenues while increasing
+your app usage and retention. Join Luminati’s developer
+community today. >>This
+completely crazy and should be illegal right? [laughter] Oh I
+mean it it’s true like th- this
+is crazy, but people will opt in and since people agreed then its
+legal, right? See it anyway I I
+just can’t wrap my head around them, but it was clear that it
+was not our Linux uh it was not
+uh built on compromise virtual infrastructure so that’s why
+we’re ruling them out of uh of
+this presentation this research. But still I wanted people to
+spend a minute thinking about
+this and you know pushing against it, right? We need
+globally to fight these business
+models. Um so Trend Micro did a, a very good paper so Luminati is
+what powered HolaVPN, I don’t
+know if you heard about them. But anyway, I refer to that
+paper and I I I I advise that
+you look at it if you’re interested in that topic. Uh we
+we’re not gonna talk about
+Luminati anymore, but I’m I’m like mad about them. Um, so
+Storm Proxies. We got IPs from
+the U.S. Uh there was conflicting information in the
+in the Geo IPs and Who Is
+database. I think this is how they pull this off, uh but it
+said like digital energy, Chile,
+but the that hosting organization was Host1Plus. Uh
+we you had like Victoria Mahe,
+which is an African ISP and that hosting uh uh organization was
+Joe’s Datacenter and even though
+it should have been African when you traceroute it, it was U.S.
+And so I think this is kind of a
+a you know um abusing the the the t- the proper updates of the
+the Instagram, uh not not
+Instagram, but uh IP databases. So Instagram is kind of out of
+sync with these and they cannot
+block, cause they’re unsure if its ISPs or or a datacenters.
+Um, this is our theory anyway.
+But then we started scanning and looking at it from uh you know
+using the the the product cause
+we purchased all of those services. And so I use Squid for
+proxying, they don’t protect
+scans from local host uh its a Linux system most likely Debian
+Jessie because I was able when
+using the proxy to scan local hosts to fingerprint uh Exim uh
+version which is an SMTP server.
+And Squid and uh Debian is very uh rigorous about you know back
+porting patches, they don’t they
+you know Exim for whatever reason, they just backport the
+patch themselves and so, because
+of that, when you fingerprint specific versions, you, you can
+be with a high amount of
+confidence know that this is a Debian system. And so uh, this
+one is a Debian. So is it
+compromise infrastructure like what we were looking for? Uh
+power- cause we were looking for
+criminal activity. No. So it’s legit. Residential proxy service
+legit and using geo IP who is
+you know min- min- uh miss update or you know, c- confusing
+state and so uh we don’t have a
+a bad guy here. Or you know we have a gray guy. I don’t know.
+Um, RSocks, it was uh, all the
+IPs that we got were same subnet in Russia. Uh it was a a packed
+by the Adman LLC ISP. Adman if
+you look it up, there’s nothing so you don’t know if its
+datacenter or if its a
+residential ISP provider. There’s nothing on Adman uh as
+an ISP. Traceroute confirmed it
+was Russia. The fact that its all the same subnet was like,
+uh, you guys are kind of lame.
+But uh ok, you know. Um, they expose SSH when you scan locally
+through uh 3389 which is usually
+RDP. The uh the we were not able to fingerprint the proxy service
+itself, so we don’t know what
+binary, what proxy system they were using. Uh and again,
+because of the SSH that we found
+and the SSH banner is gives all the information. So we know its
+a again a Debian Jessie. So
+again to our, you know original inquiry, is this compromised
+infrastructure? Most likely not.
+And what I failed to mention so far is that this is not single
+IPs. This is several IPs. We
+analyze 5, 10 proxies and they’re all the same, so it
+cannot gives you like the sense
+that it’s not compromised infrastructure. And now lets
+look at Valar solution.
+Unfortunately they don’t provide um, uh management accounts so
+this screenshot is just the
+glorious webpage. Uh, but the IP we receive was a Dedibox uh IP
+which is a a a i- clearly not
+residential in France. It’s like uh dedicated uh servers. Uh but
+the this is the first provider
+where the the traffic was not going out from the same IP that
+you connected, but it was a
+tunnel. So it would, you would connect in France and you would
+get out in the U.S. You would
+connect IPv4 and you would get out IPv6 and so it was a a bit
+different to analyze. The the
+the outgoing traffic was labeled uh from a AT&T internet
+services. So was probably one of
+the best one like a solid AT&T no confusion whatsoever. Uh, so
+uh good job. Uh Valar Solutions.
+I don’t know how you pull it off. Um we we geo IPed the the
+information and this gave us a
+middle of a lake in Kansas. So at at the time I was like oh
+that’s cute, I I imagine a
+datacenter on the water datacenter. But I know it’s
+b******t. I know geo IP is not
+precise and there’s a radius you know involved. But I I kind of
+liked it. But then that vision
+was destroyed when we presented at BlackHat two days ago. They
+told me like any IP in the U.S.
+not properly geo IPed or labeled is in that lake in Kansas. And
+so I was like, ok. [laughter] I
+got it wrong. There’s a story about that late- I mean wou-
+wou- we should do a lightning
+talk about it anyway. Uh I’m going to skip through it cause
+we have a lot of stuff to say.
+But uh, so Valar uses 3proxy. 3proxy is a very famous Russian
+uh uh proxy service that is kind
+of shady, but its open source. You can use it, like pen testers
+should use it cause its really
+flexible. But its still like, I see- I’ve seen it before in
+malware, but it still it legit
+but you know. So it they they clearly uh proxy a lot of stuff
+on the same uh- en- entry IP.
+Cause they had a thousand cont- continuous port exposed entry
+proxy. Uh we uh we identified it
+both by nmap and by triggering errors and looking at the error
+strings and matching it with
+source code so we were sure it was 3proxy. Um, they protected
+scans from local hosts so it was
+a first one who did that and uh ipv6 would co- completely
+sealed, so any external scans
+through the ipv6 address that we got were were giving absolutely
+no result. But we know that the
+proxy entry is again Debian 9. A lot of Debian in this industry.
+I don’t know why. Uh but they uh
+through fingerprinting of the Nginx and Open SSH. And so
+wrapping this up, uh, what we’re
+gonna say is like there are several providers uh uh and
+everything we analyze I don’t
+feel its powered by malware, but clearly Valar solution sis the
+shadiest one and the one who
+protects itself the most. So if I had more time, I would
+definitely lo- look into these
+guys, cause um, there there’s something weird uh about that
+service. Uh there is a a paper
+it was released called Resident Evil: Understanding Residential
+IP Proxy as a Dark Service,
+which is very interesting. And they took a completely different
+approach than us. And we found
+it while doing that research after we were accepted to talk
+about. Uh this stuff here. But
+so I just want to give them a hat tip you know. Cause uh they
+actually uh they collaborate
+with ISP so we use the proxies and try to a- access if its
+compromised infrastructure or
+not. But they saw traffic go through these proxies and they
+know what they are used for.
+Very interesting paper and its collaboration between Indiana
+University of Bloom- uh
+Bloomington and Tsinghua University and its more than 10
+people that worked on it so I
+think they need a hat tip. So where do you we stand now? We
+have a IoT botnet which we
+started with 4 years agao, but now we know it could be done
+residential proxy that you could
+put- pay for right? We have automation software, which uses
+these two services in order to
+automate or make scale your Instagram interactions right? We
+have resetter panels and panel
+as a service provider. So we have all that stuff, but who
+buys from the reseller panel?
+What’s going up uh upwards, right? Masarah. >>Yes. Ok, so
+what we did is we called them
+customer facing sellers. So we they just chill out. They just
+chill out on top of the tree
+above everybody, because they’re the ones like dealing with the
+celebrities or agencies related
+to the celebrities. I just give you an example here. Um, of the
+Devumi. Have you heard of
+Devumi? No. Ok. So uh this is a customer facing seller, uh it
+just it looks really legitimate.
+They do lots of customer services. Uh you can pay with
+credit cards, its less shady and
+easier for anyone who’s not in who’s not technical. Or who
+wouldn’t- who would believe that
+what you’re doing is ok. And what’s interesting about D-
+Devumi is that it they were in a
+legal procedure with some of their partners who were trying
+to sell their, to steal their
+customer. So they ended up having to publish their list of
+customers and the New York Time
+took that as an opportunity to create a huge investigation
+called The Follower Factory.
+Where they actually sort of show names of people who bought from
+Devumi and names that are people
+that are well known in the United States. And following
+that uh investigation, the New
+York Attorney General, did a legal proceeding against Devumi
+and sort of announced
+groundbreaking settlement saying that selling fake followers or
+likes is illegal deception. So
+Devumi was fined 50,000 dollars for what it was doing, according
+to the um, New York
+investigation, the New York Times investigation, they made
+over like 5 to 6 million a year.
+So it was that of a high fine. And obviously what happened once
+this uh solution was sort of uh
+pulled out by the New York attorney general is that Devumi
+closed down obviously. But
+obviously also, they just went down to their best alternative.
+So Social Boss dot Org,
+InstaGrowing dot Net and YoutubeGrow dot com, so like it
+hasn’t thought much of what’s
+going on. And then lastly the people that are driving this
+whole business. The buyers. You
+get it? Squirrel. And where do they stand, well, they stand at
+the top of the tree next to the
+customer facing seller and nearby the fruits of social
+networks. How did we sort of end
+up analyzing the potent Well, we dates back to our analysis in
+2016, we knew that Linux/Moose
+was proxying traffic in 86 percent of its traffic was
+Instagram so we took only
+Instagram and then we sort of developed a methodology um which
+said that if Linux/Moose had
+followed more than 5 times the accounts, if it wasn’t a super
+popular person, like a Kim
+Kardashian, because we know that they’re following these people
+to look more legitimate and it
+had to have a very low engagement. So they have like
+100,000 cus- uh followers, but
+like when they post a picture, there’s 2 or 3 likes and it just
+sort of shows you that it’s
+probably fake following. And then we did a content analysis.
+So from this sample, uh we
+categorized as much as we could the people that we saw. So for
+example, first thing that we, 20
+percent of our sample, was the enter- entertainment industry.
+So people like this guy who
+would have uh 30,000 followers, but in the end when you clicked
+on his YouTube channel, it’d be
+like 10 to 12 views or you know like very low. And this person
+uh with 200,000 followers who
+calls himself reality, TV personality, actor, global,
+jetsetter and you wouldn’t find
+anything about him online. Except from that.Then 21 percent
+of our sample was selling
+products or services. So example of watches being sold online uh
+ev- all or most of the products
+and services that were advertised on Instagram were
+were like luxurious stuff. Maybe
+that’s just a result of the social network, but here’s
+another example of a jewelry in
+Paris. Who also we found in our botnet. And lastly the saddest
+things is more than a quarter of
+our sample was personal profiles. So individuals who
+post pictures of their food or
+of them hanging out on boats and then they have lots of
+followers, but they know they’re
+false. So it sort of questions us as to, you post them and you
+think you have visibility, but
+inside of yourself you know that is not the case. [laughter] But
+lets say that that’s just
+another research for psychology or something. [laughter] But
+yeah. And then that’s how we
+ended up calling this market the eagle market. And then there was
+the unexpected ones. So what
+happens is that I could categorize about I’d say 60
+something percent of the sample.
+But there was so many weird profiles that I couldn’t say oh
+yes, this is this or this is
+that. So for example, here I had a mil- an Iraqi military general
+uh who was in the spec- special
+forces and unfortunately this is his profile and it’s probably
+the person managing his account
+that has bought fake following. Or its potential, right? Like we
+haven’t seen these people doing
+it, we just, we’ve seen them in our botnet. And we also saw some
+qui- quite large amount of
+magicians, spiritual psychic, uh people involved in magic. Here I
+give you an example of a New
+York home witch as she called herself. So yeah, um, 141,000
+followers. And then there’s the
+fascinating ones. Ok. So here I give you a it makes sense right.
+An STDs testing account. Well
+obviously if you were to want to have followers online, who would
+follow that, right? So it makes
+sense that you buy this. [laughter] And then there’s dogs
+with more money than you.
+[laughter] Right. How do you categorize that. Right? Like
+anyway. So we made an
+experiment. Ok. Uh. You get it, it’s a duck face in a mirror.
+Ok. So we knew that Linux/Moose
+was targeting uh Instagram, but it was also targeting Periscope,
+Flipagram and Kiwi, which is,
+which are unknown social networks. And we found the
+seller, a customer facing
+seller, that was selling those uh, fo- fake following on these
+social networks. So we though
+well lets just try to buy from that customer facing seller and
+see if we’ll see the account
+going through to Honeypots, right? So what we did is we
+bought, I created a fake account
+called beautifulbird33. We bought 6,000 followers, got
+8,000 cause I complained. And
+you know I wanted increase the chances of seeing the the
+account. And luckily that day
+was one of our best day in the research. Is that the the
+account went through the traffic
+in our Honeypots. So that sort of confirmed our investigation
+even more, right? And if you
+think about it, what we did is we acted as the buyer and we
+went on a customer facing seller
+and then we saw the account going through the botnet. We
+don’t know what happened in the
+middle with the reseller panels, but we know that it happened. So
+in terms of the revenue, I’m
+gonna go a little bit quicker, just because we’re gonna miss we
+de- we’re short on time. But in
+2016, uh when we studied the botnet we had the customer
+facing sellers prices and we
+concluded that most of the profit was going to the botnet.
+So what w is we calculated the
+amount of follows that we saw in each honeypots and then took the
+prices that we saw in customer
+facing sellers and just addition added this together. And we
+said, well, if Linux/Moose has
+3,000- th- 33,000 bots then it would make on average, for
+example, 400,000 dollars.
+However, now we know there’s much more actors involved right?
+So you have the buyer who buys
+from the customer facing seller, who has a mid price on average
+for 95 thousand, 95 dollars for
+10,000 followers and then the customer facing seller will go
+on the reseller panel and then
+will pay at much lower price for the fake following. And then we
+don’t know how much Linux/Moose
+is going to make out of this right? But what we know is the
+cheapest reseller panel is 1
+point 8 dollar for 10,000 followers. Which I’m honestly,
+I’m pretty sure that’s a scam,
+but still. And then meanwhile you have all these actors that
+are still making money. So you
+have the so- the panels service provider who makes on average 47
+a month per client. And proxies,
+its about 2 dollars per proxy per month and the automation
+software will make, they’re
+making on average between 10 to 16 dollars a month per client
+too. So let’s just do an
+exercise ok. You want to be trending, you want to buy 10,000
+followers provided within a
+week. So you’re doing something. You’re going to DefCon and
+you’re like, this is my chance,
+I’m gonna get popular. And then you know that each bot, we know
+that each bot performed on
+average a thousand follows per month on Instagram. And how do
+we know that. Well, we just
+calculated that, we took the average and if its not that
+high, its because the botnet has
+to imitate a lot of human behavior to ensure its not
+flagging. It won’t go like
+follow, follow, follow, follow, right? And then uh that equals
+to about 280 follows a week. And
+for that, if you wanted to go through proxies, well, you would
+need 36 proxies at a median cost
+of 2 dollars a month, so it would cost you a flat cost of 72
+dollars. I mean that’s quite
+expensive right, for the median price of 2 dollars per proxy per
+month. So that’s sort of leads
+us to think that this is not for nothing, that Linux/Moose
+exists, right? Infected devices
+are cheap and otherwise that Valar Solution or like more
+shadier actors are involved. So
+Valar like sells for about 50 cents. A proxy. For a month. And
+then if we just le- estimate
+Linux/Moose capacity, so if we say that uh Linux/Moose has for
+example, 40,000 bots, then we
+could say that it’s make, it could make on average 40 million
+Instagram follows. Per month. So
+that’s quite a lot. And if we try to see how it sort of fits
+on the graph, then that’s how
+you see that if you take the minimum price of the reseller
+panel, it would make much less
+money than we expected. And then the first quartile is a little
+bit higher in the median pri-
+price is even higher. But what’s the main takeaway from this is
+mainly just to understand that
+we often try to estimate profitability just by adding one
+by the other, but there’s often
+many actors involved and we don’t calculate that, so we’re
+always like, oh, this is
+millions of dollars for the malicious actors. But in the
+end, you see that it’s much more
+complicated than that and there’s other people making
+money out of this, right. So
+this is sort of how we concluded our illustration of the
+ecosystem of social media
+manipulation so you see all the actors here. There’s other
+research avenues, so obviously
+you have other ways to be able to create fake following such as
+click farms, compromised
+accounts and troll farms. And just to um, let you know there’s
+some inf- journalists that are
+working right now into uh interviewing actors involved in
+the ecosystem that we talked
+about. So and they’re going to publish really soon so if you
+have uh you’re interested in
+knowing more about that, you can come talk to me and I can put
+you in contact with them. And
+there’s a prof in Germany called Patrik Van Hul who’s also
+working on interviewing reseller
+panels owner. So I think I’m gonna stop here cause I had a
+what to do next. But it’s the.
+Oh yeah. Ok. What to do next. Ok. Really quickly. Just keep
+your attention, policy makers
+will make into the soc- the sell of social media manipulation
+right. Because we saw the New
+York attorney general doing it and then we we wondering what
+the countries could do that in
+other states. Law enforcement target the middle man panel as a
+service provider. They enable so
+many actors to sort of connect into the customer facing sellers
+and the botnet. Social networks
+continue to flag any robotic. We went on the discord server on
+um, Valar Solution and it was
+kind of interesting to see that just right now, yes, just right
+now um people are having a hard
+time doing uh fake likes and follows cause it seems that
+Instagram has published a new
+AI. And that’s the really struggling to do it. So I mean
+it works. And you will maybe try
+to focus on the content rather than the container. So if
+somebody tells you look at this
+person, like they have so many followers. Well, instead of
+saying wow. Just wonder what’s
+the person bringing to society and what’s the content being
+published? Is this pertinent or
+not? And lastly, just remember I bought 8,000 followers on my
+account and I only have 400 now,
+so face visibility doesn’t last. Thank you very much and I’m
+sorry for rushing through the
+last part, but it’s very nice to be at DefCon and I hope you
+enjoy your week. [applause]

@@ -1,0 +1,519 @@
+All right, guys, we'll get
+started. Welcome. Good afternoon, thanks for coming.
+Thanks to DEF CON for having me. My name is Jeremy Dorrough on
+two different variance of attack I made for the USB rubber ducky
+what we got here. Or is that just their screen? Are these
+screens screwed up, too, just that one? USB two different
+payloads for the USB rubber ducky that will decrypt theWi-Fi
+communications. Yeah, so, before we get started. Quick
+disclaimer. I'm here on my own behalf. It's my own opinions.
+Not my employer, no one else we get the legal jargon out of the
+way. Yeah. Okay. What are we doing here? Sorry. Alternates
+more than decade of experience in national security industry
+those ten years I've worked for a couple of different sectors.
+Started out with the Department of Defense, working for the Army
+at a datacenter hosting both class and unclass material. Left
+out of there to go to work in the energy sector, defending a
+nuclear power facility. Then currently I'm working in
+financial sector as network security engineer for Genworth
+financial. Just a side note, fun fact. As a hobby I enjoyed
+building, driving and detroying demolition derby cars, if there
+is any gear heads we'll talk cars. What we'll talk about.
+From a high level we're going to first talk about what is a USB
+rubber ducky those not familiar then talk about how the attack
+actually works. Then get into the details of each of the
+different payloads. First talk about the keyboard payload then
+we'll talk about the one involves both keyboard and USB
+mass storage. I'll demo the second variant of the attack,
+any time for questions, maybe we'll take some questions but
+it's probably going to take the full time. All right, so, again,
+those are not familiar with rubber ducky in simple
+description of what it is, think about if you were able to take a
+keyboard and apply some type of logic or some type of memory,
+what to send to a machine when you plug it in ultimately have
+the USB rubber ducky. They are sold by hack 5. Run by and
+support them. Really good group of guys. Like 40 bucks or a
+little better than 40 bucks, pretty cheap. Here is what the
+rubber ducky looks like. You'll notice that it is a very common
+form factor. Notice there on the far right for you guys, if you
+been to any of the trade shows like any of the I.T. security
+stuff, typically as vendors hand out swag a lot of times it wilt
+be actual form factor. If you go to some of those you look you
+probably have one that looks very similar to. That inside the
+enclosure you'll see it has micro SD card storage area. As
+well as a little micro processor, a little 32 bit chip.
+And again that's what kind of drives the memory part of the
+brain from that previous slide. And to kind of talk about the
+different ways that the ducky behaves it comes shipped -- the
+duck firmware which is that first bullet there. And again
+that is just keyboard input. But there's also the detour duck,
+but make note that have last variant of the firmware as well.
+That involves having both USB mass storage at your disposal
+when you plug the device in as well as programmable decord. Lot
+of powerful things can be done once you start adding mass
+storage, we'll see that in a demo later. For those that are
+like, thank you, he's trying to pedal their products. You don't
+have to go with the hack 5 rubber ducky, there are other
+options out there. Sammy Cam car he's got presentation later
+today. I recommend you guys support him. Really smart guy.
+He developed the USB drive by he does the same kind of mentality
+with the device. So check his stuff out if you don't want to
+spring for the 40-some odd for the rubber ducky. As women as
+last year at Black Hat, Carson and Jacob did the bad USB, those
+that are familiar with that term. Then later at derby
+conadam called on Brandon Wilson released code to take off the
+shelf variant of a flash drive, flash their firmware to it and
+more or less it will run the same scripting language that the
+rubber ducky run. That is more or less free if you have those
+flash drive laying around. So, how does attack works? This
+slide just depicts the victim having a wireless connection to
+a little radio there you see the lock. Any SSL connection they
+have are working as they should. Everything is encrypted.
+Anything that this they are supposed to be encrypted is
+encrypted just standard connection before the attack.
+Then comes the rubber ducky, if the rubber ducky was USB flash
+drive was plugged in, first thing going to happen there's
+going to be a trust of certificate that's loaded on
+that victim's machine. After the trusted cert is loaded will move
+wireless connect over to a man in the middle machine which I
+will be running. If you kind of think about this in your head
+what just happened, not only are we now man in the middle, but
+since we provided that key there's nothing I cannot
+encrypt, right? It's kind of a bad situation for that victim.
+All right, so, first question I had when I bought it was, is
+this a novelty device? Yeah, it's great to roll your buddies
+with it, cool. Does this thing really have a place in the
+corporate environment for an actual pentest or is this a real
+useful tool for Black Hat for that matter. I was kind of
+astounded to see these numbers. You may have heard these before,
+but DHS obviously had the same thought they paid a third party
+to perform a study where they dropped flash drives around
+public areas, whether it be smoking areas, walkways, what
+have you. They found that an astounding 60% of people plugged
+them in once they picked them up. Well, that's scary enough.
+Then look at last bullet, if they add official logo that
+number jumped to 90%. The moral of the story is that you really
+don't need any clever social engineering for this attack to
+work. If someone really wanted to be bad and do this attack for
+$400 you got ten of them. Someone is going to plug it in
+your odds are pretty good. Speaking of official logo. If
+you recall the form factor of what the rubber ducky ships this
+is just a quick Google search of marketing USB drive, Ta-da the
+exact same form factor that the rubber ducky ships in for couple
+of bucks you can put whatever logo you want here because it's
+just a shield there that connects to it. You're up to
+your 90% mark according to the DHS study. Pretty useful stuff.
+I kind of want to talk about now why I actually made this
+payload. There's plenty much good ones already out there,
+rubber ducky is nothing new, product has been out there for
+awhile now. And Darren, the guy that runs hack 5 has his get hub
+is full of really good payloads that people have written. What I
+found is that most of those if not all of them would be stopped
+by the modern defenses that are deployed in most enterprise
+organizations. I'm not talking about your -- trying to attack
+random victim at Starbucks, I'm more focused on corporations and
+more secure area. The person I'll touch on is anti-virus. Lot
+of payloads that are out there will pull down tools of some
+type. Whether it be net cat or try to do some interpreter
+reverse shell, what have you. That's cool and all but if you
+pull those down on company asset your anti-virus is going to
+light up like a Christmas tree and stop in its tracks, it's too
+well-known at this point. The next bullet there, web filters
+and proxies. Some of the other attacks what they will do try to
+make you go out to some open storage place, Dropbox or box or
+something like that, well, most organizations, at least if
+they're more on the secure side of things are going to block
+those style of sites. Not let you go to any open storage pull
+down any random file you want. That's going to be stopped. Same
+kind of mentality below with the FTP wait list, trying to pull
+down through FTP, again, most companies if their level of any
+security knowledge at all they're not going to just allow
+to you FTP anywhere from any asset in the organization. Then
+the last bullet has nothing to do with corporate security, I'm
+sure most of you are familiar with HSTS those that are not.
+It's kind of tool that was designed just to stop this style
+of attack. So, the old school way of doing man in the middle
+attacks, once you got in the middle of the communication
+path, you would tell the victim just go ahead talk to me in
+clear text. Trust me. Talk clear text to me. Even though you want
+to talk encrypted so your banking site, I'll telling you
+to go ahead HTP so I can harvest the credentials. On the side
+talking to the real banking website you talk encrypted. It
+worked well for awhile until things like HSTS came along
+which is an actual browser-based security mechanism that says, if
+you're on this list of HSTS enabled sites no matter what the
+man in the middle machine tells you, you must always use
+encrypted traffic. That comes a problem because it thwarts the
+way old school way of attacking. Again, all your big sites are
+doing that, like a paid sites like you see, PayPal and your
+social media sites even DEF CON implemented this year, I guess
+DEF CON has some super speaker information in it. Let's talk
+attack. Enough pretalk. The first step is to actually set
+the man in the middle machine up. Because you have to have
+something for the victim to connect to. This is not the
+focus the attack I'm going to breeze through this stuff. Just
+to give you an idea of what I use when I set up the demo
+you're going to see in a minute. I use host APD. For wireless
+radio, I use DNS mask for the NDS server as well at DHPT
+server, I.P. tables to direct traffic over to a proxy, I
+mention the toolkit. Those guys actually have developed some
+really cool scripts that I use to kind of just adjust their
+stuff to work the way I wanted it. I mentioned proxies. The
+I.P. tables mover stuff over to proxy, you got to think about
+once you get the connections coming in to your man in the
+middle machine, and you've got the radio, it's listening,
+people connecting to you, you have to have some way to
+manipulate the traffic or view the traffic, what's the point of
+sending it through if you can't do anything with it. You have to
+set up some type of proxy, and my example I use burp suite
+doesn't mean you have to have burp suite it's easiest in my
+opinion. You can use SSL, quid, whatever. I do make note here
+that whatever proxy you want to use for this style of attack
+make sure you know how to pull the certificate out. Because
+we're going to have to convert that certificate to a base 64
+encoding. I'll get into that in a little bit. For those not
+familiar with burp suite, I'm sure most of you have seen it,
+configuration I'm using today very, very simple, I got it
+listening on all interfaces, just pick the 880 port you'll
+see that invisible box as they call it is checked but, industry
+that's a transparent load proxy. I mentioned you have to export
+your certificate, well that's what the little button below
+that, you click there. Go through dialogue boxes to export
+the certificate. When do you that it's going to come out in a
+-- formatting, but at least I want to touch on this. The
+certificate if it's in Der formatting notice that top
+window there, that is text that I can't enter by keyboard,
+right? I want to make sure I convert that certificate to
+something that my ducky can type in easily. Using open SSL
+convert that Der formatting to the base 64 encoding and if it's
+done right you should look something like that bottom
+window. It's readable, all letters and numbers. Now we have
+the man in the middle machine set up let's talk about the
+payload itself that will be sent to the victim. What it's going
+to first bypass Windows UAC open command prompt window. If the
+user is logged in with admin credentials it's going to get
+admin credentials. If they are user, they get user credentials.
+The test that I'm going to do I have admin Creds I'll make note
+that this will work with user credentials. Without admin
+credits. Just going to have a few extra pop up boxes along the
+way. Second step it's going to do create that certificate from
+keyboard input the same thing we exported. Then it's going to add
+that certificate to the trusted route store using built in tool
+Cert Util. Then the profile then connect to that wireless profile
+then lastly it's going to clean up its tracks. Going to delete
+the files that it made in the process. So, before we actually
+look at the code I wanted to let everyone at least understand how
+simple this thing is to really write. DEF CON gave me a lot of
+credit by making me talk to you buys gut really it's pretty
+simple stuff. Again, very straight forward. Delay, delay
+in milliseconds. What you're actually typing to the machine,
+what you activate the payload then all your command keys like
+enter, Gui is the Windows command, remark, any question on
+that, get hub that Darren keeps up has pretty much all the
+documentation needed to any of the commands here that it
+supports. So here actually is the first step in the payload.
+Kind of broken it out here a little bit. You'll see how the
+code kind of works. Delays 10,000 that's 10,000
+milliseconds, that's ten seconds. The idea behind that
+when you plug the device into a machine the first time you're
+going to see Windows spinning there with the drivers, load
+drivers, load drivers, hopefully done in ten seconds. Then going
+to enter the issue of Gui R command those are not familiar
+with Gui railroad that will open run dialogue box going to delay
+200 milliseconds to allow time for that box to top up and going
+to type a little Powershell command, start process command,
+all that does is open the dial up box, admin credentials if
+possible. A little side note here you'll see I put side note
+that Windows ten, as well as 8 don't have to do that Powershell
+command, for those that got Windows 10 thing if you just do
+Gui X then type A. It opens up admin command prompt. A little
+side note. Next step we'll have to create that certificate on
+victim's machine with keyboard input. The way we're going to do
+that we're going to use a built in tool Windows called copycon
+is those are not familiar with copycon it's copycon, file name,
+anything below, you break out of it now you have a certificate. I
+had to put obligatory picture of the hacker in the presentation I
+noticed earlier on my slides this poor guy having hard time
+typing he's got like big thick winter gloves on. I don't know.
+That's Google search for hacker. We're going to use, in my
+opinion the climax of the attack, this is the part that
+it's doing bad things. Cert Util, enterprise, that's added
+to the machine root store adding that certificate we just
+created. This command succeeds, game over. Lastly we're going to
+create XML file those are not familiar, Windows handles
+wireless profiles just a little XML file, create that, then
+after we create it we then connect to it with net SH
+command. Again pretty straight forward stuff. Lastly just
+delete those XML file and certify that we created. All
+right. Here is what it looks like from the attacker's
+machine. This is again burp suite, we're looking at the
+proxy a view there I've highlighted there, people
+interested in post commands. I've kind of looked at post
+command to Wells Fargo. I'm not picking on Wells Fargo hopefully
+don't sue me. Any bank would work. You'll see at the bottom
+the details you've got user I.D. and password, clear text. That
+poor person's bank was just compromised. Alternatively this
+is what it looks like from the victim's point of view. There
+have been no pop-ups no warnings, no errors, no issues,
+no indications there was anything wrong, I've even opened
+up the certificate details to show that this -- probably can't
+read that it's issued by port swigger. Those are not familiar
+with port swigger company that writes burp suite they put their
+name in the certificate. Really bad day, Internet explorer, got
+the best of them. I'm sure some of you in the crowd are like, I
+don't ever use Internet exploder, I'm cool, I use
+chrome. There's no way you get me. Here's chrome. Same deal.
+Look at the credentials, look at the certificate details, you
+also see signed by port swigger, same story, no pop ups, no
+warnings, no errors, no issues, fully transparent to the user no
+way by at least certificate you'd ever know that somebody
+bad had happened. So again, they have no more money in their bank
+account. Firefox, though. How about Firefox. Yeah, yeah, clap.
+Bad day for me I'm glad y'all think it's funny. Firefox I'm
+sure inform you -- some of you know why this is the case.
+Firefox decided they're not going to trust Windows key store
+and trust store that they're going to implement their own key
+store and trust store. Those commands that I issued earlier
+with the Cert Util that's all for the Windows certificates.
+NSS labs has the tool you can download to actually manipulate
+Firefox Certs they have their own store. It's not installed on
+typical distribution, there for be very hard to use on victim's
+machine. I kind of banged my head against the wall for
+awhile. My face looked like that for quite a bit trying to figure
+out how in the world to get this to work. I just couldn't come up
+with anything clever. That brings me up to the next variant
+of the attack. The twin duck that I referred to earlier. So,
+twin duck firmware again just to recap, it mounts both a USB mass
+storage device as well as that same programmable keyboard
+mentality we just had before. So, to use the twin buck
+firmware, obviously have to reflash the device, not a big
+deal. Instructions are out there how to do that, very straight
+forward. And I will make one little side note if you're
+planning on making some attacks using the twin duck firmware
+it's not really designed for really fast IO, don't be trying
+to load some massive application up on your micro SD card and
+pull from it through command, it's probably going to behave a
+little differently what you expected. That's a cool quick
+side note there. Let's start this attack, what is different
+this time we have to set it up. First up, the steps are to
+create a new Firefox key store trust store. The easiest way to
+do that go ahead infect your own browser. So, go ahead open your
+own Firefox up and take that certificate that you just
+exported from your proxy, load it into your own browser. I've
+kind of listed here how to do that I'm sure you all know. Go
+ahead and click trust the certificate identity and
+website, yes, that way port swigger can sign anything
+through Firefox, okay. After do you that then you're going to
+pull your key store and trust store and copy it over to your
+micro SD card, it's located in the path there listed on the
+screen. That variable works for pretty much any basic install
+you see it uses variables. As well as wild card.default going
+to give it some crazy number stream.default that path right
+there if you just enter that into your machine it would go to
+your Firefox profile. Going to get those two files there listed
+in the bottom. Get the Cert ADD your key store and trust store
+for Firefox profile. So, again from, high level how this attack
+is going to work now done the prework set it all up. Same as
+before going to open a command prompt with admin CDs if it can
+get them. Then this time a little bit different going to
+create a script to identify where that mass storage was
+mapped. Again, got to think about this going to it blind we
+don't know what is on the machine once it's plugged in it
+could be mapped to E drive, F drive, who knows. A little
+script trying to find where the ducky mass storage is located.
+Then it will create another script, BSD script that will run
+batch file invisibly. Just run can in the background. And the
+idea behind that it's quicker to write a script on the screen
+because it's all done with keyboard input than it is to run
+-- write the whole batch file out. Just gives you a little
+less time to scroll across the screen. But what that batch file
+is going to do is going to first add just like before, going to
+add the Windows, trusted root certificate, it's then over
+write user's Firefox Cert and key store then create new
+wireless profile, connect to it, clean up. Here is what that
+batch file looks like. Just for those that are looking for the
+code part of the talk. You'll see here we obviously killed
+Firefox don't want to do anything while it's running.
+Same commands added to the Windows enterprise store of the
+machine store. Then you'll see over writes the Firefox
+profiles. A quick view, sheer what the micro SD card looks
+like on my device, I'm getting ready. You'll see the XML file,
+the wireless profile, you'll see the Cert file which we load the
+Windows, you'll see the Cert and key files for Firefox as well as
+batch file we just looked at. So there's the files that are
+needed to run in the twin duck mode. So, again, we'll go back
+to looking what it looks like from the user's point ever view
+or victim's point much view. Internet exploder, yeah, got
+'em. Chrome, same story, no more money in their bank account.
+Firefox, yeah, Firefox. Sneaky bastards, got you. You'll see
+also been signed by port swigger, we got 'em. Again,
+because we loaded those trusted certificates into their own key
+store and trust store, this point I'm more or less consider
+the attack successful. We've got all three modern browsers and,
+yeah, they have all been -- with that being said. Thank you.
+[Applause] We'll dive into the demonstration now and I kind of
+want to set this up it makes somewhat of sense, I obviously
+don't have environment here to have someone over there getting
+attacked and want to show you guys. What is going to happen is
+hopefully, please no one in the crowd be that guy that tries to
+mess up my SSID, please. If you do, whatever, I've got a video.
+But I'd rather do it live. Please don't screw with it.
+There's going to be -- Windows machine which I'm presenting
+from that's going to be the victim. You'll see, Windows
+machines where I'll actually apply the rubber ducky payload.
+But there's going to be a Linux box to represent which is which,
+a Dabian background I have bunch of like USB connections up here
+I can't really show you. I have USB connection to hard wired out
+to the Internet as well as a wireless radio that is going to
+be hosting the SSID. From the VM. And when the payload is
+deployed hopefully the built in wireless on the Windows machine
+will connect to that wireless radio. It's all kind of in one
+but should depict what the attack would look like. Let's do
+that now without further adue. That's what the Windows machine
+is going to look like. I'm going to change it to clone the
+machine again. Should be able to see my desktop now. All right,
+so, here is going to be the victim. Let's go ahead pull up
+super secret password. Before I actually get started, my
+resolution is all whacked out now. This is the script that I
+was talking about, the toolkit script that I kind of modified.
+Again, for anyone that wants to take note using host APD again,
+using DNS mass and I.P. tables to redirect traffic. Let's
+actually do that. Actually before I kick it off, let me
+show you again, here is the -- I've got burp suite up and
+running it's just listening on any interface on port 8080 in
+transparent mode that's where again you go to export those
+certificates. Let's go ahead run that script. Hit enter to kill
+me that's a little brutal. Okay. At this point what I should see
+if I were to look. There's SSID being broadcast. It's actually
+trying to connect. I'm disconnect from it once to prove
+that this does work. Now again what I'm going to do I'm going
+to restart the payload. This would be indicative of me
+plugging in, I'm dumb user that picked it up and I decided I
+found a nice flash drive let me see what I can do with it. Ten
+seconds. This is where drivers will be loading but I already
+had the drivers on the machine. And payload has now started. And
+it's now done. That's how long it takes to do its magic.
+[Applause] It's connectings like it's supposed to be doing. Takes
+a little bit. You guys are being nice to me not kicking me off
+there. Appreciate that. Now we're going to -- you guys
+already probably know damage that can be done now that I've
+got this connection in this shape. But just for grins, we're
+going to a Facebook account created just for this
+presentation here please don't -- my Facebook account. Then
+we'll also go again, poor Wells Fargo, I could use another bank,
+they're not my bank that's why I chose them. All right. Let's go
+for DEF CON user. Some super secret password. Let's log in.
+Hope to God this is no one's password that would be awful.
+Obviously, didn't work. Okay, perfect. Just demonstrate, here
+we go. We got some data. The attack is working as we expect.
+Let's first look at Wells Fargo. You'll see like I had in the
+slides there's the authentication packet you'll see
+the post, the off log on. Just go here to parameters, I scroll
+a little bit. You guys hope you can see that -- DEF CON user,
+password DEFCON3d. Let's transfer all the money out of
+that account. Got 'em. [Applause] Scratch your head,
+dude, you forgot to put a password in Facebook. Good luck
+getting that password now. You messed the presentation up it
+was in one of those leave me always logged in which we know
+what that means use authentication cookies. That
+actually may be even worse because any of the Facebooks,
+anyone who is Facebook how they do their authentication cookies,
+drag it up to see it better. Every packet that you ever send
+to Facebook you'll see this DATR cookie that's authentication
+cookie. Every time you do anything in Facebook it sends it
+over and over so I can click on pretty much any of those posts
+you'll see, there it is again. And there it is again. What
+we'll do we'll go ahead say, let me just have those cookies for a
+minute. Then I'll go over here to this account, just prove
+there's no shenanigans going on I'm not logged in, I just
+refreshed, no one logged in here, with the help of a little
+tool foes that are familiar with grease monkey is crypting tool,
+I got the cookie inject for script loaded if I go in here to
+-- let's take those cookies I just stole and paste them in.
+Thank you, all right. Now we have hijacked the session.
+Gotcha. [Applause] Thank you. Again, the point being there not
+that Facebook is your end goal but so many sites that are using
+authentication cookies I think Facebook drives the point home
+anyone that use the cookies or passwords doesn't matter once
+you're encrypted in traffic the data is yours. Let's go back to
+presentation. Wait for it. Got it. So now since like I told you
+guys at the beginning I'm not a pentester I'm not a security
+researcher, I am a security engineer. So I am paid to defend
+against these attacks not create them. It's only fair that in a
+responsible thing that I talk about how to stop this kind of
+attack. First bullet is wireless intrution prevention system,
+Wips, they're very powerful. But this style attack would not work
+because as soon as I spin up that rogue AP start flooding me
+with packets just wouldn't work. If your organization employs a
+Wips environment you have to find some other mechanism to get
+into traffic to you other than through wireless. WIPS disable
+mass storage. This is more common there's lots of style of
+attacks, not to mention DLP, saying mass storage, that's also
+kind of a bummer if you're trying to do that second variant
+because you don't have mass storage available, you can't get
+all through browsers the way I did the payload. If you take
+that mentality step further a little more extreme, some
+companies even disabled USB ports entirely that would
+certainly limit the attack because none of the style of
+attacks would work if you won't turn on. Then this slide, this
+bullet, frankly that bullet could be in any DEF CON talk
+given this weekend in user training can always be
+encouraged to be more responsible with X. Just today
+it's USB usage because that's what I'm talking about. Yeah,
+you can always use more user training. To encourage
+responsible use of technology. Multi-factor authentication. If
+I was able to pull this attack off on you and you are using
+one-time use password or some token-based password it's going
+to be very difficult for me to reuse that credential. So,
+that's another check in a box for why you should use
+multi-factor authentication. Last one here may not be quite
+obvious but those familiar with cloud proxy agents, a lot of
+organizations are now starting to deploy them. On all the
+corporate assets, what that does it requires the company asset to
+talk directly out to a cloud resource for their proxy
+exceptions. And typically happens to both mechanism built
+in if I got that communication probably just break. It just
+wouldn't allow you to go anywhere I wouldn't be able to
+encrypt anything because it would have broken your
+connection. Couple of other things here, to consider. I use
+wireless as mechanism of getting the data to me. But that
+certainly doesn't have to be what you use. You can set up
+proxy that listens out in the cloud, right, instead of
+changing wireless settings you could go in let's monkey with
+some of the proxy settings to have it no matter if it's hard
+wired, wireless, whatever, you always connect out to say AWS
+proxy listener you can have the same kind of attack take place.
+And benefits there is, one, again, hard wire or wireless,
+but you also don't have to be in physical proximity. So you could
+deploy this thing no matter where they went it would be
+taken out to like a cloud listener. You could also
+increase the authenticity. What I mean by that is, again, I made
+this as just a proof of concept, the files are labeled what they
+are, you could certainly label them more suspicious things that
+people would be trying to click in, like if I was trying to make
+it more authentic probably put in file that says like salaries
+or something. And I'd corrupt it so they keep trying to open it,
+just buy me more time of that screen before they thought
+something was fishy, as well as talked about putting label on
+the device, company X put that label on it. Another note here
+that the syntax will need to be adjusted slightly for whatever
+your victim base will be. And the reason I say that certain
+OSs will have different dialogue boxes pop up at different times
+with warnings, pop up at different times as well as
+timers. If your timers are on like -- try to get very
+aggressive on your timers, you put into really slow old machine
+timers may not work out right it will break the whole attack. Go
+to the play with the timer, play with the syntax, the attack
+should work pretty much regardless of any version of
+Windows. Just a quick little shout out for the guys at hack
+5. They have a form out there for people to share,
+collaborate, new payloads, pretty active community. If
+you're thinking about doing this style of attack or you're
+looking at new ways to get into this kind of thing I recommend
+you check them out. That's where I got a lot of the ideas, some
+of the code that I use for my attack. With that, I'll finish
+here with please, any questions you have, e-mail me. I'm not
+going to try to do the question thing in this forum, too many
+people. Find me out in the public areas and with, that
+thank you guys all for your attention, I appreciate it. [
+Applause ]

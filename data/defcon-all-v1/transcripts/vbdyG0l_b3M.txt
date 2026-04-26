@@ -1,0 +1,854 @@
+>> The speaker coming up right
+now is Blake and cisc0ninja,
+they are going to be talking about Don't DDoS Me Bro. Let's
+give them a big hand, a Def Con
+welcome, come on. 	>> Testing, 1, 2, 3. Alright, first off I
+want to apologize to you guys.
+I've been sick for the past few days so my throat is kind of
+jacked up. So, I know a lot of
+you guys are having a good time out in Vegas. I know my good
+times have been like hot totties
+and cough drops but Blake is going to be doing most of the
+talking so, you know, really out
+of the two of us he is kind of like the better half so to speak
+so you you'll be really glad
+about him talking anyways. The bottom line for our talk is kind
+of like, it's practically DDoS
+defense. It's all about the cost, we want to drive the
+attackers cost up without
+driving your cost up. So, we're not actually trying to promote
+and high cost stuff. It's like,
+pretty much, open source so we're going to go and first off
+we're going to start off by
+showing you some of the attacks we've seen, we're going to show
+you some of the mitigation
+efforts and then if we have time for it, talk about some lulls
+we've had in the process. I
+never would have thought something of death would be
+like, so popular and cause so
+much damage. Now days it's been revamped with daedric armor and
+the former get post request
+coming from every bot net you can think of. In fact, there was
+a guy that came up to us
+yesterday and was more or less, man, you got on that soul direct
+shirt, I DDoS'd the shit out of
+those guys. I'm like, ok, what for? They had all my information
+messed up, all that HDB and just
+everything was all wrong. I was like, did you hit up the admin?
+He's like, no man I just DDoS'd
+them man. Ok. (Laughter). >> You didn't send an email or
+anything, you know, we've got
+IRC forms. No, man I was just DDoSing, it's all about the
+DDoS. That's the mentality, I
+guess, that some of our opponents have, so. >> Ok, so
+here is a good idea on some of
+the humor we're going to do. Show of hands, who's is actually
+here to defend against DDoS? Ok,
+and who is here like DDoS soul direct trying to figure out how,
+maybe, a better way to hone
+their craft? I didn't really see any Guy Fawkes masks so.
+(Laughter). >> Ok, so anyways, I
+always like humor so let's start out with a little bit of that.
+So this is basically how
+attackers visualize themselves, right? That's what they are
+thinking so then what we're
+going to try to do is give you different techniques to use so
+then your web server should be
+more like this. It's not enough to do anything. So, a little bit
+of background he had touched, I
+think at the time I was a senior security architect that I
+applied for this. We had to
+reorg so now I'm a principal senior architect. Fortune 500. I
+was directly involved with
+defending against Operation Ababil, probably a lot of you
+guys have heard of that since
+you're dealing with DDoS. Cisc0ninja works in threat
+intelligence and has been a long
+time member of Soldier X. I'm kind of like, I've been with
+Soldier X a long time with doing
+more of the back end stuff and I've also, I guess, kind of
+known as the back in the 90's at
+least, the only guy dumb enough to use his real name instead of
+a handle in the group. Because,
+you know, everybody has hacker aliases. A quick disclaimer;
+opinions, ideas, solutions all
+that stuff is from us it's not from our employers or
+representative for them
+whatsoever. Since we have Def Con kids now we do have some
+explicit language and you know,
+some pictures in some of the slides. So, just a heads up.
+What we are going to cover,
+course requirements, have a bit of introductions, show an attack
+landscape, then we have
+basically two parts we defend on. The network side and the web
+defense side. So you can
+actually try to protect the network layer or you can
+actually do it on the web
+server. I always think it's important for defense in depth,
+especially depending on what
+technologies you have or what your company will let you do.
+Maybe your company says you
+can't use snort inline or you can't have this or have that. So
+basically we try to give you a
+whole slew of things. You get enough of those and you'd be
+good. We're also going to go
+over reacting to an attack. It seems like a lot with these big
+companies, you know, the website
+goes down and everybody starts freaking out. Instead of
+properly reacting everybody is
+like, oh my god it's the end of the world, the website is down
+what do we do? Then, at the end,
+try to get some best practices; put everything together. If we
+actually have time we want to
+do, basically, story time, some fun that's happened with Solider
+X. Obviously you put that at the
+end so you guys get the information that's actually
+useful to you since fun stories
+aren't that useful to you. So for requirements, for our
+examples. For soul direct we use
+Linux, but you know, Linux, UNIX. Apache2 is the web server
+we use, Python and Perl for the
+scripts that we have. For our monitoring system it actually
+runs on Raspberry Pi, because
+you know, it's like five watts of power. We have a sixteen by
+two LCD as you can see at the
+bottom. It basically says Soldier X is up, Soldier X is
+down. That monitoring tool is
+actually, it should be on the Def Con CD. It's also in the –
+if you look at the first slide
+it has the Soldier X address; it's in that directory as well.
+So, you should have Snort inline
+if possible. There is also, we're going to give an example
+with an F5; the F5 is kind of an
+expensive load balancer so we aren't necessarily saying you
+need to have that but I know
+some people don't have Snort. Some of you might have
+Surricata, we're not actually
+giving examples for that but you should be using, like, you know
+the stuff we show to build your
+own Surricata rules as well. Network sniffer hardware if
+possible. It's important a lot
+of the time when these attacks are going on to see what's
+coming in versus just
+speculating. And then of course you need critical thinking
+skills. DDoS is not, there is no
+real silver bullet. You need to be able to adapt as your
+attackers adapt. So, why this
+talk is relevant that we fill? At least since from 2010 from
+what I can see, Layer 7 is on
+the rise. Operation Ababil, for those of you who are familiar,
+was an attack from the Middle
+East because there was a Youtube video that was offensive to some
+of the Islamic people. Basically
+they said, ok, Youtube has this video up and unless they take it
+down we're going to attack all
+of the financial infrastructure. They hit all the big banks in
+the United States. Obviously,
+the banks have no say so in what Youtube hosts but that was their
+mentality. So basically there is
+also DDoS seems to be one of the preferred methods of
+hacktavists, or like he said,
+somebody has an issue with something on the Soldier X site,
+instead of emailing us, they are
+like, I'm just going to DDoS the shit out of that site. You know,
+this is how I'm going to react
+and you're like, ok I'm being hit and you don't even know why
+half of the time. So, what kind
+of spawned this talk is I went to CloudFlare's talk last year
+and they showed a lot of cool
+attacks and then solution was get CloudFlare. I was like,
+that's not what – that doesn't
+really resonate with me so we actually did try that. We
+actually did get CloudFlare. We
+still even have our DNS going through CloudFlare and so, there
+is a cost factor. There is also,
+it's like, there is security through obscurity really. I
+mean, if they know your IP
+address then they just DDoS your IP address. For Soldier X, for
+instance, the website will leak
+the IP address. You know, you sign up for new accounts, it
+sends and email out, you look at
+the email and boom there is the IP address. Now, CloudFlare
+could say, you need a separate
+server, you need this, you need that, but we're basically a
+non-profit security hobbyist. We
+aren't trying to build this infrastructure to make sure it
+works at CloudFlare. There is
+also historical records that people could use for, let's say,
+you're a big company and you
+have Slash 16 where you're probably not just going to move
+that because you need
+CloudFlare. You've also got DNS brute force. I don't know if you
+guys have heard of knock, that's
+like a – I saw it on some Russian forums that actually
+just brute force as a records.
+And last but not least, an old technique is pointer record. You
+get an IP range, scan all the
+pointer records, if you have pointer records setup guess
+what? They get your IP. So for
+us it didn't really work. In one funny situation with our
+interpiece server CloudFlare was
+actually passing the – they were actually passing this get flood
+going after large PDFs and
+CloudFlare actually passed that traffic on to our server and so
+the server is still going down
+and you get this error, like, 522. CloudFlare is fine but your
+website is not. And last but not
+least, privacy concerns. So, what this talk is, is it's a
+real world look. All of these
+are actual real world examples. None of this stuff is made up
+for this talk. We actually take
+Soldier X logs. The only thing we obfuscate is IP addresses of
+non-attackers – we actually
+obfuscate, they were not attacking our site, I don't want
+to give their IPs during this
+talk. We also have free code examples and of course a bit of
+humor at DDoSers because we kind
+of try to keep this interesting. I know defense can be a pretty
+dry topic. So, what this talk is
+not; a silver bullet to solve all DDoS attacks, a political
+stance on DDoS, of course not a
+cry for people to DDoS us even more. I'm sure people are going
+to watch this on Youtube and be
+like, screw these guys I'm DDoSing the shit out of this
+site. We're not selling you a
+product. So, let's see, the attack landscape. If you have
+the amplification attacks, which
+is basically the biggest pipe winds, we're not covering that,
+if they have a bigger, more
+bandwidth than you that's coming in then you go down. What we're
+going after is the HTTP DDoS. I
+guess you're about to get a shot for – nooo. Maybe I am too.
+(Applause). >> You guys know the
+drill. First time speakers do a shot. >> This is actually my
+fourth time speaking. >> But
+it's his first time, right? >> Wait, give me that. >> You
+already gave it to me. >> Cheers
+to Def Con. >> Cheers. >> So, back to the – the HTTP DDoS is
+our focus. Usually in the form
+of large GETPOST requests. They will go after large PDF files,
+they'll try to hit expensive
+queries. If you have search functionality or whatever in
+your website they are going to
+hit that. Of course, for Layer 7 there is other application DDoS
+attacks we aren't covering
+those. Those are kind of future fun. If Soldier X starts getting
+hit with that stuff maybe give a
+talk on that stuff in the future but right now it's not going on.
+So, why do they do it? This is
+my stance; a lack of skill necessary to do an intrusion.
+They can't break into our site
+so they are like, I'm going to DDoS the shit out of that place.
+It could be that some people
+view it as political protest. I don't think it's peaceful
+protest since you are actually
+taking a site down but some people see it that way. I like
+little slides because I don't
+always participate in DDoS attacks but when I do I use
+links meant to trick people into
+joining. That's unwilling participation which actually has
+happened. Or my favorite – for
+you guys into the web comics – John Gabriel from Penny Arcade
+who has the greater internet
+fuckwad theory. Which is that you take a normal person, give
+him anonymity, put an audience
+in front of him and they become this total fuckwad. (Laughter).
+>> So that's – we'll actually
+get back to one of the methods with Soldier X is we've actually
+publically shamed some of these
+people if we can get attribution. It actually seems
+to have worked really well which
+kind of led me to say, you know this theory has a good point to
+it. So, with Layer 7 DDoS it
+drives down the cost of a DDoS. The attackers have a very high
+return on investment. They don't
+need a whole lot of bandwidth. It evades most current carrier
+mitigations and they can really
+take down your site with minimal effort. We've seen sites taken
+down through (indiscernible)
+which isn't all that fast. So, our goal then is drive up
+attacker costs, reduce the
+defensive costs, so we're trying to teach you technique rather
+than sell you products. Mitigate
+when possible. You may always be able to mitigate you can at
+least drive up those costs. And
+then just get people thinking about solutions to this problem.
+Then we have the famous quote to
+give a man fish, teach a man to fish. So, first let's get into
+an example attack. Important
+note with the Al Qassam cyber fighters, a lot of stuff I can't
+tell you because of you know,
+where I work and basically, agreements that I've made but if
+there is people from the
+financial section or something, you know, get a hold of me
+afterwards and if I could verify
+you I could give you a lot more information on this if you need
+it. So basically Operation
+Ababil is a large scale DDoS attack via a PHP based bot net,
+which they called Brobot,
+against American financial institutions. Now if you look
+the first thing I don't know
+probably pretty small but basically you have the
+wordpress/joomla, some CMS site.
+It was actually a really small, really clever back door where
+you see like if they call the
+PHP directly, JEXEC won't be defined so it will say hey, die
+with restricted access. They
+change it so if JEXEC is not defined then die by evaluating a
+Base64 encoded blob on CID. So
+you pass a Base64 encoded attack script and boom it goes; it does
+your bidding. So there's a
+couple pieces of example code you can kind of get an idea.
+Like if you see the first
+example it's not really a proper request the way it is set up. It
+doesn't give a lot of data.
+Then, as you see the second example they actually tried to
+randomize the refer and the user
+agent and try to do a more proper HTTP request, generated
+some fake IP's for
+(indiscernible, client IP's and stuff like that. On Soldier X
+which we can basically give you
+anything we want from Solider X. We have our usage policy is that
+if you attack our site we can
+share your information. If you're just visiting then we
+won't but if you're attacking us
+we will do whatever we want with it. So yeah so one was kind of
+weird I thought. It was like,
+critical mass. There's like dirty panties picture where
+there's him and some girl from
+Def Con back at Lexus Park so somebody actually did the DDoS
+trying to grab that picture over
+and over. There was this other one, like a seemingly random
+just request with all these
+characters then you have some other like (indiscernible) law
+guy it says fuck you mother
+fucker tango down and gives his Twitter address. Which could be
+not him at all, it could be
+somebody wanting to set him up but that's what was in there.
+And last but not least you have
+hitting a random slash node. This is my favorite though. This
+doesn't have a whole lot of
+purpose but I just liked it. Imma Firin' Mah Desu. This is
+like a single request. Like look
+at the log; what is this? (Laughter) >> Desu, desu, desu,
+desu. (Laughter) >> I would
+really like the guy who did this attack to give him a drink. It
+made me laugh for so long. So
+going in then the network defense your carrier has some
+capabilities. So you can have a
+black list malicious IP addresses and you can limit
+packet sessions, band width, per
+second IP that can be useful if they can do it. Black hole, a
+protocol or port. A lot of times
+if you see weird UDP floods I know that ends up being fairly
+effective. It's not what we're
+covering but I wanted to throw that in because we're trying to
+be as exhaustive as we can on
+this talk to give you guys like a good idea about this stuff.
+You can use IPs like Snort or
+CeraCotta. It's often ideal as long as they're not using SSL
+you can drop that traffic before
+it hits your web server. So that's pretty good. And load
+balance of course, like F5 it's
+pricey. I saw them at Black Hat, I guess now they're advertising
+DDoS where before it was a load
+balancer. But you can use the Irules, it supports regular
+expressions, and end up blocking
+that traffic there as well. Firewalls, iptables, black list
+IP addresses. A lot of people
+talk about geographic blocking. I've not really seen that work
+very well but I mean depending
+on who your attacker is maybe it might work for you. It really
+depends on your adversary and
+who is coming after you. We do block EGI Hosting, I don't know
+if that hosting company is
+really insecure or what but if I remove a block, like Soldier X
+starts getting hit like crazy
+and finally I think they've actually black listed from their
+site as well to stop their
+network from talking to ours. I'm like, I don't know what's
+with you guys. I didn't block
+you, just restart a server or something. Boom, here it comes
+from EGI hosting. You can limit
+your packet sessions, band width per second per IP on your level
+too. So back to VoxLulz1, it may
+not have been VoxLulz1 but we'll refer to him as. You see he's
+got this nice fancy user agent,
+fuck you mother fucker tango down. So, how we block with
+Snort inline. You have a simple
+Snort rule, you can go through. (Laughter) >> We had to have
+humor to try to keep you awake.
+Like I said, I always give offensive talks. I do reverse
+engineering and exploitation. It
+seems it would be kind of easy to keep people's attention but
+this stuff, to me, is kind of
+dry. So we will try to keep you a little entertained. So you
+have the Snort inline and you
+can stop them there. Then it doesn't reach the web server. If
+you have F5 load balancer you
+then see the Irules right there so you can block them at that
+point. You've got also, he came
+from EGI hosting so we have that block where you block the whole
+slash 24 and you've also got the
+limiting connections with IP tables. These are real world
+examples you can copy and paste
+or modify just to get you in the mind set how to do this stuff.
+With network defense I also
+wanted to mention Blocking TOR. Well isn't TOR too slow to take
+you down? Actually, hack3r is a
+group we used to do stuff with and they were taken down in 2013
+then again in 2014 via TOR. So
+we have a script, this is modified from another website.
+All the stuff, anything borrowed
+or used from anywhere will be at the end in the references
+section, so all of this stuff is
+referenced, we don't want to steal anyone's credit. This is
+modified from the site and this
+will basically go through, get a list from dan.me.uk. and then
+build an iptables rule and block
+it. I don't know how many companies have issues with TOR
+but I know, at least the place I
+work we see a ton of attacks coming from it. No real reason
+for us to have it. Like I said,
+TOR, people say it's a great thing. I don't disagree with
+that but there may not be any
+point. If you're a bank or you sell things I mean someone is
+giving up their identity when
+they buy something for you or when they log in to their bank
+account so there isn't really a
+reason to use TOR to do that. It's a question that I propose.
+So aside from just the blocking
+side it's important for a lot of people for network monitoring to
+figure out am I under attack or
+maybe your company might say, you know, I would like to know
+if we're being attacked but I
+don't trust you putting this in line and blocking customers and
+whatever so you can just
+basically, same snort rule you just have it do an alert instead
+of a drop so that way, you know,
+you just get notified of it. With the F5, what I always do is
+I just common out the drop and
+you can still go in and get the notification and see you're
+being attacked. But it doesn't
+actually drop it. Then next we'll get into for monitoring
+software we have RoboAmp, which
+Rat with Solier X wrote. Actually I'm surprised my phone
+hasn't gone off, I really
+expected when we announced the talk we started getting DDoS
+like crazy. I really expect the
+site to go down during this talk and my phone will start going
+crazy and it will start telling
+me, hey the site is down. But I don't know. I guess I'm lucky.
+So, it runs on a Raspberry Pi.
+It uses less or equal 5 watts of power. It displays the power and
+little sixteen by two LCD, now
+you don't need to have an LCD to do this. That's just if you want
+the display. It actually sends
+an SMS message to the SX staff that there's a disruption. You
+have the options; basically you
+have a ping check which probably isn't as useful in today's – you
+know if you're talking Layer 7.
+Your website is going to kind of -- or database will go down and
+you will get an error message.
+You aren't actually -- the ping check will not do a whole lot
+for you but we left it in there
+just in case you're worried about that whole massive attack
+that takes down the network. The
+deep check, actually what it does, it looks at the website
+and you can specify regular
+expression for like basically what that means if your site is
+offline. Some companies don't
+actually say we're offline. They say, oh we're doing a little bit
+of maintenance we'll be right
+back. They don't want to acknowledge they've been DDoS'd
+so it supports that as well. So
+then after that they go back to web defense or on to web defense
+and like I said we use Apache2
+at Soldier X so that's going to be our focus. You can use
+.htaaccess for example. A lot of
+people seem to like, oh, why do you use .htaaccess but can
+actually protect files,
+directory listings, you can block user agents There's other
+clever things we will get into,
+like, you can redirect a bad request back to themselves or
+maybe you want to redirect them
+to somewhere like FBI.gov. (Laughter) >> Like I said
+Soldier X is basically a hobby
+security group and we can do things as a company you wouldn't
+want to do but it's all in good
+fun. So mod_evasive is the equivalent if you're an IS shop,
+dynamic IP restrictions for
+Microsoft, essentially this is one of the critical things that
+I would say to use because you
+can actually use – you're throttling how they can hit your
+site. At the end of the day
+without looking into the traffic that's ultimately what you are
+going to do to drive up attacker
+cost. So say user agent seems weird and whatever. This
+limiting seems weird. Does this
+really work? You have to know your enemy. So why? You've got
+these subset of anonymous with
+an F5 armed against us. You've got basement dwelling 12 year
+olds armed with GET flood script
+posted to pastebin last Tuesday hitting us. This is pretty much
+how we view our enemy at least
+at Soldier X. So getting into some of those example directions
+with .htaaccess that's an easy
+way to block VoxLulz or get a little creative and use
+mod_rewrite and redirect to
+themselves, redirect them more interesting like the FBI.gov.
+Like I said, it's the FBI party
+van. Somehow it's a lot more funny when it's not parked in
+your driveway. (Laughter) >>
+Then we just give you a Mod_evasive sample config. A
+thing I'd like to add is if any
+of this stuff, if you and copy and paste it or whatever you
+have issue with it I'm not going
+to work for you for free or anything but I'd be happy to
+give you stuff that I've already
+written and put it on that directory on the site. If you
+guys have access to that just,
+you know, I'll give an email at the end of this as well as IRC
+and what not just to try to help
+you guys get started on this. So, then moving on to Fail2Ban.
+It's actually designed to
+protect against brute force attacks by looking at error
+logs. What we've actually done
+and this is by no means new, there are other people doing
+this as well. Just not a lot of
+people it seems. You can point it at your access logs for your
+web server and use it for DDoS
+defense. If you remember the random pattern from earlier you
+notice the attacker didn't seed
+it right. So you see that it is already repeated but then you
+also see I highlighted the equal
+mark. So when we get into that you can turn a randomized DDoS
+attempt into a worthless
+attempt. What we see with that is it's a capital letter A
+through Z -- 99 of those then an
+equals sign, then A to Z and another 99 of those. So you set
+your regX and have your notes,
+no DDoS for you and boom, blocks them with IP tables when they
+hit you with that. Once it sees
+those it puts them in the IP tables. I think we blocked them
+for like 24 hours. You can do
+however long you want but to add on some additional ideas you
+have server caching or web
+caching. A lot of the stuff turns out to be performance
+enhancements so it's good anyway
+but it actually ends up helping DDoS. I think a lot of issues
+with Layer 7 DDoS is just nobody
+was really hitting our websites. We had expensive inquiries or
+this or that but it wasn't
+really a problem for us. It was more or less like oh the search
+is little slow but. And then
+someone hits it and it's get, get, get, post, post, post it's
+like oh crap the freaking
+website is down. With Soldier X we use boost. I talked to people
+that use squid proxy for
+caching. They said that has worked well for them. There are
+some other Apache tools that
+other people have mentioned to me. Like I said, if we don't use
+it then we don't give examples
+so we're not going to make theoretical stuff up and say
+this works and we don't know.
+But you have mod_bwshare to throttle the bandwidth for IP,
+you've got limit ip connection
+to limit the number of simultaneous connections from
+the IP and there's people using
+Captcha, Javascript and those type of things to actually try
+to detect is this a bot or is
+this a person? Also for your programmers you really need if
+you have a website that has
+these different queries try to talk to your developers. They
+need really get on to this stuff
+with strict validation, filter user input, properly release
+resources because you don't want
+it eating up all of the memory. Set limits. So you have session
+limits, token expiration, loop
+counters, concurrent sessions per token for IP address,
+expensive queries should be
+limited per IP address. It doesn't make expense you know
+you have a really expensive
+query why would you let someone hit it 50 times a second. It
+doesn't make sense. Cache the
+results of those queries when possible, like what boost does.
+It will – anything something
+someone goes to that is PHP it generates an HTML file so boom
+there they go. Let's get the
+HTML file instead of running the query over and over and over.
+Optimize your database structure
+and like I always say I have a CS background, you should be
+testing. You should be testing
+your code against denial of service or distributed denial of
+service and that should be part
+of quality assurance in your organization. This is something
+that seems to be just a mind set
+of these guys they're just going to come in and DDoS you if they
+do anything you don't like or do
+it for fun. So it really should than part of your testing. If
+anybody needs like some sample
+code I can put it in that directory and you can use that
+to help test in your
+organization. >> Testing, ain't nobody got time for that. >>
+That picture says  I don't know
+when I use code I do it in production. [Laughing]. So on to
+reacting to an attack. I always
+say don't panic. When I've seen these attacks you have people
+throwing their hands in the air.
+Oh my God what's going on? The website is down. There is no
+internet. So also verify it's an
+attack. I'm not going to say which company but it was like oh
+my God we're being DDoSed. It's
+no it's just your employees watching FIFA via HD on YouTube.
+>> 1080p. >> And read the logs.
+It's amazing to me how many people don't actually read logs.
+Web logs are good. They actually
+give you a bit of insight into what people are doing. If you
+see an IP pounding away it's a
+good indication it's an attack instead of, you know, oh the web
+site is down. So getting all the
+top talkers and blocking the malicious ones, there's a quick
+thing from the command line that
+you can do to give you all the IPs and how many requests per
+IP. If you're in Linux of course
+like we said and you need some sort of reputation system.
+Especially if you share with
+other organizations. I know I've seen cases with financial sector
+where data is being shared out
+and you look in this top talker's block and it's oh it's
+tax time and Intuit is in here.
+Of course everybody is using Turbo Tax. They're not DDoSing
+you. It's freaking tax time or
+other organizations that query data from you. So we use a home
+grown tool that we call
+reputator. I will show you a little bit of output from that.
+So, in a top talkers example, I
+like this picture. Be mindful of that. Only one is a convicted
+felon. [Laughing]. >> But how
+this stuff goes people are taking this assumption. Oh,
+whoever is generating all of
+this traffic my web server must be malicious. It's not true. So
+this is an example that we use
+for the Desu attack as we go through. We're masking all the
+IPs that aren't actually
+attacking. And, you want to decide on a cut off. You see on
+the left is the actual number of
+requests they've done. On the right is the IP. So we decided
+like a thousand is probably a
+good cut off. You run it through, I don't know how well
+you can see that but I'll try to
+explain it. Run it through reputater. Also one thing that
+reputator does is you grab the
+list of TOR nodes, you like to know if somebody has TOR, it's
+useful information. You get a
+rating that we put between good and evil and if you look, like
+of course, local is like Roboamp
+which actually amp is in the audience if he wants to stand
+up, raise his hand. The reason
+his name is Roboamp is every time the site went down amp
+would hit up everybody. Hey the
+site is down. What's going on? It was like man this is crazy.
+So when Rat wrote the tool he
+named is Roboamp. It's like the robot version of him and he's
+always texting so it's good that
+it texts. But back to the top talkers. If you look  so we have
+the good and the next highest
+talker is rated as evil then we look back to the log and we see,
+hey, that was the Desu attacker.
+So it's pretty good and there's some other evils up there. Those
+guys are actually  they're going
+around the site trying to do stuff but it wasn't DDoS. I
+still masked their IP but they
+were still up to no good. Then of course reacting to an attack.
+Read logs. Look for patterns
+that you could use for Fail2Ban or whatever blocking system you
+are going to have in place.
+Often very early on blocking user agents and IPs, I'm not a
+fan of black listing IPs but
+early when the attack is going on sometimes that can be what
+you need to do right away to
+keep your site online. Then beyond that use sniffer and
+wireshark if you can. SSL forces
+an issue like if you're using RSA or if you're not using RSA
+and you're using DSA that has
+forward secrecy you can't see the traffic but if you are using
+RSA in your organization are
+they going to give you their private key? Maybe. But if you
+can get that you can look at it.
+And from that, you know, Snort F5, Surricata, etc you can block
+at the network level which is
+often a little more intensive work wise but it can have a
+better payoff because it never
+even reaches the web server. So, can you find the difference? I
+love that picture. So this is 
+yeah  a sniffer plus wireshark example. So the first one if you
+see this has been blocked so
+there's 3. The first is an actual legitimate web request.
+You say okay pass the carriage
+return the new line: The second one is a popular perl DDoS
+application. If you look and it
+doesn't have the carraige return, GET flood, HTTP1.1 it
+basically has nothing. Pretty
+easy to see that's not valid. After that you have an attack
+tool that uses PI cURL, python
+DDoS tool and that one it's better. It has a carraige return
+a new line but if you look like
+the variables don't quite match up what a browser would, they're
+out of order. So they're all
+these little things that really is like you look at and actually
+use your head then get rules to
+stop these attacks. So then after an attack if an attack was
+effective why was it effective?
+In the brainstorming organization you need to do a
+lot of testing, deploy these
+defenses, we're not going to work for your company for free
+but happily anything here I will
+put online and let you use that as a good base to get started
+and test your network against a
+similar attack until your defensive or effective. Don't
+wait for the attacker to come to
+you. This is part of like the Solider X stuff. Anytime we see
+the stuff we write tools to
+duplicate the attack and pound on the servers and make sure our
+defenses actually work. The
+controversial thing it keeps coming back up in the news.
+Let's hack back. So we have some
+form users that have hacked the DDoSers that we can get
+attribution on with some
+success. It's kind of amusing, some of the stories. I have a
+quote from Jeff Barden, I'm not
+actually going to read that one because I don't really think
+hacking back is good but some
+people may like it so I think it's not a good idea in general
+and that's where I quote
+Jericho, Brian Martin of Attrition. If a company can't do
+the defense correctly why do you
+think they can do offense right? And if you can easily and
+positively attribute they
+shouldn't have breached your differences. You have no
+business attacking them when you
+were negligent on defense 101. I agree. If you can 100 percent
+say who is attacking you and why
+they got through that doesn't make any sense. You should have
+had defense in place. But shame;
+back to the John Gabriel's theory. Shame has actually
+worked really well on Soldier X.
+It seems like we have these guys that hit the site hard and we
+actually come in and we have a
+really good guy that does data analytics and he has a data
+analytics platform that runs on
+the site and we actually can get positive attribution if you name
+the people out it's like
+instantaneously they stop attacking you. So I mean for
+most companies you probably
+can't do that but it's interesting to think about. So
+then tying this stuff together
+with best practices is like I said most important thing I
+think is limiting connections.
+Because when you do that you drive up costs. If somebody has
+to have a botnet a size you
+drive it up more. Have intelligent ways to block bad
+traffic. Snort inline, Fail2Ban,
+whatever. You need some way so if someone is actually brighter
+and has some pretty good attack
+you need to be able to identify that and block it. Have sniffers
+in place. I've seen
+organizations where they don't and it's like we're getting
+attacked. Oh we have to get
+sniffers in place and figure it out. You should already have
+them in place. And tune your web
+server and database for performance. One of the things
+like log tuning, like what's log
+tuning? It's like you should have where you're getting things
+like client IP and
+X-forwarded-for in your logs. You probably don't want to log
+small static content like CSS,
+JS, text, if it's PDF or large pictures you probably want to
+log that because it can be used
+in an attack but a CSS file, a JS file isn't so why log that?
+All you are doing is making your
+web server take up that many more resources trying to log all
+of that. You should remove or
+limit the search functionality if not needed. You can replace
+it with Google search or it
+requires loggers to log in. That is how hack3r was taken down.
+People hit their search
+functionality and held the site down for days and everyone is
+laughing about it. Avoid hosting
+large public files when you can like large PDF getrequests. It
+still goes on so if you can have
+those not public that is ideal, sometimes you have to. Having a
+monitoring service like Roboamp.
+I now a lot of you guys might pay for something but Roboamp is
+free and you can set that up and
+actually get notification if the site goes down. Instead of like
+hearing about it from your boss.
+And then sharing information. It has been good for the financial
+sector. I think if you can you
+have similar companies and if you can share that sort of
+information everybody gets on
+the same page and gets those defenses in place and these guys
+will see this stuff doesn't work
+anymore. So I don't have much time for questions but I want
+time for questions. So, a little
+bit of story time. So VB is the first guy to do this took the
+site down for like 5 minutes.
+This was before we had anything in place. He actually did it
+from his IP that his user
+account was from so we were able to do positive attribution. So
+this guy hacker on the forum a
+reformed criminal but the fixer got the IP we posted on the
+forums and turned out that VB's
+ISP was mikrotik routers, that's who the fixer used to work for,
+he knew there was a back door in
+the router so he got into the guy's ISP, turned on remote pcap
+and basically lols ensued. All
+sorts of stuff that VB was doing, who he was and it was a
+good time. BenOwns is
+interesting. This is a guy that wanted access to VIP forms to
+use like a stolen credit card
+and all this weird stuff. He was like oh I don't want you guys to
+say that I did this. Well you
+did do this so it's on the site. So he actually started to
+threaten the site and blackmail
+them and proceeded to DDoS. More shame happened. Once we said
+this guy was DDoSing he took off
+as well. There's been many stories of pizzas being ordered
+when there's an attribution. The
+EGI hosting stuff I already covered. Plexor was the guy that
+when we announced this talk
+immediately the site started getting DDoSed. Is this a friend
+messing with us? It was a guy
+that didn't like we were giving a talk on this and the last one
+I'll much is Scorpion – was
+Operation Ababil, Cisconinja did a lot of hacker database work so
+he found some evidence that
+Scorpion was involved in Operation Ababil. So that got
+posted onto the hacker database
+and all of the sudden we saw some hits where there was a
+Black Hat Middle Eastern forum
+and they were like what is this? These Soldier X guys are saying
+Scorpion is involved in this.
+All of a sudden the site was hit with Operation Ababil tools. It
+was not actually hit from the
+Brobot but it was hit from the same attack tools and since I
+was actually defending it
+against Operation Ababil I said you really are him and using
+these tools so you gave yourself
+away. A little bit of thanks. Anonymous network technicians
+didn't want their names in here.
+So if you talk about DDoS you will get DDoSed which may happen
+but oh well. Rat, for writing
+RoboAmp helped a lot with this, a lot of the rules and The
+Fixer, lattera, spendor, sn4ggi,
+Shinobi, Kohelet, EverestX, Jericho, Jeff Barden, Rhapsody
+and the entire SoldierX.com
+community to include the irc.soldierx.com and of course
+the DDoS skids like honestly
+it's a lot of entertainment for me. So I had a lot of fun at
+your expense. References of
+course for you guys to use then this is our contact information
+if you want to reach out to us.
+This is where the data is and I think we have a few minutes for
+questions. [Applause].

@@ -1,0 +1,246 @@
+I'm happy to
+be here. They asked me if it was my first time speaking I said
+yes and no from sky talks was a smaller room so happy to see so
+many people. So talking about quantum computer.
+How do youknow how quantum works or quantum
+-- so this is very basic that you have to know.
+Complex number -- obviously so if you
+don't know these please leave the room. I'm kidding. The nice
+thing I will say that you don't need to get this stuff to
+understanding quantum computing -- lost audio -- I will try to
+convince you that. Outline, I will be talking very broad but I
+will not go into technical details so how things work and I
+will give you the ideas and applications. Very brief crash
+course of quantum computing. So based on quantum mechanisms
+about you see the operating system of nature on nature like
+the framework on top which the gravity -- nuclear forces are
+running so you get series in -- and you try to adapt them to do
+quantum mechanics. There is my only side about quantum
+mechanics. What it says that the particles in the universe like
+electrons and protons they behave randomly but not not
+inception they are not predictable. But you have no way
+to predict what is going to happen but what is different
+compared to what the randomness can be negative this is problem
+but negative and complex numbers. So that seems to be
+counter intuitive and you have to trust me that it does make
+sense mathematically. So -- (lost audio) -- so when you have
+not looked as the Q bit it is in the state that if you observe
+the Q bit and ask what is value it is zero with property and
+some other property. Coefficients and -- of the
+straight line and the bracket is called the bracket notation you
+don't need to remember this but what you need to know that is
+alpha and beta used called -- so they can be a negative or
+complex and the property so you take this value and square it
+and that property that is what you get so a number between zero
+and one. You have different properties for each byte.
+Sequence of eight quantum bytes maybe it will be 0X or 00 and so
+on. And using these objects like quantum computer you have
+registered which can we -- anything you want and you will
+transform the state so that is how you will compute. You will
+have kind of quantum assembly but you have will different
+restrictions. The importance to remember that will be reversible
+but can go back in the past so for your information you don't
+have classical assembly you have end operation register one or
+two and then you register one and you can't go back in the
+past not the previous value and here you have what you modify so
+quantum objects about you just chain the properties what you
+learned in high school in algebra so just do
+multiplication and transfer the property and when you properties
+go to one you want -- sum to one as well. I will not go more
+technical but that is idea remember that quantum computing
+is multiple together some properties of complex. And that
+is it. So you have this set of register that can be bot on the
+same time and at the end you observe one bit or more and that
+your result. And the importance thing is that you cannot
+simulate this using quantum computer say you have a quantum
+byte it is encoded 256 different properties so you might be able
+to start this on the normal computer but now say you have a
+quantum motor of two bits. How do you start this classically
+might be doable but if you have 64 bits cannot start this on the
+classic computer. So can try this online there are some
+simulators you cannot go too far. Multiple vision for all of
+this was to simulate quantum physics and for some reason that
+you cannot simulate the quantum computer -- so a friend of said
+okay to simulate this we need to simulate a quantum computer and
+to understand how physics or nature works by submitting all
+the quantum phenomenon. I will just go through to common
+misunderstanding about this and people say quantum computer that
+is super faster and way faster and solves problems but bad news
+doesn't solve all the problems. I don't know if it is familiar
+to you -- where you list of cities and you have to find the
+best route. All have problems have some structure that makes
+them difficult and practically impossible to solve on a normal
+computer. You will not solve these hard problems on the
+computer. The good news is you do have quantum speed up for
+some specifications making the impossible possible on the
+quantum computer and going from N to P times Q is difficult on
+the normal computer but easy on the quantum computer so the
+application is -- I will talk about this later. So the last
+caveat is some people say you have the super notion trying
+everything the person for free -- that is not the idea, the
+idea is in some sense several values of the same time but you
+can only look at one result but like all of this is useless and
+you cannot say I want to look at result that gives this value.
+You look at the random results so no magic here. So that was it
+for the tear. Let's move to practical part. Like I said --
+we know how to factor 15. Three times five. We also know how to
+factor 153 and 56,123. But that is caveat here for these numbers
+they use special -- about in some sense they have to know in
+advance what was the solution before searching for the
+solution. I want to say that we have very far from the use
+application of quantum computer and the reason is it is
+difficult to build. First of all you is have to find a object to
+simulate your Q bit so you will take some physical particle and
+sometimes foreign molecules -- the main problems they are
+facing in quantum computer is that what is -- interact with
+the rest of the system and this will complicate the system --
+you can correct all your -- in time but in practice much more
+difficult. You have to computer temperature plus absolute zero.
+And we don't know how to scale to several hundreds or thousands
+of Q bits so we have to result four or 5Q bits but if you want
+to break all the crypts in the world you need a thousand and we
+are far from this. 9Q bits this year not a actual quantum
+computer just a set of 9Q bit that's can live together for a
+few seconds while correcting -- in the environment. Lost audio
+-- I don't think they do. They probably don't but -- so like I
+said -- RSA -- explain why RSA this is based on factoring
+numbers. If you can factor numbers then you can break RSA
+and then factor numbers so it is hard with computer we don't have
+a math proof of this but we convinced that is our problem.
+Factoring is not complete but easy on the quantum computer.
+Doing a quantum for transform and gives you the result. And
+what is nice within is not specific for factoring, it is
+for a whole class of problems that we call the -- fighting a
+subgroup ribosome bigger group and turns out that the disc
+algorithm is another time of this problem. So the problem
+behind the -- problem is you have number G and you know a G
+to power of Y and you don't know why so you look for Y. You can
+try it. It's not easy if you do it only big numbers. And again,
+it easy on the quantum computer. So what about -- or has
+functions. A little bit faster than is quantum computer but not
+that faster just that is search for the key would be much
+faster. So you get half of 64 bits of security. If you do some
+advance math if I want 120 bit security I need a key off to 56
+and we have version of 256 and we not have -- of 12 bits and
+the reason behind this -- we can search in a table of elements in
+time square with N instead of M. So if you have two to the N --
+so there is a field called post quantum crypting to fee and goal
+is the find alternatives. Lost audio -- means equations with
+many variables and the variables are come fined in such a way
+with multiplication and once you have that much much harder to
+solve. You do multiplication it is harder so impossible. But if
+you want the use it, most of time you need the have a shorter
+system. You need to have some trace structure and that reason
+why some -- working I don't -- now something important to
+understand, someone has quantum computer that created it might
+break -- you can still signatures but issuing knew ones
+with a quantum system. But if you encrypt something with a
+nonquantum safe cipher it is too late and going to be encrypted
+and no use to encrypt again. So the bottom line here is more
+important the have quantum encryption you can still wait
+until the quantum computer is created. So two types of
+encryption techniques so nothing new. Ideas from 70s or 80s. We
+have very large keys kilo bytes but today we have tera byte but
+maybe kilo bytes not big data. And the other one is -- very
+simple to understand you have function and you don't know the
+function you know what it looks like and you want to learn the
+function. So you cannot guess how it works. So fifth part is
+quantum distribution. Here the problem is like a quantum --
+instead of using -- you use physical phenomenon. Not really
+quantum computing but using quantum mechanics. The argument
+is that if you are in the middle you can't do the middle because
+it will be detected by the law of physics. It will be modified
+so you will see the modification you cannot copy quantum bits.
+And are random. So this one is the -- BB8 h invited by the guys
+in 1984. This is simple. They want -- so likes a few bits and
+she has to select encoding. Here it means just position of the --
+you can see just simple encoding. So she says blue-green
+green and she will send this to bob and he doesn't know the
+encoding and thing is if you have the same encoding you will
+observe the right value and if you don't have the -- it will be
+too late to correct because once you observe it, it is not a
+quantum bit. So bob he observes the bits that he receives and
+then he publishing encoding and Alice says you have the right or
+wrong one and it just pick the bits why you have same -- so the
+scheme is more complicated but that is general idea. But it is
+not as secure as it pretends to be. The first one is it is
+quantum when you use the keys when you store it in your system
+you use classical -- so the people say classical -- yes, but
+then what do you do, you have to use classical crypt. In practice
+you to -- quantum hacking and broke some of the first systems.
+You can do this over the internet and dedicated optical
+fiber links so point to point and limited in distance less
+than a hundred km. You can put repeaters or make -- now it is a
+bit annoying. So that application is quantum computer
+if you wonder why I put this here. I don't know if you
+recognize this guy. Leverage the no claim principle. The idea is
+simple. The idea is when you have quantum bits you can know
+like momentum but you know bot at the same time. You cannot
+know everything about the quantum object so if you don't
+know everything you cannot copy it. You cannot copy what you
+don't know. In physics you have this -- that cannot clone a
+physical object to exact copy. So you see the relation with
+quantum cash. You will put some Q bits on your bank note and so
+only the bank can create the ones. So that is suggest a
+experiment and not practical because it is difficult to put Q
+bits on the note and to deal currency problem. So you will
+never see this for real but you can imagine. You can imagine
+software -- so using this idea of quantum non-cloning, so you
+have function here in green the -- let's say you find you get
+the code of function and maybe sophisticated but you can
+reverse the code. You check the hash, if a strong hash you not
+find the password easily. And if you have binary you can copy the
+bytes. So here is idea of prediction that you cannot copy
+the program. You have the problem which is a list of Q
+bits and you have no idea about what the program is doing. So
+like quantum cash it is not something that will happen for
+real. So my last one is about learning. Seems to be hot these
+days. I have seen some very good talks and not so nice talks. So
+one slide difficult to summarize but see the science of getting
+computer -- it is either learning patterns or -- notion
+of supervised -- un-supervised like discovering patterns and it
+is quite a success and feels like for detection -- usually
+better at finding similarities that no monies and intern
+detection for example we went to find monies for specific notion
+of no money. But security -- lots of false positive the
+mission learning. Recommend something that you don't want
+the see it is not a big deal but if you -- system or detects too
+much you have a problem. Some companies claim the use it but
+sometimes just say we will use mission learning just to say
+they use mission learning. I have not seen detail about this
+so I don't think it works as claim. Some people have been
+trying to -- mission learning. But a bit boring because not a
+brand new algorithm, just take the algorithm and run them on
+your quantum computer. Things like clustering. There are two
+advantages and one sometimes you have search in the big list of
+data, so you can use what was seen before to speed up the
+search and you have the square root improvement. You do get a
+exponential speed up which means it is something you could not do
+on classical computer but you need a quantum ram. So the idea
+is out there. You give a address and get the value add this
+address so in quantum memory -- and you receive the values at
+these addresses in superposition. I have no idea
+how the implement this and physicist have no ideas. And the
+idea of quantum learning -- so if you have a quantitative you
+don't have quantum -- so will be useless. So time to conclude?
+Maybe you were not happy about this and you will be leaving the
+room. It sucks. Doesn't even solve problems. So -- this is an
+article but if you are more opt mystic person you will see it
+differently. Stuff collecting all the -- if you are math --
+transforming a physical state. You can take this microphone a
+bunch of atoms you can see the wall is big quantum computer
+allowing da. What is universe computing. So what some
+physicist say we don't know if it is possible to have a quantum
+mechanics but if we have proof that is poses then it will tell
+us about physics. So even if we fail we win something. So I hope
+you liked this. If you have questions, I will put the slides
+at line. I have just been interested in this stuff for
+years and years. So if you want to build a quantum computer
+don't talk to me. Yeah. I have a few minutes left. When I did
+this talk people ask me why don't you talk about the company
+that is selling a computer. This is recorded. So the company
+selling the quantum computer, it is a different type and it
+cannot factor big numbers. So that's it. Thank you for you
+attention and I am happy the
+00:32:18.303,00:00:00.000
+take questions.

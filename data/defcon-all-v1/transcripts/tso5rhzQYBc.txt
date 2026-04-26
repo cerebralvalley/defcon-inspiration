@@ -1,0 +1,609 @@
+>> Thanks everyone for coming.
+I'm going to be talking about
+cookies but first a couple of cookie related jokes. What's
+milk's favorite band? Oreo
+Speedwagon. [Laughter]. What do you say when no one laughs at
+your cookie joke? Doh, sorry
+that was half baked. [Laughter]. Ok, so we're going to be talking
+about why someone would want to
+steal http cookies off of your client and we're going to talk
+about how that could happen and
+what you can do to protect yourself. SO, people stealing
+cookies off of the wire is kind
+of a well known attack over plain HTP but I'm going to talk
+about how they are stored on HTP
+clients, like your computer, and how those can be stolen. Just
+before we get going, the
+opinions in this presentation are mine and not my employer's
+and the security issues I
+discuss are not vulnerabilities in particular websites. You'll
+see some logos from screenshots,
+I'm not going after particular websites. This is sort of a
+systemic issue that I see so
+don't get too excited and live tweet "oh my god, google got
+hacked," that's not what is
+happening here. Ok, so what is an HTTP cookie? Cookies are
+name-value pairs that are
+transmitted as HTTP headers both in requests and as responses. A
+typical use case in one I'm
+going to focus on for pretty much the whole talk is a client
+sends a username and password.
+So you're in your browser, you type your user name and
+password, you send it to a
+server in the login form. The server sends back a cookie that
+is then used as your
+authentication token going forward so you don't have to
+constantly reenter your
+password. So that is a very common use of cookies and that's
+what I'm going to focus on. So,
+for those of you who have never seen cookies before they have
+some attributes besides just
+some name and value. They are associated with a domain. This
+is a fresh request to
+twitter.com from an incongnito session in chromium's developer
+toolbar and their name space
+into a path so if it only applies to a part of a site the
+browser will only send the
+cookie to a certain path within the website. They expire, a
+session cookie. The term session
+is overloaded, so a session cookie is both a cookie used an
+authentication token and a
+cookie that expires when you close your browser. So, here the
+expiration time session means
+when you close your browser the cookie is gone. It expires when
+you close your session. A lot of
+them have dates sometime in the future. This just has the size.
+The HTP only cookies cannot be
+seen from client side scripting like java script so this
+mitigates some cross side
+scripting attacks where normally someone could read your cookie
+in java script and send it to
+some bad server sites somewhere. HTP only cookies can't be
+accessed from java script, it's
+only part of the HTTP request. And secure cookies are only sent
+over HTPF connections, not HTP.
+So if you accidently type in http://g‑mail.com, you will
+connect there and be redirected
+to the https version but your cookie won't be sent if it is
+marked as secure. That is
+another security feature. So, every one knows it is bad if
+someone takes over your machine.
+I'm going to deep dive into that a little bit. And something that
+I heard other people talk about
+too much. So any process that runs your user within the
+default configured system can
+read your private keys, which hopefully you have passwords for
+that reasons. Some softwares
+stores passwords in plain texts so like IM clients and FTP
+clients will often, when you say
+save my password for pigeon or whatever your ftp client is,
+that is in a text or XML file.
+It's just your password that you had typed in and it will send
+that to the server each time to
+authenticate. So it is on your hard drive somewhere. And web
+browser cookies are generally
+stored as plain text, but they are always readable as a user. I
+gave a five minute talk at
+another conference on this called the readable data and
+multiple personalities because
+they are illustrated the same. And the whole idea here is the
+data infiltration attacks.
+Someone gets on the machine, they see the data they want and
+take it to a server somewhere
+and then they are done. They don't need to ask for privileges
+and they don't need to persist.
+So this kind of the crux of my talk. I believe that cookies can
+be more valuable than passwords
+some of the time. I will go into a little more detail in the next
+couple of slides. Usually people
+think I got to protect my password, what is a cookie?
+Especially to an attacker. But I
+think they are pretty valuable. Counterpoint, cookies expire,
+whereas passwords sometimes
+expire but for web applications, often don't. A lot of sites will
+make you reenter your password,
+before you do something special, like change your password.
+You'll have to reenter the
+initial one or before you enter an ssh key on gethub you'll have
+to reenter your password. So in
+that sense passwords are more important than cookies you
+cannot do everything with a
+cookie, but you can do a lot. So how many people use g‑mail, but
+do not have two factor
+authentication enabled? Raise your hands. How many passwords
+start with the later A? Just
+kidding. Kind of. So two factor authentication for people who
+are not familiar. There is
+a password, one factor something you know. And another factor
+something you have, like
+a phone. So the idea is, a bad guy is going to take over your
+account they need both your
+password, something you know and something you have. So you enter
+your user name and password and
+then get a text to your phone after you a ‑‑ authenticated
+successfully, and then you enter
+the code sent to your phone in a text or a little app into the
+web browser to verify this is
+the account, the person that owns the account. If you have
+a cookie you bypass this,
+because it is already authenticated. So if someone
+sends you a g‑mail cookie they
+have a bypass two factor. That is interesting. Usually if you
+steal a password you cannot get
+in, but steal the cookie you can. And similar for Facebook.
+If you log‑in, authenticate from
+a new location or new ip address you get an e‑mail to your
+account e‑mail and will say,
+hey, someone new logged in, is this you? But if you have a
+session cookie and you log‑in
+with the session cookie, you just make it part of your HTP
+request, which I will show
+later. You don't get this e‑mail triggered. So in that sense,
+again, the cookie is more
+valuable to an attacker than the user name and password. So,
+we're going to take another
+little cookie joke break. And be ready, prepare yourselves, brace
+yourselves. What do cookies have
+in common with stoners? Both are freshly baked. So we're going to
+talk about the way that browsers
+store cookies. Because the idea is that someone takes over your
+machine or on it for a temporary
+period of time, how do they read your cookies? What is involved
+in doing that? So most browsers
+store cookie as plain text. And http only and secure flags I
+talked about earlier are only
+inside of browsers so it is up to HTTP client to store them, to
+protect you. So malware does not
+need to inforce them, malware doesn't need to respect them.
+The cookies are stored in the
+same place. So your secure cookies are stored along side
+unsecured cookies. FireFox is
+one of the popular browsers I'm going to talk about, I'm going
+to talk about five, it stores
+cookies in the SQL database. So that means you can use a SQLite
+free command line tool. Python
+has a SQLite baked in, you can link to SQLite libraries. So an
+example of SQLite connection.
+We, on Mac, open the database just by passing the path to the
+SQLite 3 command line tool. And
+can you read this? Yeah. Cool. And ‑‑ schema just shows how the
+table is created. You can see
+the name and the value are both text columns at the end of the
+second row and the third row on
+the second command. And all it takes to read the cookies out of
+the FireFox cookie database is
+select value from most cookies where name equals gx. Where gx
+is the gmail cookie. It would be
+pretty ironic if my dummy account got taken over, because
+I posted my cookie here, but it
+is a dummy account, I don't care. There is a second SID
+cookie that google accounts
+uses. I'm not too worried but I would love if someone took over
+the account and sent me e‑mails.
+If you get bored you can try doing that but I think you'd
+need another cookie. IE is
+interesting. It sorts cookies at text files not in a database.
+The folder where the cookies are
+stored depends on the IE version. And the file names are
+random. In order to get the
+value you're looking for, like the GX cookie for g‑mail. You
+need to iterate through the
+files. So your programmatically on the machine, you run a
+script, loop through thhe files
+in the directory that have random names, that you will see
+here, and pick out the one that
+you want. So I'm reading a bunch of cookies, one of them has a GX
+in a place where I put the name,
+okay. That's the one that I want. You cannot just do index
+search, you have to loop through
+them all, as far as I know. I blocked it out, its the Google
+analytics cookie, it's not a big
+deal but I'm paranoid because it's DEF CON. Yes? [crowd
+question]>> In that case how
+does a company know which cookies are theirs? So, lets say
+I'm shopping on Amazon, I go
+back on, how does Amazon know which cookie to utilize, i.e.
+know which cookie is associated
+with Amazon? >>So only the ‑‑ the web browser says, you said
+on the twitter slide ‑‑ this is
+an Amazon.com cookie, this is a twitter cookie. So the only
+cookie that are sent to the site
+are one that are marked by the client as belonging to the site.
+Make sense? The question was how
+do you know ‑‑ how are particular cookies sent to the
+right site? Okay. So Opera and
+Safari use custom binary formats to store their cookies. But they
+are freely available software
+tools for parsing them. It is not hard to read safari is
+binary cookies, in case you
+didn't think cookies are in there and opera it's called
+cookies4.dat. So just a quick
+example of the free software tools that I didn't write. One
+is a github, and one is a blog
+post. Python script to read cookies and find Yahoo ones is
+not that interesting compared to
+anything else. Opera is the same thing. They just put a bunch of
+debug info in their parsing,
+they didn't clean it up because this is just a demo. Okay.
+Chromium is by far the most
+interesting browser for cookies I'm going to focus on the most.
+So chromium, in recent versions,
+encrypts cookies. It got a lot of press in January for doing
+that so it's been there for a
+little while. It was in the diversion for months before it
+made it into the main line
+chrome. When I say chromium I'm talking about the open source
+version of the chrome browser.
+They are pretty much equivalent. Chrome just has Google branding.
+So it stores cookies in the
+SQLite database. Before, just like Firefox there was a name
+and a value text column but now
+there is an encrypted value blob column which means binary data
+can go in there. It was still
+use the text column, the value, but it will look in the
+encrypted value field and see if
+there is an encrypted cookie set and I'll show more about that.
+In Linux there is no single
+standard key chain. KDE, Gnome, the different desktop
+environments all have their own
+key chain. There is no Linux key chain. The key chain being
+a place where you type in your
+password and you want to save this in a secure place that is
+encrypted. There is one master
+password for all of your system passwords for the user. So Linux
+doesn't have a centralized one.
+So on chromium what they did for Linux encryption of cookies they
+used AES, which is symmetric key
+encryption and used a hard coded key in salt in the course code.
+If you encrypt your cookies on
+one machine they can be decrypted on any machine because
+you can just read the source
+code, the key in salt and decrypt the cookies. So I say it
+is offuscated and not encrypted.
+There are comments in their source code about that they just
+haven't fixed that yet. So
+reading, what I did was ‑‑ I linked against the chromium
+libraries. So you can just call
+code to decrypt, undo the encrypt they are doing, but I
+decided to reuse their code
+because I'm lazy. The way that works is ‑‑ there's a binary
+blob that looks like garbage
+here, but when you call the code to decrypt it is the same DQAA
+prefix cookie, it was on
+FireFox. The GX cookie again. You don't have SIDS you can't
+take over my account I don't
+think. So what this means, the black shell, one computer reads
+the cookie out of the database,
+you're some malicious actor, then you bay 64 code it, send it
+over the wire and in my case
+just copy and paste it into a text file because it's in a
+VM. You can read it on another
+computer and decrypt it on another computer. It is not
+really encrypted. Windows is
+encrypted. It uses a Crypt/Protect/Data function to
+encrypt cookies for chromium on
+windows. That's a windows cyrptography API so it's part of
+the system libary, it's standard
+stuff for windows. It uses login credentials as part of the
+encryption. If you have access
+to someone's computer, power it off, you need their login
+credentials to decrypt the
+cookies. Whereas on Linux that is not the case, you can just
+implement them on any machine.
+So crypt/unprotect/data is sort of the twin function of
+crypt/protect/data, you must
+call it as the same user that encrypted on the same machine.
+Chromium on mac is perhaps state
+of the art of cookie storage in browsers. So in the system key
+chain they store an encryption
+key. If there is not one at the beginning they have a random one
+to put in there. And use AES to
+encrypt/decrypt with that protected secret. One thing to
+note, if you an unsigned app and
+try to access the key chain there will be a pop up for
+users. If you have some random
+Malware on your computer trying to access your key chain you
+will get notified. It will look
+like that. In that sense it is harder for an app that you don't
+trust to read secrets out of
+your key chain in general, it's a mac security feature, which is
+cool. Okay. So in summary,
+chromium encrypts cookies on windows and mac, it offuscates
+them on Linux and other popular
+browsers for the cookies as plain text. And FireFox, Opera
+and safari store them in plain
+text in a binary file format, they are just there to read.
+Okay. So we're going to talk
+about some attack vectors. I try to come up with more cookie
+jokes but they are all too
+crummy. So the first one, which I alluded to earlier is physical
+access, which is someone gets
+access to your powered off machine. You don't have
+dis-encryption on, they turn it
+on and read the cookies. Chromium actually protects you
+from this on Windows and Mac; do
+the encryption, that is cool, that is novel, that did not
+exist until eight months ago.
+That cool. So social engineering is another attack vector. So
+someone gets you to run an excel
+or Word document with a macro in it, they can run visual basic
+for applications code on your
+computer and then call code from the Internet to read the cookies
+and just read the cookies and
+ship them somewhere else. I have a demo of this later, or slides
+of the demo. So again you don't
+need to install anything, it's a data filtration attack, if
+someone is attacking you where
+they just get on your machine, get the cookie, leave and then
+reuse it before it expires. It
+is kind of scary. Malware is similar to social engineering,
+it kind of overlaps. Someone
+drops and runs an executable there is a whole metasploit.
+You've got code execution on the
+machine. Again, any process that runs with a user for the
+cookies. The idea from
+attacker perspective would be I want to send the cookies over
+HTTPS or just plain HTP to
+a server somewhere and then use them myself. Does that make
+sense? Cool. So here is a proof
+of concept that I did. So what I did was I wrote some code to
+read cookies off of the client
+in various situations. So chromium on windows, for
+chromium on Linux and for
+Firefox. And I ran that in other machines, so one is a VM, these
+are both VM's, the top one,
+Google one is a windows VM and the other one is a Linux VM. So
+I ran the malicious code that I
+wrote for myself and then sent the cookies to my listening
+server, which is a cookie
+capturing server and ‑‑ then when I, in the admin interface
+clicked use cookies in browser
+and pressed the go button. It creates a temporary profile with
+cookies in it in chromium and
+logs in to the accounts from another setup. So you're able to
+use the cookies to login, kind
+of semi automated. Bypassing two factor, bypassing the new login
+location notification email. At
+this point, I milked all of the cookie jokes for all they are
+worth. So dis-encryption
+prevents against physical access. That is kind of good
+idea from a security perspective
+in general. With data exfiltration or just someone
+reading your comptuer that you
+don't want to and in this particular situation, it is good
+if you have dis-encryption that
+will protect you from physical access. Application firewalls
+are an interesting tool. The
+idea you can block or allow traffic based on server port
+pairs per application. You can
+say this application can access this server and this port. So if
+another application tries to do
+the same thing you will get a pop up. So, example, chromium
+can access google on port 443
+for HTTPS. Little snitch is a popular way for doing this for
+mac. It's a commercial product.
+Windows I think that limiter is one thing that does the same
+thing. Linux is an interesting
+case. There are not any stable currently maintained application
+firewalls for Linux that I know
+of. I would love to hear if you know. There are a couple
+different products that are
+supposed to do it open source, but there is a currently
+maintained one on stable, and
+not currently maintained. So that would be great to see going
+forward. Little snitch here, is
+an example of it, just to illustrate when I tried to read
+from an HTP request from the
+command line it says hey your command line is trying to access
+reddit, do you want to allow it
+permanently or just once. SELinux is another thing that
+helps with this kind of attack.
+It segments your applications from each other. Before I was
+saying if a process runs the
+user can read all of your files, SELinux and other tools like it
+have sort of extra access
+controls that you can apply on top of normal UNIX access
+control. You can say I own these
+two files, but only one process can access this one and only
+this process can access that
+one. If a third process spins up it's just Malware, it's random,
+they will not be able to access,
+even if they are all owned as my user. One idea I have, I don't
+know it will be implemented for
+cookies is a master password for cookies. The idea is your
+cookies are stored encrypted on
+your hard drive. It's kind of a two factor idea, you need to
+enter a password at the
+beginning of your browser session to decrypt your cookies
+before you can access them. It
+is not too inconvenient, you only have to enter your password
+once per session and FireFox
+actually does this to protect passwords. Cromium doesn't, they
+made an intentional decision not
+to. So here's what it looks like for Firefox's password manager
+and you can imagine sending
+similar cookies. So the idea here is if the passwords are
+stored on the hard drive they
+can be read by any process or user, but they are encrypted
+unless you enter this password.
+Then one interesting defense is tying a session cookie to the
+login ID. So when someone
+authenticates initially the first time, they authenticated
+from this IP address. If they
+try to log in from a different IP address later with that
+cookie, it will reject and make
+them re-authenticate, it will only work with that IP address.
+cPanel, which is a web hosting
+configuration tool actually does this optionally. The bunch of
+people who are actually confused
+on their forums. They log‑in, and they go to somewhere else,
+they have to relogin everytime
+they go to the coffee shop and come back home. So it is
+a trade‑off of a security versus
+convenience. I think that is a little bit too extreme. But you
+can do, which g‑mail does, you
+can say, where have I logged in from recently? So I have logged
+in from five countries this
+month. I haven't been traveling, I should probably do something
+about that. Okay. I think I blew
+those these pretty fast. Cookies should be handled with care. And
+client side cookie security is
+not a solved problem, it is something that I think needs
+more thought going forward. And
+that is how the cookie crumbles. Any questions? Yeah? So the
+question is how do you protect
+the hard drive? With cookies or in general? Okay. So having an
+encrypted hard drive is a form
+of protection, and how does that work is the question. The way it
+works, if someone accesses your
+computer, before they can mount the hard drive, before they can
+read the files on your hard
+drive, they need to enter the secret, the password, the key.
+If that password is strong they
+have to guess that key before they can read the files on the
+computer. Dis-encryption
+prevents someone from accessing your computers and opening up
+and reading the files. If it is
+not encrypted, someone can put in a Linux live CD and they'll
+be able to read all of the files
+on your hard drive. Correct. So the question ‑‑ if they have
+physical access, this encryption
+helps. If they are accessing you remotely, encryption doesn't
+help, everything is in memory,
+anyway. Yeah? So the question, is the encryption on chromium
+enough for this type of attack?
+Mathematically it is. So it is good encryption, but on Linux
+they use a hard coded key. So ‑‑
+in that sense, the encryption doesn't matter, because you can
+traverse it trivially, on the
+other two, it should be, it should be good. I think. Yeah?
+So the question is, why didn't
+the encryption prevent the cookie from being exfiltrated?
+So the reason the cookie was
+exfiltrated it is decrypted on the client where it lives. You
+call code to read the cookie and
+decrypt it and then you send it somewhere. No. It's, it's,
+actually I e‑mailed the chromium
+security team about why it is different on Linux. They said
+the main reason they wanted to
+protect people on windows without full dis-encryption,
+that was their main intention.
+So it's ‑‑ by design in some sense. So the question, does
+Cserve protection help? Ah ‑‑
+I'm not sure I understand how ‑‑ okay. So the question is does
+Cserve protection which
+invalidate sessions in that in sense, does that protect people
+from this kind of attack. I
+would say no. Once you get the cookie into the browser like in
+the proof of concept, then you
+are just that user. You are in the browser as that user. So it
+will do all of the normal Cserve
+stuff, it will read the tokens and send them along with the
+request. I'm sorry. Can you
+repeat that? So the question is, could you have cookies that
+belong to multiple sites? I
+think the browser, the way cookies are stored probably
+doesn't support that. I think
+domain is just a column one right now and just one thing.
+And I think the secure
+implications these that are kind of scary if you sent ‑‑ well ‑‑
+it would be ignored by the site
+unless there was some collaboration between the two
+sites on the back end. If I had
+Yahoo! and Google cookie that goes to both of them, it is from
+Yahoo!, Google would need to
+know about that, it would need to have something on it's
+session on the server saying
+this is a valid cookie. So in that sense, it wouldn't get too
+much more with having just two
+separate cookies. Anyone else? Yes? Does client side JavaScript
+have access to non HTML in the
+cookies. I think that is the main idea, I think that's what
+HTML means for that site. Not
+just for any is site in the world. Someone else over here?
+Right. So if you're really
+paranoid, what you do is you just don't save cookies. You
+have everything via session
+cookie and it expires when you close your browser and then you
+are happy. Again, it is
+annoying, you have to reauthenticate all of the time.
+I think application firewalls
+are a good choice for. No one is doing this kind of attack, but
+if it happened, application
+firewalls would be a good choice, like SELinux to segment
+the applications from each other
+would be a good choice. I think application firewalls
+performance because you have to
+inspect packets as they go out saying hey, does this meet all
+of the rules. That will slow you
+down, I think encrypting the cookies, the master password is
+a decent idea. I have not seen
+discussion of that. I know chrome said this is not a good
+idea, it is not really extra
+security. If someone is on your machine, you're in trouble
+anyway. We don't want to give
+you a false illusion if someone is on your machine your are
+going to be ok because you have
+a password; a master password for your passwords. That's why
+they didn't implement that in
+chrome as far as I know. So ‑‑ um ‑‑ but I think a master
+password for cookies is decent.
+So question is how can you help the client be as secure as
+possible with cookies as a
+developer? So sending cookies as secure and HTML only, you don't
+need the java script to read it,
+they are accessible from JavaScript. That is the thing
+that everyone should be doing
+all of the time. HTPS versus HTP. If you have any login or
+any sensitive information, you
+definately want to use HTPS. There are a couple of older
+attacks sniffing Wi‑Fi on the
+network. And a cookie going HTP you can sniff the cookie and
+steal it that way, that is
+fairly well known. Using HTTPS and sending you cookies HTP only
+and secure and using HTTPS are
+sort of the fundamental things you can do. Everything more is
+that browser‑implementer level.
+So I thought about that. The question is, has someone thought
+about going down a layer to the
+Mac address rather then time the session cookie to the IP tying
+it to the mac address. I think
+there are two problems. One is if you are just a web server
+listening the cookies are mostly
+set at the web server level. You don't want to try to read the
+packets as they come in for Mac
+addresses. The more fundamental thing is that someone on your
+computer is sniffing a Mac
+address and spoof it when they are trying to login as you from
+another machine. They can render
+commands to read the Mac address that you're using now, possibly
+try it with multiple interfaces
+if your computer has ethernet and wi-fi and then spoof it
+later. So I don't think that
+will protect you. So the question is, if a cookie is used
+multiple times, is there a way
+for the server to know it is two different sessions? And ‑‑ I
+think the IP way is one, unless
+you are the same network, and then it just looks like the same
+IP and the host, but ‑‑ right
+now I think most sites just look for the same session and it
+looks like one user because what
+happens is you log in and get the cookie back. You log in
+again and get the different
+cookie back. If you use the same cookie it is the same entry in
+the session store usually in the
+database. I think. Anyone else? Question is, can cookies from
+the client extend their
+expiration date. The answer is usually it is set on the server.
+You would not want people be
+able to steal them and to extend them like that. I haven't seen
+any applications are like, when
+you log in, do you want to stay logged in for two weeks, four
+weeks or a year. I haven't seen
+that. Yeah. Are we done? Okay. Thanks guys. [ Applause ] "This
+text is being provided in a
+rough draft format.  Communication Access Realtime
+Translation (CART) is provided
+in order to facilitate communication accessibility and
+may not be a totally verbatim
+record of the proceedings."

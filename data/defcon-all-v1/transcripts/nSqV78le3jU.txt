@@ -1,0 +1,391 @@
+>>We have another short talk and
+then one more long one and
+Andrew here is clearly going to do another live demo so wave the
+rubber chicken in the air and
+say the incantations so that nothing breaks and he'll talk to
+us about this rad little Verizon
+unit he has here. Give him a big Party Track welcome. (Applause)
+	>> Thank you very much, My name
+is Andrew Hunt and I'm currently a graduate student at George
+Mason University and also work
+at Pac. Tel. So shout out to my peeps here. Thank you. Standard
+disclosure, what I'm doing here
+is my own personal work, not necessarily the views of my
+employer. But, it's fun stuff so
+let's talk more about it. 	So the moCA alliance was formed by
+a bunch of large companies that
+got together and said we have all this great copper in
+people's houses that we have
+installed about 30 years of cable, and they wanted to find a
+way to use this as they were
+moving into the age of the triple play, being able to
+deliver video, voice, and data
+over this network. Copper carries electrons a long way
+because it's shielded and it's
+got to a pretty nice insulation there. 	They developed a PHY and
+max specifications so that they
+would be able to do that, so that they would be able to
+process package to basically
+turn your coaxial bus in your house into a network. The key
+point of this is they wanted to
+deliver guaranteed bandwidth because this is what video
+requires. So that's pretty much
+what MoCA looks like, it's in your house, it's coaxial cable,
+everyone knows what it is. This
+is what it looks like a little bit. They use, at the PHY level
+they are using signaling
+division -- frequency, divisional multiplexing. I found
+this graphic on Wikipedia but it
+actually works really well, for what they are doing with MoCA
+and dividing it into two
+channels. There's a WAN channel and a LAN channel, two operate
+at two different frequencies but
+standard. 	They use this to be able to talk with the router and
+also to have the router talk to
+other devices on the coax. On top of that, they overlay a,
+well, thank you! -- (Laughter)
+So. 	>> Woo-hoo! (Cheers and applause) 	>> Somebody has done
+the research, this is pretty
+good shit. 	 The Mac layer basically over these channels
+are dividing it up by time so
+they can create variable length frames which means that they can
+encapsulate things in them and
+that could be video which has very big frames and also
+Ethernet packets, Ethernet
+frames, they will encapsulate as well. Running at the standard
+100 megabits per second PHY they
+can guarantee a sustained rate of 54.6 5 megabits per second.
+Consider what your typical
+Ethernet looks like and collisions are going that's
+actually very good for 100
+megabit rate. They're everywhere. Everywhere you see a
+DVR setup box, everywhere you
+see these routers here, they are using MoCA. Which means that it
+is a great exposure. It's
+everywhere. 	You'll typically see these enter the home through
+something call wall works on the
+outside of your house. This is the one outside of my house
+that's opened up but there are
+different ones. You might have a smaller one if you have a cable
+provider that's bringing it in.
+It won't have this big optical network terminator but basically
+just a splitter that splits off
+to the rest of your house. That's a good point of entry.
+	On the inside you have this
+router so every cable company gives you some kind of a router
+to parse up these streams and
+packetize them. Read the packets they are sending to you and push
+it out over the network. They
+typically have a SBI firewall to divide the inside from the
+outside as is standard network
+security practice. 	They also have on the left side of this
+little picture -- uh-oh -- on
+the left side of this little picture they've got the coax
+binder there, the plug but it
+actually carries two MoCA nodes, called network connected --
+we'll talk about that later.
+They also provide a MoCA-Ethernet bridge on both of
+those nodes that basically
+allows them to encapsulate the frames onto the coax. So, they
+now turned your nice coax bus in
+your house into a large Ethernet system. 	This supports your
+digital Video recorder so your
+DVR requires time, you have to be able to schedule shows and
+find out when everything is.
+That's the prime function of having Ethernet on that, to be
+able to tell when to record your
+functions. 	So, yes, sir? (Laughter) 	>> May I borrow
+podium for a second. 	>> All
+right. 	>> If you are a new speaker, raise your hand.
+Awesome! [Cheers and applause]
+Are you familiar with this tradition? 	>> No, I'm not. 	>>
+Really? Do you drink? 	>> Yes, I
+do. 	>> He brought his own. 	>> You just -- you provide it for
+me. 	>> Every new speaker at DEF
+CON, see, they know this, how do you not know this, every new
+speaker does a shot onstage. 	>>
+Okay. 	>> How about love for our new speaker? (Applause) 	>>
+Great. Congratulations, quick
+shoutout from the guys at Whiskey Pirates that gave me
+this. Pretty awesome. I see we
+have a pirate in the audience. 	>> Tell him how you got it. 	>>
+He chained him to a radiator and
+had their way with him. (Laughter) 	>> Some kind of
+pirate. (Laughter) 	>> Thank
+you. 	>> Okay, so what just happened here, let's go back one
+slide. What this is doing, this
+is action tech is bridging your Ethernet and coaxial bus which
+means if you have a coaxial
+splitter as most of you do somewhere around the house that
+splitter is carrying not only
+the WAN traffic that is supposed to be going out to the biosfeed
+but also carrying your LAN
+traffic on a different channel. If you notice on the left you
+have a MoCA LAN, Ethernet LAN
+and wireless LAN. The action tech router bridges those
+together and most of the do.
+That just makes it easier to manage the notes on the device
+so you can see everything, nice
+big happy broadcast network. Same domain. 	It's great!
+Except, oops. You can take over
+all three networks by plugging into that splitter. If that
+splitters happens to be outside
+your house, as this gadget diagram depicts, but is also
+similar to the Cox, Comcast and
+Verizon default installation guides for field technicians,
+they want it on the outside of
+the house because it's easy to maintain and install. 	So now
+that we know the LAN is exposed,
+just walk in and plug in. All we need are a couple items, things
+we usually locate here at the
+utility point of presence so all I have to do is walk around some
+houses and look for the utility
+pole, on the outside of your house look for the electrics
+box. Yes. 	>> Drink! 	>> Yay!
+(Pause) (Applause) 	>> All right. So you'll need a couple
+items and you'll be able to go
+on this fishing adventure. A MoCA Ethernet bridge. Mine is
+net gear MCAB 1001 and then
+you'll need some RG6 coax cable and a greater than one GHz
+splitter line, line splitter.
+Plug that in, I had to color invert this picture because it
+was almost impossible to see if
+you were just taking a picture. I had to invert it to see that
+x-ray image. It's hard to see
+when it has cover. Which is great for us! 	The action tech
+LAN does not also engage any of
+the encryption features provided by the MoCA protocol. It does
+have a -- I believe it's 40-bit
+key DEZ that is a pre-shared key but you can code into it. It is
+used on the WAN side of the
+connection that has the key that Verizon knows but it's not on
+the LAN side. It's open, clear,
+hey, works with everything because it's consumer-friendly.
+	So basically what happens you
+had a MoCA device on the outside of the house, it connects to
+your action tech router, your
+action tech router says hey and lets you on the Ethernet. Pretty
+awesome. 	So as y'all have seen
+this since 2001, typical Ethernet line of attack, this is
+your normal traffic flow but I
+really don't want you to go that way, I want you to come to me
+first and I'm going to do unholy
+things to your traffic. 	So I think we have belabored this
+point. What could possibly go
+wrong? We all know what can go wrong. We have known about it
+for a decade. 	Yeah, whatever.
+Take the device, take it over and get the more persistent
+presence. One of my co-workers
+actually brought up to me and says but I'm protected. I have
+this MoCA filter. So MoCA
+filters are great, they physically block the MoCA ranges
+in the bandwidth. What they are
+designed for is blocking these signals between one house and
+another. So you can't block it
+within your own house otherwise your DVR won't work. So it has
+to be located on the egress of
+the splitter that they are using to provide the cable signal to
+your house. That's usually on
+the outside of the house. But even if it's not it's usually
+not in a place where you could
+divide the inside of the house from the outside of your house
+because if there's any cable
+exposed that is carrying your internal connection all you have
+to do is splice it and you're
+done. 	So, great idea but it's not going to work for this
+particular purpose. 	So, the
+idea here is to be able to build a disposable attack unit. So
+yeah, we can walk up but yeah,
+someone is going to find that lap top. So we built a
+disposable attack unit that is
+small, that can hide under a bush and lasts forever, and
+allow you to walk away and go do
+your evil. To illustrate this, you have some requirements. You
+have to have some point of --
+some way of providing power. You have to be able to physically
+insert or demonstrate with that
+is and you have to have some type of compute device to
+execute these attacks. Once it's
+installed you have to be able to access it and then commit some
+type of attack, redirection and
+manipulation. 	The objectives of this is do no harm so first of
+all, I'm really just here to
+demonstrate the problem, but you know I'm sure people out there
+could take it to the enth
+degree. Want to use some standard tools. We do not want
+to expose ourselves by showing
+everyone our latest and greatest coating techniques and be
+profiled and arrested. We want
+to use common stuff that everybody has. Needs to be
+updateable so we can a few
+change things, or add new tools. Needs to be disposable, so we
+don't care if we lose it. That
+basically means it has to be cheap and has to be small and
+not too powerful, because if it
+is too powerful it will burn up all our battery before we have
+even gotten home. So, some
+ingredients I just recently purchased these gorilla 16 800
+milla amp batteries, got two of
+them on woot. Thank you woot. Smaller than a paperback book, I
+used two of these because I have
+two because I have two different draws on my units. MoCA draws
+one amp and the raspberry unit
+draws half an amp and that's a little more than this can put
+out on one battery so I need two
+batteries. 	I also used the raspberry pie, Model B. Has an
+ARM 11 processor. It's a little
+bit slow but doesn't consume too much power, can last 18 hours on
+this battery and it's cheap, so
+if somebody finds it go buy another one, buy 10. 	So Kali
+Linux has a distribution that
+works amazingly well with raspberry pie and the ARM
+distribution, thank you, guys,
+for that contribution to this field. It's awesome. Has all the
+necessary tools you need pearl
+python and also squid Apache and mini PUMP. Let's talk about that
+later. 	It also supports the
+universal plug and play IGDE protocol which is available on
+the action tech firewall and
+then you'll also need the Ethernet bridge. I bring this
+picture up, I don't know if you
+can see it down there but the original MCAB mockup that I did
+before I modified it had a -plug
+that you had to plug into an AC adapter in order to provide
+power. Looking at the back it
+was 5 volt, one amp which means that it is within the USB
+specification for power draw.
+So, a little hardware hacking later and soldering up and you
+have a USB power cable for the
+MCAB. I recommend it because then you can provide it direct
+off battery. I was originally
+trying to do this work with the APCUPS. Only lasted about six
+hours and it beeped a lot. I
+didn't think that would be very good for hiding it from
+attackers, outside of someone's
+home if they were looking for the freaky beeping. Also this
+nasty habit of shutting things
+down before I was done with it, I'd get about halfway through
+the battery and say oh my God
+I'm out of power and shut it off. These batteries are a real
+God send. They came out in the
+last couple years, they are really great. There is no loss
+of conversion from DC to AC to
+DC, there is just direct power which means they lasts longer.
+	So on each of these devices
+MCAD adapter I've got about 14 hours of up time so that's about
+how long you've got to commit
+whatever you are going to do. 	For those who can't see it on
+stage, this is what it looks
+like, a bunch of rubber bands and duct tape. But, it's dark,
+you can spray paint it and hide
+it under a bush and no one will see it. Word about universal
+plug-and-play, I know this is
+kind of beleaguered by GRC and other sources but it enables,
+it's a PMP protocol that enables
+Gateway manipulation, the action tech supports this. Basically it
+allows, everything talks to
+everything and says hey I'm an iPhone, hey I'm a printer, let's
+talk, right. Downside is also
+hey I'm a router, you want a firewall port opened, let me do
+that for you. 	So I borrowed an
+idea from Joshua Wright, his scripts for doing image high
+jinks with the I Love My
+Neighbors distribution. I borrowed those from him, did
+modification and some batch
+scripting and now we have a nice little device that will go and
+punch holes in firewalls from
+the inside. 	Mini PMP is basically what we use here,
+PMPCA, tell it to forward 22 to
+myself and send a nice little report to my e-mail address and
+tell me what my internal and
+external IP and port are. This might be a little hard to read
+for you guys but basically you
+will turn on your engine. You are going redirect web streams
+and then to you'll manipulate
+that stream. So, let's see if it actually works. (Pause) All
+right. Nope. (Pause) All right.
+There is my MoCA device there. 63... Aww, it doesn't like my
+key. (Pause) (Laughter) 	>> You
+want me to get through this demo or you want me to drink? 	>>
+Drink! 	(Laughter) 	>> While
+this is loading up, I'll take a drink. Okay, that's on and now
+we have to do one more thing.
+What that's doing is going through its sequence. I owe you
+a drink. (Cheers and applause)
+The sequence it was doing, it's just going through and doing the
+normal networking stuff, it's
+also engaging over the MoCA network which is then going to
+poison the action tech router.
+If you want to play along, get laptops out and want to connect.
+The access point password is
+testing 123 testing 123 SSID is testing. So, go ahead and play
+with me. I don't see any takers!
+{{(Pause) We are getting to the end here. It's going through the
+set up sequences. It's going to
+engage the squid engine and web server, it basically provides
+the redirects and squid proxy is
+going to redirect to pearl which is going to do the re-writing of
+the sequence to provide the
+re-directs. Okay. So let's get through. While that's going on I
+can go ahead and show you this.
+So you enumerate the redirects, it's not there yet, that one has
+failed. Oh, there it is. So you
+can see there are all kinds of redirects from things like
+Microsoft, they've got all kinds
+of protocol in there that they contracted to get on the action
+tech. But you can see here this
+is my PP and C this is my port forward for my SSH to my router.
+So that can be reached through
+the Internet and then want to go for it, give it a go! All right.
+There we go, somebody is on here
+and they are getting redirected around and if we try it, so we
+can stop them... (Pause) Look at
+that! It went somewhere else. Can't see it. There we go. So
+anyway, not too exciting but the
+entire point of this demonstration is to show the
+MoCA network is exposed to the
+outside of your house, anyone can walk up with no keys, can
+walk up and take over your
+network and do whatever unholy thing they want to do with you.
+So I just have a couple wrap-up
+slides and then we're out. (Applause) So basically some
+results from this research, the
+arm 11 is single core, low power drive, but it's also kind of
+pokey. If you actually do use
+this, don't try to do any image processing it will show itself
+very quickly but it's great for
+injects, redirects, and things like display. So tested it with
+my network at home, it has about
+a dozen devices on it, works just fine. So it's cheap. It's
+disposable. It's quick delivery.
+Walk up to a house and install this in less than 2 minutes walk
+back to your car and drive away
+and you have all afternoon to do what you're going to do. Allows
+you to find a more permanent
+back door. So what do we need to do about this? You need to talk
+to your ISP, tell them you want
+them to allow their devices to support better encryption, since
+the DVR tends to break when you
+turn on encryption on that local LAN. The ID do not want IGD, you
+want disable turned off whatever
+because you can't turn it off. It's a Daemon and you can't
+disable it. You want them to
+stop bridging all your networks together on the same domain and
+actually have it route so you
+can do something with it instead of having it just lave
+everywhere. 	Customer should
+demand this, you guys should demand this. Ongoing work on
+this, we want detect these MoCA
+injections, people installing these devices, we want to be
+able to alert on insertion, but
+something better, you could it and see the poisoning that's
+going on here but you can't see
+the MoCA side of it. You want to be able to see that. We're
+currently working with a
+gentleman named Steven Barani, he is a fellow grad student of
+mine and we're working on a
+product called Slim and then integrating that into another
+raspberry unit that will face
+off with this one called counter pie and hopefully able we'll be
+able to demonstrate that soon.
+Thank you. (Applause)

@@ -1,0 +1,630 @@
+>> So, our next talk is gonna
+be super cool. I'm looking
+forward to this. We've got another live demo. We are going
+to learn about how to mess with
+your SmartTV system. Ism guessing make it do a few things
+it probably wasn't intended to
+originally. Is that right? Excellent. Hopefully, that is
+all that is intended for today?
+Yeah. All right ready to go in all right. Let's give a big
+party track welcome to Felix.
+Let's get this thing started. Have a good time. >> Thank you.
+>> Okay. Is it on the slides? We
+still have to get the video set up. I want to show you how it
+looks live. We need to switch
+the video projector in between. So, we are still working on
+this. (Pause) >> Is it up? Here
+we go. There is no sound. Starts very well. (Music playing) >>
+This is how my story begins.
+Sorry? TaTa was a German TV series. A crime series. It is
+almost as old as Colombo. The
+only thing is it is still producing shows and it is still
+running. In some German families
+after the weekend is over, you sit down, switch on the first TV
+channel that was ever there and
+is still there and watch the show, new episode. Since it is a
+tradition, it is also something
+my wife and I like to do we moved to a different country a
+few years back and were not able
+to see the show before. That was kind of sad. That is the
+beginning of the story. I am
+Felix Leder. My passion is to take things apart and put other
+things together that help to
+take things apart. Besides that I like to be out in the snow or
+in the water. To explain a bit
+more of what I mean by taking things apart, I like to have
+collect them. Research
+takeovers, count heavily involved in the project. During
+my day job I work around mobile
+research at a nice company called Bluecoat. The research I
+am presenting is not only my own
+work. Every research has supporters. In this case it is a
+group of people from a company
+called Ensigns [phonetic] and they helped me with this. We had
+the digital box TV I actually
+have one on stage here. It is a very kind piece of hardware,
+makes your dumb TV smart. If
+have you a smart TV, you get even more services and
+possibilities. You see HDMI out
+port. You can attach a keyboard and sufficient stuff like this.
+What is more interesting looks
+more like an Apple TV. It also has a one terabyte the hard
+drive. One device, don't need
+extra storage. So, that is very convenient. The processor is
+show. It is also not responsible
+for playing the video. Actually. Codex are on the system and they
+make sure you can play it fast
+enough. Back to the story. So, this box already has all kinds
+of services on their quite
+night, YouTube, Spotify. We did not have this TV sometime my
+wife actually said you know you
+are always breaks stuff the whole time. Why don't you for
+once do something useful with
+this and put my favorite show on this box. You know, when your
+wife asks for something like
+this, you better make sure you please her. Actually, I hope my
+wife is not here. She would
+probably come up and say, how you know about how to please me.
+That is a different story.
+Before we start, we are going to release the modifications we
+have done. This is for
+educational or research purposes only. If you do what we have
+done here and you break your
+box, it's not our fault and we will not help you or cannot help
+you. Also, if you lose any type
+of your keys and so on the box, it is not our fault. So much for
+the disclaimer. First attempt we
+did an off line he take it out, plug it into the computer, see
+what is on there. Started off
+lucky. We found a private partition on there. There was
+nothing of relevance on the
+partition. Just off line storage for Spotify and TV. The
+partition that holds the data,
+videos we upload. That was nothing. Unfortunately, bad
+attempt. Getting some pressure
+already from my wife for wasting time. Second step, this box has
+an update mechanism. It
+automatically reaches out to Western Digital to see if there
+is a new server if so asks if
+you want to install it. You can download the firmware manually
+going to the manual. We saw
+there was a zip file and in that is five different other files,
+two were interesting. One is bin
+and the other Bi 2. 150 megabytes roughly. We wanted to
+see if we recognized something.
+We did. There is a squash [phonetic] file. It is an offset
+32. So, I have some people
+drinking with me tonight. You can answer if you can guess what
+the first 32bite before the
+extra are? Signature! Very good. Who said it first? All right.
+Come back later to me. I will
+buy you a beer. Perfect. Turns out it is an MD 5 signature of
+the whole image. So we started
+researching this a little more closely, how the museums look.
+What you see is two different
+images that compose the whole operating system on the device.
+It is a Linux system. Which is
+the root file system? Everything from roots down wards? Has an N
+signature including the size and
+at the beginning like the gentleman just mentioned, the
+MB5 of the whole image. This MB5
+appended to the second image which is usually mounted at
+slash up. This has another
+signature at the very front to make sure they fit together,
+nothing is broken. Those two
+together basically make up the image. Let's look into the
+contents. A little small. I will
+explain it. On the left side is the root image. Image process
+which initializes the whole
+device, a conflict file and another file with MD 5's. There
+will be lots of those in this
+presentation. Western Digital seems to like them. On the right
+side there is the up folder.
+There was one interesting folder Web Server, looked quite
+interesting. So, with this,
+there was enough information to actually modify the box. We were
+a bit hesitant about whether to
+modify the primary for the reason we were not sure whether
+they had more MD 5 checks. We
+could break the single device we had. The other option was let's
+hunt. Might take more time but
+also is more fun, right? Vulnerability finding. First was
+to look at the web server. This
+has a web server. So, we will quickly switch to Firefox. This
+is live now. You see. When you
+looking in the password is Edmund, by the way. Remote
+control. You can change the
+password. That looked promising. The PHP to change the
+configurations is not recorded,
+encrypted or anything. That is always a good start. STL
+injection. That was the first
+attempt. As you can see there is a nice SUS [phonetic] statement
+at the bottom. Request.
+Especially tri ID, language ID. Perfect! That is using S cue
+light you. Here is creating an S
+cue light [phonetic] and another PHP file. Anybody have
+experience with the PDO driver?
+Somebody over here? What's a problem? (Pause). PDO only
+allows one statement at a time.
+We wanted to inject five statements here. So
+unfortunately it did not work.
+Even if it had worked we found out this part of the process was
+Read Only. No chance at all.
+Bummer. Okay. Being on the web server track, next thing to try
+was remote file encode. There is
+a remote file inclusion or file inclusion possibility based on
+the language which is stored in
+the cookie. So, let me switch back to the web server. You can
+see there you have to enter a
+password. Down here, you have to select the language. Okay. I
+have a cookie I dropped here.
+Let's wait and refresh it. You can see there is a language ID
+of 3 in here. We are wondering:
+Okay, can we just modify this? A few slashes. Did I press the
+right button? It is a little far
+away. Yes I did. We get an error message saying it did not find
+the file hope not PHP. We said
+why not upload the file to a folder we can access. Then
+modify the cookie. To point to
+that and actually you can calculate the path looking at
+the firmware. I pressed the
+wrong button sorry. The cookie is really small. It is hard to
+see the screen, actually, from
+here. Okay, wow, nice. Now we have a PHP shell. Those of you
+who have worked with PHP shells
+know that they are a pain in the ass, right? The first thing you
+want to do is try to figure out
+what is on there. Tell it what should be on there. We want to
+activate it, get it into the
+box. I have to admit, my background is usually not too
+much the MP3 devices but the PC
+world. Next you think about privilege installation. The same
+thing here. Let's go and tell it
+to the box. In order to know like from which account or to
+get the privileges, first figure
+out which account you are and oops hey, we have the root
+already. This was significantly
+easier than I expected! You can also see my stupidity on the
+screen. PHP actually tells you
+that is your root. Okay. Nice! So, this was just the beginning.
+We were able to root. But, the
+lesson that I had to learn during the experience is: Don't
+start with SQ [phonetic]
+injection, remote file inclusion or privilege escalation stuff,
+like this. Look for the really
+low hanging fruit. Investigating the image a little further, I
+found the guys from western
+digital had a similar link from the root server's directory
+right to the disk. It was not
+necessary to even upload try to split the system. I am exploit
+the system. I am not sure
+whether they forgot or wanted to make it simpler for people.
+Because that is pre
+authentication. No authentication at this point,
+also get the shell; just a
+different directory. Ah, that's nice. If it is that easy, I
+figured we probably would find
+more stuff. If you saw the first this morning: Doing things in 45
+minutes that was a fantastic
+talk. The guys took apart the Google TV in the past. We tried
+the same as they did. We looked
+on board, tried to see where our soldering points were. We found
+two pins that are candidates.
+See them in the picture. A little measuring, the one was
+closest Rx 2 H to ground and the
+3.3volt pin. Here is the warning: At home, it is P.3 and
+your PC is 5volts. You can burn
+either your PC, the box or for example I have burned three.
+That was my lesson learned of
+not buying cheap stuff from Taiwan. So, what do you get
+after you a teach a serial
+console? You get all kinds of information about the system,
+where the images are stored,
+what else configurations, what is currently loaded, which
+drivers. Actually, when you have
+the system up and running and see the screen and push a
+button, remote control, tells
+you which buttons are pressed and which order to take. This is
+perfectly done button. When
+finished you see something like this. They like ND 5's. And you
+see the login. What's the
+password? That is a chance for winning another beer tonight. It
+is not that easy. It is not as
+easy as OEM root or something. These guys like MD 5's. Let's
+have a look. Sorry? MD 5? Close.
+Not quite. It is a little more sophisticated. I talked to
+another Gaia few minutes ago at
+least I did it right. Let's have a closer look. The shadow file
+exists in MP3 ETC exists in
+there. We wanted to find out what it is. That did not get us
+very far quickly. So we
+investigated a little closer. The serial line I told you is he
+very helpful for debugging. One
+line said: Password for root changed. From the screen shot
+you can see other information
+like which modules are started before, which modules load
+after. This was helpful to
+triage which module, which problem's actually responsible
+for this. There is a tool Gbus
+serial Nam [phonetic] and in a folder not inside the original.
+It is an encrypted to addition
+to the file system. Used a local S pin. Security by obscurity
+because it is located in slash
+home slash file. That is containing a lot of interesting
+information. Also put the
+information here, how you can get the AS key. I will not go
+into that. That is more nor
+reference. Here, visually, in the Home folder, a file called
+File, AST and after, stuff is
+put into folder local S bin. There is this program and
+another 30 megabytes AMOC. Since
+it is encrypted folder this is interesting. Let's have a closer
+look. Let's get back to what is
+the password. Once we had the problem we would reverse
+engineer. We found it is doing a
+system call. Subsystem function call of not a system call.
+Serial numbers used, MD 5 of
+that is actually reduced. It is the password. How do you get the
+serial number? Look at the box.
+Yeah. Actually an easier way. Have a look at the login screen.
+The serial number is the MD 5
+right in front of the login. I didn't bring the serial cable.
+Should have but since I have
+blue screen, a few times with a serial cable I don't want to
+find out here. We can try it
+with LINUX that works better, we can try it later. I wanted to
+demo to you guys, see what it
+looks like. Log in. We want to log in as root. Need to copy and
+paste. On. Sorry, don't see that
+screen? That is calculating. And then over here, hey: Another
+root shell! This was the
+password, by the way. Okay. You probably know this yourself. At
+this point in time, you say yes!
+Right? Because your root always feels good to be root especially
+on systems you have not been on
+before. That's the point in time when my wife came back in:
+Sounds good. Are you done yet? I
+said Ahh, halfway. Next step was actually to find out where are
+the apps located. Looking on the
+root file system or the file system in general, you will find
+a lot of hints. You will find
+from DRM files but also some app v for which you find the one is
+AUL, some others. So, we were
+really wondering where are the apps especially for those. We
+had a closer look at this
+process. DMA. OSD. This is the last process that started. If
+this process dies, the whole box
+automatically reboots as a watchdog around it. It is okay
+in the encrypted partition, the
+AS before. This single process uses 150 megabytes of the 200
+available on the box. So, it
+seems like this is an important piece. Looking more closely into
+this process we actually found
+some hardcoded URL's. HD western digital, HTML. And some others.
+Okay, when you go to these
+webpages now I have to check the resolution of. Projector here.
+Let's go to AOL. Hard to see on
+A.L. Let's try this Russian site. This is a Russian video
+site. Basically you can buy or
+stream videos from there. What you see is there is a white bar
+at the very bottom. That is not
+part of the design. If you go to these webpages with your
+browser, you will see they are
+1280 times 624. Exactly for your TV. These are made so this box
+can access them and you see what
+you are supposed to see. That gives us some pointers some
+information about this is VMA or
+V executable. Browsers, 30 megabytes. That is huge,
+especially for these devices.
+Big for small one like this, it is huge. Everything is linked
+esthetically. There is a QT web
+browser in there. H D MI, for accessing the corrodex. Check
+for firmware, automatically sync
+with the hard drive. On screen menus. On Start, all pictures,
+it finds in some specific
+folders on the disks, all into memory. This is actually a piece
+where you want to dig deeper.
+You really want to modify the on screen and TV sayings stations.
+The next step to understand the
+logic, create a server, put it on the box, attach a debug err
+on the box where it is running,
+control it from another machine. The next slide is for your
+reference if you want to try to.
+This is a compilation change. The nice thing if you are
+reversing an Upro you can use
+that to debug this process. Unfortunately, it breaks
+sometimes. Don't fully rely on
+this. This cost actually a few evenings. My wife at this point
+came back, looked over my
+shoulder and said: You are again looking at assembly. What's the
+status? The programs starting.
+Now I want to see it. I said: I am making progress. But let's
+see. So now we know there is a
+web server on the box, right? There is one nice thing. The
+broadcast err, they have a live
+stream. They have a live stream on the Internet. Let's see.
+There is no running at the
+moment. See if we can get a live stream. They blocked some
+content to other sites.
+Unfortunately, not. At the moment I was hoping it would be
+in use. They are not. We will
+show you how this stuff works. At this time, I was dedicated to
+go for the low hanging fruits.
+In this case it is going through the process, search around,
+where are the URL's the hardcore
+ones and catch one or two, to get the TV station we want.
+Switching back to the box. >>
+This is the process ID we want to patch, 2006. And we want to
+dash let's take, for example the
+Red Bull [phonetic] entry. MTV entry. And we redirect it to
+Germany. So, what this little
+tool does is it searches E choice and searches the memory
+or sequence we have given it
+here. In this case, connect the dot Red Bull MTV and once it
+finds it overrides it with what
+we the address never changed, no randomization. To keep the tool
+flexibility for future versions
+this way there we go, we have found it. Now, the dangerous
+switch. (Pause). Now you see the
+box in action. See all of the services on the box and also you
+see Red Bull TV. In the
+background it basically prepares everything for the browser to
+start up. Once it starts up, is
+running, the box reaches out to Google.TV page. Went down a few
+times this morning actually.
+Okay, perfect. (Applause). >> We are able to redirect the TV to
+whatever webpage you want it to.
+This was the point where we did the biggest mistake in the
+overall process. So, because I
+knew there was a page when there was live stream and was able to
+patch the browser, I told my
+wife: I have it! I will be done in five minutes. Have you ever
+told your wife you are done in
+five minutes? Then you know Murphy's law it usually takes
+five hours or more. Same here
+so, quickly changing to the new URL, got something which looked
+like this. The point was the
+codex that they returned to the browser of the box did not match
+any of the hardware codex that
+were actually on the box. Oh, man. So, not quite there yet.
+So, fortunately, the serial
+console actually was providing more information. Once the
+browser starts it tells you
+which codex it loads and supports. Then it was only a
+matter of finding out are there
+other stream that is we can leverage that we can use from
+this broadcaster. After looking
+around, matching, trying out other things, finally, we were
+able to create a small webpage
+that selected a specific codec and also made it work. So, let's
+try this. So, we want to go.
+(Pause) and we want to take it dash just a second. I have to go
+back to another slide where I
+have the original URL. Don't want to mistype anything. If I
+mess up with the bok at this
+point in time it takes at least three minutes to reboot. So, I
+try to avoid this as much as
+possible. Okay. (Pause). >> Process ID it wants. 1206. Okay!
+Looks good. Again, attach pre
+trace. Serve the memory. We want to Google.TV what we put on the
+overdrive. You can see the URL
+slash user. Gets you down to the page that you can upload. That
+takes a few seconds. Here we go
+switch back. Unfortunately we have to restart Red Bull. Not
+the whole box unfortunately. The
+page is up a little quicker now. Now it's trying to get the
+stream. At least we should get
+the stream that is saying: You are not supposed to see this
+program. Takes time to buffer.
+They are streaming the message. You are not supposed to see
+this. Hm. (Pause). >> Maybe
+today Ah. Actually, wow. We have progressed a bit further. That
+is called that is the weather.
+Perfect. Ah, nice. (Applause) >> You know? Finally, we were able
+to watch the program. It feels
+good to please your wife after you have put so much effort into
+it. So, I have told you that
+actually the show was quite old, from the '70's. They changed
+actors. This is one of the
+famous German actors, plays in some American movies. Someone
+recognize him? Who is it? Kil
+Schveiger. He played the Nazi killer in Inglorious Basterds,
+Quentin Tarantino. The talk this
+morning was quite good about this: You want to own the
+software in the system, not just
+the hardware. The stuff that I have shown you is not really
+owning the software, because
+nothing of what has been done so far is persistent. Everything
+was just done in memory or
+running system. It actually is not even though your root you
+cannot modify the file system,
+for example. Everything is stored in Read Only memory. When
+the system is rebooted,
+everything that needs to be changed, shutoff file, host
+file, everything gets copied to
+slashtp and you use it from there. The reason is quite
+simple: If you pull out the
+power or have a power outage, you never can break the box. You
+always can get a clean copy from
+ROM and everything volume a tile is basically done. The
+configuration is stored in a
+specific region in the ROM or flash memory. You have to make
+sure that you do not have a
+power outage during reflashing or changing configuration
+settings. This wasn't tricky. We
+wanted to be persistent. Most of the stuff you see, I marked in
+red. The only thing that is
+really persistent and liveses long is the hard drive. We want
+it to be persistent. Some more
+requirements. We wanted to actually keep this clean reset
+scheme. At any point in time,
+you unplug the system, it still works. It should be persistent
+and writable. It should be
+possible and based on the information we have, to actually
+flash the drive, every time we
+wanted to have it changed. Or, somehow use the hard drive. If
+you flash a drive often enough
+especially when experimenting with firmware, I promise at one
+point you will break it. I only
+had one device and my wife didn't want to lose this
+feature. So I had to make sure
+this device staying up and running. So, another requirement
+or thing that we were a bit
+scared to do was we did not want to catch the main but the second
+image. The main was full of MD 5
+sounds and integrity checks. Investigating the blue process,
+we found something interesting.
+There is the inner process which starts runall, runs a tool which
+is later on starting the main
+executable. But this script is looking for another script
+called off T P run T P in the
+off partition. This script wasn't there. If this file is
+present, there, it is executing
+it. If not it doesn't do anything. That is perfect. We
+have taken out a file and have
+left the suitable in the boot process for us to just place it
+there. Very kind of them. Only a
+little challenge with this. The challenge is this script is run
+first and only after it returns
+the main process, the main executable startup. The main
+statutable is actually
+responsible for mounting the hard drive. So we cannot modify
+anything to load additional
+stuff from the hard drive until this final processor started.
+That is not an overly challenge,
+I admit that. So, what we did is basically returning from run T T
+and started a background process
+which is monitoring for the hard drive to come just in the
+background. Is the hard drive up
+yet? No. Let's wait five seconds. No. Wait 52nd. At one
+point, the hard drive is there
+and we basically can continue to note stuff from there and
+execute it. This way, we have
+secrete created a second stage LINUX Start. If you look at SMB
+you will see it here. There we
+have a script, you upload it to the root folder at SMB and you
+have your own new process,
+Second Stage obviously. On the device itself, it is a different
+part. That is okay. Now you can
+start to modify via SMD, the firmware as much as you like.
+Any change you do there are some
+limitations to that, you only can do things outside the root
+FS or you have to remount it.
+All of the processes are already running so you cannot modify
+them really except patching them
+like we did. So, the nice thing about this extension is you can
+undo everything by SMB. Just go
+there, SMB, change the files to what they were before. Can
+completely mess up the systems,
+remove all of the files and good to go as it was originally. If
+you mess up SMB you still have
+the option to take out the hard drive, put it in normal PC, undo
+all of the changes. Very good
+way to experiment without any risk of breaking the box.
+(Applause). >> So, this was the
+techie part. Usually it is not a good party without lawyers. Do
+we have some lawyers in the
+room? (Pause). >> Come on. There must be some lawyer in the room.
+At least somebody who will say
+you are talking about LINUX: What about GVL violations
+actually western digital has
+been thinking about that? They are making their firmware
+available as a GPL variant. You
+might say why the heck did you spend all that time on changing
+the original if you can just
+download the original and upload that? There is actually a reason
+for that. If you go to the
+webpage, there is a warning. Let me read the last sentence to
+you. Once you install third
+party or user modified firmware even if the product goes back to
+its original, access to certain
+features will be disabled. What does that mean? That means they
+delete all a of their MP's if
+they find out. So, no more Spotify. No Netflix, for example
+anymore. Unfortunately, this
+does not give you the full feature set. With the firmware
+we are going to release, we have
+not seen any of the we do not want to give any guarantee. But
+since we have slid past the
+original firmware, we do not expect it to go out. Disclosure:
+Next political topic: I looked
+up on Showdown over 500 box only were available on the Internet.
+500 only. A lot more in houses
+and closed networks. I heard some estimations there between
+10,000 and 100,000 boxes out
+there. So, 500 open there. Not password protected. You can
+upload stuff via SMP in most
+cases. You may say Felix, there are two remote ways to get into
+the system with this. You should
+talk to the vendor. I tell you: I have tried to. I have tried so
+hard. I filed an official
+support case. I contacted their press because they are the ones
+most interested in saying I want
+to present this at DEF CON. Fixed it first. I talked to
+product marketing, tried to
+reach out to western digital. Unfortunately the answer was
+thanks for contacting western
+digital. We will forward your request to and it feels like
+there is null. Even pinging them
+asking what is the status. Quiet. Do we have anything
+anybody from western digital
+here tonight? (Pause). >> If you know anybody Western Digital, I
+am interested in getting some of
+the stuff fixed because it is just too open. So, if you know
+somebody, let me know and we can
+make some progress. The playing field I know some of you like
+conspiracy. Theories. I have a
+theory too. If you think about it, they have serious bucks.
+Intentionally. Roots on the web
+server pointing to world writable [phonetic] folder. On
+the other hand you have some
+stakeholders like providers of end based services, Netflix,
+Qualify and so on. They don't
+want their services to be switched to the open. So, why
+don't you leave some backdoors
+in there, easy to find, satisfy the community and at the same
+time satisfy the other
+stakeholders? Okay. That is just my conspiracy theory. Another
+topic for some beers tonight.
+What is the outlook? Let me explain my situation. Two months
+after we were able to watch the
+cable TV provider. Guess what? In their standard portfolio was
+the broadcast. I was able to
+please my wife two months. Now it is another entity that is
+doing it every Sunday evening.
+(Laughter) >> Maybe life is better for you. First, again, a
+disclaimer in case you use your
+end piece or break your box: It is not our problem. This
+firmware is just for educational
+purposes. But if you are interested in actually getting
+it. The last slide it is on Wdtv
+put up zero point com. You can download there and also our
+version of second be stage. In
+case you want to create your own, you can modify it from
+there. Now you can go and based
+on the techniques that were presented here, patch the system
+to add your own TV channels or
+if you want for example to have Torrent on your box, low power
+consumption, you can add Bit
+Torrent on there. Or if you have problems not seeing other
+country's streams because you
+are IP limited you can change this. If you are really craze
+you can find a version of
+Bitcoin. You won't get rich. You can use squeeze and simply
+upload the executables and most
+work right away. We have not been the first ones to research
+this. B Red [phonetic] is an
+awesome guy. He did fantastic work with western digital, most
+without storage. You should
+check out his pages to get more inspiration. That leaves us with
+three minutes left for
+questions. (Applause). >> Let's give him a hand one more time.
+(Applause) Now I don't know if
+you have been noticing but a lot of our speakers have earned
+their merits have been given
+these patches. How many people think Felix should get a patch
+too? [Cheers and applause] >>
+Thanks. And yeah there is somebody named Charlie Miller
+speaking next. You are going to
+want to get together. We will probably be really crowded for
+the next talk.

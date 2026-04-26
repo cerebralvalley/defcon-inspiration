@@ -1,0 +1,274 @@
+>>This is Aaron Luo. [applause].
+Good luck. >> Er, go –good afternoon ladies and gentleman
+and thank you for coming, I Aaron. Today I going to talk
+about drone hijacking and, er, I going to enjoy this event. This
+event is my first time presenting in Defcon and er, er,
+actually [applause], er, thanks. Actually, I a little nervous now
+because, er, you know, first time so [laughs] and er, this is
+my first time use English to presentation. So, so, so, so,
+er, I know it’s hard to decode my English, so please bear it
+and…okay… let me start with er, brief self- introduction. Er, my
+name’s Aaron as I mention before. And er, currently I er
+working in Trend Micro. Er, and , er I come from Taiwan also,
+also HIT count member, a hacker community in Taiwan and er, this
+this year he can’t also benefit, enjoy the Defcon CTF and er, I
+do want to tell a story about, about , er, about, why,er, I
+start my security research life since 2005. Please also because
+of [inaudible] deal, in my fifteen years or so I decide to
+development IT and, er, , er out of blue or madness, I don’t know
+why I decide I don’t like that, but if only I finish the , er,
+darkdoor when 16 years old, and , er, and, er, and er, list IT
+for me to remote [inaudible] machines …. He also offer some
+nice functions,er, such as you can see if someone want to
+[indistinguishable] or, or, look some functions or see remote
+desk top screen. Or, but trust me, I just only play this
+summer. I’m my own VA so no one impact. Okay, oh sorry I
+[indistinguishable] you know. Er, after I creating the
+darkdoor management web server
+then I join the Taiwan government
+cybercrime investigation department with Kang
+[indistinguishable]. Then I joined Trend Micro cyber 15
+solution team so, I think the dark door is the beginning of
+everything. Okay, er, this enough my self- introduction…..
+let’s start, let’s start hacking. This, er, this is,
+today’s agenda. I will introduc-introduce the drone
+architecture and, er, and the point of the vulnerability
+component. After I will demo how to hack it and provide, er, er,
+prevention solution. The talk will then be showing the G Hub.
+Er, today our topic is… the DJI-Phantom 3 Advanced. This,
+this drone render is popular, is popular and, er, I think the
+drone architecture is a similar. So, if you know how to, er,
+exploit this drone, you may take this same tech to hack another
+drone. Okay, let’s talk about the structure of this drone. Er,
+there are three main model: er, drone itself and the remote
+controller and,er, app SDK [indistinguishable] vulnerable
+and easy to exploit. Er, I think it’s er usually find in radio
+remote controller and, er, GPS model and, er, app SDK. First,
+we, we, search for vulnerability from TJI, TJI app and SDK. You
+can see the operation process in this image. First the TJI
+develop app will makes a request activation data from TJI
+authentication server. Then the remote controller use USB to
+transmit data. Final drone, drone will fly if can find the
+activation data. Er, actually, actually presentation is not
+speciality so, so I’m really very, er, nervous and er, er,
+now I want to introduce how to correct the SDK authentication
+mechanism. First, er, we have downloaded SDK from DJI website,
+then, er, then er, this [indistinguishable] I choose
+actually SDK so it is, er, JAR file. You can find the key
+function with JDGUI and, er, I found the function, it calls
+check permission. This function will, will be called by, by a
+when you open the app, it will call, it will call this
+function. So, we just need to patch this, er, function, then
+we then we are, we know to bypass the, the authentication
+mechanism. So, how to patch this function. Er, I think this part
+is easy, you just use JBE. JBE is a java byte code editor and
+er,er, find, find, er, just mention, er check permission
+function then, then I, I replace the check permission directory
+to, to SDK level 2. It means we can directly use the level 2
+SDK, er, I forgot to tell you about the SDK permission. Zero-
+it mean you have no permission and for SDK level above the,
+bigger than zero, then it mean you have the SDK permission so I
+just save it to, to er, to, to , er, 2. Then return. After patch
+this function you can, you can recheck [indistinguishable]
+JDGUI then you can see the SDK level directory, return to and ,
+er, this SDK is, SDK authentication mechanism is
+easier to hack but I think it is simple but powerful because all
+kind of DJI drones can be affect by this, by this vulnerability.
+Er, now I demo, I demo how to use this, this vulnerability.
+Er, at first we can… Oh sorry, I check the video. Wait a moment.
+Oh, okay, okay, thank you, thank you. Er…er, after we crack the
+SDK we can directly connect to the app and look the camera
+data. So, this, you can see the camera so this is really work
+and er…next demo I will show how, how to use this
+vulnerability to impact the drone. Er, I develop, er, a app
+by the SDK and er, this, contain contains some er, API can be
+call, like er, we can, er take-off or landing and for this
+I, I use the take-off function. Then I press the button, the
+drone just be take-off and then I press the landing button. The
+drone is landing. And, er, I also use this feature to, er,
+write a function, it can, it can fly drone into the location we
+submit [indistinguishable]. ……at first I input the GPS location
+and then I press the fly to here, fly to there. The drone
+fly to there. But actually this SDK er, er have some , have some
+limitation, er because this demo I just use cracker a SDK, er
+this, this means I, I don’t need to to connect to the
+authentication server I can directly this, use this SDK. Er,
+so how to prevent or improve this. The vendor can protect
+their library firewall by either use obfuscator or packer. Or use
+the the encry- encryption tool to void the SDK authentication
+keep between X and drone and server now only just void the
+front [indistinguishable] server. Okay, this is intro
+session, firmware, analysis. Er, how to analysis the firmware we
+can use bin walk extract some data but actually it’s limit.
+So, so, er, we we use IDA pro tool analysis incomplete data
+extracting by the bin walk. And use string reference to find the
+key function. The function decide to check the firmware, we
+can use it to reverse the firmware format. Actually this
+decode function is very big. Please forgive me for not
+explain, explain the detail. And, er, finally we can, we can
+extract each function which contain detail information
+including the measuring of ID and module name and the binary
+name. And after that I shared the UBI file system from from
+PFC300SFw3 dot bin by er, by by using old password. And er, an
+er then we can extract some interesting things from firewall
+systems. For example the SSH key and, er, and, er some, and er
+some config-configuration data. And er, if you want to know the
+loop and as well you can view the X shot to create this file.
+Okay, er, I will introduce how to prevent or improve this this
+part. Actually I think, just increase the firmware binary but
+still need ec, extra careful about storage place must be
+safety and er this side and should careful of the side
+channel attack. Okay, this is the end of firmware analysis.
+The next section is signal analysis. How to analyze the
+radio signal, er, just by the SDR SDIs software define radio.
+The two on top are hacker-Ive, the, the bottom one is,er, blade
+hive. Er, by the way, this all available in Defcon vendor area,
+so if you interesting with this you can buy from from vendor
+area. And,er, we found DJ PA 3 used two modulation/demodulation
+to transfer data with 2.4GHz ISM band. I will introduce this
+detail later. One modulation is used to control the flying
+duration of drone like, er, flying up down left or right.
+You can observe it is SFHSS frequency hopping and the
+frequentation range is about two dot four gigahertz to two dot
+four eight gigahertz, and er, each channel is about one
+megahertz bandwidth. The other modulation use DSSS,er, it is
+direct frequency duration and er it that drone to transmit images
+to remote controller. The frequency is, er, about 2 dot
+forty fifteen to about two dot forty eight fifteen gigahertz.
+Each, er, channel is about ten megahertz bandwidth. And, er,
+finally we found the image has no check sound mechanism, so we
+can jamming the radio frequency to show wrong image to
+controller. Er, let’s see the demo. This is, er, the program I
+development. It can, it can jamming, jamming the radio
+signal and show blue, er, green screen to the , to the, to the
+DJI F system. And, er, how to prevent or improve this. I think
+just validate the image checksum, if checksum is wrong
+er, just don’t show this image. Or, or you can transfer the
+image data by a sound metric encryption, but, but, it can
+more performance, er, actually I think just add er checksum is
+enough because reverse modulation / demodulation, er,
+is not easy. And, er, let’s move to next section. The GPS modules
+analysis. The GPS modules is general way to hijacking the
+drone and,er, GPS protocol is not encrypt. Er, GPS protocol if
+use for commercial is not encrypt is call C /A for
+commercial, er, there is, there have another GPS protocol call:
+Pcode. Pcode is for mainstream so no more commercial can use
+this encryption, no. Er, so, so, every every commercial usage,
+the GPS is, er, is er, easier being attacked by attacker, er,
+attacker can easy to fake this. And er, I will finish off with
+which function is associate with the GPS. In these slide have
+four function will impact by faking the GPS. One is: no fly
+zone. No fly zone mean DJI have, say many place to the no fly
+zone like, like the airport or some important place so if you
+fake the docket, if you are in airport or some important place
+the drone will be a false landing. And, er, another
+function is return to home. Return to home mean: if you
+press the return to home, the drone will return to original
+point. The other function is called follow me. The follow me
+is the, is the function…it means if you move, the drone will,
+will er also move. So the drone always follow you. And the la
+-latest function is way point. The way point means: you can
+setting the mutual location and drone will go each location for
+four function will be impaired by fake GPS. Now I will
+introduce how to spoof the GPS location. They have a good open
+source simulation directory in GitHub called GPS SDR. But, it
+have some limitation. Before you want to fake a location you
+should wait for a few minutes to generate the IQ data. What is
+the IQ data? IQ data is,er, if you want to play SDR you must,
+you must build a IQ data for, for, for, modulation. And er,
+er, so we improve the code, that it can in real time generate the
+GPS signal. And, er, can be control with the joystick, that
+is mean you don’t need to wait five minute or a few minute to
+generate the IQ data, you can directly, real time fake the
+point. And er, this is the, er, demo. Er, wait a moment, sorry.
+You can see I use the joystick and it can directly impair the
+GPS location. When I, I move to left you see the GPS point is
+move to left. And, er, I move to other side, the GPS points is
+move to other side. Then I move to right side, it just move to,
+to right. So we can use this, this joystick to, to impair the
+GPS location. [applause] Oh, thank you. And now I demo to
+fake landing the drone by fake location into the no fly zone.
+You can see the other side the red circle is the no fly zone
+and the er…I open the program then, then, its need to we need
+to wait a few, a few seconds because, er, GPS, fake GPS
+should should, take, er, take er, some times to update the,
+the satellite track. And the, er, er, it is take about,
+third-thirty minutes, er, thirty second, so you can see finally
+the drone is in the, the no fly zone then drone take down. This
+demo also is being paced in, in paced [indistinguishable]
+account so so I just want to, er demo, demo this again, because I
+think someone maybe now seeing this and er… and er I want to
+demo the er use the joystick to hijacking the drone. Er, I open
+the DJI follow me function and you can see I not touching the
+the remote controller. Then I move the joystick can directly
+move drone to to location I want the drone to er, like I, I move
+the joystick to the, to the my side drone to take to my side.
+Then, then I just forward this for a few times. And er, er,
+finally use joystick and easy, easier to, to to control the
+drone. But finally the drone just er, er, move to to far
+place I can’t control so I switch to my, to my remote
+controller. Then, er, because this drone is, our company,
+our company er, I turn so I can, I can fly then to this er, I can
+then disappear. So, finally I use er, er, the AC controller
+and get back the control. But actually you can, if you want,
+you can let the AC controller now work. You just jamming the
+er, two dot four gigahertz frequency then control module
+will be lost. That time you can use the hijacking program to
+fully control the drone. And er, I want to introduce how to
+detect the fake GPS signal. The one way er, is avoid the GPS
+sub-frame data, sub-frame data, er, is data sent by GPS
+satellite which contain the satellite track information. But
+fake GPS sub-frame data will incorrect, er, like this. This
+is the sub-frame data and you can see the upside sub-frame
+data is, er, is, er, true satellite data and the the down
+side is the fake GPS satellite data. You can see something is
+wrong. So you can, you can void the sub-frame data to, to check
+the signal is fake or real. But, I know you must, you must think
+if I just recall, replay the GPS data the sub-frame will be
+correct, yes it is. But, er, we have another solution, when when
+you . when you, er, recall and replay the GPS, you can use, er,
+time, you can void the time between satellite time and the
+real time. Because if you recall and replay the time will be
+wrong. So, this is another way to detect a fake GPS signal. And
+er, another way is, er, check the motion speed between point
+to point. Er, for example, it is impossible to change your
+location from Taiwan to Las Vegas in one second, unless you
+are dynamo or sonic. And er, er finally, I development a fake
+GPS signal device by just
+measuring ways and the, I, er, develop it
+in the raspberry P, raspberry pi, and er er, I buy a GPS in
+module, is  a popular module
+called U-blox. This this the demo of
+the tool I create. You can see, er, this is raspberry pi and
+this is ,er, my phone controller hack of device. And I transfer
+some fake GPS data and now, now now it’s no more because the
+fake GPS, they come, will take a few time to affect. Er, er about
+about thirty minutes. And er, er. Wait a moment. I don’t know
+why my screen is become black, er, er. I…wait a moment. I press
+this, okay? Is the screen being hacker? Oh, [laughs]
+[inaudible]. Er, no problem, I just er take the… I think today
+is unlucky. Er. Wait a moment. [inaudible] oh, er. Oh, so it’s
+the sound people just…[inaudible] oh er…oh, I
+need screen to er…[inaudible]. >>…these guys lost the signal…
+>>Oh okay. [inaudible]. >>Sorry for the interruption, guys, we
+have A- AV tech is on the way, erm, and they should be able to
+fix this. Thanks. >>Actually this is not my computer be hack,
+so I have nowhere to start this attack because my computer is
+fine but the environment just got attack… >>No, your computer
+is fine. [inaudible] >>Er…[inaudible] okay. >> So I
+just take this opportunity to remind people it’s not the back,
+erm, and we probably gonna have you compress over a little bit,
+erm, at the end of the talk which, you know a few minutes
+here. [inaudible] [applause] >> Er. Unfortunately, this talk, I
+think maybe I can’t finish because…[inaudible] >>Are you
+close to the end? >>oh, okay. I close. I’d like to, to publicly
+provide my GitHub account that I will, I will put my fake GPS
+detection program to my GitHub and, er…oh, sorry today
+I, I think… >>It’s, it’s okay man, you did a good job. >>Okay.
+Thank you for coming and er, er I would like to provide my
+GitHub account. This account er, will now be hacked by, er, by er
+any anyone, er maybe. Er, my account is Aaron, Aaron Lou.
+Aaron dash Luo and I will publish the attack and defense
+to all to this GitHub. Thanks
+00:45:32.563,00:00:00.000
+for coming. [applause]

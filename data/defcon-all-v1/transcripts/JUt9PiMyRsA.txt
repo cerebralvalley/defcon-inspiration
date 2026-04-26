@@ -1,0 +1,490 @@
+Welcome to the early morning
+shift. Thanks everybody for showing up. For the half of you
+that are not hung over I hope you enjoy the talk. For the half
+of you that are hung over, we're going to try to talk really,
+really softly so you don't hurt your head. This is abusing Adobe
+readers JavaScript API's. We've got a lot to cover so we're
+going to start getting going right away. A quick agenda of
+what we're going to be doing. We're going to introduce
+ourselves, talk about ourselves for about 45 minutes and we'll
+go over the content the last five minutes, it will be great.
+We've been doing a lot of research on Adobe reader over
+the last six months and trying to under understand the attack
+surface and what we're going to show you is an overview of the
+attack service that most people don't know about and what you
+can do with it. We're going to talk about how you can find
+these vulnerabilities themselves and how you put it all together
+and chain the various bugs that you need. For remote execution
+on Adobe reader. First we'll introduce ourselves. My name is
+Brian Gorenc. I'm the manager of vulnerability research inside of
+HPC security research organization. I run a program
+called the zero day initiative which is the world's largest and
+one of the oldest vendor agnostic bug bounty problems.
+We're entering our tenth year and we spent over $10 million on
+bugs over these last years. We do -- I work with researchers
+around the world to procure vulnerabilities, and send them
+to vendors to get them fixed. Sometimes they fix them,
+sometimes they don't and we have a long history of making sure
+everybody is aware of the vulnerabilities that we
+purchase. I also organize the ever-popular hacking competition
+which just this last year game away almost $1 million for
+exploits against the hardest attack surfaces out there in the
+industry and we had one individual win $250,000 for
+three exploits this year. I got to work with Jasiel and Abdul
+back here along with several members of my team are working
+on the Adobe research project that we were doing and I'll let
+them introduce themselves. >> Hello. I'm Abdul. I'm a security
+researcher working for the zero day initiative program. Been
+working for them for a little bit more than two years. I do a
+lot of root cause analysis, bug hunting and exploit development.
+And recently I have been operating reader in a regime of
+high memory pressure. (Laughter.) >> I'm Jasiel and I
+prefer to go by wandering glitch. I also work at ZDI,
+spend a fair amount of time on root causing vulnerabilities and
+using what I learn to augment my own vulnerability discovery in
+exploit development and I use python assembly to prevent
+people from operating high pressure memory. And if that
+doesn't make any sense you should check out the ZDI
+blackout talk. >> So we've done a lot of research over the past
+year as well in Internet explorer so that's a good paper
+to read. So we also do a lot of research and you can see it here
+on the slides, some of that research that we've done. These
+are all of the bugs that we've discovered in Adobe reader since
+we've started this research back in December 2014. Like I said we
+do a lot of internal research. We started researching it back
+about six, seven months ago to get an understanding of how it
+work. We've discovered it's about 91 vulnerabilities in fact
+we found or at least Abdul found one on the plane. So we'll be
+submitting that -- yeah, true story. It really covers the
+whole spectrum of vulnerabilities that exist in
+the product itself but the majority of these things that
+you see on the slide are what we call JavaScript API restriction
+bypasses. So we'll go into detail about what that is and
+how they occur and what you can do with them. So before we get
+start, we kind of want to call out some prior research that if
+you are going to spent a lot of time looking at JavaScript APIs
+and what you can do with them. The first is a set of research
+from back in 2014 and he was the researcher to highlight the
+restriction bypasses and he goes into detail about how all of it
+works and he provides you a proof of concept that will allow
+you to bypass the restrictions that we'll talk about and
+disclose information on a box that he can read files off of a
+computer and send them out to a server using this restriction
+bypass. And it really is required reading, in my opinion,
+to get started in this research and hopefully our paper will
+also be required reading when it's done. There was also a
+presentation released by MWR labs where they asked the
+question why bother basically auditing popular software. And
+that's a good question most of the researchers out there kind
+of are scared to go after some of these bigger pieces of
+software thinking that all the low-hanging fruit is gone, but
+as you can see from the previous slide you can find a lot of bugs
+if you start looking at the software and reading the
+research that's out there and they provide a nice overview of
+the attack surface and all the attack vectors that are
+available in Adobe reader and highlighted and also highlighted
+the JavaScript restriction bypass bugs. So this research
+like I said started in December 2014. And the reason we started,
+because honestly we were not getting a lot of Adobe reader
+bugs. We knew that they were being used so we want to get a
+better understanding of what existed in this product and how
+it could be leveraged. And we basically hit every type of bug
+that -- probably every CWE that exists, right? We took a varied
+approach when doing this auditing. First we started out
+writing a bunch of fuzzers, we followed up with binary
+analysis, we released a blog recently about a privilege
+escalation that existed in the shared memory region. We did
+some code analysis on the JavaScript APIs and we trained
+each other internally trying to find as many bugs as possible
+with the main goal of trying to kill off as much as possible.
+Because we do purchase bugs, so the more that we kill, the
+better that it is for us, money wise. Internal discoveries we
+found basically every type. Use after freeze memory leaks, use
+after freeze privilege escalations, logic bugs,
+sandboxes you name it, we found it. So we specifically we're
+looking at the JavaScript API's today which offer a rich set of
+functionality for document authors. These allow you to
+process forms, control multimedia events, do
+communication with databases, basically all there to give end
+users really a lot of options to make complex documents. But it's
+also a perfect avenue for attackers if they think outside
+of the box, you're able to kind of leverage these weaknesses
+within these APIs to do a lot of interesting stuff. There are
+mitigations that are built into the APIs and we're going to talk
+about those right now. It's this idea of privileged versus
+non-privileged methods. Some of the APIs that exist have
+security restrictions on them and it can only be executed in
+what's called a privileged context. So what exactly is a
+privileged context? A privileged context is really three points
+within Adobe reader. One is when you're compute -- executing at
+the console. Then there's the batch processing and during
+application initialization events and if you're trusting
+the document certificate is when you can actually used these
+privileged and security restricted APIs. For example,
+non-privileged API would be things that could be processed
+within the doc context. An example of a privileged APA is
+what you see on the slide which is launch URL. This is not
+supposed to be executed from the doc context and only be executed
+when you're doing some sort of automation. If you try to
+execute a security-restricted API from a doc context, you're
+going to get a security warning and you'll see that in action
+shortly when we try to execute one of these APIs from the doc
+context. It will pop up to the user. If you're an exploiter,
+you don't want that to happen. You want to kind of remove that
+obstacle from your exploit. There's also the idea of trusted
+functions. And this is where you're trying to execute
+privileged functionality from a nonprivileged context. Why would
+you want to do that? In certain cases you need those privileged
+functions for your workflow. You need to launch URL for some
+reason during your batch processing so you do this using
+what's called a trusted function or app trusted function. You can
+see that on the slide there. Hopefully you can see it in the
+back. That AN verified comments is actually a trusted function.
+And the -- in this function you're going to leverage the
+privileged APIs. This idea of a code block, where you've got app
+begin priv and app end priv and you can actually execute these
+privileged APs. You can see on these slides. We're going to use
+this later on when we're actually looking for a privilege
+escalation. Not this exact one, but that idea. There's also the
+idea of a folder level scripts. A folder level scripts are
+available to end users for when they want to use -- when they
+want to use them for automation purposes and they want to use
+those trusted functions and leverage those privileged APIs.
+So these are available in Adobe reader and you can put a set of
+JavaScript in the JavaScript folder. As you can see on the
+screen we kind of show it. And in that folder you're going to
+put your scripts and they'll be available to you in the doc
+context when Adobe reader is loaded. And in there you can
+actually implement trusted functions and use those
+privileged APIs. Luckily for us, Adobe provides us a set of
+JavaScript APIs and you can see them on the slide. Inside of
+there there's a set of APIs on that do use those trusted
+functions. This will be loaded up inside root and exposed to
+the doc when the document is opened. So what you see here is
+an example of what that code looks like. You can actually --
+that is actually compiled spider monkey XDR bite code. One of the
+best parts about the research back in the day was that he
+actually provided us a decompiler. So you can actually
+decompile this by code and get the code off of that hub
+location and that's where you want to start. You're going to
+decompile that by code and you're going to find interesting
+trusted functions in there. So when it's actually decompiled
+it's pretty messy so you want to pass it through a beautifying
+process so you can actually read the code and you can see here an
+example of the color convert function. That's inside of
+there, about 27,000 lines of JavaScript within this bin. And
+this is your place to start auditing. So if we think about
+this for a second, and we are going to be auditing this code,
+and how are we going to actually leverage an attack, we need to
+kind of -- we want to be able to execute some sort of privileged
+API from within the doc context. You want to be able to reach
+these functions that Adobe considers security restricted
+just from within the document. This is not something that they
+normally allow, so what we're going to do now in a couple of
+seconds here is we're going to show you how to go through this
+code and find these vulnerabilities and chain them
+together so that you can do some interesting things. So before we
+look at how we managed to find these, you first have to
+understand there are few places in JavaScript as part of the
+language itself that will implicitly cull functions. So if
+you look at this snippet of code, it takes an argument
+called argument and there are three places here, we are
+potentially unexpectedly calling a function. The first is in the
+if conditional, and that can potentially either retrieve that
+property or could execute a getter or accessor method if one
+is defined. The second is within the app dot alert you're adding
+arguments to a string so if the argument is not a string then to
+string has to be called on it. And the last one is right after
+the if and that's where we're setting a value on argument dot
+attribute and in that case we would be either replacing that
+property or calling the setter or mutator method. And this will
+be viable in a couple of slides and the main thing to note here
+is that we can use this to replace properties or just
+execute code within a potentially different context.
+For the next couple of slides we essentially have the set-up in
+the last two lines where we have some object that has some
+attributes set to a value. That's done before we ever get
+any control, and that's essentially out of our hands.
+What we do have control over is the empty line under it as well
+as the cull function so the next two slides will basically be
+replacing that empty line. So the first is define getter and
+define setter with two underscores before and after
+them. The way both of these work is you cull this function on any
+object and give it two arguments. The first is the
+property name and the second is a function that will actually
+return the value. And define getter's case you can use this
+to overload and essentially replace an attribute that may
+already exist even if that attribute doesn't let you
+override it. You can also execute other functions or do
+anything at this point. After that there is defined setter and
+as you can imagine the mutator method. In this case you can do
+conversions on the input argument or just deny access to
+ever change that value. The other way, because this is based
+on spider monkey, is to use the proto attribute. Unlike browsers
+which have prototype, this only has proto with two underscores
+before and after. And in this case all you're doing is
+creating a dictionary with updated keys and updated values.
+And then setting proto to the original object such that when
+anything tries to access a preexisting attribute it will
+fall through and still access it. But when it tries to access
+the properties you care about, it will get your special value.
+So as far as getting system level execution, and by system
+level I mean within the root context, which is a more
+privileged context, you have to somehow execute arbitrary
+JavaScript within -- outside your context. The easiest way to
+do that is to grip for eval. You can see there are a bunch of
+results, it's less readable than I was hoping. But essentially
+you have calls to eval on potentially untrusted input. The
+first one there is a call to eval. And long entry is supplied
+to that function and char et is a function is as the name
+implies returns a character. We'll overload that and instead
+replace it with a custom function so that we can execute
+arbitrary code there. Once we have done that, we have to look
+for ways of escalating privileges within JavaScript and
+we do that by app dot begin priv. The key thing to note here
+is we can't just look for app dot begin priv for every match
+we find. We have to look for we're looking for a function
+that's being sent to trusted function. Because if it's not
+being culled from a trusted function, the user will still
+get prompted. There will be a subsequent cull, and somewhere
+in between there we're going to look for some sort of method
+indication that we can overload. So here is an example of where
+we get the system level eval. You can see the second argument
+is long entry and all the way at the bottom we can see that cull
+to eval. So what we can do is just set up a custom hash with a
+char app that will execute the bulk of the JavaScript payload.
+Here we are going to replace a -- we have a place we can
+replace a property with a privilege function. This is CB
+shared review security dialogue and it's a trusted function, as
+you can see. Where it is being set and at the very second to
+last line you can see the call to begin priv and the last line
+is a call to collab so what we can do is replace the property
+with app.launch URL. Since it is an input argument, it will call
+it directly and we'll be able to escalate from there. So
+altogether the first thing we do is set up a system level eval
+and issue the bulk of our pay load. We'll replace that call so
+we can call app.launch URL or any privilege call and then
+we'll trigger it. And here's what it looks like. Easiest way
+is probably look at the bottom. That first argument can be
+ignored. That's just to hit the vulnerable code. The interesting
+thing being that we're sending the O object four times and if
+you look a couple of lines earlier we are setting O to have
+a char at attribute where that function will return the exploit
+function and then call it. The exploit function itself is
+defining a getter to replace collab within the system level
+context and it's calling shared dialogue to trigger it. So here
+we're going to see the normal behavior, this is what it looks
+like in Adobe reader DC when it's patched. And you can see
+that all we're doing within the PDF is a call -- and it's
+prompting the user as it's supposed to do. Whereas when we
+chain everything together, we end up launching, in this case
+four browsers. The reason is because we're passing that O
+argument four times to the function. And that was a
+privilege execution. (Applause.) So here in the vulnerable
+version, this is what the JavaScript debugger looks like.
+It's a little weird to read. Basically the first line and
+every other line after that is where we are executing
+JavaScript. So we're executing collab and it's telling us it's
+a collab object. On the third line we're replacing collab and
+setting it to app. On the fifth line it's saying let's access
+collab again and it's being returned to the app object and
+we replacing it and that's persisting. In the Adobe reader
+after the patch we're doing the same thing you only the last
+line is now changed, it's no longer persisting it's staying
+as collab because they've blocked our ability to replace
+that object. So all in all in order to execute privileged API,
+we get to execution within the system level context by finding
+those evals and within the block that we're going to execute that
+eval we replace the property that we can call some privileged
+API. Abdul is about to go over another set that works out
+better for full RC. All right. So this whole bypass stuff is
+awesome. So let's go back -- can you hear me now? All right. So
+going back, in the advisory, Adobe stated that this bug
+basically leads to information disclosure. And that's cool. So
+we knew 245 we were able to leak information out of this bug,
+extract information and send it to whatever server we want but
+we still needed to take this to the next level if it was
+possible. So you guys can imagine if you were able to
+actually get RC out of this stuff. Like it's just logical
+JavaScript stuff. No memory corruption. It's just freaking
+awesome. So the main challenge here was to gain RC through the
+JavaScript whatever Jasiel discussed. But in order to
+achieve this, we have to find the right APIs that would allow
+us to actually do interesting stuff. So it was clear for us
+that we needed a way to dump a file on disc and we needed to do
+this thorough the JavaScript API. So I started doing like
+going through the JavaScript API reference that that would be
+provided and started looking for interesting APIs and that was a
+big fail. It was a big fail because most of the documented
+APIs were really hardened. There were a lot of restrictions on
+file types, file contents and stuff like that. So eventually I
+was like screw this. I'm going to get back to memory corruption
+and fuzzing and that's it. So one day I decided to write a
+fuzz module for the collab object. So being the lazy ass I
+am I went back to the JavaScript preference API and then I had a
+look at the collab object basically there. As you guys can
+see the screen shot, there were three methods documented in that
+API reference. So I was like, okay, this is going to be easy.
+I can implement the fuzz module for this. But I was kind of more
+curious about the collab object. So I went in console inside
+Adobe reader and decided to dump all the actual methods that were
+inside the collab. And this is what I found. So basically there
+were like 128 methods. So if we do the math it's like 125
+undocumented methods. So I have no idea. Seriously Adobe. >>
+Thanks, Adobe. >> Yeah. So with 125 undocumented functions, we
+decided to have a closer look. So while I was going through the
+list of functions, I noticed there are some interesting ones
+which are highlighted right there. Which I would later
+reference as the URI family. So I wasn't like super convinced
+that these APIs were not really explored by anyone. So I ran a
+search on Google and I got nothing. No information. Nothing
+like no documentation whatsoever. No description,
+nothing. All I got are these two hits. And basically these just
+describe -- they list the functions or the methods inside
+collab. And one of these hits were a report by the minister of
+defense. So I'm going to go over these or the interesting APIs.
+Just describe them briefly and stuff. So the first one is URI
+put data. Basically it takes two arguments. So basically this
+function, what it does is it takes data object and it strikes
+it to the path they supply it to. The delete folder as the
+name implies, it take one argument which is the path and
+deletes that folder that you give it as a path. Create
+folder, same thing. Takes one argument, which is the path, and
+just creates a folder at that path. The URI -- it takes a path
+as well and takes a listen side that path that you give it. And
+finally the URI delete file as the name implies, it takes a
+path and deletes the file. So you guys can see that Adobe
+provided like such an awesome set of API that you guys can go
+whatever they want. We talked about it as some kind of
+government agency back door whatever. So just a overview of
+the whole URI stuff. This API is used for collaboration.
+Collaboration is a feature provided by Adobe that would do
+like -- that would allow us to do some shared reviews and stuff
+like that. It's worth noting that delete folder, delete file,
+put data and create folder are all privileged APIs so you guys
+cannot exclude them from the normal doc context so they have
+to be changed by one of the by passes that Jasiel discussed.
+The only one that's not privileged so you guys can run
+it from the doc context. So these functions have one thing
+in common, which is the first argument which is the path.
+Basically the path should be a UNC path. And the UNC path
+should be of a specific format. So these APIs are not perfect.
+Basically they fail at sanitizing the path and the old
+school trick works like a champ. URI put data has two major
+fails. The first one it doesn't check the file type that it's
+going to write to. It doesn't check the file name for sure.
+The next big fail is that it doesn't really check the
+contents of the data object. So if you guys can provide PE file
+data inside the data object and then write it to an EXE file it
+doesn't complain. So basically you guys have an ideal API that
+would allow you to write whatever you want, whatever file
+type, whatever you want. Thank you, Adobe. All right. So, what
+do we have here so far? So we know that our problem of finding
+an API that would allow us to dump a file on disk is solved.
+But if we have a closer look at the URI put data, specifically
+the second argument which is the data object, that's an
+interesting piece of information. So basically being,
+again, being the lazy ass I am, back to documentation to
+understand how the data object looks like or how to actually
+get a reference of data or anything like that and I found
+nothing, as usual. But during my experiments I noticed that if
+you supply a stream object instead of that data object,
+than your data would not complain which is awesome
+because we can create stream objects in multiple ways. You
+can see I basically created a stream object out of a string
+and then supplied as a second argument for URI put data. And
+basically attribute it to whatever path I gave it. Which
+is cool. All right. So what we know as well is that we can
+attach files to PDF documents. We can attach whatever files we
+want, whatever file types and stuff like that. And we also
+know that we can extract the file contents and store them in
+a stream object using documented APIs as well. So what we should
+do is that we should chain the URI put data with one of the
+bypasses of course supplying the stream object to it and we can
+write whatever we want on disc. So then what? We know we can
+dump files but how can we get RC out of this? So basically there
+are two ways to get RCE. The first way, I call it a chelky
+way. So basically we can just like write our file to a startup
+folder and just wait for a logoff and login. So the second
+way which is my favorite way and of course a cleaner way, which
+is writing and enforcing acrobat to load it right away. That is
+possible in specific scenarios where you load a PDF in a
+specific way. And we call this -- one of our colleagues and
+he's obsessed with clean exploits. By the way, 2015 was a
+blast. All right. So this table shows the vulnerable versions of
+reader and acrobat pro. So basically reader and reader DC,
+there are limited stuff that we can do on windows due to the
+sandbox. So it limits our ability to write files. But we
+can still exploit with no problem. Acrobat pro and acrobat
+pro DC is available on all versions because it doesn't have
+a sandbox. So you guys might be asking questions why we didn't
+enable like specific version numbers and stuff. Well, it's
+because the first time we tested this it was version 11.0.10 and
+then Adobe patched it and we broke the patch and Adobe
+patched it again and we broke the patch again. And it's still
+not patched. In process. Everything is vulnerable,
+basically. So let's put this all together. Now we know that Adobe
+acrobat pro doesn't have a sandbox, so it's the easiest
+target to exploit. So basically our exploit, so these are the
+steps with the exploit basically to attach a pay load to the PDF
+and we should write a JavaScript code that basically executes
+when the document opens. So this JavaScript code should be
+composed of the following. A code that extracts the contents
+of the payload and saves it in a stream object. Then we have to
+bypass the privileges to execute URI put data and then dump and
+then have acrobat basically load that URL. So I have a demo here
+that demonstrates this exploit which runs on Windows 8.1. It
+exploits acrobat pro 11.0.10. It basically dumps -- and have
+acrobat pro. Of course. So it dumped, if you guys cannot see
+it, but. There you go. (Applause.) Thank you. So it's
+not over yet. So basically we paid a visit to reader on micro
+sacks. This is the latest reader. As you can see, this is
+the latest batch. There you go. (Applause.) And by the way, this
+works on 64 bit too. (Laughter.) All right. So I'm going to hand
+it to Brian so he can wrap this up. Thank you very much.
+(Applause.) >> You're so much taller than I am. So in
+conclusion, what we wanted to start off with is really kind of
+an idea of go after an application that we hadn't been
+getting a lot of submissions in and we did this and we looked at
+prior research, we looked at the occasional submission that would
+come in and our goal was to take that to the next level. The
+existing research that existed at the time would only allow you
+to disclose information on a server but we wanted to take
+that to make sure we could get remote code execution so people
+would treat these vulnerabilities with the
+criticality that they are. So what we did, we also wanted to
+challenge ourselves. We are actually mostly memory
+corruption exploiters and reverse engineers looking for
+memory corruption bugs. So we wanted to do this in a way where
+there would be no memory corruption. We wanted to logic
+issues within side of an application so that the exploits
+would basically run clean. You saw in the videos that were on
+the slides that there was no crashing at all. The things ran
+really smoothly, really cleanly, and shows just kind of the power
+of these type of exploits. So our plan of attack was to obtain
+an arbitrary eval by using the JavaScript overloading and
+redefinition capabilities. We wanted to chain that eval with a
+privilege escalation through these app.trusted functions. And
+we wanted to leverage the undocumented APIs that existed
+in Adobe reader to execute our malicious code and we were able
+to do all these of these things to actually produce some pretty
+interesting stuff. Then we wanted to profit from that. We
+decided to submit it to Def Con so that the corporation would
+pay for us to come to Vegas. (Applause.) So yeah, wanted to
+share with the community. We are a bug bounty program. So if you
+do decide to take this research and look inside some of the
+inner bits of Adobe reader and if you do find vulnerabilities,
+there are quite a few in there, we do purchase these and we do
+pay quite a bit of money for them. If you're interested,
+zerodayinitiative.com we'll submit the programs, these
+individuals on the stage and the couple over there will do all
+the analysis. So send them as much bugs as possible so they
+have to do a lot of work. Outside of that, we are
+celebrating our ten-year anniversary as a program. So up
+on the stage we have these challenge points of the they're
+actually our dual use technology. They are also a
+bottle opener. So get them before they take them away.
+Thank you very much. I hope you enjoyed the presentation. We'll
+be taking questions and coming on up. We have a bunch of these
+bottle openers to give out and coins and I hope you guys have a
+good Def Con. (Applause.)

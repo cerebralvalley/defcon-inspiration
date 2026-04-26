@@ -1,0 +1,596 @@
+Thank you for coming. Are we
+good? Okay. So this is a 45 minute presentation where we sum
+up a full year of research on a Linux powered rifle. My name is
+Runa Sandvik and this is Michael Auger. Wired covered a lot of
+stuff about this research and so in this presentation we want to
+try and focus on how we did the research. How we found the
+different issues. We have some cool demos to show and we also
+got some distant pieces that wired didn't cover last week. So
+checking point was widely covered in the media over the
+past two years, three years. It's a Linux powered rifle that
+allows you to actually take accurate shots even if you've
+never shot a firearm before. Then it has mobile apps and all
+sorts of cool things to go with it. Journalists on CNN last week
+asked me why we decided to hack a firearm. And I told them it's
+because cars are boring. But in reality it's because it's fun,
+the technology is there, and it seemed like something that was
+worth poking at? >> So the platform we decided to work with
+was the TrackingPoint TP750. It's a Remington 708
+multi-action as the baseline firearm. The hardware, the piece
+that cracking point designed and made was the scope. The platform
+on ours is called cascade. They do have a smaller platform
+called Aries which is on some of their shorter range rifles. A
+lot of the things we found here, there is a very good possibility
+in all likelihood that they will also affect Aries as well. The
+hardware itself, it's modified, running in a modified version of
+Angstrom Linux, these come with beagle and blacks (ph.). The
+hardware itself is very similar to a beagle and black. 250 ram,
+150 arm CPU. There is 16 megflash George and a 4 gig
+flash chip that holds the file system. The way this system is
+intended to work, there is two modes. A traditional mode which
+is now just a rifle with a fancy scope with a range finder on it.
+So you can tag a target, see how far away it is, you have cross
+hairs and you can make adjustments manually and do what
+you're going to do. You can push a button and kick the scope into
+advanced mode. And in advanced mode you have what they call tag
+track exact. So the first frame here, you're lining up to your
+target. You push a small button in front of the trigger and it
+tags that target. The scope calculates the ballistics to
+calculate the target where you tagged it, and the cross hairs
+will move accordingly. You hold down the trigger and the gun
+will not fire. There is a triggering action between the
+scope and the trigger that holds the firing pin so you pull down
+the trigger and line up the shot. As soon as the cross hairs
+are lined up on the tag that you have on your target, the firing
+pin releases and it fires with a very high likelihood of hitting
+the target where you tagged it on the first shot. >> There's a
+couple of things to keep in mind about the research. Is that --
+do require the wireless network on the rifle to be on. It comes
+off by default. You have to turn it on for any of this to
+actually work. We cannot fire the rifle remotely. We can do a
+lot of fun things like lock the trigger so you cannot fire, but
+we cannot fire remotely. And lastly the TP750 is a firearm
+even without the scope. So if the owner decides not to use the
+scope at all, you can still use the TP750 as a standard rifle
+but you can't -- you have no good way of aiming at that
+point. So when we were putting together this presentation, we
+were trying to figure out how we wanted to tell the story. We
+really wanted to focus on how we did the research. So it really
+came down to sort of three different rounds where we tried
+a lot of different things. For round one it was basically when
+we bought the rifle, we got it, we took it out of the box. And
+this is what the scope that sits on top of the rifle looks like.
+You have a couple of physical buttons. There is focus, there
+is wind. Zoom. Couple of other things. Two USB ports as well.
+And it also has a microphone. When you're in advanced mode and
+you're tagging your targets and firing, it will record a video
+and also audio at the same time and save it on the scope. So
+that's what that is used for. So what we did after looking at the
+physical buttons and trying to figure out what was there, we
+started it up and we did a port scan as you do when you have a
+rifle with a wifi. And we found it runs two services. There is a
+web server or port 80 and a streaming service that runs as
+well. And that was it. We tried a lot of different things like
+assigning ourselves a different IP address and doing another
+port scan just to see if maybe something else popped up. But we
+could never really find anything interesting. It seems like these
+are the two services that are running and that's it. So after
+that we jumped to looking at the two mobile apps that
+TrackingPoint created for use with this rifle. There is one
+called shot view which is just the stream. It allows you to see
+exactly what the shooter is seeing inside the scope. But it
+doesn't give you any controls whatsoever. The second app and
+more interesting one is called TrackingPoints. That's the app
+that will allow you to change wind, temperature, the type of
+ammo used. It will allow you to download media, so videos off of
+the scope and it will allow you to do software updates from your
+phone. So we downloaded the app from the Google play store, we
+decompiled them. Tried to figure out exactly what the
+communications between the S and the scope looks like. There is a
+WP2 key for the wireless network that is a default very guessable
+key but it's still there. We found that the apps to
+communicate between your phone and the scope is HTTP only which
+isn't that big of a deal when you have WP2. We got really
+excited when we saw that the TrackingPoint app uses HTTP to
+pull software updates from TrackingPoints website. From
+trackingpoint .com but then we realized that the updates are
+encrypted and signed with HTTP with the passwords that we don't
+have. So that didn't really seem like a big sort of problem
+either. When we then took a closer look at the mobile apps
+we found this public API. That is all the options that you have
+available to you within the mobile app. Which you can set
+wind, you can set temperature, you can set factoring defaults
+and a couple of other things but it seemed fairly locked down. It
+also seemed like the app was validating the input that we
+were trying to give it. So you can't set this crazy value for
+wind for example. So at this point we were sort of, we were
+hitting a wall. It seemed like a fun project initially. It seemed
+like something that would be easy to do. But we got to this
+point and we just couldn't seem to find a way in. So we did what
+we usually do, we tried a lot of different things. We tried the
+port scans. Tried to poke some more at the different apps. We
+tried pushing all sorts of random buttons on top of the
+scope. >> We also quite literally tried [indiscernible]
+codes with the buttons trying to do something. It did nothing. >>
+We couldn't really find a way in. So after all of this, the
+sort of findings is the SSID for the wireless network contains
+the serial number of the firearm. So in our case it was
+TP750 under score the serial number. And you cannot change
+that. The WP2 key to get onto the wifi is an easy to guess --
+for us anyways -- key that you cannot change either. And NTSB
+(ph.) -- the scope view. That is not a massive problem. We found
+nah the API is unauthenticated and anyone who can get on the
+wireless network can change values and use the mobile app
+the same way you would use it. But it does validate input. If
+you try to change the type of ammo used for example for our
+rifle, you'll get a drop down box with only two values. If you
+try to pass it a value that aren't either of those two
+values, the scope will just reject it because there is
+something on the back end that is validating the input. We
+found out that for advanced mode, when you want to jump into
+the tag and track mode, you can set a four-digit pin. So when
+you boot the rifle, when you boot the scope, before you can
+even get into advanced mode you have to enter this 4-digit pin.
+4 digits is easy to brute force and we also found that the API
+set factory defaults and will also set the lock. So if someone
+has the lock set on the rifle, you can use that API call and it
+will just reset it. And the updates are HTTP (ph.) encrypted
+and signed as well. >> Quick note on the pin lock as well.
+When you're loading up the TrackingPoint application on the
+phone, the first thing it does is check to see if a pin is set.
+If one is set it won't even let you into the app. But again,
+when you do that set factory defaults it ignores all of that
+and just resets, so you're good to go. So at this point we've
+been treating this as kind of a black box. We've been poking at
+it, seeing what is available. There wasn't really much there.
+The footprint was very small. There is not much to attack. So
+it was time to dig into it a little bit more and start
+looking at the hardware. So first thing we did was start
+looking at some recon, kind of digging around on
+TrackingPoint's website to get some idea of what to expect when
+we tore this open before actually tearing it open. This
+picture here came right off the website as part of their
+marketing. Looks an awful like a CAD diagram. If you look there's
+some screws, you can see pin outs and a couple other things.
+Dig around a bit more and found a white paper that they put out
+with the same type idea. Looks like a CAD diagram but from the
+other side. And you can see the cable that goes down to interact
+with the trigger, you can see the trigger assembly in the PCD
+(ph.) as well as that red button that you use to tag the targets
+in advanced mode. So once you tear it open, it looks an awful
+lot like those CAD diagrams. They use them in their markets
+which was useful. It was nice to have some idea what I was
+jumping into when pulling things apart. Digging around some more
+on TrackingPoint's You Tube channel they have a video that
+actually shows some of the fab process. You can see these five
+PCBs laid out. Those yellow strips in between there are a
+flexible, basically a cap tape, same type idea. If you use 3D
+printing or anything else that allows the circuit boards to
+take different shapes beyond just a circuit board. So when
+this is fully assembled here is a view of what it looks like
+inside. It doesn't actually come through up here very well. All
+the circuit boards are double sided. And they're in this 3D
+assembly, meaning simple things like I'm going to probe this pin
+and see what it does, start to become very difficult because
+even getting to them requires hours of de-sodderring. Here is
+a close up of one of the sides. On the left side there you can
+see a patch of pins underneath the focus knob. There are 20 or
+30 pins there. Underneath the ribbon cable there is another 20
+pins that are even smaller. And you see the red and black wire
+and all of that has to be sodderred in order to get this
+PCB assembly out. And there's so many watchdogs and other things
+in the system that when things aren't present it doesn't
+function anymore. All the things I need isn't present and it
+shuts down. So the only way to test things is having everything
+hooked up. So this very simple task, oh, I'm going to probe
+this really quickly become very long, intense tasks. If it works
+awesome. If it doesn't, oh, I get to spend another two hours
+fixing it and trying something else. Looking at close up of
+this. TrackingPoint was nice. They labeled pretty much
+everything on this circuit board. With this silkscreening
+here we can see this patch of 40 pins. There is two pins labeled
+TX and RX and we looked at that and said, hey, that looks like
+it could be U art (ph.) hooked up to it with a bus pirate.
+Loaded up a terminal. Turned on the scope and this is what we
+saw. It was a very exciting moment. Takes a minute to boot.
+We're going this is great. We've seen those projects where people
+hook up to U art and they turn the thing on and it dumps strait
+to a root shell and we're like, yes, we're in. Then I finished
+booting and came to this. Here is a close up for those that
+can't quite see that. Strait to a password problem. So that was
+an emotional roller coaster, that moment. Tried all the
+things you would expect, blank password, password, the top ten
+most common passwords. They say this on their website, let's try
+that word. None of that worked. So we also found with the U art
+it was running you boot. Probably can't see it in there
+but there is a thing that says press a key to interrupt and
+dump into U boot. With you boot there is a function to download
+memory, so you can put in a set of address space and it will
+dump out the memory. With some project ifs the memory that it's
+pulling from happens to be the file system as well, you can
+dump everything that way. It's a tedious process. Takes a long
+time. You're doing it at the speed of U art which isn't
+particularly quick. But it does end up working. We tried doing
+this. Did I mention this runs off of batteries? We tried the
+first time and it's running and it's running and it's running
+and all of a sudden it's off. We're like, oh, that's not good.
+And we look at the size of the dump and it's 15.5 meg and the
+full dump is 16 meg. So that was very unfortunate. So ran to the
+electronic's supply store, bought a bench power supply,
+hooked that up. No batteries required anymore. We were able
+to get the dump. And looking like the dump we're like suite,
+this runs bit 1, we'll find the [indiscernible] and extract it
+and get in and all we see is four Linux kernels, nothing
+else. Not to mention 16 meg seems awful small for a file
+system for something that's recording videos. So it turns
+out this is when we learned there is another chip somewhere
+that has a file system on it. Round two findings, the console
+axis is password protected and the initial cursory stuff, the
+kernels are on one chip and the file systems are on a separate
+chip someplace. So time for round three. At this point we've
+been nice to it. At this point we've been trying not to break
+anything and to be gentle. After banging our heads against the
+wall repeatedly, it was time to get a little more destructive.
+So we ended up pulling the whole thing out. Met with Bob Giovati
+(ph.), he was nice enough to de-sodder some stuff for us.
+Spent a weekend with us working on this. He noticed the big chip
+on the top there is an FPGA. There is an empty slot next to
+that or empty square, there was a chip there. When we were
+looking at it, we could see another chip. We're like that's
+another memory chip, file system chip, all right, that must be it
+and the failure to read the data sheet and not comprehend that
+512 mega bits is not 512 mega bytes. So yes, 32 meg chip that
+programs the FPGA that is sitting there. So as fun as that
+was to pull that off and dump it, it did absolutely nothing
+for us. Looking at this next torn apart lovely piece of
+circuitty here, you can see the file system chip in here. I'll
+give everybody a moment to try and find this. Anybody find it
+yet? That's where it's sitting. It's underneath a massive
+capacitor. On its own also made it interesting to try to find
+because it's very well hidden unless you're at the right
+angle. And then you see these -- this five -- five character
+string there which is a short code that micron uses for their
+BPGA (ph.) packages. Unfortunately because this was a
+BGF (ph.) package the initial plan was, once we find the file
+system we can tap onto the pins and be able to dump it that way.
+The BGA (ph.) package not so much. There is all sorts of
+obscure ways to try to do that but it's not easy. So at this
+point we were just set, pull the stupid chip off and dump it that
+way. We know this can be done. This will get us what we want.
+It may not work when we're done, don't care. Got a hold of some
+people in Portland, they were like, yes, we can help you do
+that but you're aware it may not work. And we're like we don't
+care as long as we get what we need. We packed everything up
+and flew to Portland to meet with them and they luckily know
+more about hardware than we did. So they saw this silkscreening
+and said these pins look familiar, these look like
+actually EMMC access pins. That PA0 to DA7 maps directly to
+accessing an EMMC chip. They called around to a couple of
+their friends after trying a couple of other things to try
+and get it, one of their friends happened to have this. Ali Babba
+special, $118. It's an EMMC to USB adapter. The socket that is
+on here is worth probably $100 on its own. It comes in this
+nice package, so if you do de-sodder the chip you can drop
+it in that socket, plug it in, you have now a really clunky USB
+thumb drive. But there is also these pins in between the socket
+and the USB port which map to that DA0 to DA7 command. So we
+hooked it up. We were able to dump the file system this way.
+Plugged it in. We got all five volumes of it. It was a very
+good day. First thing we did short of looking at the ESE
+(ph.) password file which did nothing for us, was look at the
+root for the web server. And there's a whole admin API that
+we hadn't been able to find yet. This isn't all the commands that
+we found but some of the stuff in here is interesting. This set
+wifi lets you change the wifi AP name and password. SHS accept
+sounds interesting. Running that gives you access to SSHN, it
+opens up a port for you. >> One of the admin API codes that we
+also found allows you to communicate directly with a
+system back end. The part of the Linux system that does the
+ballistics calculations for the rifle. It actually connecting to
+it requires the admin call that opens a port in the firewall.
+You can then just connect it to a set of socket ands talk to it
+there. While the mobile apps will validate the input, so like
+I said if you're trying to select a type of ammo, you will
+only have two options. The system back end will happily
+accept any value you set. So when we did the demo with wired
+that came out last week, what we did there is instead of the
+default value for the bullet grain or the weight of the
+bullet, we set that -- we changed it from 175 to 500,000
+and the system just happily accepted that? >> If you do the
+math on that it's like 72 pounds, by the way. >> It will
+happily take negative values. There are options in there that
+are for sort of future type stuff that we can't use but it's
+definitely in there. We can do things like tell the scope that
+it's -- that it attached to a different type of rifle. Or a
+different type of firearm. We can tell it that the solenoids
+is disconnected so you cannot fire. It has one option for
+default or [indiscernible] which deletes the whole thing. >> It's
+really fun to do when someone is playing with it. They're lining
+up for their shot and it reboots. >> So with, when you're
+interacting directly with the system back end you can make
+temporary changes to the system. You can do anything you want
+within that sort of system back end but that is only for the
+part that does the ballistics. It's not really the full Linux
+system. We have a demo, it's similar to the one that was in
+Wired but it's shot from a couple of different angles. >>
+So this first video is normal operation. So we'll be tagging
+the target, lining up for the shot, taking the shot. We're
+aiming at the target on the right here. Here it goes. Line
+up. There we go. We have the tag. The cross hairs drop. Pull
+the triggerment once we're lined back up it fires. There we go.
+Hit pretty much exactly where that tag was. Nice and easy? >>
+That is from about 50-yards. >> Looked pretty easy even without
+this. But for the sake of Wired we were at 50-yards. Here is
+what happens when you set that bullet weight to 500,000 instead
+of 175. So aiming at the same target on the right but watch
+the cross hairs. Quite the difference in ballistics there.
+So lines up, takes the shot, come back in. We can see -- I
+don't know if you can site in the back but there is now a
+white target on the left. So we'll do these side by side so
+you can see them better. The first one here is the one on the
+left. It's normal operation. And as it lines up, takes a shot,
+pull the trigger to line up. Now the second one calculates a
+whole different ballistics and we line up, both take the shot.
+The one on the left hit where we were aiming. The one on the
+right hit the target on the left instead. We we've essentially
+controlled from the shooter's perspective they thought they
+were aiming at the target on the right. The bullet actually hit
+the target on the left? >> So the only indication to the
+shooter that something is off is, one, the wifi icon inside
+the hood has the No. 1 or the No. 2 depending on how many
+people have connections. I can say from experience that when I
+was lining up for a shot I did not really pay attention to
+anything else in the hood besides where the target was. An
+experienced shooter might actually see that change. >> Do
+you guys want to see the video again? All right. We'll do it
+one more time. There you go. The target on the left. Normal
+operation. And now on this one, pay close attention to where the
+cross hairs go. Quite the difference. >> And that's the
+other thing, the cross hairs will jump and then you have to
+readjust. So again for anyone who's not a very experienced
+shooter you chock it up to I just bumped the rifle a bit and
+have to realign. >> Keep in mind all of this can be done with
+zero authentication short of getting on the wifi. >> So we
+got the system back in. We got this sort of demo that was at
+the top of our list where we wanted to make the shooter miss
+the shot but we also wanted to get root axis on the Linux
+system. So we found a way to do that by using the software
+update functionality. Once we got access to the file system,
+we had to look at the update script. We found that
+TrackingPoint operates with two DBG keys. One that it holds at
+HQ I guess and one key that is on the scope. And the updated
+script will verify the signature of the package but it will not
+check to see which of the two keys actually signed it. So if
+you have access to the private key that is on the scope, you
+can create a software update that will be verified by any
+TrackingPoint firearm out there. By using that private key we
+decrypted the software updates that we had already downloaded
+from TrackingPoint's website, modified them, reencrypted and
+signed and pushed it up to the scope with the updated script
+was happily accepting it. With the software updates we can make
+permanent changes to the system. We only need access to a wifi
+once to do this and then we can change everything, all the
+ballistics values and everything we can do on the back end we can
+now make permanent changes on the Linux system and we can get
+root access this way as well? >> So here is a demonstration of
+that. So first part here, we're going to try SSH to the scope.
+Probably nobody in the back can see this or the front, because I
+can barely see it. The first call that it's doing here is
+hitting the SSH under score accept. This is basically having
+the scope literally pass an IP tables command to open up port
+22. Then SSH as the user hacker to 291.268.1.1 which is the
+scope. And it comes back as expected. We're going to up load
+the package update, run this, this is what you see in the hud
+when the update is happening. Modified a few other things
+instead of just adding a user. The package is finished
+applying, the scope will reboot. No sound on this. We don't have
+the audio for it. When the scope is booting it does a trigger
+check. It pings the solenoids. So the gun is going click click.
+It's interesting when we were working on this, the gun was up
+and we're doing things and we hear click click. Wait, was that
+you? Did you do that? What just happened? That was pretty
+entertaining. The second part, here we go. Scopes back up,
+reconnected to the wifi. Hit SSH under score accept again. Opens
+up port 22. Now we SSH in as the user hacker. And no password and
+we're in. Who am I? Can anybody see or read any of that? Anybody
+in the back, you're screwed, you should have gotten here earlier.
+So yea, using this package updates, full access to the gun.
+>> So to summarize round three, we found that the admin API is
+unauthenticated. You need to be on the wireless network and you
+need to know about the admin API calls but that's it. So these
+API calls are present on any TrackingPoint firearms so if you
+know about them you can use them on any of them. The system back
+end is authenticated again, full access to anyone that knows
+about them. It does not validate any input. Whether you tell it
+that the bullet weighs 500,000 or minus 500,000, it will
+happily accept that information. And the GPD key on the scope can
+encrypt and assign updates that other TrackingPoint firearms
+will happily accept and apply as well? >> At this point as great
+as it is to get root, the attacker would have had to have
+access to one of these guns, dumped out this GPG cert. Made
+their own package. We weren't really happy with that. So
+worked with some really smart people in Portland, Kenny and
+Jessie. Asked, we have one more thing for you. I don't know how
+many of you made a firearm routable on the internet, but we
+have. Kind of awesome. So they're working in Portland and
+we're in DC working and we have full remote code execution now.
+Leveraging the package update. Everybody back there you're
+screwed. Leveraging the full package update, we have a shell
+script that basically passes commands to it. You run it, it
+tells you to open up the net cat listener on a specific port. You
+go back and hit any key. It up loads a package. Run the package
+and jump [indiscernible] command and dumps a remote shell back to
+the net CAD listener. Now instantly route on any
+TrackingPoint rifle, no access previously required. Dumps in, I
+can make a new user across the board. ...(applause)...? >> So
+it's not all that bad I'd say after having the remotes. Quid
+execution, remote updates and direct access to the system back
+end. But when you compare what TrackingPoint did to what a lot
+of other inventors of inventive devices do, TrackingPoint did do
+a lot of good things in securing the system. So early on I
+mentioned that the scope has two USB ports. They're disabled
+during boot so you can't do anything with them. The media
+that is on the scope, so if you're been out, fired a couple
+of shots, the media is deleted from the scope as soon as you
+downloaded it onto your phone. So if you at any point have to
+send your firearm to someone or back to TrackingPoint, there's
+not going to be any media on it. There is a WPA2 (ph.) key even
+if it is guess able and you cannot change it, it's still
+there. The EPI validates user inputs. We have a star next to
+it because the API, the one that you're interacting with when
+you're using the mobile app will verify that the input you're
+giving it is within this allowed range. The only part of the
+public API that does not validate the user input is the
+software update functionality. Instead of giving it a package,
+you just tell it to execute a command. Console access is
+password protected and software updates are GPD encrypted and
+signed even though the implementation is not as good as
+we would like it to be? >> So will this get better for
+TrackingPoint? We did reach out to them starting in April to
+talk to them about the stuff we were finding, we had zero
+replies up until Andy Greenburg wrote the Wired piece. At which
+point we immediately got a phone call since he got off the phone
+with them, one of the TrackingPoint founders called us
+up. Said we were doing great work. We knew somebody would do
+it actually. They were just happy to work with us. So we're
+working on a patch for all of this. As far as the vendor goes,
+they've been great to work with. >> So somewhere you probably saw
+this on Twitter. A couple of days ago TrackingPoint updated
+their website with this little notice. It says that they're
+working with us in fixing the issues which is great. It also
+says that your gun can only be compromised if the hacker is
+physically with you. It goes onto say that you can continue
+to use the wifi if you're confident no hackers are within
+100 feet. >> I'd like to point out they're wrong. We've all
+seen the wifi shoot out that hits 50-miles or something like
+that at this point. Or if somebody using the gun has a
+compromised device on them, that can do it as well. But at least
+they're trying. >> I've got a lot of photos of Pringles cans
+in my Twitter feed pringles saying this screen shot. >>
+Overall as an industry vendors need to level up. People have
+been saying this in the industry for a long time. But it's still
+true. The issues found here with this product are not unique to
+this product. Too many vendors are ignoring the low-hanging
+fruit. So things like password protecting U art for example.
+It's a simple thing for vendors to do and most of them are not
+doing it. Really simple things that are overlooked. We tried to
+find some resources to recommend to people that are doing
+inventive system design or security on embedded systems,
+there currently is nothing we could find. The best things we
+could find currently are build a secure link. Which has a lot of
+general device around building system securely. And the OIS
+(ph.) top ten, given this has the API and all of that. A lot
+of these issues would have been taken care of if they had
+adhered to that top ten as well. So if anybody is add Venn rows,
+our people that give trainings and things like that, they talk
+about things that you should be doing when you're thinking about
+it. But there is no solidified resource. So if anybody works
+someplace that has a lot of sway in these area, it's something
+that definitely needs to be out there and more vendors need to
+pay attention to. Huge thanks to everybody on this list. Couldn't
+have done this without these people. They were a huge help.
+This is definitely a community project and I definitely
+recommend to anybody that is thinking about doing something
+but not sure if they can, go ahead and do it anyway. Start
+reaching out to the community. When you start hitting walls,
+asking people, people are really great about helping out. So just
+because you may not know how to do something end to end, don't
+let that stop you when you're trying to do something? >> I
+just want to add that when we started this project and when we
+reached out to these people, most of them I had never met
+before this project. They were happy to take the time to sit
+down and work with us and help us put together a great
+presentation and actually complete the project and get the
+info that we wanted. So thank you. >> That's everything we got
+for you guys so any questions we're happy to take those.
+...(applause)... >> Yes. So we'll get a microphone if anyone
+has any questions. >> I got a question. Have you tried to put
+it on any other things like adapt into a bow or something.
+>> Into what? >> Adapt the scope into another device, like a bow
+or a grappling gun. >> It could be done you have to adjust all
+the ballistics for the things that you're using it with. Given
+the access that you have it's definitely doable but it's
+nothing we bothered looking into. >> Thank you. >> What
+ballistics value were you changing to achieve the offset
+to the left. You talked about changing the grain size of the
+bullet. It seems you get a horizontal adjustment rather
+than a -- >> Yes. We discovered that was happening. We were
+using the shot, looking through it and getting access to the
+back end, oh, I can adjust these variables. And you adjust them
+and the cross hairs jump live. So when I adjusted the weight I
+was expecting that. Oh, the bullet weight, cool, that could
+go up and down and all of a sudden we adjusted like 1,000
+not much. 10,000 it jumps to the right. That seems awkward. But
+there's been a couple of people that reached out nicely or
+otherwise to explain that we're idiots for not looking up how
+ballistics effects are done and Coriolis effects and all that.
+And all these reasons to which I'm like that's cool, I'm really
+curious about that but in the end I don't really care all that
+much because in the end I got it to do what I wanted regardless.
+But, yes, that was the exact train of thought we had. >>
+Thank you. >> You said that the key from the rifle could sign
+updates for any other rifle or just it? >> For any other rifle.
+The GPG key that is on the scope, they use the same key on
+all the other scopes as well. >> Okay. Thank you. >> Sorry? >>
+Good question. The question is why would they do that. >>
+Because they can. >> You guys made any attempt to find the
+algorithm used for WPASSID or the SSID as well as the WPA2
+key? >> So algorithm, there isn't one. It's a hard set key
+value which literally is some words. The way we found it, we
+didn't have to correct that. We needed to have the manual. So
+it's like use this key to connect. It's hard velocity.
+There are a couple other systems they have. So previous to making
+these weapons they didn't make the Remington 2020 which is a
+scope that you can buy for any weapon or any rifle. The way
+that the SSID is generated for those is REM underscore and the
+last 4 digits of the serial number on the gun. So that is
+unique to each scope. And the WPA key was a similar type idea
+for those. So they definitely know of ways to do it better
+than what they did. There is a usability trade off. When most
+of your users are not technical you want to make it as easy for
+them with as few barriers as possible to use the product. So
+definitely one of the things we looked at when we saw that is
+this is horrible and did the risk models on it and thought
+it's really not that bad. But as far as any algorithms, will is
+none. It's just hard set like that? >> Thank you. >> Someone
+wanted to replay a video? The update video? >> Yes. >> Can we
+play it? >> There you go, this is the software update one more
+sometime for those that missed it. Or they really like Duck
+Hunt, either way. >> We can take questions at the same time. >>
+You said that you could not make the rifle fire without the user
+input, right? >> Correct. >> Pulling the trigger. Why? Is
+there any mechanical interlock that prevents you from doing
+that? >> Is no mechanical lock. It's the way a gun trigger
+mechanism works. You need a mechanical interaction and the
+way they're interfacing with that, it doesn't remove that
+need. So the way they're interfacing with it, you have
+the trigger assembly and when you pull the trigger, normally
+the firing pin would release. They have a solenoids that stops
+that release from occurring. So you pull the trigger and instead
+of it releasing it's held by a solenoids instead of by the
+trigger. Now when you line up it releases the solenoids and the
+weapon fires. >> Could the -- rifle be acting as a
+[indiscernible] and then fire. >> The solenoids they use is
+normally open. So unless there is power, it's going to stay
+open. If you were to switch aground and put a solenoids that
+is normally closed and requires power to open it, then it would
+have that effect. >> Thank you. >> Actually I kind of had the
+same question he did. But wouldn't the software stop you
+from firing the the weapon? >> It's nothing in the software.
+It's the fact that you need the mechanical interaction, period.
+>> Okay. >> We can prematurely cause the solenoids to release
+if somebody is already doing it but that's still -- at that
+point somebody is trying to take a shot. So they're lined up
+hopefully in the direction of the thing they're trying to
+shoot in any way. So while it's a surprising behavior for
+somebody that is trying to take the shot, it's still not
+particularly bad. It's not going to cause any major issues. >>
+You say you looked at the public API documentation to look at the
+HTP calls that are made. Did you also man in the middle the
+mobile app? >> Yes. Less about documentation and more about
+decompiling the apps and snipping what was going on with
+the network. And the fact it was all HTTP made our lives a lot
+easier. But, yeah, also got to learn how to decrypt WPH
+wrapping in the process of doing this which was fun. >> Any other
+questions? Nope. Okay. Thank you. >> Thanks again.
+...(applause)...

@@ -1,0 +1,510 @@
+>>So we are all set. Let's learn
+about HTTP. Let's give our uh
+rather nervous speaker a uh big round of applause and make him
+feel comfortable. [applause]
+Have a good time you're gonna do great. [applause] >>Okay so we
+should add some demo but maybe
+it won't works uh no demo. [inaudible voices] Mic like this
+okay. So it's Sunday morning and
+I hope you are all well and I've so this would be about HTTP. So
+why wookiees um wookiees because
+this is about smuggling and wookiees are smugglers and the
+also because the wookiee
+language is a thing uh quite hard to understand and easy to
+misinterpret. So this was the
+nice thing for HTTP so. So what are we gonna talk about um
+something about the eh HTTP that
+you need to know uh what is HTTP injection. Uh some recent some
+some recent vectors HTTP 0 dot 9
+which is on old versions uh maybe not the demo you'd get to
+trust me and then maybe we'd
+talk about the tool I wrote which is called HTTP Wookiee. So
+who am I uh Regilero because
+it's French. Um French um yes it's that's Wookiee but maybe
+sometimes you won't understand
+my words. Uh I work I work on the very small French uh free
+software web company which is
+called Makina Corpus. Uh 50 people I'm a devOp [mic boom]
+I've always been a devop so it
+means I'm a seasoned man and I'm a developer. Um web security is
+just a very small part of my job
+and it's part of my spare time or so. Sss and this is important
+because if I can do it on my
+spare time uh some other people might be doing it uh better than
+me. So why did I start testing
+my tools uh I work every day with open source HTTP servers
+and I like this tools a lot um I
+used to trust those tools a lot but I found two very interesting
+papers. The first one is HTTP
+Host header real world attacks and this is about uh very old
+stuff in HTTP which is the
+absolute [inaudible word] in location. Um there's some tricks
+with these so you can attack the
+OS header on HTTP and the real uh threats with this sort of
+attacks um 2015 for example. The
+other one is a study from 10 years ago 11 years ago which is
+HTTP smuggling and everything is
+inside. Most of the things I I can tell you today are already
+inside but it's like everyone
+forgot it. So what is HTTP smuggling uh it's a protocol
+level attack so it's injection
+on- everything always is injection. Here we're gonna
+inject HTTP in HTTP so we gonna
+have more requests and more responses than we should. And to
+do this we'll craft low level
+HTTP messages. By definition you can not do this with the browser
+on or on HTTP library because um
+they do not make mistakes so the goal here is to make mistakes
+and when you make mistakes
+usually you get errors but not always. So before we start the
+first things on HTTP is the very
+old version of HTTP was one TCP connection for each resource
+like you want a file you want an
+image you want CSS file you need one new TCP/IP connection for
+each resource then you do the
+same- same act- act thing you make your request you get your
+response and then you try to
+close the TCP/IP connection on on their programs when you try
+to close because we're not sure
+you get there the answer and this is a big personal scare of
+course because you may need a
+lot of TCP IP connections. So they may keep alive on HTTP one
+on one that is your we used the
+same connection and when you get the your response you can make
+another request you get the new
+response and you make another request and you can infact you
+can usually your browser will
+use 6 TCP IP connection and do this un unless you're you're
+using HTTP 2 it's what you are.
+Um there's also something that most people doesn't know there's
+pipelines so instead of waiting
+for each response before doing the next query you can send
+every query and wait for the
+every reponses. On the example you can see that I made 4
+queries and I get 3 responds
+instantly which is a lot but the important thing is the other
+other responses so if one of the
+response is huge you get to wait for this response before having
+the next one. So this is called
+Head of line blocking and this is also a preference program and
+this is one of the reason of
+HTTP 2 and the other reason of HTTP 2 is smuggling because you
+debug only on the other other
+messages um um in HTTP 2 you've got a real binary multiplexing
+thing where each response can be
+accelerated with the request on it it's better. If you get a
+reverse proxy like a [inaudible
+word] or reverse proxy cache uh the things if you make by
+applying to the reverse proxy
+will talk to the back end without the pipeline it will
+make just a simple um HTTP 1 dot
+0 or 1 dot 1 keep alive connection but you will not
+choose a pipeline when you talk
+to the back end. The problem is the back end doesn't know that
+there's no pipeline. So if you
+can make the reverse proxy play something which looks like a
+pipeline the back end may cease
+all requests and send several response but the reverse proxy
+doesn't want several responses.
+This is smuggling um you've got one example here where I send
+something which should be only
+one query but the final um step has a split splitting issue so
+now you've got 2 queries and
+you've got one extra response and the problem is on the
+question mark. What do you do
+when you've got one extra response and you've got 2 type
+of things with are the
+transmitter which transmit the bad syntax and you've got the
+splitter which splits on this
+bad syntax on the 2 are problem problems but the spitter is the
+real problem. So why do you do
+HTTP smuggling maybe just because you want to hide a query
+so maybe the reverse proxy would
+like to prevent this sort of query to happen but it doesn't
+see the query. Uh you can make
+crash you can crash a lot of things when bad syntax are used.
+You can try to shift the
+response trim like uh if you insert one extra response on the
+pipeline you may really shift
+the ruh the stream and do cache poisoning and you may also try
+to attack another user
+credentials on HTTP by using incomplete queries and this is
+uh thing on the on the
+demonstration. All those things were described 2005 already. So
+we also need exploit oh. Hmm hmm
+it's not me. [laughing] It's the mic. [mic boom] [knocking] It's
+my day. [applause] thanks ab
+[applause] So the exploits it's all about size because we are in
+a pipeline we have got we've got
+several messages in the pipeline and each one has it's own size
+so the goal is to alter alter
+the size. You can make double content length headers so people
+doesn't know which is the right
+one and this is strictly forbidden. You can play with
+content length and chunked
+transmission and you should not play with both. Um on chunked
+transmission you do not have a
+line for your message you say I will send things and when you
+see the end of chunk marker it's
+the end of the message. Uh you could use inverted errors or
+inverted values like the
+contents length with a space is not a valued error. Uh you could
+use also invalid LF lines like
+the first one the real LF line is CR LF you could try to use LF
+or so it's almost valued but CR
+is not valued as an LF line. Um you could also try to use very
+old features of HTTP which are
+still there like HTTP 09 like uh multiline errors which are in
+the RFC. So the first demo um at
+least you can read the the thing um ya these should make an
+attacking credential exploit. So
+here you've got some real world uh exploitation like this was
+working on nod before the
+version 5 but 6 it's a splitting issue and you should always have
+CRLF format for LF line but for
+node if you are the CR they fold that they do not treat need to
+read the next character because
+it's always RF but if it's not you've got to program so on on
+the example you've got the dummy
+header and then you got the CR on a zid corrector which is not
+an LF and any other thing so for
+everybody this is just one header which is dummy header CR
+zed transfer-encoding it means
+nothing but for node there are 2 headers. The first one is dummy
+header which means nothing and
+there's a transfer-encoding header. So for everybody this
+request is one request on the in
+blue. You've got the body of the request and you can make a get
+request with the body it's
+allowed. So this is just one request with a binary body that
+nobody reads but for Node you've
+got transfer encoding chunked and there's a pre priority and
+chunked always has the priority
+on content length So it does it does not read content length it
+reads chunked on the first bytes
+of the body is the LF chunk marker so after the LF chunk
+marker you've got a new request
+in the pipeline. You've got a past request and this past
+request is please select user 2
+um there's another thing on on this second request. There's a
+partial there's a partial LR at
+the end so um it's an unterminated past request. Node
+is still waiting for the end of
+this request. So what could happen if you got a reverse
+proxy in front of Node with a
+keep alive connection with node and the first proxy get the
+first response like he think
+he's thinking this is one query I need one response so you get
+one response. Then Node is just
+wait waiting for a second query and another user like the admin
+user is there sends a query any
+query and the query gets appended to the int unterminated
+one. With the new user
+credentials like the cookie like an HTTP authentication
+credential and then the admin
+user is doing a post user edit to without requesting it. So uh
+I cannot show you because there
+are problems with the screens but atleast I can show you uh
+what happens um I'm the attacker
+uh I send a request to vanish which is which is a reverse
+proxy cache on this request is
+the request you just so like you've got infact 2 requests but
+it's just one and the request
+goes to Node. Node has a splitting issue so is un a know
+things there are 2 requests and
+it sends back 1 reasons then another user came for um new
+request which is request C
+vanish reuse a keep alive connection with a back end so
+send the request C which is
+appended to the unterminated request and then it get response
+B which was my hidden request um
+the user 2 is the [inaudible word] uh only if you do not have
+um CS CR perfection on the past
+request. So this is a way to run this attack it's just a request
+I run it uh on the nukes with a
+printer from net cat just to put the contents in it's P IP
+connection when I do it uhh 150
+time just to feel every vanish um dis P IP connection in the
+pool of backend connection with
+the node and it works. Believe me make you can try you've got
+everything on on the CD if you
+want to try. It it worked um before it was fixed on Node. Um
+there was a second demo and on
+this one is about IH HTTP 0 dot 9. So HTTP 0 dot 9 is something
+awful which should not exist. Uh
+it was the very very first version of HTTP where you do not
+have any errors so you've got an
+example of what is HTTP 0 dot 9, 1 dot 0 and 1 on 1. On 0 dot 9
+you do not have the the protocol
+version you just the middle on the location. Noid errors. Noid
+errors it means there's some
+noid errors on the response but the security of HTTP's and the
+errors like the content eye of
+the cookies the content security policies the content length
+everything is on the errors. On
+HTTP 0 dot 9 you've got just the body of the answer. So it's just
+text stream and if you get a
+text stream maybe you can make this text stream look like a
+real HTTP response with errors.
+So for example you can make an image and the content of the
+image instead of being a binary
+thing would be uh an HTTP response with errors and if you
+requested this image in 0 dot 9
+mode it may looks like an HTTP response. You can also try to
+hide uh these parts this HTTP
+may say each in the exit data of the image and make it one large
+query to only get this part of
+the image. So you get your real image and if you request for un
+un the the right parts of the uh
+image. You've got arrange HTTP response but you should not be
+able to do a range request in
+HTTP 0 dot 9 mod. So another another program uh is the node
+cache poisoning like maybe you
+know about cache poisoning in HTTP but for cache poisoning you
+need the cache. Note cache
+poisoning it is infact circuit poisoning like take TCP PTC IP
+circuits and you add response on
+their circuits and another user when the circuit is reused get
+the response. So this is a real
+thing on Apache for example. So this was the thing we could try
+like here we've got uh a
+splitting issue on go uh where gogh uh is fixing your uh your
+syntax like transfer cutting
+with a space is fixed as transfer dash uncutting. Uh so
+for everyone uh the line
+transfer cutting chunked means nothing but for go it's a real
+line so same as before the blue
+part uh is no new request and there's the note cache poisoning
+we'll use it. Uh there's another
+bag on uh go which is that we can ask for HTTP 0 dot 9 which
+does not exist and this makes 0
+dot 9 crash. It should not work this way and there's a third bug
+on the go where we can make a
+range query in 0 dot 9 model. It should not exist because in 0
+dot 9 mod we should not rid the
+request errors. So you make your request uh with a splitting
+issue on the go long reverse
+proxy for some pro ya I've got an Ipa Apache reverse proxy
+which transmit the request to
+go. I've got a splitting issue on go so go is doing this
+request um uh against Nginx it
+targets an image and takes only their HTTP part of this image
+which gets back in HTTP 1 dot 1
+mod but for go it's in the HTTP 0 dot 9 request so it removes
+the errors of the originals and
+sends you back the real thing. Uh it's hard to understand
+without the demonstration but it
+works it means I can um request with go an HTTP response which
+is you know in an image on a
+server. Um in inject this response on the streams of fresh
+ones but there's another problem
+for Apache if we get back there was only one request and it
+get's one response. Then there's
+a new response which carries back which was the response in
+the in the image and for Apache
+there's nothing to do with this response so nothing's happened
+and the response is stored on
+the TCP IP connection. The when a new request is coming for
+Apache from anybody Apache will
+use the TCP IP connection with a back end send a new request on
+the read on the TCP IP
+connection to see maybe I've I have an response in file and you
+see that the other response
+takes and send it back to the user just before getting the
+real response which was hey no
+you should not reuse this connection. This is an er errors
+T on TCP IP because there was a
+0 dot 9 response so you should not reuse the connection but
+it's too late. The the the
+message was told and was sent back to the user. So you can
+store a response in Apache and
+get this response with maybe an nexuses or maybe everything you
+want like any error you want any
+cut on security policy error and sending back to every user. So
+this is the way to do it if you
+want. You need to run a lot of requests because you need to
+feed every TCP IP connection and
+um I cannot show show it to you but it works. Um what can I say
+about it. The real problem on
+these things are the splitting issues and if we get back just
+right here. Here this is the
+real problem on go and it's fixed now. Uh as soon as you
+have a splitting issue bad
+things happens like having an extra response sent back and for
+Apache the fact that you've got
+the note cache poisoning is a public issue it's not a security
+is-issue because they consider
+that there was a security issue for go there was a splitting
+issue and what happens after
+that is not there problem. It's a little their problem but it's
+complex to manage if you think
+that uh uh the the back end is doing bad things you cannot do
+anything. So for every splitting
+issue you should a CVE because for me it's quite critical uh
+but usually projectly theirs do
+not like uh doing CVE on those things and maybe sometimes they
+do not understand oh you can
+exploit the the injection and because of so they do not want
+people to try to do things uh
+with those issues. The other ish- issues are transmission of
+the st-strong syntax like ya I
+had something which is quite very strong syntax like transfer
+encoding with a space. You
+should not have any header with a space in the in the header
+title and a reverse proxy could
+detect that this header is invalid and could reject your
+query but usually they do not do
+this. So there's a big problem of responsibility because
+everyone is trusting every other
+one and no one wants to take the full responsibility of the
+problems on things which looks
+like smaller things. For security researcher and a
+warning, you will not earn money
+with uh HTTP smuggling because you cannot test it uh like an
+XSS thing you cannot take a
+public infrastructure and try to break everything because you
+won't be the only one impact
+impacted on this. You may crash everything you may send back
+response through people that
+have nothing to do with you so it's very hard to test on public
+uh servers. Um I earned one uh
+brain teaser with a golang issue uh from Google but it was ruh
+unexpected and it's very hard to
+usually explain to people that maybe they should upgrade their
+servers. Um the other things is
+that we should have more people written the code of HTTP servers
+like there are a lot of issues
+which are still there and we need people which really do not
+trust blindly the code. Um
+things get better um years after years the issue gets fixed and
+you should really try to upgrade
+um to avoid problems. Some other exploits may be because we
+cannot see them all so we
+content time on exploits. Uh I had some expression Nginx links
+like their integral over flows.
+This cannot be used with Nginx as a reverse proxy but if you
+got Nginx as a back end you can
+try some things with uh very low numbers. This was fixed last
+year and there is another issue
+which is fixed on the chunked currently which is a 0 dot 9
+downgrade using HTTP 65536 dot 9
+or dot 8 where you can even use a post and this is uh 0 dot 9
+query for Nginx so you get no
+errors in the response. This is usually wer -er not transmit
+transmitted by your reverse
+proxy to Nginx. Like you need to to exploit these sort of things
+you need to get Nginx as a back
+end and you need the re-reverse proxy which transmit this bad
+syntax and this usually doesn't
+happen but in the past HP proxy was transmitting these to Nginx
+and HP proxy is one of the best
+HTTP tools against smuggling. Um another one here it's a CR
+against vanish uh we air the
+CRLF line was varied and you could also use the double
+content figures and there's
+another one but I can't remember what what what I can't read
+another one on Apache like here
+it's on the chunked size attributes so when you do
+chunked transmission you've got
+chunks with a size on there was a truncation like only the 31
+first cu-characters here are
+reads. So you can use the work like that and try to alter the
+size of the chunks this is now
+fixed of course um there are the other exploits I showed
+previously in go in Apache like
+the note cache poisoning in Nod and there's also various peoples
+other peoples we fix which fix
+overflows like we had in one the Python U UR lead recently and uh
+another overs so do you protect
+again lease the first thing is to use the last RFC which is uh
+72 30 and a lot of people are
+still using the very old RFC 4 HTTP 1 dot 12 which is really
+very very very old. You should
+really try to rereads the RFC because on this new version
+there are a lot of things
+against smuggling like they said you should try to avoid uh
+chunked and cousintents. You
+should really avoid re-writing your own reverse proxy because
+it's a very hard stuff but in
+case of if one day you try to write a reverse proxy the goal
+of the reverse proxy is to
+re-write all errors in a very clean way. Do not take blindly
+their theirs eyesight and give
+it to a backend. Uh you should try to read books on TCP IP
+circuit connection because it
+looks like something like an obstruction which is simple but
+infact it's really not simple.
+You should also think about browser and browser do not makes
+HTTP errors uh a lot of HTTP
+server is to allowing a lot of things like HTTP 0 dot 9 because
+of um monitoring tools which is
+0 dot 9 or because of bugs or because of bad implementation on
+the right but I think you should
+reject bad im-implementation and you should retreat uh uh what
+you allow in HTTP. You should be
+interwound and this is one of the problem. There is this
+sentence uh which was in general
+and implementation should be conservative in it's sending
+behavior and liberal in its
+reasoning behavior but maybe it's wrong maybe the the right
+thing is not lib it's not being
+liberal it's being robust like you should think that you may
+get some bad things and you
+shouldn't think like maybe you need uh a special error message
+maybe but do not fix the things
+bli-blindly and there's a new RFC uh which is called draft
+thomson postel was wrong which
+is talking about this thing. We should now be entrailed on the
+the protocol [mic boom] edition.
+I think it's so also that you should be able to get more
+option on on the HTTP server
+configuration like you should say I do not want to support
+HTTP 0 dot 9 because even today
+you may get an HTTP 2 server uh in go for reasonable uh you've
+got very nice HTTP 2 server but
+there's still the HTTP 0 dot 9 support inside and you should
+also be able to get the keep
+alive thing without the pipelining so there's no option
+to say there's no pipelining on
+this server. You could also try to get back to HTTP 1 dot 0 but
+you'd get some problems of
+performance. Um you may also think I was thinking things that
+I think a reverse proxy will
+secure your installation and maybe infact it's the country.
+Every time you add whatever
+layer maybe you add another issue. The reverse proxy trusts
+the backend response and it's
+the way it works and we never think it works this way it means
+you've got the reverse proxy and
+you've got the back end PHP application and you let everyone
+write PHP application. Everyone
+can break your reverse proxy simply by sending several
+response several responses so
+the reverse proxy will always trust the things from the back
+end and we do not think the this
+is the case. Um think about things like Haproxy uh because
+it's a very good tool to to
+remove everything which is strange. Nginx links has a
+reverse proxy which is also
+quite nice uh the next Apache mod proxy will have the strict
+protocol option which is nice.
+Is HTTPS protection no it's just uh a layer so it's not your full
+protection because inside after
+the SSL thing you've got just HTTP 1 dot 1 and and maybe when
+you add an SS Terminator you
+just added one and never uh HTTP server but HTTPS is great of
+course. Is HTTP 2 protection yes
+of course it's better against smuggling but you can always ask
+HTTP 1 dot 1 for an HTTP 2
+server. It's just another transport layer. Just the last
+thing I wanted to reach is
+called HTTP Wookiee uh it's an open open source tool. I will
+we'll use it uh today or maybe
+tomorrow uh nuh- with uh test. The goal of this thing is to
+test uh reverse proxy
+implementations and to fuzz HTTP um I need to remove some of the
+tests which are not fixed yet
+everywhere but uh if you need to fuzz your own server you could
+use this tool. Uh if you got any
+question I will be outside. Um and that's it and thanks for for
+everyone. [applause]

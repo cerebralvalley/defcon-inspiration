@@ -1,0 +1,256 @@
+All right. Say hello to KRBTGT.
+Say hello to KRBTGT. Come on
+this is DEFCON people! >> [Cheering] >> Since the beginning since your domain
+was formed. KRBTGT has been
+there. It's been there through the early years in 2000, 2004
+>> [laughter] >> when everyone thought
+they were special and
+deserved admin rights. You remember the time?
+KRBTGT was there protesting with
+everyone else that everyone should be an admin and then
+there was these things called
+domains an active directory and everyone wanted to be a domain
+admin. Windows 2000 was
+revolutionary but so was D con. So in 2003, all those domains
+that were sitting on the
+internet very likely could have been owned by D com or
+any of the worms that were
+going around at that time. Things got better, right? Everyone
+remembers KRBTGT was there when
+you finally installed a fire wall. So all those remote attacks and
+those worms that were destroying
+your domain for years finally stopped. It was the answer to
+all of our security problems,
+right? Yes. Then there was Windows XP probably Microsoft's
+greatest product. Except there
+was MSO8067 and once again pen testers and hackers rejoiced
+because they were easily able to
+knock over every enterprise. Then there was the great
+administrative layoff of 2007 as
+much when you realized your domain admin's group ballooned
+to over 400 people and over a
+hundred of them no longer worked at your company anymore. Why
+would you say you have admin
+rights? So then it really got better. 2009 the security
+industry blossomed and everyone
+was selling windows server 2008 and KERBEROS was the answer to
+your pass the hash problems. You
+didn't have to worry about pass to hash anymore. KERBEROS it's
+awesome. To manage your local
+admin accounts you decide to deploy this policy group policy
+preferences, right? Yeah.
+Everybody did that. Including Microsoft. So in case you didn't
+know group policy preferences
+are terrible, you should never use them. Microsoft even came
+out with a patch to keep you
+from being able to use a feature that they swear was never
+security vulnerability. If
+you're using group policy preferences that's terrible.
+That means anyone on your
+network can get local admin rights or any of the passwords
+that are in those group policy
+preference files. So, let's talk about the last two years. So,
+you decided to move on, the
+domain moves on, the server 2012 and KRBTGT is loving life
+because you finally gotten rid
+of MTLM you've gone to Kerberos. You got rid of MTLM and then
+there was heart bleed. And it
+knocked over all your VPN servers and you got owned again.
+And there was this thing the
+golden ticket which no one seems to know anything about that you
+find all over your network as
+well. Account number two. Thanks to Mr. Benjamin Delpe in the
+front row. So, do you know how
+old your KRBTGT hash is? Anybody. When you created a
+domain or when you upgraded from
+2003 functional to 2008, anybody created their current domain in
+2001? Nobody? 2002? 2003? 2004?
+Five? Six? Seven? So anything that happens to this domain was
+2004 so I guess the question is
+do you know where your KRBTGT hash is because this domain's
+hashes are on P span.
+(Laughter).  >>> That's not good. But the
+bottom line, the whole point of
+this talk is this. If you've ever been owned, if your domain
+has ever been compromised your
+hashes dumped you may still be compromised because that KRBTGT
+hash is what's used to sign all
+of the tickets so with that and only that tickets can be created
+to take any user and add them to
+any group or a lot more. Did anybody go up to the Kerberos
+black hat talk besides the two
+speakers in the front row who gave the talk? Awesome. They're
+only here to heckle me and they
+have been heckling me the last half hour while I had to sit
+next to them the previous talk
+but now I'm on stage and you're not. So maybe you could be like
+this guy. Does anyone know who
+this guy is? Nobody? Cool. So he testified before senate that as
+long as you scan you're secure.
+He testified against Dave Kennedy or countered Dave
+Kennedy earlier this year and he
+said that with a straight face. As long as you're scanning
+you're secure. You have not been
+compromised. So ‑‑ (Laughter). >> Now that I have an audience
+other than twitter, I would like
+to say good luck with that. Let's talk about Kerberos. Does
+nobody get the name? No one gets
+meme. I swear. All right. I'm not going to bore you with how
+Kerberos works. That was Skip
+and Ben's talk at BlackHat, but this is the basics of it in a
+really crude diagram I drew
+several years ago. If you would like to go over that. But what I
+want to focus on is the Spoofed
+PAC attack which is the privileged account certificate
+(PAC) which is a portion of the
+Kerberos ticket. The previous diagram and this diagram are
+taken from skip and my white
+paper for black hat 2012 and if you see what we're doing here,
+we're basically just adding
+groups to the pack and then we're using the KRBTGT hash to
+sign it and make it valid so you
+can take any user and add them to any group temporarily and
+they're not actually going to
+show up on the domain network in that group so there's almost no
+log of this unless you actually
+use the privileges Who has heard of the golden ticket attack?
+Awesome. So, golden ticket which
+is a great branding by one Benjamin Delpe sitting in the
+front row heckling me right now.
+He added to the wonderful tool Mimikatz Who has used Mimikatz
+before? Awesome. So, the golden
+ticket attack is not just the spoof pack that skip and I
+theorized several years ago. It
+goes beyond that. It's not only that but in addition Ben was
+like man, you guys are idiots,
+you could make this ticket last forever. We were like wow, why
+didn't we think of that? True
+story. So there's a great tutorial by Rafael Mudge who is
+awesome and not talking this
+year, which I'm disappointed about but did he a great
+tutorial, that's the link to it
+if you want to check that out. So now it's demo time. So, I
+prerecorded because this is DEF
+CON and I knew everything was going to go wrong. I'm just
+going to pause it, cause it's
+going to go real fast I'm doing who am I. I'm limited user, I'm
+nobody. In this scenario the
+attackers already compromised in one of those hundred ways that
+we kind of talked about earlier,
+compromise the enterprise way back when in 2004 with D con or
+MSO8O67 or MSO90S in server
+2008. So, the question a lot of people ask is if you knocked
+over the domain then you've
+already got everything. The point to all of this is that you
+can leave and come back whenever
+you want. You're not going to leave anything beaconing, you're
+not going to leave anything to
+find. So, this is one way of coming back in this limited user
+is going to check the group
+membership or domain admin and it's just administrator like it
+should be. No one else. All
+right. Phishing E‑mail really important. Got to open that up.
+From the boss. It's too legit so
+we got to ‑‑ that was not enough hammer time. Hold on.
+You got to get that. All we need to do is enable
+macros. So we've got  to do that. I'm going to put
+this on youtube and that's
+mostly for when I put this on youtube but what this macro is
+doing is it's using PowerShell
+and then PowerShell is going to pull down invoke-Mimikatz. Has
+anyone used invoke-Mimikatz and
+power-- It was released last year at DEF CON. A couple
+people. It's awesome. Basically
+we get a fully staged Mimikatz without having to worry about
+A/V or touching disk at all. So
+what we're doing is we're using a macro to call PowerShell to
+pull Mimikatz down reflectively
+in memory and then in addition I added a few things so now I'm
+going to use the Krbtgt hash
+I've already stolen to create a ticket and add myself to the
+domain admin group. It's not
+just a Kerberos ticket for domain admins we'll take this
+limited user and add them to
+domain admins without them realizing what's going on.
+It's kind of a silly example not
+really what you would want to do. How you would want to do
+that. All right so now the user
+has enabled macros and they shouldn't feel remorseful
+but in this case shouldn't
+have done that. We see PowerShell firing up. And then
+you'll see limited user is in
+the domain admin's group. So thanks to Kerberos if you've
+ever been compromised, it's
+trivial to come back in. A single phishing E‑mail and all
+privilege escalation is done. Let's talk mitigation. As I gave this
+talk to a couple people, experts
+beforehand ‑‑ what's that? >> >> [Applause] >> Yay! Both I and Windows 8
+suck. All right let's talk
+about mitigation. So, this side had to be reworked multiple
+times because everything I had
+on it was wrong originally. So, the easiest thing and if you
+read this a couple places on the
+internet, MSDN maybe one place, if you really want to reset the
+password hash to the Krbtgt
+account you got to do it twice but be warned it might literally
+break everything. Shear point,
+exchange, you name it, it will not automatically fix itself. It
+may be multiple reboots. Someone
+who has actually gone through it, caution that it is not worth
+doing and even Microsoft hasn't
+done it. So, the only reliable way is if you happen to have ‑‑
+if your domain functional level
+is 2003 and you've raised it to 2008, this really shouldn't be a
+reason to do it because if
+you're doing this because you know you've been compromised,
+you probably should start
+completely over so I guess the biggest take away from this is
+if you've gone through and
+changed all of your passwords and thought that you were good,
+you're not. Or if you're an
+incident handler and you cannot figure out why a threat group
+keeps coming right back in and
+you can't figure out how the privilege is escalating this
+very well could be the way. So,
+it's all in Mimikatz. I put business practice DC with all
+available futures don't get
+owned again. Detection is worse than mitigation. It is
+completely a needle in the
+haystack. Harder to detect than pass the hash. >> Pass the hash
+you're actually doing something.
+In this case you're generating a ticket on a single box. Until
+you actually use it it would be
+very difficult to detect. As well as whether or not your
+Krbtgt hash has been stolen.
+Unless you know you have been compromised like you find PW
+dump sitting on your PC I don't
+know a way for you to know that that has already been taken. You
+can look for strange account
+activity. I thought it was really sneaky, and I was like Im
+going to look for ten year old
+tickets and Benjamin is going to go ahead and change that is
+feature to allow the tickets to
+be an arbitrary length. Even that detection mechanism is not
+going to work for Mimikatz. One
+thing you could do is look for low privileged accounts
+performing privileged actions.
+That might be the only way to detect this particular attack. I
+do want to give some thanks to
+Skip. Stand up, Skip and Benjamin, can you come up here.
+Is Joe here? Joe. He wrote
+Invoke-Mimikatz which is the awesome PowerShell script and
+added. Will and a bunch of other
+people. This is Vince. Vince has never been to America. He came
+all the way here for DEF CON and
+black hat. He seldomly ventures out of France and it took a lot
+of negotiating I think and I
+just really want him to feel appreciated for his tool
+Mimikatz and the number of
+people that use it so let's give them a hand. (Applause).  >>> And I think for his long
+trip, he deserves this speaker
+badge more than I do. So I'm going go ahead and give him
+that. (Applause).  >>> One more time for Ben and
+everybody else on the golden
+ticket stub. Other than that, that's all I got. I will see you
+guys around and partying
+tonight. (Applause).

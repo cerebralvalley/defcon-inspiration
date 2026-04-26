@@ -1,0 +1,871 @@
+> Alright. So this is hacker
+machine interface: State of the
+union for SCADA HMI vulnerabilities. It's not um the
+title slide here is not about
+stuffy shirts and racks. Um I mean this is about hardcore
+exploitation in this talk. We
+are going to cover a in depth analysis of a corpus, of a 200
+plus uhh confirmed HMI's
+vulnerabilities that have come through the 0day initiative
+program. We are going to detail
+out the popular vulnerability types that have been discovered
+in these HMI solutions and we
+are going to talk about how they are developed. And how the
+weaknesses actually manifest in
+the underlying code. We are going to talk about some of the
+biggest scada vendors that exist
+on the planet, including Schneider electric, general
+electric and Advantech. But all
+the vulnerabilities we are talking about can be applied to
+pretty much every SCADA vendor
+that's out there today. This talk will also cover and
+compare, a time to patch
+performance for the various SCADA vendors in the industry
+and will also compare the SCADA
+industry against the other entities in the software
+industry. And finally we are
+gonna use the data that we presented to provide you
+additional guidance on what
+SCADA researchers should be looking for in HMI solutions and
+what we can expect in future
+attacks against SCADA HMI solutions. But first let me,
+lets introduce ourselves. So you
+know who we are. Ill let Fritz introduce himself. >> uhh Good
+day, my name is Fritz Sans, my
+twitter handle is FritzHands because I'm occasionally boring.
+I was a long time developer at
+Microsoft, 25 years, in the Windows operating system. And
+then I joined the trustworthy
+computing and secure windows initiative in 2001, when the big
+security push happend at
+microsoft. I left Microsoft in 2014 and joined the 0 day
+initiative, where I have been
+investigating software in the real world, which has given me a
+deep appreciation for the code
+quality at Microsoft, which I did not have when I was there.
+[Laughter] > So I'm the senior
+manager of vulnerability research in TrendMicro's Tipping
+point organization. Umm my
+primary responsibility in this jobs is to actually run and
+manage the 0day initiative
+program: which presents the world's largest vendor agnostic
+bug bounty program. We have been
+in operation for 10 years, we spent over $13 million on
+vulnerabilities over those
+years. Umm we do a lot of root cause analysis working with
+researchers around the world to
+buy bugs, uhhh define how they actually fire and help the
+vendors to get them fixed in a
+proper way. Im also the organizer of the ever popular
+pwn to own hacking competition,
+where I spend probably ummm over half a million dollars this year
+just on exploits uhh against the
+hardest attack surfaces in the world. So before we get started.
+we want to give you kinda a
+overview and level set everybody in the audience on what we are
+talking about here. What the
+SCADA industry is, what HMI is and who are the heavy hitters in
+this industry. A lot of the
+market place, if you look at it, it's really focus on developing
+hardware and selling control
+systems, and not so much focused on selling the HMI solution
+itself. In fact most of them are
+freely downloadable which makes them good targets for auditing.
+So in this case they kinda focus
+on hardware, uh software or software that runs on hardware
+and less on windows applications
+. And that really shows in the type of vulnerabilities come
+through the 0day initiative
+program. It is a highly regionalized market, so there
+are vendors in China, which
+specifically develop SCADA software and hardware for
+Chinese uhh for Chinese
+implementation. There are also ones in Germany, uhhh and even
+seen code developed by Chi....uh
+by Italian developers. So it's a very active market and if you
+are focusing on
+SCADA...uh..products in one region, it will be completely
+different in another region. As
+you can see on the slide we have a bunch of big names on there.
+That Wecon brand is actually the
+one that is for China, we found, I personally found a dozen bugs
+in their HMI solutions and
+submitted them, and had them fixed. Siemens is also a major
+brand and GE electric or General
+electric and Advantech which we will talk heavily about in this
+presentation. Now theres also
+alot of merges and acquisitions in this space. Its very much of
+the rest of the software market,
+lots of buying lots of selling. But and the one interesting
+thing that we find is that when
+we buy a vulnerability in the some mom and pop SCADA
+develop...uh HMI shops, which
+there are a lot of them, we see that by the time the patch comes
+out, they have actually been
+acquired by one of the bigger companies like Schneider
+electric or Siemens. So there is
+a lot of merger and acquisition going on which makes the
+disclosure poss...uh process a
+little bit more complicated. If we look at the Human Machine
+Interface what is it? Well its
+primary job is to provide status of the critical infrastructure.
+Things like alarms,
+notifications. They also provide highly advanced and customizable
+visualizations that give
+operators insight into what is going on in their critical
+infrastructure. And a lot of
+these you know, their, uh you can kinda develop these and
+customize these visualizations
+for different components in your actual infrastructure. Now
+they're supposed to be air
+gapped and run on isolated and trusted networks, but this is
+really not always the case. And
+we will take about it, about attacks where they took
+advantage of HMIs that were not
+on isolated networks. Now even isolation uhh is not
+guaranteeing security if you ask
+the Iranians, back when Stuxnet came out, the air gapped network
+didn't provide them much value
+uhh when they were being exploited using USB link
+vulnerabilities that existed. So
+if the developers are actually spending their time and and
+thinking that their HMI
+solutions are going to be used air gapped networks, and not
+putting security in, that's what
+we are seeing in the code. That's what it feels like. They
+are not actually spending time
+applying best practices of the industry. So why would you
+target HMI solution as an
+attacker? Well because it controls the infrastructure. You
+can actually see and get get
+configuration information about devices on the network, and it
+can actually be used by itself,
+without a vulnerability to shut down a netwo...to shut down
+critical infrastructure. This
+is, this is the case in the Ukrainian attack that happened
+last year. Ukraine..uh attackers
+who were going after the Ukrainian infrastructure just
+used the HMI solution by itself
+to trip breakers and shut down the power. They were not
+actually exploiting HMI
+vulnerabilities, but they were using the HMI system, to
+actually take the systems down.
+Now it can also be used, you can actually attack these to
+deceived uhh and disable alarm
+systems in the, in the control system itself. And this is the
+case in stuxnet where they
+actually deceive the operators ummm and uhh about the state of
+the centrifuges they were
+controlling and actually send it, send it commands to trigger,
+uhhh, self uhhh, self
+destruction conditions in the control systems themself. So
+there are active attacks in in
+umm HMI solutions. If you look at stux..uh..stuxnet is
+obviously the most popular one
+we talk about, everybody knows about this one, but it did
+leverage vulnerabilities in HMI
+solutions and..uh...including Siemens simatic step 7 dll
+hijacking vulnerability along
+with a SQL server authentication bug. These are really simple
+bugs, very common bugs in HMI
+solutions and they leverage those to deceive the operators
+on the state of the centrifuge.
+Now black energy is an ongoing sophisticated malware campaign
+against ICS environments and it
+actually targets HMI vulnerabilities, the GE path
+traversal vulnerability. Its
+used...its uhh..we believed it to have used..uh..some
+vulnerabilities
+in..uhh...Siemens WinCC and Advantech remote web access. So
+quite famously in the ZDR
+program, the GE simplicity vulnerability is actually one
+that we purchased from an
+anonymous researcher and disclosed the ICS cert, and it
+turned out that it was actively
+being used by black energy. So it's kinda interesting to see
+that happening in the wild. Now
+another big player in the industry is the ICS cert. So as
+a researcher you need to know
+who this organization is and where they sit in the
+government. So i'll rattle off
+the title and their location in the government. They are the
+industrial and control system
+cyber emergency response team which operates in the national
+Cyber Security and Integration
+centre, a division of the department of Homeland
+security's office of Cyber
+Security and communication. I mean that is a long name, I can
+almost get paid by letter there.
+But in reality they are a very important organization and
+people in...who are researching
+in HMI uhhh need to know who they are and know how to work
+with them. We work with them
+everyday uhhh in our jobs, as we are purchasing a lot of
+vulnerabilities uhhh in HMI. And
+they they do a lot of things, they actually release a report
+every year about all the stuff
+they are doing. And according to the 2015 report they actually
+responded to 295 incidents and
+handled 486 vulnerability disclosure. And that's
+significant, that's a lot of
+vulnerabilities passing through that organization every year. So
+because it's so regional, its
+really hard getting a hold of these mom and pop operations
+when you find a vulnerability in
+their solution. And then at this point you come to programs like
+the 0day initiative or go to ICS
+CERT to help you disclose those vulnerabilities and get them
+fixed. So let's talk about
+attacks that leverage HMI features or vulnerabilities in
+their active attacks. If you
+read the Verizon data breach report, they talk about their
+team went in and actually uhhh
+were called in to analyze the security of a water utility, now
+they don't give the name of the
+water utility, but they do talk about their findings. And in
+this case they found that there
+was an internet facing AS400 system, responsible for HMI like
+capabilities: like manipulating
+PLCs. But this system also did network routing and managed
+customer data. I mean how
+ridiculous is that, that all of that information is sitting on
+one system, connected to the
+internet. Both critical infrastructure and billing
+systems. Umm this is kindof a
+uhh example, a prime example that there is no focus on the
+separation of responsibilities
+when they are architecting these critical networks. Now what they
+learnt, is is, what they
+discovered was that 4 different connections to this AS400 over a
+60 day period, where the IPs
+were tied to hacktivist activities, and they actually
+altered the water flow and the
+chemicals in, in that system. Now according to the report
+they, they say the attackers
+really didn't understand what they were, were working against
+and they didnt, couldnt really
+do a lot of damage. But they could have done a lot of damage,
+by that. By accessing that
+system. The most recent example of a really high profile SCADA
+attack was the U..in the
+Ukraine. Where there's several Eur..uh Ukrainian companies that
+experienced unscheduled power
+outages which, which is, which affect almost a quarter million
+people. These were caused by
+malicious actors and there's actually a really great report
+on the ICS website, um ICS CERT
+website, that describes all the details of that attack. Well
+that are unclassified. Umm so,
+they talk about how the attack was co-ordinated and they all
+attacked within 30 minutes. And
+in this case they didn't use HMI vulnerabilities, but they
+leveraged that HMI solution,
+because they were..because there's no isolation they were
+able to VPN into the network and
+get access to the HMI solutions and use remote administration
+tools which dossed the operators
+from making any changes. And they actually just tweaked the,
+the nobs in the HMI solution to
+turn off and turn breakers. And as a result the power went out.
+They also put killdisk malware
+on the windows based HMI systems, which basically brought
+them to their knees and really
+hurt the restoration efforts. Now this is obviously used to
+destabilize the Ukraine a little
+bit, I dont think theyve attributed the attack, but
+there's a lot of political stuff
+going on in that region so you can imagine. Now there is also
+some interesting report...um
+interesting research that came out of a sister organization
+inside of our company, uhh where
+they actually looked at the malware that was used in the
+Ukrainian attack and actually
+found links malwares in other companies in the Ukraine,
+including a rail company and a
+mine company around the same time. Now black energy was
+supposedly not used in the
+attacks against the Ukrainian power company, but it did exist
+in that network so you can
+imagine that, the attackers who are going after those are
+probably the same attackers that
+had access to some rail and mining companies in the Ukraine
+as well. How did our sister
+organization know this? They looked at the infrastructure of
+the malware and naming
+convention that were used and they released a whitepaper on it
+and it's actually very very
+interesting and worth a read. It's on the Trend Micro blog. So
+let's, let's talk about the
+prevalent vulnerability types that exist in HMI solutions and
+what the current state really
+is? So, the reality of the situation is, the HMI solutions
+have not seen any benefit from
+the evolution of secure software development lifecycles over the
+last 10 years. We have looked at
+alot of the code, you know dozens and dozens of code bases.
+We have have analyzed and looked
+at vulnerabilities and confirmed 0days. And that's what we've
+learned. There really is no
+security built into that software. THey haven't seen any,
+any benefits of the secure
+development lifecycle that Microsoft, Apple and all these
+other companies have, and this
+is actually a really scary thing. And in fact most of the
+solutions we are vetting bugs
+in, do not have ASLR, uhhhh [inaudible] SAFE SCH, or stack
+cookies enabled. Which is really
+really scary. And we actually urge SCADA vendors to turn on
+all of these mitigations,
+including things like building 64bit apps, to make, uhh ASLR
+better, uhh and actually reduce
+in the reliability of heap spray and also turning on just the,
+uhh, the basic mitigations that
+are available by flipping a toggle in the compiler. Its
+um..it's actually really
+embarrassing. It's also..there's also a lack of understanding how
+these are
+really...uhh...these..uuhh. how these solutions are actually
+run. They seem to think that
+these are going to run in an isolated environment and they
+are using that as a way to not
+implement security mitigations. But they are continually being
+integrated and you see attacks
+in the wild that leverage interconnected HMI solutions to
+take down critical
+infrastructure. So this is probably the only pie chart you
+will see at defcon, and I'm
+actually kinda proud of that, because I put a lot of work into
+this pie chart. But in a...what
+we ended up doing is we pulled all the 2016 and 2015 ICS Cert
+advisories and identified all of
+the HMI solutions that had bugs fixed in the last years. We
+crossed referenced that with our
+250 plus 0day vulnerabilities we've purchased in HMI solutions
+to come up with what the most
+popular, the most common vulnerability types are in HMI
+solutions. We also catalog the
+CWEs to kinda get an idea what vulnerabilities existed, and and
+they are purely listed on the
+slide. The nr 1 is memory corruption, followed by
+credential management, usually
+hard coded passwords. Insecure defaults. Authentication and
+authorization. And encode
+injection issues. Now what about Cross site scripting or Cross
+site request forgery? Well most
+of these are windows based applications, there are some web
+based applications, but most of
+them are windows. And as a result you are not gonna see a
+lot of that cross site scripting
+stuff. But there are some in that grey area on the slide. So
+what we are gonna do is, is,
+lets not, lets lets get down and dirty with this. Lets let's look
+at every single one of those
+categories and were gonna give you case studies of what these
+look like, so you can understand
+how terrible this code base really is, and what you need to
+understand to go actually find
+these bugs and to protect yourself against these bugs. And
+that's the most important part.
+So first we are gonna talk about code injection vulnerabilities.
+This makes up about 9% of the
+common vulnerability types that exist in these products and it,
+you know it's the classic sql
+injection, code injection, OS command injection. But there's
+other,other domain specific
+languages that exist in this software. And that's what we are
+gonna talk about today, we
+didn't want to cover stuff you guys already know, this is, we
+are gonna talk about gamma code
+injection, right. So this is a domain specific language used in
+this industry. Specifically we
+are gonna talk about Hogen Data hub, and we are gonna talk about
+CWE 2015-3789. Now this allows,
+this vulnerability actually allows an attacker to turn on an
+insecure processing mode in the
+web server, which allows the attacker to send arbitrary
+scripts to the server, and
+execute arbitrary code. Now this was discovered by an anonymous
+researcher and disclos...and
+purchased by us, disclosed to ICS CERT and fixed. Now we do
+offer the ability for people to
+submit bugs to us, in an anonymous fashion, and we get a
+lot of that actually um through
+program. So what is Cogent Datahub? Well that's what you
+see on the screen here, it's one
+of those visualizations that I was talking about. Cogent
+Datahub is a real time
+middleware solution that is deployed over across several
+sectors including chemical,
+commercial, critical manufacturing, energy,
+financial, etc and it's used
+around the world. It offers the end user the ability to create
+those really intense, advanced
+visualizations that you see on the slide here, customize those
+so that you can monitor your
+underlying network. So what is Gamm script? Well Gamma script
+is a domain specific language
+specifically designed for the use, within, within data hub.
+It's a dynamically typed
+interpreted programming language, specifically designed
+for rapid application
+development. Its look like C and I'll show you some her in a
+second. And it has a range of
+build in features, it's got libraries and everything. It
+actually has a fully documented
+A..uh...API, that you can read on the internet. It's actually
+pretty full featured for those
+application developers. Now the attack itself is a flaw in a
+valid expression method. It
+allows an attacker to execute arbitrary code on the system. It
+actually sits uhhhh and is
+accessible through an AJAX facility on port 80. And you
+simply supply a well formatted
+Gama script which allows the underlying code execution. Now
+the interesting thing about this
+is, is its domain specific, so there is a lot of functionality
+in gamma that specifically used
+for developing that stuff. But unfortunately it did have
+the...in that script the ability
+to execute system commands. So what is the vulnerable code? Its
+right here on the screen. Its
+very very simple. Valid expression basically takes an
+expression and checks one flag.
+Are I allowed to execute this expression, and if it does then
+it executes the expression. And
+this is whatever you want to send to the system. Now the
+question is how do you actually
+get that to load up and how do you change that value. Well it
+also allows you to do that as
+well. So the exploitation steps are you send us a request, a
+HTTP request to the port 80,
+which will load the gamma script libraries. Then go, you call
+AJAX.support.allowexpression
+which will set allow any expression to true, and then you
+call a valid exceptio with any
+script you want and you execute code. So thats a demo of that
+exploit. So what you see here is
+the installation of Data hub, you can see, and you kinda zoom
+in for the audience
+here..............hmmm...... yeah well forget that. Ummm so
+what we are gonna do here is
+right on the screen, what's highlighted is Cogent Datahub
+version 7, and its running and
+sitting on port 80. And what the first thing that we are gonna do
+is, we are gonna run a proof of
+concept here at the bottom, that is a, uhhh just basically a
+python script that sends the 3
+commands that we need, and will disclose information on the
+server, it's actually is
+disclosing autoexec.bat uhhh on that box. So then we are going
+to send another script, uhhhh,
+which will actually execute calcu...the evil calculator. And
+you will see here it's a
+actually a very very reliable bug and a very reliable exploit
+and you can just kinda send it
+over and over and over again, and there's those evil
+calculators, you know. That's uh
+a pretty fun bug. Really simple bug. And they did actually do a
+really good job fixing it, and
+you can see all the calculators being spawned by the process,
+so. Now how did they patch the
+bug? Right, this is one of the interesting things for thee ZIDI
+program, because when bugs get
+patched, researchers will also submit bugs, uhh POCs that
+actually break their patches
+which is kind of interesting. But here it's kinda gonna be
+difficult. So on your left is
+the old code and on your right is the new code and you can see,
+up here, that they actually
+removed allowed expressions, so you cannot access that at all,
+so you can no longer toggle the
+flag in the system. They also removed....a valid expression
+entirely and they actually gave
+it a really great comment which is actually a best practice:
+this method is dangerous, it
+could allow somebody to execute arbitrary code via http call, if
+you absolutely need it create a
+script and define it, then make sure your webserver is on a
+trusted network. So that code is
+buried in the application itself so it's highly unlikely that
+developers are gonna go look at
+that, but they are just gonna call the APIs. But it's good
+that they actually documented
+that, so they won't regress that bug at some point. So that's
+actually how that bug works. So
+i'm gonna turn it over to Fritz, and he's going to cover the rest
+of the prevalent vulnerabilities
+types and then we will talk about some disclosures
+[inaudible]. >> Hello again. So
+the next section we are going to look at is Authentication and
+authorization problems and
+authentication bypass, improper access control and proper
+privilege management, bad
+authentication. And what we are gonna focus on is a Advantech
+case and you are gonna hear
+Advantech a lot. And this actually a pretty fun one. This
+is information disclosure. And
+uhhh this is CVE2016-5810 and the ICS CERT says properly
+authenticated administrator can
+view password for other administrators. The terminology
+is a little unfortunate here,
+because this is not a system administrator, this is the
+administrator of a given SCADA
+solution, a given project and that's sort of a kin to
+unprivileged users of the
+system. So this is in essence saying a user can extract the
+password of another user. And
+this was discovered by zooyu and disclosed by the Zero day
+initiative. This was sort of
+fun, and basically they have a script, a ASP, script that
+allows you to change your
+username, your password, your description and this is great,
+but this can be abused. And they
+way you do it, you log in to the account you have, this is not
+anonymous, you have to have an
+account on the system, but then you can change the URL to give
+any other name. And then pass
+that in and it will bring you back the password of the second
+account, and you can't see the
+password because it has astrix in front of it, yeah.
+[Laughter]. So yeah here's a
+demo showing it. SO first log in as the admin, and by the way you
+can also get the full sys commit
+administrator account this way. And you can see there is a test1
+and a test2 user. So now you log
+in as test1..............and put into your password for test1,
+and that's all great. Now if you
+try to change, you...change to test2 using the UI, it will
+quite properly give you an error
+saying you can't do that. But if you change to a username of
+test2 in the URL, it will pop it
+back, but it has those asterix so we got to fix that. So you
+view the source. [Laughter]. And
+there's the password, and then you can use that password of
+course and log in as anyone
+else, including of course the complete system administrator of
+all the solutions. And there you
+got it, and you're logged in, and what...okay here it goes. So
+that one was sort of fun. And
+there is also a lot of insecure defaults in this space. Uhh pad
+transmission of information,
+missing encryption, unsafe activex controls, yes we are
+back to activex controls. The
+one we are going to focus on here, is the Schneider Electric
+DSNVS, and this is a bad activex
+control with memory corruption. Even Though this is memory
+corruption, we put this here
+because this activex control will first....it was set as safe
+for scripting from untrusted
+source, but what's also interesting it was never meant
+for it to be a control to be
+used in.....uhhh...Internet explorer, in a web page. SO it
+should have been configured as
+automatically killed [inaudible]. So it's really bad
+configuration. It was wide open
+to Internet Explorer when it should not have been. The is
+CVE-2015-0982 and the Schneider
+Electric Pelco here is a HMI for digital sentry video
+surveillance systems. So its
+really great uhhhh you can use this to, you know get
+information on video
+surveillance systems, which is always fun. Uhhh what I wanted
+to do is show this for people
+who are going and auditing and looking for activex controls
+that might be vulnerable, it
+shows and interesting second step you often need to take.
+There are two ways to tell the
+system that an activex control is not safe for scripting. The
+standard way, the past way is
+statically in the registry to mark it unsafe for scripting,
+but if you note...its is, is is
+to turn it on, to make it safe for scripting is to flag it as
+safe for scripting. But if it's
+not marked in the registry as safe for scripting, it can
+insta...it can then use the
+interface Iaptic safety, and then in dynamic runtime assert
+it is safe for scripting. So
+even though it's in the registry for not-safe for scripting, it
+still is potentially vulnerable.
+So you've got to look at the dynamic situation as well as the
+static situation. So you can't
+just do one. And here is a demo of just how the memory
+corruption works. Which is you,
+you use Internet Explorer, and you go to an attacking web page
+which invokes the control in IE,
+and it does a stack buffer overflow, and fills everything
+with your classic 41s, that we
+all know and love. Uhhh let's talk about some credential
+management problems, uhhh this
+actually...I was really shocked when i ran into this, cause its
+like you are kidding right? Uhhh
+there's, this happens a lot that they hard code credentials in
+the code, hard coded passwords.
+Uhhh you know like, I thought we got rid of that 15 years ago
+with IIS, but well, it's...we
+are in SCADA space you are hacking like it's 1999. Its
+awesome, its awesome we are back
+then. [Laugher]. So the one we are going to look at is GE MDS
+Pulsenet, and it has a hidden
+support account, and this is really fun. So this is used to
+monitor devices and Industrial
+Communication networks and its deployed in Energy, Water and
+Wastewater sectors and its used
+World Wide. This is CVE-20156456. So if you take a
+look at the user management
+panel using the UI, you see there are exactly 2 accounts in
+the system: there is a admin and
+a operator. Well that lies. If you ac..if you go in and you
+use....uhh...I use HeidiSQL but
+if you use anything that extracts information from the
+database, you see that there are
+not 2 accounts, there are 3. There is a hidden account called
+GE support. Now, now it's really
+super subtle, because it only stashes the md5 hash of the
+password, not the password
+itself. Certainly you...no one here can crack an md5 hash
+right? [Laughter]. It it turns
+out that the password is actually Pulsenet, but the made
+it l33t by changing the L to a
+1. So here's the demo. Uhhh you can see on the right, the two
+users that are officially there,
+and on the left we will log in as the user that isn't there.
+And what I think is really cool,
+even after you log in as the user who isn't there, as you are
+logged in as the user that isn't
+there, it tells you that, that user is still not there. Which
+is just sort of slick I think.
+Uhhh there's also a lot of other misconfigurations. One of the
+other ones we see a lot, where
+companies decide to roll their own apples, and they decide they
+don't want to put things under
+Program Files like Microsoft intended and so they create
+their own top level directory,
+with their company name, under the C drive, and they often put
+World has full access. And then
+they put their service binaries in there. So any local user can
+drop new binaries in, and they
+will run as a system service. So this is very standard. And now
+we get to, to the joy of memory
+corruption. Stack based buffer overflows, heap based buffer
+overflows, out of bound, read
+write. Just the classic ones. And Umm the Advantech is our,
+our, our whipping boy here.
+Because they did an awesome job here. We got a 100 bugs in one
+day, from an anonymous
+researcher. This was like this, this data dump from heaven. And
+we analyzed them and passed them
+on, and they were all buffer overflows. And yeah its was
+quite impressive, and I will
+drill into one particular. This is CVE-2016-0856 and it was an
+anonymous researcher and
+disclosed by us. And this is their webpage, and what's really
+interesting about web access is
+it's a SCADA solution, but they also advertise as you can see in
+here that this is also for
+Internet of Things. SO this is widely deployable, and its
+widely exploitable [Coughing].
+It launches a service web, uhhh the RPC in the context of local
+administrator and listens on
+4952, and the web..the service calls are configured to look
+like Microsoft IOaccess control
+calls. So they've got an IOCTL value and they do jump tables
+off of that to perform 100s and
+100s of types of services. For this particular one, the
+parameter that's passed is a
+window name, which is then copied using sprintfW to a stack
+buffer that is Hex 80
+characters. And as you can see in this packet the length is
+Hex8C. So it copies Hex8C bytes
+into Hex80 byte buffer on the stack, with predictable
+consequences on the stack.Uhhh
+so inside you've got this....and the flaw is the stack based
+buffer overflow, here is the
+classic sprintfW call, you know nothing of a surprise there.
+Here is the stack playout, and
+this is sort of fun, because you can tell that the windows name
+is at -80, and then 0 is your
+return address. No stack cookie. Why no stack cookie? They didn't
+flip the bit in the compiler and
+linker. Probably cause they first built this 20 years ago
+and they never changed their
+configuration, to handle, to add ASLR, to handle SAV ESCH, to
+handle stack cookies. So all you
+have to do is overwrite the return address, point it to the
+first of your ROP, you can
+handle the ROP chain well because there is no ASLR. Life
+is good. Life is really good. So
+you can see is jumping to a address and here I will pop the
+glorious [inaudible]. And this
+was fun to do...........................Bin
+go! And that is running at high
+privilege, life is good. Uhh Let's talk about the PAG
+analysis. As sprintfW Microsoft
+published the banned API list a decade ago, and there's a reason
+Microsoft published the banned
+API list. So what they did when we reported this, is they change
+sprintfW to snprintFW. So
+snprintfW is also in the banned API list. It's a better banned
+API, because it won't buffer
+overflow, but if you give it too many characters it will also not
+null terminate. So if the stack
+is not pre-cleaned out and it isn't, it is possible for you to
+use stirring manipulations on
+this window name, where you think its Hex80 characters long,
+it may be longer as it didn't
+null terminate with the copy. So there might still be problems.
+As I said a 100 bugs came in, a
+100 bugs. Advantech fixed 75 of them, we have disclosed the
+other 25 as not fixed, you guys
+can enjoy. There are also...when they did fix they did not any
+global replace, they did
+specific point fixes of the ones they fix. There are 1000s string
+copies and sprintfW's in the
+codes base, and I would not bet 10 cents that none of those can
+be reached by attackers that
+apply data. So have fun guys, have lots of fun. Ah yes
+researcher guidance. Sup. What
+do you people want to do? Well the first thing to do is Fuzz.
+Right..these things are easy to
+fuzz, they don't have CRCs, most of these file formats are wide
+open. Just do but flipping,
+remember to turn on page heap on, on the process being
+attacked. It's a great way to
+find memory corruption because then it breaks at the corruption
+point not later on when it's
+being used. Use your tools that you got for fuzzing, use your
+tools for analysis. SQLMap is
+great for finding SQL injection possibilities. One of my
+favourite tools is Attack
+Surface Tool by Microsoft, one of the reasons it's one of my
+favourite tools is, I helped
+write it. Microsoft release a public version in, in 2012. It
+creates a snapshot before and
+after the installation of your target software and then it will
+highlight security problems in
+the configuration and it will highlight increases in attack
+surface. So it will tell you
+your new COM object, your new Activex controls, your new RPC
+endpoints. Here's and example it
+shows you for example on the..ummm...on the advantech
+software of the new RPC.
+Information in here is attack surface analyzer telling you
+that the web root directory,
+which is you know where files are gonna go that are being
+executed,in the high privileged
+web server context, that this entire directory has ful...can
+be..has write access by the
+world. What could possibly go wrong? So I,...ASA is a great
+great tool to use. Now if
+anybody in here has pull at Microsoft uhhh we need a new
+version drop of ASA, because it
+doesn't work on Windows 10, and if Microsoft wants to be really
+cool they can release the source
+of ASA, because I know what needs to do to fix it. So works
+on Windows 10, would take an
+hour for me to fix if Microsoft would release the source. Also
+audit for the banned APIs, could
+look for the s_printouts,str_copies, use IDA
+to trace the tainted data back
+and see if you can get to the source of these, uhh, unsafe
+copy APIs, if you can get those
+from attackers apply data. You know it's wide open people. Now
+back to Brian for more of the
+corporate things. > Yes. Yes. So we wanted to give you an
+understanding of how...when you
+find a vulnerability how long it will actually take to fix. Kinda
+talk about the vulnerability
+exposure window. So what we did is we actually took all the HMI
+vulnerabilities that we received
+in the 0day initiative program, again over 250 now. Ummm and
+looked at how long they actually
+took, and if you look at the last 4 years, it's not exactly
+trending down, its pretty
+consistently a 140 days from the time we disclose a bug, until
+when the patch comes out. And
+the thing about the SCADA industry, is that when they are
+applying those patches, if the
+patch is bad or there is a issue, it will actually denial
+of service the critical
+infrastructure as well, which is not good, but that means that
+patching actually takes a really
+long time. You can imagine almost twice as long. So that
+leaves, you know almost
+through...uhh probably around 300 days that the patch is not
+being applied. So you know
+that's how long the bug is....are existing in the
+software even after you find
+them. So what we wanted to do is actually call out a couple of
+vendors who, uh who...who
+disclosed...whom we disclosed vulnerabilities to, because
+that's what we like to do. Ummm
+so what you see here is all of the vendors over those years,
+and Cogent Datahub I want to
+call out as one of the better SCADA vendors for doing
+patching. Actually one of the
+first bugs we disclosed to Cogent Datahub, their CEO
+actually emailed us and uh and
+worked with us on the fix. And they fixed it in like 6 days, it
+was amazing. Um and they have
+continued that trend, we are still purchasing bugs in Cogent
+Datahub and they are fixing them
+relatively fast. But if you look at the big vendors you see ABB,
+GE, um you know Indiesoft,
+those..um over 200 days to release a fix for a 0day
+vulnerability that we purchased
+and that is known. So that's kind of interesting, umm you
+know averages out to about 150
+days for bug fixes. A lot of these are going through ICS CERT
+and so, um just to sort of call
+that out. If you look at the SCADA industry and how it
+compares to other industries,
+you know micro....umm we we in the highly deployed software we
+consider that Microsoft, Apple,
+Oracle, the big name vendors, they do a decent job. Take them
+about 120 days to fix a bug when
+its disclosed. Umm and and SCADA and security products are
+battling out for second and
+third and with SCADA coming in third and kind of worst of all
+of them is business software,
+things like HP and other big name business like IBM it take
+them a long time to fix
+vulnerabilities. We are almost 200days for those types of
+vulnerabilities. So just, you
+know as you find bugs and you, you, you worked with ZIDI to get
+them fixed or disclose them
+directly to a vendor it does take a significant amount of
+time, but it..in certain cases
+it take more than a 180 days. So kind of rap things up. We
+present at these conferences and
+provide this level of detail because we want you to find
+bugs, we want you to work with
+uh with the vendors to get them fixed. We want you to work with
+bug bounty programs like the
+0day initiative to get compensated for your research
+and so um we are definitely
+interested in buying vulnerabilities and that's why
+we provide this detail. There is
+ICS..umm...you know focused malware that is actively
+exploiting HMI vulnerabilities,
+these vulnerab...these code bases are plagued with
+vulnerabilities. ANd you can use
+the simple techniques to actually find them, it does take
+a long time for them to fix, but
+they do end up fixing them. Umm and so we are going to be
+continuing this research and we
+are actually going to be releasing a whitepaper in a
+couple of months. We are going
+to release some proof of concepts and all our disclosure
+data is publicly available on
+0day initiative dot com, for you to analyze yourself and draw you
+own conclusion. Again we are the
+0day initiative, we buy bugs, if you find 0days, we are a
+whitehat bug bounty program. We
+like to watch researchers grow and provide feedback so that
+they find better bugs and
+getting higher payouts and so if you are interested, you know
+come up and talk to us. We've
+got basically the whole team here in the front row. Uhh
+they..uh we do a lot of research
+and we look forward to working with you. Thanks for coming and
+spending the time with us.
+[Clapping]

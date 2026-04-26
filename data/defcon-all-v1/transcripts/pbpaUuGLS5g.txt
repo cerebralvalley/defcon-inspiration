@@ -1,0 +1,567 @@
+Mahalo. Welcome to my talk. My
+name is Patrick, I have worked at a bunch of Acronymed places,
+I am currently the Director of R&D at SYNAQ. So SNYAQ does
+crowd-sourced vulnerability discovery with vetted security
+researchers. Basically anyone can sign up to find bugs in our
+customers websites, mobile apps, IOT devices and even networks.
+Our customer service isnt that good, so we end up paying
+out a lot of money to our researchers, which I think is
+pretty cool. So this is something that's of interest to
+you, check it out at SYNAQ.com or chat with me after the talk.
+All right so what is this talk going to cover, a brief overview
+of XPC, were then going to talk about a privileged
+escalation bug that was named Root Pipe. We are going to talk
+about malware that was then discovered, that actually
+proceeded the public disclosure of the bug, so it was exploiting
+it as a zero day. Then were going to talk about Apples
+initial patch, how they blotched that patch, how I was able to
+bypass that to re-exploit the vulnerability on a completely
+patched system. And then briefly talk about Apples final
+patch, which seems to squash the bug. Usually credits are given
+at the end, but there are a lot of really good SOX researchers
+who ive learned a lot and are kind of partially responsible
+for this talk. So first is Ian beer he works at Google project
+zero, he has given a lot of talks on XPC found a lot of
+really cool bugs. So pretty much everything Ive learned about
+XPC is from Ian. Neil actually found Root Pipe so a lot of
+credit goes to him as well  and then Pedro he did some
+initial analysis on Apples original patch which got me
+inspired - and finally the book that taught me most of what I
+know about OSX internals was written by Johnathan levven so I
+highly recommend this book. So before diving in, since were
+in Vegas. I think to define any possibly ambiguous terms so in
+the context of this presentation. Talking about
+implants, Im talking malicious persistent code.
+Talking about hooking, Im talking about intercepting
+function calls, installing a hook or detour. A trojan is a
+malicious program, something that is malicious but pretends
+to be benign. An injection is about getting code into a remote
+process. Finally a backdoor in the context of this presentation
+is code that provides undetected remote control of the computer.
+Alright, with those out of the way. I want to start with a
+brief overview of XPC, which is a modern interprocess
+communication mechanism on OXX. Since root pipe is an XPC
+related vulnerability, I think its important to understand
+what XPC and how it works. So XPC as I mentioned, is an IPC
+mechanism with 2 goals; privileged separation and
+stability or fault tolerance. So basically each XPC component is
+its own unique process, this allows more fine grain controls,
+because each process can have its own unique sandbox, which
+gives it real fine level control over what access it can have. In
+terms of stability or fault tolerance, again since each XPC
+component is separate process, if that process crashes or has a
+bug that wont necessarily impact the main application or other
+XPC component. The Operating System can just restart that
+component automatically. XPC is used extensively by Apple in
+both frame works and applications so you can just
+grab the file system looking for XPC components. Terms of frame
+work for example we can see webkit, webkit is obviously used
+by browsers such as Safari and does things like rendering and
+plugin hosting. Makes sense to put these in separate processes,
+separate XPC components because if you think ability a ton to
+have render bugs, exploits so if this is in a separate really
+tightly locked down sandbox process execution, even if the
+attacker gets arbitrary code execution, they're not going to
+be able to do anything useful like persist malware or do some
+command and control. They're not going to have to break out of
+the sand box. Also in terms of stability if a plug in crashes,
+if the plug in hosting is a separate process, its not
+going to impact the main browser, might just say hey
+plugin was unable to load, but its not going to crash the
+Safari. Another example of applications, again iPhoto has a
+bunch of XPC components, again related to rendering and
+converters. This make as lot of sense from a security point of
+view and stability point of view if iPhoto is doing some
+rendering or doing some converting thats not going to
+crash the main iPhoto application. Heres a more
+detailed example, allows us to dig into XPC a little more. Say
+we have an example application that does 3 things; it downloads
+zip files from the internet, unzips them, and then displays
+the images that are in the zip file. Normally we would write
+this as a single standalone binary that does all 3 tasks.
+What we can do though, is convert this to XPC basically
+break out its logical component. So here can you see we have a
+download XPC component, and then an unzip XPC service, which will
+also be a separate process. So as I mention each process can
+have its own set of privileges so for the download sure this
+has to talk the network, but theres no reason this has to
+talk to the file system. So we can put a sandbox constraint
+that says, this process is not allow to talk to file system. We
+can lock down the unzip XPC service even more saying it
+should not talk to the network or the file system. So this
+means if an attacker is able to find a vulnerability in the
+unzip component and they get arbitrary code execution, can't
+really do anything useful. They can't talk out the network, they
+then have to break out of the sandbox before they do anything
+useful. So it just adds an extra layer of stability. Also again
+in terms of stability fault tolerance, if any of these
+components have a bug and crash, its not going to impact the main
+UI of the application. Can say hey unzip fail, but its not
+going to be taken down. So conceptually how does this all
+work? Basically you have a client component, in this
+example the XPC application; it sends message requests to the
+XPC components or the XPC servers. These XPC servers or
+services will list infer messages, optionally
+authenticate clients that connect to them and then process
+or handle their requests. Now this should sound similar to
+something more familiar, kind of the client server networking
+model. Theres a ton of parallels where you have clients
+talking to servers authentication and all that
+stuff, so very similar. Message handling is process by the
+operating system. Some of Ians talks go into great
+details of XPC as mock messages. The operating system takes care
+of everything but from the application layer you send the
+message and get to end point. So its pretty easy to make an
+application and XPC component. If you have an application in X
+Code being Apple ID, you can just add a new target, and for
+your target type you select XPC service. This will create the
+required files with some play code and when you click build it
+will be automatically be packaged into your application,
+really easy to deploy. One thing to mention we can see a bundle
+identifier this is a string that is used by the client the
+application to find the XPC service at run time. Again we
+create parallels to the client server networking model this is
+like the URL of the server or DNS NAME, again this allowing
+the client and operating system PC server that the client wants
+to connect to and talk to. So how does the XPC service listen
+for client connections? Well theres a few things so first
+it creates this NSXPC listener object, accepts its delegate
+which is just a call back object and then invokes resume. This
+delegate object has to confirm to the NSXPC listener delegate
+protocol and implement a method called listener should accept
+new connection. This authentication method is called
+automatically anytime a client connects and allows the XPC
+server to examine it and validate and allow the client.
+Again, this is all kind of similar to a server socket doing
+a bind, listen, accept. So now with this all set up and running
+XPC clients can connect to the XPC server. Of course the server
+or service should expose some useful functionality. So here
+for example, going back to our downloader application, this is
+the download image method. So once this is implemented the XPC
+application will be able to connect to XPC service and
+invoke this remote method. Again if there is a bug or a crash in
+this method it will not affect the application. So back to XPC
+application client. To use this service. It needs to connect
+obviously and invoke the remote methods. Connect via the NSXPC
+connection and takes that idea I mention so pass it is XPC server
+that it wants to connect to. This will return an NSXPC
+then what you do is call the NXXPC connection object. This
+returns an exported proxy object. So this is basically the
+servers remote object that venders client. Now the client
+has basically a local copy of the remote object and invoke
+message directly on that object as if it was a local object.
+Executed in the remote and so that's boring part and XPC
+basics. Lets dive into root pipe is an XPC privilege bug. Now
+what makes root pipe so interesting at least to me is
+not just the bug but timeline. So we can see that the bug was
+discover in by Neil in October of last year where he
+responsibly disclosed it to Apple. I tested the code, which
+is Snow Leopard and found that those operating system were
+still vulnerable -- I did not have older version but it was
+introduced in original release of OSX in 2001. So -- some other
+details we'll see some malware that exploited this bug and talk
+about Apple passion attempts. So let's start by looking at the
+vulnerablity. So there is this private XPC called right config,
+it can create files. Exposes are emote method name right con fig
+dispatch created files. Nothing too special. The problem is or
+was any user even guest can connect to this right config XPC
+server and creates files. And the user can specify the path,
+the content, and the attributes. This is really not good. So for
+example we can create a copy of the shell and sets the SUIB and
+since that shell is going to be created as root simply executing
+will give us root privilege. It doesn't get much easier than
+this. So now let's detail exactly how we can connect to
+this right XPC service and invoke this method, so kind of
+go into the details of what happens under the hood when we
+perform this. So while we that you can directly to that remote
+to right config which has to method that allows anyone to get
+a file there is a client code with an Apple private frame
+work. That we can utilize is just another layer of
+abstraction but easier to talk to promote. So step one we need
+to get access to right config object as it name suggest this
+is a client objective to talk to the right config XPC service. So
+specifically we call the right config client share client class
+method and this will return a single instance. So now with
+this client object we can connect to the remote right
+config XPC service we do this via the right configs client.
+Authenticate using authenticate, authentication using sink method
+if you look at the disassembly for this method, you can see
+some of the low level XPC functions we talk about so you
+can net work name. Under the hood makes this connection to
+the remote. Now as I mention when you make initial connection
+to XPC server is going to authenticate you first. Which is
+with this bug that allow guess user that for this
+authentication object is if you have a kneel object and you
+execute methods on this this doesn't throw a null pointer
+just kinds of goes off. Older versions did not allow kneel to
+pass this this perimeter and have to be admin to create an
+authentication. Older versions of OSX were more secure. So now
+we authenticated we wanted to invoke the remote method to
+create that file. You need to get a proxy object from the
+server side of the connection. Then you can invoke methods on
+it like a local object. So the right config client has a remote
+proxy method, which gives a dispatcher object, then we can
+pass to the remote object. We don't get the remote object
+directly. We get a local dispatcher object. All right so
+luckily you ask the dispatcher object to create a file with
+content method under the hood a little more goes on, that local
+dispatch object as we see. Is then going to the remote proxy
+objects and pass that methods. We call the remote method we
+want the local vulnerable method itll transfer over the remote
+object and create attacker file. So putting these steps all
+together we can create a shell or any other file as root with
+any attributes or anything else we want. Our first we can an
+instant and we authenticate which again anyone can do even
+guest users. We then get this local dispatch object we invoke
+the remote that allows to create the file. Now if we execute
+this, we can monitor what goes on, at least at the file level
+for what goes on at least the file running a tool FS users. We
+can see the application which is called root pipe. It makes a
+copy of the shell we use KSH that allows itself to be run as
+root. If we look we can see right config XPC component that
+has vulnerability, we can see it creating a copy of that file and
+showing it so it has the SUI ID. So older versions just briefly
+mention they do require you to be an administrator. The default
+user so again this is a privilege escalation, because
+allows an attacker to get root privilege without having to
+specify the username and password. Neil found the bug in
+October and reported to Apple. There was some malware before
+Neils discovery. So SSL CMD is OSX persistent back door, was
+submitted to virus total in ought of 2014. Few months later
+they came out with a report. I guess they did some back end
+analysis on this file, determined it was a new piece of
+APT related OSS malware. As I mention, back door provides
+ability to create a shell, stream capture ,and key log
+which will be important in a sec. There were no report of
+Escalation. I don't think they were withholding I think they're
+analysis completely missed it. That's my opinion. So after
+Apple patched the vulnerability, Neil wrote a blog detailing the
+bug. And someone went back and doing some analysis found out
+that this malware appeared the same bug and we don't see a lot
+of OSX malware and we dont see a lot of OSX malware that
+actually has 0 to 8 privileged escalation vulnerabilities built
+in. So why was malware attempting to escalate its
+privileges, so on OSX user mode code can capture key process if
+the access for assistive devices is enabled. Now you can enable
+this via the UI under system preferences, but you have to be
+root. So a normal user if you click on the check box it is
+going to throw up a prompt and youre going to have put in
+your username and password so you can as I mention. You can do
+this via the UI, and if you monitor what this does under the
+hood, it creates a file named accessibility API enabled in bar
+dot Db, that contains a single character A. this is just a
+marker file -- that the operating system checks if that
+file is there it says user mode code can do key logging, it can
+intercept or capture key processing. So if you look at
+the disassembly for the malware we can see it is creating this
+file so in other words is using the root pipe as a 0 day to
+create this file to key capture and keylogging kind of cool. All
+right so I mention again. Neil reporting this bug to Apple in
+October. Took him about 6 months they did release a new patch so
+I think they may finally got it right but is rocky road to get
+there. So the first thing Apple did which I think some what of a
+fail, think decided not to back their patch they basically said
+its too much work. However PEDRO released a DYLD for monitor for
+connection attempt and basically ignore untrusted clients. I
+think is funny or sad that researchers can help secure more
+than the vendor. Anyway so Apple did patch so let's look what
+that patch did. So basically they left the right config
+completely intact. They left that function that can create
+files completely intact. Basically what they did or what
+they said we are only going to let Apple processes talk to
+this. Its like they added security at the door. If you
+want the talk to me create a file I'm going to check your
+badge, your ID if you are not Apple, GTFO. In the diagram you
+can see if untrusted or hacker tries to connect to this XPC
+service, its going to block it now not let them in. But if
+Apple process tries to connect, security guard will say, sure
+can you create whatever file you want. So when a client connects
+to XPC server the listener should accept new connection to
+invoke. This allows the server examine the client so what the
+patch did check that the client has new entitlement right config
+and we'll talk about entitlement in a second but let's take a
+closer look at this authentication. It grabs the
+clients authentication token, this is something that it
+generates when you try to connect to remote XPC service
+and as far as I know you cannot spoof it. It checks the client
+has that entitlement Apple private and if it doesnt have
+this entitlement it doesn't let it in so you can think of this
+as security guard checking badges at the club and you are
+not an Apple employee you do not have the right entitlement
+they're not going to let you in. Basically they're embedded blogs
+that are in the code signature of an application they confer
+capabilities or permissions so its a way to kind of tag an
+Apple indication and give it special permission, specifying
+what employer they are. When a security guard checks it
+determine whether they are denied. So apples patch
+looked weak. So I had a long flight home from infiltrate, I
+always wanted do something cool on an airplane. Besides
+obviously hacking the airplane so I took a little closer look
+at Apple patch and it tuns out it us insufficient. This a brief
+video. Basically see I execute the OS command. I look for a
+file named Phoenix, if not on the root file system, I try to
+create it, Im not root so it tells me to take a hike and then
+I use a small python script that does a few things, says its
+done. I re list this file I can see now it has been created in
+the root directory, we can see that is owned by root. Makes
+sense that XPC server is owned by root as well and any content
+I want it in the file can be put in this file. This was on a
+fully patched system This after Apple released their initial
+patch. So I want to walk through how I was able to by pass what
+fail when what worked. My goal was simple since the XPC service
+and function was left untouched I just wanted to be allow to
+talk to it to authenticate. And since authentication was based
+100% on the binary connecting. If the binary is trusted, any
+code within that binary is trusted as well. So you can
+inject malicious code, load a malicious plugin anything like
+that. The operating system only was checking that the main
+binary was entitled. So this is what I tried. I first tried to
+create my own entitlement. I first tried to infect signed
+trusted entitled binaries, tried to do some process injection,
+hijacking entitled binaries and trying to load malicious
+plugins. So we'll look at each of these closer. So I try to add
+the COM dot Apple dot private dot admin dot right config
+entitlement to my own binary. Again this is what the security
+guard at the door is checking. If you have this entitlement,
+you will be able to talk to XPC service. So I was like, let me
+try to put this Apple private and let me compile binary but as
+I soon executed, the OS told me to GTFO. Basically said, hey you
+claim to have this Apple entitlement but I cant verify
+you so I'm not sure exactly how this verification works but
+imagine it can probably detect that I'm not a verifiable Apple
+binary so it can kick me out. This is a fake ID, therefore you
+cannot have Apple entitlement. So I cannot fake the entitlement
+I have to abuse a legitimately entitled binary. So these
+entitlements are like an extra layer more fine grained mission
+control that can be slapped on certain binaries. So what I did
+is wrote a small python script that can enumerate all the
+binaries on the operating system and give me a list of which ones
+were entitled, this gave me about 50 or so. These are the
+trusted binaries are that allowed to connect to the remote
+XPC service. So my goal was to try to coerce any of these to
+load my arbitrary malicious code load if any of these
+processes I can then reconnect and retrigger the
+vulnerability so the first thing I tried to do is simply
+infect an entitle binary. The mock o loader verifies that
+digital signatures are in tact. So here we can see me trying to
+infect the directory application which is entitled and that's
+allow to talk to XPC component but you can see when I executed
+the loader said, hey the digital signature is no longer valid and
+kills the process. But on OSX you can unsign binaries and they
+can still execute. When you unsign a binary it removes the
+entitlement as well, because the entitlements are part of that
+digital signature. I then try to coerce the loader to load them
+DYLD into a malicious entitle process. For example, DYLD
+insert library to load or any at load time. This is kind of LD
+preload. But it turns out that environment and variables are
+ignored for entitle binaries. DYLD and calls a method thats
+called prune environment variables and the Apple comment
+says for restricted binaries delete all DYLD and LD library
+path environment variables. So what is in a restricted binary.
+When is entitle binary so the basically the mock oh loader
+will strip away and ignore any environment variables, and since
+were targeting entitled binaries because we need that
+entitlement to connect to XPC service, we ignore this so it
+doesn't work either. So then try DYLD hijacking. Kind of neat
+attack I talked about yesterday at DEFCON. Well this conference
+and you can, if you find a vulnerable application you can
+coerce it to load a malicious DYLD even if the DYLD is
+unsigned. And I guess a limitation of this attack is you
+need to find a vulnerable application or you can only
+exploit vulnerable applications you cannot hijack arbitrary
+applications. So I wrote a tool that could look for all binaries
+on the file system that were vulnerable to a DYLD hijack, but
+none of the binaries that were vulnerable had the entitlement.
+This didnt work either. I then tried run time code
+injection to inject malicious code into an entitled process
+that was already running. So the way you do code injection on OSX
+is pretty simple, takes about 5 steps. You first get a task for
+a pit. Like access to the remote process. Once you have this, you
+can inject shell code. You can create remote threats. In order
+to get access to this remote process. Even if its running as
+the same user you need to be root. Apple says if you are
+doing any kind of code injection you have to be root. From a
+security point of view my opinion makes complete sense.
+Since we dont have root, this also doesn't work. I then tried
+to find an entitled application that can load plug ins. And then
+once I'm loaded in this trusted entitle binary and I can connect
+to XPC service. So here we have directory utility. It is
+entitled and it appears to support plugins. We can see
+internal folder that is named plugins so I was intrigued. So I
+disassembled directory utility binary, you can see it invokes a
+method named load plugins in directory. If we run a file
+monitoring tool again FS usage monitors file IO. We can see
+when you execute the directory utility it does it goes through
+all plugs and yes loads and execute them into memory. Seems
+promising. Now since directory utilities is a system
+application, its owned by root you have to authenticate to
+even install a plugin, but let's forget this fact for a minute.
+If I found some way to copy in or install a plugin, would
+directory utility load my plug in? Maybe directory utility is
+doing some extra checks so I manually authenticated,
+installed it and when I executed you can see that directory
+utility found my plug in and even though it was unsigned it
+loaded and exhausted. So we are kind of closer. We can get this
+entitled binary to load unsigned malicious code that can talk to
+the XPC service, but since we need to be root to install the
+plug in this really not any closer at all. But if we can get
+directory utility to no be owned by root we can then copy and
+install the plugin and re exploit. So turns out we can
+change the ownership and install a malicious plugin game over. So
+this is how I bypass Apples initial patch. 3 easy steps.
+First you copy the directory utility into the TEMP directory.
+On OSX when you copy a file to the temp directory its
+permission to get changed to current user so it gets changed
+from root to me. So this means now I can put plugins into
+its application bundle because now I own the
+application. So we drop a plugin there and simply execute
+directory utility. This loads the malicious plugin even if
+unsigned and make the XPC request to the remote service.
+Again the security guard at the front door hey I'm not allowing
+anyone to come in and re exploit this. Who are you with? I'm with
+directory utility so it goes and checks directory utility and
+says yes you are executing within directory utility, okay
+directory utility is an Apple application, and it contains the
+correct entitlement. So go ahead, youre able to do that.
+education cutting with -- okay, directory until -- so go ahead
+you're able to do that so that means we can trigger the exploit
+once again. So heres the python code for it, super basic.
+I wish all escalations were this easy. Basically 3 simple steps,
+you can see python code, we copy the directory utility
+application to the temp directory. This makes it owned
+by us, we copy in the malicious plugin and again we're not
+modifying the digital signature we are just planting a plugin in
+its plugin directory and then we execute it. This will give us
+root. So I reported this bug to Apple they fixed it in OSX
+10.10.4 CDE 2015 3673. When I posted the video showing that I
+was able to bypass that. This inspired the original founder of
+Root Pipe look as well and he actually found the same issue.
+So he shares the CDE with me which is kind of cool. So heres
+some control flow graphs. We can see in the original version of
+OSX 10.10. This is the listener should accept new connection
+function, this is what is authenticating clients so we can
+see the very beginning theres no authentication. This is the
+control flow graph there is no checks being done. Basically
+anybody is allowed to talk to XPC server and 10.10.3. They
+added similar checks. As we just showed these were insufficient
+and finally you can see. The complexity of their checks got
+way more as well see, I think they got it right. But this is,
+kinda shows how hard it is to get things right. I would of
+hope Apple wouldve got the initial patch right. They
+didnt, but you know security is hard, I don't want to pick on
+them too much. Looking at Apple most recent patch we can see it
+does a few things. We can reverse engineer it to figure
+out what its doing. They add extra private entitlements, I
+think this gives them more fine grain control over whos
+allowed to connect. Most importantly they say the binary
+thats connecting has to live in either system or /user. Now
+these are both own by root so our attack generically is
+forwarded. we cant copy out these applications, we also
+can't put plugins or malicious code in any of these directories
+because these are owned by root. We don't have root. So I don't
+see any immediate issues with the patch. But as PEDRO says,
+there isstill the issue that the fix seems kind of brittle. As
+Pedro says the problem of their fix, is there are at least 50
+plus binaries, which are entitled and allowed to talk to
+the XPC service. So a single exploit in any of these binaries
+and the system is owned again because there is no fundamental
+fix inside right config. So I really would not be too
+surprised if someone found a way to exploit this. Alright so we
+see OSX contained a trivial privileged escalation that
+perhaps was introduced in the very inception in OSX in 2001.
+We saw malware that exploited this as 0 day vulnerability and
+Apples initial patch in my opinion was it was crap. These
+things scare me I love my Mac but I don't want to get hacked.
+So I want to talk about free security tools that I run. So my
+side hobby, I run a small OSX security website. I have a nice
+little malware collection including the one I mentioned
+today SSL dot CMD that exploits this vulnerability or exploited
+this vulnerability as a 0 day. I found it hard to find a good
+collection of OSX malware. People that have these samples
+don't like to share. So I try to have a collection that anyone
+can download and play with. So I want to share them with you guys
+today. So the first tool I wrote is called knock, knock, simple
+goal. When I say knock, knock It should dell me who's
+there. Basically tells you all software that's persistently
+installed on your computer that will automatically get executed
+when you restart your computer or log in. Exactly the same to
+autoruns on Windows but in my opinion looks a little better.
+My favorite feature is the virus integration. The tool doesnt
+actually tell you if something is malware or not. Its
+malware agnostic It just shows you what software is persisting,
+which is good if some new malware comes and persists.
+Which all OSX malware Ive seen does, it will be able to
+show it you as well. But with the virus total integration this
+is kind of nice, because for known malware, it can detect and
+flag this. You can also submit files. Kind of cool. Now the
+only limitation in my opinion to knock knock is that its
+reactive it doesn't provide realtime protection. So I wrote
+another tool that can provide that. So I wrote block,
+block Knock Knock tells you whos there and
+Block, Block tells you when some one is moving in.
+Basically it provides realtime run time protection. Monitoring
+known persistance locations. You can think of it as a firewall
+for autorun locations. So any time something persist itself or
+installs itself, itll pop up and youll get a little
+warning you can either confirm or deny. I released this
+January, but its been kinda cool. As new OSX malware samples
+are released I have been able to test them and they have all been
+generically detected by this tool. So we can see hacking
+implants persistent OSX implant. This means if you have already
+been running block block and hacking team tried to target it,
+you would of gotten a pop up. Now my mom and dad are going to
+click allow. Another piece of malware that was released a few
+days ago. A few days later there was a malware that was
+exploiting it. This is an example of why its not good
+to irresponsibly disclose bugs, the malware authors were just
+like adware writers, so as security researchers when we
+release 0 days there is negative to that, and in this case there
+are now adware authors that are targeting innocent Mac users
+with this privilege escalation vulnerability that Apple is
+working on. So again if you are running block block even though
+it would not detect the exploit, its not designed to detect
+the exploit you would be protected, because when the
+malware goes to persist you get a nice little pop up. The last
+one we were going to talk about another one at Blackhat is
+called task explorer. This is similar to process explorer on
+windows. In my opinion it is a better activity monitor for
+security conscious users. You can see all the processes that
+are running that are not Apple, that are not signed. You can
+quickly filter those out. It shows you the signing
+information, so you can see if things are unsigned Virus total
+integration, and then at the bottom you can see the loaded
+DYLDs. So I actually use this tool to help my find this
+vulnerability, because what I did was I ran it and looked at
+the plugins that were loaded by directory utility and then when
+I planted my malicious plugin it was loaded. So lets wrap all
+this up. So first my humble opinion I think OSX security is
+lame. There is a lot public 0 days, Apple, they can be
+bypassed and a lot of exploitable bugs that are out
+there. Since Root Pipe was kind of in the inception of OSX that
+bothers me. So its a great idea to audit all things, I think as
+security researches thats a way we can help Apple, or at
+least make our Apple computers secure. So its a great idea
+to audit these XPC interfaces, Apple thought that this since
+this is a private interface maybe no one will look at it but
+as soon as some one started to poking around there was a
+trivial exploitable bug that was found. Its also a good idea
+to really thoroughly analyze OSX malware. I believe they missed
+it, but again we should be doing a little bit of a thorough job.
+And finally when a security vendor releases a patch I think
+its good to audit the patch. So again I think we have some
+responsible to audit these things. Because we cant count
+on the vendor at this point. All right so thanks for your time,
+these slides should be up shortly to download. Also check
+out SYNAQ dot come. We have five minutes, are there any
+questions? Yes, sir? So the malware used it to enable key
+log in. I thought I could of used it far better to do more --
+things but I think they used it for what they needed. Use it
+only to enable key log in. Yes? So the question was, the DOD I
+think it was is NSA used to release documents how secure
+your mac and they have not done this for the number of years.
+Im not sure, I would like to see that too. They had good
+suggestions I don't know why I'll e-mail. I don think they
+talk to me anymore. But they just heard so that maybe we'll
+get an answer anyways. All right, well thank you guys, I
+really appreciate attending. E-mail me or chat to me if you
+have any other questions. Applause.

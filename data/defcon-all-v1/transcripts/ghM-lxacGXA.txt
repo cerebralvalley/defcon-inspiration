@@ -1,0 +1,425 @@
+>> Good morning, everyone. Welcome to DEF
+CON again. We're glad to see you all up this morning. And my name is Marc Weber Tobias.
+This is Tobias Bluzmanis, my partner. And hopefully, they'll get our audio problems
+dealt with. And our ‑‑ hey, okay. So we've got video on both screens?
+>> But no teleprompter? >> MARC WEBER TOBIAS: Right. But the president
+is not here, either. So Toby and I work for security labs which is in our office and we
+work for a number of major lock companies in the world. We have a team that analyzes
+mainly high security locks but some consumer level products as well for security vulnerabilities
+mainly for covert entry. So a few years ago at DEF CON we talked about a number of different
+consumer‑level locks but not really in detail. And as a result of that, we ended up filing
+a complaint with one of the standards organizations about the lock we're going to talk about today.
+And we figured a couple years would go by, some things would occur, maybe the problems
+would be remedied but they weren't. So today we're ‑‑ now the monitor went
+away here but I guess we're okay So today we're going to talk about one of
+the most popular consumer‑level mechanical cylinders in the United States. And the problems,
+the design problems that we found. How many of you guys have this lock on your
+doors? Ooh. So everybody knows what this is. Okay.
+Yeah. So this is probably in the United States there's really two major consumer level brands
+in the United States. This is one of them. And they're in every DIY store, hardware store.
+And a lot of folks believe that these are really secure. And in many ways they are.
+The problem is, we'll point out to you in critical ways, they're not.
+So we're going to go through ‑‑ we've done a pretty detailed slide presentation.
+And with a lot of graphics and animation that we hope you guys enjoy to detail the problems.
+And we recognize that a lot of folks can't afford high‑security cylinders that are
+$75, $100, $150 a piece. We do understand that.
+And I guess some locks is better than no locks on your door. But there's also a false sense
+of security that these kind of locks provide a higher level security than they do. And
+that's also enhanced by packaging and marketing statements by the manufacturer, especially
+with regard to the Builders Hardware Manufacturer's Association standard for ‑‑ it's a consumer
+commercial level standard that has much more to do with endurance and durable than security.
+And that's the case in this lock. So Kwiksets are really easy to understand.
+Today we're going to talk about their SmartKey versus conventional pin tumbler locks. And
+a number of ways we've determined to open them very rapidly and that present some serious
+vulnerabilities. Now, you'll notice that the lock on the left‑hand
+side of the screen, that's a SmartKey because it's got a little slot to the left of the
+key way. That means it's a reprogrammable lock.
+So what we're going to do is begin this morning, letting you listen to a couple pieces of audio.
+We called customer service repeatedly to ask them how secure their locks were as if we
+were going to buy some. And we wanted to set the stage because this ‑‑ either these
+folks aren't trained properly or they're making statements that they shouldn't be making.
+So either way we thought you would enjoy the questions. These are about two minute clips
+each. And nothing has been edited out that was relevant. Only the chit chat between us
+but these ‑‑ I tried to edit out to the relevant statements. So this first one was
+on ‑‑ in June of this year with Brian. >> Audio clip: Quick set, this is Brian. Can
+I help you. >> A couple questions on SmartKey.
+>> Okay. >> So my only concern is quick set comfortable
+and basically debunked this that there's no way to stick a screwdriver, just a common
+tool into the lock and open it. >> Technician: No, that would be a negative.
+I mean, if that ‑‑ if it was that easy to pick ‑‑ to pick a Kwikset lock, they
+would be having us do recalls, okay. This customer has this unit. Get a call tag, have
+a prepaid label sent back and sent back to our quality control. There's nothing like
+that. It's business as usual. >> Are you guys are aware or been trained
+of any tools out there that will open these or is this all just nonsense.
+>> Technician: No, without the key you can't open it, no.
+>> Just so I can tell my boss, as far as Kwikset is concerned, other than drilling these, if
+you don't have the key, you're not going to get in.
+>> No. >> That's the bottom line.
+>> If you stick anything foreign inside the key way is just going to make it that much
+harder to open up. >> Basically what you're telling me is it
+isn't going to happen. >> You can sabotage the key way which ‑‑
+>> (Ended) >> MARC WEBER: That was Brian. So you're starting
+to get the picture. This is Satima. (start audio)
+>> How can I help you? >> Are you tech support?
+>> Yes, I am. >> Ma'am, we're looking to buy a large amount
+of your SmartKey cylinders. So I have some questions.
+>> Go ahead. >> Are you technical?
+>> Yes. >> How about forced entry? How difficult are
+they? Like the old locks you could take a screwdriver and put a lot of pressure on them.
+>> Same thing with these. You can line up the springs. That's what the screwdriver would
+do, right? Force the springs to align and open the lock. With these ones, you can't
+even put a flat head screwdriver in there. >> You can't.
+>> You can't, no. Because there's racks we call them. They're coming from up and down
+‑‑ up an down direction. Not just up. >> Okay. So this stuff on the Internet is
+not true? That you can stick a screwdriver in them and open them.
+>> No, no. We were aware of that video and you know, we found out about it. But they
+did something else before they showed that video. I believe that's what I heard that
+they did something else to the cylinder and then they recorded the video with using a
+flat head screwdriver and opening it. That's not how it works.
+>> So, if somebody walks up to a lock in one of our apartments, unless they can take that
+lock apart, you're telling me they can't open it without a key.
+>> That's correct, sir. >> Is there any quick way of forcing these
+open that a burglar could do, like, in 30 seconds or 15 seconds.
+>> No, no. >> Is there anything guys have been trained
+on or are aware of. >> No, no. Nothing like that. There's no tool
+you can just put in the cylinder and just pop it open.
+>> There isn't. >> There's no emergency key that we send you
+that will open it. Nothing like that. >> How long have you been with Kwikset dealing
+with these? >> Four years.
+>> Let's just take a 4‑inch or 6‑inch screwdriver which everybody has in their kitchen
+drawer and you stick it in the lock and you take a pair of pliers or vice grips and you
+turn it. Can you open the lock? >> No.
+>> What about sticking a wire through the ‑‑ where the key goes in or any other
+‑‑ >> MARC WEBER TOBIAS: Now don't jump ahead
+of yourself. >> No wire or anything like that.
+>> You cannot. >> No, you cannot.
+>> You wouldn't worry about these to protect your valuables or your house or apartment.
+>> Not at all (end audio). >> MARC WEBER TOBIAS: That's what the public
+is told if you call in and want to he no if these locks are secure. I don't think there's
+any malice on the part of their employees. They just don't know. They haven't been educated.
+There was plenty of stuff on the net a couple years ago that they referred to I don't know
+if they don't know or have been told not to say it. They just don't know. The reality
+is as we is see from a show of hands, there's millions of locks used in America, homes,
+apartments, businesses, they're inexpensive. Cylinders run 20, 30 maybe $40 a piece, they
+have pin tumbler models and SmartKey models A deadbolts and also electronic cylinders.
+So it is one of the most popular locks in America. And they've been in business actually
+for about 60 years and again, they have a very diversified product line. These are some
+of their distribution channels as you recognize Home Depots, Lowe's, Ace Hardware, lots of
+folks are carrying these locks. Mainly they're sold through DIY channels, do it yourself
+charges rather than the locksmiths. A lot of locksmiths actually don't care for these
+cylinders because it circumvents their revenue and they're low quality locks. And this is
+a shot I think from Home Depot. And they're very, very prevalent. They've got great marketing.
+They're in residential and apartment facilities. So Kwikset, Weiser Baldwin, the basics. Toby?
+>> TOBIAS BLUZMANIS: No, keep going. >> MARC WEBER TOBIAS: We're talking about
+pin tumbler locks which is their older version and SmartKey. SmartKey will show you the difference.
+In some ways it is a very clever clock. The pin tumbler locks they sell are 5 or 6 pin.
+SmartKey is 5‑pin. The SmartKey, there's attributes that the pin tumbler locks don't
+have as far as security. The pin tumbler locks, if some of you guys were around several years
+ago we had 11‑year‑old Jenna Lynn bumping them open. You all remember Jenna Lynn? She's
+probably in college now. But she became a YouTube star a little girl in one minute figured
+out how to open these locks, whack whack, they're open.
+The problem is they all have the same key way. There's no duplication protection. There's
+no key control protection. These are definitely not for high‑security installations. They're
+mainly residential and apartments. So Kwikset history as I said, they've been
+around about 60 years, they're very easily compromised. And the SmartKey was introduced
+around 2008 but probably a lot of you folks still have pin tumbler locks. You probably
+wouldn't know the difference unless you look at the little slot, the right hand photograph,
+the little slots to the left of the key way, that indicates Kwikset. But it's the same
+key that will open these locks. So here's the difference: On the left is a
+pin tumbler where it's a conventional lock with two pins and a spring in each chamber.
+On the right‑hand side is SmartKey. It's much more complicated design but same key
+will open it. >> Actually, you can see what they share is
+the same key. What Kwikset did with this is try to use the same key for their locks so
+you have one that is pin tumbler design and the other you can reprogram and supposedly
+more secure, you cannot bump, cannot pick open the lock, you can probably other attacks
+like impressioning the key, you cannot do that with Kwikset. But on the tradeoff, we
+find ways more easy to open this Kwikset lock. >> MARC WEBER TOBIAS: So pin tumbler, they're
+not secure unless they're a lock with a number of added on attributes. Pin tumbler locks
+in this category are easy to pick, easy to bump open. Easy to impression, easy to mechanically
+bypass. Can be master key'd and it's also fairly easy to determine what the top level
+master key is and there's limited number of combinations. And these locks are fairly low
+tolerance locks. So there are many fewer keys that, in the universe of keys that will open
+these locks. So the pin tumbler lock ‑‑ go ahead.
+>> TOBIAS BLUZMANIS: Okay. So we're going to go first how a pin tumbler cylinder works.
+Okay? In this case, we have a Kwikset cylinder, this is what you see from the outside. And
+the parts ‑‑ we have a shell that is the outside portion, the plug, and the key slot
+where you put the key. That's what mainly more people know about the lock.
+So what is inside isn't a pin stack. You have a spring ‑‑ series of pin tumblers and
+you have shear line. That shear line is where you have to move the pin stack in order to
+create and >> MARC WEBER TOBIAS: A clear surface.
+>> TOBIAS BLUZMANIS: Separate those pins in order for the lock to turn. Okay? So that's
+the basics of a pin tumbler. You have to get that pin on shear line depending on the height
+of the key so you can unlock the cylinder. Now, that's one pin on regular pin tumbler,
+you have more than one pin. You have in this case 5 pins, different heights on the bottom
+pin, which is the portion that fits the key. So when you put the key, you see all the bottom
+pins line up with the cylinder. So that cylinder can turn if they match ‑‑ pins match the
+key. So if you put the wrong key, what you have is some pins either extend to the lock
+or something from the top blocking the rotation of that pin. It's a very simple design. Has
+been for many, many years. And most manufacturers work around this design adding side bars,
+third levels of locking devices but it's the most common element.
+>> MARC WEBER TOBIAS: Are we okay? Okay. >> TOBIAS BLUZMANIS: So that's what is inside
+on a regular pin tumbler. And we said this SmartKey is not a pin tumbler lock. If you
+look inside, the very different components that will make that lock be able to reprogram
+the lock to any specific key. And to make it more secure against bumping and picking
+and some sort of impressioning techniques. >> MARC WEBER TOBIAS: This is what the inside
+of a SmartKey looks like. We'll blow that up in just a minute. But this is a side bar
+base lock which means it's a different locking mechanism that keeps the plug where you stick
+the key into from turning. And this design actually was developed in 1978. The original
+design here was in over a million hotel rooms because it aloud ‑‑ it was the first real
+programmable lock. Very, very clever. And then it was improved by a company in Italy
+called Rialda. And then Kwikset took the Rialda design and modified it for the consumer market
+in the United States. So attributes of SmartKey. It's only a 5 pin lock. And when we say pins,
+they're really not pins. They're sliders. And there's a really big difference. Pins
+mechanically and physically are secure against torque and forced attack. The sliders in these
+locks are not quite so secure. In this lock there's one side bar that really provides
+the entire security of this lock. They are extremely pick resistant. There's
+an underwriters laboratory standard 437 which defines picking for commercial and high security
+locks. Kwikset actually meets this standard. That means these are not be picked in under
+10 minutes. They are very, very pick resistant. And they also cannot be bumped, period. Because
+there's no pin pin tumblers. These are sliders so there's nothing to bump open to ‑‑ which
+in a way, as we refer to this lock, it's one of the most secure insecure locks in America.
+Now, obviously those are opposite ends of the spectrum. That's what it is. From the
+picking standpoint, from the impressioning standpoint, from the bumping standpoint you're
+essentially not going to reopen them. The problem is that's trumped by other ways we'll
+show you. The other really cool thing ‑‑ how many of you guys have SmartKey versus the
+old pin tumblers or do you know. So not that many.
+SmartKey are backwards compatible. You can instantly reprogram them with without a locksmith.
+Stick the correct key into the lock, turn about 30°. Pull it out. Stick a new key in,
+turn it back to 12:00, that lock is reprogrammed with a new combination. It is a very, very
+clever and desirable option in the marketplace. But there's a lot of security tradeoffs to
+get there. >> TOBIAS BLUZMANIS: Definitely. We have to
+also we understand the space they have to work is also the same. So to put all this
+different attributes in a lock. It becomes a very difficult task to do.
+>> MARC WEBER TOBIAS: The other attributes it has one primary kiwi everywhere which is
+a problem because it's easy to make keys or duplicate keys. There is no key control. Now,
+they make a special deadbolt lock for limited master keying for apartment houses that we'll
+show you. And they think that that key cannot be duplicated easily. Toby, you want to do
+that this one? >> TOBIAS BLUZMANIS: Okay. We showed you at
+the beginning how a pin tumbler lock works. This is a SmartKey. The first you notice is
+the little slot on the side. That's to change the combination when you follow the right
+procedure. We told you on the inside totally different. This lock is based on a side bar
+design. You see a pin you see a slider on next to the pin and side bar.
+>> MARC WEBER TOBIAS: Side bar is in purple. >> TOBIAS BLUZMANIS: Side bar tried to retract
+but it's blocked by that slider. So in order for that lock to open, the pin has to move
+the slider to the right height so that side bar can enter groove of the slider and the
+lock can be opened. That's the principle of this SmartKey as far as the slider bar combination.
+The way they can make the different combinations is the way that they fit the pin to the slider.
+With different channels. The slider stays in the same position, slide bar at the same
+position, but the pin configuration pin slider changes for different depths from 1‑6.
+>> MARC WEBER TOBIAS: The relationship between the pin tumbler on the right hand side and
+the yellow slider those separate in reprogramming mode so that they index to one of the 6 different
+little teeth on the slider. And they bring it back together. That's how the combination
+is changed in this lock. Go ahead, Toby. >> TOBIAS BLUZMANIS: Same thing, not only
+one pin/slider combination. We have in total for the SmartKey, we have 5 pins and 5 sliders.
+So the sliders are the ones that set the combination inside the SmartKey cylinder. So when you
+put the key and the key is set to that combination, you see the red dots? That's where the side
+bar drops, okay? So when the side bar drops at that combination,
+that lock can be open. And the pins just follow the combination of the key. In this case we
+have 26341 which is the individual depth of each key. If we want to rekey the lock, we
+have to put the working key they have a special cool that it will move a block in that have
+a hub that house all those sliders and what happens is that the sliders separate from
+the pins. So now we can remove the pins but the pins ‑‑ the sliders are at the same
+‑‑ shear line with the ‑‑ >> MARC WEBER TOBIAS: They're locked into
+position so they can't go anywhere until we stick another key in.
+>> TOBIAS BLUZMANIS: So we can put another key. That key sets to the combination of the
+key and then we have to bring all those sliders back to engage again to the sliders, the pins.
+So we have a new key working for this lock. So it's very clever design. They have ball
+bearings to prevent also ‑‑ >> MARC WEBER TOBIAS: Okay, so these are the
+components that ‑‑ let's see. Okay. So this shows the 5‑pin tumblers that the key
+responds to. These are locked together to make this lock work. So ‑‑ and the two
+bottom pieces are the side bars that actually stop that plug from turning.
+And this is what the plug looks like. >> TOBIAS BLUZMANIS: Yeah, their pins are,
+like, hollow so you can put the pins, they have a cover. So you see the tabs where the
+sliders go and you have that hub, that puts the slider together with the side bar.
+>> MARC WEBER TOBIAS: Okay. So now let's talk about master key systems before we get to
+the attacks. So in conventional master key systems and
+pin tumbler locks, we have one key that can open many locks. And there's potentially many
+different levels of keying. Because we have an extra pin in each chamber. And that creates
+a whole bunch of different shear lines. Conventional locks are expensive to rekey. You have to
+have a locksmith do it. And there's also what we call incidental master keys. A lot of keys
+that will open a master key cylinder that really aren't intended.
+>> TOBIAS BLUZMANIS: And that's a problem. >> MARC WEBER TOBIAS: And that's a problem.
+>> TOBIAS BLUZMANIS: Well actually, what happened with master key system, those unintended keys,
+they tried to use those to work in the system. So depends on how the people doing the master
+keys, you have more than two keys working on the system. We're going to show pretty
+much how a master key system works. >> MARC WEBER TOBIAS: As we pointed out years
+ago, if they're not high security, they be also easily compromised but in a different
+way so we can figure out what a top level master key is in a system.
+>> TOBIAS BLUZMANIS: Remember the pin tumbler lock it has top pin, bottom pin? Now we have
+another pin between the top and bottom. So what happened that we are ‑‑ we are creating
+two shear lines, right there we can split the pin and the lock opens, we have one depth
+for that pin. But it's also another shear line. So we have two depths that opens in
+that specific chamber. But again if this is not ‑‑ a lock is not one pin, so we for
+this example we put another split pin. We put a master ‑‑ that's called a master
+waiver. >> MARC WEBER TOBIAS: Middle pin.
+>> TOBIAS BLUZMANIS: And the rest will ‑‑ were left the pins like that. We have an A key
+that makes the shear line ‑‑ so that key will open the cylinder. We also have a B key
+that will open the cylinder. So those were the two intended keys when we're making the
+master key system. We have to understand also that when people say they have a master key,
+there's no such thing as a master key for a GM car. You have to set a master key system.
+In a pin tumbler lock when somebody said I have a master key, the system is set to work
+with this master waivers in order to set the system to open different locks. The problem
+now is that we have two unintended keys, key C and key B that will also open that lock.
+And if we add more master waivers, that number is going to increase an exponential number.
+And, depending on the person doing the job, they can do even more master waivers and that
+creates many, many coincidental keys and they're not secure.
+>> MARC WEBER TOBIAS: And it can also make the lock a lot easier to pick.
+>> TOBIAS BLUZMANIS: The other problem with Kwikset is the key way is so common and they
+have so many different individual keys that they can use that probably your home key if
+you have a commercial facility that has been rekeyed and has a master key system, is that
+potentially one of your keys can open one or more of those locks.
+>> MARC WEBER TOBIAS: Kwikset came up with key control. It's a one level master key system.
+There's two cores in one cylinder. It's actually a clever system for apartment houses where
+you only need one level of master keys. There's two separate key ways that are secure that
+one won't go into the other. So the apartment user, the apartment tenant has one key, their
+change key and the management has a key that will open the other core in the lock. It's
+actually very clever. No locksmith is required. You can instantly change your master key systems.
+There are 46,000 theoretical combinations. They're good for facilities that need a very
+limited kind of system. So actually, it's a very clever system. However, it's got the
+same security vulnerabilities as the single lock. And again, they can be instantly reprogrammed.
+And you do not have cross key problem in the Kwikset that you have on conventional master
+key systems. It doesn't exist. So the problem is they can also be compromised in 15 seconds.
+So security, what you get is what you pay for. Does anybody expect a 20‑$30 lock,
+$40 lock to actually be secure? And that's the question. And again we understand that
+a lot of folks can't afford high security locks. But we also believe that the public
+has a right to understand so they can make the decision knowingly and intelligently whether
+they'll accept the risk. So as we say, there's millions of facilities that can be at risk
+here. And there's a false sense of security as we talked about between the BHMA standard
+that says this is the highest grade of security for residential and the anti‑picking, anti‑bumping.
+So we're going to go through and as you heard the tech reps at Kwikset say, there's no way
+to get into these locks. If you don't have the key or you've got to drill them and destroy
+them. So SmartKey and design issues, the problem
+is the side bar and the sliders. There's only one layer of security and our problem is these
+little sliders that you see are very fragile. And there's also maintenance problems and
+programmability problems and low tolerance with the lock. And the real problem, as we're
+going to show you in a minute, you can apply torque to these plugs and open them. So here's
+the attack methodology that we came up with. Try out keys, wired through the key way. Visually
+reading the side bar and slider positions. Torque the plug, replicating key control and
+decoding of the master key. Other than that, they're very, very secure locks.
+(Laughter). Okay, so first of all, try out keys, probably
+most of you guys aren't old enough to remember in the 60s we had 64 keys that would open
+up all GM cars. 64. We exploited the tolerance in the locks.
+>> TOBIAS BLUZMANIS: There's no such thing as a master key system for GM and you said.
+>> MARC WEBER TOBIAS: They're not master keys, they're tryout keys, you jiggle them in the
+key way. Sometimes they would open. Most of the time. But what you're doing is cutting
+the tolerance in half. Same thing with Kwikset. Basically with six depths in a Kwikset, most
+of the time we can make three depths equal 6 depths. So here is a graphic. The six steps
+on a Kwikset key, 1, 2, 3, 4, 5, 6, cuts. This is a depth increment key of 1, 1 1/2,
+2, 2 1/2, 3, 3, 3 1/2 and 6. >> TOBIAS BLUZMANIS: We didn't do this. This
+is something that we test on the SmartKey. This is an old type of attack. Try to split
+the difference between one cut and the other one. Because the tolerance is ‑‑ you need
+tolerances for this lock to work. >> MARC WEBER TOBIAS: Yeah. So the next problem
+has always been their problem and it's called the tail piece design. And this is the linkage
+when you insert the key into the plug, the plug has to talk to the bolt or the latch.
+To communicate the energy to withdraw or lock the bold. So with Kwikset, this is hollow
+on one side. It's square and hollow so it will interface on both sides of the door together.
+Through the bolt. So this is one of the attacks we developed on one of the older key knob
+cylinders. This is a special key we made on the bottom that if we knock out the piece
+at the end of the key way, so there's a slot, we can go right through that and open the
+lock. So, if you stick that in literally in five seconds, this key and knob lock is open.
+This is another design. Toby? >> TOBIAS BLUZMANIS: Yeah, this is an old
+design. Actually this is a pin tumbler lock. They share the same configuration. But the
+back was covered by like 20,000 of an inch thick brass. So we're piercing that with an
+old Kwikset key that you can get anywhere and we put a piece wire that it was bent to
+accommodate the cylinder. >> MARC WEBER TOBIAS: This is the newer design.
+>> TOBIAS BLUZMANIS: This is on the Kwikset SmartKey and we're going to show how easy
+we can access the tail piece and pierce ‑‑ >> MARC WEBER TOBIAS: You tell us whether
+you think this is ‑‑ ah, come on ‑‑ whether you think this is secure.
+>> This attack on the tail piece of the Kwikset SmartKey and earlier cylinders is based on
+the design of the tail piece by Kwikset. It's hollow and it's square which allows us to
+pierce the cap at the end of the plug and insert a wire that's been formed to catch
+the edges of the tail piece and turn it. >> TOBIAS BLUZMANIS: Okay, the first thing
+is to introduce the tool like a regular key. I'm going to put tension. And that tension
+is going to make this side bar block the slider so I can remove the tool. And the reason is
+I need to put the tool backwards so we can start piercing from the top. That's the complicated
+part. >> MARC WEBER TOBIAS: Yeah. It's just a sharp
+piece of metal. Yeah, that's the complicated part. Now it's a matter of breaking it.
+>> TOBIAS BLUZMANIS: You can see the back on one side. (Smack smack smack smack smack).
+>> MARC WEBER TOBIAS: That's it. >> TOBIAS BLUZMANIS: This is a complicated
+part. >> MARC WEBER TOBIAS: Yeah, you've got to
+use the pliers, yeah. That's why I let him do it.
+>> TOBIAS BLUZMANIS: Now we have an opening for wire now we can access the tail piece
+that is ‑‑ right here you see I'm moving the keep going because ‑‑
+>> MARC WEBER TOBIAS: Yeah. And that's it. That will open the lock.
+(Applause) >> TOBIAS BLUZMANIS: So that's it.
+(Laughter). There's no damage to the lock. Your key still
+works. >> MARC WEBER TOBIAS: So how many of you still
+trust your door locks? Next one: Visual decoding. We didn't show this but we'll tell you, you
+can actually take a little mirror, insert it into the lock, it takes a little more talent.
+And you can read the position of each of the sliders. Okay.
+Here's the really good one. This is, as I told Toby, let's just label the slide "torque'd
+off." So this is torquing the plug. We actually filed a complaint with the Builders Hardware
+Manufacturer's Association a couple years ago. It was essentially ignored. That we didn't
+think this lock should be certified as a grade 1 lock. This is the entire security of this
+lock as far we're concerned. These are sliders as you saw on the diagrams. The one on the
+left is normal. The one on the right has been warped. You can see it's not straight. This
+is also what happens when you stick a screwdriver into the lock. It's warped. The geometry changes.
+>> TOBIAS BLUZMANIS: The lock is going to be as secure as its weakest link and if the
+material is not as strong enough, that that's the end of it.
+>> MARC WEBER TOBIAS: We also ran some tests and we were able to torque this lock at 112‑pound
+force inches. The standard actually requires 300 but their argument was well, yeah, but
+you're either sticking a paperclip or a piece of key ‑‑ a broken off piece of key into
+the key way. >> TOBIAS BLUZMANIS: There is one element
+‑‑ >> MARC WEBER TOBIAS: 7 minutes.
+>> TOBIAS BLUZMANIS: There's one element that ‑‑ on the cylinder that when we torque
+the plug, we had to introduce a piece of key wire. Because we need to lift that slider
+that is blocking to the housing because there's three different depths, depth 1, depth 2,
+depth 3 that it will block the physical slider will block the rotation for that pin.
+But there isn't a specific position. And doesn't matter depth is set the slider. The slider
+is going to get inside the plug. So the only prevent element preventing the cylinder for
+opening is the slider. >> MARC WEBER TOBIAS: So here's what happens.
+(Audio) SmartKey. >> TOBIAS BLUZMANIS: That's the SmartKey.
+We just need to ‑‑ that is specific height. We're using a piece of paperclip. We just
+‑‑ >> MARC WEBER TOBIAS: That's also the complicated
+part. >> TOBIAS BLUZMANIS: And of course I did that
+part. (Laughter).
+>> MARC WEBER TOBIAS: Yeah. (Chuckling) so this is just a standard little screwdriver.
+We just seat it into the key way. You don't have to bang on it. This is a vice grip. This
+door on your house. You see it's already turned. >> TOBIAS BLUZMANIS: You can see it's already
+turned. >> TOBIAS BLUZMANIS: Those sliders bend, the
+plug compresses. So now the cylinder can go back and forth. Now you have to put that piece
+there. And that's the reason why they passed the test. To certification. Because when they
+test for this lock, they put the screwdriver, they torque it to say ‑‑ but the cylinder
+is open right now. >> MARC WEBER TOBIAS: Okay. Same problem,
+no key control plastic keys. Okay? This is very impressive.
+>> TOBIAS BLUZMANIS: That's a MasterCard. >> MARC WEBER TOBIAS: No, that's Chase.
+(Laughter). >> TOBIAS BLUZMANIS: Sorry, I didn't know.
+>> MARC WEBER TOBIAS: So then we figured out how to decode the lock. We're going to run
+out of time. Basically there's a procedure that we can take six different keys and we
+can figure out ‑‑ >> TOBIAS BLUZMANIS: How to decode it. Those
+are the depths of each pin. But now, if we notice, that side bar really doesn't ‑‑ did
+not engage on the false gate. So we designed one key that can move basically what we're
+going to ‑‑ you're going to see here in this video is that if we can remove the key
+from the cylinder with a specific depth that is an indication that we have the code ‑‑
+>> MARC WEBER TOBIAS: I don't think we have time to run this video. But these are the
+six keys ‑‑ let me just do part of this. >> Video: This is going to be decoding the
+cylinder on Kwikset. >> This is the problem with master key.
+>> We have depth probing keys for each of the 6th depths that we're going to probe in
+rapid order and determine the essentially the gate positions on each of the sliders.
+>> TOBIAS BLUZMANIS: So let's start with number 6. Just put the key in. Put a little bit of
+torque and try to remove the key. >> TOBIAS BLUZMANIS: If we cannot remove the
+key, that's an indication that that pin is not set for that depth.
+>> MARC WEBER TOBIAS: Basically we go through and probe each of the six sliders and then
+once we figure out the code, we generate a key for it in, like, 10 seconds.
+>> TOBIAS BLUZMANIS: So we go pin by pin. Pin. We just put the key in that position.
+We try to remove. If it can be removed, we record the number that we're using to ‑‑
+>> MARC WEBER TOBIAS: So basically, Toby goes through, decodes the entire lock, creates
+a key for it. So making the control as we'll wrap this up,
+this is their master key scheme. >> TOBIAS BLUZMANIS: Yeah, this is the way
+that Kwikset takes the approach for the master key system. This is what they call the key
+control. >> MARC WEBER TOBIAS: It's not playing. Go
+ahead. >> TOBIAS BLUZMANIS: So that cylinder has
+another cylinder on top. That's the scheme they use. It's two cylinders because their
+platform is so small they decided I can have one key for a renters. One key for the user.
+The thing is they're so close and all this attack also can be performed on the ‑‑ their
+lock. That we thought well, this is not secure. It's even more insecure because you don't
+see the cylinder on top. The cover has to turn so you can expose the other cylinder.
+So, if torque the plug or you pierce the plug, you're never going to notice. And that's something
+that you, as consumer, should know that the >> MARC WEBER TOBIAS: Here's the bottom line
+as we'll sum up. This is a clever in some respects but also insecure in some respects.
+It's a trade I don't have. When you spend money on locks, it's an insurance policy.
+You do get what you pay for. It may look secure but that, as we've shown you doesn't mean
+it is. I think that wraps it up for this DEF CON this year. We thank you very much for
+coming and we hope you enjoyed this. (Applause.)
+>> TOBIAS BLUZMANIS: If you have any questions ‑‑
+>> MARC WEBER TOBIAS: Thank you.

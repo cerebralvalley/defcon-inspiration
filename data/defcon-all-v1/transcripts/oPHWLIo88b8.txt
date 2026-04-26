@@ -1,0 +1,354 @@
+- Bonjour! My name is
+Elie, I work at Google, where I lead the Security
+and Anti-Abuse Research team. Today, we (mumbles),
+which is here in spirit, we're going to tell you how we can use deep-learning to reduce
+side-channel attack surface. Before getting started, I
+would like to point out that the research you're about to see, are part of a larger project that we do in collaboration with many Googlers, and external collaborators around hardening hardware cryptography, to create more secure devices. Side-channel attack is one
+of the most efficient ways to attack secure hardware, because instead of
+targeting the algorithm, which is usually well
+understood and well scrutinized, Let's say, AES, instead we target the implementation. And the interplay with a given hardware. And this is way less scrutinized because A, there is many of them, and B, it is way more subtle to understand how side effect of code
+affect a specific hardware, and how that can be
+exploited by attackers. Here is a concrete example to show you how powerful such an attack are. Back in 2017, researchers
+were able to recover Bitcoin private keys, out of
+a the Trezor hardware wallet, by using side-channel attack. This shows you that, despite
+the algorithm being reviewed, and the hardware being well understood, the interplay between the two, still had some problems, that you can exploit through
+side-channel attacks. And from the defender side, side-channel attacks are
+very difficult because they are very hard to debug and fix it. So even you know that
+you have a side-channel, it's really hard to know
+where it's coming from, and what you can do to fix it. So, a side-channel attack
+are both very important, and hard to debug, which means that there is a room for innovation, on how to help with a situation. And that's where as
+these projects comes in. And our idea was, maybe we can try to develop new technology, to
+accurately pinpoint the code, which is vulnerable to
+side-channel attack. So, developer can quickly isolate it and try to improve it and strengthen, and improve the quality
+of the implementation, and be more resistant
+to side-channel attack. So was the idea we had, and then, the way we went about that was we propose to use a deep-learning and dynamic analysis and combine the two to be able to accurately pinpoint
+the origin of the leakage, which is responsible or
+which is exploited by a given side-channel attack. And I know, I know, what you're thinking. You're going to be like, Oh my God, one more deep-learning talk. Really? It's all going to be all
+hype and etcetera et cetera. Well, actually, no. This talk as I promise
+is a hacker (indistinct). So, we want to make it very concrete. And what we really want
+to do today is showcase to you our deep-learning tool, which we call SCALD which stands for Side
+Channel Attack Leak Detector, and how that works in practice. And to make it very concrete, today I'm going to show
+you how we can use SCALD, to debug tinyAES a very
+vanilla plain implementation of AES running on a well known,
+CPU, which is the SMT32F4. So, we're going to really
+see in practice today, how you can use the
+technique we developed, to isolate a very clear leakage. And hopefully by end of the talk, you will have a good understanding of what the tool is about and why it maybe useful if you're working in the field of cryptography
+and hardware crypto. or if you're interested in the subject. So, with this, how are we
+going to go about that? First, I'm going to briefly
+detail how side-channel works. Then we're going to discuss how AI based side-channel attack works because we are new. We need those to be able
+to pinpoint a leakage. Then I'm going to dive a little bit into what is AI explainability and how you go about explaining what the machine-learning sees, or understands or how it makes a decision. And finally, we're bring
+everything together. I talked to you a little
+bit about the part of the project and how we fit all together to well, pinpoint a leakage, and I'll show you how
+it works in practice, for the target or tinyAES on SMT32F4. We can follow along by
+getting on the site, at the very least. And hopefully links of code, by going to https://elie.net/scald As I mentioned, the
+purpose of this talk is to be a very practical, down to earth, on how can you use and how this type of tool works at a high level, and how you can use it, as a practitioner, not necessarily how you
+can develop such technique, and how you can research
+on how to improve it. If this is something
+you are interested in, we are working on a
+paper, a research paper, which have all the technical details about the question technic
+we used for benchmarking and the alternative and also good stuff. And hopefully, the paper
+will be out shortly, by the time you see this recording, or will have been already put on archive by the time you see it. With that out the way, let's talk with, recapping what side-channel are, At its core, a side-channel attack is, an indirect measurement
+of a computation result, using an auxiliary mechanism. So, basically instead of
+observing direct as a result, we try to infer what it is,
+using a third party way, which is what we call
+an auxiliary mechanism. Side-channel attack, are
+using many, many ways, to attack various targets. Obviously as discussed in this talk, they are used to recover encryption key, out of hardware secure implementation. They're also used in web security to perform blind disc SOL injection. Where you cannot see the
+return of a history statement or it's SOL injection. And then they also used, to steal password pins
+from secure implementation. And they're also used, as I
+mentioned in already example, at the beginning, to recover,
+crypto wallet, private keys. And those are only four examples, of the many way you can
+use side-channel attack, which is basically, when
+do you need to either write something you cannot
+observe side-channel attack is usually the way to go. Let's make that a little bit
+more concrete for use case. So when you do a computation, for crypto, what you do is you feed for a plain text, and you feed a secret key. And the algorithm is running on the CPU, and what it's running, we
+have some leakage, right? The first one is, how long the computation takes, what is not very relevant to AES when you have hardware
+acceleration, actually, depending on the computation, time might change depending on the key that was mostly used
+for, say a long time ago, because RSA use exponentiations and when it's not constant time, it can actually help to recover the key. That's one, the example, but again, timing is part of the computation text. Then we have the one we use in this talk, which is current, of course, depending on the operation you do, depending on how many register you load, how many registers you unload, the amount of power consumption and will rise, from, clock to clock. And so that's what we can measure. And that's what can use to
+infer what is happening. Then we have a third
+one, which is less used, but it's still possible, It is heat, of course depending on
+which part of the type of operation you do, different parts CPU will
+be used and as result, some parts will be hotter than others. But (indistinct) not most values. I think I haven't seen
+very much concrete example, but it does exist. Last but not least, we also have what we call
+extra magnetic emission, E-M And E-M is also a powerful channel, widely used to recover, public keys? It is with current, probably one of the two most
+used in side-channel attack, timing being also
+important as I mentioned. But purely current and E-M, is probably likes the two
+leading technologies these days. What does it look like in practice? So here is a power trace of a AES. And if you look carefully
+in the middle of the slide, you'll see, well, about
+10 times the same pattern and they do correspond
+to the turnaround of AES. So you can and visually see on a non-protected very
+lightly protected in the AES. That we can observe around, by just working out the power trace. If we can observe it, as human, it means there are some
+statistical information there, that can be exploited to I
+understand what is happening. And that's in a sense, the searching out, the side effect. And that we can use to recover an AES key. In nutshell, how you go about that? Well, you get the CPU or the
+target, to do the encryption. And what you do is you do inquire while your encryption is performed, the power trace using an oscilloscope. And then, in a traditional
+side-channel attack. As the state-of-the-art is
+called a template attack were you basically combine
+the traces you observe, and you make statistical estimates, on what it could be. And the statistical estimate will help you to recover your AES key. This is how it works. If you wonder what type
+of hardware we used. And again, this is what
+we used doesn't mean that's the best, just what works for us. We used a NewAES Chipwhisperer Pro, and for some of our work,
+however, notice still we also used Picoscope 6,000, when we need faster sampling, when the target is very fast, and we need all the information. So for example, last year,
+when we talk about SCAAML, which is a way to do, a side-channel attack
+using machine-learning, which we're going to
+briefly recap in a second, then we do use a Picoscope. For this work, we just used
+plain old Chipwhisperers. And again, this is not an Ad, this is just happened to be what we used in practice as how we
+want to make this talk as concrete as we can. Now that we have an idea of what a side-channel are, let's talk about, how you
+would go about using AI to perform side-channel attack. Well, this is something we
+call side-channel attack, automated with machine-learning, also known as SCAAML. This is what we did present
+in depths last year. But let me briefly recap, how does they work in practice. Because we're going to need a model that we create using a SCAAML attack to do the explainability, and then find out what the the leakage is. If you want to have more detail by the way about this type of attack, where you can check out last year talk, it's available at the, on my website at elie.net/scaaml I'll also probably put
+a link on to Twitter. I just want you to follow along. And again, you have way more detail. I'm going to try to shrink down the explanation as much as I
+can, so you can follow along But if you want all the details, they are on the previous document, I also want to say this year, is different from last year. So, for people who follow
+both, in two senses. This time, last year, when we talk about using machine-learning to attack hardware encryption, we took the worst case, which is we're doing Blackbox attack, where the attacker doesn't
+have any knowledge, about the target. And for example, it cannot have access to
+the clock because the clock is usually not accessible after when the key is in both the hardware and condition is in operation mode, right? And so as a visual tool or creating traces in a asynchronous manner, which means that the clock or the target and the clock on the
+oscilloscope were different. Which is why we had to use, very high sampling rate, In this specific case, we, this year, we are changing the model because this time SCALD is for people who are developing implementation. So we do assume you have the code, you have the hardware target,
+you can put it in debug mode. And so we don't need to
+create asynchronous trace's. We also have a good idea, if you a developer, at what time AES starts and what time it ends. So you can also create shorter traces. So reason why to do shorter captures is because the machine-learning
+have an easier time. If you don't capture the whole thing, because that means you spend
+less time when it trains, to eliminate part of the
+traces which is useless. So again, this is a whitebox attack model, it makes more sense for that work. However, do not try to compare the model you use in this talk, which are easier and smarter than the one in the previous talk, where we had the way harder task with the machine-learning. Right? So when you're in the blackbox, the machine-learning work harder, which means you have to train more, and use more complicated and
+more deeper architectures. In the case of a whitebox, when you are really laser
+focusing on one part of the implementation here
+will be the first round. We don't need that. So the way side-channel attack assisted by machine-learning works is very similar to the traditional
+side-channel attacks. Right? Whereas in the previous case, you have the encryption which is running and then you capture the traces, don't forget that you capture the traces and you store them to normalize them between one and minus one, because the machine-learning
+actually works in that range, which is not what your traditional
+oscilloscope will output. And then, we feed those traces
+to a deep neural network and we could show it, make prediction on what
+it thinks are, the value, which can be used to recover the key. And then we combine those to do a statistical estimate. And hopefully you get back AES key. One of the advantages of that, as you were shown last year is that you did not need to do
+any kind of pre-processing. You can just see the traces directly, and there is less expert knowledge on it. So it's open to place to do
+that almost automatically. And so that make it a little bit easier. And also it's more
+powerful than in a sense than the traditional competitor attack. Because of the reason I mentioned. when you do a side-channel attack, you do not necessarily directly target to record the key, you target what we call attack point, in the case tinyAES, they
+are three, two points, which works really well, which is a sub_byte_in which is when you extract the
+key with the plain text. And there is also the sub_byte_out, which is when you look at the output of the SBOX. In this talk, we're going
+to focus on one of them, which is a sub_byte_in which
+we know work really well, based on our experience. And this is something which is a point. So basically, so the machine-learning will not predict the key that really doesn't
+work when you try that. But instead, its going to
+predict the sub_byte_in, and well basically, if you
+want to do the real attack, you take the sub_byte-in, and then you have to invert it, using the Plain text or do another XOR, and then you get the key, and then you can do
+your prediction. Right? So the target point today is sub_byte-in. When the machine-learning
+will predict the sub_byte_in what it does is you get a trace, and they tell you, okay,
+sure, it's a soft mark. So a, almost a probabilistic
+output of 254 evaluated which is the most important value, but also, what it thinks
+is the second best value, third best value and so forth. And that's what the soft marks do. So what you do on how
+to combine those things, that's why we created
+probabilistic attack. It gives you basically summed it up, using locked-in, because of finding errors
+and then you combine them, and hopefully by combining them, So you get the most likely value. And as machine-learning is
+correct most of the time, So we can quickly converge. Last year, we showed that for tinyAES, on a full trace we only need four traces. So you can see your, see that in specific settings today, where is even easier where
+we need us later that two. So basically three, four traces for simple cases, you get the correct value and you recovered one byte at the key. What's important to mention as well, here we have one model to byte. So we shall 16 bytes, which is in the more input
+we have in reality, 16 model, which are performing one byte at a time, it is easier for the
+machine-learning to predict one byte at a time. So, well, you have to train 16 in times. I'm not going to show that on the slide because it's not relevant. If you can do it for one,
+you can do it for 16. However, there are some difference of accuracy between the byte, but that's not relevant for this talk. Okay. All right. For those who're curious, this year we used a Hypertuned residual 1D
+convolution neural network, difference between this
+model and last year, is that its way more efficient, smarter. And I think it's 300,000 points or something travels at
+Southern neurons (indistinct). Its weight too works
+really well out of the box, this is kind of our like
+our go to model this days, which is based on our previous work and has seen a ton and ton of models, The a paper, I said last
+year, it's kind of funny, but, the paper on all our tests about all the machine-learning
+model will be out, At some point, I said,
+last year, it will be soon. We had some technical difficulty, to make everything producible. And we have had our improvement, but hopefully I'm really
+hopefully knocking on wood. (Knocks wood) These models, and the data-sets we
+use to get our expertise into this would be out. And you guys can test it out. Hopefully in the near future. Lets carry around, you need the 16 models because you need to know, what is the commonality
+between all the byte to know then exactly, where there is the main source of leakage, So you train 16 models. As I mentioned, the accuracy varies, as you can see your reach (indistinct) validation accuracy to be clear, so data, which has not
+been seen during the 20s, or which am seen between
+60s, three for the worst one, which has in cases by four, up to 87% for the best
+one, which is by zeros. And again, they're all between that. For SCALD It doesn't really
+matter what you need is to be able to isolate enough examples that the machine-learning is correct. Because those are one we're
+going to use for explainability. Because we want to know what the model, is using when it's correct. That's why we don't train more than that. Try to imagine each of them is about, I would say 15 to 20 minutes. So you three per hour,
+and you have 16 to go. So, that's already about
+five hours of training time. So we don't want to do 28 box, which will be completely over kill. And they said, unsurprisingly, because tinyAES is not protected against side-channel attacks. And our model is really well optimized. We have high accuracy in for all of them. Now, the model is good
+at extracting the key, So we are able to use it, and we can consistently recover keys. Now, the question is, okay, how does it help us to go back and well find where's
+the leakage coming from? Well, so this is where you need to add another pieces, which is deep-learning in explainability. So what's deep-learning explainability? The deep-learning explainability, was first developed a belief of vision. And the idea was I have
+a deep-learning network and it says in this
+picture, we have a boxer and we have a tiger cat. Now you can ask the
+question, okay but why? Does it really look at the cat, but it's really look at dog or does it look at statistics. I don't know, maybe, so
+stripe in this stripe, colors of the tail of the cat, or maybe the dog leash
+or something like that. So what you want to do
+is you want to have a way to ask the neural network. What do you look at, right? And that's what explainability is about, is being able to say for a model, how does it come up
+with a given prediction? Why for this specific class outputs, are one-of output neuron, what did you use as input? What does that input matter to you, right? So it basically almost inverting the machine-learning
+model if you will. And so we call that explainability, (clears throat) there are many techniques, but the idea is all these technique have in common that you feed the machine to the model, to the explainer, then you feed the input, you would like information about, And then you have, to tell
+him which class you want to have an explanation for. This is why, as I explained earlier, we need for SCALD to have
+model, which work well, not necessarily 99%,
+but at least very well, because we need to have
+example of prediction, which are successful
+because we want to know, for a given trace, and
+a successful prediction, what to think. So, as I mentioned, you
+give it to the explainer, the other side, you put the gift bags, the picture we had, and we say, okay, why did you believe it was a boxer? And hopefully it will tell you, well, I look at the face of the puppy. It's a boxer. Okay. That's understandable. And you can ask also, okay. How about the cat and hopefully, And again, those are
+real example out of one of the explanation technique he will tell you, well, I look at the cat, and the reason why I think it's a cat is because well, there is a face of the cat but the most
+important is there are stripes. As you can see as the
+right part of the image. And you're like, okay, that makes sense. I guess a cat, which have stripes is probably a tiger cat makes sense. the machine-learning is actually
+looking at what it should. Was this thinking ever useful. And the answer is yes, absolutely. There is this very, very famous, dataset in machine-learning for vision and is called the Pascal
+vocabulary, visual vocabulary. And what happened was,
+in the early version of this data set, I think one picture in five, four horses had a bottom left, a name of who took it and what the machine-learning learnt, was not recognize the horse, It was to recognize well that there was something on the bottom left. Alright. So that's what
+explainability is for, so therefore we like, because essentially what we
+want to ask the machine-learning is given a input and a
+prediction, can you tell me, how you figure out why is
+the leakage and what part where do you get information
+to get to the conclusion that the correct key, or
+the correct attack point? Well, that seems great in practice. That's too great in theory and we can't see where
+it's going, the thing is, so don't tell us how we're going to combine this expandability techniques. And then recognize this to debug leakage. Because so far what I
+explained to you is maybe how we can get some part
+of the output highlighted that doesn't tell you how you go back, to know where the leakage come from. And so that's all the
+difficulty of SCALD is even, and that's why it took us about one year, over a year, to actually really know how to get that done is because you need to be very creative around how to combine the things, which in theory makes sense, to actually get the result you want. So let's deep dive into how you get there. Our game plan was fairly straightforward. Again, we start with an explainer, we're going to give you the train models and then we're going to give it the trace and the prediction and say, okay, please tell me, of all the traces, what are the important point for you to make your prediction? We're going to call that the leakage map. Then we go into also do a
+run, not necessarily after, but which is parallel a target emulator, which is basically we're going to run, our target, which is the given CPU in this specific talk
+SMT32F4 and the firmware. So, in our case the firmware was tinyAES and we're going to emulate it, to be able to know at which
+every instruction cycle, AM CPU correspond, which, of code, right? So basically we need to know, at what time precise point in time, a given code instruction was run, and then which current
+instruction was run, right? And so with that, we can
+combine both of them. We can combine the leakage
+map, which has machine-learning which has at what time, the leakage occurred and the emulation which started at what time each instruction was run to be able annotated code which was
+leakages that the idea. In practice, This is where it becomes complicated. There is of course love the techniques. Appears as the screenshots,
+here's a figure from one of the recent paper, which is called "Sanity
+Checks for Saliency Maps," which basically we're looking at how efficient is different type
+of explainability technique. And you can see some of them have more the finer prove than others, in this specific, in our research, we tried a bunch of them, including even say a Guided GradCAM which seemed, when we started to be giving some more define precisely leakage. And then we tested a bunch of them, right. The idea was which
+explainability technique will work best for us. Because we want to
+highlight a very precisely, which part of the traces
+was the most important one, how you do that? Well, you get the explanation. So, you run a loss, tracing, which was successful into the explanation, here is the activation map technique. Then you combined them, and you're not managed between two and one to create some sort of a mask. And then, you eliminate all the noise and hopefully you get, the bottom images, which is a leakage map. And you can see, stride here. And you can see that some
+places which are lighter are supposed to be the place where, the model is the key to most. So according to activation maps, there is a, I think it was bytes by zero. The very, very early, there was a leakage and they were late around the 4,000 points so at the end of our traces,
+some, leakage, right? Depending on techniques you use, you going to get different results. The first one we tested is SNR, which is not a deep-learning technique, but is the standard technique, use intentional attacks to detect whether or not there is a leak. So it's a very much, a very robust way, statistical workable way and that kind of like a baseline. So it was the signal
+to noise ratio tell you that as you can see, there is a main leak and there is a secondary
+leak somewhere in the middle of the tracer. And then if we look at GradCAM++, which is one of the latest technique, the results are not so clear, we have a bunch of different points, which doesn't seem to
+align well with the SNR, or at least they are less defined. There already exists in parts, but not exactly the same. And then, the activation
+map looks almost equivalent to the GradCAM. The first one was the
+events of activation map look at the output of
+lay up, the lowest layer. This seems very, very much the same. So how do you benchmark how
+good explainability are? So the idea is, well, we
+have a leak map, right? What we can do is we
+can take our test traces that we know the machine-learning is successful at predicting,
+and then we can decide to use the leak map. And let's say remove the four
+point or the eight points, which are supposed to
+be the most important. According to the leakage
+map out to the traces. We can just get blank them, Blanking them means for them
+to zero or to minus one, put them to zero. But same idea, you basically,
+remove the information there, and hopefully either
+the most important part of the prediction and the
+accuracy of the model, which should feed again, should result in aggregate to decrease accuracy, right? The idea is that it
+should blank-out the point which are used by the
+machine-learning to the prediction. The accuracy should decrease. So mechanical is the best technique, should yield the best decrease. Baseline as I said 100%
+because we only used traces. You removed four points. Why four points is because
+in instruction text, when we capture them with the oscilloscope is four points, right? So each cycle of a CPU is
+supposed to be four points. So if we know that, if we say, okay, let's try to remove the
+most important cycle. If we do it with SNR, the technique seems to work, right. It seems we reduced by 57% and 44%. If we do the activation map, and it was our first
+vary big disappointment, sometime in the project
+last year, not last year, but like a few months back was like, ooh, well, doesn't work as well SNR is better. So activation map
+doesn't work really well. And, if you remember, I
+should use the leakage map almost the same and the
+visual (indistinct) GradCAM+ So the idea seems Alright. It's working the same that SNR works, our deep-learning explainability which is way more
+complicated than should be, working better doesn't. So that was a little bit disappointing. And so it was like back
+to the drawing board, what can we do? Let's go back to that. And so the way we went
+about that is like, okay, let's write our own technique
+because what we want is to only find the top point. So we can probably do
+something with a very old idea, which is occlusion and try to
+make it a little bit better. So I know it seems weird to say, okay, let's invent a new technique
+for a specific task, but the thing is we are trying to do something very first unique and very, very precise is we don't want to have like the exact region and have more like a
+holistic understanding And we want like top
+five or top 20 points. So, because our optimization
+for our technique is different than the type of underlying algorithm. You want to use it a little bit different we can use or occlusion, which should literally try
+to use a window to do that. And so SCALD, explanation
+technique is actually, exactly that it's a hybrid
+version of occlusion, where we start to eliminate
+large regional to, we assume we don't choose more region. And then we use convolutions convolutive occlusion, something we developed for this to actually really pinpoint
+which part of the traces, for the region that we
+think are predictive, which of the point exact
+point are the most important. And as you can see, the traces are way cleaner
+than the one we had before. And they clearly outline, leakage. Also, as you can see for two,
+the byte zero and byte seven, it is clear that byte
+zero is before byte seven, for in term of leakage which make a ton of sense, because obviously tinyAES
+process one after the other Alright, it's not (indistinct) as code. So that will be exactly what we expect. Okay. So we're like, okay, traces is good should work. Right? So go back to the
+benchmark, run the scene. And voila! our number are way better, or at least better for byte 7 And so again, so now we have a
+technique which works better. Our map is not precise. We hope that the leakage
+pinpoint will be more precise. And just to give you a
+visual comparison to finish on that side is very clear that, the SNR SCALD basically
+find for precise and major, except the regions are
+better defined with SCALD which is good because the
+SNR is not wrong in general. And B we have something which is cleaner, which means that we have
+improved over existing state-of-the-art and also
+finding something completely out of the telcos model. So this tech model is
+more precise is good. So I said, benchmark
+shows that in every case SCALD actually outperform
+everything we tested. It's not to say there is not a better way, but this is working for us. And this is good enough as we'll see. So we came to favor the same, because it's also quite fast. It takes about 10 minutes
+to explain a network. Okay. Now let's explain in
+greater detail how you go from leakage map, how we can go from model to leakage map, The question is how it goes
+from leakage map to code. Well, for that, as I mentioned, we have an emulator which is
+base of unicorn and rainbow. And basically we run it
+with a firmware and the CPU, and we basically have a set of automaton We'll try to emulate whats happening during the leakage map. But the idea is you want to do a start run the AES and stop and
+basically pick up what is in sync with the leakage map. And then what happened then is you get a Mapped ASM. So what you get is you get, okay, this cycle maps to this time, this point in the trace
+map is that cycle, so that they can map to this
+specific CPU instruction. And then what we do is when we have a CPU instruction, we build a tree, and the tree, we bubble up the instruction to a given code line using the debug symbol of our firmware. The firmware will run both firmware The firmware we have is in debug mode. Again, we're back to this idea that, this is a tool for developers. So when you test for leakage, you can compile with it very simple, because you don't try to harden it. We just want to debug it. So with debug symbol
+will help us to go back from the instruction
+back to the line of code. And hopefully that give
+us an idea of where to map the code. So there's the theory,
+but we haven't told you, or haven't shown you
+precision work in practice. And the thing is, before I do that, I want to be on phase three
+points in about this project. So the first one is, we spend a lot of time talking
+about the explainability, because if we don't have
+extremely precise technique which exactly our point, which exactly pinpoint,
+what point is the trace is responsible for the leakage. We're going to fail. We're going to fail
+because most instructions on AM are two, maybe three,
+maybe four seconds long, at most right? Not at most, but two, one, two, two instruction for an addition, since priority is standard. So it's literally four to eight points. Like our margin of error
+is maybe one point, but that's about all we get. So if we don't have precise mapping, then if we map, let's say 10 points ahead. Or if you have a windows of 10 points, it's meaningless for us, because then it may be three instruction. And also instructions may be wrong to different lines of codes. So basically your analysis
+is completely botched. At the same time, we
+need to have an emulator, which is also thinkers like a precision, because what happen is if
+do not take into account, let's say pipeline
+flush, if you don't take into account the CPU pipeline side, and things like that, you get it wrong. You get it wrong because you're going to shift everything by, let's say, you're wrong let's say by
+one second for each addition, then your whole traces
+is completely shifted. And then even if your
+leakage mapping is good, you get somewhere in the
+code, which is not relevant. So you need second precision
+emulator, second precision, a single point precision explanation. So you need something extremely precise. This is very, very much a precise work. And then on top of that, you need a bit of computation. Again, as I said, you
+need to (mumbles) about, we use I think 1 million data
+point, something like that. And then even for the explanation time, we use 60,000 traces, you need 16 models, as I mentioned, you can
+shorten the time, of course, by using good model who
+convolution quickly, And then, to 16 explanations for all those models in your trace, and then you need to map everything. So with our, optimizations,
+that will take you, a day or so of work. And of course, as I said, most of it is part is (indistinct) because the 16 model and 16 explanation can be run on distinct CPU. Right. So, you can make it 16
+times faster, usually. So that's really good
+because we want to use that as a fast iterative
+tool for the reverse. Alright. So is it all bunch of like, okay. He gave me a long speech of it's very hard, so probably it failed. And that's really,
+really hard because yeah, emulating a CPU is hard and
+I'm telling you it's true. I don't think we have a
+perfect emulation of CPU. I think we have very
+precise emulation of the instruction we need for AES. In particular one thing we
+don't have, a disclaimer, if we don't have implemented
+mapping for the divide. Why is because division actually
+takes a lot of cycle and, a very different range of cycle on AM CPU. So we don't really know what to do there. So, only working for now
+AES in full transparency. That been said, If we try to apply what
+I said, to our model, what we expect to see
+in the technical sense is we supposed is the model
+is targeting sub_byte_in, then it most exploits something in the AddRoundKey because AddRoundKey where you do the key
+extract the plain text, so it must have most of the
+leakage should be there. So it's a technical thing. And so what we do to verify
+that's what we said worked, is to actually try to verify that. And so that's what the
+schedule could look like. It's a terminal thing. You basically run it. And at the end you spit out this tree, which map, cycle instructional machine on display for visibility to code line, which is basically numbers. And then I filter everything
+which is not leaking. And then what this
+mapping tell you is yes, it's the main leakage
+is online tool searching of AddRoundKey. So that's promising It also have interestingly
+enough, a secondary leakage, which is later on into
+the cipher functions. So, where is the line 213, Right. Well, the good news is it's
+exactly what we predicted. This is exactly the, the
+line is a whole code, that you can find on GitHub, which is Exactly, where the key is XOR with the plain text. So the model and SCALD in
+general, really clearly is using what a JIRA would predict, which is there is a leak
+in that specific line because they are doing,(mumbles) they are sharing the values of registers. It's (mumbles) some assignments, sorry, And so this is what it is. So that's a success. That's what gives us confidence that when we do work in practice is not a, it's really giving
+us interesting results. I will not claim it's
+working in every case. I'm sure that with a more
+complex implementation, like mask ASM or more
+complicated security, the results may be drastically differ. As I said, our emulator
+do not fully emulate all the operation you get on AM. There is still a lot of uncertainty, but however it works. I think it's a very promising step towards the right direction
+of having tool who go back from leakage to, exact line of code. As far as we can tell it's the first time it has ever been done. Based on secondary leakage, I don't have a good explanation for it. So the best thing we can come up, I can come up with today is
+that it probably went some of the register unloaded. And so, this is where as it
+starts to use a mixed column, you should look at line 371. So maybe that's what happened
+is unloading some registers, and then we can go back. We did have a bit more analysis for that, but basically we interesting to know why there secondary leakage. So hopefully today I
+showed you how we use SCALD to automatically isolate vulnerable code and show how it works in practice. And showed you concretely. What's the benefit of the tool? And really our hope is this type of tool we keep building it and we'll get feedback from the community to build something which will empower people
+who develop secure hardware to quickly figure out and patch, where the leakages are coming from. So we can develop stronger crypto in a easier way and a faster iteration. So we all benefit from a stronger, more secure devices. And takeaways of the talk, I said, as we discussed last year, machine-learning is a way to
+automate side-channel attack and you wish it was the opposite. So it's really one of the most, it's at the forefront of
+side-channel at attack. And, this year we flipped
+the use case on its head, which is really what was
+the intent of the project from the onset two years ago, which is you try to
+use all those knowledge to actually have developer
+building better tooling for the to reduce the cost of developing secure implementation,
+and make them better. So that being said, this is a very very new
+field of exciting field with the rough ideas,
+rough energy around it. And it can really use more interest, more people interested in it. So if you have some interest into crypto or machine-learning, it's a great time to get in and work with the community on this type of ideas. Thank you so much for attending
+this (indistinct) talk. I wish it would be in person. I'm going to miss a DEF CON as you will probably do. I hope you are well
+and that she would like to follow up and keep up
+with what we're doing. We'll try to publish as fast as we can, module some delay to
+provide you information about what we do on side-channel
+attacks, on the website. And hopefully we'll have
+an official project website in the future as well. Thank you so much for
+listening to this talk. And then, do not hesitate to reach out on Twitter or by email or any other means. Happy to answer questions,
+Thank you so much. Bye.

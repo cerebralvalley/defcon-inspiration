@@ -1,0 +1,271 @@
+>> FATIH OZAVCI: Test. Okay. Okay? Hi guys, welcome. First of all, my apologies about my English
+level. (inaudible) It's a jedi tradition. Just forgive me. I'm Fatih Ozavci. I'm a penetration tester for 13 years. My special expertise is voice over IP servers,
+voice over IP infrastructure, mobile applications, also other ones. I'm author of Viproy Voice Over IP Penetration
+Testing Kit. Also, I published a small paper about SIPRA
+relationship tracking. Also I demonstrated Viproy Voice Over IP Penetration
+testing kit yesterday in Blinket Arsenal. Anyone from Blinket Arsenal here? Okay. We shall ramp up this Viproy part. Viproy is a penetration testing kit, and I
+will discuss a few advanced attacks and Viproy have a few models to demonstrate and exploit
+these attacks. And this is a small Viproy demonstration. (Music)
+Viproy has a few models, time models, right now, but I'm working on three models. It's a metasploit models pack. You can download and extract in metasploit
+realtime. So you can use it to discover SIP infrastructure,
+Voice over IP infrastructure, you can collect information from SIP servers, also you can
+get a few important things from SIP servers. Also you can ameliorate target servers. Here is Viproy in action. Details give us support. Also, it has vargus support. That means you can easily collect information
+from debark data. Discovery can be used for collecting information,
+so we can use all methods, all SIP infrastructure and protocol methods in this collecting part
+and discovery part. So Viproy has register options in softscribe
+and a few methods to discover future results in SIP servers. This basically is a SIP client, but a smart
+one. You can easily develop another model for your
+custom tasks or something else. It has a SIP library, actually a metasploit
+race library. That's a register task. We can register an infrastructure or we can
+register a client or we can register a user using Viproy to add a SIP server. Also, we can initiate calls with a user or
+without a user, or with a SIP proxy or not. Also, we have a few headers in a SIP request,
+so we can monitor these requests and these headers to bypass billing, to bypass restrictions
+of SIP based CS or SIP based (inaudible). This is a  basic demonstration, basics of Viproy. I will talk about these basic features now,
+but I will discuss a few advanced attacks in this demonstration. Also, I have another demo at the last of this
+presentation for this advanced attacks. >> It's really hard to get him to speak at
+DEF CONs, give him a big round of applauses. (Applause)
+So this is his first time speaking, so we need to do a shot on stage. (Applause)
+>> FATIH OZAVCI: Okay. >> Cheers. >> Cheers. FATUG IZAVCI: Okay. That was a surprise. >> Do you need another one? >> FATIH OZAVCI: No, not now. Maybe later. (Laughter)
+>> All right. Thanks a lot. >> FATIH OZAVCI: Thank you, guys. (Applause)
+For some reason I'm fine right now. So okay. We should pass this part, this action, okay. We have a few people are coming. We can start the actual presentation. You can watch this video what I just played. It's already in YouTube. Also, I played this video in (inaudible) conference
+to show Viproy's basic features and basic attack abilities. So I will discuss these attacks, and how can
+we use these attacks to bypass security features of SIP servers. And this is my agenda today. Discovery footprinting, collecting information,
+initiating a call, initiating a bypass for CDR or billing or restrictions or something
+else. Also, we have another attack, a SIP (inaudible)
+attack. I will explain it. Also, fake services and MITM. We have another model for SIP proxies, for
+MITM hunting. Also, SIP servers should be available 7/24. So we can attack them using those features
+or something else. Also, we have another feature, hacking SIP
+cross relationships, because they trust each other, so we can act like just one. Also, we can use these SIP features or SIP
+cross hacking features to attack another client, a specific mobile client and other desktop
+client. Also, fuzzing in advance, another subject
+for us. I will discuss a few fuzzing features. Autoscope is actually RTP. I will add RTP features later. Also, additional services are not subject. Also, XLMO, Jason based supporting services
+is not required for this presentation. SIP is Session Initiation Protocol, is just
+a signaling protocol for NGN services or SIP-based telephone services. Next Generation Network is postmodern TDM
+devices. Actually, -- sorry. HP blade-like systems. They have three or maybe more or so switches,
+RTP proxies, C proxies, or something else, so they should connect MSAN or other devices. I will show an infrastructure for this sample. And so SIP and mega protocol, also RTP, they
+are part of this engine infrastructure. Also SIP should be implemented securely in
+NGN platforms. So we will hack this SIP protocol and we will
+hack this NGN infrastructure. They use Next Generation Network terms, but
+I believe it's not, because SIP is old protocols, SIP has many significant weaknesses and we
+will discuss in this presentation these weaknesses. This is a sample SIP server in your network. If you have a network, commercial network,
+it should be placed just like that. By the way, commercial services are completely
+different. This is a sample of the Next Generation Networking
+infrastructure. SIP server, also known as source switch, part
+of this infrastructure. STP servers, also other servers, such as VAS
+or DBI or CDR, these servers should be connected with source switch. Also, MSAN devices, or metagateway devices,
+should be implemented for end point termination. For connection between MSAN metagateway devices
+and source switches, the protocol is megacore. Other connections, especially redirecting
+calls between source switches, it should be SIP. Also, you should know you use many soft phone
+applications in your mobile phones. That means you already have SIP services and
+you are a customer of a SIP provider. But here is the thing. They think they are secure, but it's not. Especially their infrastructure it's vulnerable. This infrastructure is not closed, but they
+think it's closed. Actually, it's open physical access. Also, you can easily manipulate end point
+terminators, such as metagating devices, smart modems or something also. Also, they think that using VoIP requires
+specific knowledge. That's no longer the case with Viproy because
+we have many features to easily test the SIP servers' features and security. Also, they focused on tall based attacks,
+tall fraud or something else, but we have many attacks. Spying, phishing, surveillance or DDOS attacks
+or attacking actual mobile clients or desktop clients. Also, one of the servers or another are important
+vulnerable servers. Also, they think their vulnerable devices
+are well configured and securely. They are vulnerable. They use also fairs. They use actual legacy fairs, Solaris 5 or
+Linux slackware 2.1 or something else. So we can easily bypass and exploit them. But that is not our real subject. We will discuss a specific one, SIP protocol. Viproy is a Vulcanish word that means "call." Viproy has many models to test SIP server
+security. So we can actually initiate a few advanced
+attacks and mostly all basic attacks for these target SIP servers, using Viproy's models. Also, it has custom header support. It has authentication support, but in many
+ways, proxy authentication, server authentication, for many different hashing algorithms, if
+you want. Also, I have a few new models, such as trust
+analyzer, a short message service tester, or bomb scan model DDOS initializer, or directly
+MITM proxy tool. You can use this tool to test attacks which
+we will discuss now. Basic attacks are important. They are not new, but we have no sufficient
+tool to analyze this type of attacks. So I'm going to go to the left with this. So there is shipshak and other tools are not
+sufficient for penetration testing of SIP servers. We should create another one. I should create another one, because I need
+it. So I create Viproy to analyze security of
+SIP servers, especially their features, discovering SIP servers, ameliorating SIP servers, collecting
+remote users internal numbers of clients, bruteforce attacks for internal numbers, users,
+SIP password list or not. And, also, identifying specific numbers, identifying
+other services or something else. If you use these tests after authentication,
+you have no choice except Viproy. By the way, bruteforcing or MMITS features,
+they are required to test special features of SIP security. Also we can initiate direct MMIT attacks. We can initiate MMIT spoofing attacks or we
+can initiate (inaudible) MMIT attacks. So we can easily bypass CDR records or ACRs,
+or maybe other things. Viproy easily automates these types of attacks. This is basic discovery. This discovery step is basic, just like other
+penetration testing types. We should send a request and we will wait
+for a response to analyze. So we can send options, registered in my subscribe
+message or other methods. So we have all in Viproy. And another one is visual online headers in
+response, so left side, generic headers, and the right side proxy headers and warnings. We can collect many information from these
+headers: MSAN devices, invoicing information, remote server software or whether it's vulnerable
+or not. Register is another important test, because
+many of the other services have no authentication. Another thing is these specific services or
+specific trunks or specific gateways has no authentication to heat up or to speed up the
+connection. So we can initiate register attack to detect
+this no authentication services. Also, we can register our specific port and
+IP address to initiate rove attacks, such as rove fuzzing. We will discuss in the fuzzing section. But you should know SIP servers have many
+authentication skills. So if it has an authentication, just like
+that, it fakes your registration and it sends a privileged ACR or it accepts your specific
+IP address import for other requests. If this type of authentication is available,
+you can register your specific port and iPad address to initiate other attacks, such as
+direct invite, spoofing or fuzzing things. By the way, registered attack could be used
+for bruteforce or something else. We have many more attack types. Also, we can bypass many things using proxy
+headers, or a few specific features such as changing "from" field, changing "contact"
+field, adding specific proxy headers such as charging vector or changing identity over
+proxy headers, such as (inaudible) identity calling ID or P preferred identity. These headers could be used to bypass billing
+or security or other SIP specific virals, acting just like another SIP proxy. We can use these attacks. Also, we have another attack just like invite
+or update. We can send an invite request or update request
+during a call, to change its charging vector, change its billing features. So we can use these features. Also, you can develop a specific tool or a
+specific model for Viproy. You might request issues just like that. We will send an invite and we will get a specific
+response. We can change many headers, so we can easily
+bypass rules, protected or not. Specific headers I already mentioned. Also, it's just basic usage. But we will use MMIT for specific tests, for
+another test, just trust analyzer or something else. This is SIP attack. It's similar to balance attack. If remote target has a proxy support, we can
+use it to secure other servers, which is stressed or not. So we could use it basically. These are the screen shots, so this tool exposes
+user agent or servers and remote servers and untrusted ones. It works just like that. We will send a register or option or invite
+request to target remote server. Also, we will change its RION or URI to collect
+another one so we can collect this information. It's important for us, because remote servers
+and frontend servers are well protected, and these servers have many co-liaisons. So we could use these remote targets if it
+is a proxy support. Scan other specific features and other inaccessible
+servers, also we can initiate other attacks, such as SIP trust relationships. Also, just now I should mention another thing. I have a friend for you. I will mention after -- sorry. I should have mentioned after the video, but
+I already shot, you know, so this is my friend. It's a gift for a best question. It's five-year old special Turkish liquor. I'm from Turkey, as you know. So if you shout me a good question, you will
+have this bottle. If -- if we have no time during the QA section,
+you will find me at the Chili Bar, Chili out bar, or the QA section or just push me or
+attack me to ask a question. So, we will continue again. Fake sources and other subjects. We should discuss about fuzzing features,
+or specific MITM attacks. Because our regular SIP clients, general SIP
+clients, have more features to bypass billing or security features. Also, it has no support for spoofing. So we will add MITM tools. We can change our client's features. For example, aiding MI support, MI spoofing
+support. Specific MI header support to bypass billing. Also, we can use this feature to fuzz SIP
+clients or servers. We can easily change specific data with fuzzing
+requests, so we will have a few crashes from SIP clients or SIP servers. Fake services is not yet ready, not really
+yet. By the way, MITM is ready. I updated Viproy's GitHub repository, so you
+can easily download it and you can use it. This MITM feature is useful for testing or
+adding specific features. You can use it freely. But I should mention if you use it to collect
+information, collect credentials from clients, such as MITM attacks, or something else, you
+should use ARP scan or ARP spoof or VLAN hopping attacks. You should be the man in the middle to collect
+this information. Also, DDOS is another important thing that
+we will discuss about SIP servers. It's not server, it's a business, so money
+is really important for them. So we can attack their availability, logging
+all users if they have account loggin policy. Also, we can initiate many call same time,
+so we can overflow call limits of server. Or we can ring all clients same time. It's possible. So we can use those things easily. By the way, we can use these attacks to bypass
+a few features. For example, if you use -- if you act -- if
+you need to act just like a SIP proxy, you should disable it. So you can use these tools to disable or unresponsive
+this remote SIP server. By the way, we have another attack. SIP servers send many responses. It's an RFC. So we can initiate a bogus request, for example,
+unauthenticated invite, or something else. They will send us many responses, 10 plus,
+20 plus, maybe more. So we can send IP spoofed requests to target
+SIP servers. So this remote SIP server will send responses
+to another DDOS target, just like that. So we can search many servers, many SIP servers,
+and we can collect all of them to initiate a DDOS attack. You should remember all SIP servers -- all
+SIP services should contain many SIP servers for gateway connection, for international
+connection, for redirection or for backup. So we can use all of them in same network. And acting in other one, we cannot access. Also, transrelationship hacking is another
+subject. We can act just like SIP proxy. So we can act and we can initiate call. We can send messages or we can attack mobile
+clients via these SIP cross relationships. In general, servers should trust each other,
+because TCP is slow and TLS or other encryptions are slow. By the way, they require many CPU usage. So in general infrastructure vendors prefer
+UDP-based SIP identification and UDP-based trust. So we can attack just like SIP proxy or something
+else. We need specific information for this attack. We should have an internal number. Basically, we should be a customer of this
+server. Because we should have a soft or a hardware
+client to view caller ID. We will spread IP spoof or spoof packets to
+this target server, and if this server trusts other IPs, there will be a call and we will
+learn its basic IP and port. It's in baby steps. We should find trans-SIP networks, mostly
+B class. We should send requests, invite requests,
+for each IP and port. That means 60,000, maybe more requests. If this server, target server, accepts one
+of them, we will have a call. But we will have no idea about which one is
+trusted. Here is the thing. We have in my spoofing section, so I will
+add IP and port section in "from" field. That means when we will have a call, we shall
+see which IP and port is trusted in "from" field and calling number. Okay. Here is the demo. There is an attacker. Attacker has no idea about Ancora or Istanbul
+IP addresses or networks. He should know only B class network, maybe
+C class network. He should have a soft client from Ismer server,
+this production server. He will supply -- he will initiate IP spoof
+packets from this field, just like sending from Istanbul or Ancora. And when we have a call, we will see IP address
+and port. That means Ismer trusts Istanbul IP address
+and port. Okay. How can we use it? Stress but what? We can't initiate a call. If we have a specific IP address and port,
+we can send a specific IP address and port and we can send a specific from field and
+we can initiate the call. So in my spoofing, also, it's CDR and billing
+bypass. By the way, probably you should ask or you
+will ask it's just one package and we used IP spoofing and we have no responses, and
+how the call works? How will it resume? It's not. All required is we have a packet to send another
+one. For example, internal number, 101. One packet is sufficient for many attacks. I will show you. By the way, in message protocol -- message
+method has no resume or no state. So you can send this message, short message,
+or something else, to remove server. Just like came from Istanbul or something
+else, which trusts. That means you can exploit specific voice
+over IP features, voice mailbox features, value-added services, just like send a registered
+request for us with short message service, invoice me at this amount. We can spoof this message. So we can change billing features. Or we can activate features. I'm not here, redirect me for something else. Okay, just send us a message. Which one is required? Or why you will be available. Okay, redirect space my internal number. It's a small message. We can send it. So we can handle all calls. It's possible. By the way, we can use it to initiate DDOS
+attacks. For example, ringing all clients by specific
+features, initiating many calls to overloading servers or VAS services, value-added services,
+or CDR fields. By the way, we can attack specific mobile
+clients or desktop clients. When we send this invite request or message
+request, we have a few features. From, from name, contact fields will be saved. We can send this request to remove server
+and remove server and redirect these fields to client. So we can fuzz it or we can crash it, with
+many AAAs in from field or from name field or contact field. Also, we have message support, so we can exploit
+this vulnerability over a message, too. Also, maybe, you know, SIP and STP has many
+features. So this type of STP request or STP content
+should be redirected. Also, mine type support should be available. And you can manipulate mine types or content
+of these requests to crash mobile application. This client trusts remote IP address and port,
+so we can initiate IP spoofing easily. Basically, I crashed an application. On a phone, iPhone SIP client, you can download
+it from app store. It has a vulnerability. It has no border control in from field, so
+we can send 550 chars in this field and it will crash. It will be crashed. So we can exploit it. Okay. We should summarize and collect it. We can send a packet from Istanbul. We have no idea, and we cannot access Istanbul,
+to Ismer, the production server. It has a SIP address, yes. But it will redirect this call to another
+one, something else, we have no idea this IP address. But it has an internal number just your SAN
+number or something else. So there is no user interaction, the application
+will crash. There is a client attack. So many applications can be vulnerable to
+this type of attacks. Asterisk has a limit for this from field,
+only 1000 chars, maybe more. By the way, SIP SECs or other commercial products
+have no restriction for this from field. So we can use this from field, from name field,
+contact field or other mine types to crash specific applications. Also, we have fuzzing. Everybody loves fuzz. But fuzzing is completely different than SIP
+protocol. You have many fuzzers, but these fuzzers are
+old. And it's really important, because vendors
+use these old tools to evolve their products. So you have no novelties to find using these
+tools. You should change your perspective on a vision. We can fuzz it in many ways, acting just like
+SIP server, SIP client, MITM attack or just like -- acting like proxy or something else. But old school fuzzing is not sufficient. Request-based and response-based fuzzing,
+difference. It has a few differences. Request-based fuzzing is popular and we have
+many tools for request fuzzing. But they have no state features, they cannot
+track all call, and they cannot fuzz during a call. Our newest SIP fuzzing tool published in DEF
+CON 2007. So we have no new tool almost six years. We can develop our specific fuzzing tool,
+especially for response-based fuzzing. So we can use these features in Viproy's specific
+library. We can initiate specific fuzzing features. How about smart fuzzing? Smart fuzzing should be real smart. It should have state support. It should have many methods, such as Softscribe,
+ACK, frak, or MMIT, REMIT update. We have no support in meta tools. Also, fuzzing reauthentication is a completely
+different thing because we have no tools to fuzz remote servers after authentication or
+reauthentication. So we have another thing. Yes, fuzzing is cool, especially crashing
+an application. But in SIP servers we show fuzz specific numbers
+for value-added services, directing its features, directing free call features or directing
+a few specific things. So you can easily create your basic fuzzer. Okay. Viproy. How it helps you. It has a basic SIP library. A few models have a down fuzzing support. I will show you. Also, we have custom header support, so we
+can easily bypass many things before fuzzing. Also, last line, we can develop more. We can easily develop our tools. Also, it has row request support, so you can
+combine it with your generic fuzzer. It's really free. Fuzzing SIP services request based. Okay. You already knew this request-based fuzzing
+and I will bypass it. But you should know headers should be fuzz. Proxy headers or something else. Okay. Here's the thing. Response-based fuzzing is not popular. Also, there is no tool to fuzz response features
+of SIP server. Just imagine you have two clients, one for
+acting just like remote SIP client. Just one for attacking and fuzzing remote
+server during this call. You can initiate two clients separately and
+you can drive separately of them. Also you can initiate many using this library. Starting one, starting two, after that you
+will initiate a call from starting two and target is one. Also, you can add reinvite fuzzing feature
+during this call. You can add STP fuzzing feature during this
+call. Also, this response is important, because
+when you send a request to a server, server redirects the request to another client. If this client sends bogus responses, this
+remote server should assess and analyze and execute this response. 200, okay, such as. So we can send bogus responses. So it's a specific feature. You can develop your tools using Viproy. Viproy has many features. So we have a few things to do a lot, such
+as advanced fuzzing support, RTP support, TCPILS support, or many more. By the way, it's MSF licensed so you can download
+it freely. You can change it. You can develop your tools with this library. That's it. I will show another demo. This demo prepares to show SIP balance attack,
+hacking SIP transrelationships, directing process servers, initiating a fake call. After that, crashing MMIT white lines. This is a sample. I have a network. Actually, a small network. Three SIP servers and four SIP clients. We can initiate this SIP balance attack to
+detect servers and clients, trusted or not. We can use remote SIP proxy server. We will have two SIP servers now. One is ours, another one is inaccessible for
+us. Also, we have another range, 200 and 210. I will set this range to the date. Remote SIP servers (inaudible) during the
+test. As you see, there are many SIP services, one
+of them SIP server, other SIP clients. SIP trusts hacking is basic and old method,
+but we can use it easily for NGN platforms, especially for local network. So we can easily break physical network with
+smart models, hacking, or physical hacking, breaking locks or something else, and we can
+initiate this attack. Also, public SIP service is also vulnerable
+for this type of attacks. SIP services it should be paired with a specific
+target range and ISAT SIP server, the remote server, source remover is the potential network. Also, I can set up port range because they
+can use any port for trust or anything else. Also, we should set interface for IP spoofing
+and other requests. And internal number 103. And you initiate this attack. If you have a number, you have an IP or something
+else, you will learn which is trusted. Agency, 202 and this port, 5016, is trusted
+for support of ACL. So I can set specifically this one. And I will initiate the call. This is transit host and I set from field
+for in my spoofing. I can write anything. I write occupy EZ. If you already knew, it's from Turkey. It's a tribute. By the way, if you don't know, you can search
+this tag iterator. Agency, you have a call. Also, we can crash mobile application. This mobile application is a phone, an iPhone. You can download it from app store. I downloaded it and I initiate execute style
+application, left side, and I start a debugger. And I crashed it with the right terminal. I set only set action to call. I set from field to fuzz features, for example,
+set from fuzz 515. Also, I will set to field. That means our destination, our internal number
+remote. So I initiate the debugger. You can watch this video from me on YouTube,
+too. It's available from Viproy's home page. HFC is real easy to use because it's a metasploit
+set. Left side HFC, 138 is iPhone, iPad rest, but
+I have no idea, I didn't set it in my tool. Initiate the debugger to debug other phone
+applications. SPID. And the debugger is initiated for this IP. This continues. When I start attack, you should watch and
+you should see left side's internal email address issue. We have a memory corruption in the email routine
+and this is a basic DDOS attack. By the way, it can be exploited. You feel free to develop and exploit for this,
+using this tool. So you can download this presentation from
+my home page, also Viproy's home page. You can download this tool from Viproy's home
+page. Also, itsget GitHub source code section. By the way, you have 15 minutes for any video,
+you can use it, and also these papers. These people helped me to present also. They encouraged me. I have many respect for them. Yes, I have only one minute, so I will be
+at Chili Out Cafe. I have this one for you if you will come to
+ask a specific question or a smart question, I will give you. Okay. (Applause)
+Thank you. >> Okay. Everybody, a couple announcements. If you are leaving, head out that direction,
+to your right, my left. We are not clearing the room. So that means if you'd like to stay for Mudge's
+talk, then you can stay where you are. But it's going to be crowd in here. So to help everybody that is outside waiting
+in line, if you can move towards the middle, and bunch together as much as possible, that's
+going to help everybody out and get as many people in here to see the talk as possible. Okay?

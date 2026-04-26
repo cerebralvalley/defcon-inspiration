@@ -1,0 +1,333 @@
+>> MODERATOR: This is Pwn the Pwn Plug. I hope I said that right. Wesley, give him a big hand! (Applause.) >> WESLEY McGREW: Thank you. How many of y'all out there have been basically
+emptying the vendor area out of these devices, Pwn Plugs, pineapples, I have to watch my
+Ps. They have this thing called a Rutabaga, Mini
+Pwners. How many of you have been buying these things? Make some noise. (Yelling.) >> WESLEY McGREW: How many of you will be
+using those for good? (Chuckles.) >> WESLEY McGREW: How about for evil? (Cheers.) >> WESLEY McGREW: There are people doing bad
+things with these things. That's why for those of you using these for
+good and evil may want to be careful when and where you turn these on. The talk is Pwn the Pwn Plug: Analyzing and
+Counter-Attacking Implanted Devices. My name is Wesley McGrew. I'm essentially the elder states man of the
+Mississippi State contingent here, effectively DC662, Mississippi state folks make a little
+noise. (Applause.) >> WESLEY McGREW: Cool. I'm an assistant research professor at the
+Mississippi State University and run McGrewSecurity.com and the McGrew Security Twitter account that
+you all followed last week. What I do, I break things. I love breaking things. And I'm occasionally good at it. So I'm into any kind of vulnerability analysis,
+any kind of exploit stuff. I don't care what it is, I want to find the
+problems with it. I'm into reverse engineering. I teach a reverse engineering class at Mississippi
+state that went really well in the spring. I also have been involved in the National
+Forensics Training Center which teaches free forensic classes to law enforcement and wounded
+veterans. I have my Ph.D. now. For everybody who keeps bugging me every year
+at DEF CON to finish my paper. That prepared me for the new role as the 12th
+doctor. In the meantime, I'm a professor at Mississippi
+State University, leading the charge on doing some cool offensive breaking things type research. What we are going to be talking about today
+are attacker implantable devices. This is a sort of term I sort of apply to
+a wide variety of things. There's a crisis of terminology for these
+things right now. The traditional name for these are a Dropbox. And unfortunately, there's a really bad name
+collision with that right now. (Chuckles.) >> WESLEY McGREW: The storage guys kind of
+took that one from us. What I'm talking about are all these kind
+of all in one embeddable type things that you can buy over there in the vendor area,
+things like the Pwn Plug, the power strip, the pwn whatever they call that one now. The Pwn Plug R2 that just got released. I haven't had a chance to get hold of it. The Pwn Pads. You have TP link router devices like you see
+that can run stripped down versions of open work. And finally Raspberry Pi. These new arm sort of credit card size computers
+are perfect platforms for this sort of activity. So there's a basically a pwn OS type thing
+for the Raspberry Pi. I presume it is probably called the Raspberry
+Pwn, but I can't remember right now. What they have in common, they are small and
+what I call attacker implantable, whether you're a pentester or attacker, you can take
+these and hide them pretty much anywhere in an organization. You can use that as sort of your in. You can use it to sniff packets, use it to
+launch attacks from. And it's basically a do it yourself pivot
+point in case you suck at phishing and things like that. These things have applications for both penetration
+testers and malicious attackers. I'm sure all the folks that sell you these
+things want you to be a penetration tester. There's something to be said for somebody
+maliciously using one of these things. So the question here, one question, if we
+are a good guy, how do we respond to one of these that we find in our organization? So we find a new toy in our server room that
+we did not purchase from Pwnie Express. How did this get here? Who is running it? What is it doing to my network? And also for both good and bad guys, what
+are the implications of there being vulnerabilities in these devices? If I'm a penetration tester what does it mean
+for my penetration testing tools to get attacked and compromised and persistent compromise
+over a long period of time. If I'm an organization that found these that
+malicious attackers installed, can I counter attack it? Why not? Assuming all the legal considerations are
+in order, we don't have the same sort of problems with attribution of attack at this point. It's not like we are counter attacking some
+random IP address somewhere else on the Internet and we don't know if that's a hot point or
+not. If three a Pwn Plug or some Raspberry Pi plugged
+into our network inside our building that we don't know about, that's obviously something
+we can attack. Why not? I say why not. So this slide is basically on identification. I'm not going to go into all the different
+ways of identifying one of these on your network. Honestly, if you have proper network access
+and control and monitoring in place and everything, you see one of these things pop up the first
+time it starts doing anything noisy. Physically, they are meant to be sort of inconspicuous,
+but to the trained eye it is not so much. So you look at these things. Those are the two stickers that come with
+the Pwn Plug. And one of them has a reference to SSH on
+it. The other one is a printer power supply. I think that's the best application for the
+Pwn Plug itself. It looks like a printer power supply. Part of its part number is 1337. (Laughter.) >> WESLEY McGREW: Actually, now that I look
+at the picture, I'm not sure what the bar code it. It is probably for a pack of skill else or
+something. Who knows. But so if you're going to be a pentester using
+these things or better, if you're a malicious attacker using these things, print up your
+own stickers. Get an HP printer power supply and run that
+off of it. If you found these things, that's cause for
+concern. What do we do? We can respond to it. The first thing here, I just love this picture
+because Ryker is hosting this thing. I forgot about that. First thing we want to do is pick this thing
+apart. What's going on with it? We want to seize this thing. We want to image it and forensicate it. What has it compromised already? If we can find that out. We want to attribute this to somebody. Is this somebody inside our organization who
+is trying to do their own sort of unauthorized pentest but they have good intentions? Is it somebody who managed to sneak in? Do we have a physical security problem now
+too? We want to get this information back. There's a good chance with these devices that
+you can find, where is this thing phoning home? Who is grabbing the data off of it? It may not be in the logs immediately because
+these things are small and are not meant to log a lot anyway. We have to wait until somebody tries to connect
+to it and get their data off of it. The challenge here for forensics on these
+devices is essentially how. We know procedures for pulling the plug on
+a computer or taking RAM image and imaging a hard drive and stuff like that on a normal
+PC or Mac but for an embedded device, do we know how we are going to acquire a forensic
+image of this thing without inadvertently destroying the evidence or bricking it or
+anything. That's one concern. How do we do incident response on this? Another is, if we decide to, how do we counter
+attack it? So obviously if this thing is sitting in our
+organization we can pull the plug on it. After we take our own forensic image out to
+it, we blast our own image on it, to hell and back and that's not terribly hard. What if we want to attack it in place. We want to compromise this thing as somebody
+is using it and that's the main meat of this talk. And so once we get into this thing, we can
+monitor the attacker. We have a better chance at attribution. We have a better chance of determining motive. I don't know about you, but it's okay to stop
+an attack, but I would rather know who is trying to attack me and what are they trying
+to get at? What are they after? That may help to defend against them in the
+future. We can turn this device into a honey pot. It is a vulnerable system that they are in
+and trying to attack us from. We can monitor their actions from it. So for pentesters, the typical use case for
+this, there's two different use cases. One is the lazy pentester who doesn't want
+to take a flight out and go in person or anything to do an internal behind the firewall pentest. Sends it out and says plug into the network
+here, plug it into the network here. Coordinates with IT staff on this. And so that's one use case for this. It's all set up. You know, plug in power, plug it into the
+network, it phones home, establishes SSH connection, whatever. You have your nerdy James Bond type pay load
+situation. This is somebody who is a more sophisticated
+pentester. Actually, it has a physical component to it,
+a penetration test where he'll go in and drop this device off surreptitiously in a network. This is the same thing that an attacker is
+going to do. He want to place this thing into a position
+on your network that gives him access without anybody knowing about it. These devices are going to be typically, are
+typically reused from test-to-test, client-to-client. I don't know, they probably emptied your wallet
+over there at the vendor area when you bought one of these things. You're not leaving it permanently anywhere
+probably unless you are very malicious and you're profiting enough from one of these
+to buy 50 more. And so when you are using this thing, most
+pentesters want to pick it back up and use it on the next client's engagement. Between the tests, are you wiping it? Do you know how to wipe this thing? It's an embedded device. The clean up procedure on it may not be as
+obvious as it would be if you blow out a new installation of Windows or something. It's probably more complex than that. Are you actually bothering to do that from
+Client A to Client B? And that, we can use that to our advantage
+when we attack these. From here on out I'm going to take the stance
+of an attacker attacking pentesters. Come on, they deserve it, right? We are going to put on our Black Hat. This is the only free image of a cool looking
+Black Hat I could find on image search. I like this guy. He looks cool. You put on your Black Hat. We are going to talk about hacking a pentesters
+implantable device in the field or on his bench. The attack I'm going to talk about in the
+Pwn Plug here, it's fine and dandy if you see this on a client network and you can compromise
+it using this attack. But this attack can also be used if the pentester
+is testing the device or provisioning the device for a new test on the bench, in his
+lab, getting ready for a penetration test. It might be even a little bit easier. Due to the way we do this attack. The benefits of an attacker doing this are
+great. The implication of breaking into one of these
+devices and before I get any further if you're running a WiFi pineapple, you might want to
+turn that off pretty soon unless you want it bricked. (Laughter.) >> WESLEY McGREW: Because somebody in here
+is going to do it. They are going to do it fast. The implications of owning one of these things
+is one, we can intercept things. If penetration tester is doing the work for
+you, he's scanning for vulnerability. He's breaking into systems. I don't have to do that now. So I just collect what that penetration tester
+is doing for me. And we can modify these results. Let's control what gets back to the penetration
+tester. He popped root on the tester? Cool, let's not let him know that and keep
+it for myself. We can filter the reports. It never shows up to the report to the client. Everything is cool. Yeah, that database is totally secure. We can camouflage ourself. Maybe the pentester sucks and he's not running
+the tests you want him to run. Launch your own attacks from the device. The thing is supposed to be launching attacks. Nobody is going to care. So your attacks are part of the test at this
+point. It's also a competitive Intel if you have
+a clever pentester that leverages some O day, you steal it. And essentially this is the gift that keeps
+on giving. You can do this again and again, as he reuses
+that device across multiple clients. You can maintain access to these organizations. You can get back into the pentesters' company's
+network whenever he tacit home and plugs it back up again. Cool stuff. So there's difficulties in preventing this
+sort of thing. And the reason why these sorts of systems
+have these vulnerabilities is because they are very small platforms and they respect
+running off the shelf penetration testing tools. These tools are, attack tools are great, you
+know. People write quit Python script to leverage
+some particular vulnerability or some particular network attack or something like that. It will work. So everybody starts using it. The problem is, as soon as it works, we are
+very fickle creatures. We get something working and we move on to
+the next attack. We don't do a whole lot of testing. We don't think about the attack surface of
+our tools. If you think about penetration testing tools,
+you're connecting to all sorts of services not under your control. These services, you know, implemented protocols
+probably to a level that even your attack tool doesn't fully implement. You're pulling in data from lots of sources. You're parsing that data. You're parsing file formats. So your attack surface is essentially the
+entire code. If it didn't have to do with processing things
+from another service, your code wouldn't be doing it. So essentially a vulnerability in any part
+of your attack tool opens up for you. Most of these tools are proof of concept tools. That's always a disclaimer. That's my disclaimer when I write a security
+tool. This is a proof of concept. I got it working and then I stopped. And I'm as guilty of this as anybody. So the disclaimer there is, don't use this
+in a production setting. Don't use this in your production malicious
+attack, malicious penetration test unless you understand the implications of what you're
+doing and control it. These are open source and folks that put together
+these small embedded attack appliances will take these open source tools, put them on
+the devices as is and wrap a user interface around it and send it out. So at no point in this process is there any
+kind of audit of what are the vulnerabilities in these tools? These are very small, weird platforms. The arm is getting less and less weird, I
+guess, but these things are not, you know, these aren't PCs. These are outside of the comfort zone of a
+lot of people who are using them. So once you get these tools running on that
+platform, then you just pray to God, that's great, let's move on and do something else
+now. When you send these things out, they are out
+of your physical control. So obviously, unless you are implements some
+sort of encrypted file system on this thing, how would you do it? Where is your key? Who is going to type in a key on this thing
+once it's out there? It's hard to protect this thing once it's
+out of your physical control. We know, we have access to a computer. We have access to a USB port, we're in. Finally, the update procedure for these things. Once they work, they work. The chances of somebody actually seeking occupant
+between tests the new firm ware for their Pwn Plug, the new firm ware for their Mini
+Pwner or Raspberry Pwn or whatever is very slim. As long as this thing is working and doing
+the job, not much chance they are going to think and go out there looking for it. It needs to be an automated procedure but
+you can't have automatic, that's a whole new attack surface for me to talk about next year. So these things will run old code. They'll run old code for a very long time. Security geeks are easy targets. It's hard. There's another problem. I talked about the problem of the naming scheme
+for these types of devices, Dropbox being taken. I'm going with the wordy attackable implantable
+devices. There's problems with doing research on this
+problem. If we talk about finding vulnerability in
+vulnerability software, that's tough to Google. Finding exploits in pentesting software, not
+the easiest research area, but there's a lot of it out there and there's a lot more that
+is yet to be found. So I'm not sure who is currently working on
+breaking things that break things, but there's a lot left out there. You're already familiar with the million bajillion
+Wireshark vulnerabilities out there. That's very typical of this genre of software. We are talking about things that parse things,
+have a huge attack surface. We have vulnerability, cross-site in meta
+exploit. We have screen shots of titles of talks that
+are here at DEF CON and back at Black Hat this past weekend. So the tools that security geeks use are no
+less vulnerable, perhaps even more vulnerable than the tools we are attacking because there
+hasn't been enough attention or enough audit on these tools. So the case study for this, and I'm a picking
+on the Pwn Plug for this, but honestly these same problems exist in other devices. Talk about that in a little bit. But today we are going to be playing with
+the Pwn Plug. I have one plugged up underneath the podium
+here. Wired up and everything. Hopefully it will behave itself long enough
+for a good demo at the end of this. What we have is a discussion of the forensics
+of it and demo of a counter attack against this thing or straight up attack against it. Depend on how you look at it. So for forensic acquisition of a Pwn Plug. This is what I do the first time I get hold
+of any new devices. I want to know how to perform a forensic analysis
+which involves imaging it, which gives me something that I can go back to the original
+state of the device when I screw it up when I attack it. Forensic acquisition is something that I'm
+interested in. There's explicit detail in the white paper
+for this. I haven't looked at the DVD. My, I don't have a DVD drive, but the DVD
+that comes with the conference materials has the white paper, it has the slides, it has
+the attack code and pay loads and all the crap that you need to do your stuff on your
+own. The white paper has the details about the
+forensics. I won't go into the U-bot commands, but the
+essential idea of this is that the Pwn Plug, which is based off of the Shiva plug platform,
+if you want to play around with the devices you can buy a little 99-dollar Shiva, but
+you're better off with the Raspberry Pi or something, but the Shiva hardware that the
+Pwn Plug is based on can boot off of a USB drive if you ask it to nicely. Essentially you can grab a DB image for Shiva
+plug and which will have everything you need to DD a drive. More importantly you are not relying on the
+file system and tools already on the Pwn Plug itself. You can, you can boot up into the serial console,
+interrupt U-bot, tell it to load a kernel off the system in the USB drive and go. It will boot into your USB drive instead of
+the Shiva, and. For forensics, you can DD the root file system
+once you get in there. Now, it's just, turns out it's just as well
+on this device just to copy from root down. Since, for the analysis of it, you know, the
+UBI file system that's on these devices, and other similar compressed file systems run
+a lot of these embedded devices are options for forensic analysis on these are kind of
+limited. There's lots of compression on these. At any given point you don't necessarily know
+how much free space you have. It depends on what you're storing really. The flip side of this for forensics is probably
+you can forget about recovering deleted files on this thing. The whole thing is part of the compressed
+image. If you lose chunks of it you are basically
+out of luck with the rest of it. The rest of it is just noise. There's really no tools for doing good forensic
+analysis that I know of right now for recovering deleted files and things like that. If you have the file image which you can blow
+out to another Pwn Plug, which is useful, you can use MTD tools on Linux to mount this
+image and start processing it at the logical file system level. You can go through an look at the files and
+things. These devices support attached storage. The storage on board most of them is fairly
+limited. So the nice thing about this is doing forensics
+on the little small USB drive that is hooked up to this thing is going to be a lot easier
+than doing the forensics on the device itself. And it is going to be standard procedures. Pop the thing out, hook it up to FTK through
+the right blocker, if you please, and start analyzing. Chances are it is going to be a normal-ish
+file system, EXT or Fat 32 or something like that. The cool thing, the stuff that is going to
+be on that, that's the real goods. That's all your packet data, things like that
+that aren't necessarily feasible to store on the internal storage. The cool thing about these devices is anything
+that is different from the base image, anything that is different from the base image on one
+of these Pwn Plugs is likely to be of interest to you because it's something that is changed. It's something that is as a result of the
+attacker using it. Or as a result of the tools that are running
+on it as a result of network traffic coming into it. What you can do is, you can take that file
+system that you've acquired and run it through FDK or whatever tools you have for making
+a known file hash set, hash all the files on the base image. You can download the base images off of Pwnie
+Express are. And you blow away everything that matches
+the hashes in there. I don't care about that. That's the same as the factory config. The files left are the files that are going
+to tell you something. Cool stuff. Now we are going to get into attacking these
+things. We're going to put our Black Hat firmly on
+and attack some penetration testers. The particular exploit that we are dealing
+with here is in the Pwn Plug user interface. So congratulations for those of you who bought
+a Shiva plug and put the community version, the free version of the Pwn Plug firm ware
+on it. You are not vulnerable to this. This is only in the interface, the web-based
+interface that is on the version versions that they sell to you. So this plug UI or pwnix, I've seen it called
+various things in the documentation. This is a commercial version of the Pwn Plug
+and it lets you do things like turning on passive recon, so you can sniff http requests,
+look at passive OS discovery stuff, set up reverse tunnels, things like that. And so there's all sorts ever fun things that
+this interface can do. They tell you in the documentation when you
+put this thing into stealth mode if you are going to have it in stealth mode in an organization,
+this interface has it up and going. The problem is, you can't do the cool graphical
+things. People aren't going to put it in stealth mode. Who cares if it's noisy? Another thing when you're setting it up, on
+the bench back home back at your lab or whatever chances are you are going to be using this
+interface. How do we break it? With a bunch of -- I did get a DEF CON talk
+accepted for cross-site scripting. These are boring vulnerabilities, easy vulnerabilities. So if you have not attacked much, you're going
+to be able to follow this. We have three different vulnerabilities in
+it. We have cross-site scripting, boring. Cross-site request forgery, that's everywhere. Sort of interesting, we have command injection. So we can run commands on this device. That's kind of cool. But you have to be logged in to do it. So who cares? If we combine these exploits. Say we will say our cross-site scripting is
+triggered by an injected packet that we send to this thing. It doesn't have to be directed to it. It can be anything that sniffs. We send a packet to this thing. That's a cool way of triggering XS, cool,
+better than united phishing e-mails and links on Twitter and things. What if the XSS pay load triggers the cross-site
+forgery vulnerability? So we have one page on president interface
+that is vulnerable, the cross-site scripting. That pay load hits another page that we can
+submit forms to on behalf of our penetration tester. Cool. What does that get us? Well, our cross-site request forgery is in
+the page that has command injection. So why don't we have our cross-site request
+forgery vulnerability, our pay load, go ahead and inject the command for us on behalf of
+the penetration tester that's logged in. We get remote cross-site scripting. Cross-site scripting leading to -- it requires
+setup. The stars have to be aligned but it's a realistic
+scenario. I will make you watch this slide again because
+the animation is cool. Boom! Okay. (Applause.) >> WESLEY McGREW: Thank you, thank you. It is all down on the keynote on that. I didn't render that fire myself. So here is your pay load. This is what you send in the exploit package
+to the device. This is what you are going to pass into HP
+to get this thing rolling. This part of it right here just passes the
+reg X to get it on to the passive recon page. This is what it's looking for in a packet. You know, you might want to make something
+a little more believable than user agent, hi! This is the bit that you need to get cross-site
+scripting going on. Everything inside of that is going to render
+in the page and we'll see that in a bit. The cross-site request forgery in here. We have a form in here and a bunch of crap
+that you have to fill out for this form to actually take. We submit this to the SSH tunnel setup page
+on the Pwn Plug interface. And it goes ahead and submits it on the penetration
+tester's behalf. Finally, the command injections in there,
+and this can be in any field. These same vulnerabilities, these exist throughout
+the interface. So basically you can mutate this to go to
+basically any page on the Pwn Plug. So basically what we have here is the SSH
+tunnel IP address is now semi-colon, CD user bin, W-git my malware, run it, remove it,
+and keep going. So what do we run as a result of this? We are not alerting XSS here. We want to do something with this. So there's some proof of concept, see my disclaimer,
+proof of concept. Don't run this in the real world or you'll
+get owned. My proof of concept malware is pwnmon. You can't adapt this to anything, it's a crappy
+discriminate. It cleans up a bit after itself. It installs itself into user bin, user S bin. It sets up some persistence in RC local and
+chron and all that crap to make sure that it keeps running. It sets up a lock file so it doesn't run more
+than once at a time. The Pwn Plug specifically disables the batch
+history for the root user. I go ahead and re-enable that so I can keep
+up with command logs. Occasionally it phones home and tries to get
+more code to run. Because that's awesome. So often, it gathers a process list, command
+history, file listing, set of network interfaces and connections, all the log files for the
+most interesting tools in the pwn OS and wraps it up and sends it to my FTP server. This is something that you can start from
+on this. So the demo for this, there's everything you
+need to replicate this on the DVD. You need a floor model or above Pwn Plug,
+actual commercial Pwn Plug to replicate this from the guys at the vendor area. Tell them I sent you. Tell them if there's a patch for this, to
+give you the old one so that you can play with this. Or just use an unsuspecting friend or enemy's. We are going to bounce out of here. I hope this demo will work. Otherwise I have a recording. So what we have here is, and we'll take you
+on a tour of the different views here. What we have here is the hapless penetration
+tester setting this thing up. Over here we have our attacker. Basically with where he's launching the attack
+from and the Web server that he's hosting the stuff off of, the FTP understand info
+on what is going on here. The players that we have here are the Pwn
+Plug on 10, the pentester/victim on 15 and the attacker here on 20. And here we have basically a view on the code
+of the pwn mon software in case I want to refer to anything for y'all. What we are going to do, we are going to start
+up the attacker Web server so we have this. I'm going to show you what is in here right
+now. The UBI pentest PI. The UBI file names, since I had to do a bunch
+of research to figure out what the hell is going on with the UBI file number, I figured
+adding more UBI named commands to the operating system is a good way to hide my malware and
+nothing makes sense anyway. So we have UBBI pentest PY and UBI mount here. UBY pentest PY is the UBI malware. UBI is the file on the Web server that pwnmon
+occasionally polls for new commands. I'll show you that in a bit. Classic, you know, buy and shell type crap
+here. We are going to host this Web server. If you learn nothing else from this talk,
+you can set up a Web server out of your current directory with just that command. That's just tons of fun. It beats setting up Apache, whatever. Don't run your blog off of it or anything. (Laughter.) >> WESLEY McGREW: Pay loads are great. That fires you up a Web server on port 8,000. Cool! Let's see. The Pwn Plug is still awake. That's good. We have our FTP dead drop here where it is
+going to go. It seems fine. We are going to be the hapless penetration
+tester again. We will turn on under plug services here,
+turn on the passive recon stuff. Oh, dear! We're already -- I may have already triggered
+the vulnerability, that's cool. He is going to enable this and we are going
+to see here in a second whether or not that is actually -- so we are enabled. We are going to see over here, it hadn't requested
+anything else. That's good. Might not. What we are going to do, we are going to -- we
+have the exploit pay load there, which I reviewed with you. A simple HP command sends this out. There's a trick. We are sending it ten times because it's kind
+of goofy. The passive recon page is pulling from a log
+file and unless you send -- unless there's a good bit of traffic on the network it takes
+a bit for the buffers to flush and for it to show up on the page. I've done it ten times. The exploit said not to run it more than two
+times anyway. Sometimes it will request it or whatever. So we are going to blast that out. And while that's going, I'm going to set up
+inspect element on this guy right here so we can see it when it shows up. All right. So let's inspect right here. So what we see here is our, you know, cookie
+high form, all that crap going on there. So pretty soon we should see a request here,
+and we have. So the cross-site scripting vulnerability
+has -- come on, get me off the blue screen here. Un-highlight all. Okay, has set up a standard reverse SSH shell
+of get all my crap. And that is scheduled to run every minute. Thankfully it's already run. Sometimes if you hit it wrong I would be standing
+here and have to tell you a joke or something before it actually does anything. It's gotten the UBI Mount script for code
+to run. It's already phoned in with a basically a
+tarred up image of all the cool crap on the Pwn Plug. So let's take a look at what we've got here. With the UBI mount we should have a reverse
+shell running. 192168.9.10 on port, I think it was 9,000. Yup. Drum roll, please! Root! (Applause.) >> WESLEY McGREW: I've always wanted to do
+that on stage at DEF CON. (Laughter.) >> WESLEY McGREW: All right. Over here at FTP dead drop. This is cooler. We want to get stuff. Loot! So what we have here, this is funny. The Pwn Plug isn't so hot on its realtime
+clock or anything. So this is time stamped. So with Unix time stamps. I have underscore and dash here. Oh, I fucked up on my script and I have a
+dash in here also. That's a negative time stamp there. My Pwn Plug has lost its shit. We'll see what it thinks the time is. (Laughter.) >> WESLEY McGREW: Oops! What? Oh, what? (Chuckles.) >> WESLEY McGREW: What the hell is going on
+here? Oh, I see. It's already grabbed another one. Okay. We'll grab that one. Implausibly old time stamp 1946. We have defeated the Germans --
+(Laughter.) >> WESLEY McGREW: Now we are wrecking shit
+at Landry Park, I guess. What we have in here, you couldn't see it
+from that. It's complaining about the time stamps. We have listing of files, interfaces, logs
+from met exploit, John, Bluetooth, we have the command history, things like that on here. Everything on this device runs as root. The Web interface is running as root. So there was nothing to keep us from doing
+any of this. And that's -- let's see. That's about it. The whole thing is broken now. It takes like ten minutes to get everything
+back into a good state. I'm glad that worked. So back to my slides, wherever those are. And so for conclusions for this, these attacker
+implanted devices can provide good counterintell. If you find one of these in your organization
+as a defender, it's a curse, I suppose. Depending on what they've already gotten. But you also have, you know that somebody
+was there that is going against you. And also you've got all the tools in front
+of you that are necessary to start counter attacking this thing and doing forensics on
+it to figure out who is doing this to me and why. What are they after and what have they already
+got? Those of you pentesters out there, that's
+very few of you who actually said you are going to use these devices for good. Know your tools, test your tools, use them
+safely. If you're an attacker, do that. Monitor carefully and clean up between engagements,
+things like that. You need to be a little more literate with
+your penetration testing tools than simply using them. You need to understand how they work. Maybe even try breaking them once in awhile. For breaking things, people who break things,
+pentesting tools make good targets. So with that, I appreciate y'all coming to
+my talk. There is no Q&A room. So you are just going to have to track me
+down before I go off and get bored and do something else. (Applause.) >> WESLEY McGREW: Thank you. If you can't track me down between now and
+the end of the Con, you can hit me up at Wesley@McGrew Security.com or Twitter @McGrewSecurity. Thanks!

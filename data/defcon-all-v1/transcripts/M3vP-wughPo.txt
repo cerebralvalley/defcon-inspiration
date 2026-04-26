@@ -1,0 +1,593 @@
+welcome, welcome to DEFCON,
+welcome to DEFCON 23, and I hope y'all have as much fun as I
+generally have, and so to start off, this is -- this is the talk
+bug files, if you're here for some other talk then you're in
+the wrong room. And let's start out by introducing ourselves. >>
+My name is Damon Smith. I am a security engineer with NCC
+Group. I work alongside this happen man. Embedded devices but
+recently file format research with this man right here. >> And
+this man right here is Daniel Crowley, as aforementioned hand
+some, thank you. Thank you. And I -- I like web applications
+encrypto and fiddling with file formats, so this is right up my
+alley, which you would hope because I'm up on stage talking
+to you about all of this. And so, yeah, just so you know,
+we're from Austin, Texas. Anybody -- yay. And there's some
+local up there, Austin hackers anonymous, ha ha. It's a time
+honored tradition, if you have something funny, feel free to
+shout it out. If you're not funny, please just stay silent.
+So let's begin. So what is this talk about? This talk is about
+abusing features of file formats to make files that trigger
+outbound traffic when opened. And there are some caveats to
+this. We focused research in particular directions because
+you know, if we were to stand up here and say, I can make an
+executable that calls that when you open it, well, yeah, okay.
+So it's slightly more interesting things like that,
+document formats, media formats, that sort of thing, and this
+does not -- the important thing to keep in mind here is that
+none of this is exploit -- well, it's sort of exploitation, but
+it's not exploiting any kind of bug, right? These are not
+mistakes so much as user vulnerabilities are. We're
+talking about features in file formats, features in parsers
+that allow this to happen. >> Why do you care, why in this
+room? Three main reasons this stuff is important. The obvious
+is privacy. There are a lot of obvious privacy implications,
+there are also some more hidden privacy implications. We're
+going to go over each one of these points in detail during
+the talk but just briefly, we're talking DRM, files phone home as
+soon as you open them for tracking their use, data loss
+prevention. Files that exist on a corporate network as soon as
+they're opened outside the corporate network they phone
+home to let someone know they've been reached. Deanonymization,
+some real serious information that we're going to go over a
+bit more in depth later. We have files as soon as you open them,
+credentials to an attacker. Finally as Dan mentioned, not
+going to be fixed on patch Tuesday. These are going to be
+around for years, that's what makes these bugs different than
+your standard buffer overflow type bugs. >> We're going to
+start out with a little demonstration. I'm sure a lot of
+people, they heard, ooh, credentials. Credentials. Let's
+see it. So we're going to show you two demonstrations now, one
+with RTF and one with SVG. >> Quick prayer to the demo gods,
+please. >> Did you bring the live chicken? Does anybody have
+a live chicken? I've got the ceremonial dagger, but -- okay,
+well, we'll just have to hope for the best. >> Resolution. [
+Laughter ] >> Okay. >> So I guess I'll tell you what he's
+doing, while he's doing it, since he can't hold his
+microphone and use computer at the same time. I know, I know.
+You see in front of you a standard Windows image, Windows
+8.1 fully patched, fully up to date. Nothing up my sleeve.
+Nothing up my sleeve at all. What you don't see is the Kali
+image running in the background in this machine that is going to
+be capturing credentials, if we're lucky. Come on. Pray
+harder. Demo gods. >> Like Santa. >> This doesn't look
+good. Something is wrong with your disk. Mmm. I guess this is
+the failure of putting demos at the beginning instead at the
+end. Oh. Great. >> It's moving. It's working. That's good. All
+right. So here we have a completely normal document, and
+if I can just -- >> I'm just muttering to myself, don't
+listen to me. >> Hey, there it is. [ Laughter ] >> You may be
+at the wrong talk. >> That's funny. Do that. That's -- >>
+Don't do that. That wasn't funny. Be meaner. Come on. [
+Music playing ] [ Laughter ] >> Credit where credit is due.
+Thank you. Thank you. He's available for parties, bar
+mitzvahs, weddings. >> Web URL -- >> Put in your password. >>
+I'm working on it, Pal. >> I swear it worked five minutes
+ago. >> This is why -- [ Laughter ] >> Oh. [ Applause ]
+>> Yeah. >> No virus protection. This is how we roll at DEFCON,
+am I right? Ooh, this is not good. We are waiting to enter
+the password into the Kali Linux machine. >> I wish I had chosen
+a less complex password. You know what? This is -- this is
+not going well, so let's try this towards the end. >> We will
+revisit the demos later. Back to the presentation. All right. So
+-- >> Thank you. >> Thank you. The best demo you'll see at
+DEFCON this year. >> We'll try again later on. Hopefully it
+will work later, once it's finished thinking about it. So
+there's already a number of formats that are known to allow
+this. There's been some research into office document formats.
+There's play list files, there's short cut files and that's
+actually kind of an interesting vector because as soon as you
+open up a folder with one of these files in it, it triggers
+this interaction. Interestingly HTML, yeah, it's obvious you can
+do remote references with this, and all -- >> Kind of the whole
+point. >> Yes. You know. Hypertext. Not like calm
+uncaffeinated text. And so you can also do NTLM references,
+certain browsers, Internet Explorer will work. In Internet
+Explorer, image source equals SMB URL and that's actually the
+trigger, is when Windows tries to do SMB communication, if that
+SMB service asks for authentication, Windows will
+take your current cast credentials, whoever currently
+logged in, authentication using those credentials. If you
+receive an HTML formatted e-mail through Outlook and has images
+that do the same sort of thing, referencing SMB share, this will
+trigger the interaction as well. >> So that's what's been done in
+the past. Let's talk a little bit what our research is focused
+on. We were specifically targeting your average Windows
+build. Your average user in a corporate environment is used to
+opening at e-mail attachments much these are document formats,
+media formats, images or audio and video and stuff like that.
+Outlook stuff, meeting invitations, contact cards. We
+wanted formats that the average corporate user is used to
+receiving in their inbox every day and double clicking it
+without thinking. >> So just a quick note here. Up at the top,
+you'll see, like R type N, just -- this is some quick notations,
+you know this particular format supports ordinary remote. MTLN
+credential capture so PDF supports both, just a quick
+note. So PDF, a couple different ways that we found. You can
+actually embed remote images into PDFs, which is interesting.
+A very interesting format. The 1.3 specification 300, 400 pages
+long, so it's a wonderful read, if you are, like, having trouble
+sleeping on the plane. So -- so remote images. This is one of
+the simplest ones, so you just embed a remote image in a PDF
+and -- when you open it, it has to try to load that image, of
+course. There's also JavaScript stored in PDF. Anybody out there
+didn't know PDF supported JavaScript. >> All educated in
+the PDF format. >> Probably in the right talk, good. You can
+pop up a media player, and this supports SMB URLs. That's not --
+UNC paths, and the same thing with git URL, a specific
+JavaScript function. One really funny thing, Damon, I'll let you
+talk about the warning. >> It does issue a warning, as soon as
+you embed one of these -- SMB URL in your document. You're
+trying to connect to post name, attacker.com, do you want to
+allow this? What's funny, if you're familiar with UNC, you
+might be familiar with long UNC. Slash, file. Long form UNC is
+slash slash, question, slash host name, slash share name,
+slash file. I don't know why it exists, but it does. And his you
+can see by this cute error message, it says this document
+is trying to connect, huh? Do you want to allow this? So, yes,
+it's still a warning message and it's kind of funny we can make
+it an obscure and bizarre warning message. >> I can't tell
+if this is more or less shady, would you like to connect to
+completely legitimate site.com? There you have it. >> So the
+next file format we got a quick one was the RTF format. You
+hopefully see a demonstration of later in our talk. This slide
+wouldn't make much more sense if you already had seen the
+demonstration. The technique used, you are allowed to embed
+links to remote documents in an RFT file. I don't know why
+that's the case, but it exists, so the cool thing about the RTF
+concept we cooked up, Word and Word pad. Doesn't matter if they
+have Office installed or not, I'm going to get credentials. It
+does issue a warning, saying this document has links to
+remote content, do you want to allow this? But the funny part
+and the part you'll see in our demo in maintain, already sent
+your credentials before shows the warning. So not the most
+useful warning in the world, but, hey, what are you going to
+do? >> So there's a -- an image format called SVG, scalable
+vector graphics, contrast to traditional formats where you
+have a bunch of data about the dimensions, the raw color data
+encoded into some format, SVG is actually a sort of series of
+instructions how to build the image, kind of like how HTML,
+series of instructions what to put where. SVG is kind of
+similar and what's interesting about SVG it looks a lot like
+HTML, and it actually supports a subset of HTML and some of that.
+So you can actually have remote style sheets, so you can import
+a cascading style sheet from a remote location. And there's
+also support for JavaScript in SVG, which is fucking hilarious
+as well. >> Your images have JavaScript in them. >> Welcome
+to the future. So SVG, you can use a UNC path, or rather a file
+URL which basically, when you're referencing a remote host, file
+path is for Windows is going to use SMB, right? So SVG we can
+use that as well. >> So the next one, N3U -- basically all the
+play list formats. The core goal of these formats is to have a
+list of media files that will be played in sequential order, so
+obviously these are going to be able to make remote references.
+What is perhaps less obvious and maybe not such a great idea is
+that they're allowed to reference UNC paths. I know for
+a fact I've never had a play list that needed a legitimate
+reference to UNC path. I can't imagine why that's a feature.
+You open play list a we get your credentials. That's kind of
+cool. >> Worth mentioning -- do you have a question, sir? >> [
+Inaudible ] >> So the question is, is two factor authentication
+a reasonable mitigation against this? My response, far too
+complicated. This is a much simpler problem. You should do
+this 100%, absolutely you should do that, but this is a much
+lower level problem than that, right? It should not be the case
+when you open a file format it is allowed to accepted your
+credentials to a remote party. That should never happen. >>
+Especially without your interaction. So it's worth
+mentioning at this point that the handling of UNC paths is
+sort of -- I'll get to you in just a moment, sir, I promise.
+It's done at a different level than you might imagine, so the
+parser that's working with an M3U or PLS, Windows, it's
+expecting either a URL or a file path. Now, if you get -- if you
+give it something that -- ally URL, doesn't start like HTTP
+colon, slash, whatever, it's going to say, hey, Windows, you
+handle this, right? So in -- in many places, where you're
+calling out to some file, file path, pulling a file from a file
+system, Windows is actually handling this, this is UNC path,
+I know what to do with this. So what enabled us to do a lot of
+these things, and just kind of mentioning this at random point,
+I know, but Windows is actually going to handle this and not a
+parser. The fact a lot of these support UNC path is not so odd
+when you understand that. Now, we had a question. >> [
+Inaudible ] >> Yeah. >> [ Inaudible ] >> That is an
+excellent question. The question is: Other than the default
+parsers that we have shown, are other parsers also vulnerable.
+My answer is, we don't know. We didn't check. >> We did do -- >>
+We did look into it but it wasn't our primary focus. Our
+core focus was your stock corporate build, which is going
+to have Adobe Reader and it's going to probably have Internet
+Explorer as the default browser, let's be honest. What I can tell
+you is -- >> For PDF specifically we did look into
+that more than any other format. I can tell you that most PDF
+readers out there support only a small subset of the full PDF
+functionality, because as I mentioned, flipping huge.
+Actually huge. Crazy things in there. Great -- I mean we could
+do an entire talk just about PDF and if you're interested in PDF
+in all its weirdness, I can recommend -- by Julia Wolff.
+Great talk. So great talk, if you want to look more into PDF.
+But Chromes, PDF reader, I think it's just PDF.JS, Firefox's,
+Mozilla, it doesn't support a wide range of things, so none of
+these techniques work on Firefox's built in PDF reader,
+Chrome's PDF reader, pretty much just Adobe products that will,
+like, do the whole set of functionality. So these -- the
+techniques we mentioned for PDF work on Adobe Reader and that's
+what we've tested it on, so, good question. >> Okay. So the
+next family of formats we looked at is the ASF family formats
+which maybe you've never heard of, but some of the
+implementations, Windows media audio, video, or your classic
+ASF file. I know it may shock you, but your Windows media
+video file has the ability to fetch from an URL when you open
+it, which is incredibly bizarre. I can't imagine why this
+functionality exists, you play a video file and retrieves
+information -- it pops open your web browser to a remote URL,
+which is completely insane, and since the average corporate
+build, the default browser is going to be Internet Explorer
+and Internet Explorer has the ability to fetch images from an
+SN -- what this means is, you open our video file, and it
+sends us credentials. Particular technique, URL exit. You're
+allowed to embed scripts that are executed at a certain point
+in the video file, so for instance, five seconds into the
+video file, run this script. Traditionally this is used for
+including closed caption information in a video file.
+With URL, exit command it opens URL and the default browser and
+stops play back of the media. >> So you can see how this might be
+applicable to a bunch of different things and even if
+your default browser isn't IE, opens -- I am a pirate.HTML --
+you can see where I'm going with this, but it's kind of -- kind
+of odd. So MP3, about the loss in a wind. MP3 by itself, very
+simple format. You have a fixed size block of data which
+defines, like, here's what the next block of audio is going to
+be -- going to be like and this is what allows things like
+variable bit rate. I want this bit rate. Block of metadata,
+block of audio data. An extension, not MP3 but de facto
+has become part of the standard, tagging format which is just
+sort of tacked on to MP3 in modern context. So we looked
+into ID3, some interesting stuff in there. There's a frame that
+says, hey, there's -- the frame that's supposed to go here is
+actually in this remote location and also the attached picture
+frame, which is, like, you know, if you open up, you know,
+Windows Explorer and you see, like, various pictures of Album
+Art or whatever, when you look at MP3, that's because there's
+an embedder in the MP3 file in the ID3 tag. So that actually
+supports remote pictures as well. Unfortunately, with every
+player we tried and we tried a lot of them, these features
+don't work, so one of the things we learned throughout this is,
+what the VRFC says, the parser actually supports are two
+different things. We did find some interesting reading through
+the ID3 spec though. You might be wondering why a brightly
+colored fish as picture for this slide. It doesn't really seem to
+make sense. That's because you can tell, in the APIC frame, you
+can say what type of picture is actually being attached, and
+there's like a number says what kind of picture and number 13 is
+a brightly colored fish. >> Specification, people. >> I have
+no idea. Another fun fact, own genre in ID3, so there you have
+it. So at least reading the RFC wasn't a complete waste, had a
+good laugh or two. >> Oh. Come on. >> I mean, everybody know,
+but come on, be nice. >> That's hateful. >> So, yeah, but the
+fun thing is, if you take something like a WMA file and
+rename to MP3 and Windows media player consumes it, it's like,
+oh, this is a WMA. Okay. You want me to pop up a URL? All
+right. Sure. Here you go. Sort of a win, sort of a loss, you
+know. >> So the next one we looked at kind of obvious,
+actually, is torrent files. The whole point of these files is to
+embed a list of trackers from which you can obtain peers to
+down load a file. You would think, of course, it's going --
+but what we found, that's a little bit more interesting, is
+what are the implications of a torrent file that makes
+arbitrary remote requests? So we -- we are in the process of
+creating the one torrent file to rule them all, which is
+basically one torrent file that has a list of every known
+cross-site request, in standard home router that will go through
+these URLs one after the other trying to pop a shell on your
+router, as soon as you open this torrent files. Even though,
+remote references, consider -- they become much more
+interesting. >> This is not so bad, though, because people
+don't generally open torrents and leave them running on their
+computer for hours or days. So it's not thatted ba. But, yeah.
+We found an interesting thing as well. Support for URL seed, so
+you can have, like, an FTP server or HTTP server to serve
+as alternate seed in case the swarm -- in case there's no
+peers. Or seeds active. But this is -- we weren't able to find
+any players that supported this, so that's unfortunate. Next we
+have the V card format, so this is kind of like -- like a
+contact card, virtual contact card where you send somebody the
+virtual equivalent of business card and then they have, you
+know, your -- a picture of you, and your e-mail address and your
+phone number and full name, all this wonderful stuff. One of the
+interesting things that's in there is a free Bis URL, can
+check or rather your calendar user agent can check to see when
+is this fern free or busy? And normally this is specified as an
+HTTP URL but as it turns out, you can use UNC path. So this
+does require specific actions. I would need -- if you were to be
+exploited by me using this, you would need to receive my contact
+card, import it and then try to, like, see when I'm free or busy,
+because that's when the interaction triggers. But you
+know, any of you who have done any social engineering, this is
+not necessarily a hard thing to do, like, hey, you know, I need
+to have this meeting with you, please, you know, find some
+availability, and you know, here's my contact card,
+whatever. So -- >> The next format we looked at, I Cal
+format, ICS. This is the standard, when you receive an
+e-mail that says I want to schedule a meeting with you,
+this is -- there's a decent chance the attached file is an
+ICS file. This is another really sad instance of people not
+following the RFC. Through this research we basically discovered
+that three essential steps to building a parser. Step two,
+forget everything you just read. Three, step the RFC on file,
+write your parser however you want. So reading the ICS file
+specification we found some very interesting and very scary items
+that are included. You are allowed to set an alarm,
+familiar when you set up a meeting. I want to be reminded
+30 minutes before, I want to be reminded two days before,
+whatever. These alarms have certain actions attached to
+they, so 30 minutes before the meeting, I want an e-mail to be
+sent to me. Thirty minutes before the meeting, I want a
+little noise to play for my cell phone. Those are the different
+options that are available in the alarm category. One option
+that is actually kind of terrifying is called procedure,
+which means run this program with these command line
+arguments 30 minutes before the meeting. I don't know why that
+would ever have a legitimate use case. I don't know why that's in
+the format because to put you all at ease, none of the
+calendar agents that we tested actually support that. So you're
+not going to have calendar agents opening programs 30
+minutes before a meeting, nothing crazy like that. >> I'm
+kind of sad, kind of relieved. >> They got this one right. >>
+You know, all right. >> It's great for trolling, because you
+can define as many alarms as you want and it's defined by the
+calendar invite itself. So if you want to say, like, yeah,
+let's have a meeting in 30 minutes and every single minute
+from now until then pop up an alert and play an alarm sound,
+like -- I haven't done that yet, but that's coming. So obviously
+there's a bunch of different ways you could deliver these
+documents. Obviously via e-mail. You could do this -- distribute
+these on some open file share. You might have you know, let's
+say that you compromised some site that you know a target is
+going to be on, you might replace a document with a bug
+version. Distribution, that's pretty obvious vector for this
+sort of thing. And then we have Honeypot. So this is one of the
+more interesting things we thought of as uses for this. So
+let's say that you wanted to see if somebody had gotten into your
+company's trove of, you know, documents. You might bug one of
+them, like put a bugged file in there, like, you know, something
+like salaries, 2016, .PDF or some such, and then, you know --
+that that file has no legitimate usage, that doesn't actually
+contain anything but when somebody you know, opens it,
+huh, they're not supposed to do that and you get a notification
+about that. So that's actually kind of an interesting, you know
+-- use for this. Yeah. Like a Honey document. >> So we've
+talked a little bit about what we're able to do. Now let's talk
+about how we think this could be applied. One of the more
+worrying potential uses for this is, future DRM, every time up
+open this document it calls home. This is a little more
+troubling than your standard DRM, only purpose is to prevent
+you from playing or viewing a document when don't have
+legitimate need for it. Goes beyond deterrence. They know who
+you are, they know you tried to open it, so this is kind of
+scary stuff. And this is -- you're able to do this today.
+Nothing is stopping this from happening today. >> So there's
+sort of another side of data loss prevention. The honey
+document idea, also the fact, let's say you're trying to, you
+know, be a whistleblower, trying to leak what you feel is
+information that should be public knowledge because of some
+wrongdoing. And -- but you get, you know, like some important
+document that's been bugged. And then you know, all of the
+sudden, you know, the people who own this document who have
+bugged this document see it opened from your work computer,
+then your home computer, and then you know, wherever you
+shared it, you know, all of the sudden this is known to this
+party, this bugging, and you get disappeared. So that's a little
+bit scary. >> So one of the most obvious implications of this,
+deanonymization, if you've ever used -- you don't want people to
+know you use it, if you've ever used it and ever downloaded a
+fire through the tour browser bundle it will pop up this cool
+little warning message that says, hey, we're going to parse
+this file in an external application, there's a chance
+this external application will unmask you because it might not
+go through TOR, you should be very careful opening this file.
+This research is the reason that warning exists. Take that
+warning seriously. If you are opening files, they can track
+you, even if you're using the TOR browser bundle. I think
+you're safer for using the tails live CD because routes all
+traffic through TOR. I don't know. I'm not an expert. Don't
+listen to me. >> We actually -- we're just going to leave now.
+>> Yeah, we're done. Additionally, maybe you're
+working for a government agency. You do not own or control the
+Jihaddist, you are not administrator on the site, you
+do have ability upload PDF file, how to make bomb in three easy
+steps. Every one opens this file, you know they're
+interested. So you deanonymization, that person. >>
+We've mentioned this a billion times, at least, and definitely
+not exaggerating there. But MTL credential capture, relay. I've
+already discussed all of this, so this is sort of in here for
+posterity but I'm going to move on, limited time and I really
+want to try to get that demo to work, but for those of you who
+are not aware of how NTLM relaying works, I'm going to go
+over it really quickly. So there's obviously the fact if I
+get your NTLM hash I can crack it, but what if you have a
+strong password? This is the way it normally works. I say, hey,
+server, I want to negotiate, I want to access whatever it is
+you've got, whatever your -- and the server says, well, first
+here's a number, mix it in with your hash and send it back to me
+and so once that happens, you're authenticated. If you can get
+somebody to try to authenticate to you, there's no
+authentication. There's client authentication but no server
+authentication. No -- to a particular server, just to the
+client. Server doesn't have to authenticate itself. If I get a
+connection from you, I then pass that along to the server and
+pass the information back and forth, and I never have to learn
+the password. I just have to get you to go through the steps,
+give me access, at which point I tell you, sorry, no, that didn't
+work, would you like to try again and then I pass it to a
+different server. If I can get you to try to authenticate to me
+via MTLM, I can to anybody, and actually multiple parties, so
+that's fun. >> Something we've already discussed a little bit
+but it's worth talking about in further detail. Cross-site
+request forgery. They're inside your corporate firewall or on
+home network, whatever. This means the person who crafted the
+document is able to access these -- these resources in a limited
+way. For instance, they could browse to your router, slash,
+shut down,.HTML. Whatever. They will have the ability to send a
+cross over attack, vulnerable device, as I discussed with the
+torrent file. >> Sometimes as we discussed earlier, the format,
+the parser that will initiate the southbound traffic will pop
+up -- words. Pop open your default browser, and if you have
+an authenticated session with some site, any site, in that
+default browser, then it will ride on those credentials,
+right, so you have -- your sort of classic sea surf attack
+there. We thought about mitigations, we -- I don't think
+we should spend too much time on this. But AV is not going to be
+affected against this because there's too many different ways
+to do this, too many formats, and there's a possibility of
+false positives. It is legitimate functionality to have
+remote images in PDFs. How legitimate? You know that's a
+good question, but it is legitimate functionality. It's
+in the spec, so having a remote image in a document isn't
+necessarily bad. Like having one by one pixel image that is
+transparent on an HTML page or e-mail, that's clearly for
+tracking purposes, that's legitimate, question mark. So
+not really effective defense. You could change the formats,
+way too many formats and people are already, like, using the
+formats as they are, so, like, you might be killing legitimate
+functionality by changing the formats. Application level
+firewalls are really good defense, something like little
+snitch for OSX or zone alarm or leopard flower for Linux. These
+are good mitigations against this for some things, so, I
+don't ever want word pad to be talking to word server, I don't
+ever want that, ever. So if I ever see that pop up in little
+snitch, I'm going to say, fuck, no, absolutely not, but for
+something like M3U, yeah, I want it to connect to last FM, or
+whatever. So it's not a perfect solution. >> So a few other
+mitigations we considered. Warnings. This is the classic
+NCF, information security community. More warnings. So,
+yes, you could have more warnings. We do want to see more
+parsers that warn users, hey, this document is about to do
+something kind of sketchy. This document is about to send
+tracking information to a remote party. As we all in this room
+are probably aware, every user clicks okay on every warning box
+ever. It doesn't matter what it says. Warning box, opening this
+file, we'll set your house on fire and they will still click
+okay. That's why it's not a great mitigation. Additionally
+we could do something that actually hooks the lower level
+networking libraries. If ever used proxy chains, cool tool.
+Routes all traffic from application, proxy, low level --
+libraries. Unfortunately this isn't perfect either. First off
+it's very difficult to set it up. It's kind of annoying.
+Additionally, it doesn't work every application. For instance,
+I think Chrome does not allow the use of proxy chains because
+it prevents use of the LD free load command, which is how proxy
+chains work on Linux at least. Egress filtering, you should be
+blocking SMB traffic at your corporate perimeter. If you're
+not doing that, you're behind the times. Egress filtering is
+not perfect. You may be able to block SMB traffic. You can't
+block HTTP traffic. Like every one blocking every firewall
+ever. >> This is normally the point where we take questions,
+I'm going to hope beyond hope that this demo will work now. >>
+Demo gods, please be with us now. >> Let's give this a shot.
+See if we can get this to work now. >> I guess I can take
+questions while he's setting up the demo, so we'll do that to
+save time. Any questions? Yes. >> [ Inaudible ] >> So the
+question was, what tools are available to see what it's
+trying to connect to when you open a file? The best one
+application level firewalls. If you're on OSX, want to install
+little snitch. When you open this PDF file, it's going to
+say, PDF reader is trying to connect to remote host. Fuck,
+no, I don't ever want that button. Says, no, never allow
+this thing to connect to a remote server. That's OSX's
+little snitch. On Window, zone alarm. On Linux, it's leopard
+flower. Any other questions? Yes. >> [ Inaudible ] >> Going
+to be a script? Oh, so the question is, do any of the
+parsers support fetching something that might be a script
+or executable code? Sort of would be my answer. Not
+directly. But keeping in mind that for instance, what we --
+the -- the stuff that we saw for the Windows media video files,
+it opens your default browser and goes to a web page. Not
+directly executing code but it's fairly -- it's common -- how to
+exploit Internet Explorer to get code execution. That happens
+regularly. You send the -- you give a video file that embeds a
+link to your Metasploit file, not directly executing code. We
+didn't find anything to do that. But there are paths to code
+execution. Any other questions? Over there. >> [ Inaudible ] >>
+Did we look at parsers for mobile platforms was the
+question. Unfortunately, we did not research mobile platforms.
+There's a good chance that a lot of these techniques are going to
+work on a mobile platform. For instance, if you're using Adobe
+Reader on your mobile, there's a good chance that the stuff we
+found is still going to work. It's very common that -- it's
+very common mobile versions of software are at least a few
+versions behind. Adobe Reader you have on mobile might be out
+of date and might -- it might not even show the same warnings
+that your desktop client does. Any other questions? Yes. >> [
+Inaudible ] >> So the question was, can some of these bugs be
+mitigated through policy settings? The answer to that is,
+some of them, yes. All of them, no. So, mmm -- I'm not exactly
+sure which ones can. I'm pretty sure that the Windows media
+video, Windows media audio stuff can be affected by group policy
+but don't quote me on that. In general, no, group policy is not
+an effective mitigation. That would be my answer. Any other
+questions? Yes. >> [ Inaudible ] >> Was the question, what am I
+going to get VM environment? Sure, so for the purposes of
+these techniques we're showing today, VM is functionally
+equivalent to a regular computer. If you open one of
+these documents and it triggers SMB traffic I'm going to get the
+credentials for that VM, so it doesn't really change when you
+move to a VM, in general. Yes. >> [ Inaudible ] >> Are you
+talking about the demo? [ Laughter ] >> Sorry. Sorry. >> [
+Inaudible ] >> I hate to harp on this because everyone harps on
+this, but I think user education is a critical component to
+fixing this problem. I know that there are a lot of debate
+whether user education actually works but people need to know
+this is dangerous. People opening a file can track you.
+People need to understand implications of opening files,
+even if doesn't have memory corruption exploit in it. I
+think that's one of the most important things you can tell
+your clients. User education, they need to understand that
+this stuff is dangerous and that this stuff is out there. >> [
+Inaudible ] >> Everyone opens every file, ever. So -- beyond
+user education. You already mentioned egress filtering, I
+think one of the best you can apply to corporate wide
+mitigation but even that obviously, it isn't perfect.
+Application level firewalls, I think that's the best answer I
+can give and that's not a very good one, I'm sorry. Any other
+questions? Yes. >> [ Inaudible ] >> As far as I'm aware, no.
+There is no way to say, only authenticate -- the demo is
+ready, so we'll take a bit more questions after the demo. >> All
+right. So, charge. So we've got -- we've got an RTF file here.
+I'm just going to open that real quick. And so we've got this
+warning, hey, this document contains links to other files,
+do you want to update? >> We don't want to do that. That
+sounds sketchy. If I pull this over here, you can see that I've
+already captured the hashes. So -- so that's -- >> It's like
+closing the gate after the horses left the barn, am I
+right? [ Applause ] >> So that -- oh, no, I don't think I want
+to do that, actually. Not do that. So -- so let's go ahead
+and close this. And then I'm going to open this. Let me just
+clear my -- nothing up my sleeve here. I'm just going to clear
+the -- I've got this cleared. I've got this cleared. And I'm
+going to go ahead and open up this SVG. And you can see it
+doesn't show anything, although we could make it show something.
+And again, we have captured hashes. And from here, I'm just
+going to go ahead and crack quickly, I've got like a crack
+password here. So just going to run, John. So just run it
+through John quickly, and made it a really easy password so
+crack instantly, so don't have to wait a long time. >> Password
+is also throw away, in case that wasn't obvious. >> Right. Again,
+just to review, this not an exploit. This is features of
+Windows, this is features of SVG. >> This is how it's
+supposed to work. >> Yes, and this is what we get. Right. So
+just by opening an -- image file, a video file, a -- a
+document, even -- and this is, like, we don't have -- even have
+Office installed. This worked in Word pad, right? So all of the
+sudden, this happened. Right? So thank you for waiting patiently
+for the demo to work. I'm glad it finally did. >> We finally
+did it. [ Applause ] >> Thank you. Thank you very much.

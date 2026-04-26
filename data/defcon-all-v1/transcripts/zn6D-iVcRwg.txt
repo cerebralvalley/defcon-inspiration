@@ -1,0 +1,347 @@
+>>Thank you for making out to
+day three of Def Con. It is hard
+for 90% of the audience. We're glad that you're here. First the
+agenda. We're going to go over
+the attacks surface on the cell phone. What you can find, what
+is available to you. We're going
+to be talking about testing environments both virtually and
+the real world testing
+environment and doing live demonstrations  ‑ ‑
+demonstrations at the end. My
+name is Brian Gorenc. I run a  research team, my responsibility
+is running the zero initiative,
+the world's largest vendor diagnostic program. And I'm also
+responsible for running the
+phone to own competition through the programs we have been able
+to inject $10  million  into the
+white hat research marketplace. We're proud of that, outside of
+that, I do a lot of hunting, but
+typically they don't lead the vulnerabilities, only once in a 
+while. I'm also on twitter. >>
+My name is Matt Molinyawe. I'm a  researcher. I work for Ryan.
+Pointers from there are really
+delirious. I have hours of YouTube video that and watch at
+work, because I work a lot. And
+part of the fund team that helped Internet explorer 11 and
+windows 8.1 and doing a lot of
+cleanup, it is mess to clean up your mess, so it writes clean
+and shiny. And I like scientific
+calculators. In my free time, I go under DJ, I was a  two time
+finalist in AMC. So are some
+pictures from DJ clips. And I also scratched on the 2014 song
+security by chase. I also beat
+contra using a  laser in the top nine. [ Applause ] You can see
+it on YouTube. I did it in like
+17 minutes. I beat clog. National hero status. I do
+martial arts. So anything I want
+to say, do the shit out of the things you like to do. My name
+is DJ on twitter, too. >> The
+whole point of this talk is to  ‑ ‑ it is about Celly and what
+is going to go through SMS/MMS.
+What we like about this technology, it is always on, and
+in your pocket. There is limited
+defenses between you're the phone and attacker. Everything
+going through the provider. A
+lot of the vendors outside of apple and Google and those guys
+once the phone has entered the
+marketplace it is EOL. There is no engineering team out there
+ready to push patches and no
+real clean way to get a  patch out through the field. We
+experienced this a lot. We have
+been trying to get patches out for the mobile area and it is
+quite difficult. There has been
+a lot of research in the area, of course. Every one rolling
+around and doing their own
+mutation. We're going to give you building blocks to get into
+the area and get interested in
+phones. In this case, we're using android devices in the
+demonstration. So bug hunting
+itself and what is available on the phone. For messages services
+we have SMS, short messaging
+service, it is a  technology, many of you know this, but there
+is actually different encoding
+steps and different alphabets to send to the phone. Seven bit 160
+characters, 140, and a  70
+character UTF16 to the phone. You overlay messages and do
+segmentation in the messages
+using the data header. That's available to you, that is good
+way for processing errors in
+that type of segmentation and multimedia messaging services is
+your gateway into sending
+malicious audio and video file and pictures to the phone. Most
+of these are processed without
+user interaction. And it allows you to use it quickly. And the
+community alert mobile system.
+There are three different types of alert messages to send to a 
+phone. One is presidential, one
+is eminent threats, weather, and then amber alerts. The
+interesting thing about this
+type of messaging, the user can opt out of the amber alerts and
+threat alerts, but not the
+president alerts. If you can find a  venerability alert in
+the presidential message you are
+going to own a lot of people that way. On the screen, the
+message that we got yesterday
+sitting in the hotel room. Enjoy that. There's a lot of file
+formats available through the
+MMS protocol that will allow you to get, decode execution on the
+phone itself. We listed some on
+the slides. We actually just have the source codes looking
+for the handlers for the various
+file types. There is a lot of legacy formats on the phone
+typically coded a long time ago,
+they have not gone through a  secure life cycle and an easy
+bug in there, we found a  bug or
+two in the file formats while we were fuzzing. We are talking
+about fuzzing itself. There is a
+lot of existing workout there that you can leverage, if you
+need fuzzing seeds there is good
+locations you can also Google this file type, the file type
+that you want to fuzz and get a 
+large corpus of data and send it to the libraries and then the
+phone like we're about to show
+you. And you can get mutation libraries for PDUs and things
+like that. A lot of research in
+the area. In this case we used our mutations, you will see that
+in a  video later on. It is easy
+to do press pretajing, you role your own wrapper and have a 
+database to store it. So I'm
+going it turn it over to Matt. He will go over emulation. >>
+All right. We just pulled out
+the android listed there. You can use these commands to create
+armed devices. And  ‑ ‑ you can
+go through the UI by that command. It is easy to like
+having the scripts rolling. So
+if IOS there was not a  good fall  ‑ ‑ default message app on
+there, for windows phone the
+link is there. It has a  messaging app. It looks pretty
+dope. I didn't get a lot of time
+to play with it much, but you can attack it from there. As far
+as android, there are two
+things. I used the android SDK that gives you the benefit of
+the versions for the ones that 
+‑ ‑ something, you can have images and six images, but they
+tend to be slow, they are going
+through QMU, but emulation is slow, because it emulating
+instructions on A6 or 64. And
+this is a  ‑ ‑ A6 virtual box machine. It is user friendly and
+available at Jenny motion. For
+debugging  ‑ ‑ issued this command, this slide is mainly
+for me. Because I forget stuff,
+I will copy and paste this later. I should probably write,
+screw it. But I'm super lazy and
+need to get on that. A lot of stuff that people can do is
+faster than me. You run GBD,
+find your process. And you run the GDB for your harm and then
+run the target remote command
+and then your live debugging continues. That's it. If you
+want to be cool, run python and
+catch all of the output and send the commands and that all she
+wrote. You could send it to a 
+database. So if scripting  ‑ ‑ basically  ‑ ‑ um, you can
+script SMS commands to the send
+PDU command on the Telenet channel. There's a lot of prior
+research here. A lot of gods are
+there and they have already done that. So  ‑ ‑ so I had, Matt and
+I  ‑ ‑ it is really awesome  ‑ ‑
+it is about three or four weeks of me telling, talking to myself
+saying why do you suck so bad,
+man, this is awesome. [ Laughter ] So, so yeah. You guys should
+just, if you have  ‑ ‑ fields,
+whatever, you don't have to, you will see much I failed. But if
+you guys should fail fast and
+fail often and then you'll eventually get success. But not
+for me. Luckily for me I just
+completely gave up and went straight to backing up MMS
+messages using backup. So you
+know, I did that and I pulled stuff from my phone and throw it
+to an emulator and I know that
+MMS is on an android emulator. Despite what the Internets. I
+Googled three weeks and it
+sucked. I was not getting success. So anyway, decompiled
+the code. Worked, found out that
+the MMS  ‑ ‑ SMS/MMS file is where all of the good stuff is
+stored. And I figured hey, I
+don't have to write Java, I did that for seven years and got
+tired if it, so I'm just going
+to write python. So that's it. Okay. The two directors that you
+see is where the database lives
+and the assets that your database will point to. And the
+tables that you see, that's, I
+figured all of that out by sending a  text message or
+picture message to myself, it
+would be in the sent folder but could not send, the emulators
+can not taught to each other. So
+I saw how the database was effected and after that played
+with the values and get into the
+inbox after that. So just push the database to your phones
+reset the commissions and you're
+set. Basically you can send, you know, taps and clicks to the
+phone with monkey runner. So it
+is unscriptable. Here I'm going to play this video. I'm pulling
+down the database and generating
+test cases. And I pulled down the page. Now, it is inserting
+the test cases into the
+database. And  ‑ ‑ I believe the next  ‑ ‑ blip that you will see
+a little bit more. So now it has
+inserted the database into the phone now it is sending all over
+the JPEGs that were mutating.
+Now I'm restarting the phone. So you reboot the phone, it will
+initialize the database and load
+this into your messaging app. You can see the red it is
+working really hard. It is
+working really hard processing stuff. Here we are clicking the
+messaging app. It is going to
+acquire it again. There you go, a  thousand messages I threw
+into the emulator. Now I'm going
+to go and click through one of them. This is a big deal. I
+thought this was not possible.
+But hey it is working. Now you can click through your test
+case. Cool. So that's our,
+that's our picture that we inserted into the database. [
+Applause ] This next test case,
+I'm sorry. Yes? Go back. Okay. Yeah. This next little guy is a
+picture from, of the canteen,
+like I just pulled down the corpus of hacker fisher from
+Coney Island, I thought it would
+be funny to have a  we dog situation. Here are pictures of
+hackers hacking, I'm going to
+screw with this. But anyway. [ Laughter ] Okay. So I'm going to
+turn it over to Brian. He is
+going to talk about keeping real. >> So for the real world
+app setup, you will need a  set
+of receivers and transserve s to send messages to the device. We
+have been using the USP in our
+lab. There is a  lunch of SDR devices out there to allow you
+to get the base station and get
+the messages to your targets. Next is a mission if you're
+trying to find zero base, it is
+best not to be blasting them all over the place. Somebody,
+especially at Def Con will pick
+it up. We have a discloser on the stage. This is what we use.
+We will talk about that more
+later. It will isolate all of the radios inside of the box so
+you don't use it. Next is the
+software, this is a base station and it is very handy with  ‑ ‑
+USRP. Then you need your cell
+phones, of course. We wanted to go try  ‑ ‑ to do BTS. And
+failed heavily. And Matt set it
+up for me. I'm a  loser. So we used the combination of source
+environments. So  ‑ ‑ we used
+the combination of course codes some from the networks. We
+referenced them heavily when
+setting up open DTS. Because we're using a  NSA research
+device, you to build it with the
+dash, dash and the UHB compiler to get the correct trance
+receiver in there, that is
+important to know. And the driver for the research device
+from the company, there is a 
+link on slide, it will get the correct firmware on there and
+understand what exactly is in
+the SRP. So those who have not seen a  USRP. That is what it
+looks like. You can come up
+after the talk and take a  look. We are using 900 to do the waves
+and the cable to connect it to
+the closure. It looks like this. A  Ramsey test equipment device.
+It is used for forensic
+investigations, when they grab the drug dealer's phone, they
+throw it into it box. We use it
+for fuzzing, you can manipulate the phone and keeps it isolated.
+Next, a  phone, your choice,
+android, windows phone, apple, whatever. When we are do it in
+our office, we are using the
+AT&T database using the values listed on the slide. And the
+using the card that is shown on
+the slide right now. We picked this up as a  big box store. How
+much did all of this stuff cost?
+A lot. Unfortunately. The RF enclosure is $3,000, but of
+course, if you do find O dat
+that cost is more, unless you sell it to us. We made a lot of
+modifications to the box. We
+have a lot of pass‑ throughs that allow us to do USB and
+connections so you can actually
+network. So we made modifications to the box and
+debugging. The USRP itself,
+after all of the boards  ‑ ‑ it cost around $3,000. And then the
+cell phones itself, you know,
+unlock phones is about five hundred with all of the sim
+cards and sim cutting tools you
+need. It is about $6,500  to get into the market to actually find
+bugs in a real world lab setup.
+It is obviously cheaper depending on which SDR device.
+A  blade  ‑ ‑ supports open SDR.
+But I not gotten it successfully to work. Connecting the USRP on
+android. You collect the mobile
+networks operational, network operators it will such and look
+for the base station and find
+it, click home and register on the network. Then it will be
+time to send your text messages
+like you see on the slide. We have them, we have the elite
+number, a  (281)330‑ 8004. Go,
+go  ‑ ‑ >> Who? >> 1900  ‑ ‑ sir‑ mix‑ a lot. You can send
+whatever you want. You can spoof
+any text message you want. That's what we're doing on the
+stage. This is what it looks
+like. It is actually connected to the USRP using the UHD driver
+we talked about it. Looks like
+this when it is ready to run. Once the phones are connected
+you can actually use the command
+to, to list the phones that are connected on the network. I have
+the MSI if you want it. Then  ‑
+‑ sending message in open BTS  ‑ ‑ simple. And sending basic text
+messages looks like this, you
+see the text messages coming in on the phone. [ Applause ] >>
+Uh‑ huh. >> It looks like
+somebody getting shot. >> Look, like Mike Jones showed up. So
+we'll continue on real quick.
+The live demonstrations we are fuzzing the phones you can hear
+them beeping in the background.
+There is live fuzzing going on the stage. You more than welcome
+to come out and check it out
+afterwards. You can see like thousands of text messages on
+the phones. And there is also a 
+quick emulator setup? >> All right. So if this guy, we just
+did the remote debugging to show
+you the test case. I clicked it, bam it is all messed up now,
+man, it will feedback to the
+phone saying cannot support it, but guess what, yeah. It does.
+Oh, man. >> Okay. >> Good stuff.
+>> So the last guy tried to do a  demo. Should I give you the
+shot before or after the demo.
+After the demo. I will let you decide. >> The demo didn't work.
+>> He today are taking it before
+the demo. >> All right. New speakers. You guys have been
+sucking. Show some love for
+these guys. [ Applause ] >> Shots. All right. A  shout‑ out
+right there. Good clap for this
+guy right here. So final slide, these our targets a lot of data,
+a lot of person. Information and
+corporate information. This industry needs a  wake‑ up call.
+They cannot handle patches. If
+there are venerability in the cell phone, there is a good
+chance outside of apple and
+Google you're going to have a  really hard time patching this.
+This is the appearance that we
+had with patching vulnerabilities in the mobile
+space. They need a  wake‑ up
+call, I hope the industry steps up and gets them to actual do
+that. It is 2014. Whatever, you
+should not be sitting here not being able to patch the software
+on a  mobile device. I find that
+unacceptable. There is a decreasing barrier of entry for
+this fuzzing. The SDR equipment
+is becoming cheaper. You can possibly use the blade eRF to do
+the same type of research. It is
+getting cheaper as SDR is more popular. We learned that all of
+the defuzzing on the desktops
+transfers over here to fuzzing in mobile space. It is not as
+hard as it looks. We recommend
+people get in it. If you find zero days we are a  bug buying
+program, we would be happy to
+buy them from you. We will buy the bugs off of you. It is worth
+getting into. There is a lot of
+vulnerabilities in the space. And  ‑ ‑ you know, they really
+need a  wake‑ up call in the
+industry. Hopefully you use this information to find good
+vulnerabilities. Thank you for
+coming out. [ Applause ]

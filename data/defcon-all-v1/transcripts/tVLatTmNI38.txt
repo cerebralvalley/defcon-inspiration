@@ -1,0 +1,245 @@
+>> Okay. Good afternoon,
+everything. Welcome to my
+presentation. During this 20 minute presentation, I will try
+to prevent you  ‑ ‑ present you
+some of the findings I have discovered doing research. I
+will I will probably not get
+into detail since I only have 20 minutes. But don't hesitate to
+see me after the talk. As you
+will see, I have many  focuses on analyzing the mull mead  ‑ ‑
+multimedia, and this paper has
+been prepared with my colleague and friend. He is currently
+playing a game, I will also be
+playing that game. That doesn't matter. [ Laughter ] But last,
+but not least, I'm not a  native
+English speaker. If there is something that you do not hear,
+or understand me, please do not
+hesitate to interrupt me and I will speak better. So today I
+will start by presenting myself,
+explaining who I am. And I will try to explain why I decided to
+do some research about the
+firmware of the call. I will then present the models on which
+I did my research and I will try
+to explain how to find the firmware of the target, because
+it is not always easy. How to
+approach the firm  ‑ ‑ firmware on the card and what are my main
+findings. So my name is Paul.
+And my twitter name, and then I will try to update and post my
+findings this week. Feel free to
+follow me. In my life I'm a  secure engineer for a  Swiss
+company called SCRT. We are in
+Geneva and specializing in digital hacking and forensics.
+My main hobbies are mountain
+bike, race and a fan of ( Indiscernible ), this is the
+reason why I decided to mix two
+of my hobbies. I teach security and motto sports. I tried to do
+some research for IT security
+and mountain bike, but they were not able to find a  subject. Not
+yet. Because as you have seen
+the new forks now are electronic. So maybe someday.
+Yeah. [ Laughter ] And we also
+are the organizers of the Swiss security event. This is now the
+eighth edition. March  2015 in
+Geneva there is a  conference. You are more than welcome to
+join us. As I said before, the
+research was done by my friend. You also follow him on twitter.
+So why I have decided to do some
+research on hacking firmware? For nonprofit, of course. A lot
+of research has been done
+regarding DB and so on I wanted to find something else, as you
+know, the car entertainment
+system is the music that can play the music, that can do the
+navigation, that can connect to
+your phone, it is also do much more than just entertainment.
+Most of the car entertainment
+system today can also control the lights of the car, control
+the looking of the car, the
+heating system, the axillary heating. A lot of options are
+possible to control using the
+car entertainment system. So it sounds interesting. Then today I
+have discovered that a lot of
+cars have built in options like  ‑ ‑ television, like blue tooth,
+like axillary heating that are
+just software activated. So it sounds interesting. The main
+model on which I did my research
+is a Volkswagen, the second version from 2011. Well, I live
+in Switzerland, I said before,
+I'm living at 2,007‑ meter high, so I need a  car that can drive
+in the snow. This is an
+interesting car, because it is quite modern, and I'm able to do
+a lot of things with that unit.
+And last, but not least, this is an important detail, this is my
+every day car. So not a car
+dedicated to my research. This is very important to understand
+why later on. The multimedia
+unit of that car is called the RNS800PC. You can find in other
+cars like Audi models the Q7,
+I'm not sure. And find the same unit in Bentley cars, I'm sure.
+You find that in several,
+several brands. So the first talk was to get access to the
+firmware of the car. So I have
+to find some sources. The first way is the hard way and it
+consists of dismounting the car,
+find the disk, and do a  DV of the disk to get access to the
+firmware. The disk is located
+behind the box so it is not easy to find and it takes some time
+to get access to the disk. So I
+discovered that's after breaking the car. So  ‑ ‑ now, we know
+where to find the disk. This is
+not the way I have chosen initially. You have a second
+option. Which is to find it on
+eBay. The problem is I'm not sure the disk would be solved
+with the unit. I was not sure if
+the disk of part of the car or was part of the unit. This is
+not the option I have chosen.
+You can try to do some social engineering on the, on the
+Volkswagen dealer you are
+working with. But again I have not chosen this option. For some
+models I have discovered that
+firmware of the unit is, is upgrade every time (
+Indiscernible ). I did some
+tests on an Audi TT of 2008. In that case it seeps that the
+firmware of the unit is included
+in the CD that you get to upgrade the GPS, the map of the
+GPS. And the final option is
+just to use Google. If you Google update firmware and the
+exact model and unit, it is
+quite easy to find someone to sell you the firmware. Probably 
+‑ ‑ it is mechanical trying to
+sell it. Anyway, that works. So that's how I did get access to
+the firmware. Then you have to
+find a way to upload the firmware on the car. Again there
+is the possibility to  ‑ ‑ thank
+you. [ Applause ] And that's the recall. It is made in
+Switzerland. So you can try to 
+‑ ‑ [ Applause ] Okay. So again you can try to improve the
+firmware by dismounting the
+disk, getting access to the disk and pushing the firmware on the
+disk. And another solution that
+is easier includes finding the magic. Most of the car you can
+find a  special combination of
+key. And you hold the key for 3 to 5  seconds and get access to
+menu that will allow you to
+upload the firmware on the car. [ Laughter ] [ Applause ] >> All
+right. Come on. >> Okay. >> He's
+not from this country. We're healthy. [ Laughter ] Cheers. [
+Applause ] >> Thank you. >> How
+is he doing, everybody? Is he doing good? >> So in my case,
+you have to press prone and set
+it three to five seconds to get access to the special menu. And
+I every day. So one year I tried
+to find the right combination to get access to the menu. By the
+way, if you want to reboot the
+unit you need your five fingers because you have to press phone,
+climate, navigation and traffic
+button at the same time. It is very difficult when you are
+driving. Once you manage to get
+access to the menu. As you can see on the screen, my car is in
+French, so it speaks French like
+me. You have access to a menu you when you can upload the
+firmware and see the running
+binaries on the car. I don't know if you can see that. But
+you see a lot of vulnerabilities
+there and a  check for each one. These are the binaries which are
+running on the car. You can see
+here that there are some binaries, some programs that I
+should not have on my car. I can
+see WLAN. I can see T.V., or things like that, I do not have
+those options on my car. Then if
+you navigate through the menu and get access to the new menu,
+which is called upgrade, you can
+choose if you want to upgrade the firmware from the CD, the
+DVD or the USB plug. There is
+also another option to approach the firmware and modify the
+firmware which consists of using
+the software providing by vokes weigh  ‑ ‑ Volkswagen and the
+connector that I do not have.
+Okay. Once you have the firmware. The interesting part.
+You can try to analyze the
+firmware. In my case, it is a  mix of EOS and IOS. So we used
+a  system by it to modify the
+PSS tool to create to new system which was readable. The script
+is provided in my, in my  ‑ ‑ in
+my slides so that you can reproduce file. And we deletes
+files to use for the IOS part.
+And slightly modify it correctly. What you can see is
+that it firmware of the car is
+used on QNS. So RNS850 is bigger than QNS. And we can see it and
+super H architecture. It sounds
+very interesting. So it is clearly a  UNIX‑ type system.
+This is the same thing that we
+used to extract the file from the system. So the UNIX‑ type
+system. We can see it here with
+the files, everything that you can find on the UNIX 5 system.
+What is more surprising that it
+is leaking a lot of interesting information that I was not
+expecting to find on my car. For
+example, you can see that some users are hardcoded in the car.
+You can see the name of the guy,
+and there is a  shell on the car. So I decided to do some
+more research and it is cool,
+because you can find the guy who linked these. So it seems that
+those guys are working for the
+manufacturer of the car or some company that has been
+subcontracted to, to write the 
+‑ ‑ [ Laughter ] Maybe not anymore. Right? To, to right the
+firmware. But  ‑ ‑ that's  ‑ ‑
+there are some other things that are interesting. I think that
+leaking internal IP range is
+good practice, isn't it? As you can see again in the firmware of
+the car, you can see the
+internal IP‑ range of Audi and Volkswagen and yes. The car can
+do some Wi‑ Fi and SSID
+configured inside of the firmware. So yeah. It looks like
+the person who developed this
+firmware are not very keen on IT security. So I did some research
+and I tried to modify some files
+on the car and at first it worked. So I was able to push
+some new files on the car and
+one day I tried to modify another file, which was the
+preconfigured and and long story
+short I suddenly managed to breach my car. Yeah. A very
+heavy breach. I don't know
+exactly why. Because  ‑ ‑ I have not been able to understand how
+the chips are calculating. It
+really happened, as I said before, when I was trying to
+replace a  very dummy text file.
+So somebody something wrong happened just at that time. I
+don't know. It took three months
+to fix the car. It was really long. Because during that time,
+the car was not working as
+expected and at first I  bring the car to a  mechanic, they
+said sorry we do not understand
+what is happening. I had to send it to a  second CRH. They were
+not understanding either. So I
+told them, okay. A  friend of mine told me  ‑ ‑ [ Laughter ]
+That the  ‑ ‑ a  friend of mine
+told me it could be the hard drive of the car that needs to
+be replaced. And they answered,
+sorry. Sir, but there is no hard drive in that car? [ Laughter ]
+Okay. So finally it took three
+months and they gave me back the car and said we had to replace
+the black box of the car. So
+yeah. Exclusions. It is a  very expensive hobby. And my friend
+and his family does not want me
+to do tests with their car anymore. It is a shame, because
+my car, my wife, has a  very
+interesting car, but  ‑ ‑ she do not want me to approach the car
+with laptop anymore. [ Laughter
+] So initially, my goal was to do some research on the
+multimedia libraries of the car.
+I have been abled identify libraries that are used the MP3
+videos and things like that. It
+could be very, very interesting to look more in‑ depth to those
+libraries to run a  shell on the
+car. So I hope it was interesting. If you have
+questions, you  ‑ ‑ are free to
+speak to us. Thanks a lot. When the car was break, it was simple
+to drive. It had no GPS, it was
+not simple to use loading. It was not possible to turn on the
+light and turn off the light
+when I was arriving home. It was not possible to control the
+heating of the car. Yeah. It
+was  ‑ ‑ sorry? The windows still work  ‑ ‑ windows still
+worked. Yes. [ Laughter ] Yeah.
+That's what I should have done. Find the hard drive first.

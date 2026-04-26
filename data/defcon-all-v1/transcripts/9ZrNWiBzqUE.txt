@@ -1,0 +1,638 @@
+>>Good afternoon everybody
+[Super Mario coin sound] how's everybody doing? [game music]
+yeah [game music] this is awesome so um how many people
+know what this thing is, that’s on the stage? [crowd cheer] ok,
+I only asked that because wandering through the halls
+yesterday after getting the badges I heard a bunch of twenty
+somethings talking about what the Konami code was and they
+were listing it off wrong [crowd laughter] uh, so um, if you are
+that of that age you are going to get a little bit of a history
+lesson I have seen this demo which is awesome get excited
+let's give Allan a big hand [crowd cheer and applause] Allan
+>>Thank you, well thank you very much uh this is a very very
+technically challenging series of live demos I have an immense
+number of things on the stage that can and will go wrong so
+please feel free to make fun of the equipment when that happens
+the equipment not me um [laughter] um hello everyone I
+am Allan Cecil I'm also known as dwangoAC uh I am the president
+of the North Bay Linux users group I'm also a senior engineer
+at Ciena and I am a tool assisted speed run advocate and
+a a bachelors for test videos.org um so I want to talk
+uh about speed running and uh why is that ok there we go speed
+running with human limits so early on um people wanted to
+play games fast because after you beat the game it's a lot of
+fun to try to beat it again uh faster right and some games like
+Metroid, especially Super Metroid rewards you for playing
+faster if you complete Super Metroid in in less than three
+hours uh she ends up wearing a bikini for some reason
+[grumbles] I didn't do it um [chuckle] there are now
+categories uh that people try to speed run games in anything from
+any percent to uh 100% get every item in the game as fast as you
+can to categories like low percentage no major glitches and
+then most of these demos are lists of these records are
+stored on a website named uh uh speed demos archive and there
+are some other websites like that also track the fastest
+completion times um now theres are a lot of strict rules theres
+peer reviewed videos to make sure that no one is cheating
+that no one is using keyboard macros or any kind of uh
+[grumble] any anything other the human their own human ability
+and I have to tell you there really entertaining now one of
+the places that these are uh widely shown is uh games done
+quick events uh gamesdonequick.com theres an
+awesome games done quick and the winner that benefits the prevent
+cancer foundation and an a summer games done quick uh every
+summer that benefits doctors without borders and [th] theres
+usually some crazy stuff going on there uh for instance here we
+have uh Mario Cart 64 uhm you can see his kinda out of bounds
+um thats because his tricking the lap counter so that he only
+to go around the the course uh one full time and then he can
+trip the lap count lap counter after he completes it um heres
+Super Metroid he's uh I'm sorry Metroid the original Metroid his
+lured or she technically it's Sammus has lured an enemy from
+an adjacent screen and is using it to uh to freeze it to use it
+as a platform to sequence break the game to get to someplace you
+not supposed to be at that point with the items you have now
+there is all kinds of other things uh that happen at game
+done quick events that are absolutely insane uh this is
+half co-ordinated uh he cannot use [pause] for the most part he
+can't use the right side of his body so he completes games using
+only one hand on the controller and it's insane watching him
+play uh there's also been some crazy things like uh this guy
+completing all the way up to Mike Tyson uh in uh Mike Tyson's
+Punch-Out blind folded just listening to the game audio just
+insane so [pause] this is clearly beyond the standard
+limits of what most humans can do but tool assisted speedruns
+or tool assisted superplays go [pause] a step further we are
+not really interested in human limits anymore now we're
+interested in what can this hardware really do if you pushed
+it to the limits of what the hardware's capable of and TAS is
+used as a noun a verb I TAS'ed this, this person is a great
+TAS'er you will hear me [mumble] say the word TAS throughout the
+whole talk and now the history of tool assisted speedruns is
+kind of interesting uh back in uh the 90's the game Doom came
+out and it had a quick save button and a quick load button
+because let's face it it was kind of a hard game and you were
+likely to die a lot well they added rerecording tools and that
+allowed you to uh play through the game and record your
+progress and at a certain point somebody figured out you can do
+it in slow motion and keep loading the save states over and
+over again until you got a pretty good completion and in
+1999 roughly uh doom done quick came out uh and completed the
+entire first uh game in 19 minutes and 41 seconds uh this
+was followed up by a couple of other ones uh there's uh 40
+minute and 2 second completion of Doom 2 for instance so it's
+uh it's it's definitely been one of the uh the first widely known
+uh tool assisted speed runs now in 2003 a video surfaced online
+from somebody named Morimoto and it was a little bit let's just
+describe it as controversial because Mario was flirting with
+death getting insane number one ups literally walking through
+walls and there was no context for where that video cane from
+now it had been posted on a Japanese website with
+appropriate annotations to describe that it was done with
+and emulator in slow motion with save states but uh it was
+[mumbles] the context of the video was missing when the WMV
+file in 2003 for YouTube days got circulated around the
+internet um and the problem was that it was inhuman skill and
+display at and and really tools meant hardware limits became the
+only limits but if you don't say that you're testing the hardware
+limits people get really upset so TAS'ing it's kind of like the
+doped Olympics I mean let's just be honest here [laughter]
+competitors should admit to doping let's just be honest here
+um and videos made with test tools should be labeled and
+there's a getting? Bisqwit that in 2004 created NES videos to
+track tool assisted speedruns the same way speed demos archive
+was tracking in-game human completion times now uh there's
+that's now gone beyond just the nintendo entertainment system
+this console here it's now moved on to many many consoles uh and
+there's uh everything from modern consoles like the
+nintendo wii through handhelds at tasvideos.org so I know live
+demo like we're only a few minutes of the top but let's do
+a live demo I'll talk about the console verification part in a
+little bit but just know that we made a game an emulator we set
+up a sequence of button presses and I'm going to show you what
+those button presses are TASbot so this where the video video
+might go completely haywire and I don't know what's going to
+happen if you see somebody running from the side of the
+room yeah just bear with it [game sound] whoo [game sounds]
+anybody can you turn it down, thank you whoa I said turn it
+down not crash it I said that there was going to be at least
+one catastrophic thing I wasn't kidding I don't even know what
+happened there I've never seen that happen before and that is
+something you can quote me on because it happens all the time
+alright lets do this again [game sounds] that's better it's still
+pretty loud but uh [game crash sound] whoa what [laughter] uh
+yeah I don't think blowing in the card will work but hey they
+worked last time but I do want to make absolutely certain that
+I don't have wires crossed or something funny going on with
+power because uh obviously if there's not a uh good ground
+things could be but let's just try the [Allan blowing on the
+cartridge] [cheer] there [applause] I kinda want this one
+to work this one should work uh the only thing I'm gonna
+double-check just to make sure nothing else got funny um the
+only other thing I can think of might be power but we'll try
+this one more time [game sounds] oh and we lost the signal too
+[game sounds] hmm remember how I said live demos at least one of
+them is going to go completely haywire well I don't know where
+out tech guy is to fix this and I'm not about to go touch it so
+[chuckle] at least it's [game stopped making sounds] [crowd
+shouting comments] yeah I'm a little bit concerned here so uh
+what's that [someone from the crowed talking to Allan -
+inaudible] pfft nah sides this thing is durable well welcome to
+the first live demo that goes wrong um that's okay I'm going
+to do the rest of the demos entirely on the Super Nintendo
+but of course um we'll have to get um somebody in the room to
+to fix the scrolling but um I'm very confused by that behavior
+I've never seen it before welcome to doing something in
+front of a live audience but that's okay we'll just move on
+this is going to cause a brief audio pop I apologize in advance
+[changing audio cables] alright so with any luck ok so we
+probably are going to have rolling video at first [console
+sound] or apparently no video ok we can barely see it [game
+sounds] um so I'm uh uh keep uh going through some slides here
+um this was made with uh one of a number of emulators theres
+several emulators out there FCUX there's uh LSNES which this run
+was made with uh this is the Super Mario World game for the
+Super Nintendo um it is uh it is a uh very good emulator with a
+lot of useful tools on it um and I know that's going to be
+impossible to see with the scrolling but Mario is doing
+some really unusual things right now [game sounds] uh yes he just
+got about four Yoshi's um so it's kind of hard to see right
+now but um basically what's happening is we have the ability
+to back up and try things as many times as we like and uh
+that means we can do things with frame per frame decision? and
+right now what we're doing is winding up the object attribute
+map to be exactly the way we want it to be uh it's getting
+worse uh there we go good [crowd cheer] unfortunately I think you
+going to have to do that every single time sorry [chuckle] ok
+so and let's get back to the slides so there are other
+recoding frameworks I made one called nethack uh tax tools that
+we've used before those hourglass for windows things
+everybody's looking at this video anyway it doesn't really
+matter um so this was uh done with the SNES core which was
+very very accurate and that's incredibly important in just one
+second look at these visual visualizations boards right here
+and right there that's the actual button presses we're
+sending to the console there we go [applause] [game sounds] so
+yes TASBot plays Super Mario World um yeah I'm just gonna
+skim all that we'll come back to that sometime so TASBot plays
+Super Mario World with what oh oh I'm sorry it's Super Mario
+Brothers in Super I get it um I said this is a live demo if
+somebody wants to come up here you can definitely play this if
+you wanted to uh except I forgot to bring the controllers sorry
+that won't work so well um this is fully playable so we took
+Super Mario Brothers a game from the original nintendo and placed
+it on the Super Nintendo which was never designed to have it so
+we took a previous console run from here game and programmed it
+through the console's controller ports on completely unmodified
+hardware now this was done by master Jin who set up the button
+presses and by somebody named P4+2 and it's a really complex
+series of events but there's a really good youtube video by
+dotsocool uh that volume is kinda loud but that's okay just
+ignore it um so what you're basically seeing is uh he was
+going back and forth and rearranging objects in the
+object attribute map to basically right opcodes in RAM
+in such a way that when we did certain things uh it it treaded
+the location in memory that the the controller is stored in as
+something that should execute and it did exactly that it ran
+what we put on the controller and allowed us to well you can
+either trigger the credits or you can take it one step further
+and do crazy stuff um but that's not not good enough this one
+this was this ran a hundred and eighty-four kilobits per second
+which is nice you know it's it's it's cool but we can do better
+and we're going to so I need need to uh restart which means
+that it's probably gonna mess up the video uh one of the
+interesting things about the uh about the uh original consoles
+is that they are running at a resolution best described as
+240p they played trickery with CRT TV's so uh we have had a lot
+of trouble getting captured work it's actually been a bit of a
+pain so I just erased the same game and that's going to prepare
+me for doing uh a uh another run let's see all right here we go
+so this is the same game and this time oh good the video
+isn't rolling right off the top okay this is good now if we're
+lucky it'll stick with us unless we can switch consoles um so
+this is the exact same game but if you're able to see it you'll
+notice that the video is is going to be using slightly
+different technique this is a different exploit than the first
+one yes there are more than one there's more than one way to
+blow up Super Mario World and this one is going to use a
+slightly different technique so one of my earlier slides I was
+talking about uh the different devices that we have well the
+newest device we have is from uh is a uh board uh called TASLink
+board and has a very high data rate the previous boards made by
+somebody named true who's actually a DEFCON regular uh
+true's board was able to hit a hundred eighty-four kilobits per
+second uh based on his multi replay board this one is using
+an FPGA from Papilio and were able to achieve data rates of
+much higher than that which will see here in a second as soon as
+he gets done screwing around the starting check right here I love
+the scene right here just just watch what he does to this Chuck
+there we go [applause] that is an image that was written to the
+console 900 and I want to say 920 kilobits per second um keep
+in mind that the maximum rate that these consoles usually ran
+at was about three I'm sorry about 480 bytes per second and
+that was like the most [chuckle] so for us to shove that much
+data throw this is kind of impressive I'm I'm amazed that
+this console manages to hold up um I need to actually back up a
+little bit and uh cover a few things that I skipped over so
+I'll just go to hear there were a bunch of early console devices
+true was the first person to attach a a console and uh and
+get get it to to do button presses and it's actually very
+simple protocol especially for the original nintendo and one of
+the things that's going to talk about during the original video
+I plan there's only five wires there's just five volts and
+ground there's a latch wire it says latch hey controller and
+about to ask you what buttons you're pressing clock give me
+the first button is A being pressed uh one or high voltage
+if yes none or 0 for no and the only other line is a serial data
+line out from the controller sending that information back to
+the console so what this guy here does is pays attention to
+that that feed and sends appropriate responses so the
+first device that this was tested with all the way back in
+2009 and a board from true but in 2011 something micro 500 who
+built also this this task board micro 500 made a device called
+the NESBot that based on a breadboard you can see here in
+the lower lower corner uh that was able to complete Super Mario
+Brothers one and it was used at one of the very early summer
+games done quick events to complete uh Wizards and Warriors
+three and Super Mario Brothers two although somewhat comically
+um and by the way uh that what you see on the screen if if I
+know it's really tiny but there there is just a very few number
+of people in the audience this was one of the early summer
+games done quick events that didn't have very many people now
+this room would be looking a little bit more like DEFCON here
+but um there were a couple of other boards uh there was a
+droid 64 bot that could do in 64 games and uh micro 500 made one
+of his own in 2012 using a uh propeller board um but at TASBot
+this this guy here Rob holding um random device with legos on
+it um that kind of happened a little bit later so in 2013 we
+uh had an opportunity to to again go to uh summer games are
+awesome games done quick and present and true built a device
+from scratch based on a microchip uh device and it was
+it was a very very good device uh in the sense that it was
+streaming capable very inexpensive um a little bit
+fidgety with wiring because of the punch down uh the screw down
+blocs that we used and had some unlimited data rates but we were
+able to do some really impressive things on that one of
+the first things we did was a uh snake and pong on top of Super
+Mario World well I took a uh uh I eventually this is like the
+first prototype I just zip tied them together I took some uh
+some legos eventually showed? them together and called it Rob
+Berry Pie because at that point was being fed by Raspberry Pi
+posted this run on awesome games done quick saying hey I want to
+want to go to the event and immediately the director says
+hey I want to see some of that TASBot action exploded I never
+called this guy TASbot it just happened so TASbot is nothing
+more than uh Rob robot from the nineteen eighties that was
+shipped with the original nintendo consoles so that it
+would look didn't look like an old Atari video game console
+with some Legos and replay device and that's pretty much it
+um now the multi replay device uh is what I mentioned earlier
+that was capable of putting Super Mario Brothers inside of
+Super Mario World and there was also some other really
+interesting developments there's a gameboy player player and
+there's one I haven't mentioned here that's able to play DS
+games um so we already went through all of this I'm going to
+fast forward but I really want to oh and by the way the the
+faster data rates also allowed us to play Super Mario Brothers
+1 2 3 and lost levels at the same time with the exact same
+sequence of button presses completing it about the same
+second it was really quite impressive uh very very crazy we
+just did that a few weeks ago at Summer Games done quick um so I
+want to step back for a bit uh I don't have doing on time ok I'm
+doing alright I'm actually doing just fine on time I want to
+really step through and go in a deep dive into one of these
+exploits and really break it down so that you can kind of
+understand some of the sequences we go through so I'm gonna start
+with a game called Pokemon red now Pokemon red is a really
+broken game um you'll see how how broken like it's really
+broken but a handheld game boy is kind of difficult to wire
+into now we've done it but it's not exactly a lot of fun so this
+is a super Gameboy cartridge this has an entire game boy
+processor a Z80 processor um codenamed DEMG inside of this
+card and it communicates with the super nintendo and allows us
+to um great right when I need to start video I don't know where
+he went alright well I hope it works um so that allows it to
+use the controllers which is great for us means it means I
+don't have to touch anything now I have a wire here and this wire
+is is kind of an interesting little thing there we go um
+alright that's already fully baked this wire has a little
+expansion board connector on the underside of the console there
+is this not very often use expansion board they eventually
+used it for an canceled project that connected a CD drive to
+this thing but it was never really implemented now we're
+using it because it exposes a reset pin and that we kind of
+want to play with a play with yeah I'll? play with so and
+hopefully my video signal stays any luck yay all right we're
+good um and we don't really need a lot of audio for this one it's
+uh there's not really uh that I like like the game audio but
+I've I've got to tell you when I was testing it I was listened to
+it over and over and over again and I got really tired of it um
+so what's happening right now we're going to delete the
+contents that was there previously and uh there we go
+and we're going to start a new game and we're going to set very
+specific parameters so unfortunately this is kind of
+slow menuing it takes a while to get there so I'll kind of
+explain in advance uh we're going to name the players
+character red and we're going to rate name the rival a very
+unusual name going to name him RX RX PK there's actually PK
+symbol and the reason we do this is we need to pre set up certain
+memory values to be in our advantage that will be using
+again later [game sounds] so he said yeah we're about to start
+our adventure um except we're not going to bother getting very
+far into it before we uh save we're gonna save and am so what
+we just did is we reset while we were saving the game and I don't
+need this wire anywhere I'm going to pull it out um that
+allowed us to write a completely valid game header that said yes
+you have your players name is this your arrival is this you
+have uh you have [pfft] wait how many Pokemon did we have oh we
+have we left FF's in there oh well so you can see where we're
+going here alright so now we're going to start and load the save
+game we just used so again this is kind of slow it'll take a
+little while to get here I'm gonna get it I'm gonna get ahead
+of myself because this production goes rather quickly
+there's just a lot to explain so what we're going to do is load
+the save game we just created and it is a valid save game but
+the list of how many Pokemon we have says we have 255 long and
+that allows us to go beyond the area of memory would normally be
+able to go to and right here you'll see is we swapped Pokemon
+over the area of memory that contains our items now that
+means that uh we have to look couple of switches so that we
+don't crash the game by the way but I'll get to that in a second
+uh that that means that we can now delve into our item list uh
+and uh what you can see here there are some items that are
+stored as a two byte pair one byte to say what the items name
+is and one byte to say what the quantity of it is so we just
+tossed uh now we are swatching uh switching our items are
+moving in memory but we just tossed some of an item we're
+going to hear so TN25 we're going to toss 24 of those well
+whatever value we started with a memory we have just thrown out a
+bunch of of items and we've reduced that memory by 24 in in
+uh RAM so this allows us to directly manipulate memory but
+we can only manipulate every other bite fortunately if we go
+back and swap Pokemon like we're doing right here it offsets
+memory by an odd number so what used to be an identifier is now
+a value that or quantity value that we can then throw away so
+now we can write everything in memory but we have to be very
+careful because some items if you throw them away every item
+of that category you can never touch again some items if you
+throw them away will crash the game and some items will crash
+the game simply if you look at not so helpful so there's uh
+also another thing we're doing here we're we're obviously
+writing bytes in memory in order to in in any in order to create
+an uh routine that will allow us to read from what's on the
+controller and stored in memory the problem is the super Gameboy
+cancels up and down and left and right so if you try to press
+both buttons buttons at the same time they just get zero doubt it
+will get around that the routine we're writing right now we're
+literally writing a program as you see it reads stories of the
+memory reads again stories of memory does a subtract between
+the two stores the result in RAM and ones one position and then
+keeps writing in it uh one after another um and when it gets to
+the end it rights over a jump sequence to go execute what it
+just wrote and what it's writing right now which you'll be able
+to see on these visualization boards is a rather substantial
+payload and it takes quite a while to write it all BAM
+alright so anybody recognize that it has anybody ever been to
+twitch.tv well get your smartphone's ready this is the
+live demo part this is the part I like the most oh you know what
+really really helps so I I it really helps if you actually
+have an internet connection when you try this so we have to take
+a quick pause and hope that this cable reaches without causing
+anybody too much pain so yes we really are going to connect a
+25-year old console to the internet and you get to ask a
+QnA over the chat session if it works nice we've already got
+some action here [whistle] all right somebody type something
+and it will appear on the screen I assure you so what you need to
+do is uh let me uh quickly get here I will actually type out
+the address uh oh you can't type urls and there's a swear filter
+on here have fun defeating that it can be hacked this code is
+all on ppt IRC on git where you can find the swear filter in
+there and defeated to your heart's content this is def con
+have fun knock yourselves out uh so here's what we're gonna do um
+I'm going to talk to about a couple other things uh [mumble]
+lets see if I can find the channel that everybody is in I
+know I've got it in here somewhere there it is oh wait a
+minute I know what's happening we're playing back a screenplay
+because I never move the file over [laughter] so what you're
+actually seeing on screen because I couldn't see it on on
+down here you're seeing the exact text that we we put on
+screen at uh awesome games done quick 2015 uh it was a it was an
+entire screenplay of of uh conversation I'm just gonna let
+it run because it's actually kind of stupid uh poorly written
+and and hilarious I had my own script of things I was supposed
+to say I never did because it was just too awkward so yes uh
+we did a full article on this on uh on the in the journal
+proof-of-concept to get the fuck out I didn't name the article
+journal article uh but the uh the journal is absolutely
+fantastic you can find a full write-up written by myself LRA
+the author of the emulator and p4+2 to the author of the chat
+interface at a uh uh POC GTFO issue 10 just search google for
+that it smeared all over the place it is there's a lot more
+details on what I covered here by the time we get done doing
+all of this um we escaped the super game boy we tell the uh
+the uh super Gameboy that we want to execute something in the
+super Nintendo's memory space and it lets us do it because
+there's actually there's a command that lets you do that
+there are only there's only one or two games that ever actually
+took advantage of that feature but that's there once we get to
+the Super Nintendo were no longer limited to one byte per
+frame uh in fact we were at one point only able to do a nibble
+of frame because we had to subtract them together to get
+around the button limitations um so what we ended up doing is
+after we get to this this the super nintendo uh we get to a
+data rate of two bytes per controller and we tell it oh you
+you actually have a multi-tap attached so you have two
+controllers on the first controller port and two on the
+second so you get eight bytes per frame and 60 frames per
+second so I gets us about 480 bytes per second if I did my
+math right uh but it still wasn't enough so we told it oh
+and don't just read eight uh once per frame read eight times
+for frame 60 times a second so that gets us to a data rate of
+3.8k per second or so um [mumble letters] well we're in somewhere
+I just don't know where at oh yeah there's me I just type test
+and it worked [chuckle] so there [chuckle] there's all kinds of
+crazy going on but that's ok this is going to be at the end
+of the uh of the pre-recorded input in just a second here um
+well that's playing through um there's so many more details of
+this it is there's a block loader we programed in
+afterwards it's just a really really intense of uh technically
+challenging uh process that that we had to go through to do this
+did franker Z just come through wow so it looks like because I
+ran the wrong script it's getting some characters out of
+order like hilariously out of order hack the planet huh uh wow
+that's like hilariously funny this would be a live demo
+without thanks failing let's keep going um so my call to
+action if you want to join in on the fun you can go to
+twitch.tv/dwangoAC I am going to go ahead and um well that's a
+lot of franker z [laugh] twitch the twitch well it's a little
+bit little bit messed up but I can at least see it on my screen
+here even if it's not completely correct there oh well uh go
+ahead and ask any Q&A questions you have in the chat so again
+you can go to twitch.tv/dwangoAC uh subscribe while you're there
+if you like I don't care um um but there's one other thing I
+want to talk about um we recently found a very very
+interesting glitch in Super Mario Brothers three that I wish
+I could show you on the Real console um what we found out is
+that it is possible to go from boot to the ending of the game
+in literally 16 frames I'm not kidding it does take quite a few
+button presses per second to do it um and it doesn't exactly
+treat the pallets very nicely not everything gets loaded into
+ram but it is a valid completion of the game it properly goes to
+the end credits um so this happens because of an
+interesting choice they made [whisper] 10 minutes got it um
+so um when they released this Nintendo hardware uh the
+original NES in America they had a problem they released the
+hardware and then discovered that if a game use DPCM audio
+and the controller was asked for uh what values that was holding
+at the same time that there was a collision on the bus and the
+controller input may or may not be dropped so to get around it
+they asked for that's the controller for input two
+milliseconds later they asked the controller for input again
+when and if it's different they asked again and if it's
+different from the previous ask again and if it's different from
+the previous day at you can kind of see where this is going right
+um infinitely um this allowed us to keep giving the the the uh
+console a different response for what buttons we were holding
+every other time that we didn't ask for input and eventually it
+tied up until the next phrase processing started for the
+raster input that displays a status bar at the bottom of the
+screen um and it was still doing this that we're still keeping
+busy with this loop so what ends up happening is it drops
+execution right at the bottom of the stack and slides across a
+series of breaks and noops directly into the addresses
+where the controller uh uh uh the controller data is stored so
+on the second frame instead of screwing with it and giving a
+different input we correctly give input like it's expecting
+the first bite is stored as not code in memory or else is stored
+as invited memory and treated as an opcode and we type the value
+that says jump to and on the second controller we type the
+value that says and credits or the address of the end credits
+so in fact we literally tell it to jump to the end credits 16
+frames or less than around a quarter of a second after
+starting the game now this is possible because of tools like
+binary ninja um and I had had plans to to do a full demo and
+I'm I'm being told only got 10 minutes so I'm kind of running
+out of time there but um binary ninja is definitely uh a lot
+more flexible than IDA because there's some uh uh some ability
+to add in other mappers it can handle the 6502 uh you can show
+all kinds of uh useful things that we were able to find the
+actual program code where the where the controller was being
+polled and figure out what was doing and find the exploit um so
+am I cheating no I'm not really cheating I'm just looking for
+technical challenge and visual entertainment and all of us are
+I'm the presenter and the organizer of the games done
+quick events but this is so much more difficult than anything I
+could do on my own there's one person who's really good at
+hardware there's one person that's really good emulation
+there's one person is really good at making the actual replay
+movie files there's one person who's a really great glitch
+finder you know it takes a lot of different people um and why
+do we do it because we've been able to raise over two hundred
+thousand dollars for charity between the five different
+events we've done in games done quick events and just the summer
+[applause] yeah [applause] that's that's really what
+motivates us just the summer we had an hour block of time at
+Summer Games done quick 2016 and in an hour we raised forty
+thousand dollars for doctors without borders and the marathon
+as a whole raised 1.3 million and that's a huge success so
+[applause] um so I'd like to thank micro 500 he made the uh
+the TASlink board here ALARIE made the LSNES emulator and also
+uh heavily uh contributed to the black um loader and a lot of
+other things that worked for Pokemon plays twitch which is
+what you're seeing here this is Pokemon red playing in twitch
+chat um P4+2 wrote that actual twitch chat master jin is one
+that figured out the exact sequence of orders of placing
+everything through of course made the earlier devices total
+is the one that found the Super Mario Bros 3 glitch uh
+ciphertext is behind uh uh and rust behind binary ninja AIS 523
+uh helped with uh the uh DPC input info ANG and was hugely
+helpful in getting slides put together and help them the
+proof-of-concept article uh greenfly help me setup today
+there's a lot of other people at test videos.org that I don't
+even have remotely enough time to mention um so now let's see
+if there's actually any sanity in this chat and see if there's
+an actual question I can answer it's twitch no they [mumbles] oh
+IO error gone kappa so if you do want to ask questions i have
+exactly five minutes I believe five minutes Wow somebody's got
+some potty mouth pretty good latency yep I imagine how many
+viewers do I have now anyway I'm just looking I'm looking at
+twitch chat via IRC because that's how the spot works uh
+let's see there any serious questions um have you ever seen
+a zombie come to tea no that's a very interesting is this easy
+mode not exactly what's your uh favorite sandwich I have no idea
+probably chicken pesto what the heck okay when I said Q&A I met
+Q&A about like this drinks later yes drinks later definitely I'll
+be standing over there I'm gonna need one after this time um
+[laugh] um do I know um know what I am doing no sort of um
+are they under the truck um how does the bot work with timing ok
+this is a very good question this is the first serious
+question I've seen so on the original nintendo I mentioned
+that uh it it actually asks for input more than once per frame
+uh because it has to make sure that it's not running into this
+DPCM glitch on many games not all but many any of them that
+use DPCM audio so that means that we have to put it in a
+windowed mode and we have to ourselves keep track of which
+frame we're on and in fact that's the secret to all these
+runs anyway is a tool-assisted speedrun which is typically run
+on an emulated rather than on on the original hardware is nothing
+more nothing less than a series of button presses showing every
+frame's worth of input one frame after another so we're able to
+convert that to run on a console but we do have to pay attention
+to the little nuances that the console is going to ask more
+than once so we have to keep track of which frame we're on
+and send it only the right input um safer killed the animals
+TASbot always kills the animals if any of you guys know what
+that references is um [laughter and cheer] so there's save the
+frames or save the animals or vice versa um at GDQ events they
+always play Super Metroid with usually a two to four player
+race and inevitably uh there's up to two hundred thousand
+dollars contributed of people watching and donating on either
+side for the donation incentive if you if they uh decide to kill
+the animals because more donations went to that they
+bypass going to release some animals that are trapped on the
+planet before they they leave the game which is faster and
+save frames uh if they have to save the animals that wastes
+time so uh can use this for malicious use yes that's the
+whole uh point uh in fact uh one of the reasons that we want to
+do this and I'm going to see if I can find this I'm going to go
+back like crazy because I've got so many of the slides here uh
+the primary point I will actually wanted to make and I'm
+really glad that somebody reminded me of this is that the
+difference between the tool assisted uh speedrun community
+and the infosec uh reverse engineering community really
+isn't that substantial a safe state and emulators nothing more
+than a VM snapshot the glitches just a vulnerability waiting to
+be exploited an arbitrary code expectation execution is doing
+just that console verification and a lot of ways it's kind of
+like an evil maid attack we are acting like a normal controller
+but we don't exactly have the best intentions um so a tool
+assisted speedrun because the emulators have so many tools to
+be able to step forward look deep into memory look at all the
+aspects of the cpu registers every last iota what's going on
+and the ability to try things over and over again it is a
+fantastic place to start looking for glitches and games and start
+looking for a uh uh and refining techniques for reverse
+engineering so I encourage you go to tasvideos dot org check
+that out uh I'm just gonna hold this down until you get to the
+end um if there's one last serious question I might answer
+that that I have a funny feeling there's not going to be much um
+where can I catch Mewtwo I have no idea uh more game soon yes
+we'll be doing another round at awesome games done quick 2017
+more information at gamesdonequick dot com uh and I
+think I'm just going to wrap up with this last question how do
+you mine for fish what the heck do I play Pokemon go no I don't
+but I think it would be really funny if TASbot did [laugh] uh
+let's see uh has used TAS to fuzz uh sort of not really uh uh
+but will get back to you on that can I can you do something
+useful yes I can do lots of useful things he can do all
+kinds he can even beat games really fast when when everything
+works technically uh what is my favorite TASBot exploit I have
+to say it's got to be this one I mean I know it's kind of uh
+other future console [laughter] so I mean it's kind of
+[laughter] Def Con is great now can we all agree on that alright
+yeah uh my Pokemon plays twitch by far as my favorite I actively
+was involved in making the movie for that and had a deep part in
+the technical aspects of that so definitely my favorite hey I
+want to thank everybody for participating I'll leave the
+chat up you guys can continue to talk thank you very much
+[applause]

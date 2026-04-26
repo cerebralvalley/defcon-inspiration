@@ -1,0 +1,508 @@
+Good morning. You did not party
+enough apparently. Sunday speakers are worried that no one
+is going to show up. This is ubiquity forensics. Your iCloud
+and you. A PSA announcement. Who am I? I'm Sarah Edwards. I'm a
+test engineer by day. We do government contracting work for
+other people. We are hiring. I know the -- village has been
+very popular and it's closing up soon after this talk, if you're
+interested, go and talk to these people. They're great. Fantastic
+to work with. By night I'm a -- instructor. I created a Mac
+course. I have different dates that I listed here including
+September. If you haven't gotten enough Vegas yet, come back next
+month. Latest and greatest version of this presentation
+will be at my website. If I do updates or additional research,
+you'll have the most up to date presentation at Mcforensics.com.
+The scope of what I'm presenting today. ICloud basics. Getting
+into acquisition and storage of the data. Synced presences.
+Configuration files that are synced to the iCloud. And I'm
+going to go over application data. Let's start off with the
+basics. Apple uses the term ubiquity. Ubiquity means
+everything everywhere, iCloud. You get your word document,
+email, contacts, messages, reference, configurations and
+all sorts of stuff ..(audio blipped).. Hidden under a lot of
+the underbelly of OS 10. I'm here to say, if you use iCloud
+and I do. I like it. I find it convenient to use, you should
+know what else it's syncing. Things you do not have the
+choice to opt out of. I will point that out in a couple of
+places. Moving on. The OS 10, I have a lot of Screenshots in
+here. OS on the left side and IS on the right side. They tend to
+look similar GUI-based and you can select and deselect various
+components. There are some things not listed here that get
+synced automatically. I want you to be aware of that. Just
+another overview. You can access it over the web. This is iCloud
+.com. If you're running Linux or other operating system that is
+not iCloud friendly this is the way to interact with this data.
+And Windows. I had to boot up my old Windows BM, do a million
+different updates. Way too many. To get a bunch of these
+Screenshots done. This is iCloud for Windows. The options are
+slightly less user based. You get certain things like iCloud
+drive and photos and bookmarks with chrome which is a weird
+option to have but it's available. So different account
+identifiers. We have the Apple ID. This is going to be what you
+sign into, your iTunes account, Mac app store account to
+download various applications. Using an email address of some
+sort. This email address associates a person ID with it,
+numeric. I redacted mine throughout the slides here but
+you can see 274 or something like that. A numeric ID which is
+important once we look at these files on disk. So now also with
+iCloud you can have associated E mail addresses, vetted aliases.
+Different email addresses that you might want to have the same
+information synced to or different phone numbers that you
+want synced to throughout the iCloud data. Credentials. We're
+going to talk about how we access this information. There
+is a couple of different ways. The Apple ID and password, we
+can use two factor authentication if it's enabled.
+It's not enabled by default. The last time I checked there was a
+three-day waiting period to enable it. I'm not sure that's
+the best option. If I see something I'm going to have to
+wait for three days. Hopefully Apple can make that more
+available to us and fix that. There is a token. A token is
+basically a data blob, a file that is associated. I log into
+my OS 10 machine. ..(audio blipped).. in the background.
+Not doing authentication each and every time it syncs. There
+is a token file that does the authentication for me. We can
+take that file off and ..(audio blipped).. How much data can we
+have? We're looking at 5 gigs. You can purchase up to a
+terabyte. Downloading this information from the iCloud
+server. This can take a long time to download. If there is 1
+terabyte in various graphs, it's going to take a really long time
+to download all that information. System
+configuration, this is how you check a system real quickly to
+see if it has iCloud enabled or not. There are different data
+paths. As well as a registry key. There is a lot of different
+files, file path and different locations on the file system you
+can check. These are the quick and dirty places. Throughout
+this presentation I throw in incredibly long file names and
+paths. This is purely for documentation. I'm not going to
+read out these file paths for you because I will trip over my
+words. But I like to document my presentations well. If you go
+back and do forensics investigations, go to these data
+paths in your own systems and on your investigative systems
+..(audio blipped).. security type things and look at these
+files. See what data is leaking from these files. I think you
+might be worried about what some of the data might be leaking
+from your enterprise environment. Let's get to the
+iCloud data. So on disk, disk images, forensics related,
+relatively easy to case. Whatever your favorite imaging
+tool is. OS 10, Windows, no problem, we can get the data.
+You might have encryption or whatever, that's another talk.
+OS is the interesting one. We can do physical acquisition type
+analysis now. It's going to be most important to get physical
+access. So 64 bit and data protection and all that stuff
+has limited forensics. But it's not impossible. If there is a
+jailbreak out there, you can get this data. Jailbreak your phone,
+look at the logical file system, grab the files that you need. I
+do tend to like Alcom soft. It's a piece of Russian software buzz
+it's used to do a physical logical which is a tar ball of
+all the user related files. Not a full physical but enough to
+get the job done. ICloud .com. We're going to go over various
+download tools. Some more sketchy than others. And other
+downloadable storage types. ICloud back ups. Those are very
+similar to iTunes style back ups. It bundles files up,
+renames them with a hash. And then stores them up in the
+iCloud. Versus say on your system, on the Windows system or
+OS 10 system through iTunes. It has very similar data structures
+in there. We have iCloud specific data. Stuff that is not
+put into the iCloud back up. Mobile documents, photos, synced
+preferences. I'm going to point these two locations out there.
+For instance iCloud back ups, you might have certain back ups,
+snapshots in time. You might have one from a year ago, that
+is going to be different than one that you did today. You can
+have 3, 4, 5, 10 different back up files. So back up tools. Some
+are more sketchy than others. If you do a Google search for
+iCloud back up or iCloud download, you're going to get a
+ton of different ..(audio blipped).. these cost from 10 to
+50 to 80 bucks. It does download your software. How much do you
+trust a lot of these tools. Is it taking your credentials and
+storing them for later on. We have to look into that further.
+Less sketchy we have I loop which was created --
+open-sourced and is useful. As well as the forensic level. This
+is going to be Alcon soft, phone breaker, [indiscernible] I will
+get into each of these in more detail. I loop you have to have
+the Apple ID. It does not have two factor support, doesn't have
+token support. It does run on python. While I make a Mac fan
+girl ..(audio blipped).. on a Mac. Those Windows users and
+Linux users can pull down iCloud data. Command only. Open-source.
+Nobody complained about that. And it's free which is
+excellent. If you're doing research you want to play around
+with you own data and see what this looks like, use it. It's
+very, very useful. But it does not have two-factor support.
+..(audio blipped).. you can't get the data. So what does have
+two-factor support is the Alcon phone breaker. This -- password
+and authentication, supports two-factor authentication as
+well. ..(audio blipped).. type of data identifiers and pass
+codes and things that you have. You should be good to go. It
+does cost quite a bit more. -- charge hundreds of dollars more.
+We're looking at 200 to $800. This runs on Mac or Windows.
+Each version has different capabilities to it. They came
+out with the Mac version a few months ago. Windows and
+professional versions have slightly more capability with
+breaking iTunes back ups and encrypted back ups and things
+like that. Take a look at it. That's the basics. Now we're
+going to get into the nitty-gritty of the data. A lot
+of P lists. If you have never done Mac analysis before there
+are files called P lists. I can only compare them to registry
+type files. Key data values. Basically describing a lot of
+the configuration and data saved across the systems. These are
+found on OS 10 and I OS. So synced references. These are
+data files for configurations. Saving variation preferences and
+weather configurations, stock configurations. Those are the
+relatively more boring ones. Let's get into a few of these.
+So email. ICloud saves your recent email information. So in
+the data paths above you can see a lot of these P list files.
+Example of one here. So under the values key, you see this GP
+or MR under score and some hash like value. Under each one of
+these keys holds a lot more different pieces of data. Now
+this one is called mail, come Apple mail dot reasons dot P
+list. I have an arrow there showing how many recent ..(audio
+blipped).. it stores a lot. It's combing through the mail and
+breaking out and storing that information in there. I don't
+email a lot. But it's saving 680 different conversations. Let me
+get into this in more detail. The MR is data for a single
+contact. So if I'm talking point to point with one other person,
+that data is stored in there. For group emails it uses GP. It
+marks these things in relatively easy way. I have two examples on
+the screen. Example on the left shows us a point to point
+contact. I'm talking with heather, it saves all of this
+information associated with it. Who I contacted, when I
+contacted them, best I can tell it's the last five, the most
+recent five dates associated with that contact. And that's
+messages going to and from. So not just to a certain person,
+but ..(audio blipped).. It has the client that's been used. In
+this case it's Com Apple mail which is the default mail
+application on OS 10. On the right of the screen we have
+similar data. Looks very close to being the same. T value here,
+I'm going to try to -- T value here holds the different times
+and dates for all of the recent contacts -- this particular
+group three different times. Mac of five here. Down here we have
+the key over here. This holds the contact information. In this
+group conversation, who was I having it with. With Henry,
+talking with Rob. I do a lot of sand stuff and I have to
+communicate with multiple people often. It stores all that
+information in there. Nice information to have if you're
+trying to track who is talking with who. You can set up VIP
+senders. This is a default Mac mail type of thing. You
+basically star a certain contact and they are now your VIP. Their
+emails get bumped up or flagged or whatever, just to draw your
+attention to them. Same mark up here. T for time, A for address,
+and some other information associated. So it does have the
+VIP underscore flag here, you can tell it's a VIP contact.
+..(audio blipped).. in reality, but the data is there. Just we
+mail messages, text messages, SMS, jabber, aim messages. All
+of those messages get the same data associated with them. So in
+the app Com Apple messages list depending on the operating
+system that you're looking on, it stores the same data. The GP
+underscore, the MR underscore. It's storing the same
+information. The times and dates that that contact was last
+messaged. This is not just I message. I want to make a note
+of that. I want to highlight this iMessage here and mobile
+SMS here. Different protocols show you different data within
+the property list files. The same format, the address, the
+times T protocol. And with messaging you get phone numbers
+and email addresses. I can send an iMessage to someone else's
+phone number because that's how the protocol works. Good data
+collection there. If you open a bunch of tabs on the OS system,
+you open the iPad and it syncs all the tabs down. You can see
+in the Screenshots to the right, the different tabs open on
+different systems. If I open one tab on one, I move to a
+different device, I can open that same tab. That is getting
+synced in realtime. So under the sync tabs, it's another P list.
+I often say you get sick of P lists quick but then you find
+the value in them. In the sync tabs we get a bunch of different
+Goit. Under each is a different device. Under the value here,
+modified and device name. I call my mini my pad, mini my pad.
+That is the device name I provided it. So and so's Mac
+book or mini or something like that. You have a time and date
+it was last synced you can do temporal correlation with that
+as well. So now we're going to get into this tab's key here.
+Under the tab's key is data for each tab open. That's relatively
+simple data. The title of the page and the URL it was for.
+Think about this. If you're being investigated for whatever
+bad thing, the cops come back and they get a copy of your
+iPhone. You still have say 5 different other Mac devices or I
+devices that they don't know about. If you're using iCloud
+and you're syncing all that data, they can potentially see
+what safari tabs you have open at a given period because it's
+syncing in realtime. Maybe you opened tabs on your web browser
+at home that you shouldn't have. Whatever the case may be. That
+is synced down. If they have a copy of one, they might as well
+have a copy of all of them. Synced access points. Wi-Fi
+configurations are synced across the various devices. OS 10, this
+is the Screenshot to the right. You can see the ..(audio
+blipped).. that you have connected to, attempted to
+connect to. It saves this information for all time until
+you delete it or do a complete clean reinstall. So in this
+Wi-Fi panel you can see I contacted to Hyatt guest room,
+airports and hotels and all sorts of stuff. There are other
+ones that I do not show you here that can be more sensitive.
+Maybe to corporate environments or internal Wi-Fi, places that
+are very specific that have an access point name that is --
+could be sensitive. Could be considered sensitive
+information. Naturally this is synced across all devices.
+Couple other P lists here. On the left you can see all the
+things that I've connected to fairly recently. I like to keep
+a lot of my data in here purely for science. I do not like to
+keep this up here, but I do like to have good data to show you
+all when I do my presentations. So let's take a look at Reagan
+national Wi-Fi. I'm from the DC area and hang out at the airport
+and like to connect to their free Wi-Fi. Why not. This is
+synced back. What kind of data is synced? The AP mode and all
+that good stuff. But specifically about the device
+information, we get the name of the guys, in this case it's my
+phone 5S. As well as when this was synced. Added at. So this
+string here basically says, I was at national airport on
+February 9th 2014 at a very specific time. This is very,
+very specific. Now if you look at all the access points you do
+data correlation, you can make a beautiful time line of ever
+where this person connected to at a certain point in time. Very
+scary stuff. So next up we have map information. I was always
+kind ..(audio blipped).. I don't find it particularly useful. But
+I guess I sort of brought it in to sync all the iCloud map data
+with. I use maps on my iPhone, sometimes better off than others
+and I use Apple maps. Not the most reliable but I do use it.
+That data gets synced to OS 10 maps on my laptop and desktop
+systems at home. So favorite locations. These are user
+created favorite locations. Your home address, your work address,
+whatever places you want to just go to very quickly. That is
+saved in its own list. It's a P list file. Under sync underscore
+bookmark an item and a goit. A lot of these are based upon good
+identifying information. We can search across the drive for
+various GOITs to find the information as well. The meat is
+under the data key. This is a proprietary data blob you can
+say. Apple does this every once in a while. I haven't taken the
+time out to pars it. You can see what the data is supposed to be
+using the strings on there. I through it into a hex editor. I
+was in Denmark and doing some tourist stuff. If you have not
+been to copen hay again, I highly recommend it. Are you
+from there? Awesome. It's a beautiful place. Touristy but
+pretty. Map data. Recent addresses and recent location
+and searches. One note on the recent addresses, this is not
+user driven. This is being extracted from your email files.
+Various web addressed and extracted from all sorts of
+stuff. I have a couple of examples in here. I was condo
+searching and hooked up with red fin and looking at different
+condos wherever. Every time I got a red fin email and those
+things come in daily, it's scraping the addresses for all
+those emails and throwing them into this database. This is not
+a choice of that the user can disable. Be aware of that.
+Recent location and searches. That is something that the user
+can do. Wherever they search, maybe looking for a pharmacy in
+San Diego or a burger place directions in Fairfax, all sorts
+of good tracking information in there. Where has this person
+been. So extracted information. Follows the same structure we've
+seen in other property list files before. The date and times
+of the emails. So it's extracting that time stamp from
+them. The core recents. Under this P here, basically it's
+showing us this information was scraped from a red fin email on
+April 26, 2015. There's the URL. There's the information that was
+scraped. The subject of the email and all sort of related
+information. So recent location and searches. This file is the
+same ..(audio blipped).. weird proprietary data blob. You can
+look at it and look at the strings and say, look, this
+person was searching for a pharmacy in San Diego. Time
+stamps as well and you can go back and figure out when was
+this person specifically looking for a pharmacy in San Diego. So
+moving onto some more application level data. So
+various applications, mail, notes, various documents, all
+that stuff, also gets synced through iCloud. So just to give
+you a Screenshot of what the document might look like. We
+have the OS 10 Screenshot of me saving a document to my iCloud
+drive. You can save it through the text iCloud drive or just
+..(audio blipped).. and I'll get into that more in a few more
+Screenshots. If you're on the other side you see different
+file folders, pre-populated in there for various document
+formats. Numbers, keynotes. You can just drag files into that
+white space. Works very much like Dropbox might work. So all
+these documents are really under a directory called mobile
+documents both on the OS 10 operating system and the
+underlying file system. Pages and keynotes get their own
+directory. COMTilde is for pages. Pre-populated by apple.
+The other category at the bottom, that is for anything
+that -- not a pages document or a keynote document. If I want to
+throw a PDF or Windows executable or whatever file, it
+will take it. Very Dropbox like. Not Apple specific documents. So
+looking more on the disk. Taking a more forensic look at this.
+These are all stored in that mobile documents directory under
+the specific application. Now the one thing about I work type
+documents is they're bundled files. They're a directory of
+other files. They are presented as a single file but when you --
+look in the terminal there are a bunch of other files associated
+with it. Different pictures and data and meta data, all bundled
+into one. That is why you might see multiple files under one
+document. I OS followed the same file structure. Mobile library
+you have the mobile documents directory. It's going to look
+similar to what we saw in OS 10. COMTILDE or whatever app you
+might have. On Windows. Same thing. This is one of the few
+things that syncs down to a Window's device. Same similar
+structure, the mobile documents directory. Under your user
+directory through Windows. So photos. This application is
+probably more popular than not. If you have an iPhone you tend
+to take a lot of photos. We can get giant disks now, up to 128
+gigs and people love to fill them up with pictures of the
+kids, the cats, foods, whatever is happening in Vegas last
+night. They're synced up and stored. There are two
+applications now for photos. The legacy photos application and
+photos that came out in 10.10.2 or 3. I can't recall now. Two
+different applications and on the underlying side they look
+completely different to us. I'm going to go over the legacy one
+first. People are still using it. It's not that old to begin
+with. There is this data structure under applications for
+..(audio blipped).. management. Under this particular directory
+is all the iCloud related information associated with
+photos. One particular database, this is a SQL like database.
+This is where the bulk of the meta data for each photo is
+stored and we're going to get into that more in depth in a
+slide or two. You also have the photos located underneath here.
+That assets directory which has pub, sub, sub share. Holds the
+photo information. This is different. This iLife asset
+management database. Holds a ton of different pieces of meta
+data. Height, width, iCloud person ID. We can associate it
+to a particular user. The photo UUID, the device UUID. This is
+particularly interesting because we can tie it back to a certain
+device. File name, size, time stamps, all sorts of great meta
+data associated with each particular photo. You have photo
+stream photos. Those are your photos stored in slash sub. If
+you have a shared album, those are sub dash share and each is
+stored under this hash. This is that UUID for each particular
+photo. If you're looking for a particular one, you find some
+interesting meta data in the database, you can find it by the
+UDID. Search for the file name and directory and you have the
+photo that is particularly interesting to you. The new
+photos application, this one stored in a bundle. Has photos
+with other stuff underneath it. The photos library, again, those
+bundled files. Underneath here we have all sorts of stuff.
+Stuff I haven't had the time to take a look at. Attachments,
+masters, plug ins, previews whatever. The new photos
+application stores information for all the photo stuff on that
+OS 10 disk. The previous one stored information just for the
+iCloud photos. ICloud is now more integrated. So now it's
+containing everything associated with it. So the actual photos
+are stored under the masters directory. Maybe stored under
+other directories if there were edits made to them or modified
+in some way. Maybe added text to it or something like that. But
+the general -- themselves are under the masters directory. We
+have time stamped file paths which makes it easy to find
+photos that were taken for a certain time period. How do we
+actually tell, because this is all the photos, how do we tell
+which are iCloud specific photos. I can have a digital SLR
+and hook it up and those photos would be in those directory
+PSFTP the extended attributes we can tell if it's an iCloud photo
+or not. My favorite commands is XXTTR. I like the flags X and L.
+We can see what this quarantine value is. The COM Apple
+quarantine, the metadata values are populated every time you
+download a file, every time an attachment comes in. This COM
+Apple core chain is tagged with specific files. Forensically
+speaking this is gold. It tells you when it was downloaded. That
+is a time stamp. What process downloaded this photo. In this
+instance we see cloud photos D. Say it's downloaded from safari
+or FireFox, it shows you that. On a side note, forensically
+speaking take a look at this information. It's one of my
+favorite pieces. Meta data. On the legacy photos application we
+have the iLife photo database. That stored all the metadata of
+each photo. Here we have a library [indiscernible] file.
+This is SQL like database. If you see anything on Mac it's a P
+list file or SQL like database. Everything is one of those two
+file types. So the photos. We get a lot more meta data on the
+photos app application. Time stamps, height, width. But also
+locational information. We're getting a reverse DNS look up of
+this particular data. We don't have to pull that information
+from XF data and throw it into Google or whatever, it's showing
+us. This photo came from Denmark on a certain date and time. So
+really good information in there. We can scroll through the
+database and find a picture from a certain location that is of
+particular interest and look for that without doing a lot of the
+background work for it. So the new photos application. All that
+photo data, photo stream data is stored in these particular
+files. I have an example here of I OS. A lot of the data is
+stored in here as well. The height, width, the other meta
+data associated with. The stuff weave seen in OS 10 and on I OS.
+Shared albums. We have certain file paths for them. It does
+contain the same information. I can see who shared this
+photoalbum with me and other information, my email address or
+theirs, when they shared it, identifying information
+associated with it. As well as the title of the shared album.
+Now on Windows, one of the few things that is synced down to
+Windows. You still have my photo stream and shared directories.
+This is under the photos directory on Windows. Another
+Screenshot of my photo stream. These files are stored in a JPEG
+or PIN format depending on what it .S pretty easy to get to. If
+it's a shared album you find it's in another hash type thing.
+We can correlate this back to other databases as well. So
+passbook passes. This is interesting. I use passbook a
+lot. I do a lot of travel. I use united to basically get my
+passbook, my pass to get onto certain flights. Each flight I
+take has a ticket associated with that. All those are stored
+in the ubiquity cards directory. In this directory we have these
+PK pass directories. So in these directories stores all the
+information associated with each card. Now these can be airline
+cards or Starbucks gift cards, target cards, what have you. You
+won't see Apple pay related information. You won't see your
+MasterCard or your AMX card or anything like that. That is not
+Apple pay specific information. In these files we have
+[indiscernible] this is a JSON file. Not an XML or anything or
+a P list file, but a JSON file. Apple has to switch it up. This
+stores all the meta data associated with each pass. This
+shows what flight I was on, what seat, my united mileage plus
+number, the gate I was at. All sorts of meta data. ..(audio
+blipped).. each note that you take, whether on I OS or android
+or OS 10 you see the same information synced up. You can
+choose to make it a ..(audio blipped).. or not. But many
+people do. It's like an automatic back up of that data.
+So all that data is stored in these particular directories in
+a SQL like database. I OS or OS 10 is very, very similar. I've
+done a query here to show you general information. Each note
+has associated time stamps. When the note was created, last
+modified and an HTML rendering of the Notacon tent. So very
+easy to get to that data. Calendar and reminders. While
+two separate applications on OS 10 and I OS they're integrated
+as one on the backend. I've done the same thing. SQL like
+database. You can pull out quick information out of them. So when
+was the calendar item created. What was the reminder for. Alarm
+information, all sorts of meta data. These databases are
+incredibly large. Really makes for awful screenshots. Thus I
+made a tiny query to show the general information. Contact
+information. All the Apple contacts. All the phone
+contacts. The messaging contacts are all synced to back up to the
+iCloud. So every time you sync a contact, they're pushed up to
+the iCloud and saved on your systems at home and stored in a
+SQL like database. I pulled out the records and the information
+associated with it. While here I have a creation date, first,
+last name for Andrew and I blocked out his number otherwise
+he would receive calls but there can be a ton more information
+associated. Social media accounts, physical addresses,
+digital addresses. All sort of great contact information
+depending on what the person put in there. Now we're down to
+third-party applications. If you looked at some Screenshots
+you've seen things like iCloud COM get Dropbox. Microsoft
+office PowerPoint, one note, sky drive. It looks like these could
+be reserved for future use. I looked at mine and tried playing
+with the application to populate the data but they all seem to be
+empty. Even the absence of data can tell us something. You can
+see what applications I use just by looking at this. Maybe you
+don't have my iPhone but you can tell some of the applications
+that I use. I'm assuming this is reserved for future use. And
+last but not least, iCloud key chain. This can be extremely
+useful, people do not like typing in passwords on their I
+OS devices. I can barely type on these things. I have small hands
+and I don't like to do it. Maybe I want to save all my passwords
+to Amazon or social media accounts into this database.
+This key chain two dot DB is a SQL like database. You can look
+in there and find strings of interest. If you get access to
+the users OS 10 system and password, you can dump their
+iCloud key chain which is useful to do. I have not found a way to
+do it on an I OS specific device. But if you get access to
+the users desktop or laptop it's easier. Email accounts, certs,
+keys, credit card information, saved form data, addresses.
+There is no limit to what can be saved. It works like the key
+chain on OS 10. Just a Screenshot of the key chain
+access program. So if you do have the user's password you can
+click this lock up at the top, input the password and you've
+unlocked the key chain and you can browse the data at your
+leisure. That's it for the presentation. I do thank you for
+coming to the presentation. If you have any questions for me, I
+will be here for a couple minutes and then outside in the
+hall. Feel free to email me any questions you might have. I'm on
+Twitter. I do a lot of the Twittering, if you will. It's
+probably the only social thing that I probably do. Feel free to
+hit me up on that as well. Thank you for coming. I hope this was
+informative and I hope you have a great rest of the conference.

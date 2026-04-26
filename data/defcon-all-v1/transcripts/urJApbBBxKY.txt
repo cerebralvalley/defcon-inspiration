@@ -1,0 +1,895 @@
+>> Welcome to the 6th annual DEF CON security
+jam! Whoo! You were supposed to shout free bird. You fail. Room keys, throw that way.
+Underwear that way. We're not doing that again. This is the 6th annual fail panel. Each year
+they let us sit up here and make asses of you and ourselves. So thank you for coming.
+It would be much less fun if we didn't have targets. With the flap jacks, this year we're
+making pancakes otherwise known as flap jacks so half the money we raise through your generous
+offerings. Half we raise will go to EFF and half to Barnaby's family. If you don't like
+what you get, tough luck. So we have a variety of folks, I'll let them
+introduce themselves as they do their spots. I have a quick fail before we let our next
+volunteer do their thing. I want to give the award to logarithm. Who was at black hat this
+year. Raise your hand if you're Blackhat and if you were, did you stay at Caesar's did
+you have one of these lovely shower hangers on your bathroom shower at Caesar's? You got
+lucky. I'm going to give logarithm the award for creepiest vendor at Blackhat this year.
+Nothing like waking up at far too early in the morning or late in the afternoon and going
+to take a shower and discovering this hanging on your shower head that says, "Think you're
+exposed?" (Laughter).
+What about your assets? And you know, there's nothing that makes me feel like wanting to
+purchase something like a vendor like being stalked first thing in the morning.
+>> In the shower naked. >> And David, the guy who came in to do it
+in my room opened the door and saw me there and decided he did not want to into my shower
+so he handed it to me and ran. >> Rich, are your slides done yet?
+>> I just started. >> Excellent.
+>> I'll go last. >> As usual.
+>> Can we look like we're professional? >> You seriously Google.
+>> He really is. >> I can go whenever.
+>> Absolutely. Excellent. >> Fuck you, man, I got kids.
+>> He's using Bing! >> Actually, actually, being DEF CON in the
+DEF CON network ‑‑ being that it's DEF CON and the DEF CON network, he knows that
+no one else is monitoring what's going to Bing so it's probably pretty safe.
+>> There are two things I like to do in private and both have Bing in the phrase.
+>> I think you scared Alex. >> Where's the Bing in Shizer.
+>> Are you ready? >> I'm ready.
+>> Okay, Jamie, take it away. (cheers and applause)?
+>> JAMES ARLEN: So I got a mic, a mic, and a GA. This keeps turning off.
+>> It wasn't me. >> Oh, fuck. VGA.
+>> I'll keep my finger on the button, the entire time.
+>> Please connect directly to the NSA. Last year at the fail panel this says poisonous
+mic. Labeling here sucks this year. Last year I did my slides on stage much as Rich is doing
+right now. And look at that. >> Next year we should all just do our slides
+as we give our presentations. >> JAMES ARLEN: You know what, I could have
+done this with just preview but I wanted to give you a title slide so I could talk about
+how to discover that hotel Internet is funny. >> We're not projecting. What's going on?
+>> I can see it there! >> Fail over here.
+>> Now it's over there. >> Failing over there.
+>> AV people. >> Here we fail, there we fail. Everywhere
+we fail. (cheers and applause).
+>> Don't be a cyber douche. So Dan Charles. >> Yay!
+>> You're blowing the circuit breaker. >> Yeah, I know.
+>> I can hold it. Keep your finger on the button.
+>> When you all start to see me shake, you'll know it's from being electrocuted.
+>> In a round motion. Is that good for you, Chris? All right. So last year I did my slides
+on stage and that was fun and all. This year I decided to be prepared. So when I got to
+Vegas, I still had no slides. Anybody stay in a hotel that has no guest protection on
+its Wi‑Fi? Anybody stay in a hotel that has no guest protection on its Wi‑Fi ‑‑ and
+I just lost my slides. >> We can see them.
+>> I think we shorted the whole stage out. I lost that screen, too. I'm sitting at Caesar's
+trying to prepare for my training with Rich. >> Did you guys break something?
+>> There's no ‑‑ >> What did you step on
+>> JAMES ARLEN: Hit the breaker. Did we blow the whole room?
+>> Oh, no. >> Holy shit.
+>> Anybody got a lighter. >> I have a lighter.
+>> JAMES ARLEN: So Rich and I are sitting in Rich's room, trying to prepare, looking
+at slides. All of a sudden out of the complete freaking blue, (cheers).
+>> What are they doing? >> I have no idea.
+>> You're going to hold that circuit breaker? >> This is still off.
+>> We're calling for help. >> There's no help coming.
+>> Call the union. Half cooked pancakes are delicious.
+>> JAMES ARLEN: You ever have a moment you knew somebody else was in your computer? You
+got to Vegas and forgot to turn on your firewall. Because failure, that's my modus operandi,
+bitches. I look over at my machine because somebody else's desktop is on it.
+(Laughter). Out of an abundance of caution, I asked our
+local Mac security expert, Rich Mogull, read his articles on Mac world. I can't keep the
+Mac things straight. >> The power is on on the fucking thing.
+>> There's power on on that. Keep talking. >> JAMES ARLEN: Okay. Please don't touch me
+there. I have large monitors in my office that exceed sanity. I habitually leave air
+server running because it's an easy way to take what I'm looking at on my phone or iPad
+and put it on a monitor in my office. Guess what? People will promiscuously join whatever
+air server they can in the hopes that it's the TV in the hotel room.
+>> Raise your hand if you're promiscuous. Jay Daniel wins on that one. Rich and I are
+trying to scramble and remembering what's the code for screen shot and grabbing our
+phones to take a picture of it. And then the music starts. So I'd been fooling around with
+this and for reasons that shall remain not astonishing to anyone I lose a folder full
+of screen shots you but I did catch this lovely one. Which is the guy troubleshooting why
+he can't hear his YouTube video any more. I had perfect fidelity of it. So as a call
+to action, as a go out and stamp out cyber douchery everywhere. I will ask all of you
+individually and severally, to please run air server, configure your air server host
+name as capital A small ppetTV. If you're on a Mac. The keys you're looking for that
+neither Rich nor I could remember are command shift 3.
+>> Or 4. >> JAMES ARLEN: 4 makes you draw a window,
+3 takes it in the instant. Just because air server by default fills the entire screen.
+Just keep hitting those three keys while they puzzle out why their audio or video disappeared
+or share their corporate secrets with you because they're dumb.
+I'm going to say this. As years of a Mac user, it is easy to be very secure. It is foolish
+to just depend on intrinsic security because look at me, I've got a genius to depend on.
+Not rich. Rich is a different kind of genius. Anybody know who had 90 minutes to prep a
+Blackhat talk? First talk of the morning, 90 minutes prep and he killed it for an hour.
+There are no other professionals like that in our industry. So my call to action, configure
+your air server as AppleTV, server runs on Raspberry Pi mby the way. Send screen shots
+to me so I can post them and we can titter in glee. If somebody is so enterprising to
+take my intellectual property and build such a device, please, someone make me a Raspberry
+Pi image that connects via Wi‑Fi to whatever it can and runs as an air server as AppleTV
+and screen shots once every second. Build it. Send it to me, I will give you all the
+creds in the world times one magillion. >> Build it and you will come.
+>> JAMES ARLEN: I did not say that. (Groaning) walked right into it. Can you do it? Can somebody
+do it? Is anybody better at scripting than me? Oh, you have a box that does that? You're
+going to make one for me. Fuck it. You rock. Can we offer him something congratulations
+and thank you? We have half done flap jacks. They're almost done. Okay. That's not beer
+man. Fucking close to water. >> Thank you so much. You can get a pancake.
+Put beer on the pancakes. We usually do. You're not going to put your tongue in my ear this
+year. >> There is no connection between the two.
+(off mic). Excellent. Let's hear it 
+for carry over. >> All right, just waiting for the other side.
+>> I mentioned the box is looking empty, so I'm going to put $100 in it.
+>> That's a Canadian $5 bill which is worth $5 U.S. because of the economy. We have oil
+and wood we can sell you. >> It is a great value. It's butter flavored.
+For your nipples. >> I would like some butter for my nipples,
+please. Also can I get a little bit of syrup. So who is going to lick the butter and syrup
+off my nipples. >> Chocolate car caramel or strawberries.
+I don't want Canadians licking stuff off my nipples. I have standards. >> Word on slides on this side. Slides, schmides.
+They really want to see these. Everyone lean over that way so we can see slides.
+>> In an effort to get you guys moving along so you can hear from some other esteemed colleagues,
+we'll do slides on one side while they work on the other. Okay? Yeah, this should be on
+the fail panel, right? Projector fail. It's small. That's what she said. I've heard that
+before. Mostly from Rich though. All right. We're so scrooge'd. So a little
+by me. My name is Larry Pesce, and I'm a penetration tester, hardware hacker. I'm currently between
+jobs. So my employer was supposed to send me to DEF CON to come give this presentation
+as part of the fail panel and this is all stuff that I discovered while I was working
+for them. And they laid me off lost Monday. >> Boo.
+>> With an 8 week old baby at home and a 5‑year‑old. But in any case, tweeted and all that good
+stuff that I got laid off. I got laid off at 10:30 in the morning and I had an offer
+letter by 7:00 p.m. (cheers and applause).
+>> For pornography? >> LARRY PESCE: It was. And I took it.
+>> Boy, did he ever take it! >> Where can you buy it? Uporn. Based on the
+fact I'm technically currently unemployed because I don't start with the other company
+for a month, I had to do redaction to protect the innocent and the fact that I can't afford
+a lawyer right now because I'm not getting paid.
+>> So donate a lot of money so he has a lower when he gets through.
+>> LARRY PESCE: To that former network guy. Certified instructor of the SANS institute.
+Member of the pauldotcom security group and also an extra cost HAM radio operator which
+is completely irrelevant to this presentation. >> Which means you have no sex life.
+>> LARRY PESCE: Right. I also have kids, right, Rich. What is this talk I'm going to talk
+about. I just changed jobs. Fuck. Really, again, and but I had just changed jobs into
+the energy sector. So you know, had been doing consulting for penetration testing in all
+sorts of industry but was now specifically tailored to just pen testing and hardware
+hacking in the energy sector which was a completely new thing for me. I'd never done any work
+in the energy sector so all sorts of new terms and things I had to understand. Whole new
+industry and on day one of my new job I was on a plane to a client site. Excellent. And
+I ‑‑ and after about six weeks, we find out we're going to come do the fail panel.
+What am I going to talk about? This is my impression of the energy sector, security
+in the energy sector after about six weeks on the job. And sort of why I think that.
+All right. So day two on the job. Hi. Howdy. Okay.
+So day two on the job. You don't mind if I rub back, right?
+>> No, oh, no. >> Do you now understand why we are the way
+we are? >> LARRY PESCE: Just wait.
+>> Wait, there's more, he slices, he dices. >> LARRY PESCE: There's more flap jacks. Yay.
+>> First time I ever saw naked man on wireless router was Larry.
+>> I have that picture. >> Did Bing it?
+>> You. >> LARRY PESCE: You have the picture but I
+have the life‑sized cutout. In the basement. And it has made many rounds around our house
+in various closets and the pantry and my daughter goes and opens the pantry and goes and closes
+the door and waits for Mommy to go to the pantry. Mommy, why isn't Daddy's router bigger?
+(Laughter). >> LARRY PESCE: Wow. Wow. I'm not going to
+touch that one. >> It was a Linksys. Yeah, small antenna.
+All right. So ‑‑ >> Very small gain.
+>> LARRY PESCE: Yeah, more than yours, though. >> That's all right.
+>> LARRY PESCE: See, I don't even feel it. In order to understand the reason I feel this
+whole energy sector security stuff is totally screwed, we need to understand AMI, advanced
+metering infrastructure. Not BIOS folks. I didn't know that on day 2 of my job either.
+Lots of new acronyms and stuff in the energy sector that I had no idea about and it took
+a little bit of explaining but that's okay. So let's understand a little bit about AMI.
+Speaking in general sort of terms, no particular vendor and those sorts of things. What we
+end up with is a meter on your house that reads usage, meterology. And that meterology
+now needs to be reported back to the provider, to the energy company so they know how much
+electricity you're using or how much gas you're using. So that metrology gets sent over a
+network over some sort of aggregation device and that aggregator connects back to the utility.,
+which then connects to a system potentially in a DMZ which then the accounting folks connect
+to from their internal network. So now you can start following the path from a meter
+to a host on the internal network. Great. So ‑‑
+>> What about these are not smart meters? These are actual meters?
+>> LARRY PESCE: And/or smart meters. It all depends on the type of device that are installed.
+Multiple different types of meters whether they be start or otherwise that have some
+type of wireless technology to contact this quote aggregator. The first week on the job
+I got to pen test one of the aggregators. So what did I find? Unfortunately, crossing
+your arms doesn't hide the boner. >> And tweet that in 2. All right.
+>> Real quick, how close will we get to Rich Mogull tonight speaking of boners.
+>> Take off your pants. >> Password, please.
+>> 1, 2, 3, 4. >> Password 1. Password 1.
+>> I gotcha. >> We'll save that. We need to get more money
+out of the people before I drop trout. >> Isn't the password the same as trout.
+>> We crossed 500 in donations. Thank you, people, let's keep it going.
+>> Everybody, Rich Rich Rich Rich Rich Rich Rich! .
+>> I think your pants are worth a thousand dollars this year.
+>> I'm running for Congress. >> Everyone is a weiner.
+>> District 5 in Phoenix. >> All right. What do we get if we get a thousand
+dollars, Rich. >> He loses the shorts.
+>> We get to tie Dave to a chair with his pants down.
+>> Very good. There you go. >> I'm the only person in history that drops
+my pants at RSA and DEF CON. >> Multiple times.
+>> Anybody want pancakes, raise your hand. >> That's what she said.
+>> LARRY PESCE: All right, speaking of boners, the first aggregator device I got to test
+had Ethernet and external port accessible ‑‑ winning!
+‑‑ however, the Ethernet was shut down. The password was on. Doing brute force against
+it wasn't going to work for us. So that was pretty good. However, we can still observe
+all the boot process and get all sorts of information about it via serial port and then
+we look and discover this other port. And yes, the boner police have come for you. So
+we open up the other port and there's an SD card inside. What can go wrong? This is a
+device hung on a telephone pole 12 feet up so you need an extension ladder. So great,
+SD card. But what the heck is on it? So the manual claims that it contains the operating
+system and configuration files for the device on a hidden file system. By the way, day 2
+on the job, I remove the SD card and threw it in my Mac. It mounted or attempted to mount,
+didn't find any file systems. Crap, hidden file systems. How did they do that? I made
+a DD image of the SD card. Couldn't identify any of the images on the ISO image either.
+No big deal. I ran strings and found interesting stuff on what appeared to be configuration
+from the entire disk image in plain text. Great, hidden file system unencrypted. So
+I put the image on my own SD card, so as not to damage the original. Put it back. And moved
+the device over to my Linux workstation so I could attempt to play with it. And I plugged
+it in to about 204 system and it ought mounted 3ESX file systems.
+>> Wait, I thought it was hidden. >> On Windows it is.
+>> You realize if the vendor releases vulnerability, they'll say it's the hard to understand format
+so we're fine. >> LARRY PESCE: Yes.
+>> At least it's not proprietary. >> LARRY PESCE: Yeah, just you wait. I start
+going through the file system and search for configs. And I find that there's a running
+and a quote golden config. And when you change the running config on the SD card, it detects
+that changes were made and boots the golden config. So I changed both. I changed the running
+config. Modified that detectedded it was changed on the boot and started the golden config
+that I changed to my own user name and password and now I'm root on the system. And by the
+way, they were attempting to get away with being able to modify some of those files on
+that SD card by using Unix file permissions. So they were owned by root. But guess what?
+It's mounted on my file system and on my system as a file system and I am root on my file
+system so I have the right to change those files. So I did. Insert my SD card into the
+device, reboot it. And I now have a local user account on the device before tack accounting
+has to wait for the 3G connection to start. So I have full control of the device and the
+device contains Wi‑Fi access point which connects outbound over the 3G and because
+I configure it I can set up routing and offer free Wi‑Fi for everyone in the neighborhood,
+amongst other things. >> Excuse me, could you narrate the pictures
+on the slide? I feel like you're glossing over it.
+>> LARRY PESCE: Well that's the point. So the initial vendor response was oh, but you
+didn't use your high security mount for mounting this on the pole. Oh, you mean the one with
+will big hole in it so you can still gain access to the SD card slot? No. And aluminum
+that we can take out with a crowbar? Awesome. So we contacted the vendor through our client.
+And they said sure, how about we just put a password on the config file? I'm not exactly
+sure what they meant by that. But I don't think they were either.
+>> When you say you have a shortcoming in security knowledge you can't put a password
+on a file. >> LARRY PESCE: You can. But how are they
+going to start reading it and putting the password in memory.
+>> Just put it at the beginning of the file. >> So include the password in band. No one's
+talking about music yet, buddy. >> LARRY PESCE: Not yet. When we talk to the
+vendor, we said guys, that's really dumb. Vendor, how about we maybe work with you on
+a contract to test your stuff before you deliver it to customers? And they said oh, well we
+have a team that does that for us. An internal team. Yes, they must be awesome. If my calculations
+are correct, you suck. And yes, I bet you all read that in doc Brown's voice. Yeah.
+Titty sprinkles, right? All right. So I finished that. Engagement, spent a week back at home.
+My 10th day on the job, I'm back at another vendor or another customer. And I'm pen testing
+a different device from a different manufacturer but with similar type of function. So another
+one of these aggregator devices. This one was really well secured. Same thing for serial
+port, no exposed SD card Ethernet was fully shut down. You name it. But in due diligence
+to the customer, we asked them to login to the device for us and then we were going to
+review all the settings on the system and it was a Linux based system. So we wanted
+to review the Linux configure to see if there was anything they made mistakes. Go figure.
+So Unix based operating system. Serial and Ethernet were externally accessible. Once
+we logged in, we were taking a look to see what had been done for hardening. And the
+first one was distinct lack of SE shadows and all passwords were readable. Thank you.
+Yeah, so next, I'm like all right, let's do what I just did two weeks ago and see if I
+can get a DD image from the system. So I started trying to do DD over net cap. Unfortunately,
+the user I was logged into the device did not have read access to the entire file system
+so it failed. So I could not get my DD image to the local workstation after enabling Ethernet
+and all that good stuff. And it was also in 10 years of pen testing the first time I ever
+use the netcat in a pen test. Sorry, Ed. So I started looking around the operating system
+and find an application proxy. Which gives the user an ability to use commands from a
+nonprivileged account just like the one I had. This sounds like pseudo to me but it
+wasn't pseudo. So they kind of reinvented the wheel.
+>> Again. >> LARRY PESCE: Again. So the command has
+been obscured to protect the vendor so we start looking at the app proxy. The dash A
+gives us the level of access needed. Sweet. The dash C is the command we want to run from
+a white list of commands and the dash P gives us the command line options to set command
+in the white list. Did you guys see any authentication for using
+a potential system level command in that whole setup? Yeah, no, me neither. Didn't acquire
+additional name and password much like SUDU might, and granted access to the commands
+in the white list. Turned out that the dash P flag doesn't do sanity checks or filtering.
+(Laughter). So you pipe the output from one of those white
+listed commands like IP config to dev null and then you pipe another command that you
+want to do to it and it executes it happily as system. Yay! All right, so. So I get a
+copy image via netcat, via this privileged escalation and I start doing über link strings
+against the image and find a bunch of databases and database definitions that include commands
+such as create table. ID integer name text, salt text, password text, update date, date,
+and the primary key. Name salt and password. Great. So they're
+storing the password and the salt as text in the database. No! It just gets better.
+Now, that said, just ‑‑ pancakes? Anybody want pancakes.
+>> Flap jacks. Keep flapping those jacks. >> Raise your hand for pancakes!
+>> LARRY PESCE: Raise your hand. Keep them up.
+>> Wave money if you want pancakes. >> Wave something else if you want something
+else. >> Maynor still has his shirt on.
+>> Don't worry, he'll get it off. >> Another few hundred bucks and that will
+go. I had no idea what this database was for. Now I have access to the entire image. Access
+to the databases. That feels good. >> I'm from the vendor. I'm to make sure you
+don't complete this talk. >> LARRY PESCE: Nice, vendor response on this
+one. We're still waiting and well, I don't work there any more so I'll probably never
+find out what the response from the vendor was. I'm wondering why they ran out of D on
+their salad sign though. Try our Asian salad and they couldn't find the capital D so they
+had to use the upside down P. I don't know. Here's the final fail. Who wants pancakes.
+What? Too much? >> You can tell how many people here are not
+parents. >> LARRY PESCE: Yes, that's nothing if you're
+a parent, right? Except that the ass is a little bit bigger. All right. So this one
+was pointed out to me by my former boss who asked not to be named. So I asked for some
+help figuring out some information about utilities and pictures and all that type of stuff. And
+he sent me to Flickr for a interesting government agency that supports energy in Tennessee.
+And I will leave it at that. And these did get reported to said government agency and
+they removed them from their Flickr stream. However, you know that saying with some creep
+has got a copy of everything on the Internet? Yeah, sometimes that creep is me. So once
+they already removed them, I still had copies. Once it's on the Internet, it's already there.
+You guys know that. So let's look at this particular case study. So here's a picture
+from their Flickr stream for marketing purposes. It gets better. I'll call out specific things
+for you. Weave got a picture of a badge. We've got security video cameras and we can potentially
+gather locations and we have a gentleman by the name of Rick's phone number. Two of them.
+>> You also have this nifty red jacket right here. Is that members only?
+>> Might be. >> So you found the most advanced power plant
+in North America because they're on XP. >> Yes. If anybody thinks I'm joking, I'm
+not. >> There was another picture. Yep.
+>> LARRY PESCE: So there's a flyaway book is their DR plan underneath a box of tissues
+because apparently it makes them cry. >> Is it crying that the tissues are for?
+>> Yeah, definitely not the other one, Dave. Trust me. We've got XP in the background on
+cube well and XP and what appears to be IE7. We've also got.
+>> Is that a testing valid authority. >> Seriously, most advanced control room I've
+seen. >> LARRY PESCE: This fine lady is taking a
+picture. There are three monitors connected to the system. How can I tell? The background
+was customized by her to be a family and we see a picture legs at the bottom and it is
+the same on two monitors so those are on the same system using the same Windows backgrounds.
+I don't know what that is. But it looks like there's some sort of plant control or plant
+monitoring software on one workstation. I didn't ‑‑ we're running ‑‑
+>> Don't want to rub it in too much >> LARRY PESCE: But we're doing some sort
+of plant control and monitoring on a machine that has access to outlook. And Office.
+>> That's kind of sketchy. >> Most advanced power plant in the country!
+>> Did you see there's a clock up here >> LARRY PESCE: I did.
+>> But it's analog. >> LARRY PESCE: Yes.
+>> That means there's probably nothing we can do with that.
+>> LARRY PESCE: Except tell the time. >> It's guaranteed incorrect relative to the
+grid. Seriously, like you need to use something better than NTP. You want to find a cesium
+clock source, find a power control room. They'll have two. And they're using a battery powered
+clock on the wall they got from IKEA. They have cesium sourced time. And they're using
+a battery powered clock from IKEA. Or Wal‑Mart or whatever.
+>> LARRY PESCE: And you zoom into this particular pick this is Microsoft Word. So based on my
+six weeks of experience, we are so screwed. Because we're in an industry that we're starting
+to tell them you guys need to start at the beginning and stuff. By practicing defense
+and depth 2003 called and think want their security back. Last year I brought you Afro
+circus to make everything better. I don't have anything quite as bad as Afro circus.
+I'm not going to plant the ear wig for you guys this year. However, I do have some dead
+mouse for you. But it's not going to be the ear wig that I plant. It's the eye wig. To
+make it all better ‑‑ >> Wait, wait, anyone want pancakes
+>> LARRY PESCE: You'll want pancakes after this. You do not want the dry heaves. You'll
+want something to throw up. Because dead mouse is always better. When cats throw up to techno.
+Pgh ¶ >> LARRY PESCE: Wait for it. Wait for it.
+Give it up for Barnaby, please. Dude, I think I saw this guy at one of the DEF CON parties
+last night. Wait for it, wait for it. Don't worry, this is not the 10 hour video. ¯ yes,
+I'm going to play the whole thing. Flap jacks, anyone.
+>> How long did you spend collecting these videos?
+>> YouTube. >> LARRY PESCE: Here comes the money shot!
+Cats throwing up to techno always makes everything better. Guys want to see that again? All right.
+So with that, who's next. >> Are we missing Mr. Rob Graham. Mr. Rob
+Graham to the podium. >> Larry!
+,! Do you need my delay port adapter. We all need it.
+>> We need what you got. >> LARRY PESCE: Thank you very much.
+(Applause.) You guys will never listen to dead mouse the
+same way again. >> If we ever did to begin with.
+>> While Rob makes his way to the podium, I'd like to give you some background about
+Rob. He's somewhat of a cheater. He broke the rules. We all, like normal people, do
+our presentations 5 to 15 minutes before this panel. Rob did his last week at home before
+he even got on a plane to come here. So don't be amazed at anything he talks about. It was
+all done a week ago. >> I didn't even pick a topic until I got
+here. >> ROB GRAHAM: It's true. We're talking ‑‑ Rich
+to my right. >> No, I'm not Rich. That's why you're looking
+at my chest. >> How much money do we have and what part
+Rich's clothes are coming off next? >> Rich, seriously, we're in the speaker room
+about an hour before the talk and we're just saying what should I present? And then he
+was right here a few minutes ago. Furiously putting to the slides. Just a ‑‑ together
+slides. >> Just a quick update. We've raised about
+a thousand so far. (Applause.)
+That's 500 for Barnaby's family, 500 for EFF. Give until it hurts. Although actually, Barnaby's
+family. >> EFF.
+>> Home in New Zealand and give until it hurts even though we're making you hurt up
+here. Hey, Jack, don't go away. Because you know what? I don't have a job technically
+because I don't have start until the end of the month. But you know what? Here's 100 bucks.
+(cheers and applause). >> Would somebody go out in the hallway? There's
+like 100 people out there who didn't get the call to get more money. Can we yell it louder.
+We've got a teensy tiensee people, and there are a lot of people who want to see you're
+on. These are the  panel rooms. I think we all know what this
+picture is. It's a gold plated fiberoptic panel. So this is a monster.com cable. They'll
+charge you 150 bucks for it and it's better than the two dollar cables because it's got
+gold plating to make sure that the fiber option connection is better.
+>> But Rob, what does gold have to do with fiberoptics.
+>> Oxygen free. >> Lead free probably and environmentally
+sound. And we all know the monster company, the marketing around this is that it's ‑‑ it
+gives superior life‑like sound. But this is a digital cable. Bits that go in are the
+same bits that go out. As long as that condition is true, every cable is equal. You can't add
+to the digital signal. Monster can. Oxygen free cable. Please, marketing.
+>> But Rob, what does gold have to do with fiberoptics?
+>> ROB GRAHAM: I don't know. So this is digital astrology. Somehow we can add to the bits.
+There's some magical mysticism we can add to the bits. We laugh at monster but we don't
+laugh at television sets. We laugh at Costco or Best Buy and go down the aisle of television
+sets and pick the prettiest one. But in the old days, I guess in analog TV ‑‑ by the
+old days I meant before half of us were born, TVs were analog and yeah, there was adjustments
+you could make to the TV to fix things. But with digital TV, it's digital. Same concept
+as monster cable. Bits in. It's 24 frames per second. It's 1080p or 780i or ‑‑ 24
+bits per pixel. And that's the color. Any adjustment you make on that is degrading color
+you're not improving it. So digital is digital. Anything that does to make a vibrant optimized
+contrast and color is making the picture worse. And that's why you get these TVs home and
+you have nice pretty ‑‑ showroom you have nice pretty pictures with lots of colors and
+colors is really vibrant and you really like it. But then you get home and try to watch
+TV on it and everything is crap. Like you're watching Star Wars and Darth Vader is a black
+blob and Luke is a white blob and all the colors are saturated.
+>> And that's just racist! >> Can you get prescription Google Glasses,
+please? Obviously you're not sitting close enough.
+>> ROB GRAHAM: And So ‑‑ >> But Rob, what does fiber optics have to
+do with gold? >> You watch directly and you can see the
+folds in Darth Vader's robes, you watch the same movie on TV and you can't see the details.
+It pisses me off because I've bought two TVs because no matter how many settings I've gone
+to I can't get to what a computer monitor shows. So the factory defaults are wrong.
+That's the color and contrast and the sharpness and all this other nasty stuff that they've
+distorted the digital signal. >> Maybe you need different cable.
+>> ROB GRAHAM: It looked great in the store because I bought it, right. There's a company
+called eColor that produces, in case all the distortion already on your digital TV is not
+enough, they'll sell you a box to do more. Preserving ‑‑ simple device with HDMI
+in and HDMI out just going through algorithms on SPCA. It's digital. Mathematical stuff
+on SVGA and you're great. >> But Rob, what does gold have to do with
+fiberoptics? >> ROB GRAHAM: So I'm here to liberate the
+chips. You have SPJs in service of evil. So I want to liberate the chips. So now I'm going
+to do that and grab ‑‑ actually, can you grab this thing.
+>> That's what she said. >> This is the box. You go on to Amazon. The
+chip is a $50 chip but since these things suck and only morons buy them, you can get
+them used on eBay or close on Amazon for $10. So I've got three boxes for $10 each.
+>> It has a button. There's all this crap in here and stuff. You don't want any of this
+crap. You've got the device, you've got power supply. The little remote control. The box.
+So yeah, you have the device here and it comes with a little protective plastic because you
+want to keep it pretty because it sucks. You got your little power supply and the power
+supply you sort of need and you don't need this other crap. So this device, I spent a
+long time trying to get the case open so I could actually preserve the case but it's
+all glued together. So you just have to break it. Once you break it, it doesn't go back
+together. It's just broken. (Laughter).
+So you have this device and what you have ‑‑ it's really hard to see so I'm going
+to try to use the display here, photo booth. Let's try this. So you can see there's three
+chips on this. There's HDMI in and out and there's FPGA in the middle. Now as hackers,
+what we know is that every device in the world has a daytime debugging port on it and usually
+first thing we do to grab device is go hunting for chip pads, pads on mother board to go
+solder our connectors on it. But these guys you can see they already have the Jtag interface
+on it. So that's awesome. >> But Rob, what does gold have to do with
+fiberoptics. >> ROB GRAHAM: These are gold plated for enhanced
+sound. (Laughter).
+So what we're going to do is ‑‑ can we have J tag which means a back door to the
+FPJ chip. Can you plug this in to power supply? This is nice, powered up. Another notebook.
+There's a camera. Anthony weiner. >> BOOS. Anthony Weiner's name will stop electronics.
+>> It's probably gold plated too. >> Really he'll show us his tinker bell. And
+yes, that's what the kids recalling it. >> For those new in the room, welcome. Bring
+money down here, get your flap jacks over there.
+>> It's not like you're giving money away. Bring the money over here. The money is going
+half ‑‑ half the money donated today is going to Barnaby Jack's family and the other
+half is going to the EFF. >> To be more specific it's Barnaby Jack's
+family is trying to fly him home to New Zealand which is where he's from and is really expensive
+if you didn't know that. >> Line up!
+Standard J tag dongle. USB port. >> Rob, did you say dongle?
+>> My flower is still down. >> Get to the back door. So we don't care
+about the HDME interface or whatever this device is other than it's evil. And we need
+to expunge the spirit. So we just ‑‑ so I've downloaded the AlterraSPGA software so
+all I need to do is connect up the chip. Scan the bus through the device and then upload
+it. What's the upload key? >> It's his first time.
+>> He's never presented before. >> He won't remember what it's like and won't
+want to do it again. >> ROB GRAHAM: I practiced this, that's what
+Dave was talking about. I practiced it to make sure I was getting it right. And you
+no, I can't even find the key. >> Donations welcome.
+>> We can't give you beer for in Vegas for some really weird money.
+>> We can give you sex. >> But we can give you beer and randomly donate
+money next to us. >> Michelle, it's American beer so it is water.
+Guys on the street meet for me. I will not throw beer.
+>> ROB GRAHAM: I practiced for two weeks ‑‑ well, two weeks ago.
+>> That's what he said. >> ROB GRAHAM: And application all ready to
+go. All I do is plug it in. >> How's that working out for you?
+>> But Rob, what does gold have to do with fiberoptics.
+>> If you need a pancake, Jason has some. Raise your hand.
+>> I'm a technical analyst. >> ROB GRAHAM: So I had to plug it in the
+right way around. >> That's what he said. We 
+connected to the device, identified the FPGA chip and model number here. I downloaded this
+SOF file, that's the FPGA description from the Internet. There's a project up on github
+that has all the bit point mining software that can just download to the FPGA. So now
+I'm downloading it and we'll see if it works. Usually does it the first time you actually
+hit twice. I don't know why. >> Play with it a jiggle it around.
+>> Play with your dongle. >> Show a video of the skirt.
+>> Wait, what? >> I don't know, it works for me.
+>> Show us your bit hub. >> ROB GRAHAM: Now we've downloaded mining
+software to the FPGA and you're using control program to do the mining and send the results
+up to the Internet. Password is on there. My password is food bar 123 so, if you're
+looking for my password, that's usually my password.
+>> But Rob, what does food bar have to do with gold.
+>> You can hunt down my passwords, e‑mail addresses, they tend not to be Rob Graham.
+>> I've used kevin Bitnick a lot. >> How about Carlos Danger? Is that going
+to work? >> This is slow, it takes a while but it's
+running here. >> You don't see it from a live demo but what
+had been running for a few weeks, I just put the machine asleep.
+>> He admits it. It's created one chunk and sends them up to the server. It does about
+14 mega hashes a second is the rate. It's pretty slow. Faster than a desktop shall but
+slower than a GPU but using 10 watts of power. And it costs 10 bucks. That's my chip liberation,
+taking this evil company and products and doing something good.
+>> How much money have you made. >> ROB GRAHAM: Less than $10.
+>> There's more gold in fiberoptics than that. (Laughter).
+>> That means he's done. (cheers and applause).
+>> So this is a ‑‑ this is a very special fail panel. We've expanded the members of
+the panel. We have a fail panel virgin on the team. And our first female fail panelist.
+>> But not both at the same time. So we didn't warn her we are going to put her up on stage
+right now but I think it's a good time. Yeah. Mostly because she's not drinking enough in
+the fucking lemur. All right. Here we go. >> So I said to Rob, I need to borrow your
+computer, here, I've got a USB drive. Said seems legit and he plugged it in. It was gold
+plated. >> But Wendy, what does gold have to do with
+fiberoptics. >> Just wait and see.
+>> But Dave, why is my penis in your ear. >> DAVE MAYNOR: I'm trying to hear you come,
+obviously. I just heard something. It was very small. Sounded like a dead mouse.
+>> I'm a Jewish boy from Jersey, it's not going to impress anyone.
+>> It's not the size of the penis. It's the amount of syphilis you have.
+>> WENDY: It's not the size of the ship and it's not the motion of the ocean. It's whether
+the ship can stay in port until all passengers have disembarked.
+(cheers and applause). >> I've got three kids. Call me sniper. One
+shot, one kill. (Laughter).
+>> It looks like we're a little over $1,500 right now. I want to give a special shout jut sky
+talks just threw 200 in. And let me just say in the security community we often focus on
+some blow hazards and some FUD and I know you'll be startled, there are actually ass
+holes in this community. Fuck them. There are awesome people sitting around you and
+maybe even sitting on this panel. So absolutely. So as you're exhausted and trying to focus
+on getting through it, maybe there's awesome people around you. Have a conversation. And
+people just open up. So anyway, there's a bucket here. It looks pretty good but it will
+look better with a little more in it. That's what she said.
+>> Speaking of she, hey, Wendy, what's going on. It looks like ‑‑ we did ‑‑
+>> WENDY: $1,900 last year is that what it was? Okay, we can do better this time. Hi,
+everybody. I'm Alex Rothman Shostack, Esquire. Shostack, Esquire. Speaker phone. Hi, mom,
+I'm in front of about 2,000 people. In is the boldest move in the history of fail panel.
+Hi, mom, how are you doing? >> I'm great, I guess you're in front of 10,000
+people, huh? >> 2,000, but that's okay.
+>> 2,000, but that's close enough. >> Hi, mom (in unison).
+>> You still there? (Laughter).
+You wanted something? What's that? >> Mom: I'm waiting for squawking to stop.
+Anyway, I just wanted to talk to you guys before you left the country.
+>> We hope the rash cleared up. >> Can we talk later.
+>> Mom: That would be great. >> Okay, thanks, mom, bye.
+(Applause.) >> We have to give it up for him. Seriously,
+who else would let her mother hear this place. >> Dude, at DEF CON, everyone had your mother.
+>> Boos. >> There's room for more. All right.
+>> ALEX ROTHMAN: All right. So ‑‑ >> Hey, you with the beer, come back here.
+We thank you. >> Hey, Wendy, are you going to be talking
+about blog. >> ALEX ROTHMAN: Yeah, I'm Alex Rothman, Shostack,
+Esquire. And I'm going to talk about ‑‑ let's just say I listen to presentations for a living.
+And ‑‑ yeah, bring me more to drink, please. So after the first few hundred of those, it
+all starts to look like this. And I wanted to share this with you. Quick pause, have
+you ever seen dead mouse in a presentation? >> ALEX ROTHMAN: I've heard dead mouse and
+seen some pretty ‑‑ (Laughter).
+>> ALEX ROTHMAN: This is still not enough for vendor presentations.
+>> Who will donate money for Wendy to shotgun a beer.
+>> Canadian beer. >> Fine American beer.
+>> Can't you give a version something a little better. Bourbon is bad.
+>> Who's got bourbon. >> Wait, there's a virgin.
+>> What kind of Scotch is that? Single malt. I'll take it. I'll take it. None of this bourbon
+shift. Thank you. >> Wait, wait, you're a virgin with Bon.
+>> ALEX ROTHMAN: At Schmoo con, I got on stage and somebody handed me a big plastic cup with
+what I found out later was rum. 15 minutes later I went off the stage completely wasted.
+>> Can someone get a picture of her with the bourbon for her RSA photo.
+>> ALEX ROTHMAN: Please label it Alex Rothman Shostack, Esquire, otherwise, I have to explain
+it to my boss. Why I didn't  share with him. Every presentation starts
+with there are bad guys out there and they're trying to put a big ass key into your computer.
+>> But just to make sure we're all on the same page, are there bad guys out there with
+big keys? >> ALEX ROTHMAN: Well some of them think they're
+really big but they're not that big. It's all about key length, right? Right? So yeah,
+more, blah, blah because generations because we don't understand these people but they
+wear masks. >> I really like V for vendetta.
+>> Yeah, and then of course there are scary, scary numbers, lots of scary numbers, usually
+percentages that don't have anything to do with anything else but of course they have
+to wind up with big scary numbers. >> What's the biggest number you've seen?
+>> ALEX ROTHMAN: I can't talk about that  in public. He just wants to brag about it.
+That's all. And then of course everybody's got a solution.
+>> Hey, I didn't know you were using my picture. >> ALEX ROTHMAN: Everybody's got a solution.
+And have you noticed that every term in security was made up by ‑‑
+>> Is that a spider? >> ALEX ROTHMAN: Was made up by people who
+desperately want to be macho so they use all sorts of law enforcement and weapon and violence
+things we've secured ninjas and knights and spears and blood and we don't have hair balls.
+>> My DS SOP says I have to secure this presentation as a TSCPI because you haven't gone through
+an SS SPI. >> ALEX ROTHMAN: Yes, I do, thank you. I don't
+know why they keep going through this macho stuff when this is just as scary.
+>> That's my mom! >> ALEX ROTHMAN: That's right.
+>> Wait a minute, that man just paid $100 for pancakes.
+(cheers and applause). Did you have any good meals in Vegas. Yeah.
+Yeah. I had a steak. >> Well, I had a pancake. $33 a pancake.
+>> I believe at this point ‑‑ >> Cheers, everyone. To all of you.
+>> Hey, real quick while we're doing this, everybody raise your glasses and say good‑bye
+to our very good friend Barnaby. >> To Barnaby!
+>> I can't help notice, one Wendy, you still have some left.
+>> I did. >> I'm very observant.
+>> I'm stretching it out. And that's what is he said.
+>> So Wendy as a fail panel virgin. The first fail panel I was prepared for was heckling
+from the audience. >> It was over quick.
+>> I wasn't prepared for the constant heckling to the copanelists.
+>> ALEX ROTHMAN: I know most of you guys. I found the angry old lady trick works really
+well at least for me. I think we should have more of this in security. And of course everybody
+wants to tell me that they're the best and unique and the first one to have done something
+really, really exciting and it's all because it's not antivirus and it's not a firewall.
+Everybody is, like, shooting down these things and everybody is saying the S word, signature.
+No, we don't use signatures. We're better than this because we don't use signatures.
+We use rules. (Laughter).
+Yeah. I actually ‑‑ >> What do rules have to do with fiberoptics.
+>> The golden rule. >> Is this like the golden shower?
+>> ALEX ROTHMAN: That's later, I need another drink for that.
+>> We need to raise $3,000 for that. >> It's like you hitting on judge Judy: It's
+not anti‑virus and not a firewall and nobody is ready to say get rid of your antivirus
+or firewall. Everybody is saying these days they're great because they're not ‑‑ also
+they're the best because they have really big ‑‑ data. Their data is really big.
+It's much bigger than the other vendor's data. Would you like to see our data? We'll show
+you how big it is. Would you like to measure our big data? It's really ‑‑ and they
+want to stick their big data in everything. >> There's a DI for data injection.
+>> Wendy and I are both analysts. I've had two recently one it was backed by SQL server
+and the other is they deal with large SharePoint servers.
+>> So you're a double whore? >> ALEX ROTHMAN: Nobody on the crew nobs what's
+knows what's coming up next because I made this up yesterday in the bathtub.
+>> Chicky chicky wow wow. >> Save that, that's come up.
+>> . That says realist. >> ALEX ROTHMAN: We're note just fast, we're
+realer time than they are. Because hardware cloud. We're realer time than they are.
+>> I'm going to throw out an idea here. What happens if you get cloud hardware?
+>> Then it gets really hard. >> Yeah, it does.
+>> That's what she said. >> ALEX ROTHMAN: So all of this makes me do
+this. >> I feel slightly uncomfortable.
+>> ALEX ROTHMAN: I really need a helmet. That would help me during the presentations I have
+to watch and listen to, if I had a helmet, I would feel better sometimes.
+>> It would clean up easier. >> ALEX ROTHMAN: Here's my solution to the
+problem. We need more sound effects in security. >> Is that how you spell more.
+>> ALEX ROTHMAN: Well yes, yes it is. >> I can't spell.
+>> Just play dead mouse, Wendy. >>
+>> ALEX ROTHMAN: As you can see, we're almost there. A lot of vendor names sound like side
+effects. We have hadoop. Splunk. >> Splunk is a real thing. What's's gold got
+to do with splunk. >> If you have the gold, you get 
+to splunk. Last Corona, we're going to auction it.
+>> Who will take their shirt off for a Corona. >> Underwear, oh, God, yes.
+>> We've got 40 over there. Nice gentleman with the gray cap. Anyone over 40. Sold, Corona
+with 40 thank you, serve. This is just  sound effects. Hadoop, Hadoop.
+>> They're all just Norwegians. >> ALEX ROTHMAN: So yes, sound effects. We
+really need sound effects. When you're talking about people are telling me about malware,
+I love it when they pronounce is mall‑ware because then I think of this.
+>> Let's go to the mall‑ware. >> ALEX ROTHMAN: Any time somebody starts
+talking about mall‑wear, I can start thinking about elevator music. Everything that you
+hear in a mall, you can start thinking about it whenever anybody sells mall‑wear.
+>> Is there a Victoria's Secret to this mall‑wear? (cheers and applause).
+(cheers and applause). >> 5, 4, 3, 2, 1. Fail! That would be a targeting
+fail. >> ALEX ROTHMAN: We need a flap jack trebuchet,
+that's what we need. I have an ultimate fail. >> My kids are here so they can see what dad
+does for a living. They're too busy to come to my talk.
+>> ALEX ROTHMAN: Dissed. >> One of them is teaching scratch at roots.
+So ‑‑ wait. >> He's working.
+>> Right now my daughter and new best friend are using a scavenger hunt I don't know how
+that happened and my son is teaching. That is so awesome.
+>> . Jamie, I think you misunderstand. Jamie, I think you understand the word fail then.
+Chopped liver, hi. >> That man is going to pass fire school.
+>> ALEX ROTHMAN: Settle down I have to do more sound events. Analytics is like magic,
+you should be thinking this. Analytics, it's magic.
+>> I thought you were giving me a hand job there.
+>> ALEX ROTHMAN: This is a linguistic program. I'm going to continue everybody, a room full
+of people. >> We overflowed the first donation bucket
+so we're starting a new one. >> ALEX ROTHMAN: Excellent. Yay! All right.
+Jamie, the next one is for you. Next sound effect is for you because cyber. Every time
+you hear cyber, I want you to think ‑‑ cyber. >> Wendy, I don't know if you know this or
+not but that sounds like a masturbation sound. >> ALEX ROTHMAN: Maybe for you it does.
+>> It does, actually. >> ALEX ROTHMAN: Cyber, cyber, cyber, say
+it with me (quack quack) chant chant. >> Next door is wondering what the fuck is
+going on. >> What does cyber have to do with fiberoptics?
+>> So cyber. >> ALEX ROTHMAN: So next one I want you to
+be thinking this. All right. And finally, some things are just too big ‑‑
+>> That's what she said >> ALEX ROTHMAN: Yeah, that's what I said.
+Some things just require a different level of side effect. All the things, yeah. Yeah.
+Oh, my God, hair ball. Hair ball. >> And that's what she said.
+>> ALEX ROTHMAN: Holy cow. All right. So ‑‑ pancake should go for 20 bucks now.
+>> Rich for the finishing touch. >> Did you say finishing or facial touch?
+>> How come he still has his pants on. >> We have time constraints.
+>> What does gold have do do with Rich's pants. >> ALEX ROTHMAN: All right. So the very last
+sound effect I want to share with you, hey, hey, pipe down. I'm talking.
+>> Who's late coming? >> ALEX ROTHMAN: Last sound effect. It's got
+to be a big one. >> I love sound effects. ¯ oh, my gosh! So
+that's what I wanted to think of when somebody says ATP, yes, oh, my God, because that's
+back to the whole macho sexual thing, too. >> It's so flipy!
+>> ALEX ROTHMAN: It is. So remember what did I tell you today? What did I tell you? So
+I'll just leave that right here with you. Remember, cyber, cyber, cyber. Thank you.
+(Applause.) All right, this took me about 20 minutes to
+put together. I already did it. We have something better, but wait until the end. I say that
+a lot and they're always disappointed. But yeah. So basically, this is my top 5 fails
+of the last year and the first one isn't last year, it was 2011 but I haven't had a chance
+to share it 2011, I'm in Beijing, China teaching a class. That's not my fucking problem. I'm
+up here. All right. Can somebody ‑‑ I mean ‑‑
+>> Donating 60 for the dino toy  cyber only cost her $60. Be able to stand
+in the hall and you'll be able to see my slides fine.
+>> Don't worry, come. >> Do you know what happens when you fail
+on this panel, Rich. >> You get something big.
+Yeah. We'll do that at the end. >> RICH MOGULL: I'm in China teaching a cloud
+security class. This is going well. >> When you were in China, did you get approached
+by any women to have sex with you. >> Just your mom.
+>> You're the only Cybersecurity who went to China and have not been propositions by
+a honeypot. >> It was a honey net.
+>> That means it was both men and women. I don't know what's up with the AV because I'm
+sending out. >> RICH MOGULL: So part of the lab for this
+is we do a bunch of stuff with Amazon web services. I'm sitting there with the students,
+look, this is a little difficult. I said no more than 15 students and they all need to
+speak English because I don't speak Chinese. And so I had 30 students and most of them
+didn't speak English. Little challenging, there was no translators. And so it was one
+of those experiences. This was for a large company. HP. And.
+>> I'm sorry, you coughed, what did you say. >> RICH MOGULL: So blow me. And .
+>> Put it in the crowd. >> So we do all our labs at Amazon web services.
+I have everything set up and all of a sudden I'm getting pissed off and yelling at the
+network guy because none of the students can connect to virtual servers, whole thing is
+falling apart, we're not able to do any of the labs and what the fuck is going on here?
+I take a step back and think for a moment. I had 25 students. We launched 50 instances
+in Amazon, making 50SHH connections simultaneously from one IP address. I'm thinking the dude
+over there at Amazon is thinking this. Maybe this. More likely this. And if it's Dave Maynor,
+this. Really, probably this. So the end result was for about half an hour, we were blocked
+from Amazon, student couldn't do labs and eventually they released it and decided we
+weren't a threat. So I have to go fast because Dave has cool stuff. Number 4, this occurred
+four days ago. So I'm teaching a cloud security class at Blackhat. You kind of somebody knows
+about the Blackhat Web site is. They probably can type in the URL, they heard of Blackhat.
+>> It says 4. >> RICH MOGULL: 5, 4, 3.
+>> Dave, we can read by the way. >> RICH MOGULL: It's a new thing and he's
+totally excited. So don't burst his bubble. >> This is a great reading level.
+>> Yes, it is. I've got a bunch of students in my class and I feel bad about this one
+because the person involved is actually really, really nice and I'd feel worse if she was
+in this room but she's not. So this person early on we identified that
+she teaches security at a college. So I don't think a university, community college or something.
+>> You're not telling that story, man. >> RICH MOGULL: Jamie was here, he'd help
+me coteach the class. So she teaches at a college and supervise this person. She said
+look, she sat me down and it was quiet. She's like okay, so I hate to admit this, I do mostly
+policy and management stuff. But I don't know what you mean by key. I thought for a second.
+And I thought. And I thought, and I thought and I'm like you mean an SSH key, she goes
+yeah. So she's teaching security classes at the college level and doesn't know what SSH
+key is. Favorite fail number 4. You would laugh if you weren't so fucking disturbed
+at the concept. >> standing there going I have no response
+to that question. >> RICH MOGULL: This is better than a class
+where I was trying to help her find her SSH key. Pull up file explore and she goes I don't
+know what this is. Here it is, I need you to search on star.pim. You know what she typed
+in next? S‑t‑a‑r. Guess who she worked for? That would be the federal government.
+Using your federal government laptop. Number 3 this also occurred at our class and Jamie
+is going to fucking love this one. Look at the preview of what's next.
+>> JAMES ARLEN: Laughing. >> We can't show you until you donate more
+money. >> RICH MOGULL: Donate more money. You have
+one guy, there's always a dude, always a guy, mostly and they always know a lot and they're
+really wanting to impress you with their background. So this individual ‑‑
+>> Rich, rich, did I tell you about that type I broke into an Apple?
+>> RICH MOGULL: You did three years ago here and now there's a black hat on the failed
+exploit on a panel that nobody noticed. It was a zero day at the time. So this guy ‑‑
+>> Rich, technical term for that person is asshole.
+>> RICH MOGULL: I spent 8 years as a undergrad, so I don't know all the terms.
+>> In Cherokee that means enlightened one. >> Just as asshole enlightened your penis.
+It's the fail panel. It ain't going to get better. So this individual mentioned how he
+just finished his ‑‑ where's the squeaky thing. Stat stat stat. His Cybersecurity graduate
+degree. He informed us that in the first talk and said in ominous tones "Have you ever heard
+of heap spray?" well yes. I've heard that term before. He says well you know, we're
+the guys who heap spray'd the college from Amazon.
+>> What! >> RICH MOGULL: I thought about that for a
+moment and another moment and the first words that were going through my head ‑‑ I really
+didn't have the heart. >> My name is Montego Montoya. You killed
+my father. Prepare to heap spray the college from Amazon.
+>> RICH MOGULL: It is very rare I don't know how to respond to something along lines. So
+I decided to look for heap spray defenses online. And I was pretty much not able to
+come up with anything. He got frustrated later because he couldn't realize that, when you
+enter something into the user interface if it has a space in there and you get an error
+and it says no spaces allowed, you just take the space out. So it was a really good class.
+>> But Rich, what do spaces have to do with fiberoptics?
+>> RICH MOGULL: Number 2. Like Wendy, I work as an analyst. I'm willing to admit the name
+of my company because I actually own the company. And all these presentations ‑‑
+>> I said Rob is going to be pissed. Hey, look.
+>> When I was a little girl . >> We all know ATP is a big deal.
+>> Rich, I'm no expert here, but that looks racist.
+>> RICH MOGULL: Yeah, that's because Bing is racist. You see how you spelled high h‑i‑g‑h.
+>> I can't believe it's not butter. >> Pour some on me, baby.
+>> Premature there, hey? >> RICH MOGULL: Too soon? Finally. Holy ‑‑ 
+years ago I remember I talked about a web application firewall vendor and they talked
+about the ATP marketing guy at a reception we were at at RSA. And I said well you know
+you don't ‑‑ that's not how these guys do those things. I said I know we did a survey
+and ATP. This is the last victim. No less than $20. This is free, $20.
+>> RICH MOGULL: Hey guys, MMaynor guys, Maynor has good stuff. I got to get through this.
+This is e‑mail of the year, I got it about a week ago. I'm going to let you read this
+for a moment. I'm contacting you on behalf of VISACA who would like to speak to you about
+how IT can form Cybersecurity with cobit 5. >> I got one of these too Rob Graham. Rich
+Mogull this is critical for IT teams in the name of escalating advanced persistent threats.
+So apparently we can use a control fast track known as code bit to stop ATP attacks.
+>> ALEX ROTHMAN: Yes! Oh, my God! Rich Mogull now, my absolute favorite fail occurred literally
+30 minutes before this talk. So I walk out to get coffee, I go into the normal area of
+the hotel and I'm come back with my cup of coffee.
+>> That's the area that's normal. Not the area with normal people.
+>> RICH MOGULL: Normal people, not us. Otherwise as we refer to them, targets.
+(Laughter). >> RICH MOGULL: Somebody comes up to me, he's
+super nice, he did not look like this. This is my normal impression of normals at Vegas
+and he comes up to me and it's great and he's nice and he goes "Excuse me, sir?" I've got
+all the goon stuff on. Admittedly the badge doesn't mean anything but the dumb ass tactical
+vest does. He goes what's going on over at the Convention Center. It's DEF CON, the world's
+biggest hacker conference and his face goes like this. And I'm not used to that reaction.
+That's cool. That's interesting. Blah, blah, blah. They ask questions. I'm like is something
+okay? And he goes wonderful. And I'm like why? And he goes"I work for the NSA."
+No bullshit, 30 minutes before this talk. >> DAVE MAYNOR: You came to the fail panel.
+>> RICH MOGULL: Jack Daniel and I were talking whoever gives us $100 gets to roll around
+in the money right now. Come on. Hands up. >> And for $200 you can roll around in the
+cash with Rich. All right, I need to go to the ATM but I'm doing it myself. Hold on.
+>> Tell me which ATM you're going to in case it's mine. So I have here a collection of
+spoons. Apparently to make can pancakes at fail panel you need a lot of spoons. I have
+had them signed by the members of the fail panel. You can .
+>> There are no spoon. >> You cannot unsee this shit. Barnaby would
+be so proud. >> You know, my partner over there is Securosis,
+Rich Mogull, he's ‑‑ he's rolling around in the dough. Wow, that escalated quickly.
+>> That's a lot of money there. So I got these three spoons and I got ‑‑ I don't know
+of us are there? A lot. All of us. You can buy a spoon, you can buy a spoon that comes
+with certain associated ‑‑ thank you. A lot of water. With not just the authentication
+token but also the authorization, the larger the dollar value the more authorization is
+placed upon the spoon such as the ability to have Chris Hoff lick the spoon for you.
+Or the ability to spank people with spoons. You figure out what your off is. Come up with
+the money and apparently we have to let Dave Maynor talk again.
+>> Before Dave starts, I want to thank you everyone for coming and more importantly I
+want to thank the number of people such as Liz and Martin and Jason and Jack who helped
+make this possible. We couldn't get these pancakes out to you without them. Let's give
+a round of applause for helpers and also everyone who donated beer for you guys to buy, thank
+you, everyone, thank you. Please clean up after yourselves.
+>> ALEX ROTHMAN: Jack just pointed out to me that when Rich was rolling around in the
+money he was reliving his days at Gartner. >> Gartner jokes is always funny.hell.
+>> DAVE MAYNOR: Hello, everybody, my name is Dave Maynor. Most of you know me as shit
+head. I'd like to start out by asking everybody what do I have to do with fiberoptics? The
+answer is absolutely nothing. How many people are here last year for the fail panel. I can't
+believe you came back. You foolish people. Last year I did this thing with the iBot enhancing.
+So I had become known to some people as the fail whisperer. I'm very good at inducing
+fail in things. In fact, here's a picture of me that has failed. Look at that. I have
+two chins. Fail, I'm also wearing a tie, fail. So I work at fail like most artists work in
+oils. I get to pen test things so I fail a lot. One example is that many years ago Jacob
+Applebaum who is a complete media whore wanted to distribute. He's stopped being a media
+whore and now become a media darling. He wanted to prove something in CC and redacted information.
+I thought this was stupid. So I wrote a blog post about it and it says document redacted.
+So the funny thing about this is that while you can redact large portions of the document,
+you can redact the font size. So you can figure out how many letters are in each word of small
+redacted blogs. It was pretty easy to find out. So we were able to before his big CC
+presentation decipher his message. And what did the message say? I found a new way to
+apply hair product to make it look like I just rolled out of bed. No seriously. He was
+talking about something with MD5. Funny thing he posted something he thought was secure
+and everybody read it ahead of time. I'm going through this because I'm going to go through
+my credentials about why I have fails. But this year I have no fail to offer I only have
+success and unfortunately, my success was horrible. So that was a fail. So one quick
+story of a recent pen test we had gone right, I can't really tell you the client but it's
+a really funny thing when we came in, they were gung ho, they were ready for us. They
+they let us know ahead of time how we weren't doing anything, we weren't getting in or breaking
+anything. So the window comes around, 5‑7 minutes
+into the window we had broken into everything, we had domain admin remotely. So I didn't
+know what else to do. Normally at this point you start writing a report but, if you know
+me, I don't like to write because I can't read which means I'll do anything to avoid
+writing a report, which brings us to calling a registrar and I can't mention the registrar's
+name but we called the registrar and I in my greatest southern hick voice went oh, my
+God my boss is in tex and our site just crashed, I have to change the DNS over and I don't
+have the password. Can you help me out. The person who sounded like they were in Kansas
+or Washington or somewhere said well gosh, you need the password to do that. I said well
+I don't have the password. My boss is in turkey Caracas. I was trying to channel a Baptist
+preacher. Nobody wants to mess with a man of God. Is there anything you can prove you
+work for this company? What do you want, son? What can I get for you. A little exaggeration,
+he said can you send me an e‑mail from your work account or can you put a page on the
+Web site to prove that you have control over it. Well, yes, son, I can. Let me go right
+ahead. And sense I had domain admin it was easy, you right click in the ISS directly.
+I feel a disturbance in the force. It's a small disturbance, more of a ripple actually.
+So I right click in the ISS directory. I create a file called Go Daddy ‑‑ wait, I can't
+say the name. I right click on the directory. Create a file. And I say redacted. Does this
+prove that I work for the company? I give him the URL. He goes and looks at it and said
+yeah, sure and gives me the password. To which I spent the rest of the night figuring out
+how to do split routing with e‑mail so I can get a copy of all e‑mail coming in via
+DNS. I called him the next morning at 8:00 a.m. and asked system admin why he hasn't gotten
+any e‑mail since midnight. Game over, man. Game over. They shocked. They were appalled.
+Some would say they were shocked and appalled. >> Were they awe'd?
+>> No, they were normal. Which brings me quickly to why I have no ‑‑ this is all funny,
+but I have ‑‑ wait, what? Time. I have no actual fail this year to talk about. Last
+year I did a trick and it was a very funny magic trick. I did two tricks. Well, one guy
+was named rich, he didn't pay well, but then again I didn't have to do much. It was over
+quick. So I did this trick with an iPod where I could be within 100 meters of every jukebox
+that us ooh uses an app and I can make all the boxes play oompah. Any time somebody would
+check Foursquare I'd find a jukebox and play oompah. I thought it was hilarious. So Chris
+Hoff tweeted where he was going to a bar and minutes later Dave hacked his location on
+a computer and played oompah on a local jukebox. So that's.
+>> DAVE MAYNOR: That was funny. If you look at video and audio from last year, the last
+thing I say before I walk off stage is "executives use jukebox plays to determine how popular
+a group is. It's my calling in life to get Hanson to release a new album."
+See, I thought I was joking. I didn't believe in the power of the ‑‑ I just wanted to
+put this picture up again. There was a chick sitting on my lab when I figured this out
+and she had a gun. I was like it deserves to be at the presentation two years in a row.
+But I can't believe in the power of the fail panel. So I want to let you all know, I am
+witnessing to you the fail panel power is real. It is real. It is so real. Hanson released
+a new album, look at the date. Worship the fail panel. We change the world here every
+summer. I want you to know because we don't do it because we're egotistical sons of bitches
+like Rob Graham. We do it because we're trying to help everyone have a better life. And I
+believe and I believe Hanson will have nothing to do with that. Thank you.
+(cheers and applause) >> Thank you.
+>> But Dave, what does Hanson have to do with fiberoptics?
+>> Get the butter. Oh, my God. >> That's how rock stars do it.
+>> It burns., oh, it's just him. >> Do not want. You know what? I have never,
+never seen a crowd throw a Bono shirt back. I'm going to tell you right there we have
+very polite fans. >> Thank you, everyone. Enjoy the rest of
+the show. >> All right, who wants to lick the butter
+off my nibbles. I promise I won't get no hair in your teeth. I don't promise that at all.
+>> It's only butter flavored. >> We do have pancake leftovers such as syrup,
+jelly, nuts. >> Napkins.
+>> Throw money in the bucket on the way out and take some. We do not want to take it home.
+>> We have extra beer, too. And syrup.

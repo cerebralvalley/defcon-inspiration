@@ -1,0 +1,948 @@
+>> Good morning. If you're, I
+hope that most of you are
+actually still up from last night, otherwise you are getting
+up way too early. My name is Rob
+Graham, this is Paul McMillon and Dan Tentler. They are busy
+getting our demo working, making
+sure we can demo live stuff. We're going to talk today about
+scanning the entire Internet.
+Which really isn't a huge technological development, but
+it's something that the tools
+really haven't existed before. And they are really easy tools
+to create and we just haven't
+bothered. But we started creating these tools because now
+we can go to ISPs and get
+gigabit connections to the Internet and the Internet is
+pretty small, it's only 4
+million addresses. So this is really an exciting thing to do,
+is to sit down on your command
+line using NMAP style options and just say I want to scan the
+subnet, the slash zero subnet.
+And you immediately start getting results back, just
+watching your screen just flow
+and flow and flow. Why scan the Internet? Well, if you are a
+defender, it's really actually
+an important thing to do. A lot of people have used Masscan to
+scan for Heartbleed on their own
+networks because a lot of scanning tools just don't
+support the scale. If they have
+hundreds of thousands of systems, most vulnerability
+scanning tools just can't handle
+the scale. NMAP does a much better job, but still, hundreds
+of thousands of systems, it's
+really slow, but Masscan, you just type it in and just a few
+minutes later, a hundred
+thousand systems get scanned and you find all your Heartbleed
+vulnerable systems. Or we have
+other really important answers we need to solve about the
+Internet right now like
+amplification attacks with DDOS that people have been using,
+such as the NTPs servers that
+have been misconfigured. To solve those we have to scan
+everything on the Internet to
+find them. Or when like DLINK announced a vulnerability in its
+home routers, we'll scan the
+Internet looking for all those DLINK servers to see how big of
+a Botnet problem does that
+present to us. Or like again with Heartbleed, scan all the
+SSL certificates to see how old
+they are and if they have been regenerated since the bug.
+There's also the offensive
+reason. It's the deep net and that's the, kind of a popular
+term these days of things that
+you can't find by Googling them. So with Masscan, you just scan
+with the banners option and you
+will find hackable systems within minutes. And for us, most
+of us are white hat researchers
+and from the offensive side, it's a lot of fun. It's
+informative. We really don't
+appreciate how small the Internet is until we have typed
+in slash zero and run our scan.
+Also, there's 65,000 ports out there. Pick one at random and
+you'll find something new that
+no one has ever found before, like a seamless control system
+that controls a nuclear power
+plant or something. The talk after this one, in this room,
+there is a home automation, I
+don't even know what the talk is about, I didn't get the exact
+details, but it was port 7468 or
+something like that, that he, that they scanned for and found
+millions of vulnerable systems.
+So pick a port, start scanning for it, see what the heck you
+get. Do a black hat talk or a
+DEFCON talk. 	>> Who remembers the iPhone port that just came
+out recently, the iPhone
+backdoor port? It's 65, 62,000-something. I'm going to
+scan it right now, I just can't
+remember the port. Somebody shout it, anybody remember? No?
+Okay. 	>> We'll have to look it
+up. 	>> Worth a shot. Sorry, go on. 	>> So lots of people, so
+OK, so now you've excited me
+about scanning the whole Internet, I really want to like
+just log onto my ISP, my hosting
+environment, launch a VPS on Amazon and start scanning. What
+do I do? What are the things I
+need to know about? The first problem is knowing what the
+bandwidth limitations are. if
+you have a gigabit Ethernet you are actually only sending about
+48, or 476 megabits per second
+of actual traffic. And that's because Ethernet has a pretty
+large overhead. And what
+scanning does, PCP scanning, is it sends out lots of small
+packets, probing the devices. So
+the per packet overhead is actually more than the contents
+of the packet. So when you do a
+gigabit Ethernet, what your ISP probably is going to charge you
+for is just the raw PCP
+overhead, which is 476 megabits per second. And by the way, this
+is a really high rate. So that
+comes out to 1,488,000 packets per second, but in practice
+you're gonna get a whole lot
+less, switches just barf at that. I haven't figured out why,
+I just know that when I connect
+I get between 300,000 to maybe 800,000 packets per second. I'm
+not getting what Ethernet tells
+me I should get. Even on a well configured switch, that's got
+nothing on it but me, I don't
+get the full bandwidth, I don't know why. The billing issue is
+pretty interesting because
+different ISPs bill at different rates. Some ISPs don't seem to
+notice the small packets. This
+one time we got, we did this whole scan of the Internet and
+the ISP came back and said,
+yeah, but you have only used like a few megabytes total of
+traffic and they weren't seeing
+our outbound traffic. Some ISPs they will give you unmetered
+links and that's pretty awesome
+because you can just go to your heart's content. Note that
+there's some other subtle issues
+here. CCC in Germany, the Chaos Computer Club, they do their
+annual thing, last year they had
+a 100 gigabit connection to the internet, which I had other
+plans, but maybe this year I
+will go and just bring my 10 gigabit cards with me. But
+there's still problems because
+we need, we're shoving lots of small packets across the wire
+and apparently that breaks
+agreements between period agreements. So your ISP, no
+matter how wonderful they are,
+may still get mad at you. There's the practical/physical
+infrastructure. VPSs tend not to
+handle the packet rate as often as much. It's one of the strains
+of IOs get strained. As I
+mentioned before, the Ethernet switches slow down quite a lot.
+Also be aware that just because
+the Ethernet switch says that it will accept 500,000 packets per
+second doesn't mean that the
+rest of the infrastructure and all the hops out to the Internet
+will accept those. Scanning, all
+the scanners randomize the port numbers, or the targets so that
+on the destination side, you
+probably won't drop any packets. The packet dropping happens on
+your side. So you need to scan
+some things and make sure, okay, I'm going to scan my own network
+across the internet, blast it
+with packets and make sure if I send 10,000 packets that I
+receive 10,000 packets. Most of
+my scans run even less than that. Is I will run multiple
+VPSs on different sites,
+different data centers and do a scan, one in Tokyo, one in
+Dallas, and one in Paris, and do
+that instead of blasting one, blasting out a scan from one
+site. Masscans charge really
+easy, you just do dash, dash charge, one of five, two of
+five, three of five, and it will
+split the scan. Your biggest issue is abuse complaints. The
+Internet now is done in a way
+that when people do abusive things like spam or SEO
+optimization stuff, scanning of
+websites, the complaints come back to the ISPs and the ISPs
+will block them and cancel those
+customer accounts. And even if your ISP is nice and willing and
+wants to do the scan from the
+network, they don't really have much choice because other
+organizations will just
+blacklist their entire address range, their entire AS number.
+Or peering agreements, they will
+stop peering with them. And so even if your ISP is nice, still
+they don't have much choice in
+this. They can't let you do too much nasty stuff. And so part of
+that is responding to abuse
+complaints. And answering them, which we'll get into. Some
+things are worse than others.
+Doing a Heartbleed scan these days with all of the IDS
+detection out there saying
+someone is exploiting me, that gets a lot. So we have been
+doing a Heartbleed scan once a
+month now for the past several months, which by the way is
+about 300,000 systems vulnerable
+and that's generated a huge amount of complaints. And by the
+way we have also run a Tor Exit
+Node, that's actually generated more complaints than just the
+Heartbleed scans. So still,
+that's the relative level. HTTP scan tends to put you on the
+fail to bandwidth, so put
+something nice in your use registry as one of the
+configurations options, put
+dash, dash, user agent so that -- say something nice like, you
+know, we're doing a research
+scan. And then various IDSs have rules and stuff. It's nice to
+try to evade them, not to try to
+get away with something evil, but change your signature of
+what you're doing to evade them
+so you just don't make people upset. Sadly, and this is a bad
+thing, is today's methodology
+for monitoring the network tends to monitor the inbound stuff.
+There's this old joke about a
+guy who's looking on the ground and looking for something and
+his friend asks, what are you
+looking for? And he says, well, I dropped my keys over there and
+I can't find them. And his
+friend asks, but why are you looking over here? And the guy
+says, well, the light is better
+over here. And that's what most organizations do these days, is
+they monitor the inbound attacks
+for hackers because the light is better. Because you put an IDS
+on the wire and you immediately,
+you see alerts coming up because people are, there's always a
+background radiation of someone
+doing something on the Internet, sending you packets and you'll
+get events. The light is better
+on the inbound side. But the detection you really want is on
+the outbound side, what is all
+the response. So for example, one of the abuse complaints we
+get from Heartbleed is, please
+take us off your scanning list. And we looked in our data and
+the data they're giving us, the
+addresses they're giving us are ones that are vulnerable to
+Heartbleed. So they are
+monitoring our inbound stuff saying that, are you vulnerable?
+And not monitoring the outbound
+stuff saying, yes, we are. And that's really, really bad. So as
+I mentioned before, ISPs must
+take this seriously. One of the biggest things is the DOD gets
+really, really angry. And when
+you've got people in suits show up at the ISP office and they
+say, we are seeing traffic from
+you and we don't want to, the pressure then comes down on us.
+Where they say, yeah, these
+address ranges need to be excluded. The exclude is pretty
+easy, it's the same way as NMAP.
+Which is, you just have a configuration file, either a
+file containing exclude list or
+just add to your configuration parameters and just keep adding
+them. And it supports comments.
+So we just had this long exclude list of address ranges, and
+whenever people send us abuse
+mail and say yes, hello, we're just doing research scanning,
+we'll happily take you off the
+list if you want, and they give us their IP address range and
+then we add it to this list. Now
+one of the cool things that we wish we could do is to have a
+public exclude list, but most
+everyone who sends us a request to be taken off our list doesn't
+want that to be known publicly.
+	>> Yeah, a funny aside about this, so everybody says, take me
+off your list because I'm
+worried someone will be able to go look up what my IP ranges are
+for my organization so they can
+hack me. Fortunately bgp.hp.net has all this information
+publicly available in a really
+nice, easily searchable format, which is occasionally necessary
+when they don't want to tell you
+their ranges, but they still want you to stop scanning them.
+	>> I don't understand. 	>>Yeah
+and Paul has got the block list open, sorry, so Paul's got part
+of the block list open and one
+of the other things that's really fun is, people will run
+IDS and IPS sensors on whole
+different subnet mass and netblocks and different ISPs and
+they have automated complaint
+messages that come in and say, Dear So and So, you're doing
+malicious activity. Sorry,
+didn't know a single sin packet was malicious, but you know,
+whatever, a single sin packet's
+malicious? >>The internet is over. >>But they would write in
+and complain and say take these
+net blocks off your list or take us off your list and give us no
+information at all. And in one
+particular case we had to go back and forth three or four
+times with them because they
+didn't, their automated messages asked us to take their publicly
+known, straightforward front-end
+IP addresses off the lists, but their sensors were on different
+lists, so we kept doing scans
+and their sensors kept picking up scans and kept complaining
+for us to take off IPs that were
+already in the block list. And we're like, we don't know what
+you guys are, take your crack
+back to the dealer, you got bad crack, like, tell them you want
+better crack. Stop. So it's
+bizarre, when you scan the whole Internet, you get a massive bag
+of random, like every possible
+ridiculous thing that could happen will. And every scan you
+do, you think, we have like,
+several pages now long, with multiple now huge net blocks of
+stuff that we are now leaving
+off the scans and every single time we do a scan, like I'm
+doing a scan right now on the
+port 62078, the iPhone backdoor port and there are 542,000 IPs
+responding. That doesn't
+necessarily mean they're all iPhones, that just means there's
+somebody responding but I'm
+gonna get abuse complaints. And I hope that maybe some will come
+in while we're on stage and I
+can share them because they're insane. 	>> One of the things is
+people, a lot of defenders don't
+believe that you are scanning the entire Internet. 	>> Oh
+yeah. 	>> So they have their
+company and they've got some well-known addresses that are
+identifiably belonging to them
+but they also got a secret subnet over there that no one is
+supposed to know also belongs to
+them. And then they see you, your scan go evilly across the
+entire, all those ranges. And so
+their conclusion is, oh my God, they are hacking me because they
+know me, they are targeting me,
+'cause how else would they know to associate that secret subnet
+to our main subnetwork. And so
+they're convinced that we're hacking them. There was a really
+cool story about 6 months ago, I
+was on a podcast, with this guy who was going to be one of the
+hosts and the night before I
+just launched a scan of the Internet. And he starts tweeting
+how he was woken up on an
+emergency conference call because they were getting
+hacked. And he had to calm them
+down, talk them down and go back to sleep. And now apparently he
+says that whenever I do a scan,
+a ticket gets opened up and it immediately gets closed as, it's
+just Rob scanning me again. 	>>
+[Laughter]. 	>> This was a great story. I think this would be the
+best one to tell it. 	>> Oh,
+yes. Oh, this was a good time. So going back to abuse
+complaints and dealing with
+people complaining, like I said, it's a grab bag and you get a
+lot of random stuff. I have a
+friend of mine who runs the operation in which I'm hosted
+and he's my ISP. So he has been
+very kind in letting me do this sort of scanning. Not a lot of
+people will let you do this. If
+you go to any of the major providers and say, Hi, I want to
+use like 800 mega seconds to
+scan the Internet, they go, Haha, no. So I wanted to work
+with him and be very open about
+what I was doing and what I was scanning so that if he got weird
+bizarre complaints and he had to
+deal with the crazy, that he was better prepared to deal with the
+scenario. So I did a scan for
+some, I think it was VNC, I don't remember, it was Shmoocon
+this year in like February and
+we were, the three of us sat in like the lobby conning it until
+3:00 in the morning doing our
+scans. And the next morning before the talk I started
+getting phone calls from my ISP
+and he was like Hey, we got some abuse letters, and we want to
+insulate you from this customer,
+or from this person because he is kind of belligerent. And I
+said, okay, well what can I do?
+He said just add these IP addresses to your block list,
+and all right fine. And a few
+minutes later he called me again and said we're still getting
+complaints and I said that's-.
+We do scans and we get complaints randomly for the next
+week because people don't check
+their logs immediately, right. And one guy, from Australia,
+it's gotta be an Australian
+right, decided that he was so upset that I literally had to
+single sinpack it to his
+systems. And when he sent in his complaint, my ISP guy was
+cordial and responded and said,
+hi, you know, we are doing Internet research. This is all
+open. You can see this website
+where this guy has everything documented. And I put it all up
+on my site, like here's where
+I'm doing my research, and here's my intention and here's
+how you can contact me. And
+because I guess he deals with so much random crap on his Ingress
+interface, we were the only
+people to ever respond to an abuse complaint from him. He
+like unleashed this torrent of
+crazy on us. 	>> [Laughter]. 	>> And it was like opening the
+fucking floodgates and he, up
+and including talking to these people on the phone and saying
+he was going to call the
+Internet police. And I went no, you're lying to me. And he was
+like, no I swear, he was
+threatening to call the Internet police and I'm like ok. 	>>
+[Laughter] 	>>Three hours later,
+I own Internetpolice.us and now my scans come from
+Internetpolice.us. 	>>
+[Laughter]. 	>> So you have to know how to work the crazy. So
+now yeah my scanning comes from
+Internetpolice.us and the scan that I'm running right now, that
+I'm scanning the iPhone port, if
+you're on--. 	>> Your thing is not working. 	>> What? 	>> I
+don't know. 	>> Oh, did it
+break? 	>> Apperently it's dead. 	>> Oh, boo, I'll fix it in a
+sec. 	>>Yeah, we should fix it.
+	>> Ok, yeah, but it's like now if you have, oh and I should
+also say, we're also going to be
+doing probably several live scans while we're here and if
+you have a Verizon device and I
+think AT&T your phone is directly connected to the
+Internet and we will be touching
+you, against your will, wherever your phone may be. Yeah so, I
+found 912,000 devices apparently
+responding to this port. And I should say that I guess that,
+Rob is probably going to get to
+it, there's a million or so, there's two million devices that
+respond to everything. So like
+that's a whole separate rabbit hole of a project is going in
+and finding every load balancer,
+firewall, and router and other device that responds to
+absolutely everything because
+usually when you do this kind of work, you have to do it in
+multiple passes. So we use
+Masscan for the first sweep to see if the port is open. And
+then if the port is open then
+there's a secondary process where we decide what to do with
+the open port. So like if you
+are scanning for Redis for example, there's a ton of open
+Redis instances on the Internet.
+And you connect to it and issue the monitor command. And then
+sometimes it asks you for
+credentials in which case you ignore it. And other times it
+gives you credit card numbers
+and Facebook session cookies and Twitter session cookies and what
+are you doing? Like, they have
+these gnarly hardened front-ends wth like 2A SSL certificates and
+credentialing and OR, and what
+is it? 	>>OR. 	>>Off, and they really have front-end but then
+they have that transport
+mechanism is that is completely public unencrypted on the
+Internet. So you can bypass all
+of that and see like, hey these are credit card, what am I
+doing? [Laughter] Yeah, so and
+you do it in stages, right? So what we found out was when the
+secondary pass would go through
+and we would find a substantially lower number of
+things that the first sweep
+produced. So the first sweep would produce several million
+results. And the second sweep
+would say, well out of those several million results you have
+like 200,000 living results and
+we'd like, that's bizarre, what's the deal? We started
+testing it by hand it turned out
+that there is devices that just listen to every port and respond
+to everything. And I'm like,
+it's 2014 and people don't know what a SYN flood is and they are
+configuring their devices to
+just answer to everything so I'm thinking that we're just doing
+these, and we're in the hotel
+lobby tinkering around at 3:00 in the morning and somewhere
+there's a guy with his head on
+fire because his IDS went down or his firewall went down 'cause
+somebody configured it. And I
+think checkpoint's guilty of this too. They have these
+settings where, oh yeah, this is
+going to block NMAP, we'll just respond to everything and it'll
+confuse the scanners and we're
+like scanning with like 8 gigs a second. 	>>It's not good for
+you. 	>>You might want to
+rethink this strategy. We'll see how it works out for them,
+cotton, right? 	>> So one of my
+favorite complaints I get back is the one saying to the effect
+of, we've blocked you with a
+firewall, neener, neener. [Laughter] Of like, OK, I don't
+even know who you are, I don't
+really care. One of the cool things is how broken
+organizations are, there's this
+financial worry, financial group which apparently is classified
+by the National Security
+Objective Facility Class A, as they repeatedly tell me every
+time I do a scan, and it's in
+Korea, and I have no idea why that is. But what they usefully
+do is they CC their entire
+organization on the abuse e-mails. 	>> [Laughter]. 	>>
+Yeah. 	>> You had one job! 	>>
+[Laughter]. 	>> So if you want a list of system admins that you
+want to phish for that
+organization, here's a friendly list that they so nicely give
+us. So yeah, so we're closer to
+ISP. Be nice to them. So that's the same story we have here, for
+all of us, is we work closely
+with the ISPs. We use the swipe, or the swip feature, the share
+your list project, you get an IP
+address ranges assigned to us so that when you do the reverse
+lookup, all of the abuse comes
+to us and not to our ISP. So we handle-- 	>> Usually about half
+of the complaints will CC our
+ISP anyway. Even though they have our contact info. They just
+want to CC everybody. I got one
+that was CC'd to Postmaster at the domain that I was at the
+email, that the contact info was
+from, it was completely unassociated with the IPs that I
+was scanning from. They just,
+they CC everyone that comes back in any kind of a look-up. So
+expect that. You know? Don't use
+your work e-mail if your, the postmaster at work is worried
+about this. 	>> [Laughter]. 	>>
+Apache is running. Derp is running. 	>> You're doing it
+wrong! 	>> It works for me! 	>>
+[Laughter]. 	>> Me, too! 	>> Also, if you scroll down a
+little bit, there's like a, it's
+a, I need to fix it, you can file a complaint. Which I need
+to do like, do something with
+this. Because you can file a complaint and it's a form that
+goes to nowhere. 	>> [Laughter].
+	>> You should probably fix that, Dan. 	>> Yeah, no, no,
+that was intentional, but like
+I'm now thinking like, yeah, I have to deal with like silly
+people trying to troll me with
+shitty XXX and SQL but I can't imagine if people have tried to
+fill this form out and what went
+into it because that would be like a whole Tumblr feed, like
+security reactions, just what
+goes in that form. That would be so rad. [Laughter]. Yeah, so
+right now, right now, as we
+speak, I'm doing a scan and right now there are system
+admins running around screaming,
+police are scanning us! 	>> Hopefully they've caught on by
+now and are not as, I don't
+know. 	>> You'd be surprised. Or maybe you wouldn't. [Laughter].
+	>> So you can also do a
+novelist VPS if you want to be a jerk and pay with Bitcoin and
+stuff. Some will allow you to
+complete your scan and before they cancel your account. Some
+like Lionel will cancel you
+very, very quickly. And so your $50 deposit gets cancelled
+immediately. Lionel is actually
+very friendly, if you are a well known verifiable organization
+and scan at slow rates, they
+actually are quite friendly to this whole thing, but they're
+not friendly to the whole
+anonymous VPS who do bad stuff. So I wanted to quickly talk
+about Masscan itself, it's just
+like NMAP, but not. The biggest thing is that NMAP does what is
+called a synchronous scan. It
+does a host at a time, it starts a scan, waits for a response,
+sends re-, retries, if it
+doesn't get back it responds and that's what slows it down. What
+Masscans does is it just blasts
+out the packets and never waits for a response. And that's why I
+can send out 4 billion packets
+because it doesn't have 4 billion records in memory
+waiting for the response. It
+doesn't care, it doesn't know. And what it's using is SYN code
+so that, to validate the
+responses to come back that match what it thinks it might
+have sent. So this allows you to
+be a thousand times faster. It's not a technology thing, it's
+just, it's a common thing
+throughout, it's the same difference as between Apache and
+EngineX. Apache is an
+asynchronous server, can handle a lot more connections than
+Apache can. And the proportions
+are a way better scanner. If you are scanning a few hosts NMAP is
+just totally better. The only
+reason that you are using Masscans is if you want to do a
+million node networks or a
+billion node networks. The annoying thing about Masscan is
+it has its own TCP/IP Stack.
+Even when you run it just as a normal mode, it's still going
+off and doing its own TCP/IP
+Stack, bypassing the underlying system. And so you get little
+weird things you don't notice
+like there's duplicate RPs. The biggest problem is when you're
+doing banner checking, when you
+want to establish a TCP connection, send an HTTP request
+and get a response and record
+the response. The normal stack will reset those connections, so
+you have to do a firewall rule
+to block that. Or use a different IP address. So all of
+our scans, we scan from one
+machine, but then we have another IP address that we're
+scanning from, that is separate
+from our machines, not used by any machine. And we use source
+IP or adapter IP and set that as
+our IP address and scan from that and then we don't have any
+firewall rules to worry about.
+So that the basic configuration is, is set your, if you don't
+want to rely upon the defaults,
+if you're having problems, is set them manually with the
+source IP source port and you
+have to figure the router Mac address or using the router IP
+just works because it will ARP
+it. So banner checking is the fun stuff with Masscans. So
+Masscan will go off, check the
+ports, that's your basic scan, but usually you want to get more
+data, like SSL certificates or
+HTTP headers. And that's where you need to establish the
+connection to prevent the reset
+from killing the connection. We don't support NCS soft
+scripting. But there's lots if
+you can do. If all you want to do is check for one protocol
+that's odd, put it in a file and
+then do dash, dash hello string, that file name, and it will
+shove that data across the port
+when it connects to the TCP. So if you got some weird protocol,
+like some weird industrial
+control protocol and a weird port, that's an easy way to find
+just that industrial control
+protocol, bypass but ignoring all those systems that synack
+with nothing. One of the cool
+things is that you can do, you can break apart a scan, you can
+shard it. So if you've got 50
+different machines. You can just do shard 1 to 52, 53, across the
+machines. You can use multiple
+IP addresses a range. If you have a class C, and you just
+want to use all those IP
+addresses you just type all of them in, type in the range. The
+same thing with a port. You can
+do a range of source ports. So, yeah, so we're sitting around
+doing our three day, or our days
+talking until 3:00 AM in the morning, drinking and we're
+imagining, yes, we can also do
+this. If you want to synplex someone from all of the IP
+addresses from the Internet that
+can be your source range. Your ISP might not allow it, it might
+do Egress filtering so it might
+not work, but in theory, the scanner can do it. 	>> The 90s
+are alive and well right here.
+[Laughter]. 	>> Also, it can do load testing. The, a really cool
+feature is infinite, which,
+yeah, it does crash firewalls a lot. 	>> I've done that recently
+and the next generation
+firewalls, I do deep packet inspection, oh, they get angry.
+	>> [Laughter]. 	>> So I was at
+a client site several, like months ago yeah, and they were
+putting in new, fancy pants
+firewalls and I said I have an idea so like with dinky laptop I
+go okay, Masscan to a network on
+the other side of the firewall that doesn't exist. Just scan
+it. One NGFW had active
+directory authentification and all of its little gauges went to
+100% and it broke and it never
+came back. And another one just went to 100% and dropped a lot
+of packets, but as soon as I
+control C'd out of Masscan, it came back to life. So yes, this
+is a wonderful firewall
+load-testing tool. 	>> Testing tool. 	>> It breaks clouds too.
+	>> So I overflowed it. I may
+have overflowed a CAM table and a switch at a client once too by
+mistake. 	>> So that's the
+optimization we are doing with this whole asynchronous thing
+and for us, it's a billion
+connections in a few minutes, that's no problem. But the
+devices start stranding at
+100,000 connections. And so they just, everything falls over. But
+the infinite feature is cool
+because you just type dash, dash infinite and when it completes
+the scan, it'll just restart it
+and if all the pieceway are open from the previous scan, they
+remain open, so you can create
+easily 100 million, I mean, yeah, 100 million of concurrent
+connections. And nothing else
+handles that right now. By the way, no one ever uses this, but
+I always output to binary
+format, that's the slash OB parameter and then read it later
+with dash rescan of that, and
+then output to XML or JSON or TeX or some other format. No one
+ever uses that but me, but I
+want to mention it. So one of the cool things, Paul was
+mentioning this when we were
+talking the talk, that should work, but I've never done it
+before, but it's really cool,
+you can receive on one IP address, like a burner phone and
+then you transmit from like a
+Xolo that's got a gigabit connection and then you spoof
+the IP address from the Xolo
+phone. So all the packets go out to the Internet at a very high
+rate and the responses come back
+at a very low rate to the phone. And what's cool about that is
+the abuse complaints don't go
+back to your Xolo account, they go to the phone. [Laughter] So I
+did that. I went out and got a
+T-Mobile phone, a T-Mobile chip, put it in my little Ninja
+telephone from two years ago,
+from which I can run Masscan 'cause I jailbroke it and
+compiled a command line, but
+that didn't work because T-Mobile throws you through a
+firewall. I could not get all of
+the responses come back through the firewall. Clear has a direct
+access to the network. They also
+have a firewall, so the SYNs can't come in, but the synacks
+can come in just fine. So Clear
+works great for that. T-Mobile doesn't. We don't know about
+Verizon and AT&T. I think
+Verizon does have you directly on the Internet so it'll work
+with Verizon prepaid phones and
+stuff like that. But all I have actually verified working is
+this. And by the way, it works
+really cool because Masscan, what you do is you set the same
+seed. So Masscan randomizes the
+parameters, randomizes the SYN cookies. 	>> I just had a
+thought. So NSA is scanning all
+inter-continental traffic? Do you want to make them really
+mad? [Laughter]. Set up your
+phone --. 	>> Yeah, this will do it intercontinentally. Yeah, set
+up your phone on the other side
+of some ocean and just send all the results over there and watch
+them, what the hell is going on?
+Just a thought, you know, if you are bored. 	 >>>So but, you can still do the
+banner checking. So the device,
+the Masscan on one hand, because again it's in its nature, it
+gets a synapse, it checks to see
+if it matches the seed, and if it does, it will then establish
+the TCP connection so you can do
+complicated scans like pulling down everyone's certificates or
+Heartbleed scan or something,
+and all from this device. But the massive gigabit per seconds
+is all on these other servers,
+potentially just blasting the whole Internet. Okay, let's talk
+about some results. So what Paul
+here did, and it's really cool, is he set up a little script to
+then download the image. And he,
+so here's an example of -- 	>> So you probably can't see, you
+probably can't read the title of
+that window. It says, I blanked out where it is, County warrant
+processing system, something or
+other state police. 	>> The derp is very strong. 	>> This one
+went away pretty quickly when I
+called my contact and said, hey, you know, we should probably do
+something about this. But
+there's stuff like this all over the results. And you know, this
+is probably someone who is all
+kinds of compliant with all the local regs, except that they
+didn't seem to think that a
+remote desktop protocol with no password was a problem. 	>>
+Yeah. 	>> So Paul has got lots
+of good results. We'll hopefully get to more. 	>> Another one was
+Heartbleed, we do a Heartbleed
+scan and there's still 300,000 systems vulnerable. And so
+here's a list of the subject
+names coming back from here. And what we can see is, they're not
+websites that are vulnerable,
+it's things like Synology Nas, that's the PS series Nas down at
+the bottom. 10,000 of those.
+There's also a Synology box, there's a hick vision which is
+cameras, so there's all of these
+devices out there that are vulnerable that you would never
+find, if you come in through the
+DNS name and if you only scan the IP addresses. 	>> But there
+are some websites that are
+vulnerable and like one long list starts with secure dot some
+domain. Some I think are
+honeypots like NANOG, which is the North American Network
+Operators Group or something.
+There's a guy who's doing mainframe scanning and found
+lots of cool mainframes. I
+didn't include his pics here but they're really rad, to see what
+mainframes come on the Internet.
+	>> That guy has a Tumblr of his mainframes. Live mainframes,
+like what are you doing, why is
+this on the Internet? In DMV, pharmacies and stuff. 	>> What
+are you doing? 	>>Okay, so let's
+try to do a live demo here. 	>> How many goats did you sacrifice
+to the demo Gods? The answer is,
+always not enough. So --. 	>> Yeah, so right before this talk,
+for some reason our servers have
+not wanted to respond. So like here it says
+Internetsurvey-2.erratasec.com,
+that's the one we do most of our scans from and it's not
+responding to me, so I'm going
+to have Paul log on to his server and do a demo. 	>> Give
+me another like 5 minutes. 	>>
+[Laughter]. 	>> Okay. 	>> So we can, I'll start talking about
+what's going on while the
+configuration is script is running. So I, this, I lost
+access to the service I was
+going to be doing this demo from and only got it back about 2
+hours ago. So my configuration
+scripts have been running and installing the distributive
+scanner that I built. The way
+this works is that it runs Masscan from a host that's
+friendly to run Masscan on. Come
+talk to me afterwards if you want hosting recommendations.
+And it scans port 5900 which is
+VNC. And I started that about 15,20 minutes ago and I think
+it's just about done with the
+whole Internet now. The follow-up processing is a set of
+cloud images that don't run SYN
+scans. What they do is they take the results of the Masscan
+output through a queue, through
+a Redis queue, and just shave off a result, go take, try to
+connect to the VNC, try, you
+know, speak the VNC protocol and if the VNC protocol says you may
+connect without authentication
+because VNC says, you need a password. But if it says you may
+connect without
+authentification, it's a very explicit thing, we're not you
+know, hacking into something
+that's not authorized. And then it goes and puts it back in the
+queue and takes a screenshot of
+it and then it just logs in the VNC screenshot and puts it back
+out into the queue. I, the
+results when they start flowing in, will be available at
+results.survey.tx.ai. I don't
+know if they're up yet. It doesn't look like it. I'm
+waiting for the screenshot
+machines to come back up. tx.ai. What I, oh, you're not on the
+DEFCON network. You won't be
+able to get to it unless you are on the DEFCON network. 	>> I'm
+on the DEFCON network. 	>> Are
+you on the DEFCON network? 	>> I'm on whatever this Ethernet
+cable is. 	>> Oh, you're
+probably coming from a different Egress IP, let me fix that for
+you. 	>> So as the results come
+in, they just flow through this queue and the beautiful thing is
+we can scale this follow-up
+processing as wide as we want. I normally would have about 100
+cloud workers running to do this
+process. I haven't gotten it scaled up yet because they only
+just got installed here, but,
+you know, they cost me 16 cents an hour, so it's perfectly
+reasonable to spin them up for a
+job like this and tear them down when you're done with them. 	>>
+If you can add that . . . 	[Off
+mic] 	>> We can't quite do a live demo yet, how about you? 	
+	>> It's loading. 	>> Loading?
+	>> They won't be able to see the results you're looking for
+on this right now. 	>> Oh, okay.
+	>> Give me another minute. 	>> They need five minutes, they're
+not ready. 	>> Okay. 	>> Well,
+in the meanwhile, we'll just do a scan from the DEFCON network.
+We'll see how much they like
+that. [Laughter] 	>> Oh yeah, I can't imagine they'll notice.
+	>> Yeah, so we can do a slow
+scan. So, Masscan. Let's do like the, 23 is the big one? 	>> The
+wall of sheep. 	>> We can do
+like port 80 and we can do a slow packet rate of just like 10
+packets per second. But it's
+really cool because we start getting results immediately.
+It's one of the cool things
+about Masscan versus NMAP is that NMAP waits until the entire
+host scan is done and then it
+does a ping and it does some other checks and it takes a
+while. So when you scan a
+subnetwork it takes a while before you get any result. And
+the NMAP scan, you go away for a
+coffee and you come back and realize you made a mistake in
+your configuration promoters and
+have to do it again, and it's an iterative process. But one of
+the cool things with Masscan is
+it's just a port at a time, I don't have to do ping first, I
+don't have to do anything first,
+I just send that port request. So you can have that slow rate
+like 1000 packets per second,
+they just start coming back. And if we just want to do a little
+bit more obnoxiousness like
+10,000 packets per second. I'm sure they won't mind. 	>>
+[Laughter]. 	>> So actually, it
+doesn't look like it's much faster, that's because this
+whole screen is taking thousands
+of responses and dumping them to the screen and then doing the
+next one second update. But
+that's the little thing that reports there on the bottom of
+the left hand side is how many
+packets per second it's successfully doing. We should
+probably stop this. 	>>
+[Laughter]. 	>> Which is actually really bad because 20
+-- so 23 is the range I test
+with because there's lots of hosting environments. There's
+Amazon, I know there's a bunch
+of other web servers out there, so I know that there is always
+something listed on port 80 and
+I don't get any abuse complaints back from that range, so they're
+a good thing to test with. But
+you can also do something like this. [Laughter] So one of the
+things I do with Masscan is
+kinda boss, is that I warn you that you probably misconfigured
+something and you don't want to
+scan the entire Internet. So I make you actually exclude one
+address. So I'm going to do ten
+packets per second, but even now, ten packet per second
+across the entire Internet, we
+already get back one result. But one of the cool things is, it
+does give you a time stamp, a
+time of how long remaining. Now ten packets per second, that
+remaining is going to be a long
+time. 	>> It's like when you copy a file in Windows 95. 	>>
+[Laughter]. 	>> But it's really
+cool, when you type in that 0000/00 subnet, meaning the
+Internet, and at a much faster
+rate, like a million packets per second, and it tells you, yeah,
+it's about an hour. 	>> Yeah,
+for reference, I'm getting 690,000 packets a second on my
+scan that's going right now and
+it, I started it as I walked in and it was telling me an hour
+and 20 minutes. That's just like
+on a modest gig pipe. 	>> Can you, can we connect that to the
+VGA port? 	>> All I have is
+HDMI. So, if we can sort that out somehow. 	>> Can we screen
+that and have you log into the
+machine and pump that up? 	>> Oh there we go, okay, the results
+are starting to flow in. 	>>Yay!
+	>>So, the results of that survey, .tx.ai. So I now I need
+to scale this out in the cloud.
+But we're starting to get results now. 	>> You might be.
+	>>Okay, what's your IP address?
+	>> 172.18. 	>> Our IP is 192.801. Why can't you add me?
+	>> Because someone got mad the
+last time I did this, and I exposed it to the whole public
+Internet so I figured I'd just
+expose it to all of DEFCON and then they can't complain. Okay,
+so what's that IP address? 	>>
+So by the way, Masscan does, one thing that is also boss with
+Masscan is it's just, well I'm
+getting errors here, but it compiles on Mac OS and Windows.
+Well there's some results that
+all you guys can look at the results. 	>> Yeah, everybody
+except for you apparently can
+see them. Can one of you who's in the room who has a laptop see
+if you can get to that? Are you
+seeing results there? Cool. 	>> So here's the thing about,
+here's the rule of DEFCON, is we
+call the demo gods or the demo demons, is even when your demo
+is actually working, something
+does not work. 	>> Try it now. 	>> [Laughter] 	>> Oh, here we
+go, okay. It's working, some of
+you can get it, but I can't get it. 	>> Okay, what's your IP,
+Rob? 	>> Well, it's --. 	>>
+There's the Korean billboards again. So apparently there's
+like a swath of billboards in
+Korea and that are advertising and you can't really see but, a
+lot of, and this is one of those
+opportunities where like, you think of Hollywood movies and
+you're saying well, so I'm
+looking at a billboard that is probably in a really big public
+place, and hmmm, you know, all
+exploitable, the trolling opportunities. 	>> [Laughter].
+	>>I should stay away from the
+Korean radio. 	>> Go through the browser. I think your routing is
+funky. Actually, here, fuck it.
+We'll just do it from my machine 'cause we're about out of time.
+	>> Do we just hook up the
+video? 	>> Yeah, do you have a-? 	>> We can bring the machine up
+here. 	>> So any last minute
+questions by the way? Question over there? 	>> Is Masscan open
+source? 	>> Yeah, it's open
+source. I probably should have mentioned that before and had a
+link to it. It's on GitHub so if
+you Google "GitHub Masscan" you'll probably find it, but
+it's GitHub/RobertDavidGraham,
+my name, slash Masscan. 	>> [Off mic]. 	>> So the question for
+IPv6 is, and the implications
+are not really going to work. There are some things we can do
+knowing how IPv6 allocates
+addresses and we can maybe do target ranges. 	>> [Off mic].
+	>> Oh, nice! Nice! Well done!
+	>> [Applause]. 	>> So to be clear, these are all, these are
+all results that have been
+dynamically found while we have been on stage. While they have
+been fearlessly typing. 	>> Is
+this a train? This is a train! 	>> We gotta go though, bye. 	>>
+Oh my God. 	>> So check the
+results. They're up there! 	>> 46! 	>> [Laughter] 	>> Well
+done. 	>> [Applause].

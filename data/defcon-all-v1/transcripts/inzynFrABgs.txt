@@ -1,0 +1,178 @@
+>> JASON STAGGS: Well, hello, DEF CON!
+(Cheers). >> JASON STAGGS: How is everybody doing?
+All right. We will go ahead and get started. First things first. My name is Jason Staggs.
+This is my second time here at DEF CON. I was here last year at DEF CON 20. I had a
+great time and met people doing interesting stuff and I'm glad to be back here this year
+to relive the experience the title of my talk is "How to Hack Your Mini Cooper: Reverse
+engineering com messages on passenger automobiles." I'm a graduate student for the institute for
+information security at TU. >> AUDIENCE MEMBER: Yeah.
+>> JASON STAGGS: Right on. I'm also currently finishing up my master's
+thesis, related to drive‑by attack mitigation and network intrusion detection systems and
+critical infrastructure protection, digital forensics and most recently, vehicle network
+security, which I carry out through TU's crash reconstruction research consortium which is
+directed by Dr. Jeremy Daley. I quite literally wrote the book on automotive collision reconstruction
+fundamentals. We are fortunate to have someone with his caliber of expertise leading those
+efforts. And then before I game to TU, I was actually
+a cyber security analyst for an information security firm in Tulsa, Oklahoma, called True
+Digital Security. So who here in the audience remembers Tim
+Burton's "Bat Man Returns" from like the early '90s. Several of you, good. Good.
+There's a scene in the movie where batman parks his bat mobile and he leaves to attend
+to his crime‑fighting business and then all of a sudden the penguin and his gangster
+thugs stumble across the Batmobile and they start taking things apart and then all of
+a sudden they attach a wireless gizmo to the Batmobile, designed to interface with the
+computer systems on the car. They basically reassemble everything they
+take off. Batman comes back later on that night and hops in the Batmobile and goes off
+and leaves and then all a sudden of Penguin appears on the informational screen and he
+says, gentlemen, start your engines. And Batman is trying to step on the brake pedal. A scenario
+such as that was near impossible considering all the mechanical devices used to control
+the various components of vehicle. But today a scenario such as that is fairly realistic.
+So what originally got me interested in vehicle network security was some research that was
+put out by the University of Washington and the University of California San Diego, back
+in 2010 and 2011. What they did originally was they actually
+did an empirical study to see how resilient the computer systems on vehicles were to digit
+attacks, and the short answer to that is they're not too resilient whatsoever, surprise, surprise!
+So in their first paper, they actually were able to compromise various systems on the
+automobile, assuming the attacker had physical access to the bus, you know, what all could
+they do, and they were able to take full control of the brakes, the accelerator pedal and body
+control mechanisms, the locks, interior and exterior lighting, basically everything.
+They later received some criticism from automotive manufacturers saying, yeah, well, you were
+able to do that but you had physical access to the car anyways. Why not just cut the brake
+lines. Well, okay. So the following year, they put out some more
+research, basically they were able to carry out the same types of attacks. Basically,
+by taking advantage of some vulnerabilities and some short wave radio communication such
+as Bluetooth and the telemetry device. So at TU we are interested in doing this research
+as well. The actual systems on the actual vehicle networks themselves, we also assess
+the accuracy of the actual precrash and crash data stored on event data recorders, so the
+little black boxes that automobiles contain. And then we want to be able to understand
+these systems and networks at a very low level and be able to understand the potential points
+of vulnerable on these systems and networks, but most importantly, we want to be able to
+prevent something like this from turning into this because of this.
+So what you guys are looking at here on the table, I'm sure a lot of you can't see it
+in the back but what we are calling it is the CAN clock. It was actually a project that
+was the outcome of a research‑driven class that I was involved with last semester called
+vehicle communication systems. That was co‑taught by Dr. Daley and Dr. Mauricio Poppa who
+is a computer scientist and specializes in computer networks.
+It was designed as a proof of concept to demonstrate what a rogue ECU device could do if it was
+attached to a CAN bus. And the overall goal was to actually transform the instrument cluster
+from the Mini Cooper into a CAN clock. There were two problems ‑‑ I had no prior knowledge
+to how these systems worked beforehand. I had to build a CAN bus from scratch and then
+also with the automobiles, the message IDs that are responsible to control the vehicle,
+proprietary in nature. So some reverse engineering methods were used
+to identify the message IDs themselves is. So it's actually quite common for vehicles
+to have multiple types of networks in place on these vehicles. If you have a car that
+was manufactured on or after 2008, then by law you actually have CAN whether you know
+it or not on your vehicle. If you are curious to see whether or not you have a CAN‑enabled
+vehicle, you can do a voltage check on pin 6 and 14 on your diagnostic connector underneath
+your steering wheel. Network protocols such as FlexRain, LIN, MOST,
+a high‑speed application within vehicles and J1850 and J1939 is actually a protocol
+used for the heavy trucking industry. That sort of sets on top of CAN.
+And then what we're looking at right here is actually data bus diagram of the Mini Cooper
+itself. As you can see, there's actually four different networks here that are all interconnected
+with the actual instrument cluster, believe it or not, acting as the gateway. And these
+systems are actually kind of segmented based on common functionality and information that
+they share between one another. So when we're talking about CAN, Controller
+Area Networks, it was actually developed by Robert Wash back in the '80s to actually as
+a method for basically communication between embedded systems with a bus style topology
+within vehicles. Prior to CAN, the solutions for networking embedded systems on vehicles,
+sort of called for more of the ring style mesh topology, where nodes were sort of interconnected
+and dependent upon one another. If one node were to fail, that could potentially affect
+the other node on the vehicle and that was somewhat of a nightmare from a service technician's
+point of view trying to troubleshoot these networks.
+So CAN was actually designed to be a very resilient networking protocol, and standard
+designed to with stand harsh operating environments such as the heats and the colds, electromagnetic
+interference, those sorts of things. And then automotive manufacturers ‑‑
+European automotive manufacturers were early adopters, so Volkswagen, Mercedes were the
+early. And CAN is a multi‑broadcast system. So if one node were to transmit a message,
+then all other nodes on the bus would actually receive that message. Whether or not a node
+actually processes that message is dependent upon something called acceptance filters on
+the actual CAN controller itself. So if a message matches up with the actual acceptance
+filter, it then gets passed on to the microcontroller for further processing, otherwise it's disregarded.
+With CAN, there's no notion of source addresses. So it's nearly impossible to identify where
+a message actually came from, which is sort of a problem. And CAN actually comes in two
+flavors. So there is at standard format which is used on the passenger automobiles, and
+then there's the extended format. With the standard format, it uses 11‑bit
+message ID and then in the automotive, the passenger automotive world, these messages
+are actually proprietary, but when we are talking about something like J1939 which is
+the protocol for the heavy trucking industry, it uses a 29‑bit message ID and actually
+this whole standard is fully documented. So if somebody was wanting to create a message,
+designed to maybe override a brake control, they would have to refer to the automobile
+association, to construction such a message. Here's what a CAN frame looks like. So with
+a CAN frame, the actual payload portion of it is limited to up to 8 bytes which I thought
+was somewhat limited to, like, the stuff like ethernet, which can be up to 1500 bytes. And
+so the way ‑‑ one of the cool things about CAN is the way it handles arbitration.
+So if two nodes attempting to transmit at the same time, obviously perform a collision,
+the way it handles arbitration is based on the identifier, the message ID itself. So
+the idea of a node trying to transmit a message with a lower message ID has higher precedence
+than another node trying to transmit a message with a higher message ID.
+And then the actual computer systems on CAN networks or vehicle systems for that matter,
+we call ECUs, electronic control units, and these are designed to control a variety of
+features on the vehicle, everything from vehicle safety, critical systems to non‑safety critical
+systems. And these devices are for the most part programmable, which is nice from the
+automotive manufacturer point of view, because if there's a flaw or a vulnerability discovered
+within one of these devices, they can just push out, you know, firmware updates or patches,
+whatever, updates, as opposed to physically removing these devices.
+And then the average modern day luxury vehicle has somewhere on the order of 70 or so ECUs.
+All right. So let's get back to the actual CAN clock instrument cluster thing that I
+built here. So what we want to do is we want to be able to manipulate the tachometer, and
+the speedometer. So manufacturers don't publish the information to manipulate these accordingly.
+So we used several methods on how to configure this. We did visual correlations with identifiable
+patterns all see ‑‑ humans are inherently good at seeing patterns that we recognize
+on a graph, maybe something that is indicating a vehicle speed for an engine speed.
+And then for the ones that we were not able to use this method on, we used some simple
+fuzzing techniques to identify the various items we are interested in. In my demo, the
+lighting is causing some issues, but if you want to see this, I will be out in the hallway
+or the Chillout Lounge and I will be happy to demonstrate this for you.
+So the actual instrument cluster, was from a Mini Cooper that was involved in a collision.
+They were outfitted with external‑like instruments to measure such things as vehicle speed and
+then we correlated that information with the CAN bus itself to verify its accuracy.
+This capture lasted roughly 90 seconds. And over the course of that capture, they gave
+us around 106,000 actual messages on the CAN bus.
+I will show you guys the crash. Yeah. As you can see, the Mini Cooper didn't
+really stand much of a chance whatsoever. Oh, so we also hooked up a data logger to
+the actual can bus itself. It records all the messages on the bus so message IDs and
+raw payload information and then we need a unique on all the message IDs to see what
+IDs occurred and then a frequency count to see actually how many times a message was
+transmitted on the bus during that capture and then we started playing with the ones
+that were most occurring first. So back to the method of the visually CAN
+methods of interest based on plotting the data on a graph. If we are interested in vehicle
+speed, we basically will start ‑‑ we started to play with suspect message IDs and
+then for each buyoff set, we would plot data until something we saw that was indicative
+of the vehicle speed such as the third one right here.
+And then for the tachometer. You noticed in the video I just showed you, both of the cars
+were being pulled together with like a pulley system for a collision. So the actual engine
+speed itself was at an idle state the entire time. We basically had to use some simple
+fuzzy techniques until the tachometer flipped out of control and the needle started spinning
+like crazy. That was kind of interesting. So up until now, we have actually identified,
+you know, the message IDs responsible for the speedometer and the tachometer, as well
+as the pay load and the data offsets for those. We built a simple CAN bus and 8 gauge wire
+and 12‑volt power source, arduino, and our CAN transceiver, the instrument cluster, obviously
+and the realtime clock module, and this is available on our website, as well as the source
+code for this. And here as an image of what it looked like
+early on in the prototyping stages. It's kind of a mess.
+And as far as talking CAN, with the Arduino, we just used basically a CAN controller library
+that was designed to communicate with the MCP2515 that allowed us to create CAN frames
+and inject them on to the bus. And so basically, there's two modes of operation, the clock
+mode and then the demo mode. So the demo mode, incrementing the speedometer and the tachometer.
+Like I say, I will show you a demo afterwards if you are interested.
+So, you know, if you have physical access to the car anyways, you know, oh, well. But,
+you know, there's a bunch of possible scenarios in which case, like, potential conspirators
+like service technicians and mechanics, car rental companies, coworkers, family, friends,
+ex‑girlfriends could potentially have momentary access to your CAN bus or car and attach a
+rogue ECU for less than $100 and that's kind of a problem. And they could attach whether
+that be to the OBD2 port underneath the steering wheel or tapping the CAN bus, either under
+the hood or by some other means. So what's surprising to me is that the actual
+access control, I guess, between ECU and ECU or network to network on vehicles is somewhat
+nonexistent or the ones that had been ‑‑ the ones that are in existence aren't very
+good and they are easily bypassed. So maybe applying conventional network security techniques
+such as like make network intrusion prevention systems or some firewalls to these networks
+might provide a better solution. And then maybe some sort of like message anomaly
+prevention depending on the context of other messages on the CAN bus at the time. Maybe
+there should be a message that says, okay, someone is trying to apply full throttle to
+the accelerator but at the same time they are trying to, you know, apply full pressure
+to the brakes. And then if you are ‑‑ in case you are interested in some of the
+research that we are doing, here's some links to our sites and some of the stuff that we
+are working on. Like I said a full tutorial is available on our site. So feel free to
+check out our stuff. And I will be out roaming around. So if you
+see me around here, feel free to come out and ask me questions. If you have some questions
+or ideas or concerns, feel free to email me. Thank you very much.
+(Applause)

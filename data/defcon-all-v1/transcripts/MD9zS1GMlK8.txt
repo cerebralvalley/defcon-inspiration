@@ -1,0 +1,813 @@
+>>Hello, hi everyone. Hi.
+[applause] Eh, thanks for
+showing up. Uh, this talk is called oh what did I call it.
+Reverse-engineering 4G hotspots
+for fun, bugs and net financial loss. I am I am a senior
+work-avoider at pen test
+partners. Uh I also do hardware or embedded work sometimes. And
+no one cares who the speaker is,
+let’s go on. So the structure of the talk today looks like this.
+And I’m talking about a what I
+am talking about, cellular routers, I’m going to talk about
+the sort of attack surface you
+might see on them and then I’ve got two devices to look at, um
+one made by a Chinese company,
+one made by a U.S. company to sort of avoid getting everyone
+all over excited about it. And
+then I’m gonna go over uh what was fun about each one of them
+and the sort of bugs that I
+found in them as well. And then I’m probably just going to
+complain until my time’s up.
+[laughter] 5G is uh apparently imminent. Uh, I’ve heard. The
+it’s meant to be operational in
+some areas and I’m not entirely convinced by that yet. And it’s
+meant to be very quick, uh
+consumers and business users are probably going to start using it
+more for their daily TCP/IP
+activities. And and so there will be more modems, dongles and
+routers out there in the world.
+And there’s not been that much public scrutiny of non-phones,
+consumer cellular gear so far.
+Which is sort of weird because, uh there’s not that many vendors
+or OEMs actually doing uh
+cellular kit from scratch. And cause there’s only a few OEMs,
+there’s lots of code reuse. Um,
+so the label on the box doesn’t necessarily mean that the
+contents of the box are actually
+made by that vendor. Um so, and also code on these sort of
+consumer devices ends up on very
+similar industrial vice- devices as well. Cellular is sort of
+interesting. Um they’re
+somewhere between um phones and traditional routers. Um and
+cause they’re just embedded
+computers, there’s probably going to be lots of bugs in them
+as well. And I would say at this
+point, the bugs, still pretty low for finding bugs in these
+sorts of things and not as low
+as it used to be, but it’s, it’s still pretty easy. I’m going to
+really quick cellular network
+refresher, uh, just to get everyone on the same on the same
+page. Uh, some people think
+cellular networks are safer than public wifi. It’s not
+necessarily true. Uh, devices
+connect to an APN, which is like connecting to any LAN that you
+don’t control. Um, some APNs are
+really well configured, some aren’t. It totally depends on
+the APN itself. And ‘cause
+you’re essentially on a LAN uh you’re not gonna see a lot of
+cellular connected devices on
+Shodan and things like that, but if you connect to the same LA-
+the same APN, and you can start
+to poke around, have a look and see who else is in there. Uh
+there’s a few security measures,
+uh you might find on public or private APNs, like client
+segregation, web filtering, uh
+IMEI uh IMEI/ICCID sort of filtering. Uh, it’s sort of like
+any network, there’s certain
+security mechanisms that can put in place uh we have to take into
+account, when we’re thinking
+about attacking a cellular device, because we don’t really
+know where it’s going to be used
+and the APN configuration might be really weak. And so when I’m
+looking at something like this,
+I’ve a rough idea of what I’m trying to find. I’m always
+looking for higher risk issues
+and actual security bugs and since we’re going in like a
+pessimistic view of the APN and
+you have to assume to extent you can touch the the wide interface
+on the device. If there’s no
+client segregation on the APN or something like that. Um, so we
+can’t rule out the sort of
+traditional RCEs and as a vector. Uh, you can also think
+about things like if you’re much
+more worried about uh state level stuff or very very serious
+axes, you might want to worry
+about compromise like GGSNs or NGCNs or or whatever they use in
+5G. Um, the- these sort of
+things that handle IP traffic on these APNs. And we use a call
+them rule out cross site request
+forgery on the ro- web configuration interface uh
+because if you’re looking at
+stuff in a browser while you’re looking at. And sometimes
+there’s all other kinds of
+TCP/UDP services running, traditionally DNS, UPMP other
+obscure proprietary stuff that
+the vendor makes. Um, not all of it’s gonna get blocked off on
+the on the WAN side as well. And
+they try these days, but but it’s not always the case. Uh
+there’s also the possibility of
+more traditional cellular services like SMS or MMS being
+exploitable as well. And there’s
+also lower risk stuff, so, the the sort of thing might get you
+just to share if you’re
+connected to something, uh a piece of copper. And or it might
+give you some sort of uh, more
+access or something like that. The- uh these sorts of things
+are not necessarily reportable
+to a vendor but they’re really nice if we’re looking for bugs
+on them. Uh or if we want to
+just mess around with some of the lower level configurations
+on on the model itself like,
+trying to change the IMEI to bypass APN security measures uh
+which I think is illegal but I
+see it everywhere, so don’t do that. And you also want to get
+like a privilege AT shell to to
+lock your device to a particular band or something along those
+lines. And there’s sort of a
+limit to that in my opinion, if you can if you can permanently
+backdoor a device and like 10
+seconds, with access to a USB USB port, that’s that’s uh
+probably reportable to the
+vendor. And you might want to try to get them to fix that.
+Whether they do or not is is who
+know. Uh, they might not care at all. And I also prefer in your
+shell doesn’t survive a reboot,
+but uh a lot of these things that check for the firmware
+integrity. So when I’m looking
+at um, devices like this, I have a sort of ge- really general
+methodology and which is
+basically asking, what’s been already, what’s been done
+already, uh what public info’s
+out there already for the same or similar devices. Can I get
+firmware, uh what does it look
+like? If I can’t get that firmware, can I get firmware for
+a really similar device. And can
+I get a shell and start playing with that? None of that is
+necessarily in that order, but
+it’s just a rough guidelines for what I’m trying to do when I
+start reverse engineering these
+things. So, ahem. Let’s have a look at some devices. The first
+one is the ZTE MF910 um, I also
+had a look at the MF65 plus and the MF920. Uh which both had
+really really similar code
+running on them as well. And I’m going for a deep dive on this
+one, ‘cause it’s end of life,
+easy to get, really cheap and so if you interested in looking at
+these, it’s a really good start.
+Uh it runs a Qualcomm MDM SoC and to really common the MDM
+series uh in modems. ZTE also
+massive OEN slash vendor, so you tend to find their hardware and
+software running in lots of
+devices that aren’t badge ZTE. Ahem. There’s also a few
+caveats, there, there might be
+O-days ahead. Ah, definitely in the MF910, because it’s end of
+life, so they’re not going to
+fix anything in that. But ZTE also pretty slack uh following
+up on the reports. That we, that
+we send them and so there might be issues and really similar ZTE
+devices ‘cause they share a lot
+of the same code. Uh, we originally thought it was
+supported, ‘cause it’s
+advertised on their website, still being sold, and nothing on
+their website says it’s not
+supported. Uh then we told the more bugs we found and then they
+told us it wasn’t supported. Uh,
+ha. Uh we asked them how to how we’re supposed to know that and
+they just said uh we’ll only
+tell you if you ask basically. Uh, so we asked them to check
+their other products themselves,
+they didn’t do that. Then we found essentially exactly the
+same issues in a different
+support device disclosed again then they fixed them, they gave
+a couple of CVEs. Linked us to
+an advisory, which they don’t link to on their website. And I
+thi- I think they’re doing that
+thing where they’re checking issues per device, rather than
+uh, rather than, uh looking at
+the entire code base. Itself or it’s code base genealogy or
+whatever. And so I’m just gonna
+do this whole talk, uh approach the device in the same way their
+en- the ZTE did. I just gonna
+treat the MF910 like uh everything that I talk about
+only affects this device and
+doesn’t affect anything else and whatever. Let’s go. So let’s
+have a look at the hardware,
+it’s got this Qualcomm MDM9225 SoC, um, some of the newer ones
+it may be 9625S, but there’s
+much of them much less. They run this uh on Linux call plus a
+base band, the base bands this
+Qualcomm hexagon um, micro-architecture. Other people
+have done a lot more intense
+work on that, I actually want it to start looking at that when I
+started looking at these, but I
+got- I totally sidetracked by by looking at the really easy bugs
+instead. And it also has this
+like combination RAM/LAN chip, which you find attached to a lot
+of these uh Qualcomm devices. Uh
+it’s got this really nice test pad array and if you’re looking
+at a modem and you see it some
+test parts that are sort of square like this, it’s a really
+high possibility that it was
+made by ZTE. I’ve seen it on quite a few devices that have
+either been made by them or but
+but aren’t batched by them. Uh and you can do things like on
+some of the more lock down ones,
+you can pull these test pins low and it will boot into different
+modes. And so like the GPIOs or
+like the volume button on a phone. There’s already a bit of
+public information about this
+particular device as well. And there’s two ways to enable ADB
+over USB. So you can just then
+unauthenticated root shell immediately and haha. The- its
+its its only over USB so its not
+that not that, its not that bad. Uh haha, you enable it through
+just API calls in the web
+interface, so you just send a uh request to this USB mode switch
+endpoint and the USB uh will
+just go down and come up again and you just write ADB shell and
+you your root. Uh it’s really
+well know. Uh I couldn’t really figure out who already who found
+who found it already, but it’s
+it’s a really well known thing that’s out there. Um it works on
+loads of other ZTE stuff as
+well. Uh apparently not just the MF110. There’s another public
+way to do this as well which is
+mode switch, uh, just does exactly the same thing, you just
+send the the word factory to um,
+the switch command parameter and it will just um, just start ADP.
+Over USB again. So we can get a
+shell really easily on this, uh, start pulling firmware off, see
+how the thing works when it’s
+running, uh see what binaries are running. See how they’re all
+talking to each other as well.
+Uh, so the MF910 is quite bloated and which also means
+there’s quite a lot of
+interesting stuff about it. Uh the underlying system is
+probably going to be familiar to
+people who are used to working with embedded devices it’s just
+old Linux kernel running on um,
+Android-esque, not really full fat Android. The default ro-
+root password you can find in
+just one of the RSC start up scripts uh in a function called
+set passwords. It just echos the
+password to a temporary file, pushes it into a changed
+password and then tries to
+delete temporary file to cover its tracks. Uh this kind of
+stuff is really common on
+embedded devices, its not really revolutionary, it it it’s quite
+funny wherever you see it. Eh,
+it’s not hugely useful out of the box as we’ve already got a
+root shell, but and there’s drop
+bear running, but you can’t get in because there’s IP ta-
+default IP tables rules. Some of
+them have telnet running, others don’t. It really depends on on
+who batched the firmware, I
+think. There’s loads of Qualcomm stock binaries and these QC map
+ones uh Qualcomm mobile access
+point binaries. And there’s a few diag binaries as well. And
+for anyone who’s interested in
+that. And there’s also a gdb server. Just stock on it. The IP
+rules just default accept and
+they block TCP and UDP on everything uh there’s TCP and
+UDP 22 on everything. And and
+then blocked TCP 80 UDP and TCP 23, 53 and 1900 on the on the
+one interface. And but it
+doesn’t, it doesn’t actually block everything that’s actually
+running on it. Uh, there’s still
+a few services exposed. Like uh syslogd. There’s that dnsmasq,
+uh dhcp port and there’s a
+custom binary called zte, where whisper, which is some sort of
+propriety whisper protocol
+service on uh UDP 4500. And had a really qui- quick look at
+that, it’s definitely using lots
+of unsafe, uh C functions, but. I’m gonna talk about that one
+today. Um, I’m going to talk
+about this, uh zte topsw goahead uh binary which is really fun to
+reverse. If you’re not familiar
+with embedded uh web servers the whole web server stack tends to
+be just custom binaries, so
+they’ll be based on um, some open source uh web server and
+then they’ll just uh attach
+stuff to it. And this one’s probably based off of, off a web
+server called go ahead, which is
+just a common commercial web server. It’s not directly
+accessible from the from the WAN
+side, so you can’t do any of this directly over the APN and
+but you can still attack it by
+cross site request forgery. Ah if someone went to a malicious
+page. Uh so we’re gonna have a
+look at look at it with that in mind. A web APR logic is pretty
+standard for router. Uh because
+there’s a a large configuration table, that holds all the
+configuration data for this
+router. And stored in non volatile memory somewhere. Um,
+all the configuration is written
+to or read for that by this binary and so the web server is
+just a broker for reading and
+writing that information. Uh there’s a couple of API
+endpoints. Goform get command
+process and goform set command process and go form get is just
+for reading data and go form set
+is just for writing data. To uh to the MV RAM. Uh Go form get
+takes a CND parameter and then
+an optional multi-data parameter. Go form set, takes
+this go form ID parameter and
+then custom parameters based on what that go form ID is. Uh so
+we can lo- with that information
+you can load the binary up in IDA or Ghidra or whatever. I did
+it in IDA originally, but I
+think Ghidra a bit easier to see and really really quick time.
+And there’s a lot more endpoint
+handlers in this binary than you actually see when you’re using
+the device normally. Uh, not all
+of them are that interesting, but it just means there’s a lot
+more attack surface on it, a lot
+more stuff to play with. Uh go form set command process, um,
+each go form ID points to a
+different function in a big lookup table in the binary, so.
+Most of these functions are just
+wrappers around a pretty safe zte library function, just read
+and write data to the MV RAM.
+And and some of them are like explicitly white listed as well.
+Uh so they can be used before
+authentication. And not all of the functions do this uh MV RAM
+reading and writing. They also
+tend to run other sort of sys commands. There’s one more ADB
+mode, uh that I found pre- that
+you can enable pre-authentication. So. Go form
+ID takes this set device mode
+parameter and just takes a debug enable uh sorry go form ID takes
+a uh set device mode uh as it’s
+value and takes a debug enable parameter. Checks if it’s 0, 1,
+or 2 and then just echos it
+straight to that and Android USB debug enable file in sys. Which
+just brings up uh ADB again over
+USB. There’s no command injection ‘cause they’re
+actually checking the input, uh,
+so it’s not really a nasty risk, but its a nice new way to to get
+ADB access over USB on a device
+if you don’t have the password for uh. As far as I know, this
+hasn’t been public before, but
+it’s quite a nice one. So there’s three different ways to
+do the exact same thing. Uh, in
+one web server binary. There’s a something else that’s really
+nice is there’s lots of verbose
+logging. So it’s got this zte syslog or pen library function,
+so you know exactly where you
+are in every function in the code. Uh, there’s also a way to
+leverage this from the web
+server. So one of those undocumented endpoints and lets
+you setup a remote syslog in.
+This uh so this you send a request to this endpoint and
+syslog data gets sent back to
+you on UDP 514 uh of the requesting IP address. And it’s
+only available post
+authentication, but it’s persistent across reboots. Uh
+the function itself does a
+system call, but there’s no command injection in this
+particular one. I think there
+was command injection in eh in the MF920 or the 65 plus, I
+cannot remember. But they’re
+very very similar functions. Just with slightly different
+bits of uh checking added. And
+so if you open up UDP 514, you get all of this zte uh, syslog
+data sent back to you. Which is,
+which is useful if you’re looking at particular zte binary
+and trying to hit particular
+parts of the code and uh. And. You can dump logs to a file as
+well, download them, enable
+kernel logging as well. There’s also a bug that I can’t actually
+properly test and and again
+because anything that doesn’t directly affect the MF910 zte
+aren’t going to do anything
+about, so I didn’t report this to them. Um there’s all these
+pre-authentication http share
+functions. Uh they don’t work by default on the MF910 uh cause
+there’s no SD card slot. But
+with a bit of basic reverse engineering, you can see there
+might be a few problems in some
+of the code. And so in this particular one, uh, you get a
+1024 length buffer, you just
+spring f uh a touch command, with the user applied variable
+in double quotes and just pass
+it straight past them. Um, there might be a couple of problems in
+there. I’ll leave that as an
+exercise for the reader. But um, I can’t really confirm this,
+because I don’t have a zte
+modem, with an SD card slot, but theoretically if I did, the
+exploit would look something
+like this. Um, that sort of qualifies as fun. Uh cause it’s
+not technically exploitable in
+the MF910. But we’ll never know. We’ll never know. So there is
+actual actual technically
+exploitable bugs, this first one is a leaky uh, API endpoint, the
+go form get command process
+endpoint uh there’s two checks. One for authentication and one
+for cross site request forgery.
+But there’s no proper authentication check if the
+mult-data parameter is set to
+zero for some reason. So we can just read arbitrary values from
+the configuration table. Uh, as
+long as you can pass the the CSRF check. So that includes the
+unencrypted admin password
+value. So if you set the re- referrer to the router IP or 127
+dot 1, you can read things just
+like the admin password backwards. And without cea-
+without CSRF bypass you have to
+be on the same LAN. and there’s also obviously command injection
+with code like this. And there
+is that USB mode switch function from earlier. Uh the USB mode
+prom is injectable, so it just
+passes whatever it whatever it it gets straight straight to
+system. Those two bugs are not
+quite a proper exploit, because we can’t really and they’re not
+really remote exploit, cause we
+can’t really uh access the web server over the over the WAN. So
+to turn it into another kind of
+exploit, we could uh, we have to take some of the mitigations
+into account. There’s uh this
+cross site request forgery protection. So it just checks
+the referer header, uh, you
+can’t control the referer header in a browser, so uh any request
+that we send through another
+page you’re gonna fail even if we try to login. We’re just
+gonna fail and if we’re coming
+from another page context. I think you might be able to guess
+and how to bypass this
+protection. Uh cross type scripting means we can just run
+Javascript in the router page
+context. So the referer header is gonna be the router IP
+address. And there’s a really
+nice clean uh xss in this totally inexplicable page uh go
+form slash form test. Um, which
+by default just prints name joe smith, address 1212 Milky Way
+Avenue. So you send it something
+like this, you just bypass the cross site request forgery
+protection. Uh and you just run
+any Javascript you want. In the router page context. So we can
+have an exploit that just goes
+like this. XSS gives us clean referer header and we don’t have
+to worry about the same origin
+policy, so we can read the responses back as well. And we
+can just leak the admin
+password, login, exploit the command injection. Uh, the CSRF
+text is actually just a form
+posted into an iframe, because uh if you try to use XHR, it
+will send this options pre-flow
+request and that uh web server just can’t handle an options
+request. So it will just fail.
+Uh and the injected Javascript just sets up a couple of
+functions, reads the admin
+password, logs in, executes arbitrary code. So. Let’s have a
+look at it. So on the right,
+there is the uh, um, Windows machine just connected to the
+router. Uh and on the left is a
+sort of attacker machine that’s gonna open up. Open up a shell.
+Yeah. Ok. Case study number 2.
+Uh, a high end router this time. Uh the NetGear Nighthawk M1. I
+wanted to see what an expensive
+4G router looked like, ‘cause the MF910 is is pretty old and
+pretty cheap. Uh the M1s new uh,
+newish. It’s been out maybe a couple of years. There’s barely
+any public information out there
+about it. And it’s using a new Qualcomm SoC, so there’s almost
+no public information about
+that. Uh so it’s a it’s a sort of a sort of challenge. There’s
+also really cool Russian
+sub-culture of just pushing them just way too hard by putting
+heat sinks and massive antennas
+on them. Uh its also part of the Netgear bug bounty, uh which
+they run on their high end
+routers. And I absolutely hate the Netgear bug bounty so much.
+And before you disclose them,
+you’ve got to agree that you uh can’t publish your findings or
+speak about it to anyone other
+than Netgear. Uh if you do, there’ll be uh so called
+entitled to some kind of
+performance uh, instead of giving money back. And I uh. The
+payor calculations also really
+uh complicated. They seem to calculate the payout amount
+based on CVSS. And which is,
+arguably not the best uh way to calculate risk in a piece of
+hardware. Uh I had a look back
+through some of there recent disclos- recent uh disclosures.
+One of them they gave a post
+authentication command injection. This CVSS v3 score of
+6 point 8. Which is conveniently
+uh, a medium risk. So a 300 dollar payout, rather than a
+high risk 6 hundred dollar
+payout. So uh they’re also cheapskates. [laughter] So, I
+did not manage to find command
+injection in this thing so I just, I very briefly considered
+my options. Um, should I go
+through Bugcrowd? Never talk about it in public and maybe get
+300 dollars from Netgear? Or
+speak at DefCon, complain about Netgear in public and get 300
+dollars anyway?
+[laughter/applause] Yeah. So yeah, I’m here. The hardware’s
+really really similar to the
+MF910. It’s got a QualComm, uh, MDM9250 uh, which is pretty new.
+You can’t really find much
+information about it. It’s got this Nanya combination, NAND/RAM
+chip as well. These really
+generic looking test pads. I’m sorry for all those those like
+scrapes and scratches all over
+them. Cause I tapped onto them and tried to clean them up. And
+so it’s the, the main core
+component are pretty similar to the MF910. Uh, but a little bit
+more up to date. There’s
+basically no useful information out here at all. For this one.
+Uh there’s a really long thread
+on 4pda, which is this Russian phone modem enthusiast website.
+Um, they want to lock it to
+particular bands for some reason. And no one seems to be
+able to do much with it. The
+thread was really helpful, cause they archived some older
+firmware update packages and
+documented some arbitrary firmware update process that
+I’ll talk about in a minutes and
+so thanks to them for that. Uh it’s a GPL tarball on the on the
+Netgear site that seems to be
+about 14 versions out of out of date. Uh so there’s not there’s
+not much out there. There’s
+firmware on the Netgear site, but every file looks encrypted,
+so it’s not trivial to get
+binaries off it and and look for bugs. There really wasn’t
+anything that obvious, there’s
+no ADB, no telnet, no known backdoor, there’s nowhere near
+as easy as the MF910 to get
+into. And there’s a web server on port 80 and then an AT shell
+on port 5510. Uh but only if
+you’re plugged in over USB. And I could figure out is based on
+Sierra Wireless technology. Uh
+Sierra Wireless is just a big Canadian vendor. Who make really
+expensive industrial cellular
+stuff as well like modem modules. So knowing that gives
+us a little bit of a wider, uh,
+scope to look for uh, more information outside of just the
+Netgear specific uh searches. So
+since the M1 was a bit more difficult to get to, get into
+initially, the the fun stuff was
+sort of figuring stuff out black box entirely. Um, these test
+pads, I started off thinking
+they’d be GPIOs like the zte stuff, or on phones. And I spent
+time pulling them sort of up and
+down on boot and seeing what the USB vid pid combos were coming
+up on Dmessage, but I put it
+into like Qualcomm emergency boot mode a few times, just
+cause I think I went to hard on
+it. Um a little tip, I think if you treat these things badly
+enough, they just give up and go
+into emergency boot mode. Um, it’s not that helpful, cause we
+don’t have any signs public, uh
+loader stubs for uh, the known 250. It turns out they’re JTAG.
+So thanks jtagenum. Uh I really
+wasn’t expected to be JTAG. It’s quite rare to see something like
+this. Um, that’s the pinup there
+for anyone who’s interested. Uh, you just connect to a general
+Cortex, I think A7 or something
+like that. But in the end I didn’t really spend that much
+time on it and JTAG on a really
+complex SoC with basically no data sheet is not really like a
+quick win to get into something.
+I think uh memory protection unit was also stopping a lot of
+stuff. And I figured out a few
+things, like the bootloader starts at zero. And arm thumb
+gives you some in- insight into
+uh interesting, potentially interesting, memory locations,
+register locations and you you
+can’t really read those locations from JTAG cause the MP
+is blocking most memory reads.
+Um, but its there for anyone who’s interested in in JTAG on
+Qualcomm stuff. That AT shell as
+well is sort of uh, limited. So you can see extremely small
+amounts of like modem crash data
+and things like that. There wasn’t this uh, usual privileged
+command mode that you sometimes
+see on AT shells. And I think the password is nulled by
+default, so you can’t uh, so you
+can’t get into it, even with, even with the right password.
+There was nothing like this,
+like AT band enable or anything uh that you see on some other
+devices, that would just pop
+open ADB for you. And the only thing that came close to being
+useful was this ATB boothold and
+that just put it into this QualComm flashing boot mode. Um,
+from this mode you can use this
+tool called fdt dot exe which is a Sierra Wireless proprietary
+binary. It’s not that easy to
+track down, uh, you can find it packed with other Sierra
+Wireless wireless firmware
+packages. You just sort of open them up with 7 zip and the files
+in there. And If you’re used to
+the like QualComm, normal QualComm download mode, um, this
+one’s sort of proprietary, it
+doesn’t open up a com port, it just seems to do it all over
+USB, so maybe its just some sort
+of Sierra Wireless specific implementation. But this was a a
+really nice tip from that 4pda
+dot ru thread. Um, its still not that helpful, unless we can
+manipulate firmware update
+files, uh cause they’re encrypted. I use the term
+encryption loosely. Uh Netgear
+chose everyone’s favorite encryption. [cheering/laughter]
+I mean it actually depending on
+your definition of fun, this might now sound like that much
+fun. Its its not just XOR, um,
+its XOR and AES. Uh, the firmware follows this really
+generic Sierra Wireless
+structure, so the firmware is split into chunks and each chunk
+has a header and a body. And
+Netgear added this encryption like where all the chunk headers
+are AES encrypted and the actual
+data, the chunk body is just XOR encrypted with um, with a oops.
+Oh dear. Ha ha ha. With a um. A
+1024 byte k. Let’s find this. The AES section’s also just
+encrypted in um ECB mode as
+well. So they’re just repeating 16 byte uh blocks. So they’re
+really easy to spot. Um, so the
+general theory of it. You can derive the XOR key for these
+chunk data segments just by
+assuming that most firmware bytes are just gonna be nulls.
+Uh then you can just XOR out all
+the data segments, get all the data, get the AES key out. And
+just decrypt everything. Um,
+I’ll go over the steps, so you can just sort of see really
+quickly. This is the nulls
+encrypted with AES in ECB mode, so each block is just encrypted
+on its own. 16 bytes. Uh, it
+looks like XOR with a 16 byte key, but its definitely not. And
+when you line up the encrypted
+file with a generic, uh, non encrypted, uh Sierra Wireless
+firmware update file. You can
+see the repeating blocks of nulls line up really nicely with
+the with these so called ECB
+encrypted null blocks. Um, at the same offsets. So. The
+headers of each chunk are all
+the same size. You can figure out where the headers are just
+by looking for this known uh,
+encrypted null uh, uh chunk. Block. And so you can figure out
+where the headers end and begin
+just by searching for for that 16 bytes. So it’s pretty easy to
+figure out the file structure,
+file structure. And just decrypt everything. So I I wrote a
+script to do it. You can read
+about it here and its a bit to fiddly to get in too deeply
+right now anyway. Um, it’ll just
+its the script itself will just iterate over the file just
+decrypt everything, uh some of
+the chunks are nested in other chunks. The key shifts very
+slightly if the chunk data mod-
+uh module uh 32 isn’t zero. So it’s it’s all a bit convoluted
+and weird. Uh But anyway. The
+firmware is pretty interesting once you’ve decrypted it. It’s
+got literally everything that’s
+running on the device in there. So including the bootloader.
+It’s got the DSP. It’s got the
+Linux system, it’s got the web root, it’s got the Android
+splash screen. Uh and some like
+generic APN configuration data as well. And I didn’t take this
+to a sort of logical conclusion.
+I mean it might be possible to fiddle around with this
+firmware, re-upload it back and
+uh, uh, run arbitrary code that way, uh to get in, I didn’t get
+around to doing that in too much
+depth. For reasons you’ll see in a minute. Um, there’s other
+Sierra firmware file passing
+tools out there, so you can figure out where the checksums
+are and the headers and or
+whether size fields are in the headers and stuff like that. And
+anyway. Netgear don’t think this
+is a problem so they’re not gonna fix it. So. Have fun. Ok.
+Uh, I I found some bugs before I
+decrypted the firmware. Uh these were just blackbox finding the
+bugs. And if you decrypt the
+firmware and and you might find more things. As is customary
+there’s command injection. A
+sample don’t I, I’m so bored with command injection. Uh, ha.
+There’s a so it works like this.
+A bunch of the endpoints after the uh forms hand- handler um, a
+handling requests. There’s like
+forms dot config, forms dot multi config. You send a post
+request for the parameter like
+uh webd dot admin password equals password 1 and it will
+just change the admin password
+if you’re logged in. And the session security is quite good
+on the web application. So its
+its not that easy to bypass. I I thought. Maybe someone else will
+find differently. Um, request
+look a bit like this with the sort of important parameters
+highlighted and I did a bit of
+basic fuzzing with stuff that I found when I was actually just
+going over the uh, the web
+interface. Totally black box, but I didn’t really find that
+much. And but there is an
+interesting webpage at um, instrospection dot html. Uh
+which is a Sierra Wireless
+specific page. Which gives you a really long list of parameters
+when you’re logged on. And and
+it will give you the expected value type as well, like Boolean
+or integer or string. And
+sometimes the values or they’re set in there as well. Along with
+the permissions, the user
+permissions that you need to modify or read them. So it’s
+pretty helpful. Cause it just,
+it’s just giving us a word list of valid parameters that we can
+try to fuzz. And which we can
+use to find this command injection. In a ready dot device
+share dot remove usb device. Uh
+so if you send something like that, you’ll just get telnet d
+opening up and just login with
+the default credentials. The root oelinux123 and the you get
+a nice clean root shell on it.
+This is my absolute favorite cross site request forgery
+bypass of all time. And so
+unlike the zte, there’s no dynamic API to request data from
+and you read all the
+configuration and session data from these like dynamically
+generated JSON files and that
+includes uh also the CSRF token. They’re not JSONP so you can’t
+just syphon them off cause the
+stop will stop you. And but there is a fa- another file
+called Netgear Strings dot js.
+Eh which is also dynamically generated. And just after the to
+do comment in the top is a big
+variable called NetGear Load Data which holds the user
+privilege level of the current
+session and the CSRF token. So you just load this javascript
+file from any site. Read the
+Netgear load data dot session dot set token and you’ve just
+got the CSRF token. So it’s the
+dumbest CSRF bypass I’ve ever found. So you can theoretically
+you can chain these in a really
+similar way. Um, to the MF910. I didn’t find an authentication
+bypass and so its not, I don’t
+have such a clean exploit but you’d have to try and guess a
+weak password and after just so
+much hassle with it, I was just quite happy to get a shell on it
+to be honest. And if you just
+want a shell to get a so you can start trying to change stuff
+from the low lev- low level
+configuration you can uh, you can flash any compatible
+firmware that with that FDT dot
+exe uh file. Just grab a vulnerable version and get a
+shell by command injection. Um,
+Netgear have been pretty bad to disclose to and maybe cause I
+avoided bugcrowd, they were
+having a little tantrum. Uh, I reported the issues in late
+February and as if I think this
+morning they haven’t fixed anything. So all of that stuff
+was just other days. But the uh
+they’re not gonna fix some stuff. Other stuff they are
+looking into. They might change
+the root passwords, literally who cares? Ok, its the end.
+These things are these sorts of
+devices are really fun eh they’re really easy ways to get
+into hacking embedded stuff. You
+should go into it with a mindset that vendors are going to be
+really rubbish. The batteries
+are going to be rubbish, but you can start to at least learn how
+these things work. On quite a
+low level, which is quite interesting. I’ve got a massive
+to do list of things, cause I I
+I started the whole project cause I wanted to find bugs in
+the in the Qualcomm base band.
+But I got obviously way too distracted by all of this stuff.
+Um I want to do things like
+download all the extremely dodgy looking uh unofficial Qualcomm
+tools that people have released
+out there, figure out how they work and what they do. There’s
+so much stuff out there, there’s
+so much work that’s been put into reverse engineering and
+changing these things and that’s
+just a gold mine of of existing research. And. Vendors should be
+asking things like where’s my
+code from, what else is running, what’s the root cause, how do I
+fix it? They don’t really seem
+to do that, they just respond reactively to bugs that you send
+them and don’t think about it
+anymore. Um, I tried to coerce ZTE to check similar issues and
+they just didn’t do it. Um, I
+think one of the excuses was I sent them a a proof of concept
+that used Netcap and they hadn’t
+uh, installed Netcap on another vulnerable device. So despite
+the fact that there was still
+command injection and their Netcap wasn’t running so they
+just gave up and thought it
+wasn’t affected. Uh, Netgear running s- slightly modified
+Sierra Wireless stuff. I’m
+really not sure how much Netgear actually do on this or whether
+they just outsourced to a third
+party. It’s been, what, six months since I reported to them?
+Almost six months and they’ve
+done absolutely nothing. And so I, I have no idea how, how in
+control they are of their own
+device. And in all of this stuff, there’s loads of like
+rebranding, shared code and
+especially in some of these like lower levels Qualcomm libraries
+as well. And these issues might
+affect other vendors or similar devices using a similar
+development stack. So I can’t
+buy everything and check it myself and I’m bored by a lot of
+this by now. So, that’s it.
+Thanks to everyone uh who’s up here. Uh, have a look at the
+blog post up here. I’ve written
+up some of this stuff and another issue that I’ve found,
+in a TP-Link, preauthentication
+command injection in a TP-Link, uh router as well. And just
+really basic really basic stuff
+on how to use Kitra uh to find stuff like that. And um, yeah,
+hassle me on twitter if you want
+at no thanks with all underscores underneath
+everything. And yeah, thanks
+very much. [applause]

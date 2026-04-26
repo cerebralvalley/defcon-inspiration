@@ -1,0 +1,631 @@
+Thank you for coming today were
+going to be talking about ECFS extended core file snapshot
+technology how many people here know what a Linux elf core file
+looks like so today were talking about extended core files this
+is a technology that helps aid and process memory forensics in
+Linux so what that is is a an extended version of a typical
+core file that is specifically designed for memory analysis and
+that is what will be discussing I've taken everything that I
+know about the elf binary format reverse engineering process
+infection Linux viruses exploitation and imbue that
+knowledge into the design of this software for technology or
+core file format so quick history in 2011 I I designed a
+prototype for a DARPA CFT called VMA voodoo for life process
+analysis and Linux and it detected runtime infection so
+that could be anything a memory resident virus shared library
+injection PLT got hooks strange segment permissions anything
+that would constitute a process that being infected any type of
+VMA anomalies Anthony VMA voodoo was just a prototype and it
+worked on 32 bit Linux but five years ago and fast forwarding in
+time about six months ago I was thinking it would be really cool
+to rewrite that software put it in more of a production ready
+state but I thought it would be cool to have a need of a
+snapshot format because the way VMA work does it analyze live
+process memory or its of these raw memory snapshots of the
+process nothing real special so seeking a native snapshot format
+specifically designed for forensics analysis of a process
+and so I wrote ECFS about six months ago and I quickly
+realized that it was very useful even on its own and especially
+he could be used with other people's technologies is already
+a lot of forensics technology out there and this is kind of a
+complementary piece a low 10 is a product this is in advanced
+technology for detecting exploitation through crash dump
+analysis so this actually looks at many dumps in Windows or core
+files in Linux and is able to detect whether or not I was a
+result of an exploit so ECFS is actually now in the process of
+being merged into the Linux component of this product so it
+is being used end so check that out to get a chance very cool
+stuff so moving on discount getting into the problem space
+here so a process address space is it's like a little but it's
+very complicated on its own you your full system memory got
+kernel memory what about just a singular process because a
+process especially these days and Linux is relatively
+complicated it is heavily constructed from the elf binary
+format of course because you have health executable you got
+the shared libraries there are a lot of structural nuances within
+elf say it's dynamically link you got then you got the dynamic
+segment which exist within the data segment at the Global
+offset table you got a lot of different types of data
+structures and not everybody knows how all of these work so
+you have to be a real expert in the area of understanding how
+processes laid out in understanding the elf format to
+be really successful in reverse engineering a process a process
+is a little different than just an executable because it's got
+the executable and then everything else mapped into it
+so ECFS as we'll see brings a lot of this stuff together and
+it makes navigating a process image extremely easy so no
+secret that hackers of been infecting processes for a long
+time so of course you have hackers infecting a kernel
+memory kernel rickets but there a lot of hackers who infect
+processes and there's not a lot of automated stuff to detect
+this stuff I can think of a few cases from the last couple years
+in particular but that these processes can get infected and
+it still it's typically more stuff and if you're infecting
+the binary because it's only resident in memory and just a
+few examples of these types of infections would be memory
+resident viruses so maybe a a virus that copies itself from
+process to process will stealing credit card information from
+Firefox maybe a virus infects the LDAP Damon and siphons
+information now about users so for reasons to infect the
+process root kits as well people are familiar with Jinks or his
+Azle these are like LD preload root kits Packers use these and
+any type of backdoor so later we use an anti-forensics exec to
+inject a vac a backdoor into a process address space and of
+course exploitation which tenderly behind residuals may be
+a patch see tours or detours section modified got corrupted
+he and these are all things that we want to be able to look at
+and very quickly identify so there are a lot of process
+friend there a lot of forensics tools available that also do
+some process stuff so the three major ones you got volatility
+recall and then second luck which is commercial and
+primarily these do full system memory dumps and course in full
+system memory dumps eventually the process is in there
+somewhere but they tend to get really nice structural access to
+the kernel through something like Dorf debugging symbols well
+you don't have dorky banks most for every single process so
+these full system memory dump analyzers tend to lose
+resolution the closer they get down to the process level so
+ECFS is a mentor of Plessis's tools it's hopefully a
+supplementary thing or something that could be integrated within
+them for specific to process analysis course EMP trace GDB
+and just regular core dumps and these are all tools they can be
+used so I originally had a few slides to discuss volatility
+more depth but because of time constraints on have to skip past
+those but they are in the slide deck so that you know so
+extended core file snapshot technology so it is a custom
+core file format and L format based on original core files is
+backwards compatible with original core files you can
+still use them for debugging so if you have this thing hooked up
+on your system like I do you can still use the core files for
+debugging you can also use them for detection and malware and
+analysis as we'll see later you can even relaunch the snapshots
+back in the memory another word you can posit a process and
+restart it where it left off two weeks later so quick little
+diagram here to get people reacquainted with a process this
+is a really high level overview but course you have in memory
+you got the executable which has a tech segment data segment BSS
+at the end of the day to segment the heap then the functions are
+in the text segment a.k.a. the code segment and the data
+segment of the PLT got to the Global offset table gets patched
+with function pointers as you can see the arrow points down to
+the functions in the lives see shared library and that this
+slips you shared library has a tech segment data segment of its
+own all separate mappings and in the glitzy Cisco wrappers which
+point to the VDS OMB call page mapped into the process
+Ukrainian anonymous memory mappings file mapping stack
+segment and and there's other stuff but this is just a
+high-level overview to that you visualize a little bit what were
+to be looking out so quick overview of our attack surface
+so these attacks are kind of like that there is a myriad of
+different ways to attack a process but a lot of what were
+looking at is different types of injection so dynamic injections
+that would be injecting shared objects into a process or a
+position independent executable into a process a relocatable
+code injection so injecting an object file into a process then
+Acker would patch all the relocations and to be like
+runtime relinking I and you can even execute fully dynamically
+linked executables into an existing processes is an
+anti-forensics exec technique that will look at later
+oftentimes these types of injections are accomplished
+through means like LD preload the real basic one Lib CDL open
+mode which is a yellow Burnett is resident in live CD always
+and tends to be used for injection cis P trace of course
+which is often used as a means to accomplish some of these
+other things that you show code based loading BDS O manipulation
+and once we get this code once the parasite code is inserted
+into the process through whatever means oftentimes
+control flow needs to be hijacked so this could be
+redirecting of functions through the PLT got through in-line
+hooks like trampolines a patching function pointers so
+sometimes people patch constructors and destructors
+also known as in it array Infini array on 64-bit architecture in
+any type of modification to the code segment and any anomalies
+sought beyond this of course as well such a strange segment
+permissions maybe the text segment gets marked writable or
+the data segment gets marked executable to defeat death
+course packs and protect would stop this book there's just a
+lot of different types of attacks were looking at and this
+is the general building blocks so here is a ugly diagram that I
+together a long time ago and it just kinda shows you visually
+what we just looked at this is essentially right here a binary
+in memory you got the text segment data segment course the
+section header table doesn't get mapped in the memory but and you
+can see and read the different infection point so the procedure
+linkage table the gems could be hooked function trampolines get
+placed in the code function pointers can be overridden in
+the constructors global off the table can be patched Global data
+variables these things it varies whatever's in there but could be
+interesting things that the attacker may modify such as
+function pointers and of course he of the BSS role the
+uninitialized global data goes but not one thing that's missing
+from here and it's not in red but see the dynamic section the
+name then dynamic section has tag selected DT needed tag that
+can be modified as well for another form a shared library
+injection so the definition of process memory forensics and
+analysis and this is pretty broad but people want to do this
+to either understand the process layout and structure for
+whatever reason it might not even be because they're trying
+to detect an attacker but it is necessary when we are doing that
+and we want to learn the runtime characteristic so is there
+dynamic linking involved if so then okay whatever relocations
+we can be looking at whatever symbol tables we want to
+reconstruct typically forensics analyst want to identify
+anomalous code or data and there many different ways to do that
+ECFS actually does a lot of her sticks on the back and then
+we'll see that does a lot of the work for us but dumb ultimately
+we want to identify process infection which could be a
+backdoor root kits like as a solar jinx keyloggers memory
+resident viruses or even be a virus infected the binary but
+and it shows up in memory and in protected binary so ECFS is
+actually really useful for helping reverse engineer
+encrypted binaries as it can reconstruct symbol tables and
+help you map out the entire process and of course malware
+oftentimes is protected or packed has a lot of obfuscation
+layers and things of that nature not ECFS is useful for this as
+well‚Ä¶ Take a quick look at what a traditional core file
+looks like so regular core files essentially what snapshot of a
+process it's an L file has an L file header from the old file
+header refine the program segments program segments are of
+type PT loaded reloadable segments and they just represent
+all the different memory mappings in the entire process
+so the tech segment data heaps stack shared library mappings
+and so forth but there's not a lot of metadata associated with
+these just has the raw segments not super useful for forensics
+analysis and in addition to the PT load segment there's one
+segment is a PT note the note segment contains all the
+metadata about the core file that say GDB uses when debugging
+such as what the register stay was the auxiliary vector which
+is what the top of the stack looks like when a process starts
+signal information and the past to the shared libraries that are
+mapped in now these core files are generally created when a
+process crashes when it's delivered a set fee or a sick
+bus different signals will cause a core dump to look and see how
+the cord on code is created you can look at been FNT_elf.ca this
+is a kernel source file which is pretty interesting all the
+health loading code is in there and in particular the code
+creates a core file so arguably at best core files are useful
+for debugging some people will state otherwise now they're not
+particularly useful for forensics and here's why they
+are highly dependent on the original executable and shared
+library files still being on your computer when you load a
+core file into a debugger you have to have the original
+executable right and you have to hope that executable has symbols
+and maybe even some door for debugging information now the
+other problem is that the tech segments are truncated and this
+is to save space so the tech segment of the executable the
+text segment of all the shared libraries are all truncated to
+4K and I know Linus says this is to save space now makes a lot of
+sense because the text segments are still in the original files
+which is fine for debugging but as we don't forensics many times
+the tech segment gets marked writable and itself modifying
+and it changes so we need actually have the full text
+segment as it was reflected in memory on disk so ECFS make sure
+to do that optionally and overall core files just to give
+you the kind of high resolution insight into a process that that
+would be nice for forensics analysis so just do a quick
+recap here on the forensics goals overview of course detect
+shared library injection we want to be able to detect any type of
+control flow hijacking this can be done to the PLT got hooks we
+want to detect any type of injected L file could be an
+object file shared library injection the executable
+injection pie injection on any type of show code that's been
+inserted into the process which could then in turn load in L
+file I any strain segment permission such as a writable
+data set are writable code segment for an executable data
+segment and the list goes on but once again these are kinda some
+of the building blocks we want to be to quickly identify the
+stuff typically is not very easy to identify just the raw process
+so in the end we might be looking for UserLand memory
+Rickettsia jinxes Azle more sophisticated ones that are out
+there I exploitation residuals and I run time malware or memory
+resident viruses so the ECFS technology essentially it can
+either a snapshot of process and keep the process running with
+any of a snapshot of it in EFS core file of it or as we'll see
+in a minute can hook into the core handler and essentially it
+transforms the core file into a very special type of core file
+specifically for this type of analysis and the analogy here
+with these images is at the core file is this kind of
+black-and-white or monochrome image of a process so it's kind
+of flat zeros and ones and on the other side got the high
+resolution core file is the ECFS file and that's just a little
+analogy so what are the ECFS use cases and this is kind of
+redundant here but dumb to live in our analysis there's a a
+suspicious piece of malware that's running and you want to
+snapshot it and maybe you want to then take that snapshot put
+it in an isolated environment and then relaunch it back in the
+memory and it'll start where it left off and this is something
+ECFS allows you to do a process necromancy is what some of the
+guys run the office call it and any type of process forensics
+which could mean a lot of things we arty went over also helping
+break protected binaries a very powerful binary protector was
+protecting a program on my system and it crashed so ECFS
+caught it and I was amazed that ECFS fully reconstructed all the
+symbol tables even all the functions were individually
+encrypted only one decrypted a time and it it does this through
+a very special type of symbol table reconstruction will talk
+about shortly so just get into the ECFS features so this is a
+list of the features but I do have a I'm slide for each one
+talk over them individually so ECFS plugs into the Col.'s core
+handler it's actually a UserLand application you need to modify
+the kernel proxies kernel core pattern this is also the file
+that like a bunch is AB or modifies and essentially if you
+use the pipe symbol you can tell the Col. core handler to pipe
+the core file it's creating total positive process it's
+crashing it'll pipe the core file into the standard input of
+whatever program you wanted to so we tell it pipe into the
+standard input of the ECFS handler which then essentially
+dazzles that core file up totally transforms it and then
+spits out in ECFS file so that command right there is just a
+basic command of how you would enable ECFS on the system you
+can also snapshot a process without killing it without
+having the core it and so and that's honestly handy as well
+for when you want to kill a process so symbol table
+reconstruction in my opinion this is perhaps the most useful
+feature one of them at least the ECFS does so as reverse engineer
+as you probably know it's very nice to have symbols well what
+ECFS can do is even if the original binary was totally
+stripped has no section headers no symbol tables when that
+binary get sad when the process get snapshot in ECFS bully
+reconstructs both of the symbol tables and there's two symbol
+tables in a binary you got the local symbol table Sim tab the
+one were looking at here and that's all the functions that
+were in the binary not the dynamically linked functions and
+it turns out the GCC compiles all binaries by default with a
+segment called PT GNU EH frame is a section called the EH
+Freeman of sections if you look this contains the exception
+handling frame description information and you can parse
+the store for info the common information entries and then you
+get the FTEs and can use this to locate the address and size of
+every single function in the binary so even if all the
+functions are encrypted we give you an example with item Pro
+item Pro uses control flow analysis or fingerprinting to
+find all the functions what if all the functions are encrypted
+or packed or obfuscated do not sign to work so essentially what
+ECFS does is it uses that approach to go back quick if you
+see that link there that link will take you to some code on my
+site I came up with this method of about eight months ago you
+can use that code to rebuild symbol tables a friend minded in
+a CTF and you want it way before everybody else does he quickly
+reconstructed the symbol tables so until we reconstruct local
+symbol tables and it's powerful I've haven't had actually fail
+on anything as long as that each frame segment is there and the
+only time in ever wouldn't be there is when a binaries
+explicitly told not to have it usually if you compile it was
+like no STD Lib even then it still may be there but dumb very
+nice Kling does it too so anyhow let's look at the dynamic symbol
+tables the dynamic symbol table this is like symbols for what
+printf F get stir copy and the way we do this is the dynamic
+segment of a program is in memory because it's needed by
+the dynamic linker so you can locate the dynamic segment ECFS
+does this of course find the DT syntax resolves the address of
+every single shared library function and it plugs the
+addresses into the corresponding symbols so very nice feature as
+well complete symbol table Reconstruction fixing ECFS does
+is a rebuilds everybody know anybody or Noel section headers
+are calcium some you guys do well section headers are very
+nice because they allow making navigation of the binary much
+easier they're not necessary for runtime but they're usually
+there because are used by linkers and debuggers well even
+if the original binary had no section headers let's say it was
+stripped by a hacker when ECFS snapshots a process it still
+fully reconstructs all the section headers and all the
+original section headers for just about all of them and it
+reconstructs and builds a lot of new section headers that are
+totally custom and pertain to ECFS forensic stuff let us look
+at some of the section so there's a section for the heap
+you can quickly access the heap data is a section for the stack
+were stacks of their multiple stacks the VDS over to a dynamic
+shared object of the visas call page now text and data there in
+capital letters is actually point to the text segment in the
+data segment those are different than the text and data sections
+now some people know that the product paid directory has a lot
+of information about a running process so when this ECFS
+snapshot is created ECFS captures the proctored directory
+compresses and stores it in a section pocket Fest.tgz very
+nice to decompress and look at PR status contains register
+information at the info is nice because it retains all the file
+descriptor information offsets the files the socket information
+IPC all of that stuff about the process and that's one reason
+why snapshot process necromancy works we can bring the process
+back is a restores all of that information files that were
+opened wherever the process was at the auxiliary vector the
+executable path and the personality is the is very ECFS
+specific it contains information that is pertains to ECFS such is
+were the symbol tables fully reconstructed basically the
+personality of the ECFS file what components were turned on
+were heuristics enabled things like that the last two is the
+art list which contains the RV vector of the program and then
+the FP red set floating-point register so all very easy to
+access the section headers now more importantly is there are
+three custom section types could you have section names with any
+of section types so for example sections have code in memory
+data are usually of type products means program that's
+well what we have is three custom types so SH live anytime
+there's a shared library mapping gets marked with the type SH
+live it's very fitting but what's even cooler is if the
+shared library was determined by ECFS to of been injected
+unnaturally such as by an attacker will actually market is
+injected she can disease retail look at the file back of this
+was injected if it determines that a shared library was
+preloaded intellectually market as preloaded so those are very
+handy for quickly identifying injection we move on talk a
+little bit about the injection detection heuristic so what is a
+normal shared library gets loaded by the dynamic linker to
+Heidi differentiate when that is normal first is not normal I
+will go too deep into the detail but getting this is it's not too
+difficult but getting it to be accurate every time takes a
+little bit of work and essentially the idea is that a
+library can legally be loaded by DL open can legally be loaded by
+the dynamic linker or by preload but if it was loaded by some
+other means such as Lib CDL open motor P Tracer the VDS so that
+we can assume that it's been injected and a lot of work goes
+into analyzing a lot of different parts the process to
+determine that and we cannot just detect shared library
+injection any type of injected code and will see that in a
+quick demo shortly here so live ECFS this is actually an API I
+designed that I wrote so that people can very easily integrate
+ECFS support into their malware analysis tools and it makes
+process analysis or it's a take a snapshot of a process that you
+know some hour was running and you could write a really
+sophisticated tool using Lib ECFS very quickly I want to look
+at Shirley here as I wrote a tool to detect shared library
+injection PLT hooks the nasal takes about 3000 lines of code
+to detect the PLT hooks and shared library injection
+reliably take 3000 line to see code and this tools like 50
+lines of code because it's using ECFS and the Lib ECFS APIs very
+easy to use and I'm the only really have to know elf too much
+to know how to use it there is some documentation so read ECFS
+if you're familiar with the tool read health read ECFS is kind of
+like Reno but it's specifically designed to read ECFS files it
+is designed using the live ECFS API and that is why designed
+read ECFS to show how to use Lib ECFS it can do things such as
+extract the parasite the parasite is found in the process
+it can parse any of the sections show all the file descriptor
+socket information etc. still in early development to work in
+progress like all of this so the last thing to talk about your
+board into a demo is ECFS re-execution so to my knowledge
+there is only one other thing that can actually do this I
+believe it was called cryo- paid and maybe 2008 I know if there
+is a more modern version but the idea of being a snapshot of
+process or positive process completely taken out of memory
+and then resume its execution where it left off is something
+that a lot of people would like to have and ECFS is so so for
+kind with information with any file all the information about
+the process because it is essentially an L file why not be
+able to execute these and relaunch them back in the memory
+where they left off so if anybody remembers the groks
+UserLand exec I wrote a UserLand exec exhibit specifically
+designed for loading ECFS files not just regular elf executables
+and it'll restore the file streams doesn't work on IPC at
+so I wrote ECFS exec and here's the get hub for exists separate
+from the regular ECFS repo in about a day days time so it
+needs a lot more work to actually go anywhere at this
+point it's a prototype so what to do now is I'm in a do a demo
+so I'm in a do a demo of sorrow Mann to sorrow mine is an
+anti-forensics exec technique so people know about like threat
+injection maybe being able to inject some show code into a
+process opposition independent shell code well what I wanted to
+do was take a fully dynamically linked executable and be able to
+inject that into a process so basically be able to it's it's
+an anti-forensics exec because sorrow model allows you to
+execute any program you want just a regular dynamically
+linked program inside of an existing address space or
+doesn't create a new process that's why it anti-forensics so
+what this does will inject in our case were to inject the back
+door that I wrote when I was 14 then I stalled the code for when
+injected into an existing process and it will run
+concurrently with that process this is a difficult technique to
+detect just by you know whatever means I would take some reverse
+engineering and it's not anything real apparent soaring
+use this is kind of a use case for showing how ECFS can help
+quickly identify the back door etc. so let's do that row
+quickly here go into sorrow Manzo first for simplicity were
+there on the simple program hosted just prints I am a host
+and then were to launch and use this anti-forensics exec and our
+back door it's a remote back door binds to a poor called
+server so we just injected that end of this process okay go over
+here see that process is still running but if we telnet
+localhost 31337X you got a back door so there's back to running
+inside of that other process take password and bam were in
+this awesome little backdoor from 99 and now may go back over
+here and I'm going to get a snapshot of that host program I
+go to just use the core handler no free looking cores we got two
+snapshots is a risk threat injections that are two threads
+that we can look at any one of them so let's just first use
+read ECFS I'm host at 2848 and lot of information register
+statement were looking at here is we look at the file
+descriptor information we see that host why would a program
+that just prints I am a host over and over have this Port
+right here it's being bound to because we injected the program
+into it the backdoor program so at just the first kind of
+anomalous thing no will to do his work and use just the
+standard retail futility read health really the section
+headers of this ECFS core file so as you can see and it's
+important to note regular core files do not have section
+headers so this is a nice feature and you can see there
+are many section headers for every single part of the process
+you would want to access if you wanted to look at say the the
+got the PLT God would just go there to open up an item you
+could open it in object dump got to keep now here's what's
+anomalous we see this CS is injected so these are going to
+say SH lip but this is as it's injected and it says elf.din.0
+says Dan means dynamic because the executable injected was
+position independent so we spotted something here now the
+next step would be we want a sample of that parasite so when
+you do read ECFS minus okay like object copy ‚Äì O ‚Äì O from but
+and we go to 848 it's called.health.din.0 is the
+section we will extract will call the file parasite case and
+now we are looking at the program enters prepare say we
+have a full sample of the executable that was injected
+into the process so we were able to very quickly performed
+surgery if you will on the ECFS file and quickly isolate where
+the parasite was we saw that it was bound to a port because all
+the socket information is included in the ECFS file and we
+see that it a position independent executable see that
+says dynamic but it's not a shared library and that's the
+server back door so that is one quick example next so well yes
+so next what to do me to see here to look at so the jinx and
+his hazel root kits that people use is an LD pre-preload type
+root kit and what that does is it preloads the as a result
+shared library into a process that the hacker wants to infect
+and hijack certain functions so were to run another simple
+program host organ infected with the is Azle shared library so
+just saying hello we go over here let's do kill ‚Äì 11 pit of
+host actually let me get rid of the other one sounded confused
+now got that so what were to do here is just look at the section
+headers again with Rita off keep in mind is using open source
+object utilities read health is totally compatible with our ECFS
+so looking at the section headers again notes go all the
+way down there's all the shared libraries now suddenly look we
+see that the is Azle shared libraries and ECFS detected them
+as being preloaded so immediately that look suspicious
+you know the libraries were preloaded and furthermore let's
+say we want to investigate the Global off the table see if
+there are any functions that were hooked the long way to do
+that would be to use read ECFS and you have to really kinda
+know what you're looking at here look at the Global offset table
+shows the God value shows they should either be the shared
+library or should be the PLT stop it's not one of those are
+those then it's off but that's I can confuse you guys what I'm in
+a do is on the show you a tool wrote using live ECFS it's a
+malware analysis tool that would typically be pretty
+sophisticated to write and see and not that you can see all
+this but this is essentially of this is the code for the 55
+lines of code this can detect shared library was injected if
+was preloaded and then if the functions were hijacked in the
+Global offset table so is run that detect PLT hooks encores
+and so can see it found the preloaded shared libraries and I
+found function hook so it says that unlink opened her and fopen
+were all hooked were all Pro hijacked so very quickly in both
+scenarios it out to about 30 seconds to take an ECFS snapshot
+and identify that there was an infection and the summary was
+done a lot of reverse engineering and analysis of
+process memory by hand I can tell you that this makes it much
+much easier and this particular ECFS core technology is reliable
+so it doesn't do all the work for you but it does a lot of it
+for you and I I could see it being adopted heavily by memory
+analysis tools forensics tools and and things I want to have a
+more accurate and colored view of a process so lastly here what
+I would like to show well the ivory can it talked about the
+delay be CFS but remove four years of snapshot execution so
+what all demo here is a simple program this because this can
+just to show you that were in a snapshot of process the process
+is gonna be reading and printing from the password file so will
+snapshot it about halfway through and then will restart it
+and it'll continue were left off so this demonstrates this
+demonstrates that it was restoring the file streams
+essentially now okay so this program read pass can you run it
+see a printing doing its thing now here will do kill ‚Äì 11. Of
+read pass over here so it printed out in O the first eight
+or so and we got the snapshot so were to use ECFS exec so we had
+a first copy it over files are all rude consider created by
+ECFS so cores read pass copy it to ECFS exec example and so we
+see that read past.29260 I was a process we snapshot it now we
+want to run it and let it begin where it left off so will do
+exactly read pass is little debugging output we got a
+pseudo-that pseudo-Zach do Zach Reed read past that 2926 and it
+started where it left off so since what that date is you know
+that.at the info section has all the file descriptor information
+pipe information socket information now if that password
+file was removed from the system this wouldn't work because it
+doesn't keep state of all the actual files and only keeps the
+state of where was accessing within the file now for the
+research and development into this project it would be too
+difficult to come up with some interesting ways of retaining
+estate like virtual machines do virtual machines have everything
+so different with the process because processes are
+self-contained they rely on the environment but this has
+implications of doing things like life process migration or
+high-availability computing or different types of fuzzing or if
+you want to be able to snapshot piece of malware like I
+mentioned earlier and then relaunch it on a system that
+sandbox and safe to run it on but let it star were left off so
+open source project as well something I plan to get more
+time on eventually and in take to the next level so these are
+the get hubs so ECFS that is the playing at the straightforward
+ECFS code the core handler the snapshot utility it's pretty
+easy to install and set up on your system so you can to start
+collecting ECFS core files instead of core files and ECFS
+exact is a separate repository and just a small bit of code and
+then sorrow Mann was the anti-forensics exec tool and
+anyway does anybody have any questions at all you can also
+come up to me after the talk but I will be happy to answer any if
+there are any right now yes in the white I believe the question
+was how specific is this to Lenox and could it be ported to
+other annexes so the answer to that is this should be able to
+be ported to other UNIX's such as FreeBSD most of the stuff
+that makes this specific to Lenox because it is just a Dell
+format self core form Apple makes a specific to Linux is the
+product directory is set up a little bit differently than the
+FreeBSD product filesystem because ECFS does get
+information from Brock. Also the this utility uses P trace and
+the limitations slightly different FreeBSD but this
+should be able to be ported to all other UNIX is other using
+nail file format provided 11 level or another Lenox has a
+very fruitful product file system previous Jesus okay so
+she definitely be portable there is a couple other questions on
+the blue right there thank you I just start from the beginning
+sure the solution was related to the ask a question at the and
+namely whether it works with processes that still generate
+code dynamically like budgets or some antivirus engines that are
+loaded dynamically yeah that's a really good question and I don't
+totally know I do know that the GCR section and an elf binary
+contains a lot of Java classes and things like that I think
+that that would be something that's definitely on the path
+for exploration I haven't gone that far yet but I think it
+would be something worthwhile looking into and could probably
+be worked on but yeah I don't know in short yes sorry please
+so by your statement that it's a health specific is that
+architecture is a CPU architecture agnostic it is not
+this particular implementation but it could be ported yes yeah
+right there on the but there you this is amazing and you with
+your research and writing this leverage you see a path to
+automatically remove injected code a runtime well I would
+typically see that being more the role of the software that
+using ECFS and DCFS tends my vision for anyways as it is a
+piece that should be implemented into existing tools that may be
+already do that so my DARPA project detected and disinfected
+so it actually did remove the injection and ECFS would be
+something that I would want to use for that so ECFS is more
+like you use this with your project for the detection
+components and then your project would maybe do the disinfection
+you any final questions so you are reading the the password
+file and you kill the process and you have a new process that
+picks up where left off yes so is ECFS serve was the exact it
+saw the F the info then it has to make a new open call and then
+and then he uses existing information to pick up from
+where is a new socket or a new file descriptor well I did make
+sure to use the actual same file after number two exit pays
+attention if it's at the three of the four then it does do an
+open and an LC to get to the offset yet you still to go to
+the Col. to say like hey didn't like the do June‚Ä¶ Call right
+yes okay yeah yep yes in the blue right there partially or if
+you could clarify one more time sorry Mike thanks the question
+was whether you can sniff it and then restart of pairs of
+processes like of and that creates the forks to clock to a
+child and then you want them both snapshot the peristaltic
+and particularly if they communicate using C pipes I have
+thought about how to go about performing the implementation of
+that I have some notes on that but I haven't actually done it
+yet so the possibility is there is is nine lamented yet and I
+think were virtually all the time here so thank you

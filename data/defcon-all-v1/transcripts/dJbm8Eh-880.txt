@@ -1,0 +1,394 @@
+>> DAVID KENNEDY: How's it going DEF CON?
+(Applause) >> DAVID KENNEDY: I'm Nick and I appreciate
+you coming out and hearing us talk. This talk is called the Dirty South, Getting Justified
+with Technology. We will be getting into that in just a minute here. Appreciate you coming
+out and always honor the speaker year after year again.
+Just a quick introduction, I am the author of The Social Engineer Toolkit. I'm also founder
+of Trusted Sec. It is a consulting company. And co‑author of the Metasport, the Penetration
+Tester's Book. And also I have been presenting at Black Hat and DEF CON for a number of years.
+One of the co‑funders of Derby CON. Appreciate again coming up on stage again and talking.
+>> NICK HITCHCOCK: I'm Nick and I can see that the slide has been modified slightly.
+Thank you, Dave. I also work for TrustedSec, security consultant
+with Dave. It has been awesome working with him. Pen tester, breaker of things. And, yes,
+I am wearing one right now. Derby CON co‑organizer, head of security there. I am also a team member
+of social‑engineer.org. We are doing the SETF down in Palma. Come down and visit at
+some point. Not now because you're here. And I haven't wrote a book but I've read some.
+>> DAVID KENNEDY: The intro to this talk is literally, you know, if you look at kind of
+the evolution of security and where we are at today and why we're all here today, it
+has changed a lot. What we are going to do is kind of go through the evolution of security
+and where we're at today. And from there we will break some stuff and get a whole bunch
+of shells and do other stuff. We will do three major demos. I have big surprise here. I am
+full of surprises. When you come to my talk, you should expect something new.
+Nick and I will be going through the evolution of security and where we are at today. If
+you look at where we are at today, we continue to get new and new technology that's trying
+to strengthen and protect against hackers, right? So advanced persistent threat and all
+these other things that we hear out there to try to protect against which is funny,
+right? But this technology, you know, is becoming
+more and more complex and introducing more and more complexity and we are spending millions
+and millions of dollars on this type of stuff to try to protect us. Today we will try to
+break it all. Sound good? >> Yeah!
+>> DAVID KENNEDY: So the way that we structured this was an AA meeting. So, first, we need
+to realize we all have a problem, right? So, hi, I'm Dave.
+>> NICK HITCHCOCK: Hi, I'm Nick. >> DAVID KENNEDY: Welcome. We have been sober
+from technology, from buying technology for about two years now but we get tempted every
+time. You see this blinky box that does cool stuff that we have no idea what but we want
+to buy it and spend a million dollars on it. Trust me.
+The way we structured this is try to break you down into a reality that what this stuff
+really does, what it really stops us against and then really start to build us up and really
+what we need to do to fix all this stuff. I see security going this way or going this
+way. Either way is going to be interesting and fun and exciting. But we need to break
+you down first to realize where we're kind of at. If anybody is drinking a beer, please
+drink one right now for because it is not AA, it is for technology.
+Anyways... Just a warning, we will try to walk through
+every single technology that we know of that most corporations implement, all right? Before
+we do that, we are going to get into the history of security and why we're kind of in this
+vicious cycle of continually investing in different types of technology. And then from
+there we will start to actually go and attack them all. Sound good? All right. Awesome.
+Nick? >> NICK HITCHCOCK: All right. So basically
+history of security in brief. So we have technology for about a century. So some type of technology.
+First the question is: Why? Why do we need security for this? You break into something,
+oh, I see why we need security. And then they say here you go, this will fix it. And then
+it breaks again five minutes, five years, whatever, breaks. Oh, wait. My bad. I can
+fix that. No problem. Rinse, repeat. It is an endless loop ‑‑ endless cycle really.
+So I thought there was a really interesting story about this ‑‑ the inventor Marconi.
+In 1903 his so‑called wireless telegraph system was being tested. And it was touted
+as the most secure communication at the time. So a magician by the name of Neville Mascolini
+said I will prove him wrong. He hijacked the presentation and sent his own little message
+through. If you know Morse code, that's actually lulls in Morse code.
+(Making noises). >> NICK HITCHCOCK: So he proves his point
+that this is not a secure technology. So then we get to the age of an actual programmable
+computer. Now, this is Zeus 3 where you can actually start to store some information on
+this. But what was really needed to secure that at that point? Well, you got ‑‑
+next slide. >> DAVID KENNEDY: Oh, sorry.
+>> NICK HITCHCOCK: You got to lock that crap up.
+>> DAVID KENNEDY: I forgot I had this. >> NICK HITCHCOCK: Can I have that?
+>> DAVID KENNEDY: Yeah, here we go. Sorry. >> NICK HITCHCOCK: Sorry.
+You got to lock it up. Easy enough, right? Locks on the doors.
+But then ‑‑ >> DAVID KENNEDY: Did you hit the right button?
+>> NICK HITCHCOCK: I don't know. Technology is hard. (laughter).
+>> NICK HITCHCOCK: Then it happened. Al Gore came along. He invented the Internet.
+>> DAVID KENNEDY: Is it amazing. Can we get a round of applause for Al Gore, please? (applause).
+>> NICK HITCHCOCK: Thank you. >> DAVID KENNEDY: We are all here today because
+of him. >> NICK HITCHCOCK: So now we have the tubes.
+The tubes are here. They are invented. This opens us up for a whole mess of different
+things, anything from your standard virus malwares. We have phishing, normal malicious
+stuff that's out there. You need some security. All right, here's some security. This will
+protect you. Everything under the sun, AV, everything to protect clients, organizations.
+Then they start to realize, we need some type of protection on the perimeter. Let's put
+up the firewall. Let's deny all these ports. Let's allow only what we need through.
+But something is not working with the state of technology.
+(laughter) Verizon, they did this nine‑year study.
+Over a nine‑year period, they found around 2500 data disclosures and 1.1 billion compromised
+records. So what happens is there's some confusion. We are putting all this money and things to
+protect ourselves but 1.1 billion personal records are being breached, are being taken.
+So why? So, you know, we continue to see this a whole
+new industry is born, an industry where products can solve the problems of people. And so,
+you know, you look at these different products are out there and the different things that
+are happening. This technology that are specifically designed and made to social engineer us basically
+into trying to solve a specific problem. So the first one I will pick on most specifically
+is next generation firewalls, okay? So next generation firewalls are being touted as the
+way to prevent APTs. If you go to any other white sites, it is all over there. That's
+a giggle. You look at what they are trying to do. They are trying to consolidate so you
+have spam filtering and white listing and concept filtering and to move everything towards
+the perimeter. You are seeing this and companies are buying this so they can try to stop against
+the latest and greatest attacks of today, all right?
+So the first demo we are going to do ‑‑ it will you a new tool release that will be
+called in the social engineering tool kit, we call it silent but deadly. Thank you, Valerie.
+I'm definitely not silent but I'm definitely deadly when it comes to that stuff as my roommate
+can tell me. So what is this going to do? I'm going to
+show you a demonstration using the social engineering toolkit. We will not take advantage
+of a social exploit yet. (laughter).
+>> Whew! (applause)
+>> DAVID KENNEDY: That's right. That's right. By the way, the chicken has no relevancy at
+all to this talk. We just wanted to put something random in here and put in a popup box. That's
+all we need here, right? So I'm going to use the social engineer toolkit.
+I show you an example. I will release the code hopefully either today or tomorrow. This
+is the new version, version 5.3. I haven't released the payload. We will clone a Web
+site and lure somebody into clicking on something via social engineering.
+>> No screen? >> DAVID KENNEDY: What happened to the screen?
+(laughter) Hey, I can see the screen. Can everybody see
+the screen now? >> No.
+>> DAVID KENNEDY: Whew. All right. I will not be able to do full screen for this for
+some reason. That's cool. We'll deal with it. Hang on. I got to minimize this one, too.
+Everybody see this? >> The logo.
+>> DAVID KENNEDY: It is not mirrored. That would be why. What we are going to discuss
+today is how to mirror displays on OSX. >> NICK HITCHCOCK: Look at the chicken, everyone.
+Nothing to see here. >> DAVID KENNEDY: Can you see that?
+>> Yeah! (applause) >> NICK HITCHCOCK: I want to thank you for
+coming. Bye. >> DAVID KENNEDY: All right. So I'm going
+to launch the social engineer toolkit. I will clone a Web site real quick. This is a new
+payload I developed. I don't know if you know this, a lot of the new next gen firewalls
+are doing behavioral analysis on the network side. They can see protocols going back and
+forth. They can flag on things that aren't necessarily protocol specific, okay? So me,
+loving Metasploit and Meterpreter and everything else, I wanted to figure out a way to develop
+something that would never, ever, ever in any way, shape or form be detected again.
+That's usually what I go for. So grab my I.P. address here real quick to
+clone it. I'm going to change it real quick. All right. There we go. I'm just going to
+clone TrustedSec so I don't get in trouble anywhere. That's not supposed to happen.
+We are connected. We're connected. Don't you worry. Don't you worry. Sorry.
+Stop it. There we go. We're good. That's right. Even hits the best of us, man. All right.
+So we are going to clone trustedsec.com. I will import my own payload. This is the code
+that will be released. The code will be public but it is basically Python and wrapped in
+an executable, okay? All right. Importing my own exe. You see it here. See that? All
+right. We're ready to go. Now what I need to do is create a quick listener.
+Go to DEF CON. Now, what this is going to do is we are going to do a social engineering
+kit. This is anybody from a post‑exploitation standpoint. We will hack a company and you
+will see that live here in a minute. It will come back to us and what's going to happen
+is we're going to assume Meterpreter in an interpreter in an encrypted bubble and wrap
+that around SSH and create a polymorphic tunnel over HTTP. FC compliant HTTP. Right now it
+is waiting. Launch the Web site. This is just the Java attack that's built in.
+So we go ahead and hit run. By the way, please don't report that I have a valid certificate.
+That's verified publisher. I forgot about that.
+So we should see here in a second, we got a response back, if everything went properly.
+There it goes. Notice encrypted tunnel identified. Sending challenge to verify. Making sure it
+is the right session. What it is going to do, it is going to create a SSH tunnel over
+HTTP for us. It is going to then send a Meterpreter shell via second stage over our local host
+over to the victim machine and then we have a full shell running over the network over
+native HTTP. Yeah. (applause)
+Let's pop a box. Now, notice here it is telling over local
+host. It is actually running through a local host environments over SSH, over HTTP. And
+then what it does is it actually chunks it up every single time it gets a post‑request.
+So it is a little slow but it chunks it up different every time and changes the behavior
+and patterns every time. Every packet you send will be completely different over HTTP.
+I figured I would stop it. Nick?
+>> NICK HITCHCOCK: I think I'm up now, good, good.
+So, type some next gens. Welcome to the era of Marty McFly. We are dealing with static
+signatures and anomaly detections and antivirus on a different level.
+>> DAVID KENNEDY: We started doing analysis on next‑gen firewalls. The analysis dealt
+with minor modification or changes done based on what is the payload. For example, a lot
+of the next‑gen firewalls will flag on a second stage Meterpreter but if you change
+that modified in any way shape or form, just a tiny bit it allows you to get around it
+and exfiltrate out around the protocols whether it is HTTP or something else. It is basically
+static‑based signature again. We are going back to the mid '80s, '90s on the behavioral
+side of the house. One of the claims is stop HTTP. That's ridiculous.
+Move to the perimeter. This is kind of crazy. So security, we started to really doing ‑‑
+a little bit of a decent job when we started having firewalls, DMZs, network segmentation
+and we had layers of defense. Instead we are moving to the cloud and mobile devices and
+laptops and just everything is completely decentralized and no longer at the perimeter.
+So it is all the way out and about. That actually creates a large exposure for something and
+something these things won't come close to touching.
+Now, next demo ‑‑ (laughter) (applause)
+(Music). >> DAVID KENNEDY: That's awesome.
+(Clapping). >> DAVID KENNEDY: All right. All right. Yes.
+Thank you, sir. Thank you, sir. We ran into a customer recently where there
+were basically ‑‑ I don't know how you manage this. But basically they were doing
+whitelisting of only Web sites that they legitimately allowed. A lot of them use social medias and
+allowed exceptions. Regardless, this is just anything that you can use that allows you
+to put information to something that's whitelisted. Now, what we are going to be releasing is
+a new tool that allows a framework for that that allows you to insert a Web site that
+may be whitelisted that's public, that's used all the time. And then you can use it as an
+intermediary for encrypted protocol traffic over HTTP as a thing in the middle.
+So what we are going to do here just to show you an example ‑‑ that's not an example.
+We're going to run this listener. I will launch a payload on my windows machine. It will connect
+to Facebook and allow and direct intermediary over HTTP encrypted traffic to allow us to
+do a command and control all through Facebook. Again, it is not a Facebook issue, anything
+you have public access to. It will inject into there. We get our shell.
+Now, it is really quick. It is fast because we are continuously monitoring any major modifications
+based on the notification system which is nice. It takes a second when I type something
+in because I have to post it, read it back in, execute the command, post it back up with
+the data so it is a little bit of a lag. It usually takes about four seconds. I gave it
+eight just in case, especially for demo purposes. And then we are able to autos Facebook as
+essentially a man in the middle to communicate. It can be any Web site, any Web site you have
+the ability to put any type of information of. That's the new one we will be releasing
+for our framework. All right. So the next one is my favorite.
+This is the best demo. This is kind of the pinnacle, okay? So we are going to through
+a bunch of different technologies, everything we use for corporations. And then from there
+we will kind of expand on it and see what we can actually do, okay?
+>> NICK HITCHCOCK: So behavior analysis. The best, say ‑‑ we can liken this to the
+FBI and their behavioral analysis unit. They base their profiles on behavior. And that's
+exactly what behavior analysis does. But the problem is people can change their behavior
+and so can the attacks, the malware, everything that the attack is actually based on can change.
+So we estimate about 30 seconds for this to be bypassed and we're going to demo how that's
+going to be done. >> DAVID KENNEDY: Application wireless thing.
+Really a pain in the butt to manage, especially in large corporations. But a lot of companies
+are moving towards that because you get to more of a trusted model where you only allow
+whitelisted applications. That's all fine and dandy but all the whitelisted applications
+you use we use as an exploit play field. So it doesn't do you much go.
+We don't really need a slide on that but I put it in there.
+>> NICK HITCHCOCK: Filler. >> DAVID KENNEDY: Just like do anything and
+it's good. So here we go. Monitoring and detection, could be a good
+concept because we want to detect these attacks. Most companies outsource them to MSBs, right,
+who have no idea what their network is and what their data is and they are looking for
+port scans. Sounds good. That's their monitor and detection.
+>> NICK HITCHCOCK: Content filtering works awesome. No, it does not. It does not work
+at all. Because why? We can change the content. >> DAVID KENNEDY: Exactly.
+>> NICK HITCHCOCK: That's all I got to say about that.
+>> DAVID KENNEDY: Is everybody ready for one of the most epic demos ever? (applause).
+This is one of the most epic demos ever. (laughter).
+>> NICK HITCHCOCK: You don't hear that a lot in talks. Bring out your chicken.
+(Clapping). >> DAVID KENNEDY: All right. So what we're
+going to do here ‑‑ and this could go horribly wrong or go horribly right, okay?
+I actually have got a customer who said that he would let us social engineer somebody on
+stage realtime and I can't think of anybody else better to do it than one of my good friends
+Kevin Mendick up here. (applause).
+So what I'm going to do first is give Sam a call to make sure he's still good and hasn't
+chickened out yet. We will give Sam a call and make sure he's good with it. We have five
+numbers. This could go horribly wrong where we don't get anybody or go horribly right
+and be fucking awesome. Either way, we will figure it out. Hopefully you don't see this
+right now  so that's fine.
+Let's see what you are seeing on the screen right now. Just blank? Cool. I don't want
+to give the phone numbers out. Because you guys are crazy sons of bitches. (laughter).
+Not going to lie. (Music)
+Give us one second to set this up. (laughter).
+(Theme to "Jeopardy"). All right, you ready?
+(applause). All right. Mirror display. Yes, I have live
+show windows up. All right. Let's give him a call.
+Can everybody see the screen with the shells up? Good. Let's do this.
+(laughter). That sounded like it hurt. That's how you
+roll a teacher. You got to put a rock inside of it.
+(laughter). The Browns are recruiting. We still have them?
+(Phone ringing.) >> SAM: Hello, this is Sam.
+>> DAVID KENNEDY: Sam, it is David Kennedy. How are you?
+>> SAM: I'm good. How are you? >> DAVID KENNEDY: I wanted to verify that
+we're still good to do that thing we agreed of. You are talking in front of everybody
+at DEF CON. Are you cool with that? >> SAM: That's perfect.
+(applause). >> DAVID KENNEDY: All right. Listen, we are
+going to try to keep the company confidential. And we will not start tweeting by the company.
+If they see their name on the phone ‑‑ is that good with everybody?
+>> SAM: That's perfect. >> DAVID KENNEDY: All right. Just a couple
+questions real quick. Again, we are not going to use this for our attack. We want to see
+what type of technologies you have in place. First of all, are you using some sort of next‑gen
+firewall that's one of the top providers out there?
+>> SAM: Yes. >> DAVID KENNEDY: All right. Are you using
+any type of whitelisting technology? >> SAM: Yes, we are.
+>> DAVID KENNEDY: Do you do egress filtering? >> SAM: Yes.
+>> DAVID KENNEDY: All right. And then as far as anything else, do you have any type of
+virtualization sandboxy technology at your SMTP gateways?
+>> SAM: Absolutely we do. >> DAVID KENNEDY: Thanks, Sam. I will give
+you a call back after this done. I will let you know how it goes.
+>> SAM: I look forward to it. Thank you. >> DAVID KENNEDY: Thanks, bye. Let's see how
+it goes. >> Hold on. I got to enter my password in
+here really quick here. (laughter)
+(Phone ringing.) >> Hi, you've reached ‑‑
+(laughter) >> DAVID KENNEDY: We got three more to go.
+We are going to keep trying until we get it. >> NICK HITCHCOCK: Dance, chicken, dance.
+What are we paying you for? (Phone ringing.)
+>> Can I help you? >> KEVIN: Yes, can I speak to James, please?
+Hello? Hello? (Busy signal.)
+>> Leave a message. (Phone ringing).
+>> This is (inaudible) can I help you? >> Yeah, James?
+>> (inaudible). >> Hello, James?
+>> Hello? >> James, can you hear me?
+>> Yes. >> Oh, great, great. This is Tom Bodett over
+with the HR department, specifically benefits. How's it going today? Hello? Can you hear
+me? >> Yes. I'm sorry. I'm having issues with
+my phone. Is this James? >> Yes.
+>> Oh, great, great, great. This is Tom Bodett. I'm over with HR. I work specifically in benefits.
+And I sent you ‑‑ we sent you over a form about a week ago on our benefits privacy
+form. Did you actually receive it? >> I don't remember seeing it.
+>> You don't. Well, unfortunately I'm calling several people. You're the eighth person I'm
+talking to today. We must have had an issue getting them out. And we have to send you
+this form because legal is requiring that you accept a new policy. It's part of our
+legal requirement to continue receiving benefits, so it is kind of important and we need to
+get this done today. It's Friday. And do you have a moment? Do you have a fax machine or
+do you have a computer handy? Better yet, are you near your PC?
+>> I'm at my computer. >> Do you have a moment?
+>> Sure. >> Okay, okay, great. If you could ‑‑
+if you could open up a browser like use Internet Explorer or FireFox?
+>> We have Internet Explorer. >> If you can go ahead and open it up for
+me. >> Okay.
+>> And what we're going to do ‑‑ I'm just going to have you accept the new policy
+over your computer so you don't have to go ahead and fax it to us. It makes it easier
+and quick so you don't have to fill out a form.
+>> Okay. >> Okay. Tell me when you're ready.
+>> I'm ready. >> Okay. If you can go to www.healthbenefits ‑‑
+and this is all one word, no spaces ‑‑ portal.com. That's www.healthbenefitsportal.com.
+>> www.healthbenefitsportal.com. >> Correct. When you get there, you should
+see a popup. When the site loads, you see a popup come up.
+>> (inaudible). >> Repeat that.
+>> I saw the popup. I just click okay? >> Click okay, that's right.
+>> Okay. >> Now, since you clicked okay on the popup,
+we went ahead and just automatically accepted the policy, so if you receive ‑‑ if you
+find that email or you find that in spam that we sent you earlier, just go ahead and ignore
+it because everything is fine. >> Oh, that's it?
+>> Well, unfortunately I have to call six more people that didn't fill out the form
+either. It is kind of my Friday work. >> All right.
+>> All right. Have a great weekend and talk to you soon.
+>> All right. >> Take care. Bye‑bye.
+(applause). >> DAVID KENNEDY: Oh, snap.
+(applause) Oh, my nerves are like holy shit. (laughter).
+Can we just stop there? So you might be wondering why I got multiple shells. The way this attack
+works is I love that Windows is end of XP. That is the best thing that could have ever
+happened to us since ever. Because with Windows Vista and above we get a thing called Power
+Shell, right? (laughter). And Power Shell is whitelisted, right? So
+what we can do with Power Shell is Matthew Graber came out with an awesome attack that
+allows you to basically inject a shell code straight into memory. I did a talk a couple
+years Baghdad with Josh Kelly and myself and we presented on how to basically take your
+malicious code, unicode, base 64 X code it and you can get around execution restriction
+policies. That still is the same case. Windows 7 and Windows 8, et cetera, we have the ability
+to directly access memory without ever touching disk on a whitelist. Sounds awesome. I recently
+released a native X86 which allows ‑‑ if you are on a 64‑bit platform or X86 platform,
+it doesn't matter, it down grades to a X86 process to allow you to inject 32‑bit shell
+code into memory to actually execute. Basically we have full execution on all systems through
+Power Shell no matter what. And as you saw here, whew, again, we were
+able to basically circumvent a lot of the different types of technology out there. This
+one was special custom shell code that basically encrypts the first stage, puts it back and
+then use the chicada to do the second stage that's polymorphic so it worked out well.
+It is all default set right now. You can use this right now in SET.
+(applause) So the truth is, since hacking is a people
+problem, it's people coming up with new ways to get into organizations. It is people that
+are sitting there attacking our infrastructure. It is people that are continuously trying
+to attack us. It cannot be solved solely by the use of technology. That's not going to
+fix the security. Technology itself isn't going to fix the problems that we face, okay?
+And so ‑‑ >> NICK HITCHCOCK: And defense in‑depth,
+air quotes, taken way out of context. It doesn't mean using multiple technology layers. It
+means using multiple layers in general. This is why these things do not work. They're not
+implemented correctly. Why? >> DAVID KENNEDY: The main reason why we have
+the problems today is because we are lazy. Anybody agree with that?
+>> Yeah. >> DAVID KENNEDY: Yeah. We are lazy bastards,
+seriously. We expect ‑‑ we don't have enough staffing. We don't have enough funding.
+We he don't have enough. So we will buy a piece of technology, right? We will implement
+it. We don't have enough people and resources to support any of the other technology we
+have, so those go to waste. We focus our six months to a year roadmap cycle of implementing
+this into our company while the rest of it goes to crap. And then we implement something
+else and then we do something else and we buy more and more.
+What I will introduce to you is revolutionary, I know. It is a 12‑step program. (laughter).
+I came up with this, okay? So this is a 12‑step program of actually fixing security. It is
+not going to cost you a penny. Big advocate of being able to do things that don't cost
+you a ton of money that you really can fix. So the first thing is get your hands dirty.
+We actually have to talk to people. Trust me, I know.
+We actually have to talk to people and interact with them and figure out our business and
+how they actually make money and how we actually have assets and how do we protect those assets.
+That's important, right? But that requires us to actually do some work ahead of time.
+Step 2 ‑‑ was Bill and Ted in the '80s or '90s? Thank you, sir. Getting back to the
+'90s, I remember sitting there and saying this is how you do egress filtering and network
+segmentation and build a firewall. Those are the element we don't do today. Once I compromise
+one machine, I'm into the rest of them. Isolating people to only access what they need, data
+that they need, systems that they need. Segmenting accounting and finance, those are concepts
+we built in the '90s. >> NICK HITCHCOCK: And this works. A recent
+engagement, fairly small, what we just did would not work. They didn't have anything
+revolutionary. They are using exactly what Dave just said, proper follow rule sets. Segmented
+networks. We have a customizable executable that we used a week before at a large organization.
+I think the phish ‑‑ well, it was about a thousand shells or something like that.
+It was one that just kept popping up. It was really cool to watch. It is completely true
+in the real world. >> DAVID KENNEDY: Now, education awareness.
+Interesting concept. New, revolutionary, we haven't been talking about this a lot. Education
+awareness, really trying to touch our people. >> NICK HITCHCOCK: Whoa, whoa, whoa.
+>> DAVID KENNEDY: Nevermind. We are not going to go there right now. Bruce Snyder.
+Anyways, education awareness is the concept to really focus on people. Making sure they
+understand key concepts, right? We all know that. Making security your friend. You know,
+they want ‑‑ people want hugs. There is no question about it except Andrew from
+Maltego, he only gives one every year on his birthday.
+But making friends of security. Making sure we are an inhibitor of the business.
+The one‑year challenge. Don't buy a damn for an entire year, not one thing for a year.
+Stay away from something and focus on what you already have and start focusing on that
+defensive strategy around security because at the end of the day, that's what's going
+to make it or break it for your company. This is my thing in security right here. If
+it introduces complexity, it doesn't need to be in your environment. If it's simple
+for you to understand, then you should put it in your environment. Something that will
+take you four years to implement, dude, really? Seriously? That's where we're at right now?
+You need to focus on the basics. Getting back to the easy things. That's ultimately what
+will stop us. Penetration testing, I'm biased. Understanding
+where your risks and simulating that and getting people that can actually help you out on that
+side. Step 9? Was it step 9? 8? Take a one‑week
+hiatus. Go get your chi, grab a beer, sit for a week and actually think about what you
+are going to do and how you are going to do it. We come in where we are fire fighting
+every single day. We fire fight, fire fight, sit back, crack open a beer. I know this is
+an AA meeting, crack open a beer and you will be fine.
+Chris Nickerson had a book called "Rework." It is one of the most fantastic books. When
+you apply it to security, it actually works. Step 10, removing complexity from your environment
+and going back to the basics. Step 11, actually just do it. Don't pontificate
+and talk about doing it. Actually go and do it. Change it.
+And, lastly, just rinse and repeat. Do the same thing over and over again. You will be
+fine. Thanks everybody for the talk. I appreciate it.
+>> NICK HITCHCOCK: Thank you very much. (Applause)

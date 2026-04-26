@@ -1,0 +1,255 @@
+>> REMY BAUMGARTEN: All right, good afternoon,
+everybody. I'm Remy Baumgarten. I work at ANRC Services, and today I'm going to present
+a tool I've been working on for a little while now. And, you know, I hope you enjoy it. Some
+of the contact information is up here. If you want to take that down. Otherwise, I'll
+give you the link to the slides and the link to the tool at the end of the presentation.
+So a little bit about me. Again, I work for ANRC Services. I mostly do mobile malware
+talks. Here's a few of the cons I've done on my talk set. Presently I'm doing R&D at
+ANRC, mostly with iOS Android. I also do security instruction for the company as well. Before
+that, I was a senior consultant on the malware team at Booz Allen Hamilton. And before that,
+I was an intern at Secure DNA. So why new tool? There is a lot of new tools
+out there that are coming out all the time, especially at DEF CON. And I believe there
+is gap that I wanted to fill. Especially in the area of ‑‑ for Mac and malware analysis.
+I also believe that visualization is a great way to learn how complicated things work.
+And that's one of the reasons why we created this tool, Mach‑O Viz.
+There's also not many security products out there to analyze Mach‑O files. There are
+a few. I'm going to show you them. I'm going to show you the pros and cons and what I'm
+going to show you what I'll try to fill the gap in with.
+There's also a lack of web based, free reverse engineering tools to use on any device. Most
+of the tools require that you use Windows or Linux or Mac. In this case, you could use
+it on the iPad or Android which is pretty unique. There's also really strong need, at
+least from what I hear, about the ability to quickly identify malicious files and automatically
+create snort signatures on the fly, especially to people without much training.
+So some of the tools that I've used that I really enjoy that, you know, were big inspiration
+to this project were IDA Pro, otool, class‑dump, Mach‑O View, PTool, otool, NG and Hopper.
+A few of these, especially MackOView, have been really, really helpful in just basically
+making sure that everything I was doing was correct.
+So with this chart, you know, some of it's arguable. I did the best that I could to my
+ability. However, there's five categories right here. And with Mach‑O Viz, I tried
+to basically, I guess, checkmark in all of them. And that's making a graphical, having
+multiple architectures, making it network security aware, easy to understand and be
+very easy to use. So basically the goal of the project again
+is to combine the features of all those programs and speed up the process plus add this network
+security element to the mix. Ultimately, at the end of the day, the goal is to help the
+network defender understand the Mach‑O file format better and provide an effective and
+efficient way to analyze the particular binary for malicious behavior.
+So with that, introducing Mach‑O Viz in beta. It basically presents the Mach‑O binary
+in a visual format. For those of you that don't know what a Mach‑O file is, it's basically
+the file format used on iOS and Mac devices. If you're familiar with Windows, you're going
+to see PE file format. And for Linux, it's going to be the L file format.
+And so basically, in turn, this makes it easier for anybody to see visually how the file is
+constructed. And it might not be that new of a concept to you if you've used IDA Pro.
+There's a little ribbon band at the top that shows you the whole entire file structure
+broken up. So we took that a step further with this tool, though, and you'll see in
+a minute how that works. So you're going to see the visual representation
+from the header through the load commands and into the corresponding sections and segments.
+It's also interactive so you can zoom into the segments for more detail.
+In addition to that, we also wanted to create a back end graph and visualization plus an
+analytic system for graphing the binary's disassembly, very similar to what you're going
+to see in IDA or Hopper if you're familiar with that. Currently, we're only supporting
+these architectures right now; 86, 86/64, ARM 6 and 7. Again, that's only for Mach‑O.
+But we have the ability and we'd like to expand it if there is enough interest to other architectures.
+We also wanted to keep this program not only visual but also accessible again so that means
+we could use a web browser and any other type of platform.
+Again more design features. We wanted to keep the back end as Mac as possible. And by that,
+I mean that when Apple updates its specs for the Mach‑O file format which it hasn't very
+recently, the tool's automatically already updated because the system's keeping up to
+date with everything Apple is doing. So it's, the whole entire tool is working in its native
+environment. And by that, it's always updating relevant by default.
+We also get to gain access to the LLVM assembler for the most accurate assembly we could feed
+into our analytics engine. We also make use of many of the open source utilities app and
+many other web open source utilities for this project as well.
+So this is a mean page of what the application looks like when you go to the website. At
+the very top, you're going to see a few different things that you could take a look at. The
+first is going to be the instructions. The white paper which I really highly recommend
+you read if you want to really see how to use the application. There's about three malware
+samples that are walked through step by step. And it will show you exactly all the features
+and how to use it. I only have 20 minutes today so I can't show you everything.
+There's also a fact and contact information, so essentially, all you need to do is upload
+your binary and then click the upload file. But before you do that, there is something
+I want to mention to you. When you actually do do this, if you're not familiar with how
+Mach‑O files work or how Apple packages their applications, this is an actual diagram
+of an IPA. An IPA is iPhone application or iPad application. Essentially, it's a zip
+file, so if you change the .IPA to a zip and then you extract it and then you open up the
+pay load folder and then you right click, you can show package contents. And then inside
+that, you're going to see a whole entire directory containing database files and resources and
+then the actual binary itself. If you run file on one of these binaries,
+especially for, in this case, on the iPhone, you're going to see two architectures. In
+this case, for Facebook, you're going to see ARM Version 7, ARM Version 6, both Mach‑O
+ARM executables. So at the very top of the application, it's
+actually divided in two different parts. This is the visual file explorer. And at the very
+top, you can see that there's a key that will show you what all the colors mean along the
+way. So at the very top, you're going to see the header, the load commands, executable
+code, data, file architecture, objective C, static info and code signature. And by clicking
+in any of these major segments, you basically could drill down to get further information
+about what is going on inside that file format. So in this example, I clicked on the file
+header itself, and you can see the magic number right there is feed face. And then the CPU
+type which is 12 and then the CPU subtype which is 9. And that basically just stands
+for ARM Version 7. In the future, we're going to add documentation
+pop‑ups, so if you could hover over anything, it will basically give you the information,
+more information about what exactly you're looking at in the visual file explorer.
+This is just the load commands. Again, another view of what it looks like when you're drilling
+down into different parts of the file format itself.
+The second part of the application is the graph visualizer, and this contains three
+major areas, the first being the interactive graph function search, the second being the
+security assessment, and the third being the graph data display pane. I'm going to show
+you what all three of those look like. And then I'm going to give you a demo of the application
+itself. So the first is the interactive graph function
+search. And at the very top left, I know it's kind of hard to see. But it says "functions."
+And it's basically going to do an analysis of the whole entire binary and give you a
+drop down menu of all the functions in the application itself. So when you select any
+of those functions, it's going to automatically draw that graph for you right below in the
+graph pane, okay? The second one and the third one, the name
+xrefs in the strings basically are going to list all the strings in the cross‑references
+for you. And when you select one of them, it's going to search the binary and then populate
+the results into the ‑‑ into the search results which is the last drop down menu on
+the right. So whenever you select the names xrefs through the strings, remember that the
+search results is going to contain all the functions that are going to have any of those
+references that you looked at when you did those searches.
+The second part is a security assessment. Right now, the way that we're doing this is
+we're identified code segments which are using EPIs and functions flagged as security risks.
+We're also identifying an automatically generated network and static style signatures for the
+binary. Basically, we're doing this in two ways. The first way the network way by detecting
+network domains, IP addresses, URLs, web protocols embedded in the binary itself. And the second
+is calculating unique binary signature for the file itself using the Mach‑O magic value
+in the file's header plus unique 16 bytes from the binary string table.
+Using those, we're going to basically get snort signature, which I will show you in
+a second. By selecting a potential security risk, the functions are located continue the
+risk. So this is the security assessment, what it looks like, the pane itself.
+And if you see a drop down right here, you can see that I've selected the system function
+call. So by actually selecting that, it's going to fill in the search results which
+we saw just a minute ago, and it's going to show you all the functions in the application
+that are using that call in the application. So you can drill down directly to the places
+where those potential security risks will be. So your analyst can look exactly at what
+potential malicious behaviors might be inside that binary. So when I do that system, it's
+actually doing a search right here ‑‑ yeah. (Laughing)
+>> SPEAKER: You know the drill. This is how it goes, Right? What are we doing? Shot the
+n00b. All right. Do it as fast as we can because we know it's a short talk. All right. We need
+one person from the audience who is new, first hand right here, yellow shirt, let's go. Up
+on stage. Paul's not having a good time. Congratulations
+to all of you for getting up. How is the speaker doing so far? Doing okay?
+(Applause) >> SPEAKER: To our new speaker ‑‑
+(Applause) >> SPEAKER: We have two more to do this hour.
+All right. Thanks a lot. (Applause)
+>> SPEAKER: He said he feels better all of a sudden.
+>> REMY BAUMGARTEN: So yeah, so by clicking that security scan result system, we're actually ‑‑
+you could see this little pop up here. That's basically looking through the whole entire
+binary and finding ‑‑ >> SPEAKER: Is he doing a good job?
+(Applause). >> REMY BAUMGARTEN: Thank you. So we find
+our three functions containing the reference system, and then we update the search results
+containing that. So if you look at the search results, you're going to see three functions
+where you click on it. And right here you can see the actual search results. Those are
+the functions containing the places you want to look at.
+All right. So the bottom, the last part which is ‑‑ contains most of the stuff you're
+going to be looking at is the graph data display pane, and this is divided into six tabs. The
+first being the graph view which is like your IDA like interface. It's completely interactive.
+You can zoom, scale, highlight and a few other things.
+You're also going to have your hex view just like IDA strings, Just Enough C, whether or
+not it be a class‑dump. Disassembly via LLVM disassembly. And then also network security,
+which is going to contain your snort signatures. So the graph view right here with the view
+highlights I've demonstrated, you can see it looks again very similar to IDA Hopper.
+How are we doing this? Basically, we're parsing the otool disassembly of the binary, and then
+we're doing a lot of magic. I don't have too much time to talk about it, but we're turning
+it into graph Viz charts, and we're taking those graph Viz charts into HTML and placing
+them as SVG with Java script in CSS to give you all the visual effects.
+So the hex view, basically you click on the visual file explorer like this. So in this
+case, we're clicking on a dynamic loader info. And dynamic loader info is basically, if you're
+going to look at that, it's got all the information you're going to see for that particular type
+of information from the visual file pane is going to be hex values. So this is what the
+hex values for the area looks like. This is the second pane.
+The third pane is the strings. And the strings are displayed in full and provided with short
+names on the left for easier look‑up references within the code. This ‑‑ if you look
+at the disassembly by itself with the tools Apple provides, it doesn't give you short
+names. So we had to develop an algorithm to actually do this and then have it cross‑reference
+to a particular area within the file format itself where these strings actually existed.
+So this is a little bit tougher than it looks. And for the objective C part, we're using
+class‑dump here. And class‑dump basically generates headers from Mach‑O files if you're
+not familiar with it. It's basically a reverse engineer's wet dream if you're working with
+Mach‑O file format. It's awesome. And I'll show you an example of how effective that
+is when we're looking at one of the samples here in a minute.
+The third is ‑‑ the next, the next panel is a disassembly view, and this is taking
+from LLVM disassembly. Again, we're paginating here, so you could basically change how many
+lines you want and then just change pages. The last tab, which is the most useful to
+the network, network analyst, is the network security pane. And here you can see we developed
+some snort signatures, and you can see some URLs, and you can basically plug and play
+these right into your IDS system. These are going to contain domains, IP addresses, URLs
+and protocols, if you, in fact, find that the file itself is malicious.
+The bottom is a file signature. And again, we're doing that unique 16 bytes from the
+string table that I talked about earlier. So with that, let me give you a demo of two
+examples of analyzing different samples. The first is Yontoo Trojan, and the second is
+Mac Defender. A little bit of background about both. The Yantoo trojan basically infects
+Chrome, Firefox and Safari and the Mac. It uses social engineering to install an HD plug‑in.
+So let me pull up this video. Okay. So again, this is the front page, and I'm going to select
+the Yantoo Trojan, which is called custom installer, and I'm going to upload it. And
+at this point, it's going to analyze and generate the graphs. It's going to analyze all the
+assembly of the file. It's going to basically break apart all the functions, create the
+SVG files. It's going to, then it's going to do some optimization to minimize the network
+load over, so when you pull it down, it's going to be a lot smaller. Also calculate
+the entry point right here. So this is what it looks like, the Yantoo
+Trojan. And you could see I'm opening up the header right here. And you can see a few different
+values. There's the magic number, the CPU type and so forth.
+Again, I clicked on the top level. And I'm looking at the load commands, and you can
+see all the different load commands here. And then I'm going to go down to the bottom
+and quickly look at the security assessment, and you can see that there's 16 security risks
+that we deemed that are essential to look at.
+And with that, there's a few things I want to show you. This is the graph view. You can
+see I can move it around. This is the strings view. And you can see a bunch of potential
+interesting URLs and file locations that are kind of sketchy that might immediately pop
+out to you. And then objective C. So with objective C,
+this is again class‑dump. So I took a look ahead before and I found a really interesting
+method or interface method in here, and it's called extension installer. So this one immediately
+was pointed out, and one of the methods right here is called "install Safari extension."
+So basically what you can see right here is there's an address.
+So what I'm going to do is I'm going to copy that address and I'm going to plug it right
+into the functions right here, just paste it right in there, and then it's going to
+automatically generate the graph for me and then display this particular method, so you
+could take a look at exactly what's going on in this installation method itself.
+So this is a graph view, and I'm going to show you the whole entire size of the graph
+view by clicking zoom extents. This is the whole entire method displayed right here.
+So I'm going to zoom in. And I'm going to show you a few different things of what exactly
+is happening within this installation itself. The first thing you can see right here is
+STR library Safari extension. And that is a short name for the string which you can
+see at the bottom right here. So this is the URL. You probably can't see it, but it's library
+Safari extensions. And that's going to be location of the directory of where they're
+going to want to install this. And that's a highlight right there.
+And then the next thing you're going to see is Safari extension plist short name. And
+then I'm going to go ahead and find that string over here and see exactly what that means.
+And you can see that. It actually is the extension .plist. So what I can kind of infer right
+now is they're actually modifying the extension plist for Safari.
+So looking further down in this routine, I'm basically looking for something else. Probably
+they're going to write a value. So taking a look further into this, I'm going to zoom
+in and see that essentially there's going to be a string called STR enabled. And they're
+going to be writing a 1 to it. So we're going to see an LEAQ or load effective address.
+And from there, you can basically see that the value is turned on to 1. So that's enabled
+right there. There's a lot easier ways to do this. I wanted
+to show you the hard way. And so how much time left? Three minutes. Great. And for the
+strings, basically, I could have just gone to STR Safari extension right here, and it's
+basically going to show me the same exact graph that I pulled up before. So it's basically
+the reverse of what I was just doing. So looking down, it's going to show the same
+graph that I just had. So let me ‑‑ due to short of time, let me skip forward a little
+bit. This is a disassembly view, and this is the snort pane right here. So, again, we
+have all our snort signatures of this Yantoo Trojan that we can plug directly into our
+IDS system. All right. So moving forward, the next one
+is Mac Defender. And we're going to build this chart right here. And right here, I just
+want to point out that Mac Defender is actually multiple architectures. That's why you saw
+two big blocks. One of them was x86 and the other one was x64.
+For this, this is really interesting because what we're going to do right here is we're
+going to find a method called "is file infected" because what Mac Defender is is a fake antivirus.
+So we're going to look for this interesting method called "is file infected."
+And by pulling this method up right here, we can see the whole entire routine that is
+going to be used for the ‑‑ for the actual virus detection for this application of this
+malware. So this is the entire antivirus routine. So looking closely right here, you can see
+that, basically, this is the world's smallest AVI file infection detection team in the world.
+It uses a random number generator for scan time, and that's pretty much ‑‑ that's
+pretty much it for the, for what this ‑‑ for what this, the way that this file actually
+scans these files. So just taking a look at one routine, due to shortness of time, it's
+very interesting. The last thing I want to show you today is
+the network security. So this is basically what you get at the end, snort sigs. These
+are mostly porn URLs. So what this application is doing is going to the net and entering
+a bunch of porn URLs. So you can put this all into your snort database right here.
+So with that, let me give you the links for this presentation. At the top, this is the
+beta URL. We don't have too much bandwidth capacity, so if you do hit it, you might have
+trouble if everybody starts hitting it at once. Just try it a little later. And below
+is a slides URL, too. The white paper is also listed on these ‑‑ this Mach‑O Viz
+beta URL. And if you have any questions, I'll be over there outside, and I hope you enjoyed
+my talk. Thank you, everybody. (Applause)

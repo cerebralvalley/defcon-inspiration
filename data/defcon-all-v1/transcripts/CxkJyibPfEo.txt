@@ -1,0 +1,824 @@
+So the title of my talk is From
+Raxacoricofallapatorius with
+Love: Case studies in insider threat. For those who cannot
+read circular galifrian I am
+Tess Schrodinger. Agenda first. Going to go over just kind of an
+introduction of myself and then
+my slides. Little bit of history some, some definitions. I'd like
+to get to current research if
+possible if I have time. I got to cut this down and make it
+short so I can't be very funny.
+For those who don't know I won the contest this year. So thanks
+for voting for me if you voted.
+(Applause) So who am I? I've got about 20 years of law
+enforcement investigation,
+industrial security experience. Forensics. I say bullets and
+bloods not ones and zeroes
+because back when I did forensics if we encountered a
+computer which was rare, we'd
+have to call in the state. There was, like, a dude in the closet
+somewhere who knows what to do
+with this because it was a long time ago. I have a BA in
+sociology. A master's in
+security management. And I just completed my grad Cert in cyber
+security technology. I've only
+been doing the cyber part for a couple years. My two mentors
+will attest to the fact four
+years ago the most complicated thing I could do was put my out
+of office on. Now I'm proud to
+say I can write snort rules. So I've come a long way. When I say
+not technical for you guys, one
+of the things I noticed over the last couple years hearing people
+talk is the whole insider threat
+phenomena. They act kind of like it is this new thing. Oh no
+suddenly we have to worry about
+this. And if you know your history that's really not the
+case. Insider threats have been
+an issue since before the beginning of time if you are
+counting at zero. Those that are
+familiar with Judas Iscariot, back with Jesus, he is famous
+for selling him out for 30
+pieces of silver on to the Romans. And, of course, you have
+Guy Fawkes. Those who have seen
+V for vendetta are probably familiar with the masks. But not
+a lot of people at least the
+ones I run into that are into the trendy thing with the masks
+realized it's taken from guy fox
+which was the 1605 gun powder plot to assassin King James the
+first of England. They had
+packed the horse of Lords with gun powder in the basement and
+they were going to blow it to
+high hell and he was kind of caught guarding everything. So
+he is the guy who went down with
+it. That's actually where that mask comes from. He stands for
+the whole antiestablishment type
+thing. 4 ADBC quite a long time ago the battle of Thermopoly.
+Anyone familiar with that? You
+had the guy that pretty much sold his country out. The Greeks
+had set up position at this
+particular place because of how the cliffs were form. It kind of
+got them down into a narrow
+line. They were going to be a little easier to tackle as they
+were coming through single file.
+And he decided that, you know, he would make a little cash off
+this. He told the Persian Army
+how to get around through the mountains to the south so they
+could actually come up behind
+the GreeksÕ position. We all know how that ended. 	His name
+is actually synonymous in Greece
+with traitor still today. It's been a very long time and they
+still use that word for traitor.
+Just was as in the U.S. if you were to call someone a Benedict
+Arnold that is synonymous with
+traitor. We have an international crowd so those not
+familiar Benedict Arnold was an
+American revolutionary war general. And very long story
+short he got kind of bitter and
+frustrated with the politics and the things that were going on
+the American side during the
+revolutionary war. So he decided to defect to the British side.
+And he was actually in command
+of west point at that time. And the plan was he was going to
+just hand West Point over to the
+British when they came to get it. Major John Andre who was a
+British soldier was caught on
+the train. He had the plans to surrender west point on them. So
+general Washington figured this
+out before it actually happened. Sent some guys after Arnold. He
+managed to escape. He stayed in
+this country, fought on the British side and led raids in
+Virginia and Connecticut before
+the end of the war. I believe he ended up going back to England
+after that. He is one of our big
+traitors in history here. Does anyone know who Robert Ford is?
+Not the Canadian current
+politician? Yes, I like Robert Ford because sometimes I'll hear
+people going I ain't got to
+worry about insider threat I am the threat. That's what Jesse
+James thought. Robert Ford and
+his buddy were arrested by the by the sheriff in 1882. They had
+actually shot and killed the
+cousin of Jesse James. And the sheriff had caught them and
+Jesse James wanted to get rid of
+him was having trouble getting to him. Basically made a deal
+with Robert Ford and said you
+take James out and we'll make this go away. Robert Ford of
+course says sure I can make that
+happen. So Robert Ford's brother Charlie actually worked with
+James and was on his gang and
+team and did jobs with him. So he told Charlie what was going
+on. You got to help me out, Bro.
+Charlie goes back to Jesse and says hey my little brother wants
+to come hang with us and, you
+know, do some work. James was, like, sure, yeah, okay.
+Unfortunately it did not end
+well after breakfast in a boarding house one morning when
+they went upstairs to pack to
+hit the next job, Robert Ford put a hole in Jesse James. Game
+over. Took him out. Insider
+threat right? Finally, I can't imagine nobody knows the story
+of Julius Caesar and how he was
+betrayed by his friend Brutus. Those who are not familiar with
+the story. Caesar was a Roman
+general and politician who actually had risen up through
+the ranks pretty high. Kind of
+gotten the point he was dictator for life. This didn't sit really
+well with a lot of the senators.
+Because if you have a dictator for life you really don't need a
+senate. So they kind of were a
+little worried about their jobs. And in theory they were worried
+about democracy. I'm pretty sure
+they were more worried about their jobs. And they kind of got
+a conspiracy together to take
+Caesar out. And they tried to convince Brutus to join them but
+Brutus was his friend and
+trusted confidant, a member of his inner circle. He had been
+made governor by Caesar. By all
+accounts he was very, very tight and close to Caesar. But Caesar
+was being a pretty big douche so
+the conspirators convinced him to join them and they staged an
+event, invited Caesar. They
+surrounded him. The stabbing began. Historical accounts say
+that Caesar did try to fight
+back and crawl away, but once he saw his friend Brutus was one of
+the people that had turned
+against him he just gave up. Interesting trivia I learned
+apparently the whole Ôet tu
+BruteÕ if you were forced to sit through Shakespeare in school,
+that is a Shakespearean
+invention. There's no actual evidence he ever said that. Win
+your next trivia game with that
+one. Or hacker jeopardy. A couple of current cases, more
+modern. This was four pillars
+consulting versus Avery Dennison. Has anyone heard of
+this? If you do security
+awareness at your organization this is a really fabulous
+example. I love to use this one.
+I've used it for years. A lot of times people don't understand
+that there's a value to what
+they work with. To them it's, like, well it's not a rocket.
+It's not, like, this top secret
+thing. Who cares you know. They don't understand the value. I
+love this example because
+Dennison makes labels. They make adhesive stuff that goes on duct
+tape. Really? If I work there I
+would probably go who the heck wants this. Apparently someone
+wanted it bad enough they paid
+off their lead $160,000 to get it. He over I think about a
+period of eight years, siphoned
+this R & D and all these formulas and everything out to
+them and he was caught and
+charged. But I think this is a really good example. Because,
+you know, people are willing to
+pay that much money for that type of thing, imagine what you
+work with, and how much someone
+might be willing to pay for that. And this is again a great
+example to use with your staff
+when you are trying to show value to them or at least maybe
+make them think differently
+about how valuable what they're working on is. Then we have Mr.
+Quentin Tarantino. Is anyone
+familiar with what happened earlier this year with him? Yes.
+He had a script that he wanted
+to do. And he showed it to six people. Six. And he said don't
+show this to anyone. So of
+course it's on the internet, like, two days later. He was
+absolutely furious. And just
+ballistic about the whole thing. He's got attorneys. He's
+demanding to know which one of
+these six people leaked it. I believe he shelved the script.
+I'm never making this movie and
+you betrayed me and he is still trying to figure out which of
+the people he trusted betrayed
+him. Again, this isn't a high tech or DOD thing. This is a
+frigging movie script. But,
+again, he was betrayed by someone he trusted. So couple of
+quick definitions. Industrial
+espionage versus economic espionage. I like to give the
+difference because when you get
+further into the study it's interesting to see how charges
+are done and things like that.
+Industrial espionage is essentially when two competitors
+go at each other or, like,
+corporate adversary type things. Economic espionage is when you
+get into foreign government or
+nations which could be through the guise of companies and
+that's where the law gets all
+squirrely and people who make way more money than I do deal
+with that kind of stuff. When I
+was doing my research I noticed that a lot of words were used
+kind of interchangeably. And I
+was asking around like are there hard definitions for any of
+these? Pardon me it's really
+dry. These are my definitions. Do not, like, if using them on
+an exam and the teacher fails
+you I take no responsibility. These are my definitions. A spy
+is someone who doesn't
+necessarily require a preexisting relationship with
+you. They can have one, but it's
+not necessarily required. A traitor, on the other hand, has
+to have that preexisting
+relationship so they can betray it. What's interesting about
+insider threat which years ago
+when I started researching this I did not realize is that an
+insider threat doesn't have to
+have a malicious agenda. So where your spy has an agenda to
+steal from you or your traitor
+has an agenda to betray you, an insider can be malicious,
+meaning they've that agenda, or
+they can just be, you know, someone who doesn't really care.
+They're apathetic. Perhaps your
+security awareness program sucks and they just don't know. They
+don't necessarily have to
+maliciously have it out for your firm. They could just be, you
+know, a Jack wagon and that's
+your fault. No I'm just kidding. So here's my obligatory sexy
+slide for DEF CON. I was told we
+had to have one in all of our decks. Honey pots I know we use
+them a lot with networks. Honey
+nets are things like that. But it's also an espionage term.
+Sharon, this is for the ladies.
+I say that because over the years when I've been briefed
+countless times what I found
+really interesting is that at some point whether it's a man
+giving the brief or a woman
+giving the brief, inevitably there is a point where they say,
+okay, guys, if you are not sexy
+at home in the bar down the street, you are not sexy 300
+miles away from home. Okay. So
+after a couple of years of this I finally asked one of the guys
+I worked with. I said, you know,
+I'm not sure if I should be incredibly flattered that you
+think that women, you know, we
+have our shit so much together or we would never fall for boys
+and their devil penis magic, you
+know, or should I be insulted that you don't think we have
+anything of value to come after?
+Or, like, maybe we're just not worth bothering to tell? I kind
+of feel like that was the case
+with Sharon Scranage. A little background. This occur Ghana in
+the 80s. The only thing you need
+to remember from the slide is the name of the man in the coup.
+Ghana broke free decided to
+become their own country. They were fighting about who got to
+be in charge. You know how that
+always happens. This dude Rawlings stepped up and said I
+am in charge, no more
+constitution, no political parties. That's the way it's
+going to be. His name is
+important. Remember that as we go forward. So Sharon was a CIA
+employee. About seven years. She
+was an operation support assisting ant so I think that's
+a fancy way to say secretary. By
+all accounts she was a good girl. She wasn't a bad person.
+You know, she was honor student,
+high school cheerleader. She went to church religiously. She
+sang in the choir. A good girl
+they say. So what happened to her? Well a gentleman named
+Michael happened to her. And he
+happens to be this is where the other name comes in the nephew
+of the man who ran the coup. So
+he was assigned to seduce Sharon when she was stationed in Ghana
+as operations assistant to the
+station and get as much information as he could out of
+her. Now the goal was to take
+that information, he passed it to the chief of intelligence for
+Ghana, and he in turn passed it
+along to the KGB, Soviet, Libya, East Germany, pretty much anyone
+who wanted it. Why did he do
+this? Well at the time Ghana was pursuing a capitalistic policy.
+They were really trying to cozy
+up to Castro in Cuba and Daniel Ortega in Nicaragua. So having
+this information helped them get
+in with some of the people they wanted to get in with. So how
+was she caught? She was caught
+when an inspection team came to the station and she invited some
+folks over for dinner at her
+house. Apparently one of them saw a photograph of him taped to
+her nightstand. I guess you had
+to pass her bedroom to get to the bathroom. Apparently in the
+photograph he was not wearing
+any clothes and he had his sheet draped strategically. He was,
+like, look Sharon you need to
+stop. She says okay I'll stop. Which she didn't. So the
+inspection guy went back to the
+chief of stations and told him what was going on. They were
+very concerned. They drew up a
+report and sent it into SAD the special activities division with
+CIA. They were basically the
+division that looked into agents relationships with foreign
+nationals if they had them. So
+SAD looked into this and said, we're not really worried. A lot
+of our folks in foreign
+countries date foreign nationals regularly. And by most accounts
+no one felt there was a real big
+concern at the time. They denied the request to bring her home
+and said she is almost done
+there, we will- she is on her way back. She is going to get
+reposted. We'll just do her poly
+when she is back on leave. I don't know how many of you are
+familiar with poly technique but
+they hit a question she struggled with. That was have
+you given classified information
+to anyone who wasn't authorized. That question really got her.
+After about four days of
+interview and interrogation she pretty much just confessed it
+all and admitted she had been
+giving all this classified information. I believe it
+included names of folks the
+United States thought were potentially KGB double agents,
+plans for a coup against the
+current Ghana government by dissidents, com data, stuff on
+military equipment that Libya
+and other countries wanted from us. And she was sending out a
+lot of the names of people
+helping the CIA. She confessed to all this. She ended up
+pleading guilty to three of 18
+charges. Mostly because she, you know, she felt bad but she also
+agreed to help catch him. So she
+had got him to meet in their hotel. They think the reason
+because they had planned to use
+her as a source once she got to Calcutta. But they arrested him
+instead. He pleaded no contest
+to espionage. They sentenced him to 20 years in prison but then
+decide to let him go in exchange
+for all the Ghanans that had been implicated which she
+released all that information to
+them. They had been rounded up and arrested. They believe one
+person was actually killed
+because of his involvement. So I think a '94 "U.S. News and World
+Report" said it cost $13 million
+to bring all the affected back over to the U.S. and resettle
+them and get them new lives. And
+they exchanged him for that. Included among them were, like,
+a guy with a posted telegraph
+who had given the CIA the keys to manhole covers so they could
+get down in there. And the chief
+of police had been placing wiretaps. So those were some of
+the guys they brought back over
+here. So, why? Well supposedly she was married before she did
+her CIA career and went over to
+Ghana. By all accounts her husband had been pretty abusive
+and not very kind to her. She
+had just gotten out of a pretty bad marriage. Now you have to
+picture yourself, you are a
+black woman in the 1980s in a predominantly white male CIA
+station. I'm pretty sure they
+weren't inviting her to play tennis afterwards. So you've got
+this woman who has left a
+terrible relationship. She is very vulnerable. Now she is in a
+foreign country thousands of
+miles from home and family and support system, probably not
+with the most supportive working
+environment that could be given. And along comes this man who
+just is, like, hey baby how are
+you doing. And, you know, it's really easy to see how in her
+vulnerable position she
+absolutely could have fallen for all of that. Now she claims that
+in the beginning, you know, he
+basically just asked for the information. But then she was
+kind of hesitant so he
+threatened to break up with her. So she went ahead and got it.
+But once he had that spigot open
+she stopped being nice and was pretty much threatening her with
+a gun. Threatening to kill her
+office workers or herself. Threatened violence. I think
+that is probably one of the
+reasons she agreed to help get him arrested. But I like to
+share that story because, you
+know, we talk about the guys all the time and the hot girls. But
+I think if you are a security
+person and you have anyone at your environment in a vulnerable
+position that could leave them
+open to compromise or being manipulated or being used like
+this, you need to be aware of
+that. And you should think of how you are going to handle that
+and how you can mitigate that
+problem as an organization. To not only support a staff member
+but, you know, to prevent damage
+to your organization at the same time. A little summary there.
+The big red flag on this was the
+fact that she promised to cut the relationship off and
+refused. Intelligence identities
+act was a big player in this. And then this is also a huge one
+because a polygraph played such
+a key role in her confession and for them discovering this was
+going on. Remember they didn't
+really suspect her. It was the Polly that caught it. This is
+another one. I'm going tell you
+a little bit about this guy first. I assuming most of you
+are security professionals. If
+you're not just pretend you are. I did this with my daughter.
+I'm, like, tell me when
+something just doesn't sound right. So you are at work one
+day and at this big facility and
+it's pretty sensitive stuff. It's not Target or 7 Eleven you
+got sensitive stuff a lot of
+people want to get at and you are in charge of protecting it.
+And we've got a delegation of
+foreign scientists show up. Unannounced for some meeting
+that that's not been planned
+that you are aware of. Then one of your staff members saunters
+through the lobby and says I'm
+really good friends with one of these scientists. Okay, you
+know, look at this a little
+closer. Call in the people that do the forensic testing. And
+they say, you know, did you know
+that this dude's been, like, you know, all that sensitive data
+you have on his network that's
+not supposed to leave this network, he is backing up copies
+to tape. Did you know this? So
+you go you know what I am not going to jump to conclusions but
+I think you don't need to be on
+this project until we get this sorted out. So you take him off
+the project. Take his badge
+away. Take his access away. No more network for you right. So
+you are trying to get this all
+sorted out and you got him over here and think you got him he
+goes behind your back to another
+division to his buddy and goes hey dude can I borrow your
+computer. And he goes and gets
+all the shit you took away from him and tapes it again. Red
+flag. And then coincidentally
+about eight years ago you find out that he was actually
+questioned by federal
+investigators because he was caught on a wiretap with another
+dude that just got busted for
+economic espionage. Spidy senses tingling yet? Here's this
+gentleman. Mr. Wen Ho Li. What
+he did was he worked for Los Alamos national lab. And his job
+was to create simulations of
+nuclear explosions. They studied the simulations to improve the
+liability of the U.S. arsenal.
+In March of '99 he was fired. The same exact day not sure if
+they ever pinned down exactly
+who gave the information to the "New York Times" but they ran
+this huge story all over the
+place. In December of '99 at a federal grand jury actually
+indicted him for stealing U.S.
+nuclear arsenal secrets and giving them to the people's
+Republic of China. In September
+of 2,000, a judge said, all right, if this goes to trial
+everything on the tape needs to
+be disclosed. So Louis Freeh and Janet Reno went oh. So they said
+okay we got to plead the guy
+out. So the whole deal with the plead out was to keep the data
+from going public, obviously.
+Then they also he had to tell them where the tapes had went
+that he backed up. You know what
+he said? I destroyed them. That's cool. It's all good. He
+ended up pleading guilty to one
+felony count of illegal retention of national defense
+data. Then in 2006 he settled a
+$1.6 million lawsuit against the U.S. government and five
+different major media outlets
+for dragging his name through the mud before he was indicted.
+	The big question with him was,
+was he an insider threat? If you read his book and listen to some
+government accounts, everyone
+was bending over backwards to apologize to this man for this
+unfair treatment and how, you
+know, okay we're sorry. But you're security professional.
+What do you think? Take out the
+charges and what do you think? Was this guy a threat? There you
+go. Okay this next guy is my
+favorite dude. I love this guy. I got to tell you why I love
+this guy. All right. So you old
+school folks like me didn't always have, like, hard drive,
+USB things to put, like, a
+billion documents on and stick it in your pocket and walk out,
+right. This guy was, like, total
+old school. Everything he stole was hard copy. Okay. And I have
+seen pictures his house. Wow. He
+was actually caught he had a high level clearance and he was
+caught during the investigation
+of another spy. For those who aren't familiar with him a
+naturalized U.S. citizen,
+engineer with a division of (inaudible). He was found guilty
+in 2007 for conspiring to export
+sensitive defense technology to China. While they're going
+through his house and all his
+stuff, they find these two letters talking about this other
+guy. And, you know, the handlers
+are basically, like, hey we know you don't have access to this
+can you see if Greg can get it
+for us? So they finally figure out who Greg is and they decide
+to do some surveillance on his
+house and take his garbage. He thought he was being pretty
+clever because he was taking the
+documents and putting them in the newspaper and putting them
+in his trash. So there were five
+searches of his trash between August and September of 2006 and
+every single one they found
+designs, drawing, diagrams, technical data, engineering
+modification reports, stuff for
+the space shuttle. I think he had a feeling they might be
+looking at him because his buddy
+CHI was in trouble. So he was trying to slide it in the trash.
+Once they found all this
+they're, like, we need to take a closer look at this guy which
+they did. So I'm going to tell
+you, as an investigator, the one thing I would love for you to
+do, can you keep a journal of
+everything you do. Because it makes it so much easier for me.
+It's, like, you just write my
+report for me. He kept a journal documenting everything. There's
+really no way he could say, you
+know, there's just no way. The journal was interesting because
+it gave a lot of insight into
+what he did and why. The big part of it was the modernization
+project with China. Back more in
+the 70s. It was China was, like, we need this technology. We need
+to be competitive on the market.
+We need to be economically a super power. If we can't come up
+with the stuff or buy it we're
+going steal it. And that was basically he wanted to help his
+homeland. So he actually, like,
+got a big bunch of stuff together and just sent it to a
+university guy in China. And he
+was, like, can you get us some more. Sure. Got you covered. So
+eventually 300,000 pages of
+documents were found in his house. Project 863 is kind of a
+newer version of more
+modernization. Google it if you want to know more. This is a
+picture of the outside of his
+house. I've seen video of the inside. There was not a surface
+area that wasn't covered in
+stacks of paper. And he had a crawl space. It was, like, those
+big metal shelves. I mean, it
+was just amazing. You just got to respect the guy. He didn't
+have a little stick. He took the
+shit right. I was, like, damn. Apparently I heard someone say
+at one point when they looked at
+it all he had the largest repository of space shuttle in
+the world in his basement. One
+of the things they found in his house during the search was a
+(inaudible) list. When they
+started giving him stuff they were can you please give us
+this. They literally gave him a
+grocery list of what they wanted and they would get it and bring
+it back. This is just an example
+of the kind of stuff he was handing over to them. There was
+another tasking list. This is
+the one that went when they were in Chi's home. They were going
+through him because he didn't
+have access to all the same stuff, so they were, like,
+whatever they couldn't do he was
+sub-contracting out to him. So this is the guy, this poor man.
+I actually use this with my
+daughter when she was learning how to spell. I'm like you don't
+want to get a crappy nickname
+from them jacking things up. He was literally known as the spy
+who couldn't spell. I am not
+kidding. I just started laughing the first time I read that.
+Brian Patrick Regan not the
+comedian, former Air force master sergeant. He was training
+to fly in the Air force. This
+occurred, like, '99 in to 2000. He was assigned NRO. He was a
+signal intelligence specialist.
+In '93 he was nearing the end '99 he was nearing the end of
+his service. He was worried
+about money because he was $117,000 in debt. He had four
+kids to send to college. So he
+did what all of us would do, he wrote a letter to Saddam
+Hussein. (Laughter) He said hey,
+Saddam, I have some shit you might want. I'll give it to you
+for $13 million. He also sent
+letters to Libya and Cuba and China. So we had a foreign
+source somewhere on one of those
+who saw this letter and came back to us and said hey guys,
+you got somebody trying to, you
+know, get rid of your shit you might want to check on this.
+They couldn't figure out who it
+was. All they had were the letters were horrible
+misspellings. It was just really
+bad. So literally when they were trying to find this guy they
+were looking for the bad
+speller. For those who had to read "of mice and men" some
+accounts compare him to Lenny.
+Literally they really did call him, like, people that said kind
+of like Lenny. A bright guy but
+had trouble communicating and said he always felt stupid and
+he really struggled with writing
+because he was dyslexic. So in 2001 the FBI arrested him at
+Dulles airport on board a plane
+getting ready to go to Zurich. He told his boss he was taking
+the wife and kids to Disneyland.
+He lied. When they arrested him, this is what he had on him. He
+had stuff in his pocket. He had
+classified papers. He had notebooks and cards and they
+could not make heads or tails of
+it. This is the other funny part. The NSA couldn't break any
+of his stuff. Now to their
+credit, 911 had just happened, they had other stuff on their
+plate. This dude wasn't high on
+the list of priorities. So this landed in the lap of an FBI
+cryptic analyst named Daniel
+Olson who managed to crack all this. Kudos to him. Good job.
+What was interesting was that
+Olson kind of was looking at dyslexic stuff and was figuring
+out there was a technique some
+of them use where they use pictures or words instead of
+numbers to help things from
+getting transposed in their mind. So, if you looked at these
+words (inaudible) so he kind of
+thought about them. Then he says you know what, five fingers,
+one, three, five fingers, four
+wheels on a car. So it was found near his AmeriTrade account
+number in his AmeriTrade account
+number and it worked. It was a pin code for the AmeriTrade
+account. So they took this
+theory and kind of applied it to all the other stuff they found
+that was in this category of the
+words. And they actually figured out we don't have the full sight
+of the number but the first
+three digits were Chinese missile sites. So they were able
+to go now we know what he is
+doing here. The next in his wallet there was a paper with a
+string of wallets. He was
+inspired by the movie man hunter with Hannibal lector. So he used
+the book code to do this Caesar
+thing and it turned out to be addresses of Swiss banks so he
+could put all the money his
+buddy Saddam was going to give him over there. And then there
+are these pages of notes, right,
+and it took them a long time to figure this one out. Because
+they couldn't get the key. So
+finally he was trying to be a helpful guy, he ends up telling
+them that there were 19 these
+all ends up to be longitude GPS coordinates for the caches where
+he buried the data. Originally
+he stole this stuff and hid it in a locker but then he put it
+in garbage bags and dug holes in
+the ground and put it in there. In case you are wondering holes
+in the ground and a garbage
+ground are not authorizes storage methods for classified
+materials. Trust me on that.
+There were 19 caches total. 12 in Virginia. At the state park.
+Seven in Maryland. The state
+park. And apparently he used the NRO phone list for the Virginia
+ones. And his Virginia high
+school yearbook for the ones in Maryland. Then he told the guys
+they could also drive north on
+95, exit 12 A, walk up the ramp, pick up the toothbrush container
+he buried by the fence and it
+had everything in plain text because he was worried he might
+lose his papers and forget so he
+wanted a backup which was buried in a toothbrush container on an
+exit ramp on 95. So in Virginia
+in that park they went out and I think he was messing with them.
+Went out behind the trees and
+they found the ones that he marked with nails and they dug
+all these holes and couldn't
+find it and he said dug on the opposite side. They found it.
+They went to Maryland and tried
+to did the same thing and couldn't find it there. He goes,
+well no the trees with the nails
+I put it across from it. Basically, you know, he's all
+into the whole crypto thing. The
+funny part I thought was he made it so complicated he ended up
+forgetting it and he had to re
+crack his own code. So learn how to spell kids. Or get a good
+nickname. Current research. I'm
+glad I have time to get to this. This first one is really
+relevant especially with what
+just happened to the general in Afghanistan. I ran across this
+article and I included a link to
+it. I honestly am not super up on the technology. I thought it
+was really neat to put a
+technical thing on this kind of non-technical concept. Are you
+him? Dude that was awesome. If
+you have questions about this, the dude is right here!
+(Applause) So in a nutshell,
+(inaudible) flow, algorithm, they say, you know >> (Off mic).
+>> Come on! (Applause) >> I
+planned this. >> (Off mic). >> That kind of makes more sense
+right? Look at that. That's
+crazy. This is, like, really modern shit. Okay so the guy he
+was a counter intelligence agent
+named Bill Snell. What he figured out was that if you are
+looking at an image that has you
+have some emotional attachment to, then you send off this
+really big signal out of a
+portion of your brain. And so what they did was first they put
+this helmet on you. And it's an
+no it's MRI. They're looking at electromagnetic activity that
+comes out of your brain. They
+were going to take a bunch of Iraqi troops and also Afghan
+troops, put this helmet on them
+and first, you know, establish a baseline then start showing them
+pictures that if they were a
+potential insider threat they would have an emotional
+attachment toward, like, the
+picture of a particular person that they may have come in
+contact with, a picture of a
+particular place that only an insider threat would possibly
+know. So this way, because your
+brain sends out this signal far too fast for you to attempt to
+hide it or officate it then
+using the data they were getting from this helmet they would know
+if you are lying far more
+effectively than if you had to explicitly lie. But you didn't
+have to actually say anything.
+You didn't have to go ahead and do the whole lie. Your brain was
+indicating your familiarity
+emotionally with a picture or with a subjects that was a
+telltale sign of your insider
+threat. So what they're trying to do right now is sell this
+actually in Afghanistan and Iraq
+to U.S. military so they can stick them on troops that are
+with the Afghan or Iraqi
+military that we're working with to pre detect potential insider
+threats. (Applause) >> Thank
+you. There's a link to his article at the bottom of the
+slide. So you can probably link
+on that and get his contact information or, you know, maul
+him after this. I'm sure he
+doesn't mind. This one's really neat. This is plagiarism
+algorithm detection. So I'm so
+old when I wrote my papers for college the first time I did it
+in long hand. Right. You got
+extra credit if you typed your paper. So what this is I just
+recently finished master's
+graduate work and everything I did I had to do this turn it in
+thing. Has anyone done this? So
+this is kind of cool. It takes your paper and it runs it past
+everything on the planet
+apparently and in two seconds it can figure out this report. And
+it kind of gives you a
+familiarity thing. So, like, you have to turn the report in with
+your paper to your professor to
+know you haven't basically copied the whole thing and
+plagiarized it. Really kind of
+neat I thought. But what some kind figured out to do is you
+can use the same theory instead
+of running it past you are going to look at emails leaving your
+facilities or your sites or your
+organization. Because, you know, maybe Greg Chung can get 300,000
+pages out but, you know, people
+may be more hesitant now. They're like I can just email it
+to my house right and nobody
+will catch me going out the back door with it. So what this does
+is it takes all the emails, puts
+them through a filter. And it does, like, the same type of
+algorithm. You can set a
+threshold for your intellectual property. To look at every
+email. If anything hits the
+threshold where you are, like, wait a minute we don't want all
+that leaving you can set it to
+alert but let it go so you can look into it. Or if there's a
+lot, it can go that is not going
+anywhere. You can actually stop the email before it even leaves.
+This was really interesting. I
+have a whole sources section where I cited (inaudible) and
+back. I just finished graduate
+work so everything is cited and this whole paper is listed. Then
+the last one, a couple years ago
+this gentleman presented a black hat on (inaudible) forensics. Is
+anyone familiar with that? No.
+This is so cool if you are into math. So he is looking from a
+forensic perspective at your
+computer usage. If you sit down and use your computer every day
+it's a baseline for how you act
+and what you do. If you are copying large masses of things
+that changes your pattern.
+Because suddenly it's not your normal baseline. They can go
+back and look at this and maybe
+not necessarily use it for evidence. But it could be an
+indicator of something you might
+need to look at closer. It is a very technical paper and I can
+just write snort rules now. I'm
+not to this other level. But if you are read at this level check
+it out and there's interviews
+with him and articles. So point you in that direction. Are we
+good on time? Two minutes. Okay.
+Really fast. Mitigation. Funny cartoon my guy gave me but it's
+really sad at the same time
+because it's true. Communication and awareness, oh my gosh that's
+a whole other presentation.
+We'll do that next year. These are some of the organizational
+factors they found that are
+really the biggest contributors to whether or not you have more
+potential threat. The ease of
+which people can get stuff out of your organization. How you
+handle disciplinary things. You
+know, do you actually have consequences for bad behavior or
+do you just kind of ignore it or
+blow it off? Then what can we do? Big thing is support your
+security people. Support the job
+they're trying to do not just with attaboys but money if they
+need it. (Applause) And, you
+know, you need to work with your people. They're not, like,
+tokens on a chess board. They're
+people. You need to understand them. And you need to understand
+what makes them tick. And you
+need to understand how that can affect your organization if they
+start ticking wrong. I think I
+am out of time. What do you do? Call someone trusted, your
+general counsel, your legal
+department, your, what do they call it what do government
+people call it? The hotlines.
+Whatever those numbers are. And then sources. On the slide, you
+should have all this. I gave you
+pretty much everything I researched. So anyway, thank
+you. (Applause)

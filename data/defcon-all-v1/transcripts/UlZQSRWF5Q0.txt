@@ -1,0 +1,648 @@
+These guys are going to give a
+fantastic talk and it's going to be really entertaining, yeah? >>
+Thanks for your faith. >> I got a meeting to go to so whatever.
+>> All right. Let's give them a round of applause. [Applause]
+[CHEERS] >> Wow! Is this a Thursday at DEFCON? This place
+is packed. Thank you, everybody, for coming. Welcome to sorry,
+wrong number, mysteries of the phone system, past and present.
+My name is Patrick McNeil or Unregistered 436 on Twitter. I
+work for RadWare as a Security Solutions Architect and I got
+about 15 years telecom experience about half of which
+has been in security. >>So Im Owen. Im @[indiscernible] on
+Twitter.I pretty much started out in development work. Then I
+moved on. I liked breaking stuff more so I moved into security
+and did a little bit of lacks DevOps, and eventually
+pentesting so. >> So we fully embraced the fil noire aspect
+of this conference, so pretty black and white deck here so we
+can read it. >> That's why we're wearing these silver shirts. >>
+So first a brief word from our lawyer. Obviously everything
+that we say up here is our opinion only and doesn't
+represent that of our employers and all trademarks, service
+marks, et cetera, belong to their holders. We tried to use
+creative comments where we could, but sometimes you run a
+file and it's all fair use at this point. >> Should be in the
+slide notice. >> Yeah, most of the slide we attributed. >> So
+some of what we're going to show you today could be used from the
+Nefarious purposes or evil. Some audio. [Audio clip.] So
+something like that could happen. >> Could choose a life
+of crime. >>So I want to thank DEFCON organizers for letting us
+speak. Great, great turn out here today. Why are we doing
+this? Messing around with stuff that's unfamiliar, stuff that's
+new, so it's a good opportunity to learn, learn a lot,
+especially from this guy and I know why you're doing it. >>
+Well, I mean, obviously we wouldn't be up here if we
+weren't having a good time, and I sought to learn as much about
+stuff from him as he has for me because I don't really have his
+[indiscernible] background and he doesn't really have telecom
+background so we did something together. You know, plus a lot
+of people forgotten the roots of freaking and hacking. And the
+original hackers were essentially the freaks long
+before there was the internet, golden board systems and all
+that. They were the first ones that said, something electronic
+to mess with it. They were the ones if you were the hacker
+Ethos. We wanted to highlight that some of the things that
+hackers used to do, or, excuse me, some of the things that
+freakers used to do are still somewhat relevant, the mind set,
+the approach to things, and even potentially some of the attacks
+and you can look at some of the freaking attacks in a slightly
+different way and now they're relevant for voice over IP and
+voiceover IP as many people know wasn't really designed initially
+to be secure. It was designed to work. Designed to generate a
+source of revenue. And, you know, potentially reduce the
+number of lines you needed in the offices and things like
+that. So we're not going to talk about everything. We're going to
+talk about maybe what's likely to happen and we wanted to kind
+of educate a little bit about ways to defend networks rather
+than just the pin testing and attacking role. >> So kind of
+learn a bit about freaking backgrounds too. So we have to
+have a pie chart. I always love having pie charts in
+presentations. Not reflective at all of what is in the
+presentation. The percentages are off and you have the history
+information and do some exploitation stuff and there's a
+little bit of a tool. So we'll just move on. >> All right. So
+before users were actually allowed to dial before the
+little rotary phone, operators were in control of the dialing
+process. So if you wanted to call somebody else, you had to
+pick up the phone and talk to the operator and they would --
+you'd tell them an exchange. The exchanges were normally the
+street name or the intersection where the phone switch is
+located and then each of those exchanges had anywhere from 3 to
+5 digit that is were used for the subscriber. So we have a
+video clip for you. This example is from a movie called Sorry,
+Wrong Number, which is the inspiration for our talk from
+1948. >> Play the video. >> Operator! Operator! Operator! >>
+Your call please. >> Operator, I've been ringing number 3 5097
+for the last half hour. The line is always busy. Can you ring it
+for me please. >> In this movie she's supposed to be a... >>
+Should have been home hours ago. I can't think of what's keeping
+him or why that ridiculous line is busy. It's 6 o'clock. >>
+350-97... (Busy tone) >>Having conversations with the operator
+and explaining the situation. >> Thank you. >> Hello, Mr.
+Stevenson, please. I want to speak to Mr. Henry Stevenson.
+Hello. Who is this. What number am I calling? >> Everything's
+okay at -- >> Excuse me. What's going on here.. Im using
+>> 11:15 is good, 11:15 is right. Get off >> So it's a
+little hard to hear but they're actually talking about a murder
+plot and that's sort of thing -- while >> Unlike todays
+movies, you know, you see people grabbing stuff and putting it on
+the other side and that's a depiction of hacking and I don't
+know if believe this. >> It is something that could actually
+happen across wire basically, so -- So user dialing...user
+dialing and getting away from the operator actually came from
+a relatively unlikely source. Almin Stroman was an undertaker
+and he was under the impression that somebody was stealing his
+business and he figured out that one of the operators in town was
+married to the other undertaker in town so when somebody would
+call and say I want to talk to the undertaker it was his
+impression that they were putting that call through to --
+or the operator was putting him through to her husband instead.
+So he came up with this thing called the Stroger switch which
+is essentially a cylinder and it would use alternating current
+pulses to rotate the cylinder and there would be one per digit
+dialed. So the phone that he came up with, essentially had
+three buttons on it and there was one button for the 100s
+place, one for the 10s and one for the ones and you had to
+repeatedly press that button with no indication with how many
+times you pressed it so you better be counting when you did
+it and it would turn the cylinder and there would be a
+little armature that would click in when you did it and they
+ended up calling step by step and eventually acquired by the
+Bell system. So as implemented by the Bell system, however,
+they got away from those little buttons that you has to press.
+That's when we first started seeing actual rotary dial and
+when you would turn the rotary and it would go click, click,
+click, click all the way back, well, that's what was sending
+the current pulses and turning the switch. The problem was that
+was only good within one exchange. And those switches
+were tied up for the duration, the entire duration of the call.
+So eventually they got around to dialing from exchange to
+exchange adding more digits on to the front of the number. But
+in order to dial from exchange to exchange, you no longer could
+reference the name of the exchange. So they had to come up
+with a way for them to do that and basically they said well
+well abbreviate the exchange names and convert those letters
+into digits and that's how they came up with the letters that
+were assigned to every number around the phone dial. Now, of
+course nothing really changes without a motivating event. And
+the motivating event for AT&T was really a combination of
+workforce growth, the need for efficiencies, cost of running a
+network. All those, you know, switches that were tied up. So
+they ended up having to work on an electronic switch, and the
+switch that they came up with was the panel and cross bar
+which introduced common control. And when you dialed they would
+actually build up the number that you dialed in something
+called the sender before it would send it on for processing.
+That was good enough for local dialing, but now we had to get
+to long distance. And long distance dialing they developed
+something called the 4A cross bar switch. That was something
+that used, it was very similar to an old computer punch card
+that was made out of metal and there were punches in that that
+represented the routes from city to city. And there were
+alternate paths, so you would follow the punches to figure out
+how to get from one city to the other and now of course we had
+to introduce the area code so you knew -- or that the system
+knew when you dialed which exchange you were trying to get
+to. Unfortunately there was a big design flaw that they didn't
+think about. And a lot of us are familiar with 2600. The reason
+2600 is called that is because of the 2600 megahertz tone,
+supervisory tone. Essentially the flaw was they were using
+inband signaling so the signal was actually being carried over
+the same audio path or the path that the subscriber was using.
+What that meant was if you dialed a toll-free number, long
+distance number, you could then send the 2600 hertz, supervisory
+tone and the long distance switch would think that you'd
+actually hung up the call. You could then send either a signal
+or multifrequency tones depending on what that long
+distance switch supported and dial another number. So that's
+how people were able to make free long distance phone calls.
+Let's see. There you go. Thats it. >> All right.
+So...one more slide back. Because you did that one, didn't
+you? >> Yeah, I just did that. >> So -- Oh I guess I wasnt
+paying attention. >> It's not our first time, I swear. >> So
+when we're looking in the future you see a lot of VoIP, lot of
+VoIP -- yeah, I see it. So when you're looking in the future
+with the VoIP, what could happen with -- we have a lot of
+technology driving innovation, watches and phones have been
+added in the Android web, I dont know why they do that.
+Or about web, webRTC. We're going to see more people fishing
+for one-time passwords or credentials. We dont have
+crystal balls. We're not going to show you any new exploits and
+cover attacks that are still relevant today based on the
+phone system. Still effective and need to be defended against
+and show you this and come sit at our table and mostly created
+for AGI scripts and we'll get a bit more into that a bit later.
+So many of you if you're familiar with VoIP at all would
+have heard of the asterisk scan and it was created 99 so it has
+been around a long time. It's created by Mark Spencer and is
+now made by well maintained by Digium. There is a confusing
+number of releases. You have got long-term support and latest DPR
+and a bunch of books. You know you have a product when you have
+a Dummies book published after you. So the AMI and AGI, the
+asterisk management interface and the asterisk gateway
+interface. Avi can be thought of for like a CGI for phone systems
+and you can write scrips and they will do stuff for you and
+it's really cool. You can do some really cool stuff,
+so...from this you create this cool system and now you have all
+these variances. Some of these are real popular. Just making it
+easier. So asterisks for abbreviations and crypt box are
+really big, the one that runs on the [indiscernible] is really
+cool but the problem is it doesn't necessarily take
+security into mind. It takes it a while to catch up with the
+latest branch from asterisk so what happens is you keep on
+building stuff and you cant keep up with it you end up with
+a big pile of trash and some of them maintain, 2013 was the
+latest update for one of them. Eventually that trash my fall
+over and anyones web server can see you and you know trash could
+fall into a lawyers apartment. So we're going to go for some
+attacking defense. >> So attack and defense were several
+categories of threats and we used Al Capone on all the slides
+for the attacker, the famous gangster and J Edgar Hoover, the
+original director and good guy as our defender so you can see
+the little icon at the top right and see which one we're talking
+about. >> It used to be red versus blue but we decided to..
+>> It didn't work for film ware. >> Black Hat versus White Hat I
+guess. >> So we're not going to cover every voice threat, right?
+There is a lot that we could cover but we're going to cover
+the most likely stuff. >> Possible but not probable. >>
+Information leakage...when a system that is designed to be
+used by only authorized parties gives you stuff you can work
+with so you can use it. All right. So, you know, the freaks
+with the original phone enthusiasts and they like to
+explore the phone system. They took advantage of information
+leaking because it was not designed to be secure,
+confidential. You know, the very first thing that they could do
+is socially engineer operators. The operators were mostly female
+so some of them, believe it or not, would actually use
+girlfriends and get their girlfriends to call the operator
+and say they were another operator and could you put me
+through to this number. Yes, hackers were freakers in this
+case actually had girlfriends. ( LAUGHTER ) >> So the other thing
+to do is they could pretend to be one of the mail workers. One
+of the test line operators, I'm trying to test this particular
+number. Put me through here and of course the operator was more
+than willing to oblige. Phone techs were also very proud to
+work for the company so they could say, hey, jeez, how does
+this particular thing work? And in most cases they were willing
+to share. I mean, anybody who is proud to be part of their job
+might be willing to talk about it, especially if you're not
+told any of this is confidential. And then of course
+was the really obvious stuff, you're picking up the phone and
+dialing and you're hearing all kinds of clicks and dial a long
+distance number and hear a tone and you start to wonder what are
+those things if you're our type of mentality and they started
+recording them on tapes and slicing up the tapes and figured
+out we could build something called the blue box and
+replicate those tones by pressing a button. And of course
+I would say the biggest gift to the freakers was actually 1960
+technical journal, Bell technical journal. They
+published these on a regular basis and actually published the
+single frequency and multi frequency tones that were
+required to send from exchange -- or from one long distance
+switch to the other. So they basically said, oh, yeah, by the
+way, if you want to control our long distance switches, here are
+the exact frequencies you need to send. Perfect if you're
+trying to put together a blue box, right? And then of course
+exhaustive dialing of numbers. Quickly figured out the dials
+were abusive on your fingers so they used pencils and dialed all
+sorts of numbers that were outside of the normal phone
+range and there are special codeings that you can use for
+routing and accessing certain features. And then of course
+there's something called a loop round which was really supposed
+to be for testing by the field technicians and freakers figured
+out that if you could stand to listen to the annoying tone on
+the loop round, you could get people together and just chat.
+Just have an exchange of information. >> You said the
+annoying tone. >> Yeah, the superrise retone that would
+play. >> Yes. Yeah, they accepted collect calls. So the
+world was largely oblivious to the freaking community and they
+really found out in this 1971 Esquire article called Secrets
+of Little Blue Box and some of the people that were made famous
+or infamous in that including Joe, Mark, and John Draper, AKA,
+Captain Crunch, they were certainly not the first freakers
+as we kind of seen because freaking was around for a long
+time but they certainly became the more popular ones. On a bit
+of a side note, AT&T was at the time a monopoly owner of the
+phone system and they had a policy in terms of service that
+said you couldn't hook anything to the phone system that was not
+sold by them. So freakers decided well that's no fun and
+we want to have some jokes so basically the first answering
+machine was made -- didn't actually record anything but it
+would play jokes. Joke lines became really popular. So that's
+pretty much the bulk of the history that I'm going to try to
+dump on you today. So I would definitely recommend exploiting
+the phone by Phil Lapsy and it's a great read and he's done a lot
+of great research. So the phone companies eventually stopped
+blue boxing by moving to something called common channel
+interoffice signal. What they did essentially was they put in
+another line from office to office using a modem so they
+could digitally signal the calls so you no longer had the
+signaling over the call path. As freakers figured out what was
+going on there, like, well wait a minute, the phone company can
+use modems to send information digitally from point to point.
+Maybe we can with these new, you know, personal computers that
+we're discovering. And very quickly they figured out that
+they could now connect over things like a bolding board
+service so they're having to do it over the phone so this is
+where we're starting to see a little bit of segmentation
+between the PC hackers and or course the protocols they used
+to communicate over these modem lines was eventually IP and that
+started the downhill roll. It turned into, let's make an IP
+card that you can jam into the back of your old switch and
+eventually well, let's make it all IP so it performs better and
+we'll just have a Gateway that goes on to the DDM network and
+of course the subsequent step from that is, hey, now we have
+virtualization. Let's just make a virtual thing that we can run
+on a lap top and, you know, use a soft client instead of an
+actual phone. So nowadays information leakage, I mean, you
+can do a lot of stuff that you would normally do with any sort
+of scan or pin test. You know, your basic port scanning, send a
+message and see what comes back for your fingerprinting.
+Extension enumeration where you're just sending like a
+register message or an invite message to every possible phone
+number that you think might be in that range and just see what
+comes back. And of course if you're actually looking at the
+SSP signaling, SSP in and of itself leaks information like
+crazy. The user agent might tell you what type of software is
+being run on the PBX or the end point you're talking to. The
+methods that are supported by the end point, may tell you a
+little bit more about what it is. >> It's very similar if you
+take a look to the way TTP works and the interesting path is in
+yellow. >> It's text based. So what does that mean? We can man
+in the middle of that because we can easily write in a script
+that says if I see this, do this to it instead. And unfortunately
+SSP still using the C.R.Y.P.T.O. that...MD-5. So you can cram
+anything over TLS and SRTP and hopefully make it more secure,
+but oh my God, they're hard and nobody wants to issue client
+certificates and basically yes you can get some integrity and
+maybe a little bit of confidentiality out of having
+that flow, but there are still TLS attacks, so I'll get into
+later what I recommend here but obviously having TLS doesn't
+guarantee security. >> Its really no good. The MD-5 doesn't
+change. It's the same for every phone call that session makes
+and I asked well why don't just change it to a more security
+algorithm and it can't be that hard. >> SRTS man. Go argue with
+the ITF. So when actually gathering information on a phone
+system, start with the basic stuff. Don't think of this as a
+phone system. Do your Google searches. Scan, you know, the
+DNS queries, scan job boards and figure out what somebody is
+running through a side channel basically and you could actually
+make phone calls and listen to the voice mail prompts for
+people that aren't there and you can usually figure out about
+what phone system they might be running just because there are
+standard prompts. >> Or the voice they use. >> Yeah,
+exactly. And of course if you're internet connected, SIP options
+generally used by many scanners to try to defect the presence of
+a PBX but a lot of vendors have either patched against that or
+put in rules that say don't allow options from anybody
+except the specific end point so use something like an invite or
+even a cancel message. Something that will evade that. And then
+of course you can look for X headers which are unique to
+particular vendors. You know, do your extension enumeration by
+sending lots of registered messages, basically just see
+everything you can get to come back. When you're doing your
+port scans, remember that the -- at least most people use NMAP.
+>>You have to change your default options. >>Yeah, you got
+to mess up a default option or add in new options so definitely
+scan your EDP because it's generally sent over EDP. Include
+the ports for AMI and AGI interface that is are not part
+of the port range. You will miss them if you don't add in those
+ports so you don't get picked up by something that's looking at
+rate base. When you're using a tool and I think this goes
+without saying but understand what the tool is doing rather
+than just accepting it and running it. A good example is
+this that's used by about 99% of the people for scanner SIP
+services has a default agent string that everybody is patched
+against now so you'll see a friendly scanner come in, not.
+And you know that's Subficious. >> Didnt Subfucious make a
+bunch of peoples phones ring in Korea? >> Yeah, exactly. So scan
+with a different tool name, a different username. Scan with a
+different method like an invite or cancel. The Medi plate
+scanner is pretty good because it randomizeed everything but it
+doesn't do -- at least the modules that I have seen doesn't
+do credential cracking. And also not many of the VoIP scanners
+around today are being actively maintained. The two exceptions.
+One is Viproi and if you go to the VoIP hacking seminar or
+whatever, the session being held by Fatee, he actually maintains
+that and Blue Box and MG is also maintained. >>[Indiscernible]
+still works. >> Yeah, for the most part. >> There is an
+exercise, Patrick looked at the Rapid 7 Z map data and came up
+with this interesting analysis. >> Yeah, I noticed that they
+basically just collected SSP UDP. They had just initial
+options response so if I was doing it, I might have used a
+different method just to maybe get some more information back.
+But it is what it is. It's a big data set, and what was
+interesting was the numbers that came back weren't as big as I
+thought they were going to be because there is an awful lot of
+SSP stuff out there that's connected to the internet so
+maybe people put in ACLs to block their scanner or something
+but we got 52- to 53,000 that came back as generic asterisk
+and nearly 11,00 that said asterisk PDX. And the
+interesting one for us which you'll see later is this
+asterisk PDX. What is it, phone cord that's actually Trix box
+which is asterisk installed on a PC [ indiscernible]. >>
+[Indiscernible] as part of a machine. >>Yeah, it's sold as
+sort of a quick start-up. >> Like an LM-1 point click
+configure type thing. >> Yeah, and of course as I expected we
+saw a lot of small to medium business systems. Lots of old
+MTAs software releases and the stuff that totally blew me away
+was the couple of instances like a Nortel DNS 100, this is like a
+big, big switch. We put that on the internet. A lot of user
+agents that just said camera and they all seem to be based in
+China, which was kind of weird. And then lots of MTAs that are
+being deployed in Germany. There's been a really active
+push for that and lots of Plowway in Iran and I'm guessing
+not many American companies are going to be selling in Iran. >>
+What's the Fritz. Fritz OS. >> Yeah Fritz OS was the MTA
+deployed in Germany. All right. So what can you do to defend
+yourself against this information leakage? Number one,
+security by obscurity. Change your user default agent. There's
+no reason that you have it. It's not really used by anything so
+call it asterisk when you're on a system or something else,
+right? So it's not used. >> You can try that. It may work.
+[Laughter] >> Block known bad user agents...we have a bunch of
+known bad user agents that are in IP tables on our Github. I
+did some research for a while so I have about three years of data
+that I just parsed through and here is a list of them for you.
+And especially if you're on asterisk, use this. Always Auth
+reject. Essentially the area code that's returned is usually
+different if an extension exists versus if you have got a bad
+password and returns the same error message for everything so
+you can't quite tell. [Inaudible question from audience] So the
+question was are you setting that for every SSP computer?
+Yes. There's no reason -- yeah, there's no reason to have it
+otherwise. >> Fail to block IPs that were repeated heavily. >>
+What happened to the video? >> Da-Da-Da. Thanks a lot Master
+Shin. >> Tried plugging it back in. >> Before I even get to the
+good stuff too. >> Oh, my God. I saw something happen. >> All
+right. There we go. >> That is weird. >> Okay. And then lastly
+user security appliance that will block such scans. >>
+Exploitation, we dont really need a definition for this,
+usernet something for greatest possible advantage or the
+selfish users. [indiscernible] >> Yeah. So exploitation usually
+has this connotation of being malicious, but for the most part
+a lot of the freaks was similar to the medical profession. Do
+not harm. It was all about just exploration. It was fairly
+innocent for the most part. >> Nowadays it's pretty much
+anything you can imagine. You got fraud, Bobnets, profit,
+whatever you want to do. The bad guys use it to however they
+want. We take a look at the Trix folks we were talking about
+earlier. There's 1200 on there. Quality software. Last updated
+and what's that, June 18, 2013. Five stars in the search so we
+know it's good. This is a little bit of the freak theme but kind
+of an example of what happens when you keep building
+technologies upon technologies and without taking security into
+consideration. These are the vulnerabilities for asterisk as
+of a few months ago. You can see there's one for every category,
+denial of service, code execution, overflows. You name
+it. I like the one, bypass something. That's cool. There's
+more and you can look into it depends on what version you're
+running. So this one's actually written by a guy called Attack
+Terrorist. If he's here, we want to buy you a few beers. >> We
+want to give you a hug. >> He made a cross site scripting
+that's against the help module. Its basic cross side
+scripting that did a pop-up and that's real cool, right? Doesn't
+work in the Chrome, Firefox is honorable to it. I didn't test
+[indiscernible] because who runs that. We also can be found in a
+CBAF, local filing where you could pretty much include any
+file you wanted to. You can't read all files on the system
+because some people know that if you include PROC slash FD, which
+is your file prescriptors you can write files and put PHP
+filters which can allow you to read PHP code. But once you get
+LFI asterisk systems, it's just one of the ones you can pretty
+much go around reading configuration files. User.com,
+if you can read those, the permission is on properly which
+will generally on. You can read the extensions on there. The
+port configuration is great because it has your my SQL
+password in it and what's going in, going out, whats happening
+on the network. >> And was that authenticated or
+unauthenticated? >> This was authenticated so you have to be
+an admin so you can do the functionality anyway if you're
+an admin. But it's still a vulnerability correct? So
+there's also a remote code execution. This example though
+there is some PHP code into shell and then we call that
+shell and execute pen test monkeys python shell. Pretty
+cool. And we have a video for that one. So this is the shell
+execution. This is also authenticated. Space bar once
+more. There you go. And here is the video. So, you know, I'm on
+the server right there. I removed the shell, no funny
+business going on and this is the authenticated again. And its
+loading echo [indiscernible] bash. It's not rocket science,
+but it works so we go back to the server and LS again and hey,
+there's the shell. So the video gets a little funky. There's the
+listener. Listener on my local host and there's the call to the
+shell. >> Sort of anticlimactic because it doesn't really do
+anything. But bam, right there. >> [Indiscernible] So yeah, you
+can kind of do whatever you want there. So that was cool. And
+this makes -- this one gets a little tricky so this is using
+the same L file we saw earlier but we do remote code execution
+by reading the asterisk log using a SSP message. If I can
+read the log maybe I can inject something, so play this one. So
+again this is authenticated but you wouldn't necessarily need to
+be authenticated well, you would to execute it, the local file
+inclusion, but not to submit the script to it. So there's your
+local file. Read the passwords file. I did Prox CPU for fun. [
+Indiscernible] Just to make sure its working and all that. And
+then this is the asterisk log refresh that. So there you go.
+The next step what we do is this is SSP SAC and I just sent a
+text message. That's not even a valid user by the way thats just
+the users dog and you'll see that the text message shows up
+at the bottom, somewhere. So I go ahead and do the PHP in
+there. >> So basically injecting stuff right into the file. >>
+Which you can do with Apache too if theres an LFL file in apache.
+And then there is your PHP. So you can execute a PHP code as
+you wish. Next slide. So that's cool, but those are
+authenticated so what I would do is take the unauthenticated
+cross side scripting and then use the remote code execution
+which is authenticated and do a phish. So this is the one that
+gets kind of, makes me confused. It used cross scripting and use
+this in height of frame and replace the window location with
+this base 64 decoded stuff and then you do your shell eco in
+there and we got a video to show this. This one took a little bit
+of time to get right. But it works. This is the window that's
+authentication required and we need to press that. And that's
+the phish showing that it doesn't work, unauthenticated
+user so you were going to want to send that payload to somebody
+you know who has access to the system. I can't do it because I
+don't have credentials.[ Indiscernible] This is the
+logged-in user and this is phish reloader and I did twice just to
+make sure it works. What is going on here. >> As most people
+probably would, they're moving their mouse around. >> You
+probably changed this so it isnt that cheesy but you put
+an RF frame. But on the popular side its only in the network. Do
+the same thing. So there's your own and that's from
+unauthenticated. That's why it's dangerous to, oh, I don't care
+about unauthenticated. What could you possibly do with it?
+Well, you could do something pretty malicious. So how do you
+defend against this? That's really easy for the cross L file
+and the execution it's all the same. You make an array of what
+you want and you... >> You want us to sanitize input? >> Yeah.
+Don't just say what language do you want? Oh, I'm going to try
+and read that file now. English, French, Spanish, whatever you
+want. Don't take anything else. So never trust any input from
+the end user and it's not the end user's fault. It's because
+you can't trust bad people. So it's more defense. So avoid all
+in one distributions. Update custom built. It's not hard to
+do a custom built if you built and you don't build what you
+don't know and configure it properly. Like some other slides
+thorough your firewall. >> All right, so fraud and abuse, you
+know, my definition was fraud is when you have no intention to
+pay for using the services that you're using, potentially causes
+loss damage to the owner, enables criminals to make a
+profit and, yeah, I guess you could say abuse. Manipulative
+phone network to do something maybe fun or unintended... yeah,
+I'm going to skip these for now. I had some little Q&As you want
+to get to the slide and we want to get to the good stuff. So
+making money is a top motivation for phone fraud. International
+revenue sharing fraud is the top fraud scheme where you
+compromise a phone system and make lots of calls to a foreign
+destination and the owner of the switch at that foreign
+destination splits the profits with you because of
+international telecom revenue agreements, phone companies are
+forced to pay the peer who delivered the call and >> And we
+talked about that last year. >> Yeah, we talked about it last
+year at Sky Talks, caller I.D. spoofing or back spoofing which
+is a social engineering vector where you can make a phone
+number that you don't own pop up on the caller I.D. display and
+it has implications for the name that also shows up. We're going
+to show a demo of that. Telephony denial of service
+where you basically just target somebody either for purposes of
+extortion or just maliciousness and keep cramming calls at them.
+They can't get a call through. >> And the last one was
+phishing. >> Yeah, so fraud and abuse demo...when a number comes
+into your phone, the person sending that call doesn't
+actually send along the caller I.D. display or the "see name"
+display. That is actually in a database that the phone
+companies use and your phone company does a dip to the
+database and then says hey this is what you need to display on
+your phone. >> Could be useful. >> Yeah. So most companies that
+offer SSP trunking do not allow you to set the number that
+you're sending as part of the call. You have to tell them, you
+know, this is my phone number or they'll assign you the number
+and that's all you can send. It is useful to be able to send a
+different number especially in something like a call center but
+usually agreements are made so that they know what numbers will
+be coming through. However some smaller providers looking at
+terms of service experiment with it, you can set the caller I.D.
+information on a SSP trunk. And by the way it is illegal to
+cause loss or damage as part of spoofing -- >> Well with an
+intent to to cause harm. >> While you might not intent to
+cause harm if you spoof a law enforcement number, I generally
+wouldn't recommend it. >> So this is how you set caller I.D.
+and asterisk with extension.com and this is another way this is
+used in a project we'll show you in a .com file but it is worth
+noting. But you have to find a provider that will send this so
+these are just two ways we have used in this demo. >> So, hey,
+look who's calling me. >> So hey, look whos calling me. So
+Im sitting on my couch watching Jurassic Park... >> As
+you do. (Phone ringing) >> Everybody knows who Jeff Moss
+is, right? He's the reason why we're here. >> That's enough of
+that. Lets focus on real stuff. Say so I have this
+idea that we're sitting around the table and we're saying what
+if you spoof voice mail? What would happen? Would you answer
+your phone? I was originally thinking if you had your caller
+I.D. set to voice mail, would people call them back if you
+randomly called them. Yeah, so we... >> Thinking about it. >>
+So and here are some scenarios we came up with. >> So you get a
+call from your voice mail system and it says we have been
+acquired. Punch in your security number now for security reasons
+to listen to this message. >> Heres another one, the tech
+support fast track. >> Yeah, tech support fast track,
+exerting your date of birth, you know things that you would want
+to collect, maybe getting through your password challenge.
+>> So I created -- it's not really an IBI, interactive voice
+-- because I punch in the number. >> Yeah, as far as IBI
+systems go, you just press the buttons right? >>So we did
+continuous SSP trunk in variables PHP and set up a
+recording of scenarios we were just talking about, create a
+target list, a hex list of phone numbers or you can go single
+number just for fun. Record everything and make sure it
+works. You can test against your local phone number. >> And the
+key here is you dial into the system. You run the key from
+your phone. You designate the targets from your phone. >> So
+the caller is making the web app to do it but the web app -- >>
+It's a little more old school freaker than just doing it from
+a script. >> And they make a web app for it just because. So this
+is go, press space twice. This is kind of what happens when you
+dial in. >> Main menu. Menu to turn on press start. (beep) >>
+Top menu zero [indiscernible] after the beep return to main
+menu. Press zero. >> Record. [Indiscernible] >> Please enter
+your password. >>[Indiscernible] >> Listen to a special broadcast
+from our CEO. For security reasons, please enter your voice
+mail pin now. Phone number fast track verification system is
+being rolled out. You must be enrolled to the service. Please
+enter your date of birth and two-digit month, two-digit day
+and four-digit year for verification now. >> And it
+beeps afterwards. >> The top menu. [Indiscernible] After the
+beep to return to main menu, press zero. (beep) >> All right.
+You can skip. You get the idea. >> Yeah. >> So basically note
+that when a call comes into this mobile phone, it's showing up as
+the voice mail number that's already stored in the phone. >>
+So we get to the video. >> This one starts off really loud.
+(Music Playing - Video Starts] >> Might want to shut it down a
+little bit. Turn it down a little bit. [Video Playing] >>
+So then you hear when it was recording, the we selected...
+[Indiscernible] >> That's good. So he enters a pin number and
+there is the -- it's contour based at this point. I just
+finished making it so you could dial in and it would tell you
+and there is the pin number he entered. So -- It's cool. Let's
+see if it works. So why do we care? I was thinking when I read
+this oh, you can get people's voice mail passwords and you can
+get their pins and read their voicemails and delete stuff and
+apparently there's more risk to it. >> You get that pin number
+and some voice mail systems will let you forward calls, let you
+originate calls and make an original broadcast to the entire
+company. What would you do if you had that power? >> You could
+also adapt it to get one-time passwords or conference in
+information. >> Right. So I have a bunch of fraud and abuse
+defense stuff that you can see in the slides. I know we're
+running out of time here, but one of the things that I really
+wanted to point out as part of this is if you're trying to
+block international numbers, those revenue-sharing number,
+you cannot just block 0-11 for your international dialing codes
+at least within the North American numbering plan. There
+is a lot of Caribbean destinations that are also
+considered high cost and if you look out and it's just a regular
+10-digit, a regular U.S. number. >> There's some more stuff. >>
+Yep. Set pins on long distance trunks, et cetera, and -- oh, we
+got to that already. Oh, thanks. That's a Github. Thanks a lot,
+everybody. >> We'll be around. [Applause].

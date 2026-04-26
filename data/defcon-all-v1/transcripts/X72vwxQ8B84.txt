@@ -1,0 +1,819 @@
+>> I'm going to kick it over to
+pdogg 77 and the Duke Zip. >>
+Thank you. Good morning Defcon! [Audience noise, comments.] >>
+Good Morning Defcon!!!!
+[Applause] >> So welcome to our talk, it's on Steganography and
+commonly used HF radio
+protocols. We have tons of content for 45 minutes we've cut
+this talk about a million times
+so we are going to just jump into it. First off, I'm pdogg,
+Paul like when pdogg is taken on
+Twitter, someone beats me to it, I'm pdogg77. Uhm, as a day job,
+I'm a security researcher at a
+start up called Confer Technologies Inc. We're doing
+some cool things with end point
+security threat sharing. Well, if that's interesting to you,
+check us out at confer.net. But
+I mention that because this has nothing to do with my day job,
+it has to do with amateur radio.
+Amateur radio has been a hobby of mine since I was a little
+kid, thanks Dad. Uhm, I'm now an
+extra classed, licensed ham as well as an ARL volunteer
+examiner. We'll talk about that
+a little later. This is my second trip to Defcon, so if
+there's any first timers out in
+the audience, come on up here next time please… and I'll turn
+it over to Brent. >> Hey
+everybody, my names Brent, I go by thedukezip on Instagram and
+Twitter. I actually don't work
+in the security industry whatsoever. I work as a software
+and systems engineer.
+Specifically dealing with radio protocols and devices, but
+hacking all the things has been
+a passion of mine for way longer than that so, I love being here.
+I'm also an amateur radio
+operator since 2006 and I upgraded to my extra class last
+year at Defcon actually. I'm
+also a volunteer examiner. So, one very important warning,
+we're going to talk about hiding
+messages inside amateur radio communications. And we're going
+to talk about using cryptography
+layered on top of that.Then we're releasing a tool that does
+all of this for you. This is
+completely against the FCC regulations, as far as our
+interpretation goes, so we do
+not actually transmit any of this over the air, and we are
+not recommending that you do so
+either. Okay! So, another warning, this was a project that
+kind of started as a fun
+conversation over drinks at a Massachusetts meet up called
+Mass Hackers. Ahh, we are
+talking about cryptography. We believe we are just using
+cryptography libraries, that
+we're just calling using the correct methods. But, if you're
+trying to hide your stuff from 3
+letter agencies, you probably want to audit the code. If you
+find something we did
+incorrectly, we'd love to hear from you, you can let us know
+and we'd be happy to fix it as
+well. So… >> So what are we really talking about? We set out
+to demonstrate to ourselves and
+hopefully to you that it's somehow possible to create a
+really low infrastructure,
+fairly long range, covert, short message protocol that could be
+used in many ways. Whether it
+was point to point, broadcast, or mesh. And for reasons we'll
+talk about pretty soon, we
+wanted to use common, off the shelf consumer radio and
+computer equipment and some kind
+of commonly used digital communications mode that was
+already in use. Why would you
+want to do that? Well, the vast majority of us are dependent on
+some kind of short message
+communication all the time in our day-to-day lives. Whether
+it' something like Twitter or
+SMS what not. But all of those communication mechanisms are
+really dependent on some third
+party to provide the infrastructure whether that's an
+ISP or a cell phone provider or
+someone actually building the platform on which we communicate
+and those third parties don't
+always have our best interests at heart right. So we could
+subject to censorship or spying,
+or in extreme cases these people want off switches on these
+communications, right. So Mom
+and ApplePie at Defcon I guess, we believe it's a fundamental
+human right to communicate
+without that form of interference. That's why we're
+talking a look at this stuff and
+one of the reasons we think you should be interested in this as
+well. So you could use a method
+like this, hopefully to communicate in these ways and
+we'll highlight some portions in
+the talk where relatively small changes to things we are doing
+could result in new protocols.
+So you could definitely take forth this research and create
+something that is completely
+different but along a similar line. If that doesn't motivate
+you, then most likely there are
+bad actors doing something like this anyway, and I think it's
+important to actually look at
+what is possible, what's some of these communication mechanisms
+might look like. How we could
+find it, etc. so we could combat really bad actors using
+techniques like this. >> So Paul
+mentioned we want to have all these communications without the
+use of any infrastructure
+whatsoever, that obviously includes the internet - which we
+are all very familiar with. It
+just so happens that amateur radio operators are experts in
+communicating in worldwide
+without any infrastructure whatsoever It is a real cool
+hobby and you may hear us refer
+to it as amateur radio and ham radio, the terms are kind of
+interchangeable. Uhm, you get to
+do really cool stuff like transmit with up to 1500 WATTS
+of power, which is a heck of a
+lot if you are not familiar with that. You get to do cool things
+like bounce signals off of the
+moon or off the ionosphere over to the other side of the earth.
+Or practice sending a message to
+a satellite and having it repeated on the other side of
+the globe so…. All kinds of
+really cool stuff you can do with amateur radio. One thing
+that is important to mention is,
+after we submitted this talk to Defcon, this group calling
+themselves Luizlabs released a
+tool called AirChat, it's similar in some ways but very
+different in other ways. It also
+uses encryption over amateur radio but they are making
+absolutely no intentions to hide
+that. They're basically just transmitting encryption, anybody
+listening would know that. Where
+as we're doing Steganography, anybody listening should think
+that it's some innocuous normal
+message that they would totally expect to hear but buried inside
+it would be something completely
+different. So, you know, good stenography, good OPSEC. This is
+actually a picture from the tv
+show Lost, of which I was a huge fan of and there was this
+numbers station on this island
+that continuously transmitted 4, 8, 15, 16, 23, 42. Uhm, but
+number stations are a real
+thing. There are stations you can tune in to on a short wave
+radio and there's some creepy
+music and some person comes on and the air and starts reading
+off numbers and 99.99% of the
+time the people in the world actually have no idea what they
+mean. We think that, or some
+people think that they may be secret instruction for spies
+across the world or something.
+But, they're not trying to hide it. They're just sending numbers
+and everybody knows it means
+something secret and you don't know what it is. We're talking
+about doing things like having a
+radio in a pelican case and you can run into the woods, throw an
+antenna up in a tree and start
+transmitting your secret message and then take it all down and
+run away. And if you're a
+receiver you can have a 30, 40 foot antenna in the rafters of
+your attic and nobody would even
+know that you were listening in. >> So how are we going to hide?
+We'll talk a little bit about
+the protocols that are used over amateur radio and HF radio for
+digital communications. These
+protocols are very much different than some of the
+traditional networking protocols
+we think of. In most cases they don't have some of the features
+we would typically look at to
+use for a covert channel. The protocols are extremely tight,
+they're the utilization of
+bandwidth and power is restricted because it's thought
+of as a Hallmark of good amateur
+radio engineering not to use anymore spectrum than need. And
+not to use anymore power than
+you need. So you look at the design of these protocols and
+they are really designed in that
+way. Then you can look at maybe doing some sort of timing or
+substitution or error timing
+between symbols. Or substituting one symbol for another, etc. and
+those are visible and the more
+you use these protocols the more you can stop seeing that stuff
+on the screen and you can start
+hear it with your ear. We also took off the table what's termed
+auspicious emissions, hum or
+adding additional tones or signals along with the
+transmitted signals, that is
+also against the rules, along with everything else we are
+talking about. It's extremely
+visible and again amateur radio operators have a tune ear for
+that and it's thought of as bad
+practice so it's murk more likely to get noticed. The
+candidate protocol for this
+really has to be in widespread use. It doesn't matter if you
+find an ideal protocol for a
+betting Steganography if you are the only person transmitting on
+that protocol it's still a bit
+fishy. And then again we're looking for protocols that
+needed no special hardware or
+closed software. You can find great packet radio protocols,
+etc. but usually they require
+some sort of proprietary interface or software, etc. We
+were doing something you can do
+with standard radios and computer equipment. So,
+predominantly we're talking
+about what in the amateur world is termed sound card digital
+mode, or a mode that is
+modulated and demodulated with only a standard sound card and
+more or less a pc, a standard
+computer system. So the output and input of the sound card are
+wired to the microphone and
+output of the transceiver and then somehow usually through
+like a serial interface, your
+keying the microphone on the transmitter. There are countless
+numbers of these protocols,
+anything from these well designed, well documented to
+something someone threw together
+in their garage. So, if you're a protocols person, there's
+endless stuff to play with here,
+go take a look. Some were the modes were developed
+specifically for this kind of
+use but older modes, such as radio teletype have been in use
+for a very long time and have
+been adopted to be transmitted and received as well. But most
+of the examples up here are very
+common protocols, they suffer from the problem we were talking
+about, they are very tight.
+There's almost no room to shove in any extra information here.
+The other thing to know about
+these protocols is they are more or less keyboard to keyboard
+chat. You can send freeform
+text, whatever you would like during your transmit cycle and
+then switch over and then the
+other person talking to you does the same thing. So it's more or
+less a back and forth chat. So,
+we need to find another type of protocol. Enter this protocol
+named JT65, it was developed by
+Joe Taylor in 2005. Originally detailed in a paper he wrote. It
+was designed for
+earth-moon-earth communications. Bouncing signals off the moon
+and returning then back to
+earth. It's a very long glossy path of course. This protocol
+has some error corrections built
+into it. It's extremely power efficient with about 25 watts of
+on a good day with decent
+conditions.Can communicate worldwide with JT65. It's kind
+of an in between chat keyboard
+to keyboard chat protocol, And some of the more packet
+protocols, we will talk more
+about the structure. It has an extremely low data rate. It's
+one of the tradeoffs here, all
+of this is a tradeoff, for privacy in the communication we
+are traducing a lot of bandwidth
+you will see. Good news it is an open source implementation, uhm,
+it is in 4 trained the error
+correction code is in C. So we did deal with the 4 trand code
+because we wanted to stick as
+close to the real implementation as possible. So what does a JT65
+Communication look like? This is
+a screen shot of one of the more common clients that is in use.
+Basically, amateur radio
+operators use this protocol to exchange a few little bits of
+information that compose a
+communication. Amateur radio call signs, the 4 digit grid
+locater, in a system that is
+detailed in a bibliography notes as well as a signal report. How
+well one side is receiving the
+other communication.It's sort of a time dependent mode.
+Transmissions begin at the top
+of a minute and are around 47 seconds long with about 13
+seconds of silence. So it
+requires some clock synchronization between the
+receiver and the transmitter.
+When they are used on HF frequencies, generally hams
+congregate around these watering
+hole frequencies, which are displayed on these slides. And
+for the radio folks in the room,
+it's uppers sideband am. So, you're getting about 3000 Hz of
+usable paths there. And multiple
+JT65 conversations will happen within that path. You can see on
+the waterfall display up there,
+there's one that is fairly strong. Kind of to the left,
+around 500 Hz. So let's talk
+about how this protocol actually works because we need to
+understand how we can hide in
+it. Here's one of those structured messages that I
+talked about. These are 2
+amateur radio call signs and the grid locator. Hopefully these
+are not still someones real call
+signs. If they are, we're sorry. The protocol puts that message
+through a custom packing routine
+that understands or has look up tables for an amateur call sign,
+the prefix, the suffix, pieces
+of that grid locator etc. And you get a 72 bit message, it's
+shown here as 12.6 symbols and
+it's usually manipulated in those 12.6 bit symbols. Remember
+we have a one minute transmit
+time and we're talking about 72 bits so you can do the math.
+We're not talking about
+streaming HD video. That's the source encoding, then it goes
+through a very important step,
+it's transformed into a 63 symbol message through Reed
+Solomon encoder. Sorry… hum, and
+then the resulting symbols go through a series of shuffling
+operations interleaving
+operations as well as a grey coding to result in 63 more
+symbols which are the final
+symbols. In the original paper, Joe Taylor says that some of
+these steps were down to improve
+the error correction capability of the protocol. From here it's
+modulated into audio and we will
+talk about how that happens. You have these symbols here that are
+shown just as regular numbers.
+Those numbers are put through this formula so JT65 is an MSK
+multiple shift keying protocol
+and you can see the formula there, do the math. You put in
+the number you get it's home.
+One second.. these guys are coming up here. The actual
+packet, and that's our term,
+uhm, I don't know if it's really used out there is 120 slices. A
+full half of the packet is a
+synchronization tone. A demodulator uses to find these
+signals and find the relative
+value of each symbol value there. So that is how it's
+transmitted on the air. That
+synch tone becomes really, really perceptible to your ear
+and you almost start singing it
+to yourself. This is the alien music that we've talked about.
+You'll hear some of it later.
+You start singing it to yourself when you are working on a long
+project with it. How are we
+going to hide Reed Solomon Codes? We're going to shove in
+some errors, I'll cut some time
+off this slide…so we can do this. And, we did it in multiple
+ways throughout the process of
+the project. In the end and what we're going to talk about is
+we're basically going to encrypt
+and pack our own custom message and apply forward message
+correction on top of that.
+Basically a truncated message of the same version of the Reed
+Solomon code used in JT65. Reed
+Solomon codes are everywhere, there's prior work in
+Steganography code so if you
+want to hide information in Reed Solomon code just look at that
+paper. >> Pardon the
+interruption. For first time speakers it's hard to get
+accepting and these guys did it
+so give them a round of applause, please. [Applause]. >>
+Brand new tradition. >> As you
+were... . >> I would like to see you ‑‑ >> I'm transferring the
+microphone over to Brent. >> So
+how are we actually going to do the steganography. Say we want
+to hide inside the JT65. Say we
+want to hide DEF CON 22. Right, we're going to put it through
+that same stuff the JT65 uses
+and convert it to 12 six bit symbols and we will add an
+additional 8 bit symbols, the
+same one JT65 uses. We're not make it quite as big but we will
+make it big so you can tolerate
+errors from interference or inside the transmission. This
+allows us to tolerate 4 errors
+in the steganography portion of the message. Now we also have to
+pick places we're going to stick
+this in the message. So we allow the user to input a key that the
+receiver would also have to have
+knowledge of and we'll take the hash and generate 20 locations
+for that. Now there's 63
+possible locations. So we'll take the bits and monitor by 63
+and it gives us all those
+numbers but of course we will have a few left over because 256
+is not divisible evenly by 63 so
+252‑255 we'll just throw those out so there's not an uneven
+biased to the symbols zero
+through three. So it will all work out in the end. We promise
+you. >> It made sense at
+4:00 a.m. >> It made sense at 4:00 a.m. Right? For this
+example these are the 20
+locations you would get out. So we can take some innocuous
+message, two call signs and the
+grid locater. This is the 63 symbols. And the 20 locations
+generated and we'll start with
+the first by the. Location 9 we replace with 42. You go through
+all 20 symbols and what you end
+up with the original message on the top and new message on the
+bottom that can be recovered
+both into the innocuous message and if you know the key and can
+reorder those symbols in the
+correct order and no where they're located from that key
+you will be able to get the
+message as well. This will go a long distance fan you pick up
+interference you can still get
+both messages out of it. But we want to do encryption too. We
+like encryption. Yes? So there's
+12 six bit symbols. Seventy‑two bits. Most of the encryption
+standards I know use 8 bits. So
+if you divide 72 by 8 you get 9 bits which is a co‑incidence and
+we love that fact and this guy
+does too. So what question was we created a packing function.
+(So what we did). You have 9
+eight bits. There's no magic here. We decided to do it where
+you have 8 data bits and 1 bite,
+header. Why would you want a header in this message? We
+thought it would be cool if you
+had a long age in would take multiple transmission to get
+across. It would be feet if the
+receiver could see you received packet 100 or packet 2 of three
+and when you get the third you
+can reassemble the whole thing. So we basically use it to keep
+track of packet numbers for
+assembly. In the case of a stream safe cypher. The
+remaining 6 bits are used for
+the total number of packets, packet number or because we have
+a stream cypher we need to track
+how many bytes are actually used in the last transmission. In a
+block it's simpler. You have
+that slide for the first packet and 7 bits to track the packet
+number. This gives us the
+limitation of one message if you want to call it that. It would
+be limited to 1 kilobyte the of
+data. If you have more than that you can do multiple longer
+transmissions and reassemble
+again. It's not really a limitation. It's really what's
+cool on the slide at 4:00 a.m.
+So we went through all this and we had a problem and we'll talk
+about some statistical analysis
+we did on this data. But what we found by doing this was it was
+really trivial to pick up the
+steganography if I messages. You end up with the symbol number 32
+way more than any other symbol.
+It was very, very obvious. If you knew what to look for. So we
+came up with something cool
+we're calling bit swapping. >> Or bit Magic introduce classroom
+engagement. >> You take the 8
+bits and swap them with 1 bit each of the 8 data bytes, and
+this particular diagram may not
+give you a warm fuzzy feeling because it forms a pattern in
+the data bytes but when you
+convert it to the 6 bits it distributes the bits among all
+the bit locations. So doing
+statistical analysis on this in the end it comes out very much
+flatter distribution. It looks
+good to us. So the tool we are releasing we will demonstrate is
+kind of a multi-layered
+software. The bottom layer, base layer is just built off the
+original force trans code and c
+source code we've compelled to make it accessible and C source
+code from JT65 protocol and
+compiled with F2Pl and be accessible from Python.C code is
+just a binary we can call. On
+top of that we made it easier to access with a wrapper layer in
+Python on and for our libraries
+there's actually two JT65 StegaH  is where the encryption
+and steganography that you can
+call is in this library and the JT65 sound which is a python
+library for all the audio, N
+coding and G coding. You can create your own tool to do this
+however you wanted. The analysis
+package which we'll talk about JT65 analysis fan you want to
+mess around with the protocol
+and change things around and experiment and see how you can
+make yours different this comes
+with black tests so you can make sure if you're experiment
+doesn't break anything. Play
+with that if you want to. If not we did it for fun. This is where
+we demo the tool. We hope the AV
+does not blow up. You can see that, right? Okay. >> So I'll
+show you the help output from
+the tool. There's two basic functions N code and D code.
+There's a bunch of options here.
+You can inject additional nose if you want to try to hide where
+your message is embedded and
+interactive mode for listening to messages live on the air,
+places to embed your messages,
+the JT65 protocol if you look into it more there's options
+like a frequency, a base
+frequency and mode. For examples for cyphers and encryption we
+have super secure stuff. Okay.
+All the way up to real things like GPG and 1 time Pad. There's
+trade offs using these and you
+will figure out what they are but we have shown all as
+examples so do what you will.
+For the output you can print the symbols to the terminal or wave
+file you can broadcast over the
+air but we did not or for the input the same thing. So let me
+show you what happens when you
+encode a message here. It's cutting me off. Okay. Let me run
+it then. what you can see here
+is we've encoded this message. The innocuous message is two
+call signs plus a grid locater.
+Anybody listening would see just see that on their tool. Our steg
+message is Defcon22, we're using
+the queue from example pdogthedukezip and printing out
+the symbols to standard output
+and you can see what symbols will get transmitted over the
+air. If you kind of wanted to
+kind of follow along the different stuff this tool uses
+you can enable verbose mode
+where you see that source encoding stuff where you get 12
+symbols and add in the error and
+the final message is displayed here too. But the cool stuff of
+course is the audio which I know
+you all want to hear. So here we'll do the exact same message
+but I will put to an wave file,
+and I will go ahead and play that wave file. example same
+message but I'll play that for
+you. >> Sing along. >> I love singing these things. After
+you've been listening for 4
+months every night you will love singing it too. >> (Beeping
+noises). >> We affectionately
+refer to this as the alien music because it sounds bizarre.
+Especially when you're listening
+to the real air waves and you've got multiple messages happening
+at the same time at different
+base frequencies. Of course you have the static in the
+background and other noise. It
+sounds really creepy and we might have an example of that
+coming up as well. But it goes
+on for a minute but we want to do it as quickly as possible. So
+let me show you what happens if
+you run the actual tool that the most common tool everyone uses
+to use this protocol, WSJTX. So
+if you were to open that wave file or hear it over the air
+waves what you get is all you'll
+see is that innocuous message. There's no other indication here
+that there are errors in the
+message or secret cryptographic data. Close that out. Whoops. I
+went past it. If you go to
+decode that file with our tool, you can see both the original
+and the innocuous message and
+the steganographic message as well. >> So we wanted to play
+with this in different form
+factors. One of the things we envisioned as we worked on this
+project a portable feed reader
+and that led to this. This is raspberry pie with a display on
+it. It can be run on batteries
+and plugged into that which is pretty common short wave
+receiver. Basically building a
+receiving station for this for under $200 running on batteries.
+We were going to demo this here
+but we're in RF hell in this room and receiving those low
+power transmissions is not going
+to be possible. So videos didn't happen. >> [Off mic] >> That is
+connected to short wave
+receiver. >> I hear the aliens. >> The pie is decoding. >> This
+is the part where the lap top
+dies? No anyway since we're short on time Brent will fix the
+lap top and what I will do is
+talk about some of the analysis that we worked on. I'm hoping I
+get an analysis slide. So we
+wanted to look at this protocol and basically figure out how
+would you locate if someone was
+going to do ‑‑ if someone was doing these types of activities
+and generating the JT65 packet.
+If you've been paying attention you have some limited population
+of real JT65 messages in the
+universe. Right? It's the structured communication that
+goes through predictable error
+correction algorithm, et cetera. Then you'e shoving a bunch of
+errors in it. This gives you a
+lot of other statistics about the packet that's been received.
+One of which is a confidence
+value. That confidence value is essentially the demodulator as
+it then signals into the various
+tones and it gives you the value which is how sure it was the
+given signal was correctly
+demodulated. So our thought process was you take the numbers
+of errors in a packet and
+signals to noise ratios or confidences and do some sort of
+analysis and figure out whether
+a packet was suspect or fishy. There's great pictures of this
+that we don't have right now but
+there's been analysis tool or analysis section of our tool
+which will take in either a
+single JT65 packet or multiple and it will produce graphic
+analysis of this for you or it
+will output all these statistics in basically a comma separated
+value and you can import them
+into any tool of your choice. So you can process these in bulk.
+We listen to probably around
+3,000 transmissions on 20 meters. Called those
+basically a population of
+natural packets. And we generated 60 of our own packets
+and through the could over cable
+which is basically a stereo audio cable demodulated that on
+the bench. When you look at that
+ideal scenario where you have a lot of packets received over the
+air and just a few that were
+generated with the stego tool and you had a clean transmission
+line the packets were extremely
+obvious and Brent will bring me to the next slide right now.
+Please. Thank you Brent.
+[Applause]. You should always co‑present and have a back up
+lap top. The analysis module,
+yes, graphics and pictures and you can see those things. So we
+thought finding steganography is
+pretty easy. Here's the pictures I was talking about on the upper
+left hand side. That's the
+population of natural packets. On the light hand side you can
+see the orange dots, they are
+the stego packets. This graph is numbers of error on the X axis
+and standard deviation of that
+confidence value on the Y axis. You will notice this is the
+really non-populated area of the
+graph that you see in the natural packets. Then awful our
+stego packets show up there when
+we did it on the lab bench because you're essentially
+taking the low error packets and
+shoving a bunch of errors into them and they more or less slide
+into this place that it's
+obvious they exist. So I closed the lap top, I was done, I had a
+drink and finished. Brent said
+it's probably not that easy, Paul. Because you're not taking
+into account any of the
+interference that would be normally received over the air.
+You're not taking into account
+weather interference, bad transmitters, et cetera, et
+cetera, et cetera. Transmits on
+top of each other is problematic in this protocol. So what would
+happen if you actually ‑‑ again
+because we can't send these packets legally ‑‑ what would
+happen if you actually simulated
+the behavior, if you took the real error values and real
+signal to noise values, et
+cetera out these packets on the left hand side of the graph when
+you substituted them into your
+Stego packets and pretending that you received those Stego
+packets over the air, the tool
+supports that too. You can take a population of real world
+packets and model your stego
+pocket against them. In that case not so much. The same
+measurement value it turns out
+that there is a lot of error that you get on these
+transmissions in the real world.
+So it's not that simple. We tried other measurement signal
+to noise ratio. Not quite. I'm
+not a statistician. You've probably already notice that
+already. There was already
+enough math here to make my brain hurt. There are some
+statistical methods we think
+could tease out a few of these packets. For example you can see
+we can get some out here but
+still not all of them. So it's actually a little harder for the
+amateur hobbyist nonprofessional
+to detect than we thought. We did observe some interesting
+patterns. This is the frequency
+of error symbol and the location of those error symbols that we
+had seen. In the real population
+of packets this is about 14,000 packets received at random time
+at various intervals over weeks.
+And you can see they're definitely not random when you
+look at the real world. What
+symbols happen as errors in the real world and what symbol error
+locations show up in the real
+world. We didn't emulate this. If you were going to use a
+method take into account what
+happens in the real world. We don't know why this is ourselves
+but we have theories. On the
+bottom you will see two pictures. Those are 200 stego
+packets basically the same
+message encrypted and encoded with the same key. And you'll
+see that the locations and
+symbols really show off as very unnatural peaks there so that's
+certainly an issue. What about
+distance? So our theoretical maximum number of errors we
+could decode is 10. We could
+theoretically have 10 errors across the packet when we were
+done and decode the actual JT65
+and our encoded message. That's an absolute best case scenario.
+Turns out more likely 6 or 7 or
+so we could tolerate. Out of our large population of packets we
+looked at how far away the
+sender claimed to be from the receiver and the receiver was
+that wire antenna in my attic
+and they were out over a thousand miles. Maybe several
+thousand miles, couple thousand
+miles. So it's definitely possible that something like
+this could be a worldwide short
+messaging protocol either if A, conditions were perfect or you
+had repeating stations.
+Obviously there's vulnerabilities and limitations
+to this. We made trade off.
+Analysis and detection is a problem. We talked about what
+hobbyists can do with stock
+tools on a bench. If your adversary is much differently
+equipped than that you might
+have a problem. Transmitter location is also a problem.
+There was a talk yesterday on
+Fox hunting and they do fox hunting here and it's well
+understood problem in game
+especially by the 3 letter agency. We certainly think if
+you can observe transmitters
+from multiple locations you can better tease out what the error
+symbols that are injected are.
+Except for the GPG mode we're not doing anything with signing
+these transmissions so there's a
+message forgery problem. You can address that but you're trading
+more band width. >> So how do
+you get this tool? We've been working on it for many months.
+Much longer than we probably
+ever thought we would but today this morning right before we
+came on stage we made that
+public. So this is on gethub/pdogg/jt65stego. There is
+a version on the conference DVD
+as well. I would recommend pulling the hub version. We made
+modifications after we submitted
+it for the DVD but either one they're both compatible with
+each other and work great. So we
+hope we showed you how you can definitely embed hidden messages
+inside the protocols in digital
+radio. If you don't want to do what we did you can take the
+ideas and pick your own protocol
+and implement it. There's lots of different ways you can hide
+these things. We only just
+started to scratch the surface basically. Some things we can do
+is look into more ways to defect
+and make sure it's undetectable and working into other protocols
+as well as I mentioned. So this
+is actually an older version of the presentation but there's a
+ham examine here. On Sunday in
+the crypto and privacy village you can head on down there noon
+and take the test and if you're
+not familiar with the material but you want to get into it
+there's a cram session at
+9:00 a.m. in the wireless village which is listed there.
+If you see the pictures with
+these light up badges those are the volunteers that will be
+helping to administer the exam
+and if you pass any level of the test there's 3 levels you'll be
+going home with a really cool
+medallion that's somewhat like this. They're pretty awesome
+some come by and check that out
+for sure. I hope to see you there. >> But don't do any of
+this. And this is actually on
+the test. So we've actually given you some answers. Don't do
+any of this. >> Does the person
+that organizes the exam in the room? Do you want me to mention
+you? Or be humble? There he is.
+So we want to thank everybody in the room for coming to see this.
+We're kind of running up on the
+edge of time. We especially want to thank lots of people from the
+Massachusetts group,
+MassHackers. We have questions. We want to thank everyone from
+Mass Hackers. They've heard
+portions of this talk and we bounce ideas off them as well.
+It does look like we have time
+for a few questions if there are any. Right over here. Right over
+here, your hand was up first. >>
+[Off mic] >> So the question is really around the time
+synchronization and especially
+when we talk about mobile scenarios that might have not
+access to a network. GPS was the
+option. That would be one option if you can receive time from
+somewhere that was reliable, you
+can do that synchronization. The other option I personally have
+thought about but we didn't
+implement in the tool is honestly if you listen to one of
+these JT65 watering hole
+frequencies long enough you have transmissions starting when you
+want to start your transmission
+and all I need is relative clocks. I don't need to know
+exactly what time it is I need
+to know when the beginning of a minute is. Yes people are
+transmitting at the beginning of
+a minute. It is pretty exact. It's not 100 percent exact. If
+you look into it because what
+can happen is the transmitter can transmit before the start of
+the minute and it can still be
+decoded because the symbols are missing in the transmission. But
+one of the thoughts I had when
+we were ‑‑ when I thought about that actually was you could
+always use receiving signals as
+a relative thing and you can send the signal through a signal
+you received based on an offset.
+>> [Off mic] >> Did we look at having the data in the message
+and using the forward error
+correction to change that message into what we wanted to
+see? I'm not sure I totally
+understand. >> [Off mic] >> I think there's probably various
+places you could actually do the
+steganography injection in that process and there are various
+levels that you can actually use
+the ‑‑ what we thought about for example using the real innocuous
+message as the key so you were
+actually transmitting a key and that has problems as well and
+the advantage would be you
+wouldn't have to necessarily know the key. You would just
+have to go through at that
+algorithm, there are probably multiple places where you could
+embed the stego. There are
+probably multiple other ‑‑ this protocol or others. >> I think
+there's time for one more. >>
+[Off mic] >> Okay so the question was if you remove the
+cryptography would it remove the
+FCC regulations in you can talk to a lawyer. We're not lawyers
+first of all. Our understanding
+or our personal interpretation is that you cannot hide a
+message inside of a
+transmission. So for us hiding if without the encryption would
+still count. Now there may be
+other people that have a different interpretation of that
+and I know some are in the room
+actually they actually may know more than I do because they were
+both hams and lawyers. So that's
+a good question for them. There are some exceptions to using
+encryption. You can talk to ‑‑
+if you're sending commands to space station there's work
+around but we're obviously we
+are not doing that. Somebody mentioned two days ago if you
+control an RC aircraft and
+sending back telemetry data that is also allowed but aside from
+that, you know ‑‑ don't quote us
+on that but just don't do it. We're not saying you should do
+it. Okay. All right. I think
+we're out of time but we would be happy to answer more
+questions outside. We'll
+probably be at bar con after this. If you see us around the
+conference we will talk about
+amateur radio or pretty much anything like puppies. Thank you
+for coming. Thank you.
+[Applause].

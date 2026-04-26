@@ -1,0 +1,796 @@
+>>Good morning everyone. >>Good
+morning. Whoo hoo. >>I see most of DEF CON is not here today
+because, it is Saturday morning. I kinda expected that. So.
+Welcome to: "I Fight for the Users - Episode 1: Attacks
+Against Top Consumer Products". I'm Zack, >>I'm Erin >>this is
+Erin, she's SecBarbie and we always like to start with a
+slide of what our credentials are. We like to always say:
+don't trust a speaker just ‘cause they are up here. Trust
+them ‘cause you validate what they're saying. So, instead of
+having a long list of certifications, things we do, we
+like to say judge us for everything else. >>We're pretty
+smart though. >>So before we get started, uh, it's Erin's first
+time speaking at DEF CON [crowd cheers] and we've been informed
+that goons are no longer d- allowed to do shots with first
+time speakers >>Boo! [crown boos] >>So this is Erin's way
+of, uh, celebrating, congratulations Erin >>I brought
+a shot. [applause] >>You want the other one? >>Alright,
+alright, so, before we get started and in all seriousness
+this is our, our con speaker rule 101 so, both Zack and
+myself have been around this game a few, few years and what
+we see persistently, is companies go out and they, they
+love to use these conferences as great PR hooks so I want to
+start out apologizing to every single news media outlet that
+reached out to us but we learned really quickly, years ago, that
+as soon as you start dropping information - especially when
+you have things like "consumer product", "IoT" - your talk will
+get pulled right away. So, you've heard probably very
+little about what we're going to talk about but we hope to excite
+you with a few, uh, I don't know names… we're not being very
+vague today… >> No we're not. >>so, welcome to DEF CON
+[inaudible] >>So, what we're kinda covering three different
+topics today. First is we're going to talk about, or I'll
+talk about Bluetooth, uh, some fun things with that for
+Bluetooth low energy. Uh, Erin's going to be talking about some
+wireless security products, um especially on the camera side
+... >>Whoo hoo >>... and then I'll also talk about on uh,
+Windows security side, some fun things we found on there. So,
+you may be like, this is a little ADD this seems a little
+odd-ball to be jumping all over the place, uh, yeah. It is. Uh,
+but having one talk that goes on for 45 minutes it kinda gets a
+lot of set-up a lot of like, okay, well let's talk about
+ourselves, we spent five minute now uh, let's talk about the
+background of this, so like we just want to get through it -
+we're ADD by nature about the stuff we want to look at so, we
+figured what better format than to just kinda jump through a
+bunch of fun topics and do it that way. So, first thing:
+Bluetooth: um, yes. We have another bluetooth talk we've had
+a few bluetooth talks over the past four days including
+BlackHat um, Blue Hydra was released this week by, ah
+ZeroChaos and Granolocks over at, uh, DEF CON 101 earlier, um,
+we've got a talk coming up about pic, actually it's today, isn't
+it? >>Mmm hu >>The bluetooth lock picking from a mile away.
+That's really cool I do want to go see it actually… >> It's the
+best track >>... um, and then over at BlackHat side there was
+a gap proxy tool and a replay, um, tool and a kinda fun
+bluetooth suite. So why don't we have another talk about
+bluetooth low energy? Um so, a little backstory, uh, I like
+magic, I've always been fascinated with it. Um, I always
+had this dream as a kid to, start a magic bar like a themed
+kind of magic bar. And yes they exist but I it was kinda my
+little thing of like being able to have fun with that and
+there's always the basic rules of magic. One: never reveal a
+secret. Two: never repeat the same trick twice. Three:
+practice over and over and over. Right? And so one and three we
+can get covered but how do you, in a restaurant or some other
+establishment track, if you've shown the same trick to someone
+over and over and over? So it kinda got my mind going as to
+how can you track who someone is in any kind of environment. So I
+kinda came up with this long list of ideas of how you could,
+huh, track someone. You know, can you get them out of the car
+on the way in with a licence plate reader, through their
+electronic toll collection RFID, through bluetooth on their car.
+Ah, there was a great talk two or three years ago about how the
+toll systems are using bluetooth to track cars, um, if they come
+by foot through, or you're in a major metropolitan area where
+people aren't coming by car, um, could you do it by facial
+recognition, voice recognition, different ways through their
+cell phone, what do they have on them, um credit cards - all
+these different fun things and always the not so fancy ways of
+just asking "what is your name?" Um, and so I kinda was thinking
+about like well, how do you tr-, uh, outside of like this from
+that application. How do you track someone, right? And so, it
+kinda came down to these three areas of, or four areas of like
+well these are the key ways that if you could get positive data
+that isn't all garbage um, but wifi's a little bit of a problem
+uh, so, we've gone through the wifi tracking thing for years
+we've talked about it, about how the phones are probing for wifi
+and I'm not going to dive too much into it but I hate to pick
+on Nordstroms because I love them, but they were the ones
+that called out hard, Home Depo was doing it too all of them
+kinda stopped this practice but, it was a way they were tracking
+user behaviour by looking for the bluetooth, uh the wifi
+probes from your phone. Uh, but mobile device manufacturers
+caught on to this, they started doing randomised MAC addresses
+and, they decided that okay, only if you connect to a genuine
+SSID will I take and actually display my real MAC. So, we
+kinda take it as a data point but we don't trust it now for
+wifi as not all devices randomise but most kinda do on a
+mobile device front now. So that leaves us with bluetooth, car
+keys, RFID loyalty card. That's kinda the key ideas I was like
+um, messing with in my head and well, yeah, we could do car
+keys. I'm not, great on my STR skills, I'm getting better, but
+uh, and the RFID loyalty card is kinda lame so… let's talk about
+bluetooth. I'm not gonna spend too much time on bluetooth 101
+if you wanta learn more about bluetooth and the stacks, there
+are plenty of talks about it but for those of you who are
+catching up with us today um, bluetooth classic uses one meg,
+one megahertz channels, has 79 of them for data, one for
+broadcast hops at 1600 times a second, the MAC address -
+effective MAC address, the address it uses - uses a, uh,
+upper address part and a lower address part to make up the
+address you only get the lower address part in the packets, um
+and we all know about this and the only thing that's really
+using bluetooth now is obviously audio devices um, head-,
+headphones, bluetooth earpieces that kind of stuff but we've
+kinda moved to the bluetooth low energy or as bluetooth likes to
+call it bluetooth smart [sigh] smart. Um, and we've talked a
+lot about the insecurity in the past in other talks. There's 36
+channels, they are 2 megahertz wide for data, 3 announcement
+channels and then the increment of rotation of those channels
+and the interval all that is dictated when it does the join
+to the master and what you get basically is you have a six byte
+address effectively a MAC, we'll call it for sake of everyone.
+Um, that's used to do an, the advertisement and then what
+actually connects is a four byte access address that is actually
+used to communicate for that session. Everyone with me so
+far? I know it's early but I don't want to waste too much
+time on bluetooth, so bluetooth does have security through, when
+we talk about the wifi randomisation um, the bluetooth
+group actually started that randomisation also for it's,
+it's addresses in bluetooth smart uh, and actually this is
+the funny thing they actually have an ad up on their site or
+not an ad, a blog post on their site about protecting your
+privacy with bluetooth we've got good stuff and they use this
+photo of this child walking alone, the biggest FUD I've seen
+in a long time of scaring you of like my kid's being tracked, oh
+my god. [theatrical sigh] So, like I said there's the access
+address, right, that's what's actually used in those data
+packets um but they change upon the disconnect and reconnect
+every time a device a device is connecting, except for in the
+advertisement which is static. Um, so long term tracking of
+these access addresses isn't so reliable uh, obviously with
+devices connecting for a long time you can track some
+behaviour, moving throughout for an hour, two hours but if
+there's any kind of disconnect out of activity they'll
+regenerate. So it'll give to you good short term tracking but
+from a long term perspective you can't really track someone with
+those access addresses. So it got me thinking so we, we've got
+randomised addresses on that side, we've got randomised
+addresses on the access [08:08]er and or advertisements
+in the access. So, what else is there? So, when it comes to
+bluetooth it's two different kind of profiles. There's the
+generic access profile, GAP, and the generic attribute profile,
+GAT. Um, I'm not going to dive too much into these because,
+obviously this is not a 101 talk. Um, but basically the GAP
+and GAP profile provide the communications standard for
+communicating to the device. They basically set up the
+connect and communicate with the services that the device-, the
+slave has. So, I started looking at these devices to see what
+could be tested and obviously you go around, you play with the
+tools, you're like "okay, nothin, nothin, nothin" - I
+travel a lot. Um, a- a lot! So [laugh] I notice, when I was on
+planes, that all of a sudden, a lot of devices started showing
+up. That's odd. Umm, so normally walking around you saw a few
+devices and we generally didn't know what the behaviour of all
+these devices we. We saw certain Fitbits and that kind of stuff.
+But wha- what's the deal? It turns out that, certain devices,
+when they are disconnected from their phones - or whatever they
+are paired to - they jump back into advertisement mode. So, uh,
+for your simple coding pleasure. If it's not paired it goes into
+advertisement mode. And again this is unique behaviour we
+started determining with some of these devices. So, can we get
+devices to disconnect and actually take and start
+broadcasting again? Uh, uh the answer is, uh yeah. We can. Uh,
+it's interesting that you can actually jam the 2 point 4
+gigahertz range with, uuum, some success. Right? Uh, basically
+the- using the USRB- P- U.S.R.P.B 2- 210, uh you have
+about 56 megabits of bandwidth. Uh, it's not reliable,
+especially it takes a lot to drive it, but you can basically
+effectively create a 2 point 4 gigahertz jammer using a SDR, uh
+by generating some random data noise. We did all this and we
+testing it and we noticed by jamming the 2 [laugh] those
+frequency bands of 200- 2428 megahertz to 2478 megahertz - so
+basically that's 56- 50 megahertz band… we can actually
+take and get the devices to fall off and jump back to their
+advertisement channels. Uh but obviously this depends on the
+host. I have to give credit to IOS. They have great frequency
+hopping and detection. So basically the phone detects
+"okay I see a lot of jamming, I'm going to move to this
+frequency band and re-pair" So it does have some reliability
+but it's a little odd. The other way to get a disconnect is by
+blasting terminate connection packets. This is basically,
+effectively the bluetooth version of de-auth. Is you look
+for the access address and then you spoof a disconnect and it
+terminates. Now, granted, again, limited window and it gets wonky
+with some devices ah, we noticed some devices don't like to
+rejoin after they've been told to disconnect. So it's one of
+those things that if you are trying to track someone it kinda
+gets you some good opportunity to get an ID from them and get
+the connection advertisement side but not so much that it's
+not going to be noticed. So we've all talked about tracking
+before, right? So why am I rambling about tracking,
+tracking, tracking? Well, a lot of the talk before has been to-
+about "well it's possible". Okay, well, s- with who, with
+what, you know? This is really more of an implementation issue.
+Um, this is- when it comes down to individual devices
+implementing it - especially in the consumer side - what does
+what? Amazon, Best Buy probably loves me by now because I just
+bought a crap-ton of bluetooth. low-energy devices that people
+use every day. Um, and we're gonna go through th- a few of
+them and step: what we tested and basically we did a
+consumer-report style testing against them to see what privacy
+information are they actually leaking. And we'll start with
+the worst. Sorry - need water. These guys were on Shark Tank a
+while back and you may have heard em because it's kind of a
+funny idea of shocking yourself every time you do something bad.
+[laughter] It's also a fun thing to shock your friends when they
+do something bad and they're like" I'm trying to learn..
+[inaudible] Stop it!". But basically they use a static MAC
+address. The MAC address- the last four, sorry, 8 bits? 8
+bits. 16 bits? 16 bits! Sorry, Math is hard. The last 16 bits
+of the MAC is in the SSI- or in the name of the device. Correct
+me on my math. Um, and if you don't happen to have the- the
+MAC address from the stack MAC address or uh, its' name, send a
+GAP request to it and it gives it to you [laughter] in ASCII to
+hex. I do- du- ah. Somebody wrote a BAT converter on that.
+So, this is super easy to track because we have a static
+address, never rotates. But like I said, they've started
+implementing this rotation in bluetooth uh smart. That devices
+are started taking eh, advantage of. But then we have these
+devices that are meant to track you: um, Tracker and Tile. We'll
+talk about Tile next but effectively these addresses they
+show up in the broadcast address as being random uh, and they do
+generate a random one because the ID's rotate through it. But.
+the ID actually never really rotates on it,. Uh the MAC
+address we've noticed over a period of over four months they
+never rotate it. They did they did but they never rotate it, so
+effectively seems as if when the device powers on it generate an
+new one but if it never powers off it never rotates after that.
+As well as with these device meant to track you - as
+community meant to track you so, ir-regardless of the MAC address
+there use a static ID associate in the GAP profile that will
+take and actually dis- display, in the case of the tracker, the
+raw MAC address of the device. And it constantly broadcasts
+when it's disconnected… Tile's the same way, um, the Tile
+identifier in GAT is one of the services in there, uh again -
+static MAC addresses again because it does randomise but
+never rotates, randomisers on boot and it stays connected to a
+device but only while the Tile app on a phone is open but once
+you close the Tile app it disconnects. [sigh] Our friends
+over at Fitbit, the Fitbit one also uses a random MAC address
+but after about four months we didn't re- notice it rotate at
+all. It doesn't rain- remain connected to a mobile device at
+all. So basically to save energy it only connects when you
+connect to it and say "hey, how many steps do I have? What's my,
+my time" all that stuff. But it doesn't remain connected so it's
+constantly broadcasting as well. So thing have started to get
+better after this. A little bit. With the Withins Active, another
+device we tested, the MAC address randomises. But it still
+advertises the raw MAC address in the advertisement data which
+broadcasts out. So while the MAC address is changing it's
+advertising its' real MAC address inside the manufacturer
+data. Um, okay? That's a security choice. >>[laughter]
+>>Then the Pebble Steel also uses a- another way we can track
+the devices is in thier name and we've talked about this before
+too but has in the name, the last - four digits (I'm done
+doing math) um, of the ha, MAC address and it's random but
+still after days of rebooting the device and turning it on and
+off and losing power it still kept the same, static address.
+Uh, but advertising as random. Again in the device info and GAP
+profile it's got the serial number of the device and it goes
+to sleep every once in awhile so it;s not really reliable but
+it's a cool choice it also used "classic" so we can track its'
+lower address too. So, interesting choices on how it
+connects. The Fitbit Alta the MAC address randomises but,
+again, like all the other ones they stay static for our months,
+even after battery loss. Um, getting a little bit better this
+one doesn't turn bluetooth on until you actually turn it on to
+sync mode. [sigh] This one has the the name- uh the Microsoft
+band has the name of the address inside of the device name and it
+does randomise the MAC. So we're halfway there. We got a name
+that's kind of static, that's what you set it for but the
+addresses are rotingatin so… And then on the better side of
+things of people who actually implement security well, we
+gotta give credit to Apple they rotate their MACs pretty well.
+Androidware um, this was on sale  thank you Amazon Prime day 
+yeah… um but also notice that this is really cool on the uh
+Androidware watches. Once it's connected it stops responding to
+broadcasts forever… uh basically it'll still randomise, it'll
+connect to the device it knows but unless you go into the watch
+to say "let me reconnect" it doesn't respond to broadcasts
+anymore. So wha- I have to give kudos to them because that the
+best we saw of all the things. IOS devices as well like to
+broadcast bluetooth low-energy noise uh, they do randomised
+through and advertise they are an iPhone, iPad etc, but that
+MAC address randomised consistently so while it's being
+used in [laugh] fun apps, including Safari, we noticed,
+um… take that one on for size and think about that… it does
+randomised quickly and randomly so there's not and trackability
+on the actual iOS devices , we noticed. So we have to give
+kudos to these three for doing it right, the rest we kinda went
+through quick because we're doing it consumer report style
+and what we were gonna do is we were gonna release a tool with
+this to kinda track all these things. Fuck you Zerocast, he
+kinda beat us to the punch and got a better tool out so I just
+said: " No, bravo, we- we'll just do it on that side and
+point over there because…" [sigh] they did a great job on
+that. So the Pony- uh Pony Express crew released this ouh…
+was it Thursday at 101? >>Yes >>I think probably posted it
+three days before then, four days before then so, um this is
+definately a great tool to look at for tracking those things. It
+doesn't, I don't think it supports GAT yet, but I'm sure
+it will soon, if I have a few more minutes to tweak some code.
+So where do we go from here with all these devices? We complain
+about them all and I spend 15 minutes rambling about this Um,
+we really need to start testing more of these devices to
+determine what s the implementation issues with them
+instead of just like "well it's a problem". With these new IOT
+things it's obviously a problem across the space and we all can
+complain about IOT this and iot that, um so we're throwing up
+oh, I forgot to actually commit this this morning ah [laugh]
+throwing up on Github uh, basically a repository that
+everyone can submit pull requests to that as you test a
+device and say "hey I looked at this and it does this, this,
+this behavior" and we'll have a little checklist of things that
+we are looking for EWe can all kinda source together as to: "
+hey, here's how this specific device behaves here's a
+checkability of this device" not that it's possible not tha- to
+fool people with FUD, FUD, FUD, but that it's actually possible
+or uh, that it's possible for this device, this
+implementation. Long story short when MAC addresses are random
+look for things that aren't involved in the MAC, which
+include; not actually randomising them, the, uh GATs
+leaking serials and the device names you can knock a device off
+bluetooth, uh, by using either the deauth packets or by
+actually broadcasting on the 2 point 4 gigahertz a lot of
+noise. Um, certain frequencies. And when the standard, while the
+standard of bluetooth is great, supports a lot of cool stuff,
+uh, these devices aren't implementing it. Alright I'm
+going to switch it on the Erin who's going to talk more about
+the home security side. >>Alright this is the squirrel
+part of our talk. [applause] Squirrel [applause] Oh he’s not
+done, he has to get back up again don’t you guys don’t do
+that to him. [laughter] Just give him a minute. [inaudible
+talking] right ya right you’re gonna ya don’t don’t feed the
+ego. Not yet. Later, later. [laughs] Alright so we’re gonna
+talk a little bit about consumer wireless camera and office
+security. So before we get into this we’ve had lots of talks
+about uh wireless CCTV all this kind of stuff so let’s uh chat
+about what we’re not gonna talk about. We are not gonna talk
+about weaker default passwords. You guys have Google you can use
+it yes everybody with the exception of maybe 10 percent of
+people still use all of these congratulations. We're also not
+gonna talk about IP weaknesses but if you wanna make your uh
+network even more insecure, this guy on Youtube can actually help
+ya out and tell you exactly how to route it to the external
+internet if you really want to. Good times. I mean it was
+helpful it was his intent. We’re also not gonna talk about
+deauthing 101 um everybody has Google download Calle use some
+Google fill and you can figure out yourself how to buy the
+cards that’ll work and deauth it yourself so. >>Hint! >>Hint.
+[laughter] Also we’re not gonna talk about Showden. It’s awesome
+not this talk though. Go have fun with it and I wanted to put
+a slide up and say we’re also not gonna talk about Pokemon Go
+cause it’s almost as fun as Showden but [inhales deeply] So
+uh so who cares about the CCTV cameras and the security. Well
+ya know what? It grinds my gears, I care because these
+camera companies are selling it as security devices. Not all of
+em most of em are selling security. [clears throat] So
+that got me to thinking, ya know, what if? What if these
+were used as security devices. Well I wanna be a bad guy and
+for anybody that knows me knows that I have a little problem
+when it comes to automobiles. I like them a lot. >>[laughs] >>So
+uh so step 1 in my little mental process when I was thinking
+about these cameras was was kinda getting into the mood. So
+I wanted to channel my inner sway and think about hmm if I
+had this this absolutely amazing warehouse full of Ferrari’s that
+was protected by these security cameras what would I do? This
+also plays into homes and stuff but I find Ferrari’s to be a lot
+more fun than thinking about the homes right now. So the first
+thing I would do, get into the mood. Second thing I would do,
+I’d get some information. Information’s are pretty easy to
+find. Especially you know we have this technology here I’m
+gonna use that really loosely everyone in this conference
+we’ve been talking about war driving for freakin years decade
+almo wow decades wow that’s old anyway. >>That’s old >>It’s old.
+So some people call it war driving, in this case we’re
+gonna call it target identification. So with that you
+can drive around because these devices are lovely and like to
+tell you who they are all the time and in their MAC addresses
+you can actually tell who they’re from. So you can go on
+to the ni the nice little Google’s help us out again and
+identify who exactly these cameras belong to or you can
+actually just look for the cu cute little stickers that come
+with the cameras that say hey you’re on camera and some of em
+even have the brand name on em even easier. So with that I’m
+thinking about where the attack goes. So obviously we’ve had
+many talks that have talked about um wireless deauthing and
+what not. So let’s take that a little bit of a step further.
+This talk was kind of composed with the idea that let’s find
+out what these cameras actually do. Let’s find out what happens
+when they get deauthed. Let’s find out do they notify? Do they
+recover? So in the attack we’re gonna be thinking about the fact
+of how long it would take an intruder to get into a facility,
+a building, a house, what not, what they would have to do ahead
+of it, how long they would have to deauth the cameras and, could
+they make it away clean so to speak. So that being said ya
+know we’re not gonna talk about point a entry and what not like
+Zack said earlier there’s a wonderful uh bluetooth lock talk
+and so I’m assuming some of these homes that have these
+lovely uh camera systems also have the bluetooth locks and we
+can do a whole bunch of fun things with that as well. So,
+the attack. So in the attack we’re gonna talk about which
+cameras are weak. So in order to do that, we had to just like
+Zack, go and buy a whole bunch a cameras but ya know since we
+this is Defcon and ya know we’re progressive these years, I
+wanted to make sure that we had diversity. >>[laughs] >>So we
+have lots of different cameras that we tested. Lots and lots of
+them from different manufactures of different sizes. So we went
+from the big guys to small guys that's them so which one of them
+are not saying they’re a security camera was my question
+I showed you guys earlier all the articles and what not. So
+how many actually uh say they do security? All but 2. >>[laughs]
+>>So there are 2 really, really I’ll say forth coming companies
+that don’t claim to be security cameras they’re just like hey
+were this, this is what we are good for them. So what was
+tested? So we did a little bit of everything. So obviously we
+wanted to know what the offline time was, we wanted to know if
+it does any kind of notifications. So if you get
+bumped offline, network interference what not what’s the
+threshold of notifications. Is there any type of cache video on
+the device? So if it’s knocked off how you know what what
+amounts gonna actually store locally before we have to
+recover? What if there’s any type of wired network options,
+if there’s any type of SD options on the device itself for
+local storage? Type of power kinda was curious whether it was
+battery or wired obviously its points of failure there.
+Additional equipment needed for the function of cameras, it’s
+not all of them are just stick up and any other performance
+obfer servations. So because we were actually being pretty
+pragmatic about how this was done we actually had a test
+procedure. So ya know at 0 stopwatch starts at about a
+minute in we did a targeted deauth attack. About every 30
+seconds we were waving our hands for motion recognition cause
+some of the cameras did we required it and about 10 minutes
+into the attack we did the targeted deauth ending. So we
+terminated it and we gave it about 5 minutes from there to
+see when it would come back online on the network. So this
+is my high tech setup. It’s pretty impressive. So we have
+the uh the timer, whatever cameras being tested at the
+time, the ipad with the camera app so we could vis actually
+visually see what was going on with the camera. When it was
+gonna recover and obviously a whole bunch of uh area play fun
+going on right there. So that being said, I like to always
+prove my work like in my good ol’ math classes. >>And live
+demos never work so. >>And live demos never work so for you
+guys, I want you to know I spent many a weekends with my GoPro
+taping these lovely things but I fast forwarded em for you. So
+this is your drink break, anyone who has coffee or anything have
+a nice drink, take a second. >>Aaah >>Ya there’s about like 2
+minutes and I fast forwarded the crap outta these in split screen
+and so uh ya. You get the idea. So now the results. Kuna
+>>[laughing] >>I love this little Kuna device it was a
+kickstarter actually um as were a few of these but the cute
+thing was the Kuna device eh it kinda did what it said it was
+gonna do not quite security. Ya know it recovered after about a
+minute 30 a minute 40 after the deauth ended. The positives,
+it’s a light. [laughter] If the camera doesn’t work you gotta
+front light yay! [laughter] Another positive it’s wired
+there’s no way around it, there’s no battery powered it’s
+it’s hard wired. Um the negatives only if the app’s open
+are we getting notifications. Uh one of the other negatives or
+positives, depends how you look at it. It had this really cool
+uh pardon me, [clanking] the clanking is killing me.
+[laughter] [thud] It had these cool status lights at the bottom
+of the light. Which were super helpful and I appreciate the
+developers that put em on there because you know it’s supposed
+to help out the consumers to let em know if it’s paired and what
+not or if it’s online. That’s always a good one for an outside
+security light to have it flash red. [laughter] So one of the
+things we learned from the deauth attack is after uh 10
+minutes of it being online uh deauthed, it kinda just doesn’t
+recover. Uh before that if you cut it a little bit early it’ll
+do the the minute 40 recovery but you let it go longer it
+kinda falls over. So in the testing you know these are
+consumer products we did a few rounds of testing and found
+these things out. Well like I told you about these cute little
+status lights I was Googling ya know for the point of this talk
+and trying to see if I could find you guys a pretty picture
+because I actually didn’t fly to Vegas with the picture of the
+bottom of the the status lights and I come across this. On their
+website they actually do tell you, good to them, that it will
+fall over and not recover and you have to re setup the
+wireless camera after 10 minutes of deauth. So let’s just say
+hypothetically you have one of these lights out in front of
+your house, you lose power for more than 10 minutes, ya forget,
+your your light’s useless ya know so. I would love to talk to
+someone who’s doing the IOT monitoring of things there’s
+your uh your start for your little project because these are
+some of the things you should be looking for. So because of
+timing I’m gonna try to go through these a little faster.
+The uh media has this cute little Blink wireless HD
+monitoring and alarm system. The Blink is totally cute I will
+give it credit that with movement it will recover in
+about about 9 seconds. It does have a onboard about 10, 5 to 10
+second video recording. Um it’s clip based though none of this
+is persistant recording it’s just clips. Uh the cute thing is
+it’s easy to mount, it does continue doing the clips.
+Negative ya know it does require a base station, it is battery
+powered, there is no option for uh SD, there’s no wired option,
+it is what it is. Amcrest which I had never heard of this until
+lu again let’s look at Amazon and find out what the best
+selling wireless camera on Amazon is, it’s this one I don’t
+know how. Anyway >>It’s cheap >>It is cheap, it is cheap but,
+you would think that maybe nest would >>[inaudible words]
+>>Anyway uh so recovery’s in 2 minutes not a bad little camera.
+It keeps about 10 seconds onboard storage that does have a
+wired option for wirele for wired network not wired power um
+it does have wired power and there is an on off switch on the
+unit. Not overall a bad camera [inaudible crowd voice] [clap]
+Somebody like that? [laughter] Yay Amcrest! Anyway D Link
+[sigh] we love D Link just for the purpose that they don’t
+actually claim to be a security camera. They’re like hey we’re a
+netcam we’re cool like that. I’m like alright so on the positive
+it does have an SD option. Negative there’s uh there’s no
+actual wired option for the camera itself. It recovers after
+about a minute after the deauth. No movement’s required for that
+one actually. So Netgear cute little Arlo’s. I love these
+Arlo’s. They recover after about 45 seconds, they’re versatile
+cause they have a cute little magnet that’s how they attach
+and they have a sticker. So remember to the war driving
+[laughs] plea ya put no no let’s not put the sticker up and say
+it’s not even bad that it’s a sticker it actually just tells
+you what it is. So you have a few options when it comes to my
+little putting on my sunglasses and being sway and breaking into
+my little Ferrari warehouse for these. These are great I can
+just gr deauth it, go grab em all put em in my bag, throw it
+in the Ferrari and drive out. So so again it requires a base
+station, it is battery powered, there’s no SD or onboard
+storage, again no actual wired option for the camera itself
+because again pops on a little magnet battery powered. Here
+we’re getting into the fun ones. So the Logitech the Logi Circle
+oh sorry. >>No no we’ve got we’ve got >>Alright we gotta run
+>>15 minutes >>I never thought that okay well anyway
+>>[inaudible words] [laughs] >>Alright ADD theatre here. Logi
+Circle, Logi Circle recovers in about a minute 30 um it does do
+some uh constant push notifications. Negatives has on
+off switch on the unit again magnet, can grab it throw in my
+bag in the Ferrari outta here. No SD or onboard storage, no
+wired option. Belkin, my little buddy I’m gonna give you like
+one more second he recovers after I call it the negative 10
+seconds cause it does have an onboard buffer. So the nice
+thing is it does come back pretty quick so the onboard
+memory does recover it I dunno if that was intentionally or
+network inter interference based because they don’t actually tell
+you on their website in marketing that they do that at
+all. They also don’t tell you that they’re a security camera
+either yay Belkin. Um there’s an on off switch on the unit and we
+did find inconsistent push notifications through the app so
+that doesn’t help you too much. Samsung recovers up to 10
+seconds if there’s immediate movement. Downside to that one
+not immediate movement eh until the cat walks through. So
+positive SD option there is a wired option to it. Uh the kinda
+negative is they’re kinda working out their cloud option.
+There isn’t one at there wasn’t one for our camera there was for
+other cameras and so that’s that’s forthcoming and the SD
+storage only is on downloadable through the app download the
+clip to the SD directly it’s not permanently it’s not running a
+constant cache. [inhales] So the Canary all in one security
+device. Canary’s awesome on their recovery if there’s
+immediate movement again please have your cat running through
+after a burglary. [laughter] So uh again the deauth attack
+there’s a qu very quick recovery 2 seconds. There is a wired
+option there’s notifications the sad part to the notifications is
+it takes 30 minutes so it has to be offline for 30 minutes and
+that’s kinda not enough uh because the other side a that it
+has to be offline consistently for 30 minutes we did try an
+attack where we deauthed it for about 10 minutes brought it back
+deauthed it 10 minutes brought it back you can pretty much do
+that for awhile. So the negatives uh movement is re
+required for recovery. Nest, nest. [laughter] not dropcam
+nest anyway recovers after 20 seconds uh Nest is actually
+pretty good I’m not gonna I’m not gonna beat them up too bad.
+I I hope that we see better things coming from them in the
+future. It does keep between 30, 30 seconds and 4 minutes of
+cache. We were finding inconsistencies through the
+testing of that just because we did everything at uh 720p but it
+seemed that lighting, any other um ambient movements were
+causing that to change and fluctuate. There are push
+notifications for activity uh they’re pretty consistent so
+that’s definitely a positive. No SD option, no wired option. So
+[sighs] >>[exhales] >>I know >>[laughs] >>I’m going I’m going
+away so very fast >>Ya we have 10 minutes left >>Oh shoot. Uh
+bad guys won’t put in the effort ya right. Bad guys are putting
+in the effort to do some of these attacks. We’re not talking
+about it to consumers so then what cou should consumers
+actually do? Uh wired’s better than wireless, uh verify and
+understand the limitation of the products like Zack said we’re
+trying to put together a database so that way everybody
+in this room can also contribute to what they’re finding on their
+own. Nobody’s talking about this to consumers. This is our
+consumer disclosure to sa tell consumers this is what you’re
+putting in your house to protect yourself. Let’s be let’s be
+smart and understand what we’re doing. These cameras do have
+unintended great uses like real estate ye anybody selling your
+house in here? I feel put one a these cameras that has the voice
+listen to what the potential buyers are telling you. Anyway,
+I’m out I went too long. Thank you >>Woo! [laughter] [applause]
+>>I have 10 minutes to do a whole topic. Uh one thing I
+wanted to reiterate about Erin’s side that I don’t think she uh
+really announced and made everyone truly clear on that I
+thought was great. Um so all these cameras basically you do
+the Wifi deauth on and they’re offline and Erin is there any
+cache recordings for the majority of these cameras or
+which ones have cache recordings? >>[laughs] Very few
+I don’t have a mic on >>Oh her mic’s not working she said very
+few sorry. Um >>Very few like >>But Ya so like I I know that
+the nest camera was 30 seconds or thir 30 seconds to 4 minutes.
+>>No actually 4 minutes was the most >>4 minutes was the max so
+basically once you deauth these cameras they’re offline they’re
+not seeing any movement they’re not seeing anything so if you
+wifi deauth them guess what? You have no recording and there’s no
+cache recording on most the devices the one’s with SD card
+options do. So I have to talk about Windows for consumers I
+have 10 minutes >>go go go >>We’re gonna get through this
+fast and the teleprompter’s gonna try to keep up with me
+good luck have fun. Um [laughter] so lotta people are
+buying Windows devices especially with Windows 10 these
+are tablets we have fun with them. Um and we’re not gonna be
+talking about OEM devices with all these custom configurations
+cause the duo security crew they did a great job on that. Uh but
+we tell users all these things, patch your device, install anti
+virus, use HTTPS, use a password manager, watch out for
+suspicious downloads, uh don’t use suspicious wifi, pick a
+strong password [sniff] all of these are great things. Oh it’s
+gonna get faster uh >>[laughs] [crowd laughter] >>Reading
+[laughs] >>[laughs] >>Sorry gotta keep going. These are all
+great things we need to keep telling users but these are
+things that are not gonna stop this so back at Defcon 20 I gave
+this talk about anti >>slow down >>arm relaying >>[laughs] >> I
+don’t have time to slow down >>[laughs] >>I have probably 20
+slides to go um back at Defcon 20 I gave this talk about anti
+arm relaying. You can watch it on Youtube or all the other
+places that it’s up there. The old focus was about relaying
+NTLM network authentication to corporate accounts. We were
+focusing on corporate corporate corporate and focusing on
+internal attacks. For those of you who are just joining us
+today Windows uses NTLM for some network authentication it does
+use Kerbusch as well but it uses NTLM for hashings and MD4 of the
+password. Uh but it’s also used for network authentication and
+signing of network authentication at some points.
+NTLM network authentication is 2 flavors version 1, version 2 uh
+basically it has a client say hey what's up do you support
+this? Yup here’s my challenge and here’s the uh the hash of
+the hash have fun. Um [crowd laughter] Microsoft recommends
+uh to switch over to Kerberos an and describe [laughs] Love you
+[clapping] [crowd laughter] I I hope that shows up in the video
+some how. Um and by the way Windows auto authenticates the
+thing so how does Windows auto authenticate? It [laughs] uses
+uh we’ve talked about Wpad there’s now W another Wpad talk
+there’s been 2 other Wpad talks about all the fun things that
+were there but with Wpad Windows auto authenticates with NTLM in
+some things Windows 10 does this last but Chrome still does it.
+Um there’s other ways to get users to auto authenticate with
+things um it’s not just Wpad you can also use injection of UNC
+pass into HTTP traffic if your on out rogue access point uh
+certain file formats support UNC pass and third party
+applications that don’t use uh proper cores uh ya. I won’t name
+names. Um but for a while we talked about this on the
+corporate side the corporate side the corporate side on the
+internal attacks but was it internal only? Defcon 20 talked
+about how to exchange web services while also
+[incomprehensible words] But this is still a huge issue. Now
+I’ve talked about corporate corporate corporate we never
+really talk about cracking these hashes which are possible and
+we’ve always said it’s possible to crack em. We’ve never talked
+about the implications of em. Um so for corporate sides we can to
+VPN access shared point shared passwords all that fun stuff but
+what about personal users? We’re talking about fighting for the
+users. Things that were gonna go and defend against them. Um so
+what what if they have a shared password for certain accounts?
+What if they’re broadcasting these things? What about local
+file sharers? What about those things? So we’ve talked about
+this for years for Windows XP, Windows 7, then Windows 8 came
+along and Microsoft decided to introduce a thing called
+Microsoft accounts. On my Microsoft accounts they included
+logging into your Windows device yay. I have a 1 minute demo
+video because demos rock. [sighs] This is the point where
+I actually have to wait the full minute. >>Zack attack >>So we
+launch a rogue HTTPNSMB server in a tool called Zack attack
+yay. There’s [inaudible voice] an update soon. [laughter] Um
+use MBN as broadcast we set the options to broadcast to this
+device that has a rogue HTTPNSMB service. Exploit we wait. This
+is real time by the way. Bleep! [laughter] If you notice this is
+a Microsoft account with an email at Outlook dot com address
+yes it’s a fake email that we set up for this and [laughs]
+There goes the auth we run an OCL hash crack crack the
+password we get the password of hunter tubing. Wow no one got
+that. You guys are all noobs. [crowd laughter] I love you I
+love you. We go ahead and go into Microsoft dot com. This is
+the Microsoft account. This is the account used to login to the
+machine. We log in with that Microsoft account the password
+we just cracked from a network broadcast authentication
+request. We copy we paste copy and paste come on real time
+>>You can’t have a video demo fail >>sign in. Come on get
+there I have 10 er 5 minutes left. We’re logged in yay! So
+what does that mean? [laughter] [applause] I don’t have time for
+applause. First off Mooby said that I have to release an
+update. Uh yes Zack Attack’s getting an update for Zacks who
+can’t code good and wanna learn to do other stuff good too. Um
+yes I have to post that but ya there is cool new things with
+web hooks and with um uh the Microsoft accounts that we’ve
+added in there but yes sure enough your Microsoft account
+that your losing using to login into those machines, to log into
+your Windows 10 devices it’s using your Outlook, Gmail,
+Hotmail all those fun emails you use it’s actually broadcasting
+those across the network. So what at a minimum it’s
+information disclosure of the user information but we this is
+the first time offline password attacks are valid over a network
+thing. Yes it’s worked on some bad services before but never in
+this thing. So what happens when you crack someone’s password?
+You get in their Microsoft account what’d you actually get?
+You get their uh date of birth, you get there zipcode, you get
+their billing information, you get the last 4 of their credit
+card numbers for all the billing things attached to their
+Microsoft account and yes these things are sensitive. This is a
+2012 article from this a reporter who got completely
+poned um but basically someone got ahold of one of his
+accounts, got the last 4 of his credit card and used that to pay
+to do all his things. You also get their search history
+including things well [crowd laughter] [applause] >>[giggles]
+>>This is a libertarian noob who wants to commit first degree
+murder. [laughter] Um [laughter] and if you’re a heavy Microsoft
+user using your Microsoft account not just on your thing
+but for all the things. You’ve got your onedrive all your
+freakin files, your emails, you’ve got remote file access to
+the systems if you have it enabled. You’ve got wifi sense
+that fun thing to share passwords if it’s enabled
+obviously but yes from a network broadcast thing, from sniffing
+someone on the same wifi access point. No! offline crackings not
+original but it’s the original application of this. [sigh]
+We’ve used our offline passwords before and but we’ve never had
+it to where it’s harvestable from a LAN before. So what we’ve
+told users, patch your devices. Yes it’s still important but it
+doesn’t matter for this. Install anti virus yes some ha uh host
+intrusion detection is ubs detect de default challenge just
+change it. You’re cracking it anyways you’re not using a
+rainbow table. Um by default uses NTLMV2 so it doesn’t
+matter. Use HTTPS only well [inaudible word] you’re gonna
+hit HTP man point and Wpad broadcast don’t care. Um user
+password manager helps but doesn’t actually help if you’re
+cracking this helps with other accounts. Don’t use er
+suspicious downloads doesn’t apply to this whoops. Um don’t
+use suspicious wifi. Seriously, we tell people this why don’t we
+just protect em. Pick a strong password that doesn’t mean
+something. [burps] What we should we should never tell
+users just use a random VPN service cause that’s a horrible
+freakin idea to trust traffic with someone else but for some
+reason we think that’s a good idea to tell people. Um what we
+need to tell em. Pick a strong password, enable 2 factor
+authentication. Yes in Microsoft it takes over 10 steps to take
+and enable 2 factory authentication including and
+adding device passwords to all your devices. Oh my God it’s
+painful. Um >>Mm Hmm >>You need to use unique creds per site.
+Yes it’s important so if someone gets one cred they’re not in
+above it, and maybe avoid Hotmail and, Outmail and all of
+onedrive for a little bit until you can take and use a local
+account. How do we fix this? Disable NTLM off uh ya that
+kinda sucks telling users how to disable NTLM off but that's one
+ways to fix it. The other thing is just don’t use a Microsoft to
+login into account to login into your system use a local account
+instead. So TLDR gotta stock Windows laptop, attacker on the
+same network, uses a Microsoft account to login, you’re poned.
+Alright I have 3 minutes starting with the issues. Uh
+fixing distracted devices what we talk about with bluetooth.
+Can we track and monitor for certain implementations. Wifi
+security cameras, you deauth em they’re off the network, there’s
+no recordings and some don’t give notifications. A few give
+notifications after 30 minutes and there’s very limited caching
+on most devices except for the 2 we pointed out. Considering
+Windows laptops are constantly giving creds for offline
+cracking this is the first time we’ve seen that theirs can
+actually be offline cracking as those kinda things. I wanna
+acknowledge these people for doing some cool things Moobix,
+fuck you and end of line. [laughter] [applause] [cheering]
+[laughter] 2 minutes remaining we’re gonna go ahead and post
+the slide [laughs] I’ll slow down. We’ll post the slides up
+there um we’re gonna go ahead and I dunno where we could take
+Q and A because we’re right up on the time. Uh we’ll we’ll see
+where can we do Q and A? Right to the side, outside?
+>>[inaudible talking] >>We’ll go outside >>We have 2 minutes so
+we’ll have to go outside. Ya uh we’ll take it outside uh so the
+next track can get in here. Thanks everyone for coming we
+appreciate you guys coming out to make Defcon great again.
+Thanks for coming out. [applause] [whistling] >>Wooh!
+[applause] >>excellent.

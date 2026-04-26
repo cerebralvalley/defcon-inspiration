@@ -1,0 +1,231 @@
+All right. Good afternoon, how's
+everyone doing? Come on. There are bars you know you can get
+some beers get that excitement level up. Our next talk is going
+to be about gps. Gps used to be a big unit and I have one for
+fishing and took 8 aa batteries and now we've got these things
+everywhere. Gps is more important in all of our life and
+see what we can pull with this. Let's give a big hand. >> Thank
+you everybody. Good afternoon. Now we like to share with you
+our work on gps. [ inaudible ]. We come from team focusing on
+security and hardware security. During our research we created
+devices for defense and attack. Defcon 23 we bring some of our
+tools here to share with you. So welcome to visit our booth. I'm
+Young Quinn and I'm interested in -- this is Huang Lin. Key
+researcher group. Since that time she wrote a book on radio
+which is popular in china. First let's watch a film.
+Interstellar. Sorry. Yeah. >> Sorry wait a moment. Sorry. The
+man is driving our car. He got out of control. Today we will
+share with you simulator story about this. Gps attacker.
+Finally, he control the As we all know [applause] thank you.
+Actually, this is my first time I use English to speak. It's too
+terrible. The car carry out frequency 1 thousand 5 hundred
+74.52 meg hertz. Gps has signal effect for single usage.
+Execution we applied attack on support gps system. We first
+tried to replay attack. We use 1 usrp210 plus unfiltered and
+security. The security is used supply power to gps activity
+antenna. This shows the hardware connection. We used them to
+record the signal in our film. In the left picture this
+recorder system is out of ground. Then the signal was
+replied from the fail to error by another hardware named
+ble-wire. This black one. The cellphone nexus 5 replied signal
+3d 6. The red picture is gps test plus. When application you
+can see first time as the right down corner 15/42, which is gps
+signal term. X 69 which is the corrected time. Now, replay
+attack prove a very simple attack method. We record the gps
+signal as the new position if you want to generate gps signal
+for any position, it is not...let me see if this video
+can play. Oh, yes. This video is very interesting. This star
+track gps. How to generate safety signal. Generate signal
+to star logo. Sorry. Replay. Left in Las Vegas position.
+Right is Beijing position. Finally, this already our star.
+If you search gps spoofing you can find some products which
+generate gps signal. They are not very expensive. $30,000. For
+example, we have gps 2 which is around $6,000. And from an
+American company provides gps enumerator besides msrp also
+around $5,000. So most of the famous lab is mitigation lab
+from University Texas Austin. 2012 the team leader gave a talk
+about how to spoof gps. This attracted gps security. In 2014
+they successfully did on droid. But we are not in mitigation
+experts. How can we do gps spoofing? We have server esrp --
+they are all in -- for software we searched, the first link tell
+us about the gps. The second one is very good gps researcher, we
+found most project gps...[ no audio ]...this project is now
+finished. The company is around 7410. Finally we decided to
+finish, transmit the code gps simulator. Now let me my partner
+introduced the next bid. >> Hello everyone. Okay. Now, let
+me previously introduce the basic principle of gps system.
+There will be some mythical knowledge, it might be boring
+but we will insert some videos. Okay. [ inaudible ]...okay. See
+this picture. The long curve in this picture is the earth's
+surface. Gps receiver is here. Suppose it can see four gps
+satellites in the sky. The signal are transmitted by the
+satellites at the same time t-zero. And the signal goes
+through different paths and they arrive at the receiver. The
+running time is different because the distance that the
+signal passes is different. All those signal with different
+delays mixed together and received by the gps receiver.
+Now let's see some. Look at the first line. Multiplying the
+delay time and the light speed is the length of propagation
+path. The delayed time equals the arriving time minus t zero
+and equals the receiving time applause delayed time minus t
+zero. T minus means the time of the receiver starting to
+receive. The right part. The path length between the
+satellite and the receiver. The position of the satellite is
+told by the gps message. Okay. Now, this sequence has four
+unknowns. Three dimensions, um, position of satellite x, y, z
+the clock of the receiver which is not an accurate clock so it
+is also unknown in value. Four unknowns need [ inaudible
+]...[no audio]...in two and three...okay. We have introduced
+the basic principle. Now, let's start building the signal.
+Firstly we need to call the data. There are two methods. One
+is to download the data from website. This way you can only
+get yesterday's data. Another method is receiving the lead
+data from air, you can use an open-source program. Sdr to
+receive the realtime gps signal and get the fresh data. This
+picture shows the received fresh data by gnssdr. You may not see
+clearly enough. Here the time is 2015, February 18. Because I ran
+the software at that time. This is the code we are using to
+generate gps signal. It's my lab code. The fm data is ready and
+it's loading. And secondly, the program will calculate which
+satellite is visible in the sky. And then thirdly, it generate
+the telegraph message. Okay. This is the code we are using to
+generate the gps. This picture shows the message structure.
+Two, we need to invert all the message fits in the frame
+structure following the specification of gps system.
+Okay. This part is are the codes generating the message, sub
+frame 1, 2, 5 are generated one by one. Now the message is in
+bit sequences. We need to convert to wave form. Spectrum
+ready. Let's look at the principle picture again. We
+should emulate the multiple satellite signal. The software
+itself must calculate the transmission time from every
+satellite to every receiver. How to calculate the transmission
+time? We could know the coordinate the satellite
+according to the fm data. But the satellite keeps moving in
+the sky and our earth is also rotating. So it's not easy to
+calculate the pathway. Anyway, we don't want to go to very deep
+details here. This function is used to calculate the delays for
+multiply propagation paths and combine the signal into one wave
+form. So finally we generate the gps and save to a data file. We
+will firstly verify by software. Verify the signal by the gnssdr
+software. It's great. The latitude and longitude are the
+same as I set. And then I moved to test over air. Transmitter
+and receiver is running with gnssdr software. Right? The
+signal over air is also correct. I can see the position is same
+as I set. This picture show the approximation position in google
+earth. Here's the location of our company. In Beijing. So I
+start trying to spoof the real cell phones, well unfortunately,
+I failed. [ laughs ]. Which part is not perfect? I checked my
+code for a long time. I didn't perfectly model the doopler.
+That is doopler effect? When the signal is far away from you.
+When the signal source is going towards you the wave form will
+be shorter. So at the serve side it simple both the two wave
+forms. The two phases are different. From another view to
+see this effect, the delay will be longer if the satellite
+moving from the receiver. And the delay will be shorter if
+it's moving toward you. This must be smooth. The phase
+changing will be continuous. We try spoofing the cell phones
+again. Try cell phone again. Yes. It's okay now. Look at the
+signal strength. The signal from different satellite have the
+same signal strength. Is it change? Because it's fake gps
+signal [ applause ] thank you. Well, actually, we can also set
+them differently depends on you. Okay. This is the test on Nexis
+five cell phone. How about Samsung 3. The cell phone
+located at in Tibet actually in Beijing actually. How about
+iPhone 6? We also tested iPhone 6. The position is lower than
+other android phones. And finally also located at
+Nunzholake. The interesting is if you altar the time auto
+setting the cell phone clock will be set at the time you set.
+Time is spoofing. So we begin to think that...you may find our
+gps spoofing test, the day we set is also February 14, 2015,
+this is because the sm data is set at that date. Can we set any
+time to this spoofing signal? The answer is yes. You can use
+the data from the old file but change the time parameter. So in
+effect we don't need to download or generate the fresh smt file.
+We use the same one. That's okay. So these pictures, this is
+an example. A cell phone in future time. On July 14, we
+generated a signal for august 6th, yesterday, right? The date
+of Defcon 23. Here are the screen shots it was changed to a
+future time. Interesting, right? Okay. Now, I think you feel a
+little bit boring. Here's a video. We also tested other
+devices for example in navigation systems in cars.
+Let's see this video. Yes. This is a common car. We transmit the
+signal by usrp. Now it is located in our office area. We
+start transmitting our signal. Yes. Now it found the gps
+channels and position is fixed. Let's see where it is now. [
+applause ] thank you. Well, so, um, how about other devices with
+gps positioning function? Well the next one. So another
+spoofing target is drone. Drone has auto navigation capability.
+It can fly to the destination people set. Many drones have
+forbidden area policy. The purpose is to risk drone to
+people or critical people facilities. The drone will keep
+off when it is in a forbidden area. So can you imagine the
+store of what will happen? The first vulnerability is bypass
+drone's no fly zone. The forbidden policy can bypass the
+video shows that the drone was at a forbidden location in
+Beijing, we gave a fake position in Hawaii and it was unlocked
+and can fly out. We give it a position then it fly up. Is it
+too quick? Let's see it again. We give it a position in Hawaii,
+and the drone flies out. [ applause ] thank you. Well, the
+next example is more interesting. If the drone is
+flying in a permitted area and we give it a forbidden position,
+what will happen? Okay. A drone is flying. This is the camera's
+view. We give it a forbidden position. It's falling down.
+Landing. [ applause ] thank you. Well, I found in this day
+there's another presentation by Michael Robinson the title of
+his presentation is knock my neighborhood's key drone or
+flying. They will force to commercial drone by sending gps
+signals. I read his slides this morning. And the method he used
+is to distract the gps signal by sending noisy signals. So the
+method is different with us. Let's listen to his presentation
+too this Sunday. Okay. Simple method of gps spoofing. Everyone
+only needs open-source software and sdr hardware such as usrp,
+and, et cetera. And can realize gps spoofing. This attack is
+very, very low cost. Then how about the influence, it can
+influence the portable devices like cell phone, the path
+tracers, navigation system in every convenience can be spoofed
+including cars, yachts including planes. And cellar station and
+financial trading system can be spoofed. We think it's a big
+risk that everyone needs to notice. So how to defend this
+attack? Usually gps has highest priority in the positioning
+system. Cell phone is spoofed even if it has cellar network.
+So we think at application layer we suggest to jointly consider
+multiple results, cellar position and also wifi position.
+If the device has multimode like the lonas it's better to join
+all the results together. At the gps receiver chief level we
+propose the chief set manufacturer to use algorithm to
+detect spoofing. Professor ta's team has published paper on
+spoofing detection for people who are interested can read them
+as a reference. If we want to settle this matter finally with
+gps message must be updated. For example at digital signature to
+expandable gps telegraph that will be finally resolve this
+problem. So every receiver must be firstly checked this
+signature. Anyway, gps is still a great system. This is very low
+cost and the important is it keeps up updating so we believe
+security issues will be solved in the future. I want to thank
+to guys had who gave me great help and my team members. And
+also jial -- I want to let you know that this is not a
+completed emulator. Secondly, thanks to the senior software
+engineer at apple. He gave me very important guidance. Thanks
+for attention to our presentation. >> Thank you [
+applause ] >> Any question? Does anyone have question? Range?
+Depends on hardware. If you use usrp something like that,
+although the transmit power is very small, the sensitivity of
+gps signal is very, very low. So it's quite easy to make your
+fake gps strength much higher than gps sensitivity. Yeah. >>
+If there are more questions can you line up and use your
+microphone to ask your question. >> I was wondering if you are
+use to if you see the implementation chip has by
+sending invalidate that would potentially use interesting
+stuff. >> Well I didn't get your point. Please simple. >> It's
+interesting to see how these gps receiver respond to data and do
+various things. >> Offline. Okay. Thank you. >> Hi, you
+mentioned that it, problem can be fixed. Can you spoof the gps
+signal with just capturing and playing with time. I think the
+digital signature is not going to fix the problem. What do you
+think on this? >> You mean the anti spoofing method at which
+layer. >> Because the each satellite is transmitting the
+same thing. You just need to play with the time differences
+and you can adjust the recorder and play it to the different
+time offset and you can still spoof even if the digital
+signature are used. >> Um, well you mean at [ inaudible ].... >>
+Okay. Thank you very much.

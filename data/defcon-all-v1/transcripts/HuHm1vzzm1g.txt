@@ -1,0 +1,756 @@
+I've a little story to tell you.
+This happens occasionally. Some
+of you may remember about eight years ago a guy by the name of
+Mike decided to do a talk. His
+employer did not appreciate that, and he said, fuck you, I'm
+going to talk. That was very
+brave. We don't all have that luxury. We have a person that
+works on incredibly important
+things, but he got his talk accepted. Everything went
+through the right channels. He
+was all set to speak at DEF CON, and his employer said, don't do
+that. They said it with
+prejudice. So we will call this person agent zero. He cannot be
+on camera, but he is here and he
+does have a shot. Direct your attention over there, patient
+zero, why don't you give us a
+little ‑‑ I don't see him. Where is he? There he is. How about
+some DEF CON love for patient
+zero? You can do better than that! ( Cheers and applause ) >>
+We're supposed to do our shots
+here. First‑time speakers all do a shot. Thank you very much.
+Hopefully when you're in front
+of all these beautiful people. Thank you. Now, Phil Zimmerman.
+( Applause ) >> Hi. Well, it's
+good to be here again. You know, there's a story that I think is
+a good story. It is that
+sometime in the 19th century Americans or at least a lot of
+Americans thought that tomatoes
+were toxic. They thought if you ate tomatoes, you would die.
+There was a guy that got up in
+public and ate a bunch of tomatoes, and he didn't die. So
+everybody thought he would die,
+and there was a sharp intake of breath from the audience. He
+didn't do, and after that
+everybody knew you could eat tomatoes. For a long time, for
+100 years phone companies around
+the world have kind of created a culture for themselves that is
+very cooperative with
+governments in invading people's privacy. So these phone
+companies tend to think that
+there's no other way. That they can't break from that culture.
+That tomatoes are poisonous. And
+my company, Silent Circle is working with a company in
+Holland, the Dutch carrier, and
+Jay who been to a lot of DEF CON's is the CISO there. I've
+known Jane for about 12 years or
+so. She decided that she wanted to break ranks from the rest of
+the phone companies and get KPN
+to offer their customers privacy, to offer their
+customers phone calls that are
+private, that KPN can't wire‑tap. So she is coming to us
+Silent Circle to her her do
+that. Actually she contacted me to speak at an event and told me
+she was involved in the new
+start‑up. She didn't hear about it. She looked at the website
+and got all enthusiastic and
+persuaded all the management of her company to pursue this. So
+we have a nice relationship with
+KPN now. For the first time you see a phone company offering its
+customers real privacy. So the
+people can call each other, so the people can whisper in each
+other's ears from far away
+without anyone intercepting that conversation. And so my hope is
+that other phone companies will
+discover that these tomatoes are not poisonous and will follow
+suit. We have a lot of other
+phone companies that are talking with us about doing the same
+thing. So I hope we will see a
+change here. Quite a bit is motivated by the revolution
+creating market demand. There's
+generally more market awareness that it's time for a change, and
+the phone companies are feeling
+market pressure for this. So we have a way of doing this, and
+we're working with a lot of
+phone companies to bring it about. So I think that we may
+find a future where phone
+companies, a lot of phone companies help people have
+private phone calls. That will
+be ‑‑ that will break a 100‑year‑old culture for all the
+phone companies in the world.
+( Applause ) >>So, anyway, we had this cool startup called
+Silent Circle and it started
+when I got a call from a guy who wanted me to help him start a
+company. This guy is a Navy SEAL
+and he wanted to start a company that would allow US servicemen
+overseas to talk with their
+families back home, because it wan't easy to do. The Pentagon
+just told them what NOT to do,
+but didn't have good advice on what TO do. So he wanted to give
+them something for that, and he
+described it to me. I thought, yeah, sure. I've been working
+for many years on the Z‑phone
+project and demoed Z‑phone at DEF CON a couple of times. I
+thought, sure, I'm in. So we
+started this company. I reached out to my friend John, a CEO at
+PGP. He was working at Apple and
+later worked for EndTrust. I thought we could get this done.
+Now we've got the company that
+has grown quite a bit. We're up to around 100 people now. We've
+got customers that ‑‑ we have
+three groups of customers, enterprise customers, government
+customers and consumers. Anybody
+can sign up for our service. The government customers include
+Navy S.E.A.L.s. Navy S.E.A.L.s
+that are actually using it for operations. So we're using ‑‑
+we're selling to special
+operations forces in Canada, Britain, Australia, the United
+States. U.S. Congress uses it.
+Other parts of the government use it. We see law enforcement
+use it. We had about a year ago
+a visit from the FBI at our office, and my business partner
+called me and told me the FBI
+was in the office today. I said, oh, no, it's starting already.
+He said, no, no. They just were
+here to ask about pricing. ( Laughter ) I thought, okay,
+that's it. We're winning this.
+One of the first things that happen when had Mike approached
+me was that I wanted to make it
+so that politically ‑‑ I mean, I have a lot of experience in the
+1990s fighting the cryptowars,
+so I have some instinct to create public policy. We need to
+create conditions where
+everybody is going to lean on us to put a back door in because
+they need it themselves. If Navy
+S.E.A.L.s are using it, if our own government develops a
+dependency on it, they recognize
+it's counter‑productive for them to try to get a back door on the
+product. Now, maybe it was an
+overabundance of caution because they never asked for a back door
+at PGP, but that took years to
+get propagated out to government customers. We saw government
+customers take it as soon as the
+product was ready. As soon as the product was ready, they were
+asking about it. A lot of that
+has to do with Mike's contacts from that community and so we
+created conditions where it's
+difficult for them to even bring up the subject of the back door.
+They won't. This is effective in
+the 1990s with the course code in books and have them scanned
+in in Europe using OCR fonts and
+CRCs on every kind of Morse code and have them scanned in and
+turned into the binaries. That
+blew a hole in the export controls in the 1990s. So we're
+doing the same thing again here.
+We're creating secure phone technology that it depends on
+and other governments around the
+world. So we think we can bring this into the mainstream. It
+will be possible for you to
+whisper in someone's ear from 1,000 miles away, and it will
+become the new normal. You know,
+most of these talks have questions at the end, but being
+as how this is DEF CON and just
+the culture of DEF CON, I kind of feel like getting a few
+questions in the middle. If
+anybody wants to raise some questions, I'd like to hear
+them. Yeah. >> How do you expect
+U.S. cell phone companies to survive with the way that Qwest
+was bankrupted by the government
+for not cooperating with it? >> I don't know all the details of
+what led to Qwest's problems,
+and I would assume that there were other ‑‑ that there were
+other elements to that. We're
+not going after U.S. cell phone carriers right now. We're going
+after European ones and other
+ones are in other parts of the world. After we get a lot of
+those, we can have a look at the
+U.S. carriers. >> My question is about the metadata. They might
+not know the details of about
+what you saying but the systems you composing stop people from
+gathering metadata from people
+you're talking to? >> They could get metadata if they watch all
+the data. They can figure out
+new time correlations, here's some packets coming from this
+direction and here's packets
+going out to that direction and probably they're related. You
+know, we don't actually store
+any logs. We don't keep call records for end‑to‑end secure
+calls, so they can't ask us for
+the metadata. In places where we connect to the public switch
+telephone network, they can
+wiretap and get that for that. Those are carriers that deliver
+the parts of it. For end‑to‑end
+secure calls, we don't keep any logs of that. >> Being that
+Silent Circle is one of the few
+commercials, do you think there's an external force
+preventing the option for the
+aggression of the PGP in terms of security technology? That
+external force possibly being
+the government or any other group that doesn't necessarily
+want to make sure it succeeds?
+>> PGP has been used for 20 years by a lot of people in a
+lot of companies. We don't have
+the security of the service at this time. We did have something
+at the beginning of the company,
+but we closed that down because they closed theirs down because
+they came under pressure and
+they got a court order that demanded that they hand over
+some things we didn't want to be
+put in the same position. So we closed down our security mail
+service because e‑mail was a
+different thing than phone calls. Phone calms are a
+ephemeral thing. There's no need
+to keep any records. With e‑mail you have to keep the e‑mail
+around on a server somewhere,
+and the e‑mail has meta data. It has a from and to and a subject
+line. All those things have to
+be stored on a server. So that's metadata that invites, you know,
+a court order to have a look at
+it. In the case of that, they wanted more than that. They
+wanted some aids. We didn't want
+to be put in that position. So we wiped out ‑‑ destructively
+wiped out in a few hours our
+entire security mail service. We went down everything and did it
+without warning without telling
+our customers because we didn't want to be next. When the
+customers were pissed off about
+that, but most of them respected our reasons for doing it. They
+recognized that we did it to
+preserve their records. >> Does it make sense that you work for
+Silent Circle the adoption of
+PGP and the fact we don't see a lot of PGP into the different
+technologies. >> You recent you
+don't see PGP used ubiquitously is because it's necessary for
+people to understand how it
+works. They have to understand trust models and public
+infrastructure. They have to
+understand what it means to have public and private keys that are
+persistent and last and have to
+be managed. You have to know that a name goes with a key.
+Those are complicated things
+that we don't have to worry about when we make ephemeral
+phone calls. The way we do phone
+calls, the ZRTP protocol that was the basis for Z‑phone ‑‑ how
+many people in here have seen my
+old Z‑phone demos in previous DEF CONs? I guess everyone is so
+young, they don't think about
+that far. How many people here didn't know how to use computers
+back whether PGP was causing so
+much trouble in the '90s? Yeah? A lot of young whippersnappers.
+Okay. PGP has more complexity
+than a protocol that does secure phone calls. With the protocol
+we have now, the keys are made
+with an exchange. They're discarded at the end of the
+call, and so you don't have
+to ‑‑ I don't have to have a public infrastructure. I think
+public hand restructures are
+generally a bad idea. If you can avoid them, that's a good idea
+to move away. In fact, what we
+do to prevent a man in the middle is we verbally compare
+the hash of the session. The
+other person has it displayed on their screen. You have it
+displayed on your screen and
+compare them following it and use your voice and brain and
+ears and common sense to see if
+they match. If they match everything is fine. If they
+don't match, there's a
+wiretapper. There's a man in the middle, because if there is no
+man in the middle, then Alice
+and Bob are both using the same session. If you take that
+session and display it on the
+screen it's going to be the same hash. If there was a man in the
+middle how is this connected to
+the man in the middle with a different session key than the
+other connection between the man
+in the middle and Bob. If you display that hash on the screen,
+they aren't going to match, so
+you have detected the man in the middle. It's kind of crude. It's
+kind of stupid. That's what
+makes it so simple and foolproof. It peens ‑‑ means we
+don't have to rely on a
+infrastructure or certificate authority. Remember that some
+years ago there was a
+certificate authority in Holland that their master signing key
+was stolen by an Iranian hacker.
+The Iranian hacker used it to forge hundreds of certificates
+for things like Gmail and
+Facebook. Then he gave bogus certificates to the Iranian
+regime, and then they used them
+to do man in the middle attacks on thousands of Iranian
+dissidents and arrested them. It
+would be hard to imagine a more spectacular failure of public
+infrastructure than that. If you
+were writing fiction, you couldn't concoct a more
+spectacular indictment of public
+infrastructure than that example. So that's why we don't
+use a public restructure to
+protect our phone calls. We don't depend on them. We too our
+key exchange media there because
+when I designed ZRTV I designed it to not trust the phone
+company. I regarded the phone
+companies as not your friend because of the aforementioned
+100‑year culture history where
+you wiretap, sometimes even over complying. I didn't regard them
+at your friend, so I designed
+the protocol to not share any keys with the phone company. We
+do it through the media. The
+signaling is generally under the control of the phone company or
+the service provider. The media
+goes directly between Alice and Bob from your smartphone to the
+other smartphone. This protocol
+is designed to negotiate the keys through the media there. We
+will share them with the service
+provider, and in this case Silent Circle is the service
+provider. So if we're using a
+protocol call years later, little did I realize that years
+later I would actually run a
+service provider that I design as protocol not to trust. So you
+don't have to trust Silent
+Circle. The protocol is designed so that you don't have to trust.
+We publish our source code, of
+course. Every project I'm involved with, there's always a
+source code. You can see that
+the clients do what they say they do, and even if they were
+seized by the NSA and carted off
+to Fort Mead, they would not get the contents of your phone
+calls. Maybe we should let them
+do that. Then we wouldn't have to pay the electricity. It's
+hard to tell who is calling who.
+They can do that now if they monitor the entire Internet. You
+can figure out by correlating
+this traffic business is active at the same time. These two
+people must be talking to each
+other. If you're in a place like Pakistan and you want to call
+somebody in some other part of
+the world, the Pakistani intelligence is not going to
+know who you're talking to. All
+the calls, all the signaling would go through our servers.
+The media would be, you know,
+going out of Pakistan in that form. Yeah, right there. You
+have to yell really loud. By the
+way, there's people standing at line at the microphones. I
+should probably do that. We'll
+just go with this question. ( Inaudible question ) >> The
+question is when we shut down
+our e‑mail service, we started an initiative to do a secure
+e‑mail service built on a
+different architecture called dark mail. You know, since that
+time we've had crazy growth in
+other areas, and it has taken up a lot of engineering. So I don't
+really have that much to say
+about dark mail right now, but, you know, if anybody wants to
+hear more about that, they can
+talk to John, our CEO. He's more intune to what we're doing on
+dark mail. ( Inaudible
+question ) >> Yeah. The question is what kind of cryptosuites are
+we using? After the revelation,
+we felt a bit resentful, that NIST cooperated with the NSA.
+To express our displeasure we
+offered alternative algorithms that you can elect to use in
+this one. In fact, we even made
+the other algorithms the default. We have a new elliptic
+curve we commissioned Bernstein
+to do for us. We used 2fish as the blocker. We use scaneas our
+hash function. These are
+alternatives to these choices. Now, I don't believe there's
+anything wrong with these
+choices. We're not using this stupid random number generator
+to the NSA. I can't imagine why
+anybody would use such a stupid number. Apparently RSA did. They
+were just a closed source. It's
+funny, you know, back in the '90s when RSA started the
+criminal investigation against
+me when calling up the prosecutor and asking to put me
+in prison, they said that RSA
+was the most trusted name in cryptography. They even
+complained because we had said
+that about PGP, and in some press interview. We were just
+saying it as kind of statement
+much fact rather than a marketing slogan, and they sent
+us a nasty letter saying we
+can't see that PGP is the most trusted name in cryptography
+because that's a trademark of
+RSA. They wanted up to cease and desist saying that was their
+trademark. It's ironic that
+today we find they were paid $10 million to put an NSA‑designed
+random number generator in
+there. Anyway, we don't use that. What we do use ‑‑ we do
+use other NIST algorithms that
+are good algorithms. There's nothing with them. We offer
+those as a choice. We can use
+them, or you can use the new ones. We default to the new
+ones. It wasn't because there
+was anything actually wrong within those that we were using.
+Over here. Hi. >> Traditional
+cell phones are dependent on the baseband processor. What are you
+doing to mitigate the processor?
+>> That's a good question. You know, we had a meeting and
+video. The video makes the chip
+using the phone. Nvidia acquired the company that made that. So I
+asked them that question. I said
+can we do an independent security review of the firmware
+for the processor. They were
+open to that. In fact, they were delighted to have a customer
+express an interest in taking a
+close look at the processor. No other customer had ever brought
+up the question before. You
+know, no other customer is as obsessive about them as we are.
+So actually what I like to do is
+I'd like to figure out a way to decouple the processor so it
+doesn't have read-write access
+to the application in the processor's memory. I think that
+there may be ways to do that.
+I've hear that some of these processors are decoupled and you
+can talk them through 18
+minutes. If that's the case, then that would be a better way
+to go. We'll keep pursuing that
+with Nvidia, and we'll always be pursuing them. We started with
+black phone. It's kind of a
+journey. We have to work hard to take all the pieces and make
+them all secure one by one. >>
+Do you have what processes in the phone has access to?
+Traditionally you have access to
+that. Does that affect it? >> I don't know what the baseband
+processor has access to. I think
+you have to talk to Mike Kershaw, the CTO of Black Phone.
+I'll raise that question with
+him. It's about things relating to the base processor. Yeah. >>
+How do we make the solutions (
+Inaudible ) make the anomaly for further NALGSZ analysis and
+scrutiny. >> That's a good
+question. I don't think that's about just Silent Circle but the
+whole message about crypto. Look
+at the legislative environment today. During the 1990s you had
+to defend yourself and justify
+why you were using strong crypto. Why? Are you a drug
+dealer. A child pornographer? A
+terrorist? Justify it. That was the mindset that we faced in the
+1990s when we began fighting the
+cryptowars. If you fast forward to today, we're in a legislative
+environment that's turned on its
+head. We now have to justify ourselves if we're not in strong
+crypto. If you are a doctor or a
+medical institution, you're required to destroy crypto to
+protect patient records. If
+you're a company and leave your laptop computer in a taxi with
+200,000 customer names on the
+disk, you better hope to God that disk is encrypted. If it's
+not, you have to go public and
+announce you lost 200,000 customer names. The legislative
+environment has been turned
+around. Sarbanes Oxley requires to protect to company assets,
+and that it doesn't explicitly
+mention crypto. Everybody knows you need that to do that.
+There's all kinds of legislative
+things in the environment today we didn't have in the 90's, the
+environment now today to justify
+that. >> The current version of the information of freedom act
+mandates that phone companies
+now do the bulk metadata collection that NSA used to do,
+understanding that some phones
+are simply different, I wonder if you can comment on the
+current freedom of information
+act? How does that offer that? >> All of these other laws that
+impose requirements on phone
+companies are largely imposing requirements on phone companies.
+They don't impose requirements
+on any users. Now, the ZRTP protocol performs its
+calculations in the client
+software, which is owned by the end user. And so we're not in
+violation of that as a service
+provider if KALIA requires us to hand over what we have to the
+government. Well, we don't have
+any keys, and we can't hand them over if we don't have them. So I
+don't think that the legislative
+initiatives that we might see are going to have that much
+effect unless they try to go
+back and say that people are not allowed to use strong
+C.R.Y.P.T.O. I just don't see
+that happening. We fought and won in the 1990s in the
+cryptowars. After 9/11 I thought
+someone would roll them back, but they did not. It was kind of
+interesting. On 9/11 our
+attorney general was John Ashcroft. During the 1990s, he
+was a senator during the Clinton
+years. I met with John Ashcroft along with other activists, he
+was convinced that we were
+right, that we needed to change the export controls. We needed
+to not pursue the clipper chip.
+So he was on our side. Later he became attorney general and did
+not change his position. So even
+though we lost a lot of other civil liberties under John
+Ashcroft, he didn't try to roll
+back the gains that we had won in the 1990s. Yeah. >> You
+mentioned that you now
+publish ‑‑ I'm sorry. I was pointing to a guy in the front
+row. You really should stand in
+line back there. If you yell really loud, I can hear you.
+( Inaudible question ) How do we
+do what we can do without PK infrastructure. >> We verbally
+compare the session. How do you
+awe then indicate that partner? We send our signaling through a
+TLS tunnel. We have a public key
+infrastructure there, but not from a certificate authority of
+the we put a public key
+certificate in the client and we bake it into the client. There
+is no ‑‑ it doesn't depend on
+certification by a certificate authority. We actually do have a
+certificate authority sign it,
+but we don't care because we bake the key into the client.
+You're supposed to know who
+you're talking to. If you don't know who you're talking to, then
+you might have other problems
+because, you know, it's not our job to guarantee that the person
+that you're conspiring with is
+actually the person you know, or is it an I am impostor? >> Yeah.
+>> You mentioned that you public
+publish all your source code, and we can look and see if the
+client is doing what it's
+supposed to be doing. You have this great system where you
+display that on the screen so
+that we don't have it and know the back end is doing what it's
+supposed to do. How can I verify
+that the actual binary running on my phone was built from that
+source? >> Well, you have to
+compile it yourself and see if it was ‑‑ if it's the same. It's
+not so easy, though, because,
+you know, modern development environments have so much
+complexity. They might have time
+stamps in the binaries, for example. It might be hard to do
+that. What you can do is compile
+it yourself and run it and use what you run yourself. If you're
+on Android, that's easy to do.
+On Apple devices, not so easy, because you have to be an Apple
+developer. I don't know if you
+can really compare the binaries because I don't know if you can
+make a fresh binary if it's
+really been at the same ‑‑ all the bits all the time. It's the
+best we can do. >> You know, one
+thing I'd like to say is that we all ‑‑ I get a lot of people
+asking me about how hopeless the
+surveillance society is, the pervasive surveillance. I feel
+like if we feel it's hopeless,
+we're less likely to do something about it. It's a
+paralyzing effect. I'd like to
+point out there's a lot of times in history, we faced very
+difficult problems that seemed
+hopeless when we couldn't solve them, and yet we did. There was
+a time when slavery was an
+entrenched institution with powerful money interests behind
+it and we're seemingly so
+entrenched there would be no hope to change it. Yet, we did
+get rid of slavery not just in
+the U.S. but pretty much the rest of the world. There was
+also a time when we had the
+nuclear arms race. That seemed to be something we can never
+change. We were facing a global
+nuclear holocaust, and somehow the arms race came to an end.
+The American civil rights
+movement seemed to be a very difficult problem in the 1950s
+and '60s and yet, we made great
+progress there. Going back further in history, there was a
+Divine Right of Kings. A king
+could just chop your head off, and we managed to move past that
+globally. We came up with
+western democracies with constitutions and parliaments.
+Even if they had kings, they
+were just ‑‑ they were constitutional monarchies where
+the king couldn't chop your head
+off anymore. We managed to solve a lot of problems that seemed to
+be insolvable. I think that what
+we face today with the pervasive surveillance at this moment
+seemed to be an insolvable
+problem, but I disagree. I think like many other solvable
+problems before, seemingly
+insolvable problems before, we found a way to get past it. I
+think we can do that now. I
+think that if we deploy technology like Silent Circle
+and push back on policy space
+and try to change the laws and, in fact, these two things are
+related because sometimes you
+can change the laws by deploying technology and having it become
+the new norm. This creates
+public expectations that make it unthinkable to have laws that
+intrude upon what everybody has
+gotten used to. When you do online banking today, you use
+SSL. If government tried to say,
+well, all the connections through web browsers having to
+go through a government proxy,
+you can't talk to your bank anymore without the government
+seeing the conversation with
+your bank, people would reject that. The new norm is that we
+have pervasive crypto. So we
+need to create pervasive phone calls that are encrypted to make
+that the new norm, and then this
+will cause the legislative environment to change and push
+back. What's happened with
+the ‑‑ the reason we won in the 1990s is we got everybody to
+participate in a big public
+policy debate. We won. We got the export controls turned back.
+We got the domestic controls.
+There was the clipper chip. We killed those before they could
+get any traction. I think we can
+do the same thing here. Yeah. >> I just wondered what license
+this source code is released
+under. >> It's some kind of a ‑‑ I'm not sure. It might be either
+a GPL or some special license
+that allows you to do things with it. But I think that you're
+not allowed to make money with
+it. I'm not sure of the terms. You got to the Silent Circle
+website and read the fine print
+of the license. The ZRPT protocol has an open source
+license, LGPL, which is a
+reasonable open source license. People can use that to create
+other products. There are other
+ZRPT products out there. Yeah. >> On the subject of making
+secured communications more
+ubiquitous, one of the things is to make emergency services
+available in a secure way. Given
+your thoughts on the challenge of PKIN for structure with a
+nontechnical public, we have to
+start securing things around the media channel like location,
+determination, location
+validation and index generation we pass in the eyes to help
+records like that. What do you
+see in opportunities to make that work in a way that still
+allows us to have secured
+communications? >> It's an interesting question, because
+this ‑‑ as you described that I
+remember the terrible frustration of calling 911
+because my house is on fire, and
+I'm getting a certificate that's expired. With a little alert box
+that tells me that it's expired.
+What a nightmare that would be. Reminds me of a scene in the old
+original terminator move.
+Somebody calls 911 and gets a recording that says all lines
+are busy right now. You never
+get that when you call 911, but it was a great device in a move
+to, you know ‑‑ great plot
+device in the movie. Whatever we do is if it isn't working how it
+should, it's out the of the way.
+Right now nobody cares about encrypting the calls to 911. If
+we encrypt the calls, it's nice
+to do that. If there's a reason why the fucking PKI doesn't
+work, I want to talk to fucking
+911 regardless. You have to fall back on unencrypted keys you
+don't care about because you
+want an ambulance to get here right now. I've heard people say
+that like in silent phone that
+you can't negotiate keys for some reason, like maybe if
+somebody is ‑‑ if somebody has
+done something bad to the servers, and the servers fall
+under the control of the evil
+NSA that hacks in and turns off TLS, so the signaling can't do
+TLS, we should find a way to
+make the quality of it better. If we actually start to use it
+for emergency services, we
+should definitely find a way to get around it and make a call no
+matter what. Any kind of thing
+that involves emergency services to make an unencrypted call is
+necessary. You can display that
+the call is not encrypted. How do you make a GUI all over the
+world in 30 different languages
+and make the users understand what the security statement is.
+It's not an easy thing to do.
+With Z‑phone and with the first versions of Silent Phone in
+English, now we're kind of
+struggling with trying to deal with doing it in 30 languages or
+doing it graphically. Yeah.
+Okay. It's five minutes to go. Got a question. Go ahead. >> I
+take it you saw the news this
+week that Yahoo! is bumping up it up for companies that are
+offering it. I wanted to know
+who is doing that? >> Say that again. >> Did you see the news
+this week that Yahoo! Is bumping
+up in search results those websites that are like that? >>
+Yeah, yeah. >> What do you think
+of Yahoo! with the Internet values? >> You know, when they
+started the company, Yahoo! They
+didn't found it with a motto of don't be evil. Yet, they seem to
+be very interested in not being
+evil. So that's inspiring. >> I'm glad that they're doing it.
+What you see here is all of this
+kind of a technical TRON in this case shift because of what we
+saw with Snowden's revelations.
+Everybody in the security industry is trying to up their
+game. I think that's why phone
+companies are interested in working with us, because they're
+feeling a lot of pressure from
+their user base. So I think that the time has come now that we
+now have the wind at our backs
+with market pressure. We have a lot of motivated security people
+that are finally able too get
+traction with their own employers to, you know, get
+everything heightened up. We see
+products everywhere try to up their game is services. The
+entire purpose of Black Phone is
+to make a phone. It's not a Android phone with privacy
+features. Everything we do with
+it is all about protecting your privacy. It's not just silent
+phone but everything else on the
+phone. I've been working on crypto software for a long time.
+What if somebody breaks into the
+platform? If it's out of school with my software, I can't
+control this. I can't operate on
+a clean execution platform, then we can't make any security
+guarantees. Steve Jobs said if
+you want to do a good operating system, you have to build it
+around your hardware. That's
+what we're doing now, we're building our own hardware. We're
+being a purposeful phone whose
+purpose is to give you privacy. We're hoping that that becomes
+the new expectation, that that
+becomes the new normal. Okay. Am I out of time now? No? I have a
+couple of minutes to go. Anybody
+else? Yeah. ( Inaudible question ) >> We get our chips
+from Nvidia. Where are the parts
+built? I don't know where they build the chips. We assemble the
+parts in China. Yes, I know, I
+know. China. But we get it back and put our probes on it and
+look at all the bits in there
+and make sure that they're bits that we put in. We also have our
+own people in the Chinese
+factory supervising it. You know, maybe we'll build them
+somewhere else someday. Yeah.
+( Inaudible question ) >> Is the phone hardware open source? No,
+it's Nvidia chip set. They're
+not open source. We have to work with the materials that we have.
+Yeah. >> So what's the thing in
+privacy that you are the most excited about that may have
+nothing to do with Black Phone?
+>> Good question. I think I've gotten a little bit too much
+tunnel vision I'm focusing on
+our stuff on too much. You know, actually it isn't really just
+one product. I think what has me
+excited is now I don't have to twist so many arms. Everybody
+now is coming home to Jesus. If
+I ever meet Snowden, I have to thank him for waking everybody
+up. ( Applause ) >> Okay. I
+think that's it. Oh, one more. Yeah. >> I just wanted to know
+what is your thoughts on the
+emergence of quantum encryption? >> It's an interesting bit of
+science that is a lot of fun. I
+majored in physics before I switched to computer science.
+It's not easy to apply it to the
+general use cases, you know. You have to do it only for fiber
+optics, and you know, I need to
+be able to do practical things over WiFi and Ethernet and all
+kinds of other things. I need to
+be sitting on an airplane and make a secured call through the
+airplane's WiFi, which goes up
+to a satellite and back down to the ground. I mean, quantum
+photography is an interesting
+feature in the science experiment. It is a lot of fun,
+but I don't see it as really
+something that's going to change the world. >> Do you think that
+once it is perfected it will
+work well with your ideas, if ever? >> Well, you can't really
+get beyond fiber optics or a
+very line of sight preparations with it, so I don't think it
+will get beyond that. It's a lot
+of fun, but I don't see it as
+376
+00:50:48,458 --> 00:00:00,000
+being ‑‑ I would rather use PKI
+over those. Okay. I think we're
+done. Thank you. (Applause)

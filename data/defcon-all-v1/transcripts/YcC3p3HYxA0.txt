@@ -1,0 +1,326 @@
+>> Good afternoon everyone.
+First and foremost, a little bit of housekeeping, if anybody has
+lost a pair of sunglasses and can describe them to me come to
+me. other wise I'm gonna have a new set of sunglasses I'm gonna
+thank em for that. next up i wanna point out that if you are
+looking for seats because are you coming in. They're some at
+front and on the side as well. Now we are in track 3 for net
+rippers, smart traffic sniffing for penetration testers and
+without further ado, I give you Yanish Popesu. >>uhhh First a
+little bit about me, I am Yanish Popesu, I am from Romania and I
+work as senior security consultant at (inaudible). Also
+I'm a blogger at security cafe and administrator of the biggest
+largest security community in eastern Europe. A few things
+about my country. Is located in Eastern Europe. The country of
+Dracula. We have the first standing olympics, we invented
+the jet plain and probably the most beautiful girls in the
+world. Don't ask me, come and check. Here is the agenda what
+we are going to talk about. Introduction about this tool, a
+few details about how it works. Some details about the
+reflective DLL injection. The ll the API hooking some hooking
+examples, demo and hopefully everything will be okay. The
+introduction, what is net ripper. Net ripper is a post
+exploitation tool for Windows system. That captures the
+network traffic even if it is encrypted or after it is
+decrypted at the application layer by injecting a DLL and
+using API hooking and hooking specific functions. The most
+important thing about this is that it works without an
+administrator, it works for a low privilege user. Uh, here is
+the main scenario, in our projects we encountered this
+situation multiple times, we had access to administrator laptops,
+and we didn't know what to do to pivot to the other servers, so
+this is where the idea came from. This is the general
+example of how it works. Let say outlook. The -- someone writes
+an e-mail, the e-mail is encrypted and the encrypted data
+is sent through the network. So the user layer, use types of
+e-mail. The network layer contains the encrypted data and
+net ripper is injected after the encryption layer. Here is an
+example, the user writes the email (inaudible) the
+(inaudible) this example is for outlook. Outlook uses
+encrypt.dll and ssl encrypt packets and ssl decrypt packets
+in order for to encrypt and decrypt the data. The data is
+then sent encrypted after with send WSA send or windows API
+function. Here it what happens when the net ripper.dll is
+injected the dll from the net ripper it hooks this function
+from encrypt.dll and it gets the data before it is encrypted.
+This also happens for the decryption. It hooks the ssl
+decrypt packet And after the data is decrypted by the
+function it can access the plaintiffs data. This is the
+main idea. I use the reflective dll injection to inject the DLL.
+API hooking to hook specific functions and save the data
+locally. this is how classic DLL injection works. The application
+opens remote process memory DLL, full pack in the process memory
+and call library to load the DLL. Into the process memory.
+But this have some advantages. The DLL must be written on this
+so the anti-virus can pick it and the DLL is listed in the
+process. The reflective dll injection was implemented by the
+-- security and this is how it works. The DLL contents are
+copied, the full DLL contents, is copied into the target
+process memory, however the DLL doesn't look the same in process
+memory like on the disc. So we have to auto load itself
+correctly. For this the reflective DLL injection uses a
+function called reflective loader. This function has all
+the steps necessary to correctly load the DLL. The advantages of
+this method that the DLL doesn't touch the disc, so you can
+easily bypass the anti-virus. And that the DLL is not listed
+in the process modules. Because is not loaded with low library
+and window system use the PEV, processing environment block who
+to keep a link the list with all process module. I hope you can
+read this. This is first step for the DLL injection. This is
+actually -- for DLL, using reflective DLL injection. if you
+can see there is a method called a function call get the
+reflected loader object. This function just searches the
+reflected loading function and returns the offset in the DLL.
+after this step we allocate space in the process memory and
+it targets the process memory with he full size of the DLL.
+The DLL is now written with the process write process memory
+function. And the we call using create mode thread the reflector
+loading function. This code actually reflected DLL injection
+code is from different -- after this function is called. What it
+does is to search for the image based off the process --
+actually -- search where the DLL is in the mapped in the memory,
+search for the window portable executable header. So is like
+from the location and search for the header. After you find the
+header it needs to know some function require to properly
+load itself into memory so it finds in has to find function
+like load library and get proc address and get flash
+instruction case. Next step is to load the DLL header in new
+location. The section must be aligning in memory so this step
+is required. Is not difficult to pass the PE the portable
+executable header. So it just parts the PE header and get each
+section and the map it into the place of memory. After the
+section is loaded the next step is to process the imports. You
+may create a DLL that use some, I don't know, specific DLL from
+window. In order to make sure everything will work you have to
+make sure every DLL is loaded into memory. Every important DLL
+is imported to memory. Is to pass data directory. The
+directory imports. Is a location in the PE header that describes
+each DLL that should be loaded in order to make sure the DLL is
+loaded properly? Those things are automatically done the
+windows PE loader but we want to avoid using it. Next step is to
+process the remote location. Are some addresses that are directly
+pushed on the step or code? For example if you have a push
+location this location has to be relocated in case DLL is not
+loaded at the require memory location. Each PE file DLL or
+executable has a preferred image base -- but at least for the
+DLLS it may have -- happen to load the DLL another location.
+This is required. After the DLL is completed loaded into memory
+correctly. It just needs to call the main function of the DLL.
+Okay. API hooking. We take the same example with Outlook and
+encrypt.dll. So we want to redirect the SSL encrypt packet
+so our booking function. So we will redirect to function from
+encrypt dot DLL to net ripper.dll. These are the steps
+that we have to follow in order to do this. We to find the
+function address. We place the call instruction and we call a
+generic hooking function instead. We restore the original
+bytes because we modified them, call back function that process
+the data from our target function in this case as select
+packet and in that function we have the plain text data. For
+additional hook and core. This is normal assembly for our
+function classic function EBP ASP after we hook this function
+first five bytes are replace by our call. That address is of our
+generic hooking function. A few details about how this works.
+This is how we place the hook. We place a call instruction. The
+op code for the call instruction is 0xE8 and we calculate that
+the distance between the original function and our call
+back function. Our hooking function. And we safe the
+original byte in order to restore them later. Flash
+instruction case actually I'm not sure if this particularly
+require on Windows because it doesn't seem to do anything.
+Here it is our generic hooking function. Every time we place a
+hook we call this function and this is how it works. First we
+have hook instruction. In this structure we save the call back
+address of our function. The original address, the address
+that we hook. The original bytes and the call bytes. If you can
+see an important thing about call and not jump is that the
+call automatically pushes on the stack the -- next instruction.
+What we have to do is to subtract five from that return
+address and we have the original address of the hooked function.
+So we can just iterate to all hooks and find the structure for
+that specific hook. The hook -- do this for us. After we found
+our hook structure we can access the original address and
+original byte. We can call me CPI to restore the original
+byte. After we restore the original byte what we have to do
+is to call our call back function. Our call back function
+will safe locally the data and restore the hook. This is how
+our call back function works. It must have the prototype and must
+specify the calling convention. And the it does is to write to a
+temporary file the encrypted data this packet to once we
+encrypt the data input -- and data site is specify. So after
+data is safe we call the original function so make sure
+the data is connected to the network and restore the hook.
+First example the easiest one fireworks and some of
+applications we find the DLLS that encrypt in the data. Those
+are NC -- we found the -- function and PR maybe use by
+some other application. Another useful example will be putty.
+Call it from -- Romania. That does the same thing it put some
+function. Enter data that send will each character and will be
+call with the -- in order the be display. Writer can do a lot of
+other things so you may take a look at it. For the function so
+I only have use the signatures actually the first byte of the
+function in order to find it. So I just find the section from
+putty dot -- and search those functions and for when -- in
+your life. I found they just pay to compile the source. It took
+me a few hours but I was able to compile it. It also took me
+sometime to find the correct functions but I found SHH dot C
+the functions that looks to send the network before it is
+encrypted or to decrypt the traffic. So we have just find
+the -- functions we place encrypt, 0, 3 compile the
+application and run. And see the data -- those are the functions
+use by WINSTP. SHH make it stand have a perimeter. SHH 2 will
+return a packet structure. This is how the send memory function
+is like. Look like. And the I have -- I had to just copy first
+byte of each function and search in the code section so I was
+able to hook them and find their location. The main problem is
+that not all the reapplication uses the DLL in order to call
+some functions (inaudible) and the masterpiece -- they are --
+some different library. Maybe really difficult. And the
+function prototype will be able to hook them. So this is the
+code that hooks the win STP. Like putty I created signatures
+for functions. And I search the process memory for this function
+and place our hooks. Chrome maybe I think it make difficult
+to compile chrome. I did try to do this instead I use some idea
+from some underground and this can be more complicated --
+Chrome uses a table called SSL methods. So we have to find that
+SSL methods structure that contains the SSL read and SSL
+write functions. In the source code of chrome this is for --
+until version 37. Chrome is the NSS -- they after some problems
+they wanted to change open SSL but we open SLL that are a lot
+of problems and they decided to create their own fork of
+Open-SSL. so in the code of NSS you can find call to a function,
+call to a function, SSL. This will call the get default your
+methods. However we have to find the start of the SLL methods
+pointer and in order to find these we rely on the PR
+displayer attributed which have the value for. So we find the
+call of the function by searching the SSL string as you
+can see on the SSL -- beneath layer. There is a method call
+Identity. We find that string on the data section of the
+executable and we can find the call for this function and then
+we find the call for this set of io methods where we can find the
+SSL method stable. So string we find the method that sets the
+SSL method and highlighted with red in the bottom corner you can
+see a value of 4 attributed location. That's the location of
+SSL table and we use that table to find the SSL read and SSL
+write functions. This is the code we find the string in the
+process memory and we find that specific method and using that
+specific method we are able to find SSL read and function. And
+starting with version 38 chrome use -- boarding SSL. And those
+functions are available in Chrome.dll is a huge DLL and in
+order to find the correct functions we idea light on the
+message that was available in both SSL read and write
+functions This string is specified by the SSL put error
+marker So the DLL will contain in the data section a string
+that contain the compiling file. So we search in the data
+section. That is called CW/bill/build. And so on. And we
+have to find the correct call of the function. That are about 20
+calls of this string so we have to find -- the 15 and the 17 --
+location, those are the SSL read and the SSL write functions.
+This is the code that search -- code -- specify string in data
+section. We search for the 17 and 15 location of that string.
+So you are able to find the SSL sent and SSL read function. I
+thought it might be useful to create some -- for this tool.
+That we'll process both send and receive data. That are only 3
+plugging but I hope they're useful. The plain texts specify
+if we want to safe -- or to safe the data. Limit is use to avoid
+large load files and we set maximum file request site and
+string finder is a plugin that we write in a specific file for
+some new lines -- some strings that we can specify so for
+example if the data contains the word fast we can log in in
+another file. The plain text plugin maybe useful to avoid a
+large amount of data. That's not our interest. The data limit
+maybe used to trim the data and safe only the first 4 thousand
+bytes of the data and the string finder can find the words in the
+data. For instance it finds the password for the specific
+accounts. Net ripper has the two components. DLL configuration
+meaning just to specify specific values for the plug in. To
+specify if you want to -- not specify the data limit but
+finding the request some strings using -- to DLL to be process.
+Like in this example -- statics. This can be useful in order to
+test sound specific application. For example you are not a
+penetration tester, you do not want to (inaudible) but you want
+to find what the application is sending through the network, so
+it may be useful to analyze such application. And you can see in
+example firefox. Here is the metasploit module. So we need to
+have access. Come propriety machine and they're the same
+configuration option. Slide in windows modules. We need to find
+the data -- stream temp will automatically detect the local
+temporary folder. And we can specify either the process ID
+order process name where we want to inject the DLL. Now for the
+demo I have to get machine. And the other one Window 7 64 byte
+and this will be the victim we should have I am not sure if you
+can see, yep thought so, ok, we should have meterpreter session
+and I chose an easy way to get this. This will be the pentester
+so this is normal user, the sysadmin. So, it is a normal
+user. And we will use the post exploitation module. we just
+have to inject this in to specific processes. Is the
+example of this. And run. I'm sorry. Okay and the module will
+inject the DLL in all processes with specific process name. And
+let's take some example. And we'll do some stuff. It can use
+the WINSTP. And let say it will modify the file. Configuration
+file. The transfer is not complete. It can connect to
+MYSQL data base and it can execute a Query. It can Skype or
+talk to someone. It can use yahoo messenger really using in
+Romania it can use the SQL server to connect today at data
+base. It can use files and modify some data in that file,
+you may send e-mail. And may browse some secure server safe.
+Or even from Facebook log into an account. Important advantage
+of this method is this one. The certificate is not modified and
+you don't see another signer of your certificate. So someone may
+look at the certificate and may not be sure that if everything
+is okay. And now the attacker. What it has to do. I have to
+down load the log file specify the local directory.
+C:/Users/localuser/appdata.local /temp. Here it Will create a
+folder called net ripper. And it should be all the files we just
+down load. All of them. Each file contain the process ID and
+process name and the if you think in order to capture the
+data. This may be useful because the processes mail so that the
+net ripper can also catch encrypt data and the data before
+is encrypted. Have you to filter the results. Just a moment to
+finish the execution. The string file, the string finder. Plug in
+creates those files and then specify the string finder. Okay.
+Now we have the files hide the sql the mysql client will
+receive some data. And the we executed the select star from
+dot user which contain it from he admin this may be useful. The
+data send. And are ready the string finder finds our
+(inaudible) our strings and one of them is pass -- and contain
+the hash of the user. For chrome we may find useful information
+in SSL read and SSL write functions. And SSL write. Yup.
+Those are for the plaintext I have you may not find release of
+information here. Putty. This is what putty received and here and
+you can see the contents of the SWD file here. And this is what
+will send so we can find the user name. Don't contain any
+useful information. For us the string finder found some useful
+information. WINSCP send and receive Will not contain useful
+information but is SHH will contain the context of the
+modify file and it will also contain the file read from the
+server. So everything is plain text. For outlook the encrypt
+message packet. I think this is message encoded in base 64 and
+here is the context of the e-mail. This is the data
+received from our servers, from firefox read and write for is
+use read the information. Can you see some junk information
+ability a lot of context is compressed appear right? Here
+are the Facebook requests I think. Yeah. And it is the
+logging information that you are searching for. User name and
+password. For the SQL server management studio. We can also
+find some queries automatically executed and the data received.
+You may (Inaudible) I don't know you may find new things about
+this. SQL server using. And for file -- the whole traffic is
+plain text and you can find the information here. Here is the
+same data, so the username and the password. [ APPLAUSE ] >>
+The tool is not complete, I want to make it support 64 processes
+and to support the application and even all the version of the
+application the hook is also not thread safe so I have to work on
+this regular expression plugin. For the defense I think this is
+an Microsoft operation issue. For example my Kaspersky
+actually warns me if an application in usr land tries to
+modify the process memory of another application. And I think
+all anti viruses should do this. It is project, is private now
+but in a few minutes I will make it public. So you will have the
+source code, binaries, and metasploit module. As a
+conclusion this is a post exploitation tool reflect DLL
+injection that encrypt and decrypt the data in other to
+capture the network in plaintext and it should be ease to use. If
+you have any questions. I can't hear you, I'm sorry. Oh okay. It
+doesn't work now I'll make it public in a few minutes. And
+here is my contact information if you need help or you have
+suggestions or everything else. Thank you. [ APPLAUSE ]

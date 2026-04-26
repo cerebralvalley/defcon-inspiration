@@ -1,0 +1,611 @@
+>>Well we have a great
+opportunity to see the best
+looking speaker. Oh, here he is, sorry. At least that’s what he
+tells me. So uh- anyway. We’re
+going to be learning a little bit about some uh- active
+directory attacks uh- this
+afternoon. >>Thanks. [Applause] >>Hi DefCon. [laugh] So well-
+I’m Nikhil Mittal and I’m going
+to talk about uh- minimal rights and ACE for active directory
+dominance. Uh- so let’s get
+started. A couple of things about me. I’m a hacker. I- I
+like to research stuff when it
+comes to windows security, mostly on the userline part. Uh-
+thereto on powershell on active
+directory et cetera. Um- I’m a speak, I train at conferences,
+um- I’m with Pen Tester Academy
+dot com. Um- you can find me on Twitter as nikhil underscore m i
+double t. So please take a pic
+and tag me there. Uh- I blog regularly on Lab of a
+Penetration Tester dot com and I
+made a few open source toolkits for uh- for offensive security
+research like Nishang. Uh- there
+was one- uh- there is one on- for the defensive part as well
+called deploy deception which I
+released last year. Uh- I generally like to- to learn and
+research about methodologies to
+break into- into environments, of course where I have the
+permissions to do so. I’ve
+previously spoken at DefCon of course at uh- BlackHat and a few
+more conferences. So what we are
+going to discuss today is, uh- this is the agenda right? That
+is, we will begin with a very
+quick introduction to what ACE is, or ACLs are, when it comes
+to the access control model in
+active directory. Uh- then the philosophy of uh- minimal
+rights; what- what- what do I
+mean by minimal rights? Why are they required? Uh- then we uh-
+have a quick look at uh- a
+toolkit called RACE, which I’m going to uh- release with
+today’s talk. Then persistence,
+how we can use uh- different methodologies uh- commands from
+RACE for persistence and on
+demand privilege- on demand privilege escalation. Uh- these
+would be covered both for
+non-domain controller machines and member uh- both for domain
+controller and member machines
+in active directory. Then we look for some stacks- uh attacks
+just specific to the domain
+controller. And then a quick look at defenses, past work,
+future, et cetera. So uh- those
+of you who are not really familiar with how access control
+model works in active directory,
+uh- this is how it works. When you want, or a process wants to
+access a resource, which in the
+uh- SID lingo is called securable, whenever you want to
+access that, uh- your thread or
+process token has the following uh- information. It contains
+your user SIDs, that’s physical,
+right? Your user SIDs, your group SIDs, uh- privileged
+information and other access
+information like CDs, et cetera. When you- the process token
+presents uh- itself to the
+target object or the securable, the system does the following
+checks. Um- it compares with-
+now the system has an ACL, an access control list. The one in
+which we are interested in right
+now is called DACL, which is- it’s a list, it is made up of
+entries. Now the system checks
+each and every ACE for any particular specific allow or
+deny entry for your access
+token. It keeps checking for each entry as long as it finds
+either an allow or a deny.
+That’s- that’s how basically access control model works. Now
+when we talk about uh- let’s
+say, uh- there’s an access control entry let’s say for each
+and every trustee, right? The
+list contains entries for different trustees. Now when we
+talk about let’s say domain
+admins, we say domain admins have, and we have seen that, we
+know that, domain admins have
+privileges or permissions over all of the objects or most of
+the objects in a domain. So why
+is that? It is because domain admins have entries or ACEs on
+multiple objects, on all of the
+objects in- in- in the entire domain. Right? That is what
+allows domain admins to be
+domain admins, right? To control different objects. Now that was-
+I’m now going to uh- dive deeper
+into how DACL or how ACLs look like, et cetera. Uh- that I save
+for a longer discussion. Now,
+once we understand that, once we know that, how access control
+model works in active directory,
+how important ACEs or ACLs are, then we can begin a discussion
+on minimum permissions. So,
+domain admins or other high privileged groups or users
+usually have full control
+permissions over different objects on machines or in
+domain. Now that’s good right?
+Full control is awesome but that is something which we do not
+desire all the time. Why don’t
+we stick to only those permissions which are required
+for a specific attack? Right?
+Uh- for example if you want to reset password for a domain
+user, do you really need full
+permissions, or full control of generic all, over that
+particular user object? No we
+don’t. And that is something what the philosophy, or
+methodology of minimal
+permissions is. We stick to whatever we require, for a
+particular task, so that we are
+a lot more stealthy, a lot more silent, and we can still get the
+objectives or the goals of an
+assessment, or an attack, or whatsoever. So, for example,
+let’s- let’s take this as an
+example. You want to connect to a domain controller or any
+machine using powershell
+remoting. Now by default, you must be a part, a member of the
+local administrator’s group.
+Right? Now, why is it possible? Uh- this is because
+administrators, or the local
+group administrators, it has full access on the ACL of the
+powershell endpoint. We’re
+taking it just as an example. It has full control over the- the
+ACL of the powershell endpoint
+to which you connect, which allows them to access it. Now,
+what if we add permissions for a
+user which we control which is a proxy user or- or- or a uh-
+virtual user. We add the
+permissions for that particular user to the ACL of the
+powershell remoting endpoint,
+but in place of having full control, which is not required
+here, we go ahead and
+selectively choose the permissions required. That is
+what the minimum permissions
+part is. Right? And throughout the talk, that is something in
+which we are going to use. We
+sought out what minimal permissions or rights are
+required to access a particular
+resource or a securable object, and then we uh- modify the
+permissions, get those
+privileges and execute the task. We are going to avoid full
+control or gen control, as long
+as possible. Now, we are going to use the RACE toolkit, which
+would be available on my github
+repository. It is a powershell module which you can use to- uh
+which has uh- a lot of functions
+and code which you can use to execute attacks which we are
+going to discuss. Uh- RACE makes
+use of Microsoft sign active directory module, the one in
+which you will find on any
+machine where the AD RSAT set is installed. So I maintain a meter
+of that, or you can copy it from
+any domain controller or any machine where the- the AD RSAT
+is installed. Right? So let’s
+get started. Uh- we are going to discuss both persistence and
+privilege escalation. Uh- please
+note that we are not going to use any patchable exploit. There
+is no exploit discussion in the
+talk. In cases we talk specifically about modifying
+ACLs, we have to assume that on
+member machines we have the local admin privileges and on
+the domain controllers we have
+the domain admin privileges, right? So by the- when we do the
+modification of ACLs and when we
+abuse that, in- in a real world assessment on a- during a real
+world attack, there is a time
+gap, right? You once the local admin privileges, now you need
+to hold onto that. That is
+something which we are going to discuss so please don’t be
+disappointed that we have those
+privileges, right? This is a persistence or a backdoor
+scenario which we will be
+discussing in- in most of the cases. Uh- so we’ll begin with
+very simple, well known
+techniques, not well known ones, probably. Simple ones, then
+we’ll move onto a bit more
+complex ones as we move ahead. So let’s pickup powershell
+remoting the- the thing which we
+started the discussion. Now, to allow code execution, without
+administrator rights, we need to
+modify the permissions of the ACL of the powershell endpoint,
+right? If you run, for example,
+get PSSession configuration on any windows machine, you will
+get a list of the remoting
+endpoints enabled on that particular box. So we are going
+to modify the ACLs of the
+default one- the default endpoint, and provide one of
+all- or one of the users
+Vcontroller privileges to connect to that machine. So,
+from that RACE toolkit, if you
+use the following command, uh- we are trying to add or modify
+the privileges, uh- so to modify
+the ACL of the powershell remoting on the machine
+specified in the computer name
+parameter, for the user labuser. Right? So uh- let’s have a look
+at it’s demonstration. So what
+we are going to do, we’re going to modify the ACL of the default
+uh- powershell remoting endpoint
+on a domain controller with the domain admin privileges, right,
+that’s what we’re looking at. So
+we use overpass the hash to start the session as domain
+admin. Uh once we- uh once we
+have those privileges, uh we can go ahead and modify the ACL on
+the domain controller, using
+this command. Right? You may uh- get this error when you run this
+particular command because we
+modify the ACL of the powershell remoting endpoint for this
+current session, so you may get
+an i o operation error which we can safely ignore. Now what we
+did was to modify the ACL for
+the labuser, now as labuser, that is the current user for
+this particular uh- machine. We
+can access the domain controller. Right? You would
+like to keep in mind that the
+privileges will still be of that non-special user. Right? So
+could you please give me a ‘so
+what’ really loud? >>[inaudible] >>Thank you. So we’ll see uh-
+what is the benefit of having
+privileges- whoops, privileges on a domain controller, even as
+a normal user. Right? So
+similarly, we can go for WMI. WMI if you uh- know that- WMI is
+a two part authentication
+process. You must have privileges one, to connect to
+the DCOM endpoint, second, you
+must have the privileges or permissions to connect to a
+particular namespace. So when we
+do this similar stuff for WMI we need to modify multiple ACLs.
+For the DCOM remote- DCOM
+endpoint, as well as the WMI namespaces. So, WMI is another
+method of replicating this
+similar attack. Now one failure which I would like to uh share
+with you is for the WMI
+permanent event consumers. So WMI supports permanent event
+consumers which are fantastic
+for persistence. They persist across reboots, execute your
+commands with system privileges,
+which uh- is desirable when you want to backdoor a target
+machine. Now when I tried the
+same stuff with modifying the ACL of the root subscription
+namespace, which is used by the
+permanent event consumers, it was possible to create permanent
+events but it was not possible
+to get a command execution out of it. Right? So if- if- uh-
+this interests you, you may like
+to explore this further, but if you really have used WMI, you
+really know it well, you may
+like to correct me later on. Now, what if you would like to
+have on demand privileges
+escalation. That is, we have persistence, with privileges,
+for example, the two scenarios
+we saw, powershell remoting and WMI, in that case we did not
+have local admin privileges or
+administrator privileges, with persistence. What if you would
+like to have the persistence
+along with high privileges? In that case one really useful
+option is using, or abusing,
+Windows services ACLs. Now ACLs have their own- uh sorry.
+Services have their own ACLs.
+Right? Or security descriptors, we can modify that as well, to
+get backdoor support systems
+with administrative privileges. Now, unlike the WMI and
+powershell remoting part, which
+no one really cares about, there is minimal logging, other than
+the access logs, there is
+absolutely no logging by default when you modify ACL of a
+powershell uh- remoting
+endpoint. But of course in case of services, this is not going
+to be the same, this is a bit-
+not a bit, this is noisy in the logs. As simple as that. Now
+there could be uh- a plethora of
+services which are entrusting service control manager or SCM
+is the one which is of
+interests, which is of the interests, right? SCM provides,
+this is the service manager
+right? It provides the ability to create, configure, start,
+stop services. So if we have
+Generic All, in this case we need generic all, if we have
+generic all permissions on the
+SC manager’s service, we can create, config, start, stop
+services, uh- which means that,
+for example, we can create a new service, which runs a system,
+and a user in which we control,
+has the permissions to start and stop the service. Right? Or we
+can simply go ahead, create a
+service, and provide a user Vcontrol, generic all
+permissions on that particular
+service. What would that mean? That means the user we control
+can modify the configuration of
+the service, make it run as system, and change the
+executable part of the service
+to run the payload we desire, right? That is something in
+which we are doing here. Uh- we
+provide a user, once again we are going to use labuser as a
+proxy user all the time. We
+provide labuser rights which are equal to what the built in
+administrators have on SC
+manager on the target machine. That’s one. Then, we create a
+new service, evil svc for
+example, which runs as local system, and labuser has
+permissions to start it or
+configure it. Right? Once the service is started, there is
+another user, you can use the
+same user or another proxy user to the local administrator’s
+group. So, really not silent,
+but that is the easiest way you can abuse uh- the- the services.
+Right? Now if uh- I mean if you
+use SC manager, creating a service is still a lot more
+noisy than simply deconfiguring
+a service. So in place of that, what we can do, because we are
+assuming the local administrator
+privileges on the target machine, we reconfigure an
+existing service, and provide
+our proxy user local- uh sorry- all permissions on that
+particular service, so that, our
+proxy user can reconfigure the service, run it as system, and
+point it to the payload we want.
+Right? So that is the- uh- the service permissions issue. Now
+let’s have a look at this one.
+So. So we start uh- a partial session with the privileges of a
+user who is a local admin on the
+target machine. Uh we load up the- the risk toolkit and modify
+the ALG service on target
+machine so that the user- labuser which we control has the
+permissions to change whatever
+we want on the target service. So here you can see that uh-
+the- the SDDL of the ALG service
+has these entries for the built in administrator’s group right?
+This B A stands for the built in
+administrator here. So what we simply did was to copy that
+entry and provide it to one of
+the users which we control, right? Once that is done, then
+we- as labuser we go ahead and
+uh- run the plain command. So, as uh the user, for which we
+modified it. [inaudible] So we
+run it. And we changed the configuration of the ALG. How
+could we do that? Because we
+modified the SDDL or ACL of the target service. So all of the
+ser- service start fail. Let’s
+try to access the target machine now using powershell remoting
+because by default we need
+administrator privileges for that. So we done this. We can
+successfully connect to the
+target machine. Just to be sure, let’s have a look at the uh-
+membership of the local
+administrator’s group there. You can see that our current user,
+or proxy user has access to uh.
+It’s a member of the local administrator’s group, right?
+Now, we have seen two
+interesting methods, three interesting methods. So
+powershell remoting and WMI
+provides two of the ways to access a machine. Third one is
+remote registry. Now remote
+registry in not enabled by default on the desktop was like
+Windows 10, but it is enabled on
+the server versions of Windows. Now we can use uh- registry
+stores a lot of interesting
+information. It provides you uh command execution privileges,
+for example we can use the
+permissions on uh- uh- well known autoruns keys to get
+command execution. Now you will
+likel to notice that not only the domain objects, but services
+and registry keys have
+permissions as well. So as a very simple example, uh- we can
+modify ACLs of the popular, or
+the infamous, uh- remote registry key, which allows us to
+connect to remote registry even
+without having local admin privileges. And then, we modify
+the permissions of the image
+file execution key. What does this mean? What uh- with this
+command executed on any target
+machine, this- this is the famous sticky keys option,
+right? I chose this as a very
+simple example. You modify these keys on a machine. The command
+also disables NLA. If you use
+MSTSC or RDP to connect to this machine you will get the login
+prompt and then you press shift
+keys five times, then you will have your payloads executed as
+system. That’s what- what it
+does. Very famous, probably maybe detected by some
+antivirus. Even that is possible
+but I chose this one because this is an example which is the
+most easiest one to understand.
+Now when we discussed WMI I say that WMI is a two part
+authentication. We need to be
+able to authenticate DCOM endpoint as well as to the
+namespace. Now, if we are
+already modifying the ACLs of the DCOM endpoint, why don’t we
+use that to execute commands on
+the target machine. That is exactly what this particular
+command does. You modify the
+privileges or ACL- uh- ACL of the DCOM endpoint, and then you
+can run command on that
+particular machine using DCOM. There is no need to modify ACLs
+of any namespace whatsoever.
+Right? Now another interesting option when- when it comes to
+powershell remoting, Microsoft
+introduced JEA, which is also pronounced or called as jaw.
+Just enough administration a few
+years back. Now jaw which is a DSA technology, what it does is,
+it is useful for allowing non
+admins to do admin tasks. And how- how does it happen, how it
+works? By default, anyone
+connecting to the jaw endpoint using powershell remoting will
+have admin privileges,
+regardless of what privileges they have in the domain. On the
+domain machines, they will have
+whom’s server is connecting to the jaw endpoint, will have
+local admin privileges and on
+the domain control- controller, they will have the domain admin
+privileges. Right? Which does-
+doesn’t sound right. But the access is controlled by the
+number of commands or command
+lets uh- they can run. Right? Whenever you configure a jaw
+endpoint, you- you need to
+define a rule capability. That rule capability seemingly limits
+what commands you can run on a
+target machine, even with admin privileges. For example, you
+can- let’s say you just want to
+restart permissions to a group or a user, you can simply expose
+just simple command let restart
+dash computer with a single parameter call that’s a dash
+force. That is the uh- type of
+control which jaw provides you. Right? Uh- so as I said, it is a
+four four domain controllers,
+the domain admin privileges you get are limited to the domain
+controller. You cannot access
+any network resource with those privileges. Now how do- uh- how
+are the privileges provided to
+anyone connecting to the- to the jaw endpoint? There is a virtual
+user created for uh- every
+connection. Now the problem of course, is if you specify
+asterisk, while defining the
+rule capability file, it is possible to expose all the
+commands, not only the
+powershell commands or command lets, but also the built in
+commands. The ex- executables,
+that is also poss- that can also be exposed on a jaw endpoint.
+Because we are discussing a
+persistence mechanism, or on demand privilege escalation with
+persistence, what we are going
+to do, we are going to, we are going to create or register a
+new jaw endpoint which allows
+everything- every command, every command let to anyone who
+connects to that particular
+endpoint. And the results are terrific, or uh- terrifying,
+depending on what side you
+belong. Once again, if you have administrative privileges on a
+machine, on a member machine, or
+on a domain controller, we can create a new remoting endpoint,
+or a JEA endpoint and then we
+can simply go ahead and connect to this. Here you can see that,
+in place of normal Enter PS
+session, and the computer named parameter, we are also adding a
+configuration name. This is the
+name of configuration which gets added onto the target machine.
+Are there any logs? Uh- not at
+all. This is as silent as it can be. Of course there will be
+access logs on all the time. A
+four six two four, and a four six three four, and, that would
+be for this virtual user right?
+So it would still be possible to track you if someone is looking
+at the access logs. Other than
+that, there are- I mean access logs are there even if you run
+nat user slash dom. So that is
+something which uh- is not very- not really standout. Now let’s
+have a look at its demo. So what
+we are going to do here, is we are going to create a JEA
+endpoint onto the domain
+controller, so that when we connect to it, we get local
+admin privileges on the DC,
+right? So we done this on the DC. Here you can see that we
+create Microsoft dot powershell
+64 uh- config. [inaudible] When we run this particular command,
+as the user which we control,
+you can see that we can access the DC. Let’s have a look at our
+privileges. So we are running as
+this particular virtual user, and if you have a look at our
+privileges, those are useful for
+local administration on the DC, but not useful for accessing any
+network resource. Right, so this
+is uh- this is very useful and very silent. So, now we can go
+ahead, we can uh- the registry
+stores a lot of uh- interesting credentials as well, so what we
+can do by modifying permissions
+for multiple registry keys, we can go ahead and extract
+credentials from them. What are
+the credentials stored in registry? Machine account hash,
+local users hash, uh- domain
+cached credentials. So right now we are going to make user uh-
+code from DAMP toolkit, that’s
+what included in the RACE toolkit as well. So by using
+following commands, we can
+access- or we can extract information from the registry.
+Now to an- answer the ‘so what’
+which I asked you guys to shout, if- even if remote registry is
+not running on the target
+machine, or it is filtered out by the firewall, we can simply
+go ahead, modify the- the
+powershell remoting ACL, then we can run the commands to extract
+credentials from the registry
+without having domain admin privileges. And what is the
+least which we can do with the
+machine account hash of the DC? At least the DC sync attack.
+Right? So I- I think I’m running
+out of time so let’s skip out uh- passed the demo. Another
+interesting group is DNS admins.
+DNS admins is basically uh- the domain admin if you are running
+DNS service on your domain
+controller. It is also not a part of the protected users
+group. So we can either modify
+the ACL of the domain uh- the DNS object, or the domain uh-
+DNS admins group is not a group.
+And we can have our privileges back. This is very specific to
+the DC. Right? Same goes for the
+DSR admin which is the built in administrator on the DC. The
+local administrator on the DC.
+Its logon behavior is controlled with a particular registry key,
+which we can modify the
+permissions to, so once we have the machine uh- the local
+account hash, modifying the
+permissions, then we can modify the permissions of the registry
+key, the logon be- and we can
+access the domain controller as a local admin. Same goes for the
+resource based constrained
+delegation part, the RBCD, right? Oh, Exchange groups are
+also very uh- interesting.
+Exchange groups are not part of the protected groups, their ACLs
+are not- not protected by admin
+SD holder, so uh- we can modify the ACL of the exchange windows
+permissions group, which itself
+has rights to modify the ACL of the domain object. So by using
+this cascading effect, we can
+actually run attacks like, at least DC sync, o the domain
+object. Right? I need to skip
+passed- through this one actually. Then there are some
+well known ones, like user
+object ACL, we can modify the ACL of a user object to reset
+its password, or to force set an
+SPN of the user, and then CAD roast it. Or we can modify the
+permissions of the SD holder.
+This is very well known right? Or we can run the DC sync attack
+by modifying the ACL of the
+domain object itself. This is also very well known. Uh-
+finally we can run the DC shadow
+attack if you have not used it [inaudible] By default you need
+domain admin privileges to run
+the DC shadow attack. But it is possible to use minimal
+permissions we can [inaudible]
+run DC shadow without having to have privileges. So this is a
+summary of whatever we have
+discussed. So this is more of a reference slide for those who
+are not uh- did not attend the
+talk so that they can come back and have a look at that later
+on. Now this was not something
+which was discovered uh- just months back. Minimal permissions
+have been in use for so long
+that when I was a researcher, I found articles at least which
+date back to 2001, where uh- the
+ACLs of the DCOM endpoint. So in- in slide notes you will find
+that there is one for DCOM in
+2001, another one for WMI from 2002. And there was some
+fundamental work uh- which was
+in French, I think this was in- this was in 2014, a couple of
+years back at DefCon, there was
+a very excellent presentation about DACL backdoors. In fact DC
+sync and admin SD holder are one
+of- some of the attacks which these guys discussed in much
+detail. Now of course event logs
+are our best bet when it comes to uh- detecting these attacks.
+Other than of course protecting
+your domain administrators or local administrators. Right, if
+someone would not have that
+access in the first place, these attacks would not be possible.
+Uh- by default ACL modification
+has no detection at all. Uh- even though- even if you enable
+it, it is easier [inaudible] the
+domain objects for services [inaudible] it is still hard to
+detect. [inaudible] Other than
+that as we uh- as we discussed earlier, access logs are the
+best things you have, four six
+two four and a four six three four, in case of a non admin
+access, four six seven two in
+case of an admin access. Right? You can refer to this uh-
+document, this article from
+Microsoft to uh- to have a look at why, or how to detect ACL
+changes. The tools which we can
+use for uh- ACL auditing other than logging: Bloodhound of
+course, ADACL scanner, and uh-
+Ping Castle. You can use all of these three, any one which you
+want to detect or to audit ACLs.
+And also uh- a shameless self plug, you can use Deploy
+Deception, the tool I wrote to
+create decoy users and objects which have interesting ACLs to-
+to uh- trap or deceive an
+attacker using that. Right? So uh- for future work, what we
+have uh- what I have not
+explored is when you change service permissions, those are
+stored in the Windows registry.
+So that would be a very interesting part to discover or
+to- to have a look at. As we
+says- uh discussed earlier, WMI permanent event consumers, not
+really uh- successful uh- I was
+not really successful with that but that may be an interesting
+point. For the RACE toolkit, uh-
+specifically, I have worked on hiding the ACEs once we have
+modified the ACL. That would be
+an interesting part. More registry autoruns would also be
+really interesting. So uh- that
+would be all. Please fire your questions right now or you can
+contact me on Twitter or on my
+email. That would be all. Thank you. [Applause]

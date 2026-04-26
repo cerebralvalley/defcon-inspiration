@@ -1,0 +1,579 @@
+>>Alright, I'm really excited to
+introduce Alexandre again. He
+spoke in my track last year and did a bang up job. Last year was
+his first time speaking at any
+kind of big conference at all. Since then, he's gone on quite
+the world tour. He went to
+China, he-he- he went to Hack-In-The Box, he spoke in
+Europe and now he's back here to
+speak again. Let's give Alexandre a big round of
+applause [applause] Have a good
+time my friend. >>Thank you so much. >>Yeah. >>Hello guys, good
+afternoon. Let's talk about dot
+net malware reversing, it's uh pretty decent talk, I think so.
+Uh, I'm a security research. Uh,
+here is our agenda about my presentation. Here uh you have
+my last presentation on
+Confidence Defcon China, Hack-In-The Box Amsterdam, and
+Defcon last year; I recommend
+you should take some time to read it. In the last line you'll
+see my two, my tool, my personal
+create tool, uh Maloverview Tool. Uh if you have some free
+time uh you -you can text me.
+And let's start. Uh, there are lots of people here. Honestly,
+once again I was expecting 10 or
+12 people, huh. Uh because most malware analyst don't like uh
+dot net malware. H, basically
+malware analyst, while uh analyzing dot net malwares are
+concerned to unpack uh a binary
+from memory or uh find the –the encryption routine in a dot net
+malware or even show a – the
+decryption resources embedded in –in this type of malware. But
+according to my experience, dot
+net uh -dot net malwares uh can be so challenging because uh
+sometimes a defense uh offers
+advances in mal -malware authors try to modify uh the dot net
+malware, the application
+directly in the intermediate language. And uh, I've been uh
+-I've been -been checking in
+analyzing some malwares in dot net uh which try to attack the
+dot net runtime so it's
+recommended to learn a bit more uh umm on intermediate language
+and uh some information about
+metadata and dot net runtime. Uh most of the time uh, we find uh
+dot net malwares uh around the
+world and we have basic-, usually uh net codes, uh sorry
+dot net uh uh manage codes load
+uh uh native code on the memory. Thi- this is the common scenario
+but sometimes things can be
+worse, uh sometimes things can be a bit more complicated. You
+see, this is a real case that I
+uh faced uh some month ago. The suspect uh receive an email,
+click on the link, drop uh -uh a
+first dropper. This dropper uh fed a first payload on the
+internet. This payload is
+composed by two pieces. One pieces is a native code, the
+other pieces is an encrypt
+manage code. This uh first piece in native language, in native
+code is inject in -into another
+process, in a remote process. Once this code is injected, uh
+this code loads the first manage
+code, decrypt and load. This manage codes fetch a second
+stage from the internet. The
+second stage is the real payload and the infection is start. So
+things uh, things can be harder
+than -than uh, than usual case and I tried to show it in
+pictures here. Uh, I don't
+needed to show you again how to make injection. Injection is so
+easy. I tried to show here in
+this slide. This slide is a kind of refresh about injections. Uh,
+I won't explain it because it's
+pretty easy. But as I mentioned, things can be different. For
+example, I told you that usually
+I have uh uh manage code, load uh native code eh on rh into
+their memory uh but somethings,
+-sometimes things are the inverse. I have a native code
+the loading a manage code into
+the memory. In this case for example, I have -I use the
+CLRCreationInstance to get a
+interface name and ICLRMetaHost . From this interface I use the
+Getruntime to get another
+interface named ICLRRuntimeinfo. From this interface, I used a
+new method named Getinterface to
+load the runtime. Afterward, afterwards, I use the Execute
+application to activate the
+domain. I start the runtime using the start method and
+finally I use the Executing the
+full application domain to start the real application, the real
+infection the real payload. As
+you know, a dot net framework is composed by a runtime, CLR and
+some Libraries. Uh, malware
+authors uh can write uh networks using different languages such
+as uh C sharp and F sharp, uh VB
+dot net and so on. Basically uh these source codes are compiled
+into a common language infra
+-infrastructure and finally run by the CLR. Uh, we -we have
+several excellent tools to
+analyze dot net um, networks. I tried to list several of them
+here. I use them uh daily in my
+daily job. Personally, I also use some uh additional tools
+that I tried to show you here in
+red. Uh these are great tools to analyze dot net malwares and
+you've heard some of that. Uh of
+course uh, you must know that most dot net, -most dot net
+malwares uh use some kind of
+packers or quiters so we -we – I, -I tried to show you some of
+them here. Uh pay attention that
+the last one, VM Protect 3 dot 4 uh was released, I believe one
+or two weeks ago and now uh it
+includes uh dot net obfuscation. When our uh working uh with dot
+net malwares, uh you should, or
+you must try to remember that most them uh are using
+obfuscators and obfuscators can,
+- obfuscators, uh obfuscating the Control flow. These
+obfuscator try to rename
+methods, attributes, classes and so on. Some of them uh, encode
+all of the strings of course.
+Uh, try to encode and obfuscate the cross reference you know.
+It's so complicated to analyze
+this kind of uh code, uh while you use uh any kind of
+obfuscators so it's very
+important that you know about that. When uh, when I'm
+analyzing a dot net malware,
+usual -usually I see the same functions load the payload and
+in this case, I tried to show it
+in green here. Uh, Assembly dot Load, Assembly dot LoadFile and
+MethodInfo dot invoke is almost,
+almost, almost the same thing. Uh, uh, most times uh we see a
+kind of uh reflection approach.
+And uh, when you see a reflection approach, you will
+see a sequence similar to that.
+Uh I'm using Load R, Load File followed by GetType, GetMethod
+and Invoke the method. So
+reflections is uh so used to uh during uh dot not -dot net
+malwares so umm it's a very
+common approach. Another approach, another possibly
+-possible approach is using
+GetAssemblyName plus GetType, GetMethod, Invoke again. As most
+malwares uh have been using
+resources or, uh just dot net malware tries to hide uh some
+denial of or their payload into
+resources. You see uh sequences like this one in pink, uh
+FindResource, SizeOfResources
+and so on. Sometimes uh you see uh other sequences like this
+-this one in orange. When uh
+malicious dot net assembly uh uh is trying to load some external
+dll. All -all of these approach
+are based on uh trying to load something in runtime to evade
+your static analysis. Here I
+-I’m show you uh a first very basic malware. I opened in
+dnSpy. We have the entry point
+uh there in green. I click now the entry point. I find a class
+named the
+PinnableBufferCacheEventSource. Inside this class I see the main
+function and at the bottom I see
+our potential malicious function named TargetInvocationException.
+Following this function I see
+this -this very special function is trying to load uh an
+assembly. And eh this function
+are using a URL to load this assembly but in this case the
+weblink comes from several
+attributes. For example, I took one, the first one uh and I
+checked that this attribute is
+being set by garing uh, new assembly is using
+GetExecutingAssembly here at
+bottom. This function is trying to read a resource. This
+resource is encrypted and when
+you decrypt the resource, you see uh P -p Executable. So uh
+each uh each of these uh
+variables are -are related to our resource that represent uh
+possible or potential malicious
+native code. Here uh I’m showing the same code but uh using
+intermediate language as it’s
+similar, you’ll see. The main function, the entry point, you
+see at right our function, our
+malicious function. We have a token, a token is that number 0
+6 and to stop uh works uh a kind
+of index inside a metadata table named member reference table
+there. And when I, when I tried
+to follow it, I find a are functional here at bottom and
+more details are explained. As
+you see, implementation flex are IL, intermediate language and
+manage becauseI’m handling our
+manage code. This is a -this is a manifest. A manifest in this
+case is a file that wr -wrap up
+everything. In this case, you can see the assembly name, you
+can see several manage resource
+related to uh mresource at bottom. You can see further
+information about this malware.
+As I mentioned before this point, uh this malware is using
+reflection to load malicious
+content at runtime so you can see here several calls to
+Getexecuteassembly method in
+several points in this intermediate language code.
+Sometimes you -you are facing uh
+a bit harder uh dot net malware. Uh in this malware uh brings
+some uh encrypt resource so you
+can’t use dnSpy or other tool, drop this resource, decrypt and
+using Reflexil. Reflexil is a
+kind of loading you can add the original code and load the
+resource, the decrypt resource
+to analyze the malware. In this case, you must true -he move, he
+must -he move the old references
+because the old reference are half reference. Uh decrypt re
+-resource so in this case you
+drop the resource decrypt just the original dot net malware,
+load again and that’s it. You
+can analyze your dot net malware uh using this -this technique.
+Of course it is always
+recommended to know more uh intermediate language and of
+course metadata. I -I think that
+about 90 percent of case dot net malwares or dot net malware
+authors trying to insert some
+malicious code in our initializers, our finalizers. In
+this case for example, usually I
+try to check uh every uh class constructor to find our uh
+unpacker or decryptor or any
+kind of uh hacking code. It’s very usually for example in -in
+the last few weeks I’ve been
+seeing uh several dot net malwares trying to compromise
+the JIT. Uh in this case, this
+uh -this special malwares -these special advances malwares trying
+to uh hook JIT function
+complier, uh sorry, compile methods and to compromise the
+JIT. In this case, when the JIT
+uh generate the native code, uh this -this special malware can
+hide or uh encrypt user code in
+runtime. For -for example in this case, I try to see the
+class constructor. There usually
+I found – I find some um some hacking code. This hacking code
+try to compromise the compile
+method. And by uh using this trick, uh the malware can or
+hide or encrypt the user code.
+It’s a very clever technique. There are other uh dot net uh
+details here. Most dot net
+malwares bring some very important uh metadata. So,
+metadata basically are
+information about classes, attributes, members. Usually uh
+usually if -if you uh get very
+valuable information from metadata. Uh dot net application
+as you see is composed by
+managed executable and a managed code. It’s not so hard to
+analyze this kind code but you
+need to uh have some uh uh some guidelines to do that. For
+example a manage code is
+composed by a PE Header of course, CLR header, metadata and
+intermediate language. In this
+case, I have the compiler here, uh I have the manage – models, I
+have the resource files that uh
+are compiled to a final version, uh composed by a manifest, a
+managed models, and a resource
+file and uh our resource file. In, using pictures, you see that
+uh uh dot net header is composed
+by PE Header, CLR Header, CLR Data, and Native Code. And at
+the right side you can see the
+same picture but in a detailed view. Metadata is very important
+because there uh I can find very
+uh available things and information. Metadata in this
+case is composed by Definition
+tables, Reference tables, and a Manifest table. Uh there are
+several tables inside of these
+uh classes. And you should remember that all the dot net uh
+malware infection try to use one
+of these tricks. Our code manipulation inside the class
+constructer or fffuh analyzer uh
+try to load some unmanaged functions, F function or use a
+companies so the tricks are the
+same, always the same. Here is a second case, a bit more
+complicated case. This uh real
+dot net malware. I’m -I’m showing here the intermediate
+language and the metadata
+information. As you see, you see the name, TypeDef reference
+table. You see the method name,
+in this case, Main and the Flags. In this case I -I’m using
+the ILDasm to show this screen.
+As you see, the real manage code is so small, less than 5
+percent. Metadata is so
+important because as I told you, describes some information about
+members attributes, properties,
+classes, and so on and this metadata uh is organized uh by
+using a kind of relational
+database and it’s so tiresome because you see I have a table.
+Uh 1, 2, 3, 3, 4 slots, each
+slot is dedicated to a class. Uh each slot comes with methods
+belong to this class at right.
+Uh, this metadata are organized in main streams and classified
+in metadata -in metadata heaps
+and metadata tables. Meta – uh metadata heaps is so easy
+because that or uh or our only
+concern is about strings so a string heap is more important
+for us. Uh inside these uh six
+named streams, we have uh hash US, uh utilized to user strings
+and hash dash is uh kind of
+uncompressed metadata strings so uh I -I believe that uh this two
+ones are the most important.
+When I talk about uh metadata table, uh we have several
+tables. This -it's almost
+impossible to remember every one, every table. You see, I
+list all the tables here and uh
+things here works using a token. A token is a kind of structure
+composed by four bytes. The
+first byte determines the table. The remaining three bytes tell
+us the rule inside this table.
+Here I show you uh some statistic information about
+metadata. At bottom, I show some
+user strings that I commented about the name strings.
+Intermediate language in dot net
+is a kind of uh assembly language based on stack. So you
+see several instructions uh load
+something onto stack or pop some things from stack –from stack.
+You see uh,-uh very usual
+application or two uh named Ngen. Ngen is a executable to
+compile -to compile uh
+intermediate language into a native code. It's so easy to do
+that but in the last three
+years, I've seen several malwares trying to attack the
+dot –the dot net framework. In
+this case, uh this kind of infection are a bit more
+complicated. We have several uh
+we -we have several uh kinds of the dot net malwares but
+assemblies are classified in
+private assemblies and shared assemblies of course. Uh you
+should remember that most
+malware samples uh try to hide some malicious content in
+resource, hide by encrypting or
+obfuscate something. Uh some dot net malwares try to download uh
+an external assembly from
+somewhere. In order uh dot net malwares are based on multi-file
+assemblies. In these cases, it's
+a bit more complicated because these authors try to compose the
+dot net assembly and uh and is
+split over multiple files uh to evade the defenses. It's so easy
+to generate a multi-file dot net
+malware. For example I show you here, a step-by-step, this case
+is so easy. Uh -uh I compile for
+example a hooking dot cs model. I compile an injection dot cs
+and using a uh a main program
+named defcon dot cs, I generate a library named uh malware lib
+here. It's so easy to do that.
+Of course this operation took several metadata tables but it
+-it's normal. Here uh we have
+uh, real manifest about our second malware. You see, some
+native models being loaded at
+bottom, some external reference to assemblies. And at this case
+-in sorry, in this case, our uh
+our assembly is uh string assembly because uh it uh it is
+uh it's signing by a private uh
+key from somewhere. The second screen here you see the driver,
+uh the assembly name, you see
+several custom attributes. You see that uh the signature is
+SAG, SAJ one algorithm. You see
+several manage resource being used and uh at bottom you see
+that the uh the real name of
+this malware is Microtik Realtek Driver dot exe. I show you here,
+how to compact a file executable
+in C sharp; it's pretty easy. If you have a key pair, you can
+sign uh this assembly by using
+this procedure here at bottom. After signing this dot net
+assembly, you can see the public
+key there in red. During some infections uh I’ve seen uh
+native – native uh uh codes
+trying to copy uh dot net assembly to GAC. GAC is global,
+means global assembly cache. In
+this case, the author uh was trying to execute native code,
+copy the manage code to GAC
+because other pieces of this malware uh would use uh would
+use uh the -this shared assembly
+in the GAC to continue the infection. It's a kind of second
+stage. It's pretty easy to copy
+to that because you can use GAC Util there in orange or you can
+use the MSI Install package to
+do that. Of course uh to copy anything to GAC, you need to
+have a keeper to sign your dot
+net assembly. If you don’t have one, you can use the –only the
+public key and try uh delay
+signing. In this -in this case, you will uh sign the dot net
+assembly only use the public
+key. Uh to do that you can follow this procedure. You can
+add some resources by using
+slash resource, you can add some references by using slash
+references; it's pretty easy. Of
+course, uh I don't have enough time here to show you uh how to
+uh –to explain everything we
+instruction in intermediate language so I left some –some
+slides here showing each
+important instruction in intermediate –in intermediate
+language. Uh I don't have enough
+time to do that unfortunately. And here I show you a real, real
+malware. Uh it's the same
+malware so I tried to comment several lines. Of course, you
+must know about C sharp to
+understand these -these codes. Uh here we don't have anything
+different from a C sharp but the
+names and the keywords are a bit different. You have uh public
+class, you have private class,
+you have your sealed class, you have your constructor here uh
+ctor, you have some private
+fields, we have uh some stack reservation there, max stack,
+you have several operations
+loads, things to stack on top of things from stack. You have a
+custom – a custom instance here
+at bottom, You have private class, you have uh –uh
+invocation of a native code in
+-in the middle here, you see invoke implementation here
+trying to call a -a manage code.
+You have here at bottom uh, on a uh look variable being
+initialized with zeros. We have
+a try, uh try catch structure, so it's so similar to uh C sharp
+code. I tried to comment several
+lines here uh to help you later. You have for example here heh,
+our -our dot net malware are
+interest in get our uh keystrokes. You see uh, uh in
+this case malware is trying to
+hook uh some uh keyboard operations. As -as -as you can
+see, uh the dot net malware is
+trying to hook the KeyDownEvent and KeyUpEvent so uh it’s a kind
+of keylogger. At bottom here, we
+have uh some event declaration. Uh in -in this case, our dot net
+malware is trying to subscribe
+some functions uh on -on this event. Uh at bottom, key down,
+at up uh key uh key up. And
+finally uh our dot net malware using aggregate uh uh to invoke
+this event. So easy to do that.
+Several uh constructor’s been called here. Oh finally, I found
+the decryption function. This
+function is re -responsible for decrypting several strings from
+this malware. As you see, I try
+to comment line-by-line or the most important line here. Uh,
+you can -you can try to monitor
+all DLL’s load from the GAC by using Fuslog or even Process
+Monitor. But uh as I told you,
+uh some advanced malwares try to compromise the dot -the dot net
+framework, uh try to insert some
+hookings, uh even trying to compromise the JIT. So, it’s uh
+uh just kind of more -more
+dangerous. Here at -at bottom I show you the complete procedure.
+For example I can call a DLL
+from GAC, modify, uh recompile uh to the native code and copy
+it back again to the GAC. It’s
+so -it’s so easy, pretty easy to do that. Of course, uh nothing
+is so simple to do that. I
+needed to I -I needed to uh have a sign assembly and as I don’t
+have the private key from the
+Microsoft is so complicated, it should do that. Uh other
+approach, it would be to uh
+resign all the dot net framework; It’s so hard to do
+that. I can try to uh copy the
+-the modified DLL uh to GAC but if uh some applications are
+services, uh are using this uh
+DLL, it’s not possible. I can try to force a reboot to make
+this spot and even that I get to
+the GAC, I need to force uh my [incoherent] applications using
+this modified DLL. So in this
+case I needed to uninstall and remove, the native uh uh code
+from the native directory. Casey
+Smith uh show a very uh interesting way uh to do that.
+Casey Smith uh uh uh show a very
+nice trick by -by copying, by dropping assembly to the path
+tasks dot dll to force
+applications using my modified DLL. I can try to, for example,
+I have uh I have uh register uh
+composed by two entries. One entry uh is going to show the
+assembly code, the other entry
+is point to the native code. In this case I tried to change the
+second entry to uh point to my
+modified dll is another approach here. Some uh some dot net
+malwares try to compromises
+services, try to uh introduce some hooking in JIT. Some dll
+-some dot net dll try to load
+external assemblies so there are several tricks. Of course I’ve
+been using Windbg to analyze uh
+this kind of dot net malwares using uh an extension on Sosex.
+And uh here I show you a
+computer code. For example here -here, I load the -the extension
+SO -SOS dot dll, I found the
+native entry point -the -the -the uh -the manage entry -entry
+point. I, this assembly the
+entry point I found the PE entry point there by using dumpbin .
+Uh I tried to display the
+pointer and finally I find uh the CorExeMan uh function by the
+same. I can dump the domain. In
+this case uh I see the system domain, I see the shared domain,
+I see our domain that uh from
+our malware. I see several calls to external assemblies Visual
+basic, System dlls, forms and so
+on. I list uh several managed exceptions. I can try to switch
+uh the tracks for the sample. In
+this case, I switches to Thread 0, I checked the managed stack
+trace here. I found our dot net
+-mm uh malware at bottom. I list some manage tracks by using, uh
+by tracks here as you see, you
+can see that thre -threads uh threads. Threads zero, two,
+fine, ten and fourth thing, our
+managed threads. All of them are managed by Garbage Collector. I
+risk the native, the native at
+stack at bottom using KeyIn. I pickup a -an entry there. I
+check that if this address
+belongs to the JIT code, yes in this case belongs, I pickup the
+Method Descriptor reference. I
+assembled it, so we have the assembly uh uh function here. I
+check the managed stack again. I
+pick up a object’s address. I check it against uh uh if this
+address belongs to the JIT. Yes
+again I dumped the meta descriptor information here. I
+pickup the class reference at
+top. I dumped the EEClass structure information. I found
+the, i found that this is
+specific class has 6 methods, 8 instance fields and 5 static
+fields. I can check one of these
+fields for example in this case, I validate fields by using
+dumpvc. I found a hashtable
+class composed by several, uh several fields here at right. I
+dumped the method table
+information, I dumped the method table information again but uh,
+the payout didn’t output. As you
+see, several uh methods some of them PreJIT and precompiled. I
+dumped information about uh -an
+specific model. I found the assembly reference, I dumped the
+assembly uh information. I found
+the parent domain information. I dumped the domian information at
+bottom. It’s pretty easy to do
+that, of course here. Here is a bit more complicated. Uh,
+finally I start again, I -I
+found the metadata structure and uh the structure here. I found
+some interesting uh classes, uh
+possible malicious classes, possible malicious classes. I -I
+take one testprint dot client. I
+dumped some information from this class. As you can see,
+there are several methods there.
+I pick up one. I dumped the class, it’s -it and it’s very
+interesting because there I -I
+found some uh some fields in English, Portugese and German
+language. I - I took the German
+one to check the information. As you see uh, this part uh was not
+executed by JIT because at
+bottom it’s easy to know. So I try to put a break point to a
+future execution. I dump it
+again all -all of the stack objects. I saw uh uh a function
+using uh an array, I dumped this
+array. This array is composed by one element that in this case is
+a structure, as you see at
+bottom. I dumped, okay that’s -that’s the seems light. I check
+the heap information. I check
+any kind of reference by should this object by using Gcroot.
+References from uh, references
+from the stack uh from the handle tables. I checked the
+finalized queue to find
+something interesting. I check the pinned handles because some
+malwares uh cause strong heap
+frag -fragmentation. I track again, I keep again uh some pro
+same problems with locks and
+that locks, locks, uh the deadlocks. I tried to find a
+string inside the heap, the
+managed heap. Uh at bottom I bump the -the malware from
+memory. And finally, finally, I
+check the current event lock. I dumped some strings from there,
+I found some nice strings at
+bottom. Uh I dumped all of the heap, I found -I found uh some,
+I -I found some uh classes. I
+took one keyboard hook and so nice. I now map the front JIT
+class that are several methods.
+I took the last one. Try to assemble it in intermediate, -in
+intermediate language. Try to
+dump all the strings from the memory related to this uh
+method, and it’s nice, I found.
+Several URL’s related to banks, so this is a kind of trojan
+banker. Uh, I -I’m leaving some
+breakpoints for, for you here. These uh are very nice break
+points to test, to gather some
+additional information. And at last, the -the URL uh in a virus
+total by using malwareview I can
+see that it’s a malicious site and I test the domain and I
+found several related things,
+several malicious things uh associated to this sub-domain.
+It was a very long presentation,
+you know about that. If you want, I can uh I can explain uh
+details for you. Uh, thank
+-thank you so much to the Defcon staff as usual for you who, who
+reserved some time and have a
+nice day, thank you. [applause] >>Wonderful job

@@ -1,0 +1,785 @@
+>>So umm, without further adieu
+uh we have uh Stephan Huber and
+uh Philipp Ris Ros uh Roskosch [speaker laughs] [off mic
+comment] yeah yeah and umm
+please give him a warm welcome [audience applause] >>Okay, so
+hello to our talk about umm VoIP
+configuration interface security. My name is umm Stephan
+I am a security researcher at
+the Fraunhofer Institute of secure information technology
+and I am working umm there as a
+researcher for study dynamic code analysis and umm and during
+my spare time I am working on
+IOT stuff and with this talk we want to share our new knowledge
+or experiences. I am also one of
+the founders of a hacking team called teamSIK and it's a small
+hacking group uh from
+Fraunhofer. So, Philipp. >>Thank you Stephan, hello my name is
+Philipp. I am also working at
+the Fraunhofer SIT in the secure software engineering department
+and my main foc, my main, my
+reach, my focus research is static code analysis and IOT
+vulnerability de- detection and
+I'm also a member of teamSIK. First of all some
+acknowledgements to Alexander
+Trout and Michal Troeger and Andreas Wittmann who supported
+us within this project. Umm,
+short announcement we we brought some beer as we are from Germany
+and it's not the first time for
+us. And we always brought beer if you have any questions or
+want to talk to us, you are
+welcome to join us after the talk. So in recent years we have
+several projects which we also
+presented here at Defcon yo you might check it out on our web
+page and after the last year,
+years Defcon we, we wondered how do we get here this again and we
+were thinking about a topic or
+a, a research subject with a wide distribution a complex
+software which is a read readily
+accessible because you find bugs and nobody can exploit it,
+nobody cares about it. And we
+came up with voice over IP phones, so the distribution I
+mean it's in every office on
+every desk in every business so the distribution is covered. On
+all of these phones runs a web
+server for management and configuration purposes, which is
+complex enough to build in bugs,
+and, so this point is also covered, and the last point is
+the accessibility. I think in,
+in your business the network is configured well and the works
+phones are in a separate network
+and not accessible by any, any other of the participants of the
+network and of course it's not
+accessible over the internet. But if, you are familiar with,
+with how some companies handle
+their, their network you you might know this state, where
+the, everything is put into 1
+network and the guests, the, the regular users and sometimes also
+the people from the internet can
+access all of the devices. So the 3rd point is also covered,
+these phones are accessible
+from, from a lot of people and also from a lot of attackers. So
+this, talk, uh is structured as
+follows, I'm going to give a short background about these
+phones, then give a IOT hacking
+1 on 1 to, to show you how we, find our bugs and then I will
+present all the, all, some er
+findings and then I will conclude the talk. Starting with
+a background. Each of those
+phones runs a or has a ARMS or MIPS CPU inside and on top of it
+runs a Linux. There you have
+some of in it the basic process on watch dog the sub daemons
+for, for actual voice
+communication, and then finally the web server, which is used to
+configure all of this. And this
+web server is not today over target. The methodology. We went
+figuring out these bugs, we we
+first set up the web phone as regular user or admin would do
+so, the web server running
+afterwards we attach a HTTP Proxy and just clicking around
+and see if we find some bugs in
+the, by just, by uh just observing the traffic. If you
+don't find any more there, we
+just extract the firmware, to err, to form some static
+analysis, for, for instance some
+secrets or, or some, some scripts which we can easily
+exploit. In the end for, for
+developing real exploits and emulation comes in handy and
+other dynamic analysis tools,
+which, which are good for finding the real, the real
+interesting vulnerabilities.
+There's 1 exception when, when you luckily you find a, a way of
+injectecting dynamic analysis
+tools directly on the phone you, so you save the step of
+emulation. Here are, here's an
+overview about the tools we'ved used, you can check it out later
+in the, when, when the slides
+are available online. Umm I won't go through them detail
+here. So the first step what you
+want to do after you, you did the, the web pen testing you
+want to grab the firmware and
+this firmware access is not always this easy. Umm, first of
+all it's out of scope for us to
+desolder chips and and use complex and expensive hardware
+setups because we are software
+people. We, if we need to do this we, we skip, to another
+phone. So what did we do. First
+we check the website from the vendor or manufacturer, to see
+whether we can download the
+complete firmware image from their, so when you lucky you
+done there, sometimes you only
+get diff or some patches to the page image already running on
+the phone or it's encrypted and
+you cannot do something with the update package from the website.
+Then another way is to, to
+trigger the update from the phone, if this function is
+available and if you have kept
+the traffic you might be, might be happy or luckily and you can,
+can get the, the firmware from
+there. But what we did mos-most of the times was getting the
+firmware directly from the
+device because it's located there,and, so you can, can grab
+it from there. We used some,
+some cheap hardware adapters like the JTAGulator or the bus
+pirate to connect directly to
+the the chips. And this for instance can be done as , as I
+show you hear, if you find a
+chip on the device you may, check the data sheet of this
+chip and see which parts are
+opens up are provided and if you find for instance the SPI
+interface you can connect the
+bus pirate to it, which looks like this on the Akuvox and then
+you can directly read from the
+chip over the interface by using several tools. Here's an example
+of the flashrom tool, which we
+used to dump the firmware, after the dumping the firmware, you
+can, can analyze as you wish.
+For instance as with binwalk you can extract all the data. As you
+see from the button this, it's
+not the most stable connection as every output produces,err,
+every dump produces a different
+output, but in the end it did the job pretty well for us.
+Another way is the UART
+interface, if you find the UART connection on the, on the phone,
+you may connect the JTAGulator
+as you can see here in the picture. And then you can see
+what happens. Sometimes you get
+connec er get access to the bootloader which has a minimum
+command set available and if you
+get lucky you can dump the flash memory from there with the dump
+command. This command is not
+always available, but when when you lucky, you get your firmware
+from there. But if you more
+lucky, you get directly into the root shell and have access to
+all the data on the chip with
+this shell. The 3rd way is a vulnerability inside the, the
+web interface. For instance if
+you find a command injection you may start, tell a daemon to
+find, which allows to a
+connection to the, to the phone over uh over telnet and as it's
+not intended to run sometimes
+there is no authentication and you get a root, root shell
+directly. And then you can dump
+the, the data. As the software inside the work phones are
+limited and not made for uh
+dumping all the stuff. You need sometimes uh some tricks to get
+data on the phone for instance
+additional tools or you need some tricks to get data off the
+phone after you, you've found
+whats, whats, useful what you want to investigate further.
+Here's and overview about some
+commands we used, you can check it out, in the slides later, we
+won't go into detail here. The
+last step of the hacking 101 is the emulation. Once you got the
+firmware you, you want to run it
+in a emulator to find the real interesting vulnerabilities and
+for doing this, there are
+multiple ways. We focus on system mode emulation, which
+looks like this, we getting a, a
+QEMU emulator with a ARM or MIPS architecture and putting the
+raspbian on top of it. Inside
+the raspbian we put a CHroot environment with all the uh data
+from the firmware we need to, we
+need to run up the web server. And afterwards we attach our
+dynamic analysis tool, for
+instance a gdb server or gdb directly or S trace umm in order
+to analyze the web server, umm
+almost all the time you need to patch the binderies you execute
+as, they looking for some
+specific umm hardware interfaces which are only available on the,
+on the phone, but not on the
+emulator. You can do this in multiple ways like hooking or,
+or patching with gdb you need to
+a little bit, umm, err, umm, ya, uh, there are multiple way of
+doing it. Umm, now the fun part
+I will go through some findings, and starting with denial of
+service. Eh if you mention these
+phones are located in critical infrastructures or hospitals and
+a denial of service, ca, can
+cause, umm pretty heavy damage or can, can cost lives so denial
+of service is a, a, uh is an
+attack you want to avoid. So the first thing we, we've found is
+by, by nmap scanning the meter
+phone you, you could cause a denial of service for around
+half an hour. So the, the
+hardware is so, cheap and so limited that the nmaps can for a
+few seconds can is enough to
+cause a denial of service. So you maybe want to spend a little
+more money on your, your
+hardware inside your phone. Then the more interesting is the, is
+this request at the Cisco phone
+can anybody guess what's the problem here? Right, it's the
+double code in the debt request
+which leads to assertion fail and causes the phone to reboot,
+this, this denies the service
+for around 5 minutes, but then you can resend the, the request
+again and the phone is down
+forever. Whether this is good or bad handling everybody can
+decide on its own, s, uh I you
+avoid harder damage like remote excursions but ya its a denial
+of service attack. Afterwards we
+looked at known vulnerabilities, like a CVE from 2017 which
+caused out of bound reads in the
+open in the SSLl library which is used for the HBS connection
+for the web interface and we
+found 4 phones which we were vulnerable to this, and and in
+some cases the phone reboots and
+in other cases just the web server crashes, but in any case
+you should update your, your
+libraries or your third party libraries to save you trouble in
+this, in this area. So another
+nice category is the bad crypto stuff it's always present I
+think in every talk of us.
+Starting with the Akuvox. Awae with this phone yu you can, can
+export all your, your
+configuration settings including the sib credentials and the
+credentials for the, for the
+umm, web interface. And they claim its encrypted as you can
+see here it’s not plain text,
+but is it really encrypted? First thing we did is like
+checking whether if its base 64
+encoded which it isn't. So maybe it's really encrypted. So we
+investigated further and
+extracted the Firmware and found the implementation for, for the
+decryption of these, these
+credentials and we were, we found a phone aes decrypt
+method, and we were thinking of
+all the ecrypt lectures and were able or we were curious about
+auditing the Aes encryption from
+them. But it turns out it’s a safe int encrypto it's a simpler
+substitution and it’s no AES at
+all. And so maybe we can break this, this crypto, but it turns
+out you don't need to break the
+crypto, you get the key for free. Because it is provided in
+the firmware image, and so it’s
+not a secret. So coming to the classic web attacks. The classic
+XSS, I mean by adding my
+favorite contact name, into the audio codes. I get this, just
+for completeness I mean we found
+it on several phones. Umm,ya input generalization is a thing.
+Keep doing it. Far more
+interesting is the Gigaset Maxwell Basic, where, we've
+found 2 interesting
+vulnerabilities, first of all information leakage, by looking
+at the, the traffic. When, when
+asking this end point, it, it returns to different messages
+and what does it actually means.
+The attacker can ask the phone whether the admin is currently
+logged in or not. I mean that's
+not nice, but it's not that bad right? Umm, I mean, you just
+know that the admin is logged in
+but it's not, not state of the art. We digged a little bit
+deeper and found the imple
+implementation for, for this, inside the [inaudible 15:15]
+umm, I will explain it in detail
+here. Normally the admin logs in a session token generated
+storaged for the, in the
+database. To check the further requests from the admin, whether
+he knows the session token. Even
+if, even if the attacker asks the phone something, he doesn't
+know the session token, so he
+sends an invalid token and what the phones does, right here is,
+is checks whether the currently
+logged in user is able to use an admin and w-with the token, uh
+just provide us, is equal to the
+token storaged in the database. And then it tells you that the
+admin is logged in. Which is
+somehow weird because why would you tell somebody with an
+invalid token that the admin is
+logged in. So we digged a little bit deeper, we extracted the
+firmware as you might have
+guessed already. It's a Ph php implementation, so you can read
+through the implementation
+pretty well. And we find, found how the session or the
+authorization process is
+handled. For every request you provide a, a session token and
+then it it checks whether a user
+E is behind this session token and if the session token is
+credited a 0 you are allowed to
+do whatever you want to do. This is not nice but it’s somehow ok.
+So we digged a little bit, more
+deeper and found the following the Post parameters functions is
+umm used for, for setting, all
+the, uh several settings, and one of the settings are the
+admin password. So better,
+secure this method. It, it starts as the last method, umm,
+it checks with the A user ID is
+behind the session token you sent. And it provides 0 if the
+session token is invalid. And
+then it sets the, the para or the settings you want to give,
+so changing the password is
+possible for nearly everybody. Except the, the admin needs to
+be logged in as these post
+parameters function is all only, only executed when a user is
+logged in. And this I will show
+you, in a demo. So on the left top you will see the victim, and
+at the bottom you will see the,
+the script,from the attacker just checks whether the admin is
+logged in, the first
+vulnerability and then, if it's logged in, it sends the, the rig
+request for changing the, the
+password. Now the script is running and it sees that admin
+is not logged in. Now admin logs
+in with this a 3 digit password. And the script realises that
+somebody logged in. And he
+directly changes the password. On top you will see, that the
+admin is the real admin, by, you
+will see it right now, [speaker laughs] interesting is also,
+when changing the password, you
+don't need to know the old password, and now the admin logs
+out and the newly set password
+is 1 2 3 4 5 6 and the attacker can, can log in and you see
+that, and the change enter
+password enter phase is the admin.[audience applause] So
+that was it from my side.
+Stephan will continue with the rest of the findings. >>Ok,
+thank you Philip. So at first a
+short introduction about path reversal who is not aware about
+this umm attack from this,umm
+imagine you have the web server, web server can provide with web
+application, can provide some
+files or can write files by uploading and for this file
+handling can request this file
+name is uh send it to the applications, now imagine you as
+an attacker uh change the file
+name and for instance umm, preplan some relative path
+information if the web
+application does not verify this information escaping or
+sanitizing it will be able for
+an attacker to escape from the default umm,umm web server
+folder and can get access to, to
+different folder uhm on the system. Such type of
+vulnerability we found on the
+Yealink device so can see here when we provide a few uhm
+relative path information and
+the ETC shadow file to the file parameter. The device responds
+with the hash of the, umm the
+route user. This is possible because of 2 reasons. The first
+1 umm, the input value is not
+verified and the second reason is that the web server is
+running as, as root, as we saw
+most, we’ll see the most web services are running on root on
+our phones. But this is not
+enough, we currently we can just read 41 to reach is now somehow
+to get uhmm remote code
+execution, so we have to, to upload files. Uhmm 1 feature on
+the device is for uploading
+files is the ringtone upload so our idea was now to, to use or
+override some umm some script
+which is umm, to, oh you don’t see the full text, sorry, don’t
+know why, uhmm eff, the idea was
+now to, to override some, some scripting file which will start
+the reboot, and the scripting
+file contents then our code we want to execute. But the problem
+was, uhmm, the the upload
+feature umm the upload, the overriding of the script file
+failed. Because the uh the
+application verifies the file content says ok this is not a
+script file, you have to upload
+some audio file, and that’s why overriding of the start script
+failed. But umm, when we
+analyzed the software we saw that the, uhmm applications just
+verifies a few byte of the file
+header. What we did is, that we take a few bytes of the file
+header, prepended to our script
+file and then we were able to upload our file. Uhmm then the
+file is executed or the script
+is executed of course the first 3 lines are umm recognized as a
+error but eh operating systems
+do still continue and our script umm, will be executed. And so
+with this way, we get umm files
+access and code execute arbitrary codes again as root on
+the device. Then we were
+scanning or looking for some kind of back doors on the
+phones. We scanned the Akuvox
+box device and saw ok there is a telnet port open so umm the
+first question was that was it
+running by default, can we turn if off, or , or why is it
+running, umm, we don’t know why
+it’s running but you can not turn it off, there’s no
+configuration on the web
+interface, nothing, so this thing is running by default. The
+other thing now is to get
+somehow access, we need, uhmm the password. Umm, the firmware
+image for this device is not
+public available we we looked in different forums or on the, the
+website, it’s Linox image but it
+is not, umm public available. But as Philip uh already
+explained we get some image dump
+by SPA, and then we extracted the file system, here you can
+see how the password hashes and
+when you a bit aware of password hashes, you will realize this is
+a DS cru protection and the
+problem with DS cru is that the maximum password length is 8. I
+have an old GPU on my uhmm,
+office computer round 4 or 5 years, and took me 30 days to
+crack it. So you can imagine if
+you have a newer or modern device you can crack this in a
+few days. And then you know the
+root password or the admin password, you can log in to this
+device, by design. Command
+injections, another type of vulnerability, we found that
+this type of vulnerability on 7
+or 8 different phones. Uhmm, at first a short explanation on how
+it’s working. Uhmm few, few of
+the or the most phones providing the web interface some, some
+diagnostic tools interface for
+instance, umm ping or enter an IP address and then they phone
+the ping, the IP address in the
+network, this should verify that the, the device is, is connected
+and working. So you enter the IP
+address, the IP address is forwarded to the web application
+and the web application con
+constructs a command and this command is then forwarded to
+LIPC system function and
+function is executing our command. So here you see our
+ping, so what will now happen
+for instance if you append additional comments with a semi-
+colon and there is no
+sanitization, you can see, uhmm, the input is forwarded again to
+our application. Combined to 1
+comment and executed, so here you will see at first we will do
+zero pings because the minus c
+zero says zero pings then with the semi colon the command is
+finished the we execute ALS and
+the rest is commented out uhmm is not executed anymore. So this
+is the study of command
+injection we found a lot of this type of vulnerability on the
+devices, we will just explain 1
+here of our findings. So we had audio coded devices and there,
+umm we can execute the telnet
+daemon again via command injection and then try to get
+some access via telnet. The
+problem here is you can see you need a basic authentication so
+when you don’t know as the
+attack of credentials can be a problem, later we will umm show
+a few information from our study
+from the most devices you can try decode from the admin and it
+works. But this is not umm, the
+intention of the attack. We also tried somehow to, to bypass the
+authorization but we uhmm we
+failed. So we s-searched another way to get somehow access to the
+device. And what we saw was
+umm,there is also a change password, a change password
+feature on the phone, here you
+see the, the request and what you see, is umm, ya you see
+nothing. The first thing here is
+there is no authorization header here, so this means everybody
+can trigger this request to
+change the password, but then you can argue ok, the attacker
+still has to know the old
+password. But same story you see we have a parameter and uh
+admin, admin this is our user
+then we have a new password then we have to verify the new
+password, this means eh you
+don’t have to know the old password. So now as an attacker
+you can change the password of
+every user and we also have a command injection where will
+have to know the password so
+when we combine this, we can say everybody can change a password
+and you can trigger remote code.
+We will show this in a short demo. So here you will now see
+now the original admin, hes
+logging in. to verify his, the original admin password you see
+here it’s from the umm,
+authorization request, it’s base 64 encoded you see the original
+admin password is superpass, and
+now we log out. As you can see our attacker script. The
+attacker script will eff at
+first change the password superpass to pass and then the
+second step, it will execute our
+command injection with the new set password. It will show that
+the new password pass looks base
+64 encoded in this way and you see this is matching our
+request.[audience claps] ya
+[speaker laughs] It’s not finished yet, give me a second,
+so now we try to trigger our
+exploit,umm.eh,umm, on the device by umm at first we have
+to veri to verify you see there
+is no telnet running so there’s no telnet service, so then we
+execute the exploit. So password
+changing, the ping, the login admin password is pass, and
+again we get a root shell
+because the service is running again as root.[audience
+applause] Ok, thank you.
+[audience applause] Sometimes sh*t happens and yeah sh*t
+happens brings us to stack based
+buffer overflows, we found on different devices, buff
+overflows, umm in our abstract,
+we announced some arm based, but we also have some MIPS devices
+and MIPS is a, a bit more rare,
+so we decided to explain, the MIPS attack. Here you see one of
+the buff overflows, I have to
+mention this is not err, prehalt overflow you have to know, you
+have to be at least a user, but
+then you can use the buff overflow to umm, escalate your
+privileges to get root. Uhmm
+either way this bug or s vulnerability is not fixed. Uhmm
+here you see again to change
+again the password, there is a set security password command
+and the internal code you see on
+1 side we have a target buffer, with 32 bytes, and our input is
+forwarded as a parameter and
+used in a copy to comment string function. You can imagine this
+sounds like already like some
+string copying and when we look into the implementation of the
+comment string function you see
+this is a simple wire loop, just writing each criteria into our
+buffer, and the loop only stops
+a bracket or on a , a null value. So it’s, it’s a buff
+overflow you find it in each
+,uhmm, don’t know college textbook. And umm here you see
+an expert of the gdb or
+debugging you see, we can control 2 registers, the most
+important is the return address.
+So we can control their program counter jump to our code, and I
+will explain a bit more now how
+we get our final exploit. So 1 challenge when you try to
+exploit such a devices, how do
+you bypass mitigations like NX, ASLR and so on, it was very
+easy, there is no mittication.
+Then we were a bit lazy and at first decided ok, we don’t want
+to write a MIPS shellcode by
+hand, because I’m not a MIPS sky and it would be too hard, so we
+audioed generate shellcode. The
+next step is, we have to find the uhh, the, the stack address
+on,on ARIM exploration you
+simply make the, or use the branch to stack point the gadget
+or on E 86 you make a jump to
+ESP, best of my knowledge there is, is not such a, a gadget, in,
+in err, MIPS, so, so, we have to
+build it simulate by other gadgets, and we found 2 useful
+gadgets, the first 1 simpular
+user app operation to write the stack pointer, to to address an
+addui, then we jump to our
+second gadget this moves the addiu to T9 and then we can jump
+to T9 where our address of our
+stack pointer plus 32 byte of set, so, so with this two
+gadgets we simply find our stack
+where our shell code will be. We also have some how to handle the
+bad characters. This means, umm,
+when our shell code contains this kind of cari characters
+this will not be written
+completely to the stack. So we have to somehow encode or
+oviscate them. So for this we
+use simply umm EX encryption or encoding umm we took this idea
+from a good paper, it’s from Yun
+Young from vintage point, he wrote write a very good write
+paper about MIPS exploration so
+if you are working in this field it’s worth to read it. And with
+all this, we can now decide our
+final exploit, you see the payload structure we have a few
+bodies pending, our 2 gadgets th
+the decoder and the shellcode. But there is another challenge,
+especially on MIPS and sometimes
+on ARM. So here you can see this would be our stack lay out, you
+see the decoder and our
+instructions, here you see to, to add operations, which would
+be just an example for our
+shellcode. So now our decoder will modify the, the code and
+memory, but on the most MIPS CPU
+you have different types of, of cache, the 1 side you have the
+data cache and you have the
+instruction cache, and when you modify the umm the code in the
+memory the data cache is
+modified but the instruction cache not and when you try to
+execute the code, the
+instruction cache executed but not the data cache so our
+modification is not triggered
+and our shell code, failed. So we get back and try to, to fix
+the problem, there are 2
+recommendations, on the 1 side there is a trigger cache
+function, but we did not find
+any gadgets in on our device. Another option is to umm use,
+the sleep function to, to
+trigger cache flush.we also tried this, but after a few days
+we still failed. I don’t, don’t
+know the reason, but then we decided ok, back umm, to roots
+and we decided simply to write
+our shellcode by hand and try to, umm avoid null bytes or
+other bad characters. I want to
+give a few hints or umm what you can do to avoid this, here for
+instance you see uh uh
+instruction uh load immediate instruction to write a constant
+value to your register and some
+MIPS instruction have by design a null byte included, so you can
+simply split it up use some
+negative value, inverting and so on. and play around, and then
+you will also get your final
+result and this null byte free. For setting zero values classic
+tricks some eek, some eeksaw
+function, eeksaw registers and target register you get your
+null and this instruction is
+also null byte free. It’s sometimes, eeh especially when
+you need strings or other
+characters it can get a bit complicated then we also use the
+our eeks arering this means we
+took our string value umm eekoaring already with a exorate
+constant value put this as our,
+our baseline and then we can exorate again during run time
+and then during the run time we
+have again our string and so we can bypass the decoding thing.
+And Err, umm the shadow cache
+problem. After that we put everything in a assembler in
+this case it was a good online
+assembler we got our big Endan in this assembly and can out
+this in our exploit script. Here
+we will show you a short demo so in the lower window you will see
+our reversal listening. The
+upper window will execute our attack script you see ok, our
+target device online. Here you
+see the script it is written in cache. Her, here you can see in
+the upper side our padding, our
+2 gadgets and then umm our handcrafted reversal shell. We
+will put this code also online.
+So I think in the video it’s hard to see, but also have
+written some advisairy
+containing the code. You see again our exploit is executed,
+we’re on the device, you see in
+the lower window. We have access to the password and so on. We
+are again root because we
+already know all web servers are running as root. ok, [audience
+applause] here you see a small
+overview of all the devices we analyzed, uhmm we had a lot of
+findings the most critical
+findings we most announced are CBCs for the minor findings err,
+we did not, so so this is just
+for completeness, below you will find a link where all we
+uploaded all advisory we sent to
+the manufacturer they also contain our exploits, scripts
+and everything, so if your
+interested you can read it. Here is again an overview of the
+vulnerability and the devices as
+you can see we found a lot of command injections path
+reversals,a few buff overflows
+sometimes also a few classic umm web base attacks. When you looks
+at short session ID we had 1 web
+server which was generating a session ID with a length of 3
+characters so we can say this
+session is very short. We were also curious uhmm how, how much
+devices or phones are out there,
+but you will not get any, any numbers from the manufacturer.
+And, as as Philip already
+explained, normally this devices should not be reachable from the
+outside It’s more a problem
+from,from an attacker from the inside but we still made a shor
+shorter scam and here you will
+see the top 4 erm, devices and you see nearly over the 10000
+devices were still reachable or
+the web interface reachable, also made a few sample tests if
+they used default credentials
+and we found also the devices with the default credentials so
+aah, you should take care about
+this kind of problem, because this can be an entry point to
+your company network when
+somebody abusers or or,attacks the published or leaked device.
+At the end you, should give a
+few recommendations, I think the most is aware of this, you,
+don’t use default credentials,
+keep the firmware update, you don’t need a telnet server or a
+or a, VoIP phone even if you
+have a web server, mmh , try to isolate it umm there are a few
+phones where you can disable it,
+when you don’t need it, disable it. And also as we already
+mentioned it network protection.
+Try to isolate your, your web network. Also for developers,
+there are features called ASLR
+and NX activate the compile up press, uhmm, no hard coded keys
+and also when you implement
+updates what we saw was there's just a manual update mechanism,
+so implement some uh outdoor
+updated. It will be helpful. So this is now the end of the
+technical part, so at the end
+more more summary eerm and I think the most are already
+asking uh or wonder why we have
+such a lot back to the future images in it, the last part of
+the documentation we will make a
+short umm, time travel to a few umm historical light year
+moments you will see why here.
+So when we go back to 1992 or 91 everybody knew that Linux was uh
+released and from the concept we
+have a multi user system, we have a process isolation so it
+was a good idea and good
+baseline. So 96 then someone realized that ok emm there are
+some bad see functions we have a
+problem, we must do something. So different mitegations were
+introduced and NX protections
+ASLR and now we also have control flow integrity relog and
+so on. So you can see from this
+time we have a good umm desktop PC. I of course think it’s not
+bulletproof you can still
+exploit it, but it, it was harder to attack. Back Then, now
+we will go the year 2007, we get
+new umm generation of devices everybody knows there are smart
+phones now and what we see now
+is devices that were released again everything was running in
+root with one user. Ok, we
+realized this is not such a good idea what have we done. 2010 we
+introduced again mitigation
+techniques. So we missed our chance to to produce uh new
+designs or protection
+magnabilities. Now we arrived today or the last 2 or 3 years,
+we now in the time of IOTS and
+the focus. And when you listen or saw our vulnerabilities or
+read in the news,where are we
+the state of 1992. So in our opinion, something went wrong
+and so you have to think when
+you use your web phone on the desk in some cases you using
+technology which is in the
+security state from 28 years before now. Of cause we made
+responsible disclosure, informed
+all vendors about our findings, we gave them 90 days or more to
+fix the bug. But sometimes also
+responsible disclosure can be hard term sure nee. Here you see
+a few reactions, I have to
+mention of cause most corporated and also tried to fix the
+problem, but the first reaction
+sometimes were why are you investigating our poor phones?
+What should we say? Yea because
+we can. Eer sometimes they just argue,ya, eer, the device is not
+supported anymore, this is not
+our problem. Eer I would say yes this is your problem because
+your customers still, still use
+it. And sometimes you just have to, to argue for instance umm
+explain that you will publish
+all your findings on Defcon and 1000 of people will listen and
+suddenly everything goes a
+little faster. Umm I already mentioned that the buff overflow
+were not fixed. We had 2 vendors
+which did not react to our announcement, 1 was umm Htech
+and the other was aukobox uh we
+tried to contact them via, email via, support, via, twitter, via
+facebook, via Linkin, umm the
+only thing we did not was going to China [speaker giggles] mmm
+but if someone is here from the
+company they can, can contact us we will give him more details.
+Umm at the end we had different,
+we had 33 different type of phones, all in all we found 40
+vulnerabilities, the most
+critical we reduced to CVES so you can, can look it up. We
+realized during the proto uh
+during the project there is a lot of old technology out there,
+but on the other side umm
+especially when you look at newer models and the premium
+flagship piper or whatever
+superphones, you see there is a change, there the newer phones
+are running for instance with
+android, which can be good, because you have process
+antalation sandbox inulooks umm
+by design, which makes it more secure, but now on the other
+side you have now the feature to
+install Apps so when you, install on your,your desk phone
+some Apps you can err, how can I
+say, you can bring in new attack or vulnerabilities umm in the
+umm start up App. And the
+question is now do we really need a web browser or umm
+WhatsApp on your wipe phone. So
+I think this is end of our journey so umm as Phillpe
+already announced if you have
+some questions or want to talk to us, come to the front grab
+some beer, if you have no
+question, just thirsty, also grab a beer, we we brought them
+from from uh Germany, it’s good
+Munnik beer. So I can only say thank you for your attention,
+here you see our contact
+details. [audience applause]

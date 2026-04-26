@@ -1,0 +1,297 @@
+>> RICKY HILL:
+So my name is Ricky Hill. I'm a wireless and SCADA security consultant. I work in the D.C.
+metro area, specifically my office is out of Reston, Virginia, Tenacity. I have done
+previous DEF CON talks. On a similar vain, I love flying things with other wireless equipment
+and other technical stuff on them. I have done (inaudible) eight years ago where we
+launched a wireless access point and collected data for about 30 square miles. It was good,
+but you can't get a lot because you can't launch rockets in urban areas.
+The other talk I did here ‑‑ that I have done previously was Web ballooning. They banned
+us. They didn't give us permission to do that. We had a balloon with a Kismet drone payload
+that he we were going to fly over DEF CON that year. That was five years ago. Unfortunately
+the city banned us and we couldn't do that. So we went to church ten miles out from the
+airport to make it legal. >> Hey, Rick. How's it going?
+>> RICKY HILL: What's up? >> So we have this tradition at DEF CON for
+first‑time speakers. You all know the drill. >> RICKY HILL: No, no, no.
+>> However, we have it on good authority that this gentleman is a liar and he, in fact,
+just wants a shot. And, by the way, pull the drone one.
+>> RICKY HILL: I changed my mind, thank you, thank you very much, Ron.
+>> Raise your hand if this is your first DEF CON, humans only. You, the blond. You raised
+your hand, didn't you? I can barely see under these lights. I hope your hair is blond. Come
+on up. (applause). First‑time attendee, all right.
+>> RICKY HILL: Good stuff. >> Did you ‑‑ I'm telling you ‑‑
+>> Thank you. >> The drone gets one. I told you to pour
+one for the drone. >> RICKY HILL: It's already been dunked in
+beer so it is not an issue. It is fairly waterproof. >> Everybody, this is Crystal. Crystal, this
+is everybody. (applause).
+Let's hear it for the drones, for the drone and Crystal's first time at DEF CON.
+(applause). As you were.
+>> Give it to Ricky. >> Have another shot.
+>> It's yours. (applause).
+>> RICKY HILL: Don't blame the next (inaudible) on me.
+Where was I? All right. So what is ‑‑ >> (speaker off microphone.)
+>> RICKY HILL: Give me a bit. Yeah, he's got a good point. I don't want to cut anybody
+up, so we might fire it up a little bit later. So what is this talk about? It's about network
+surveillance. It is not about ‑‑ I don't know if you guys saw it about a month ago
+but cleaners in Philadelphia, as a gag, did this. And they are delivering their dry cleaning.
+Guess which drone? That's the Phantom drone right there. This thing, believe it or not,
+will lift probably about two pounds, 400 grams, whatever that works out to.
+I hear beer works. So I haven't tried a six‑pack. I understand some guys have.
+So here on the screen is what I plan to cover today. First, we will look at the advantages
+of doing wireless surveillance from the air. You've got line of sight to everything. It's
+a real easy way to get all the access points in a large area from a reconnaissance perspective.
+Next, I will explain how this year emerging technologies have made this a possibility.
+Two years ago the payload you see loaded on this drone would not have been possible because
+of the power required and the size of the microelectronics on it. In particular, we
+talk about the electronics and the Hak5 software improvements in that and it has something
+on it called a cotton candy computer which is, basically, an USB stick which runs full
+of Ubuntu or Android. I will cover how I built and flew the Phantom
+drone. I think you would like the video. You will witness some of the successes as well
+as some of our oops moments encountered flying the drone. We flew a lot of missions in June and
+July this year. All right. So the talk is really about the
+goodness of aerial wireless surveillance. My previous attempts have been problematic.
+As I mentioned, the bracket had problems because the whole flight was, like, four minutes,
+right? Even from 10,000 feet you are not going to get a lot of information in that
+amount of time. The balloon suffered from similar things.
+When you launch a balloon over the Vegas skyline we managed to capture the Luxor from quite
+a distance out, seven to ten miles. It is not a real good platform. It tends to do this.
+The video from that venture looked a lot like Blair Witch. It was pretty sickening.
+Next we will talk about what others have done, what you see on the screen here. There was
+a contest ‑‑ how I got the idea for this was DARPA UAVForge. DARPA UAVForge was about
+a competition to design a small drone that would fit in a soldier's sack, basically fit
+on his back which is why the small drone. It was supposed to go out and land on roofs,
+houses, buildings, towers, whatever and conduct visual surveillance. It would have been very
+useful, for instance, in the Boston bombing if you could have had surveillance anywhere
+you wanted it, right? That was the military's purpose in this.
+The top picture is the UAVForge's team above the competition course. The other attempts
+at wireless surveillance some of you rather the Blackhat WASP, the wireless aerial spy
+plane. It cost about $6,000. The problem with all of these people that fly drones now want
+to fly them continuously in the air. When you are flying you are using a heck of a lot
+of energy. You don't have fuel tanks like a 747. You are burning up battery power like
+mad. The advantage of this one, of course, is it can hand and then shut off the motors.
+The UAVForge contest, as I mentioned, introduced a very novel and progressive idea and that
+is surveillance. If you can land on something, you can shut down and conserve your battery
+power and then conduct wireless, cellular, whatever other operations you want to because
+those electronics in the payload will use a lot less power, I expanded upon the concept
+to program network surveillance and exploitation. How many of you guys in here know what a Pineapple
+is? How many of you have used the Pineapple? Excellent, excellent. Keep in mind throughout
+this presentation it is a proof of concept of what can be done and what the military
+wanted. I'm not encouraging anybody to go out there and land in a coffee shop or terrorize
+your neighbors. What you learn in this talk is up to you.
+Teams competed from 153 countries. Guess what? Nobody won. Nobody met the criteria for perching
+on a roof and collecting photos and coming back. They did require some autonomous operation
+but not full autonomous operation. Anybody know what the difference between an
+UAV or UAS a drone is? Go ahead.
+>> Really? >> RICKY HILL: Yeah, well.
+>> Pilot on the loop. Pilot in the loop. >> RICKY HILL: Yeah, exactly. The keyword
+is autonomy. The Phantom is an autonomous drone in the fact that it will return to home
+base without any pilot intervention. Otherwise, it's just like an UAV. It will fly with pilot
+control. Full drones ‑‑ autonomous operation was one of the Achilles heels of UAVForge
+because things like trees got in the way, right, that weren't on Google Maps. Okay,
+well, guess what? It doesn't do trees well. So here's a review of UAVForge. As you can
+see, it is pretty self‑explanatory. A lot of crashes. Out of all these teams, out of
+a dozen teams in the final competition, the average time between takeoff and crash was
+three minutes. (laughter).
+It's just ludicrous and it was only two years ago. That's how much I want to impress, how
+much the technology has changed. That's not good for an aircraft that costs upwards of
+$10,000. I don't think even the Army wants to buy that.
+All right. So the Phantom just came out in January of this year. I found out about it
+because a friend of a friend I work with was doing some Grand Canyon white water rafting
+and she said her cousin or whatever ran this company that flies Phantoms and other drones
+over the Grand Canyon, films people going down.
+The Phantom also comes with a GoPro camera. Excellent pictures from the air. So that's
+how I got the idea and went out and I was addicted once I saw all these videos on YouTube.
+I'm like, this thing is really cool. Look what I can do with it. It flies really good.
+I can't tell you how many of the RC helicopters I have crashed. I suck as a pilot.
+I suck as a pilot. But you know what? GPS and all the guts inside that thing make me
+rock. They are great. It also has other safety features built in such as the T‑stick startup.
+What that means if you have ever flown RC before, if you accidentally turn on it with
+the throttle up, then you can like fly up inside indoors. One stick is easy to get out
+of the way. As you can see here, it will not do anything with one stick. It requires both
+hands to take off. Very nice feature. I also the return to home capability is the
+most valuable. If for any reason your flight gets into trouble, guess what? You can just
+turn off the transmitter, the drone says, okay, I lost communication or even if my battery
+goes low, I'm going to come back to where I took off from.
+The technological improvements I talked about earlier, the cotton candy computer was one.
+Let me show you that. I have got one right here. So the cotton candy is basically this
+USB stick. It debuted at the 2011 computer electronics show in Las Vegas. This thing
+runs full Ubuntu or Android operating system. It makes an excellent platform for hooking
+in, for instance, this wispy spectrum analyzer. It also does ZigBee connection. Move around
+RO, there are payloads on the drone in the last month.
+Let me put my drone back up. I can't emphasis how many of a joy this thing
+is to fly. It is just incredible when it is in GPS mode. Anybody fly helicopters? RC?
+Okay. We got a few people. How many crashes have you had?
+(laughter). Okay. That says it all right there. So this
+is a look at the two payloads. Sorry the pictures are fuzzy. Again, the main payload reviews
+for this thing is the Hak5 Pineapple which you can see underneath the copter and the
+other one is the cotton candy I just showed you.
+The Pineapple required quite a bit of modification and quite a bit of work to get going because
+we needed a custom power supply. For instance, on the mini system it required UUID mats instead
+of regular mats. It literally took me a month to get that payload configured and I finally
+got it configured with a T‑Mobile GSM modem because all the other ones, they just suck
+power. The CDMA, the typical USB stick modems just suck power.
+So my opinion cotton candy is the perfect computer to use for an aerial payload. The
+trick with it is because it takes power from its USB port, once you connect to the USB
+port and put it on the helicopter, you just killed your computer, right? But there is
+a work‑around for that. You supply it with a LiPo battery, an Apple Bluetooth keyboard,
+you can now detach your Bluetooth keyboard and mouse and you are good to go on the helicopter.
+Whatever you got running is now still running. In my case, it's (inaudible). It's wispy spectrum
+analyzer and the other payloads I talked about before. Basically, any USB device you can
+run, you can fly with this. You can fly with this cotton candy computer. Let me show you
+what the cotton candy looks like. It actually will also act as a virtual computer when you
+plug it into a laptop. So let's do that. I did pray to the demo gods.
+>> (speaker off microphone.) >> RICKY HILL: No, but I took two shots. Okay.
+Installing device driver software. Here we go.
+Okay. The goat will happen next time. Sorry. Come on.
+I will know next time. Do you have goats for sale?
+This is our first flight with the wispy spectrum analyzer. This is a neighborhood overlooking
+a lake in Virginia. It is a cool place to fly copters because there aren't many trees
+on lakefront property. It is easy to fly and buzz lakefront property. This is the collection
+off that. Approximately we flew out to 200 feet and got all this data. This particular subdivision
+only had about 20 houses and we did a 10‑minute overflight. There is a lot of stuff on channel
+9. Plenty of data there. Okay. So we found a lot of wireless sources.
+So now what? Well, the "now what" is ‑‑ well, wait a minute. Wait a minute. I want
+to make sure I'm not skipping something here. We found 9211 sources. Big deal, right? That's
+when I got the idea to do the wireless Pineapple. The Hak5 Pineapple provides numerous wireless
+survey and exploitation packages. You can even do Metasploit on the Pineapple. Pineapple
+is basically a router that acts as a man in the middle for unsecured wireless networks.
+If you connect Android phones, I have captured a number of Android and Apple phones that
+connect to it. I'm the man in the middle and running your connection so I can do anything
+I want. Again, this ‑‑ the payload objective
+for the flying Pineapple were the same as for DARPA, that is to land on a unique advantage
+point. That could be a cell tower, that could be a hotel balcony. It could be, you know,
+anything you could think of that's hard to get to, right? Conduct your operations and
+return the Phantom safely to starting point. So I'm lazy. I didn't want to construct the
+standard Vizio diagram so I stole Hak5's. Thank you, Darren and Robin. This is episode
+1112. How this works is there can be a wireless exploitation team on the Internet anywhere
+and through the GSM modem they can talk to the Pineapple and conduct operations on the
+Pineapple. That's how it works. There is a relay server that's out on the Internet that
+enables that. Here is a short list of the Pineapple's capabilities.
+As you see, URL, DNS spoofing, SSL strip. Aerial dumping runs great in flight because
+it doesn't transmit anything. The only other thing I would caution you, if you want to
+do this project, this is 2.4 gigahertz, okay? You are running that with receiver on board
+to Phantom and you are doing wireless ops with the payload, guess what? You're in the
+same band. You may not be looking so good. Theoretically it is supposed to work. I have
+seen numerous blogs on the Internet. You just crashed your $700 Phantom. So monitor mode
+only in flight is the way to go. And that works.
+That sucks, sorry. I'm going to skip here. I forgot to show you this video. This is pretty
+cool. Watch this. This is the return‑to‑home feature of the Phantom.
+(Video playing). >> RICKY HILL: Basically, what I did is take
+this thing out in the field. This is my last test that I did, by the way. I turned off
+the transmitter and you can see it landed near my gym bag like three feet from the same
+point it took off from. That's the GPS and the NAZAM controller on it.
+All right. So the next mission we did was we went out on my sea ray boat and we decided
+the next place to see how many people had wireless was on the beach. This was at Lake
+Hannah. No, we were not looking for bikinis. We were just looking for how many people were
+using their Androids and other wireless devices on the beach.
+Notice the pylons added to the drone. Worked quite well if you guys know kids' noodles.
+I know one will support me above the water so it worked really cool. We are flying out
+here about like one of those little advertising planes does at, you know, Virginia Beach.
+And we just buzzed the whole beach area which is probably about a football field long so
+you can see right here. So down at the other end, you know, we started to get people's
+attention. Thank goodness the lifeguards did not chase us off. Probably an altitude of
+about a hundred feet here. And we're collecting all while we're flying, right?
+I'm running low on time here so I will speed this up. Here's the landing. The battery went
+dead. Watch this. (laughter).
+It died. I actually had no control at that point. My friend, Mr. Nick Hopler did helicopter
+search and rescue. He jumped in, held the thing over his head and swam 50 feet back
+to the boat. Incredible. Actually 100 feet. Thank you, Nick.
+All right. I had bragged to one of my friends that I had not crashed the Phantom yet and
+we had been doing ops with it for about a month. And unfortunately there were some "oh,
+no" moments but I think you will find these interesting. We now have moved on to the phase
+where we have done aerial collection and we want to do the DARPA thing where we want to
+land and do collection from roofs and other interesting places.
+The first thought let's perform a test light. And the second thought is let's land on a
+balcony. We can land on the Marriott or whatever and just check out somebody's room and do
+the Pineapple wireless thing, right? Okay. We'll see how that looks. This is test flight
+number 1. Pan right. This was a stormy evening, fairly windy. I had only had two beers at
+that point, not two shots, but watch. >> Oh, no! Oh!
+>> RICKY HILL: Yeah, that's about 75 feet at least. So not so good. What you see here
+on stage is Phantom V2. (laughter). One more clip here. This is our balcony shot
+where we are trying to land on a balcony, just to see if can be done.
+(Buzzing). >> Oh, no!
+>> RICKY HILL: About an inch short on that. >> Damn, you are a good man. (laughter).
+>> RICKY HILL: Also Mr. Nick Hopler. (Video playing.)
+>> RICKY HILL: This is a look at the reconstruction of the Phantom. What you see in the center
+there, that red thing, is the NAZAM controller, very sophisticated. Uses GPS accelerometer
+and even uses a compass on the leg there in order to orient itself in space. I have seen
+advertised GPS that it's no better than, like, 6 to 9 feet or something. This thing actually
+does better than that. It does a space about this wide and it will hover in place with
+that controller. The Phantom has no moving parts other than the propellors on top there.
+What you see on the end are the electronic speed controllers. They're on each thing.
+The only damage this thing had was one of the ends right here, you can see the end when
+it did that full head‑on impact and bent it 20 degrees so the propellor was bent.
+The hard shell is about 60 bucks and about an eight‑hour rebuild.
+So mission number 3 is the attempt to do the DARPA mission. That's to do a rooftop landing.
+We did quite a few rooftop landings. We ran Airmon ng before and after we landed. We did
+some URL sniffs. I can tell you by virtue of wireless these are great vantage points.
+When you land on somebody's roof, you don't need a high‑gain antenna. You're there.
+(Video playing). >> RICKY HILL: So the thing is, this is with
+the zoom lens. This thing is pretty far away. The problem is if you as a pilot attempt to
+start to land on a roof, you lose ‑‑ the farther the object is from you, the more
+depth perception you lose, right? So there is an onboard camera. I can show you guys
+after. It is about the size of a postage stamp. First‑person view camera was I looking at
+to see what he was on the roof, if you wonder why I'm hanging up there, there is a corrugated
+thing on the platform in front with about this much dip on it that I'm wondering if
+I can ever get my helicopter off. That doesn't look so good. Let's back up a hair here.
+So decided to abort the rooftop landing and go for the actual platform there. There is
+the chopper going down. This is a clubhouse on the lake, by the way. There you can see
+their lawn chair, their grill. There were no people here thankfully at this point.
+Now we all held our breaths as way ‑‑ well, actually, we did a few ops before this.
+The video has been clipped together. But we held our breaths and did the takeoff and voila.
+(Music). (applause).
+>> RICKY HILL: Thanks. So we did encounter a couple of places. And what you have to worry
+about when flying drones or you are doing surveillance is, you know, if you're doing
+private property or whatever, the people might be pissed off that you are trying to collect
+their wireless or flying a drone outside their window, right? It's natural. I personally
+have shotguns for that purpose. Watch this. Oops. We're not going to stay
+here. Let's get the hell out of there. That thing will do 35 miles an hour, by the way.
+(Video playing). >> RICKY HILL: These are just a few of the
+results. I know they're hard to see. But SSL Strip, I actually hacked and got my own password
+with SSL Strip. Basically what it does it collects. As man in the middle, you don't
+have SSL anymore, right? Urlsnarf, the same way, I'm basically getting every Web site
+you're going to. That's results there. We did compare ourselves to UAVForge team
+scores. I know they're hard to see, but the scores go from 0 to 100. All the teams failed.
+Nobody even made the baseline ‑‑ I'm sorry. Let's go down one here. One team, Team
+Halo, made 47 points. The Phantom, if we score it by the score, it scored above 10
+out of 12 helicopters two years ago based on autonomous return‑to‑home, avoiding
+obstacles and other baselines. If you want to see more ‑‑ want to learn
+more about drones and UAVForge, go look at uavforge.net. It is a very interesting contest,
+and you can see a lot more crashes there. We proved perch and gauge will work for wireless
+surveillance. It is a highly effective site survey tool. The take‑away from this is
+drones and UAVs can be used for good or bad, right? They can be used to peer in people's
+windows. They can be used to collect information at coffee shops, other important places. Or
+they can be used by the military overseas, you know. They're sort of, you know ‑‑
+it is in the behind of the beholder basically, right, as to what they're used for.
+We hope they're used for good. So keep that in mind if you guys are interested in flying
+or keeping drones flying because right now the FAA is evaluating who's going to be able
+to fly drones in the United States and where. That's due out, I believe, mid 2014 or 2015.
+Right now I flew under the rules that say no commercial entity sponsored me, I'm flying
+under a model association rules wherein I have to maintain an altitude of under 400 feet.
+If any of you guys fly, I implore you, implore you ‑‑ and here's the disclaimers ‑‑
+is not fly this without experience. If you don't have experience flying a drone, you
+know, don't start with a $700 helicopter, right? Also, don't fly anywhere near an airport
+because 400 feet is not a lot. I was going to do ‑‑ before we decided on our lake
+trip, I went to a place near the Potomac river which as you know borders D.C. and thought
+this was a cool resort. Let's do some drone operations here. Bad idea.
+Went out there. A bunch of golfers were in my balcony. You saw the balcony crash. Well,
+that would have been a golfer's head. Think about it. The other thing over the Potomac,
+there is the approach to Reagan National Airport which is about ten miles out. I thought there
+couldn't be any airplane. They will be thousands feet out. No, they are 800, a thousand feet,
+well within the capability of this drone. So bad idea. If you are going to fly anywhere,
+make sure you get with somebody in a local RC club or whatever and make sure that you're
+doing the right thing and you're not endangering people, right? It is all fun. We had a great
+time doing this. This is one tip I have for you and I can show
+you guys afterwards. It is an altimeter. It is just an USB stick,
+basically. You get on the elevator, punch the zero at the bottom floor until how high
+you got. It fits well in about any copter you want to fly. What's 400 feet? For the
+Phantom, it's about as far as you can see. When it starts to get to where you can't see
+it anymore, well, you know, you're too high. You're in aircraft space now.
+Again, that's about it. Let's see what I got here. Some shoutouts to NASI ops team helped
+me out with operations, Nick Hopler, Mr. Search and rescue right here. Thank you very much,
+Nick. (applause).
+And the hobby hangar in Chantilly, Virginia. I have the advantage of being able to go out
+within two blocks and get parts for the Phantom. I will leave you here with the final thoughts
+on the screen. (applause).
+>> RICKY HILL: Thank you very much. We might fly this in the parking lot or somewhere today
+or tomorrow, if we can pull that off. So I will try to let everybody know. After the
+scenes you have seen, I don't want to try it here.

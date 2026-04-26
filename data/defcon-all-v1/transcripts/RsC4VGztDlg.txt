@@ -1,0 +1,750 @@
+>>Today we're going to be
+talking about Hypebots, uhm, if
+you're acquainted, you already know what this is. But if you
+don't, uh, you might see these
+online as "Sneekerbots", "Supreme Bots", Adididas, ZZ
+bots, uh, they're everywhere and
+they're a big deal and they're a big reason why I look so good
+today. So, we're gonna talk
+about Hypebots. So, who am I? This was a, a good question
+[chuckle] Uhm, my name is Fennel
+Phoenix, I live in Shanghai, China. I'm basically the Jane
+Goodhall of bots. I cam to live
+among them and learn about them because China - as we all know,
+as security professionals, is
+where bots live. So, I started in 2012, and, I wanted to buy a
+dress. This all started with a
+dress - it wasn't ZZ's or anything like that, it was 1
+dress and it was something I
+could never buy because it was me and like a 100 other Chinese
+girls. And we were all fighting
+in 1 minute to get this Japanese dress and I said "There has got
+to be a better way!". So, I
+decided, because I was working in a marketing agency at the
+time, I had to write unit tasks.
+I had to optimize all my code that there had to be the same
+way I could get this dress
+faster than everyone else, and since I was writing code for
+bots to crawl, what if I became
+a bot? So, I got that dress and then I became a little mad with
+power and I got sneakers and
+streetwear and everything else and now I use it for Korean pop
+concerts and purses shaped like
+teddy bears. And why did I start this? Because competition sucks,
+you want to look good, you want
+to be adored by all on Instagram and you're fighting and you're
+fighting and you're fighting and
+you can't get anything. And I said "I will become the Google,
+I will become a bot". Why bots?
+Why now? We built the internet for bots. To be fair, I think we
+have done writing bots a lot
+longer than we remember. When I was very young, I would write
+fortune bots IRCs because I
+thought the Unix fortune command was the most hilarious thing
+ever, at 12-years-old. And so I
+liked to spam all the channels on my IRC server with fortune
+commands. And, of course, that
+evolved into the ubiquitous playing bots that everyone hates
+me for because no one wants to
+know that you're listening to the "Dance Dance Revolution"
+soundtrack for the 30th time.
+And then, these IRC bots moved to HTTP with the release of AOL
+web crawler. This was in 1994 -
+so that as a very long time ago. And at the time web crawler was
+released, the internet was not
+written for robots. Web crawler only did 1 thing - it scraped
+other web directories to make
+sure that AOL had the most listings. Our, our bots on IRC
+grew up into bigger bots and
+then botnets and then in 2007 we saw botnets move to the world
+wide web. And now, in 2019, 50
+percent of the traffic on the internet is automated. In 25
+percent of that traffic are the
+bots we're talking about today. They don't just purchase shoes,
+of course, they don't just
+purchase supreme super soakers - which I lost. They purchase
+stocks and everything else. This
+is a large attack landscape. So, this isn't about our IRC fortune
+bots, this is about web crawler
+and how we turned it into a monster. Web crawler at the time
+was a good little bot. And then
+Google said "I have an idea, instead of writing websites,
+like directories and just
+crawling those other directories, you write your
+website for robots. You tag your
+HTML, you add metadata, no double div-IDs" - all sort of
+things that we do now, as a web
+developer, to make sure that Google can crawl our site as
+fast as humanly possible. And,
+of course, as our websites grew up from geo cities into large
+scale web applications, we
+needed it to be reliable. Not only because we didn't know when
+Google bot would do a health
+check, but because we wanted reliable, predictable processes
+to support our ecosystems. So,
+we got into APIs and then finally we need to make a
+reliable, stable FEO to the max
+website that allows you to purchase and spend money as
+easily and fast as human
+possible. As, "as one-click as possible", as Emma Zahn would
+say. This is the internet of
+today, it's not written for us, it's written for robots. So, a
+lot of you know what test-driven
+is, driven development is. And, as full disclosure, I hate
+writing tests, therefore I hate
+test-driven development. But, if you're writing tests right now,
+you're writing bots before you
+even have a product to buy. You're writing a botable website
+and you're writing the
+blueprints for this botable website and you're 1 evil genius
+moment away from getting a
+closet full of sneakers and supreme - like your speaker. So,
+why do we write tests? A lot of
+people have like super ethical medium blog posts about them,
+you know, "I want to get 100
+percent pass or 100 percent coverage or I want to make sure
+my junior devs know what they're
+writing and not breaking". So, these are all ethical reasons,
+but of course, we all know 1
+thing - capitalism encourages bad behaviour. When you add
+money into the mix, if I told
+you, you could make your monthly paycheck written a unit test,
+would you do it? Of course you
+would! It would be much easier to make your monthly paycheck on
+a Saturday, listing some supreme
+on, uh, Instagram, than it is to solve complex problems. And this
+is where purchasing bots really
+shine. Because now we have an ecosystem, of people encouraged
+by capitalism to act badly. So,
+I'm gonna put this in an "us versus them" dichotomy. Because
+no one in this room or this
+stage is a malicious, uh, corporate, money-making,
+reselling machine that just
+churns out, you know, tons and tons of supreme. We are just
+victims of the free market, We
+just want likes and adoration and clout, most important thing.
+And to write to our friends that
+we have the latest and greatest from any one of these companies
+- Balenciaga etcetera. Why do we
+bot? Because resellers bot. We are competing against people who
+are trying to make a profit ad
+we are just trying to wear nice clothes. So the only way we can
+do this is to optimize our
+checkout process. Buy as fast as humanly possible, well, that's
+not working anymore. Now we need
+to buy as fast as programmatically possible. So,
+now we have computers using
+computers. This, of course, is not why they bot. Now, I have
+friends that are resellers and
+as much as I want to think of them a these fashionable demons,
+living in penthouses in San
+Francisco with hot tubs full of Cristal and the latest kicks - I
+can't really hate them that
+much. So, I, I still love you resellers, even if you make my
+life a little bit difficult.
+These people buy up all the inventory of any given product
+and then they control the price
+of that product. Uhm, when a hypebeast like me, loses a drop
+or a, a purchasing window -
+which is now only 1 minute or less on very high in-demand
+items. We will do anything, we
+will pay any money, right after, to say that we won. So that we
+can be like "Oh, yeah, I got
+that shirt, I got Akira, uhm, jacket from Supreme." So,
+resellers will markup 2, 3 even
+7 times the price right after they have purchased all the
+inventory. And, hypebeasts are
+willing to pay 7 to 10 to even a 100-times the retail price for a
+pair of shoes, for a shirt, for
+a lighter that says "Supreme" on it. We encourage this behaviour
+because we will pay anything to
+win. And so, they know that when they have a market, a captive
+market with people looking for
+clout, so they scale this up to a thousand, millions! So that
+they can make money off of us.
+And they make my salary in a month - not just my paycheck.
+So, everyone's probably not here
+to hear about the ethics of botting, but about how bots
+work. Bots are simple answers to
+complex systems. Now, bots that you buy online will be like "We
+have some secret sauce", you
+know, "We had like the most brilliant MIT graduate coder
+bot". But really, they all have
+the same core principals. There are 2 types of bots in the wild
+- there's a low-level bot, these
+are the most stable bots. All they do is they go behind the
+UX-layer and they use APIs that
+are built to support our site and go from call to call to
+call. This is much faster than
+using a website as a human being. And it's much faster than
+using a browser-based bot. But
+also, it takes a lot of time. You have to reverse-engineer all
+the calls, all the headers, all
+the, the form data and everything else. But it's also
+easily scalable and very cheap.
+So, you will see these bots on scales of thousands to millions
+of calls per minute. On the
+other end, there's browser-based bots - we'll take a look at how
+to code these today. Because,
+they're very easy to get started and give you the feeling of how
+you should be coding these
+boots. Uhm, it's just a puppeteer test, uh, and it
+mimics the user by loading the
+browser and walking through a checkout flow. This is very easy
+to do and if you've ever write,
+written a puppeteer's test, you know how easy it is. Uh, it's
+harder to catch because in
+puppeteer you can mimic , a human being by mouse-clicks, or
+typing slower or adding waves,
+or scrolling around which you can not do with a low-level
+bot.A low-level bot is
+programmatic, now matter how you hide it - with weights, or with
+different unit agents. And, even
+though browser-based bots are easier to write, they're more
+expensive to scale into the
+computing power that's required to run, uh, Chromium or Firefox
+or what have you. No bot on the
+internet today is one or the other - both bots, and I will
+show you, are both of them
+combined. Because companies are not interested in making
+everything easy for us, so we
+must find new ways to solve the solution. So, no bot is just one
+script, they're usually a team
+of guys no one 10 X bots here. They all work together to get us
+what we need and what we need
+fast . So, the first ever crew is the monitor bot - the monitor
+bot is our scout, he runs
+constantly, never tires out, he scans websites all the time
+looking for the link or the
+droptime to make sure that you get off the line at exactly the
+right time. Because if you're
+too late or even too early, you're, you're out of the
+running. Next is the account
+bot, the account bot is something that generates user
+accounts and you might say,
+"Well, why do I need user accounts to purchase
+something?". Because a lot of
+sights, they, tor high-key items or for link, very desired items,
+they don't let non-users
+purchase. And you need to access an API ecosystem most of the
+time and those are only for auth
+users or authorised users. And, of course, you're trying to make
+a little bit of a profit so they
+might have coupons or discounts for logged in users which may
+make your profit margins a
+little bit higher. Buy-bot is the most sexy of the bots, he's
+got the secret sauce, he's what
+everybody wants to see. Uhm, he's also the most expensive,
+his only goals is to run through
+checkout, by any means necessary,uh, so, we'll look at
+all of these guys today, except
+for sell bot. You remember a few years ago that these bots on
+Amazon were getting into bidding
+wars with each other to resell books, and they were bid up 1
+cent more than the other bot and
+they got upto 3 to 13-million for some used college textbooks.
+Which, fair, I felt college
+textbooks cost while I was in college but these are what sell
+bots do - they list n Stock X,
+or Goat, or Grailed , uhm, automatically and run through
+the selling processes as well
+because the scale that we're talking about is in the
+thousands. And you're not gonna
+be able to sell thousands of shirts thousands of lighters or
+thousands of K-pop tickets, uh,
+all on your own. So, we won't be looking at sell bots today but
+they're basically buy bots in
+reverse. So, here is our first bot - it's a very easy bot to
+write and if you've written a
+test before,you know what this looks like. This is a puppeteer
+test that goes to a website and
+looks through a div and expect it to be truthy. In fact, my
+first first bot that I wrote was
+a bastardised version of a just test that went through and even
+did, like expect true, expect
+false, the entire time it was running through the purchase
+which wasn't necessary but made
+me feel better to see all that black and green scrolling down.
+And I was like, uh, I finally
+have hacked my way into fashion. Okay, so, this doesn't really
+purchase anything. Let's make it
+work, if you look at this, this is the actual purchasing bot.
+We're going to a target site,
+we're looking for a specific product and then I used the,
+uhm, keyboard to make it look,
+uhm, like a user was typing in and going through the website to
+make it more credible. Their
+user was gonna come by, a legitimate user instead of a
+robot. Then, we go through the
+checkout and as you would see at the bottom, like, the checkout
+form being filled out. So, I'm
+going to show you this in action. Making this... I haven't
+used Windows in a long time. Oh,
+there was a full screen button right there, so, here's a test,
+it's 50 lines of code. You can
+see there, and all we're doing is running to a website and
+trying to purchase Happy Pap
+mode. I used Bodega sotre which is a streetwear store, hosted by
+Shopify, I'm sorry, Bodega
+Store. And you can see, it, it's kinda slow this is because I'm
+running it in head full mode
+which opens the browser and goes through and shows you, like what
+the bot is actually doing and
+you can see it's just running through the check out as fast as
+I can. When you run it in
+headlift mode, it's obviously quite a bit faster. So, you go
+ahead and auto-fill out all of
+the shipping. A lot of bots like to use paypal because paypal
+cookies can be stored in a
+script and you can just run through paypal with a cookie for
+their one touch, like we said,
+it's as quickly as one quick as possible. Uhm, and go ahead and,
+and purchase, so, you can see
+it's all going to paypal and it all automated. So, that is your
+first bot and that was actually
+my first bot too. Back in 2012 it was like beautiful suits at
+the time and not fancy
+puppeteer. Uhm, but yea, so, it was an easy first bot. I think
+that everyone here could write
+that - it took me about 20 minutes. The problem with these
+bots is that their'e not very
+stable because they depend on the UI. So, if, between
+submitting my CFP for DefCon and
+today - I've had to write, rewrite this bot twice, uh,
+because they changed the div for
+the search and they changed the div for, like, the actual
+checkout. Okay, let's check out
+more bots. So, when do we run this simple bot? Well, there's
+one rule of botting - " always
+be checking" And not just one site either, all sites, you know
+we'll have the, the item you're
+looking for, in stock. So, how do we check... Well that's the
+job of our monitor bot, so let's
+look at the code for a simpler monitor, you might be like "Oh
+my goodness, this was just an
+XML parses - and you're correct!. Remember when we
+talked about Google coming in
+and saying "Hey, alsides, code your, code you're web, one way
+for my bot. But we're gonna
+piggyback off of that. All sites for that bot, for that Google
+bot have to have a site map and
+the site map usually now is automatically generated by a
+content management system. And,
+generally, when we're look at these e-commerce stores, they
+have the drop ready to go, just
+not published or visible from the front end. Well, it's still
+in the sitemap so all we have to
+do is look at the sitemap and grab it and then query the page
+until it goes live. So, this is
+what we're doing here. We're just going into the sitemap and
+searching for what we're looking
+for. So, we're gonna look at a simple monitor. So, you can see
+this one is only 54 lines of
+code. And that's it, it just looks up from the sitemap and
+the sitemap is always updated
+when Shopify updates the store. So, now you have the link, the
+go live link for the, uh, given
+to Google before it's given to the consumer - I'm sorry,
+Shopify. So, how can we make
+this monitor bot better? Well, because we'll be querying this
+XML a lot, we need to run these
+through a proxy because we don't want this to be, we don't want
+to show people that we're just 1
+guy at 1 IP, running the same request over and over - that's a
+good way to get blocked. So,
+let's run through a rotating proxy. And then let's make it a
+little better and let's also
+change our user agent each time we query and we need to make
+some money, because we're
+obviously going to be spending a lot of money. So, within the
+hypebeast community and the
+people who run these bots, there are these groups of people
+called "Cook Groups" they run in
+Discord chats and you have to pay 15 to 30 dollars to be
+friends with these people. I
+used to pay money for Ops and IRC and now I have to pay money
+for fashionable friends.
+[laughter] So, we need to make this bot close to Discord so
+that I can be cool and get
+money. You can also create an API endpoint for these bots and
+have people subscribe to that
+but that's not as pretty. So, let's look at a fancier bot. You
+can see that this just runs
+through a public proxy API, grabs the closest public proxy
+and then, uh, goes ahead and
+posts to discord. And if it fails, try and try again. Cause
+you should always be checking.
+So, you can see this bot is a little bit longer because we
+have the user agent, randomizer
+and also the proxy. So, one thing I want to say after seeing
+this, I used a note package to
+describe a random user agent. [laughter] Please restrict your
+user agent to something
+believable, this one is running Linx, which is not very
+believable and probably will
+make you stand out like a sore thumb when you're trying to, uh,
+request some, some sitemaps. So,
+this one ahead found the item which was a sock. And then
+posted it to Discord and now
+people can pay me money to subscribe to my bot. This is
+very often for people, or common
+behaviors for people who are new to the entire scenes, is they
+will subscribe to a monitor bot
+that has been configured and have to do less work. But we'll
+talk about that a little bit
+later. Oh... Okay, so now it's time for the piece de
+resistance. The most realistic
+bot we have today, which I call the "complicated bot". This bot
+waits for the monitor bot to
+return an "Okay" in the link and then runs through an API-based
+purchasing flow. So, you can
+see, this is a very long bot. Uhm, because we have basically
+promise chain help but it works.
+The other thing to know is that shopify does have an anti-bot
+measure, so this is what would,
+would be considered a hybrid bot because each time in the
+checkout process, you must
+download the Dom and then pull out the secret key that is
+embedded in the form field. And
+then pass it along for the next request. This slows my bot down
+by, like, point 2 seconds each
+time. So, it's not a very effective way but this is a very
+common way for websites to have
+an anti-bot measure. They say bots are only using APIs, they
+will never query the Dom so they
+will never see this secret key. But when you're
+reverse-engineering you see that
+secret key, you're like where's this security key coming from?
+Well, it's coming from the Dom
+and another popular e-commerce site that uses this secret key
+is Blue Commerce - they hide it
+in C-data at the top, they generate the secret key and the
+nonce in Javascript. Uh, so you
+can just pull it out. We'll talk about why that's important in a
+little bit. I don't know if
+that's an O-day or just sad. So, how can we make this better?
+It's gotta be something
+complicated cause these bots cost a lot of money online, uhm,
+so there's gotta be something
+more that has to happen to make this bot worth 15- to
+20-thousand dollars. Uhm, one
+thing you should be doing is monitoring multiple outlets.
+[sneeze] There are many, uh,
+e-commerce retailers that will have a drop of the same item.
+Try everything, it increases
+your odds. Uh, another thing that you would do is you
+purchase verified accounts in
+bulk, off of LE express - and we'll talk about how those
+happen in a second. If it can be
+a variable, it should be. Right now you're creating thousands,
+if not millions of requests to 1
+website. So it's really hard to get lost in a crowd unless you
+are the crowd - so, change your,
+your user agent, change your proxy, change a little bit of
+each thing, each time and become
+the crowd. Cause it's really embarrassing if you tried a
+million requests against Adidas
+and you notice that all of your requests have the same user
+agent string. And, of course,
+cluster deploy to increase chances. You need to be scaling
+this and scaling this is
+incredibly cheap so, there's no excuse not to. I wrote all of
+these bots in Javascript because
+Javascript is a bit of a joke in Infosec. And so, I wanted to
+show you that these bots are so
+simple that you can write them in Javascript. A lot of the bots
+that you buy online, are in Java
+and you can buy, you can look at the source code online of all of
+these Java bots and they're the
+exact same thing in a language I don't care for. So, this is all
+about money, it never was not
+about money, so, let's talk about the economy. Because of
+this, this isn't about just
+shoes or about shirts or about Supreme super soakers. There' an
+economy based around these
+scripts itself. If there's a market, there's a profit and
+there's not just a market for
+sneakers, there's a market for these bots themselves and we're
+going to see that you can
+purchase every little part of this, the team that we
+introduced earlier, for a pretty
+penny. So, let's talk about what you need to purchase to make
+this enterprise an enterprise.
+So, first you're going to need to buy accounts. A lot of sites
+need you, need you to have
+verified accounts via like, uhm, multi factor authentication or
+something else. So, there's
+literally sweatshops in China, and I'm not making this up.
+There are tables and tables full
+of iPhones and Androids and SIM cards that run through account
+creation scripts for these
+websites. They cost about 5 to 10 dollars for 5, uh, 500 to
+even 10-thousand accounts at a
+time. You use 1 and then you're done with it because you can not
+continue to bot with the same
+accounts. You are creating suspicious behaviour and you do
+not want to be trapped because
+you don't want to rewrite all of your code and you have a
+signature each time that you
+bot. Secondly, we need to buy a cook group. these are our
+friends that always know what's
+up and can help you configure your bots; uh, help you create
+your own bot, give you a monitor
+bot. Uh, they're like a private Stack overflow community and so
+these are 15 to 30 dollars and a
+lot of the times it's just a bunch of fashionable dudes on
+discord and some of them have
+God-complexes and you're like "Okay, I get it," but it's
+important if you're starting to
+join a cook group. And, finally, the most expensive thing is the
+purchasing scripts, uh, these
+are just, saw, the scripts we saw earlier, that managed to
+hire somebody to do UX. And they
+often wrap everything up into a single console that you run
+repeatedly. If you can find a
+way to automate any part of these, there will be plenty of
+people lining up to pay you
+money for your script also. Let's see where we can invest
+our time. We have the "Buy Bot",
+these, like, AIO bot or Project Destroyer, range anywhere from
+300 dollars to 15-hundred
+dollars. And, there is a resale market for these bots cause
+these bots are only released in
+small batches, just like what we're trying to buy- of 100 to
+500 each season. And they sell
+out almost immediately, so you can always resell these for
+profit. These expensive Buy
+Bots, especially like Project Destroyer, have everything in
+one console. They have the
+account creation, the monitor bot, they often come bundled
+with a support group and it's
+important if you're new, also, if you invest in a Buy Bot. You
+will get dedicated support.
+Because companies will often be trying to work against these
+bots and you want an active
+purchasing bot with an active development core, Because you're
+gonna want somebody who's trying
+to sidestep new protection that are put in. On the other hand,
+the monitor bots, which I call
+the Adobe Cloud Subscription model, uh, start at 15 dollars
+per month and go up to 30. You
+can also buy these, they're rather cheap but it's really
+hard to configure them, it's,
+you're just buying, basically, an XML parser or just a,
+something pinging a site and
+you're hoping that you configured the right site or the
+right skew. This is why more,
+more often than not people would join or subscribe to an, uh,
+monitor bot that's already
+running. Since these come mostly with cook groups, uhm, you, they
+come with three real friends.
+[laughing] As real as a discord friends can get and they usually
+integrate with you purchasing
+script. So, they will have like a little API endpoint, uh, that
+you can plug into your fancy Buy
+bot and the Buy bot will know what to do from there. So, we
+saw the prices and what I love
+about these prices is that these are for resellers and if there's
+one thing that resellers know
+how to do is resell. So, I thought, what do coders know how
+to do best? And I said - I know
+how to code best. So, I wrote a bot that buys other bots and
+then resells these bots.
+[laughing] So, I went to AIO bot, which is one of the cheaper
+bots,that we have here. And I
+went through, this is it - this is the script! To buy a bot, on
+a side note, Project Destroyer,
+AIO bot, and many of the other high-end bots, are all running
+on Woo commerce, and we talked
+earlier about if you just download the dom, you can get
+all the secret tokens. So, if
+you really are interested in the bots that buy bots and resell
+bots, the resale rate is
+probably a thousand to 15-hundred over what you invest.
+Uh, so, if anyone's looking for
+a job. So, let's look at this guy in action. So, it's another
+puppeteer test. And you can see
+how expensive these bots are if you add twitter bootstrap to any
+script. You can add it an extra
+150 dollars To the price. The logical end of this script is to
+add a twitter bot or a reditor
+posting bot the posts the, a for sale, and there's lots of
+markets on Twitter where you
+just buy and sell bots. That's all they do. Uhm, so if you take
+this to the end and create a
+Sell bot, at the other end of this But not - now you have an
+entire bot ecosystem for other
+bots. I'm gonna learn this one.... full screen mode. full
+screen mode! Okay. So, finally,
+we come to the future, I have a lot of questions - mostly, will
+I have to become a robot to wear
+more Supreme? Am I a robot for wanting to wear Supreme in the
+first place? The questions and
+more, we will answer in this question. So, when the web
+started with bots with web
+crawler, it was not written for web crawler. Web crawler was
+written for the web. Nowadays
+when we write the web we write the web for Google bot. So, this
+creates a problem but for a lot
+of you in the audience may be saying is this a problem?
+Because companies are getting
+paid. People are getting product eventually, so, why do we think
+this is a problem if, if the
+money's flowing freely, everybody looks good on
+Instagram, it doesn't matter.
+Because companies care about money. This is the, the truth of
+it and resellers suck, from a
+company's prospective. When you create a 50 dollar box logo
+t-shirt and you see somebody
+reselling that 50 dollar t-shirt for 500 and you spent the money
+designing the red box with
+"Supreme" in it, tilting the future of font a little bit to
+the left, making it so the every
+rapper wears your, your new shirt - that's a lot of money!
+So you want to make a lot of
+profit from these shirts. And then some guy who happens to
+know a bit of Java managed to
+make 4 to 5 to 10 times your profit, on the same thing? Well
+that really grinds my gears. I
+don't actually make Supreme, by the way. And another thing is
+that resellers crowd real
+consumers out, if you know a site is only for resellers,
+you're not gonna go to it. And
+so now you are sending, you as a company are sending all your
+products to some random guy in,
+uh, with a penthouse in SF and his hot tub full of Cristal. And
+he decided the price for your
+product and he decides how much it will cost. And then finally,
+it's about fairness, this is the
+most obvious, in my opinion about why we, about why bots are
+bad - because it's not fair.
+Robots can't even wear t-shirts. [laughter] Only me! [laughter]
+So, why should I be competing
+with robots to buy clothes? When we were little, we said, you
+know, "This isn't fair, I'm
+taking my ball and I'm going home!". This is what companies
+are really worried about and why
+this is a problem. Because, one day, instead of waiting in line,
+with a bunch of robots that look
+like Pepper, you're going to take your ball and go to a brand
+that actually has some stock for
+you, so that you can wear whatever brand that is and it
+will make it more popular. So,
+bots aren't fair, resellers aren't fair, so, what can we do
+about it? I know! There's
+accounts, we can just blacklist it. It's a universal truth that
+every company that can not hire
+a security engineer is in possession of a pretty useless
+blacklist. Most of the time
+you'll be blocking real consumers or these purchased
+accounts are what you're gonna
+block. Or the proxy IPs are what you're gonna block. You're
+trying to find a whack-a-mole
+game - everything is changing, we made everything random so
+that we would not get caught.
+And as companies try to whack the mole to try to get you to
+stop running your not against
+their website, their blacklist gets longer and longer and more
+useless and useless.
+Blacklisting doesn't work and I'm at DefCon, so, we all know
+that blacklisting doesn't work.
+So, what else can we do besides blacklisting? There's got to be
+a better way, right? Well,
+companies are doing a lot of superficial things to make it
+worse. I'm going to tell you a
+story about my friend, he, he trains every night before a drop
+or a purchase drop, to click
+through a website as fast as possible. He has an Excel sheet
+of times and he memorizes where
+the mouse should go and he trains like an Olympian to
+purchase shoes, right? Uh, he's
+very proud of this for some reason, I do not know. He thinks
+he is more ethical or holier
+than thou because he has not resorted to scripts. And he does
+make a fair bit of money. But,
+uh, a sneaker website which I won't mention, created a fake
+page. The first and the usual
+button said "If you click this button, you will pay 10-thousand
+dollars for a 100 dollar
+sneaker" and people bought those 10-thousand dollar sneakers,
+because, if a human, this is
+what the company thought, reads the text on the page he will see
+that it says, clearly, this is
+to the purchase button - "If you click this button, you will pay
+10-thousand dollars". This
+worked, somewhat. But then I remembered my friend who, for
+some reason trains every night
+before a shoe drop to purchase through clicking. I also do
+this! I click as fast as
+possible, I'm trying to charge my card as fast as possible and
+so, false listings are gonna
+confuse me. I, most likely, will click the wrong button. Because
+I have less than 30 seconds to
+click through a UI to charge my card. I live in Shanghai,
+Shanghai has so many hypebeasts.
+It's not, it's not really hype anymore, it's just the norm. We
+have many sneaker shops near
+where I live and you will see a line around the block of
+middle-aged women, these women
+are not wearing the latest kicks, they're not wearing
+supreme, they were charged 20
+Renmindi, about 3 dollars, to wait in line for the resellers
+for shoes. So, now, you have
+this kind of economy based on paying middle-aged ladies to
+wait in line so you can charge
+200, 300 dollars more for those shoes. In person sales means in
+person retailers - it's
+distributed reselling. And, finally, this is the one that I
+hate the most because it doesn't
+make much sense to me, they have lottery systems in a lot of the
+latest releases. Bots can buy
+anything, we just talked about it - they buy teddy bears, they
+buy K-pop concert tickets, they
+buy stocks. What means they can not buy lottery tickets? And, so
+now you'll see a lottery ticket
+and you as a human being get 1 lottery ticket - and a bot gets
+5-million. The odds aren't in
+your favour, even if it's supposed to be statistically
+random. So, all of these suck.
+They're very superficial and the, uh, it's easy to poke holes
+through these solutions. So, we
+need to find a way to do this. And it's very easy. We need to
+go back to unpredictable web. We
+need to go back to a web before web crawler. We need to go back
+to a random human-curated web.
+Adding entropy to your system does not mean breaking your
+system. When we wrote code
+earlier, we wrote code to be as random as humanly possible - it
+still worked! It was a little
+bit of extra effort, it didn't break anything. If you add just
+a little bit of
+unpredictability, bots can not handle it. Encrypt your process
+- encrypt little beet, little
+bits and pieces of everything you do. Do not make it clear one
+click - easy as humanly
+possible. The easier you make a process, the more you code your
+website for SEO, the easier it
+is for bots to get on your website. And in the great words
+of a mid-1000s emo band that
+everyone forgot but me - Fall Out Boy - "This ain't a scene,
+it's an arms race". There's not
+going to be 1 answer or 1 nuclear weapon against bots.
+Because there's a profit to be
+made. What I get paid for writing websites, others get
+paid to write bots against those
+websites. They get paid probably more than I do. Which is sad
+because they're probably better
+dressed than I am too. [laughter] The only way forward
+is to, to deal with bots in only
+the way that a human can. And humans are very good at one
+thing - and that's dealing with
+the unfamiliar. Bots can not handle the unfamiliar and if we
+start to make the web unfamiliar
+with, to bots and more familiar to humans I think we have a way
+forward. This ain't a scene and
+it's not just about sneakers. It's not just about Supreme.
+It's about everything and it's
+an arms race for all of use to be able to be the best dressed
+at DefCon this year and every
+year forward. Thank you! [applause] [cheering] Wooh! I'm
+thirsty.

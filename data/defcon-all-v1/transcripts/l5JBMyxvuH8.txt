@@ -1,0 +1,461 @@
+>> TOM RITTER: Hello and welcome. My name
+is Tom Ritter and I work for ISAC partners. If you don't know who zax and dism is, you
+will know by the end of the talk. This is an anonymity group. This book, many of you
+will call the Bible, had not even come out yet. But the first edition. And while you
+could export the book itself, the U.S. government had determined you could not export the floppy
+disk that the code had come on. In fact, the U.S. was actively investigating Phil Zimmerman
+for violating the Arms Export Control Act for making the first few versions of PGP available.
+A group went on the offensive taking the U.S. government to court and suing over the export
+controls on crypto. Another group of people ultimately printed out the source code for
+PGP, exported the book to Europe and scanned it in and OCRed releasing a version that bypassed
+the export controls. Alt.Anonymous.Messages was forged in the heyday of cyber punks and
+has changed very little in the intervening decade since it was last shaped in any major
+way. But in that decade, what we have seen is a
+monumental focus of the nation's spy agencies on not what was thought to be the most critical
+piece of information to encrypt, the content itself, but rather on metadata. The people
+who know don't ‑‑ won't talk and the people who talk don't know. But leaked court
+orders require Verizon to turn over call records local and abroad. Now, I'm talking here so
+I don't know anything and I'm just speculating. But the most straightforward thing to do with
+this data is to build communication graphs, analyze the metadata, looking for patterns,
+identifying people of interest and figure out who they talk to. And the metadata around
+an encrypted channel tells volumes. So SSL is the most widely used encrypted channel
+on the Internet today. And even ignoring the numerous attacks we've seen in the past few
+years and ignoring how it break almost every cryptographic, there is numerous things you
+can learn. There are protocol‑level leaks itself. It says about the type of client you're
+using and the version. And it includes what you think the local time is. So here's hoping
+your clocks are synced. But from an information theoretic perspective,
+an adversary can see that you are sending packets and communicating. That seems obvious,
+you know. Of course, they know you are communicating. It is important to bear in mind for the future.
+Ideally, the adversary wouldn't even know that you are communicating.
+Secondly, SSL makes no attempt at hiding who you are talking to. So the fact you are Facebook,
+straightforward. Similarly, the adversary knows when you are on Facebook and when you
+are sending data and when you are receiving data and the resolution on this goes down
+to the microsecond. So they know exactly when, but they also know exactly how much data you
+receive. SSL doesn't have any real padding. And I don't know of any Web site that adds
+variable length padding to frustrate length analysis.
+So how many of you stayed through Runa's talk? A few. Thank you. Let's talk about Tor. Tor
+is an implementation of onion routing where each node peels off a layer of encryption
+until an exit node talks to the destination, the destination responds, and it is routed
+back. Onion routing specifically aims to disguise
+who is talking. An adversary observing can't see that you are talking to a Web site or
+a service. An adversary observing that Web site or service can't see who is talking to
+it. But it doesn't stop an adversary from knowing you're talking to someone, knowing
+when you're talking, and how much you're saying. Tor doesn't really do padding. What little
+it does is not intended to be a security feature. Tor explicitly leaves out length padding.
+And if you stayed through Runa's talk you know Tor cannot protect you if an adversary
+can see the entire path of a circuit. Let's say hypothetically speaking that New Zealand,
+Australia, the U.S., Canada and the U.K. were to, say, conspire on some sort of spy program.
+(laughter). Well, if your circuit went through these countries,
+Tor can't help you, at least not information theoretically. The adversary can track the
+traffic and find out who you are talking to. I'm not saying this is actively happening.
+I'm saying we've proved in papers that it's possible and that it's explicitly outside
+of Tor's threat model. A slightly more difficult version of that
+attack is if the adversary can see you and then see the last leg of your path later on,
+like, say, you're in China visiting a Chinese Web site, they can do a similar track and
+track you down. It requires a little bit more math, a little bit more correlation, but again
+we've proved that it's possible and it is, again, outside of Tor's threat model. This
+is particularly concerting seeing I, like probably most of you, happen to live in the
+U.S. and so much of what we do is hosted in Amazon ECT2 in Virginia. The adversary can
+tell who you are talking to, so we are back at SSL.
+I think it is worthwhile to show a couple of attacks on meth data. There was a traffic
+analysis tool that looks at your SSL session with Google and figures out what part of the
+Google Maps you are actually looking at, all based off the sizes of the tiles that you're
+downloading over SSL. It is worthwhile to note that this is an attack on a client, on
+someone browsing Google Maps at that moment. Let me show an ultimate example.
+You are sitting on Facebook with Facebook channel enabled. All over SSL, hacked. All
+over Tor. Facebook chat turns you into a server. You are able to receive messages from people
+and they will be pushed down to you. The attacker, not you, determines when you will receive
+a message. That's a pretty powerful capability, and it can lead to time‑based correlation
+attacks. An adversary sends you a message and looks at all the people connected to Facebook
+or Tor and see who's receiving a message right after that. Since Facebook chats tend to be
+huge, it can lead to size‑based attacks. I send you a huge Facebook chat with only
+a couple of trials, you can be pretty confident that the user whose Internet connection you
+are monitoring is the same anonymize Syrian dissent you are monitoring on Facebook. A
+similar attack was used to deanonymize Jeremy Hammond who is waiting trial for dumping mail
+spools. The police staked out his home, watched him enter, saw some Tor traffic and the username
+they thought was him popped on to IRC. Classic confirmation attack. I have gotten some comments
+they cut his Internet connection and saw him drop off. I haven't been able to confirm that
+in the police logs. Haven't had time. If that's true, that's another type of traffic confirmation
+attack that's on a low‑latency connection. Now, the good news is that even if the adversary
+can see the start and end nodes or even the entire path, there is a way to disguise who
+you are talking to. And that's mixed networks. Mixed networks introduce a delay while they
+collect messages into a pool and then fire them all out. Collecting messages prevent
+as adversary who is observing the mix from knowing what message went where. It introduces
+uncertainty. I really like mixed networks and I want to encourage research and adoption.
+I want to take a quick moment to demonstrate live on stage.
+So right now I'm going to be a Tor node or an onion routing node or a low latency anonymity
+network. I will receive a packet and then send it right out. Now, I'm going to play
+a mixed node or remailer node and I'm going to collect a packet, stick it in my bag, collect
+another packet, stick it in my bag and collect another packet and stick it in my bag. I will
+shuffle them up and peel out the outer layer of encryption and now I will send them out
+all at once. So you, the global passive adversary who can
+observe my computer and see all the traffic I send and receive, you saw that I received
+three messages and you saw that I sent out three messages. But you don't know which message
+went where. That's the uncertainty. So mixed networks demonstrated we gained a
+certain amount of protection against figuring out who is communicating with who. Given enough
+time or a low enough traffic volume, an adversary can perform the same types of attacks I just
+described against Tor, correlating messages, but it takes a lot more observation.
+The easiest thing to learn that takes no time or analysis is the fact that I'm communicating.
+We don't disguise the "if." We also don't disguise the "when" and we also don't disguise
+how large it is. So enter shared inbox by Alt.Anonymous.Messages.
+That's a bit of a wordful. I will abbreviate it to AAM. Imagine an email account where
+everyone in the room has the username and password but it is read‑only access. You
+can't delete messages. You can't send them. All the messages are encrypted so what you
+do is you download them all as one of the people with access to this inbox. And then
+you try and decrypt each one of them with your private key.
+And the ones that you can decrypt are to you and the ones that you can't decrypt aren't.
+And you don't know who they're to. Well, someone watching this encrypted connection, watching
+you accessing this mailbox and downloading all the messages, they can see that you are
+accessing the mailbox. That's certain. And they know you downloaded all the messages.
+But they don't know if you're able to decrypt any of them.
+And because of that, they don't know when you received a message, who it was from, or
+how large it was. All they know is that you're checking the mailbox, not that you're actually
+getting mail. At the cost of a lot of bandwidth receiving
+messages via shared inbox provides an awful lot of security comparatively.
+Now, shared mailboxes are an awesome anonymity tool, but the difference between an awesome
+anonymity tool an anonymity tool that's actually used is the answer to the question: Can I
+interact with the rest of the world? Tor is wildly successful compared to any other
+anonymity system because you can browse the actual Internet with it. It's not a closed
+system where you only interact with hidden services. So for a shared mailbox to actually
+be used, it needs to interact with normal email and that's where nymservs come in. The
+newest and easiest to use receives a message at a domain name and then just posts it immediately
+to Alt.Anonymous.Messages. This is a nymserv written by zax and it is on GitHub.
+And the much more complicated type one or GHIO nymservs can forward the mail to another
+email address or directly to Alt.Anonymous.Messages or they can even route it through a remailer
+network to eventually wind up in one of those two places. I will talk more about this nymserv
+later on. So if we add nymservs to shared mail, shared
+boxes also have anonymity for the recipient. When you send the message to a nym that uses
+a shared mailbox, you are ideally using an onion router or a mixed networks, although
+you don't have to, thus you would have those security properties. An adversary can see
+that you are sending, when you send it and how large it is.
+Now I have walked through the security properties through the different types of anonymity networks,
+let's actually dive into AAM. It should really have strong security, after all it is the
+most theoretically secure. But if you have never looked at it before,
+this is what it looks like, at least in Google Groups. It is Usenet. How many people are
+old enough to have used Usenet? Good, good. There is a whole bunch ‑‑ this is what
+it looks like today. A whole bunch of hexadecimal subjects all hosted by anonymous or nobody.
+A message used, like, a PGP message that may or may not have a version string.
+Today there are about 190 messages posted per day. But what's interesting is that while
+the average has certainly decreased over the last decade it has held somewhat steadily
+in the last five years. So the dataset that I worked off was about 1.1 million messages
+from the last ten years. Now, we can really see some shortcomings here
+already. Over half of the messages in my dataset go through two people. The network diversity
+is horrible. If you stay through Runa's, you know that's important. If either one of these
+folks, got subpoenaed or shut down or just retired, the whole network would be thrown
+into disarray. And to the person who asked about directory
+authorities in Tor, dism is one of the directory authorities in Tor and he is not affiliated
+with the Tor project. He is just someone they trust.
+Now, this looks pretty bad. It is way worse. That 53 1/2% statistic was over the entire
+dataset. Today zax and dism make up virtually all of the messages posted to AAM. I don't
+mean that they are sending them all, I mean they are the exit node for all the messages
+posted to AAM. And that weird dip, that was 7800 messages
+sent through Frow which operates a remailer a news gateway. It had a unique subject. It
+didn't have any unique headers. I couldn't get a whole lot out of it aside correlating
+those 7800 messages uniquely. So with network diversity pretty clearly abolished,
+let's take a look at the data and see what type of analysis we can actually do. I don't
+think I could say anything as ironic as this quote. That's from 1994. So here we are just
+shy of 20 years later. And the first thing to do is break it up by
+PGP versus not PGP. It is overwhelming PGP messages but what are not the PGP messages
+quickly? I was trying to come up with a nice way to say crack pots. I'm not sure if I succeeded.
+There are several people who have and continue to post just random rants about ‑‑ I'm
+not even really sure. Some of them is definitely the lizard people. And there are actually
+frequently asked questions that are sprung up in response to these guys because people
+are just getting flat out confused by them. And besides those, there are some other none
+PGP messages. I think the most interesting are 10,000 messages with the subject operation
+satanic. What's interesting is they are clearly cipher text but it is alphabetic. If you look
+at a single message, you might think it is a Caesar Cipher or Vigenère. If you look
+at them in whole, you see it is a perfectly even distribution over a 16‑letter alphabet.
+In other words, I think it is a substitution cipher into hexadecimal and it is actually
+cipher text. There are other clumps that are similar to this. If you are into this type
+of analysis, have at it. And the next thing to look at is what percent
+of messages were delivered to AAM via nymserv or via a remailer. These numbers will be a
+little bit off since some of the PGP or remailer messages are to nyms and some are through
+remailers I don't know about. But it is something. We can see that a large portion of our messages
+are to nyms which is important when I can tell you how many nymservs are still running.
+Somewhat interesting statistics aside, let's start diving into all of those hundreds of
+thousands of encrypted messages. Open PGP consists of packet and each packet type does
+something slightly. There is a packet type for a message encrypted to a public key a
+packet type encrypted to a password. What are these packet types? These graphs show
+the popularity of each of the different packet types. For example, packet type 1 followed
+by packet type 9. And the top five, the ones on the bottom, are the ones you would expect
+to see. Packet type 1 is messages encrypted to a public
+key. Packet type 3 ask messages encrypted to a pass phrase. The actual cipher text of
+a message is 9 or 18 for old style or new style. And I separated out the messages to
+a single public key versus messages to multiple public keys.
+Now, there are two that are just kind of weird. These are the packet types you expect to see
+after you decrypted a message. These are plain text packets. There are actually a small number
+of messages that look like open PGP data. They have got the whole begin PGP message
+ticker and they are base 64'd. But they are actually just plain text sitting in plain
+sight. If we look at packet type 8, this is what
+we get. It really is just compressed plain text data. Unfortunately it is also nonsense.
+I don't know if there is a code there or not. I didn't spend a whole lot of time on it after
+I looked at Iran organizing bizarre Sabbatical. It probably came out of some mark hub generator
+somewhere. So I kind of moved on. What I moved on to were messages sent to public
+keys. Now, it is super obvious to do analysis based on the public key that's in the message.
+I promise you, it gets a little bit more complicated later. But let's look at the key I.D.s..
+So obviously they are a pretty powerful segmenting tool. I want to illustrate examples where
+public keys can tell us more. There is one key I.D ‑‑ I have anonymized most of
+the specific data in this because de‑anonymizing people isn't cool. There is one key I.D. that
+messaged very reliably through a nymserv except for two messages sent through Easy News. If
+you track down a very unique gateway and user agent, that person sent another message to
+a key I.D. and we can make inferences across multiple types of metadata.
+I separated out the information send to a multiple keys. If a message was sent to a
+single key, we don't know too much about it because they throw the key I.D. so it is all
+zeros. If a message is sent to more than one key, then we can draw communication graphs.
+Now, it's not a strict communication graph in the sense it was sent to Alice and Bob.
+It is that they received the same message. In most situations, people will encrypt a
+message to themselves so they can read their own sent mail.
+I started drawing these pictures about the same time as the PRISM scandal started breaking.
+I was feeling really uncomfortable that this is probably what the NSA is doing to me and
+my friends. But nonetheless, quick reference, green means that I was able to get the public
+key off a key server. A circle means that a key received messages to it individually
+as well as to, like, it and multiple other people. And then the size of the circle and
+the width of the line is how many messages they received. So there is this very nice
+symmetrical five‑person graph. We've got these much larger communication networks here.
+A real big one here. A couple interesting graphs with central communication graphs.
+You can infer from that what you want. And then we got a couple more interesting
+networks. I think these are interesting because they imply that not everybody knows everybody
+else. This graph and the next one may really be a model of actual Internet where people
+will email people in a complex interconnected but not fully connected way. This is a fairly
+low‑volume network and this one has quite a few higher‑volume folks participating.
+And then there's like the rest, the simple two‑person communications going on.
+So I was working on the ‑‑ but let's talk about brute forcing cyber text. You saw
+packet type 9 was by far the most common packet type found. There is over 700,000 of them.
+Now, this packet type is really interesting so let's dive in a little bit into the open
+PGP spec. This packet is the actual cipher text of the
+message. It is only the encrypted data. It doesn't say what algorithm it is and it doesn't
+explain how to get the key. So where is the key? The key is in another packet. It is in
+packet type 1 for public keys or packet type 3 for pass phrases.
+But if you recall from that graph, there aren't any packets that precede packet type 9. We've
+got a disconnect from what the spec says and the data that we actually see until we find
+this. The ideal algorithm is used with the session key calculated as the MD5 hash of
+the password. Yeah, the MD5 and the password. This is absolutely legacy and we have had
+better ways of doing this in open PGP since the late '90s. So while in the very beginning
+of AAM this might have been excusable, the fact that my dataset was from 2003 onward
+makes this a pretty horrible situation. And we know how to do MD5s really, really
+fast. But that's only half of it. We also have to do an I.D. decryption and then we
+have to detect of what we decrypted was the actual plain text or just random. While you
+can run randomness tests, they are slow and we are brute forcing so we want to go as fast
+as possible. This is all my way of trying to justify that I spend a lot of time running
+GPU code and running it for months and killing my home desktop. But I did get results out
+of all this GPU cracking. In fact, one of the first few dozen of the messages we got
+was this one which did not ‑‑ (laughter). (applause).
+>> TOM RITTER: Which did not make me feel terribly good about myself.
+(laughter). But I kept going. And I got some HTML pages.
+I got some we are SMTP logs. I got a lot of partial remailer messages. But overwhelming
+what I got after I decrypted the message was an encrypted message. Recursively recrypted
+PGP messages. And, in fact, here's a breakdown of how many recursions I hit. I got about
+10,000 decryptions into a public key message and another 2200 that went into another password‑protected
+message. So I want to uncrack those and I got about 49 messages that were two layers
+deep and then I had to crack some more of those and I went four layers deep and then
+there is this one bloody message that was four layers deep that I still couldn't crack.
+So it's pretty damn recursive. For the number of messages I was trying to
+brute force, the fact I only got about 10,000 cracked is not really great. Password crackers
+would consider that a fail in Europe. I'm not the best cracker. I'm sure people can
+do better. What I want to defend myself with is I'm not trying to crack password, but crack
+pass phrases by the most paranoid people on the Internet. I think I did decent.
+I haven't explained why there are so many recursively encrypted messages. What the hell?
+To explain that I have to talk about remailers. How many have used a remailer? About two dozen.
+So the tools that you have probably used, mixed master and mixed minion are dubbed type
+2 and type 3 remailers. That means there must be a type 1 remailer somewhere, right? They're
+basically dead but the protocol itself lives on in Mixed Master. And boy what a protocol.
+This is a manual of how to use most but not even all of the options supported by type
+1 remailers. Now, some of the directives are on the left.
+Now, what's the difference between remailer 2, remix 2, anon 2, encrypt 2. I don't remember
+and I studied this stuff for a while. To use type 1, you actually have to type all of these
+out yourself. It is not like a GUI where you click a check box. I had talked in the beginning
+about type 1 nymservs. Type 1 nymservs are the main recipients of these directives. You
+string together a my encrypted to different nodes. You type that all out yourself, by
+the way. And that would be your reply block. And when someone emails your nym, it would
+execute the reply block. Ultimately coming out to your real email address or to Alt.Anonymous.Messages.
+And we're still seeing these messages posted. But there are only two type 1 nymservs operating.
+One is zax. The other is Paranoisy (phonetic). It is run by Italian hackers in Milan. They
+run two that you can think of an Italian version of Rise Up. If you have ever heard of Rise
+Up. So in conclusion, what are those nested PGP
+messages? They're type 1 nymserver messages where the key idea is the ultimate nym owner.
+There is another layer of encryption I haven't cracked yet. When you download type 1 nymserver
+messages you know all of the passwords. You peel them off one by one and finally you use
+your private key. And these are all the recipients with more than five messages. It's pretty
+top heavy towards just a few nyms. So communication graphs and brute forcing
+is really just the first quarter, I would say, of the analysis I did on AAM. A majority
+of my time was spent doing correlation. So even if I don't know who a message is to or
+what it says, it is valuable to know that it is to the same person as another message
+or that it was sent by the same sender. And why is that valuable? Well, let's go back
+to the slide. You can't tell if someone has even received a message in a shared mailbox.
+But if I can correlate one message with another, then I can start determining that some unknown
+person has received a message. And once I know that two messages are related, well,
+then I can start paying attention to their time stamp and to the length. And this goes
+even further. Because people tend to respond to messages that they receive. And since I
+know if someone has sent a message, it might just be that they are replying to a message
+that they just received. So let's talk more about correlation and some
+more analysis of what's going on in AAM. First off, it's obvious that you can correlate messages
+that use a single constant subject. But there are a lot of messages like these. Like, nearly
+half of all the messages post to AAM have a constant, like, English subject. They don't
+use that hexadecimal stuff. They do tend to be the older messages and they have tapered
+off recently which makes sense. But, you know, you can look at kind of these numbers, 22,000
+messages in a cluster, 18,000 messages in a cluster.
+But let's talk about those random hexadecimal subjects. Now, there are two algorithms to
+generate these subjects. They're called encrypted subjects or e subs and hash subs or h subs.
+The point of these is to quickly identify which messages are for you and which messages
+you should ignore. For the folks who used Usenet, you can download the whole headers
+and not the bodies. We can probably cut this stuff out but it is still there so let's break
+it. E subs have two secrets, a subject, a password.
+H subs have a single secret, a password. It is considerably more difficult to browse force
+the e subs and I ran out of time so I just focused on the h subs. H subs were created
+by zax. And as his services are used more and more, they make up an increasing percentage
+of the subjects. Now, h subs have a random piece of them you can think of as an initialization
+sector, as assault. While I can try to shoehorn these into the 56 hackers, it would be painful.
+You have to truncate the output. I wrote my own GPU cracker and I cracked about 3500 h
+subs. Better the percentage of messages I brute forced but not a great percentage. Again,
+these are the passwords the most paranoid people on the Internet.
+Danger Will Robinson was used by some, but it was used by some but not all of the messages
+that were sent to a couple of particular key I.D.s. I cracked all the h subs of another
+key I.D. with the passwords of testicular and panties. And if you don't know what smegma
+is, don't Urban Dictionary it. If h subs and e subs are used to let a nym
+owner identify their own messages, can we do something similar? Let's say we want to
+target the nym Bob. What we can do is send a particularly large message to Bob full of
+nonsense. And then we wait for a large message to pop out in AAM. Zax's nymserv is near instantaneous.
+Type 1 nymservs are not necessarily instantaneous. A little bit more difficult but not too difficult.
+You can do it a couple of times. And this works and it works pretty easily and effectively.
+What we get is a specific message that we know is to a particular nym. At that point
+we can target that for h sub cracking. So I'm not done. But unlike everything I presented
+before, what I'm going to talk about now is probability‑based attacks. That is, I come
+up with a hypothesis that I can correlate messages with a probability, better than random,
+if I look at property X, whatever X is. Well, how many of you like the scientific method?
+I don't really have controls. So what I'm doing is I'm coming up with a hypothesis and
+running it across the data SET. And then I'm looking at the clusters of messages that pop
+out and then I'm going to see if I can figure out something else that correlates them.
+And if I can see something else that correlates them, I call it a success. That's how I kind
+of simulate controls. So let's say I think if a message has a header
+value of X, I think that's a unique sender. One sender is sending that value of X. I run
+that analysis and I get clusters of messages encrypted to a single public key. Well, if
+there was no correlation at all, I would probably get a distribution that looks more random.
+It would be encrypted to random public keys. But with such a nicely segmented public key,
+I kind of think that this worked. That's how I kind of simulate controls and find clusters
+of data when there is no other ‑‑ and if there is ‑‑ sorry. Even if I could
+have found that cluster by just looking at the public keys, the data implies that I could
+use that trick, that is that hypothesis, to find a cluster of data when there is no other
+distinguishing characteristic. So let's how I try to preserve some semblance of the scientific
+method. My first example is message headers. That's
+a big one. Let's look at these. There are a few headers that are in every message but
+some tails that are only in a few. These mostly unique message headers are not necessarily
+the goldmine that you might think they are. That's because headers can be added at the
+client, at the exit remailer, at the mail‑to‑news gateway or by the Usenet peer. What we have
+to do is to really go after the distinguishing headers, to subtract out the headers that
+were added by all the other parts. Path which we can do by just clustering by the exit remailer
+and then seeing which headers on all of those messages and kind of subtract those out.
+Here are some great examples of headers that were specified by the client. User agent,
+obviously, X post type I.D., X no archive. If you use Usenet you know X no archive is
+a client preference. These particular strange headers all formed
+a distinct clump of messages with the unique subject of: Weed will save the planet. And
+that's an easy example of how the idea of unique message headers can kind of correlate
+messages. Now, X no archive, this means don't save it
+in Usenet. It is a client request that most Usenet servers will obey. It is also not the
+word that I have on the screen. This is a misspelling of the header. And there is one
+person or at least I'm claiming one person who has messed this up and completely distinguishes
+their messages from everyone else's. All 17,300 of them.
+So this is what you want, right? No. Capitalization matters. And this is not the correct capitalization.
+What's interesting about this one is that it shows up on several long‑running threads
+on AAM composing nearly 28,000 messages. And initially, I thought each of these threads
+was relatively independent of each other. But after finding this little bit of information,
+I'm starting to seriously doubt that. This one isn't right either.
+(laughter). There is 1500 messages posted with this header,
+including some test messages that were posted with someone's real name.
+This is actually the correct version. And there is about 135,000 messages that have
+it or a little more than 10% which makes it distinguishing in and of itself.
+So, just out of curiosity, another hand showing. Has anyone ever used a type 1 nymserv? I don't
+see any hands. Okay. So encrypt subject is a directive for type 1 remailers that should
+be processed by the remailer. It should never make its way into Usenet.
+This is a bug. This is a client. This is an user messing up. But I can't really blame
+them because type 1 is so horribly difficult. There are over 10,000 messages like this.
+And when you reuse the subject like these, you make messages without the encrypt subject
+stand out. That's the one on the far right. Or even worse, mess it up once and then figure
+out how to do it but keep using that same subject and password. So this let me identify
+52 e‑sub messages that were otherwise security but they messed up once and sent it through
+in plain text. And then there is encrypt key. Another header that should never make it into
+Usenet but does because type 1 remailers are so hard to use. There are over 10,000 of these
+messages. And let's look at another header, news groups.
+Just‑like mailing lists, you can post a message to more than one news group. If you
+do, you're wildly in the minority and that segments you. Like this news group, there
+are 34 messages posted with this news group and thank you so much for ‑‑ to Comcast
+for making your users extremely distinguishable. And what about this value? AAM with four commas
+at the end. I thought this was a correlation, but after tracking it down, it was actually
+a bug caused by the remailer remailer.org.U.K. for one week in January 2006. Just some random
+trivia I pulled out. How about this one with duplicate in news
+groups. These were sent through a large variety of remailers and have no obvious correlation
+besides this value and that they have English subjects. So the English subjects was another
+example of the control that I used to confirm that using a unique news group is a bad idea.
+And humans are creatures of habit and as flakey as remailers have been, a lot of people find
+a configuration that works for them and then they stick with it. Well, if I partition people
+by the remailer and the news gateway that they use, that's what the colored squares
+are. What was previously an anonymous discussion thread suddenly makes it very easy to pick
+out who is saying what and who is agreeing with themselves. And it's even easier if I
+add in the header signature on the far right. And then here's a really interesting pattern
+that I observed. There are a host of messages who have subjects with a 1 or a 2 in them,
+like soggy, soggy 2. Well, I looked at these and found they are being posted together,
+really close together. And then I realized one of the options in type 1 remailers is
+to duplicate a message for redundancy. Send the message down two different remailer chains
+just in case one becomes unavailable. And while that gains you some measure of availability
+and redundancy, it is distinguishing. You can target a nym with huge messages. If you
+see two huge messages appear, well, you know that nym's reply block duplicates the messages.
+Then look for all the possible duplicate candidates and you have a candidate list of messages
+to that nym. Even if you are unsuccessful doing a e‑sub or h sub attack.
+A similar pattern is these. Look at each pair of messages are that are in the slightly different
+backgrounds. The second message comes out of dism five or six hours layer of pan array.
+It is distinguishing. The subject for all these was again: Weed will save the planet.
+Also messages from Frow were mixed in with no obvious correlation to other messages.
+So there were a number of hypotheses I tried that did not turn up interesting data. But
+there are more queries that can be run across this dataset but I need to start wrapping
+up. It all comes down to metadata. What we saw in AAM is the obvious mistakes
+we've kind of expected. It suffers a bit because we haven't taken into account the lessons
+that we've learned in the 10 to 15 years since it was developed. That's a lifetime
+in anonymity technology. But I do think there's some traffic analysis lessons that we haven't
+codified as best practice that we should. So what does the future hold for AAM? The
+security of a well‑posted message is good with a lot of caveats. If you use uncrackable
+pass phrases, only use servers that output packets, post through remailers with no distinguishing
+characteristics and you are willing to be in a very small anonymity set, go for it.
+I don't know how many people are using AAM today but I don't think it is a lot. What
+that means is if the government asks for a list of everyone who uses it, they could probably
+get a really short list of names to dig fairly deeply into each of their lives.
+And AAM crucially relies on remailers and news gateways. And these services are dying.
+Remember, that two people zax and dism post more than 98% of the traffic to AAM and it
+is also text based. Very limited bandwidth. And the nymservs them sells are pretty crappy
+architecturally speaking. We can sing given hot proxies like VPNs and ultra serves, a
+lot of shit because their architecture is not nearly as strong as Tor's. But nymservs
+are in the same category as trust this guy not to roll over on you.
+I feel compelled to mention that the alternative is to use Tor which you do trust to send email
+via thruway accounts on a service you do not trust. While this is a practice that everyone
+in this room has probably used or at least thought of, it's also a really shitty architecture.
+Now, the good news is we have something better. We have a very strongly architectured nymserv,
+pin gin gate uses product information retrieval instead of a shared mailbox. It exposes less
+metadata, resists flooding or size‑based correlation attacks. However, it's not built.
+It's been started but it's got a very long way to go. And it also requires a remailer
+network to operate. And we don't really have a remailer network. What we've got is Mix
+Master and Mix Minion. Mix Minion is a bit better than Mix Master. It uses old crypto
+with no chance of upgrading. Both of these services suffer from the fact we don't have
+a good solution to remailer spam or abuse. We don't have good documentation about them.
+And they both have horrible network diversity. Under 25 people running Mix Master. Under
+five, five people running Mix Minion. So if we like pinch and gate, the path forward
+also involves fixing Mix Minion and Mix Minion needs love. It is currently unmaintained but
+we have a to‑do list that includes the items I have got here. Some of them are extremely
+complicated in moving to a new packet format others are straightforward like improving
+the TLS settings. The others give you practice writing crypto, writing a complete stand‑along
+pinger in any language or style that you want. So if you are interested, there are a lot
+of cool opportunities here. But what I keep coming back to is the fact
+that we have no anonymity network that is high bandwidth, high latency. We have no anonymity
+network that would have let someone securely share the collateral motor video without WikiLeaks
+being their proxy. You can't take a video of corruption or police brutality and post
+it anonymously. Now, I hear you arguing with me in your heads.
+Use Tor and upload it to YouTube. No. YouTube will take it down. Use Tor and upload it to
+mega or some site that will fight fraudulent take‑down notices. Okay, but now you are
+trusting ‑‑ you are relying on the good graces of a third party. A third party that
+is known to host the video and can be sued. WikiLeaks was the last organization that was
+willing to take on that legal fight and now they are no longer in the business of hosting
+content for ordinary people. And you can say hidden services and I will
+point to size‑based traffic analysis and confirmation attacks that come with a low
+latency network, nevermind Wyman's paper that pretty much killed hidden services. We can
+go on and on like this. I hope you will at least concede the point that what you're coming
+up with are work‑around for a problem that we lack a good solution to.
+So if I have been able to entertain you, I'm glad. If I have been able to inspire you to
+work on anonymity systems, I'm overjoyed. If you want a place to start, I will point
+you there. Thank you. (applause)

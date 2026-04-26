@@ -1,0 +1,327 @@
+[applause] >> First thing I need
+to record my selfie. [pause]
+[off mic comments] [pause] [off mic comments] [whistles heckling
+from audience] [pause] >> Thanks
+you guys. Whatever the outcome is I have evidence that it was a
+success. [laughter] Semi
+success. Um [speaks in French] [off mic comments] Excellent!
+[pause] [off mic comments]
+[breath] Oh god! Lift You guys are working on that? Okay.
+[speaks in French until 1:06] Um
+for the yeah sorry closed captioning. Sorry folks. A
+wonderful French movie um called
+The Dinner Game. Very dark French humor. Um who has solar
+panels? Who cares about their
+privacy? Yeah! You didn't um raise your hand. Get out.
+[laughter] There's an EFF talk I
+think next door. You can ask about privacy. Still nothing? Is
+it working on that side? Yeah.
+Who's seen War Games? Excellent movie. It hasn't aged a minute.
+[laughter] I did. Um but even if
+uh Litchfield was cool I was much more serious about my
+craft. Serious enough not to
+have the distraction of a girlfriend. By choice of course.
+Um [laughter] This quote is
+excellent. It is actually what I believe I am. Trying to take
+things opening them up and
+figuring out ways to make them better. Isn't that why you're
+all here? [pause, whistle,
+pause] It's not happy hour yet. Hey by the way I need my speaker
+shot. I could use 2 actually.
+[off mic comment] Thank you! [yell from audience, pause] So
+we're going to talk solar. Um
+this is a system by Tygo. [pause] I brought the little
+part that is the only piece
+we're going to look at today. Which is the the connection
+between the solar array and the
+internet. [pause] It's really cool because not only does it
+upload configure um production
+data to the internet. It also downloads configuration of the
+panels. Things like maximum um
+power voltage maximum temperature of the panels and
+things like that. Of course over
+the internet um what it does is gives the installer the ability
+to monitor remotely the
+production of my system. Why? Because they have an SLA and
+they actually guarantee
+production of my array and they'll pay me back if it
+doesn't produce what it's
+expected to. Yes indeed. Um I could. I would not. Cause think
+about it. About 9000 Kilowatt
+hours a year of production. This says 15 cents. Yes I could score
+a thousand two thousand bucks
+but I would get busted for it. Because this is not the only
+thing that reports my
+production. So that angle you can have fun um not with me.
+[pause] This is what's what
+started it all. You know how you take your nest and or any IOT
+device when you initially power
+it it starts advertising and access point. Uh you connect to
+it. Configure it. Tell it this
+is my home network. And then it shuts down and becomes just a
+wifi client. Not this one. It
+connects both to my network as well as the open access point.
+Um that really really bugged me.
+[pause] So started to need to figure I needed to figure out
+how to fix that problem. And
+started inventorying all the attack surfaces I had uh at my
+disposal. We talked about the
+access point. And little HDTP server that we'll talk about
+later. SSH cool. Yeah except
+there's a built in uh defense in depth maybe. It crashes after 15
+hundred tries. I have to
+re-power the uh res power cycle the device. So quickly it was no
+longer funny. Um serial to TCP.
+I never got it to work unfortunately. But it had a nice
+little UI. Do you want the uh
+the console to be tunneled through TCP or the display. This
+little guy. Or the gateway that
+it controls through uh through um serial port. [pause] From a
+physical perspective of course I
+opened that box. Remember what I told you? I take a screwdriver
+to anything. Um [pause] nicely
+labeled at the bottom left of the screen. You see a little uh
+silkscreen of console. Guess
+what. You plug in your um serial to USB connector and it works.
+So I had a nice console
+interface. Which unfortunately required authentication. So back
+to square one. U boot.
+Excellent. Maybe I could boot it in recovery mode fix the
+password. No unfortunately they
+put a password on the uh on the boot loader. And yeah I have a
+confession. I live in
+California. This was October. The middle of winter. This
+device is outdoors. It was too
+hard for me to take. So I had to look at an easier path and more
+comfortable. Um so [pause]
+Behind this access point there is a website. As I mentioned.
+That website has properties. If
+you use showdon you'll find out that actually 12 or so uh very
+courageous people maybe ignorant
+decided to have that device also internet accessible. [pause]
+Guys this is where you're
+supposed to laugh. Thank you. [chuckle] Um [pause] thanks to
+showdon I was able to verify
+that my findings actually no my lawyer's not present so do what
+you want with he Showdon
+findings. Um [pause] Remember the open access point? It has an
+SS ID. So I went to those
+wonderful folks at wiggle dot net. And uh looked at their
+database. Guess what. I'm not
+the only one who detected those. Uh they're all over the world.
+And they're captured for
+posterity. You know have GPS coordinates of all of those
+devices or some of those
+devices. Um who war drives? Thank you. Keep doing it. Upload
+to wiggle um because it's a
+treasure trove of data about people that like I want to say F
+up no mess up. Let's go back to
+the web server. [pause] That's it. My talk is over. Thank you.
+Um there's an authentication
+screen we can't do much about it can we? Of course not. It's
+funny how I've seen other slide
+decks today that also use a password file called rock Q dot
+txt. Who's used it in the past?
+[pause] Oh come on guys. If you didn't raise your hand that's
+the best password file on earth.
+Um so I ran my brute force. 36 hour later yeah I know I know
+I'm lazy but it was 36 computers
+at computer hours not mine. Um turns out admin support works
+very well. [laughter] Okay where
+do we go from there? Looking around the little website on the
+server. There's a nice little
+page that caught my attention. No such file or directory.
+Ooooo, guess what happens when
+you put a file there? Um for those of you who don't have
+their url decode option on
+Google glasses this is what it looks like. [pause] Copy shadow
+file in to that location. What
+would happen? Yeah I might break my 20 thousand dollars solar
+array by putting something
+there. Um but I didn't. [pause] By the way this MD5 I tried to
+brute force it. I failed. If you
+ever get to it I believe it is still on those devices. Um
+please send me an email. I would
+appreciate it. So that that route didn't work out. Um I
+needed something easier.
+Remember I can I can essentially run a script through that
+injection. Um so PS all oh guess
+what? The HTDP server is running under root. Bingo. Also the
+manufacturer is nice enough has
+net cap already on the device. Ooooo [laughter] By the way I
+won't admit that in public but
+it still took me 4 to 6 hours to get my reverse shell working.
+But I didn't say that. Um I did
+eventually get it working. I had root on that device. What do you
+do with root? I know what I
+didn't do. I didn't get a copy of the file system. So once I
+was locked out I no longer had
+anything to work on. But after a little bit of uh kung fu with
+the drive uh mount [pause util
+11:16] come on [applause] I know I know it feels good to pretend
+I'm that good. Um what I did was
+not rocket science. I just had the time to do it. [pause]
+Clearly that manufacturer picked
+the wrong customer to sell a device to. I'm sure they're
+still regretting that move. Um
+it probably cost them a lot more in uh cleanup then it did uh in
+profits. So anyhow looking
+around the file system something caught my attention. Actually
+not the file system the running
+processes. Open VPN. You guys know what open VPN is for? A VPN
+tunnel. Guess what. That VPN
+tunnel was on at all times on the device. I didn't do it. And
+I swear this is not a joke. I
+did not scan that VPN subnet. The manufacturer confirmed that
+all of its little siblings are
+on that subnet. [pause] Of course no where was it mentioned
+in any of the documentation that
+nobody ever reads that there was a VPN. Remember that device that
+is still on my home network? I
+was trusting it even though it didn't appear trustable. I was
+still doing that. Um so let's
+move on to me trying to get something done about the device.
+So I tried politely in October
+to get their attention. Hey guys. There might be a problem.
+You know it it I'd like to talk
+to someone who actually understand security. Yeah by the
+way in the back? If the font
+size is too small next time remember that DefCon is all
+about line con. Get early to the
+talk. [laugh] So a few emails later um while still trying to
+reach to people that might
+understand me through LinkedIn my in clueless installer and his
+contacts I got nowhere. Actually
+it got even worse. We're now in mid December. Are you the owner
+of this device? Do you have the
+right to do what you're doing? Yeah I've seen that play out not
+that well. Um [laughter] They
+actually already had my full name my email address my
+everything. They already knew
+everything about me but they couldn't find me in the
+database. Um this was the icing
+on the cake. For those in the back I will read what is
+highlighted. Or I'll I'll
+paraphrase. We can help you get access to the system. Do I need
+access to the system at that
+point? No. I can help myself. Um and I I need to read that one.
+Quote Info of system installed
+on your roof is always kept as confidential since it was
+installed. Apparently before it
+is installed not guaranteed and you know English is my second
+language I don't I don't
+understand that sentence. So time to stay to change strategy.
+Clearly I'm getting nowhere.
+I've been at it for 2 months already. Um I'm talking to the
+wrong kind of support. So I send
+this email. What I'm saying there is hey guys here's a
+picture you remember the root
+picture? Here's a picture. The last line doesn't belong there.
+Forward this to whoever's in
+charge. I don't want to talk to you no more. Remember the VPN
+tunnel? Within an hour they were
+logging in on that device and they were staring cleaning up.
+Not not security cleaning up.
+Damage control cleaning up. Disabling my account. Shutting
+down the web server. Uh and
+things like that in the process yeah disabling my entire array
+went offline for 4 to 6 hours.
+Um I was not done helping guys. Please. I was trying to be nice.
+Um thankfully I didn't tell them
+about one thing I had found while browsing the file system.
+In that CGI bin folder there's
+also a file called shell. [laughter] So I got back in and
+uh told them the next day about
+it. And repeat. So that's the best part. Once I got to talk to
+someone in charge of their
+product development. Great guy. Um his first response was
+there's a problem. This is not a
+production device. What? I bought a Tesla and the Tesla
+price and the auto pilot crashes
+on me because it's a debug version I have? No sorry Tesla
+guys. I'm just jealous.
+Everybody in my neighborhood has one except for me. So if you
+guys are thankful for the talk
+don't hesitate. Thank You. [laughter] [applause] Um
+[applause] So 6 months later I'm
+pretty sure they were actually not lying. It was a very
+convenient excuse. But they
+happen to ship me a development build. And a few thousand others
+uh throughout the world. [pause]
+god [pause] What they did well once I had a line of
+communication with Tygo they
+were actually very welcoming of my finding. And relatively
+forthcoming with sharing the
+insider information. Like for example telling me oh all of
+those devices are on the same
+subnet through the VPN tunnel. Um that would have been
+preferable for not them not to
+tell me that. Um one thing I discovered lot shipping.
+Specially for the one oh this is
+a very important question guys. Who in the audience is a black
+hat versus a white hat? Come on
+raise your hands. Oh my god there's not a single hand up.
+[laugh] Yeah okay. [laugh] Um so
+next time you go into a system you're not authorized to think
+about disconnecting it from the
+network before. Because this guy ships its logs every half an
+hour. And boy was I noisy. Of
+course there was nobody looking. Thank god. [laugh] But uh it's
+it's important to realize that
+even small IOT devices have that capability. And uh you might
+trigger a few alerts if you're
+not too careful. So got root. I made fun of the vendor. Why am I
+talking about this? And this is
+actually the most important slide of the entire
+presentation. Yeah I could
+remotely see this little red button? There's software behind
+it. I could remotely shut down
+any of those thousands of solar arrays. I could be a pain to
+people off the grid. Maybe. I
+don't have there's not enough electricity production for it to
+be meaningful yet. It will be in
+a few years. But not today. What's more important is this is
+a bought. I could have a
+thousand of those remotely controlled on your whole network
+spying on your home activity.
+You know oh shoot my my kid is here so I can't say prawn but
+things like that. Um [pause] The
+biggest part the part that bugs me the most is even though I've
+been a security practitioner for
+a long time. Only after this device being on my network did I
+realize I really needed 2
+networks. My home personal network and a completely
+independent IOT network. On
+which I have of course this guy now. He was the first candidate.
+But the nest um a few
+development boards. Who's played with the particle photon
+photons? Yeah. Those are
+excellent devices. Um but just like this guy don't trust them.
+Um my security cameras you know
+those cameras that I bought on allibaba with that Chinese
+firmware? That is apparently
+very chatty. Uh I won't go further. So yeah. Is your mom or
+your brother or your family
+expected to have 2 networks at home and to be able to manage
+those? No. There is no way that
+that even us handle it. There is no way that customers of IOTs
+can be expected to actually
+protect themselves from those devices. That is a very sad
+state and I hope that message
+comes out of DefCon as much as possible. Because it is time
+that we have a URL rating of
+devices uh that also takes into account your privacy. Cause we
+all have that expectation. You
+don't buy a car without seat belts. [applause] Yes.
+[applause] Responsible
+disclosure is hard. Yes. Don't give up. Please. Follow
+responsible disclosure. And
+finally. Thank you to all IOT devices for so much
+entertainment. [laugh] Thank you
+to quite a few people. My wife for tolerating my late nights.
+Uh Rafael where are you? Stand
+up. [pause] Keep doing your packet storming. [applause] And
+ty Tygo for not suing me. Thank
+you. Uh you got me scared there. Guys thank you. [applause] [off
+mic comment] Yeah you screwed up
+[fades out]

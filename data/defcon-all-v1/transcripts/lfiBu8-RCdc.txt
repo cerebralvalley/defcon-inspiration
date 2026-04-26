@@ -1,0 +1,531 @@
+Good afternoon. Welcome to the
+remote access talk. I welcome you all here, thanks for coming
+to this talk I know you have a lot of choices. Key megsages for
+this session, I wanted to let you know that your current
+security architecture is flawed now. I published everything you
+need to know, that's all on the website. First principles to
+demonstrations, full code releases, the proof of concept
+including test framework for at least the first set of
+technologies. People are welcome to take photos of this and film
+this if they want to. The impact is going to be significant.
+There are no constraints to data theft for remote workers or
+off-shore partners today. There are no easy answers but the
+paper has some suggestions. For my job I've been both red team
+and blue team, I'm currently on the blue team in my career. In
+my spare time, this is one of my hobbies that I'm presenting
+today, this has nothing to do with any of the companies that I
+currently work for, have worked for. I laugh at my daughter's
+Barbie car, my poor daughter has suffered at times for each of
+these projects. Her Barbie car remains outstanding, we'll have
+a look at this this Christmas she shouted out Barbie car in
+the middle of the Kiwicon presentation, she's a cutie. I
+want to give credit to researchers, there's been a
+number of researchers in this field there is this whole heap
+of technology that's been reinvented completely uniquely a
+number of times. There's a short list here of people most
+directly related to technologies that I've also reinvented again.
+I discovered them afterwards. Some of what I'm going to
+present is completely distinct from these. Some of these I've
+with other project but I wanted to give credit to these people.
+There's much bigger list on the website. Let's start with the
+problem space. First principles, my assertion is that any user
+control bit is a communications channel. Any user control bit is
+a communications channel. Validation for this is that the
+screen transmits large volumes of user controlled bits. I want
+to you imagine the screen as fiber optic table that's been
+cut through. Huge amounts of data is being pumped out into
+the room. The question then, is the screen be transformed into
+uncontrolled binary transfer interface. I've heard this. [
+laughter ] [Applause] >> We have tradition at DEF CON. First time
+speakers do a shot. This is a first time speaker very hard to
+give acceptance give big round of applause. >> Thank you. >>
+We'll all get one. Yes, we do shots in every track. >> Thank
+you very much. >> This is also to all of our new attendees.
+Cheers. [ Applause ] >> Thanks, appreciate it. There's a way I
+didn't practice the talk. So, engineering and proof of
+concept. [ laughter ] Going back in time, terminal printing back
+as far as 1984, the handbook we talk about printing as a switch
+in the software. Data was sent to the virtual terminals now
+sent to a printer device. Not really sending data out of the
+screen, same as we did with XYZ modem we switch it. Not
+literally out of the screen. '92-96 VHS tape back-up solution
+that I stumbled across in the spare parts bins of my
+electronics store. The way this worked was data was sent out of
+video port captured to VHS player, you recorded that data
+as chunk of blocks that could then be played back as video out
+from the VHS player back to your computer. Literally backed up as
+visual signal but not downloaded through the display. Pretty
+close. The first real screen data extraction that we get is
+Microsoft project back in 1994 some of you may have even owned
+one of these the way it worked there was E-prompt inside the
+watch where it exposed window and actual lines printed on the
+CRT, sent signals that programmed it through the face.
+It had to work on CRT there's been couple of open source
+projects that I've referenced there where they had to use LED
+because it didn't work for LCD display. 20 seconds to transfer
+75 numbers. Here is that high quality ad, 20 years ago the
+first computer watch revolution. Windows '95 had a tool. You
+could manage your phone numbers actually export them to the
+watch. Good old days. There he goes. Out through the CRT into
+the face of the watch. Working in the machine recognition come
+1994 we had QR codes, I'm not going into the complete
+background of this, this is much more technical audience than
+I've spoken to before. But the features that I want to take out
+of this are highly distinguished codes, the fact that they're
+easily recognized and machine recognizable. And 360 degree
+scanning. I have to line this up. Formalized in 2000.
+Capability, automatic reorientation, error correction,
+native binary support.Ment features are one of that error
+correction. Later supported to form them to what encodes,
+really recognizable. Large capacity but see in this demo
+that we don't need the larger capacities. The zen moment if we
+consider the QR code as an optical packet sitting within
+the either of the display device. Then what it now
+represents is a data gram that is layer three. You to get
+beyond packet boundary replace one code for another. I've got
+multiple codes going past the viewer. The receiver then uses
+video instead of a photo don't want to take one then exit. We
+want to take a video and keep processing. Number of problems,
+what we mean data is coming out of the screen, there's no way to
+signal the sender I've got no synchronization, no flow
+control. This requires over sampling it's a picture I have
+table able to take pull multiple pictures like any other Wav form
+to sample the screen to make sure I captured the image at
+least once. But oversampling creates duplicates. May have
+been intentional because that may have been part of the
+protocol I may have had multiple copies. Same data because of
+what I was transferring. Now at the point where we need to
+transport protocol. Create the transport data flow take the
+first of the packet, smallest packet we have in QR code has 14
+bites of capacity. Putting a header in there take one bite
+and create a header, now have the choice of framing up this
+protocol as I like. I've separated it with control and
+data frame. The data frame has the control which is the header.
+I've got a flag tell me what type of packet then a counter so
+I know where I am in the stream. At least so that I can detect
+those duplicates. The payload simply the data, actual packet
+size, the control frame, we've got flag to say whether or not
+we control the data. And then a major type and subtype. You can
+see here the types just as an example I've thrown together for
+proof of concept, file name, file size. With stop code for
+example that gives CRC the payload is the content that have
+control message most of these messages are simply designed to
+give me good user interactivity, a good user interface as you'll
+see in a moment. Now this is one way transfer between two or more
+peers, don't forget two devices can see the one screen. Now have
+multiple receivers off one sender. The features layer four
+through seven I have high latency, I have no support but
+to support that because I can't tell the sender to speed up or
+slow down. I support interrupted transfer because I know my
+position in the file based on how many packets I've received.
+And it includes error detection both within the packet but also
+end to end I have a control message with a CRC I know
+whether or not I've got the whole stream. I've picked there
+at layer three a number of specs to make sure we have good
+sampling without making it complicated. One through five or
+ten frames per second. Because I'm assuming that I got
+commodity camera, 30 frames per second, ten probably the most, a
+range of QR code. See where I have chosen the smallest one.
+Binary coding and error correction. What does this look
+like? Well, most of this has no real impact on the protocol
+other than the MTI that we specified. Here, because of the
+ECC compression, the frame will actually spill over to a larger
+size frame depending on some types of data. He pushed it up
+to that frame capacity accordings to bits. What I've
+done selected arbitrary reliable frame size that makes sure I
+don't spill over to larger frames which interrupt the flow
+of the scream, the recognition from the receiver side. For
+reference the smallest reliable frame capacity there is ten
+bites which means rest of the protocol has been shaped around
+that. As quick example, I'm going to send hello world file
+out to the room now. That is control start, hello world, fit
+into ten bites that start control. There's start control
+QR code saying I have 148 bytes packet. Star control FPS sending
+five frames per second. Now, my client can tell how long it's
+going to take for the user to receive it. There's my data with
+counter of zero saying hello world. Then I'm going to send a
+stop frame that says that this file is complete with this CRC
+the receiver can validate it. What does that look like. This
+is what you can see from the transfer. This is a PDF that's
+being uploaded to the room now. To give you quick feel of data
+rates, if we apply the frames her second to the packet side
+you'll see that we've got minimum of 80 bits per second.
+Maximum of 32 kilobytes per second. If the receiver had high
+speed camera be able to proceed much higher rates of transfer.
+This is exam Mel of the PDF I was throwing you before stored
+in YouTube being downloaded by android phone in flight mode in
+realtime. It's open letter that I sent to the office of the
+Australian information commissioner advising him that
+the difference that was made in 2014 between use and disclosure
+and the privacy act was actually not valid that if I can see it
+on the screen, I can download it. You'll see that the top the
+icon for icon, the status bar that realtime scoring this data.
+I've almost received that file. Then there's a message to say
+that it was successfully retrieved. You can pull that
+down android, Apple as a proof of concept now from their
+stores. Now, why did I pick that ridiculously low QR code version
+one. It's native resolution pixels. We know that 80 by 25
+will contain 80 by 5 will contain 20-21 pixels. What
+you're looking at here is a same program that is outputting QR
+code using space character with ANSI codes for white on black
+and black on white. We'll see where that is important when we
+get to the architecture. What do we got at this point. At this
+point, transmit software on my laptop here at the podium then
+I'd be able to exfiltrate any file I want out of this computer
+to device you can't see. Camera in my hand. But the question is,
+if -- how did I get that transmit software on to the
+laptop in the first place. User control bit is a communications
+channel, I've got a keyboard, what we want is a digital
+programmable keyboard. Leonardo comes with USB hid support, it's
+been available to us for 20, 25 years that means no drivers
+required in the target system for this to be recognized as a
+keyboard, mouse or joystick. I'm going to use this as a keyboard.
+Top is the Digi spark which is community program, the bottom
+one is the Leo stick with 32 kilobytes that means I have 32
+kilobytes -- 25 kilobytes of space that I can use to upload a
+file. The question is, what are we upload. The sensible thing
+would be source code because I can type it in this text. But
+that's hard because I've got to compile it in my target system.
+What I'm going to do is G zip a transmit binary turn it into
+Hex, allow it to type the Pex into the target system in the
+strip form, wrap it around as a pearl or bashed script let it
+output that binary on the target system. This is a HP thin client
+with XP embedded that my wife ordered from eBay, I have no
+idea what the administrative credentials are for this box.
+I've used putty to log on to a Linux system. Now what you'll
+see in a moment is I'm going to save the data but I'm going to
+plug in the Leonardo, when the Leonardo plugs in, there it is
+there, beautiful hand modeling going to pop up say, I need to
+-- I need drivers for Leonardo, I don't have rights for those
+I'm going to cancel that. But it also pop up with the USB hid
+keyboard. Leonardo USB hid I.D. can also be programmed so this
+could look exactly like HP keyboard for example. Now it's
+typing the script. Which is the payload that I want to output
+into the target system. It types and types and types. We'll save
+that script. Change permissions on it. Now when I run that
+script it will output the G zip binary. Which I'm going to
+capture to a file. Unzip that file. Change the permissions on
+the payload and I'm going to run that payload. That's a 64 bit
+Linux payload that just got uploaded through a thin wallet.
+Technology check point two. What have we done at this stage. Now
+there's no barrier to get a client on to the system and
+we've obviously got data off the system which means at this point
+I've got to bidirectional data flow. Let's look at USB hid
+interface, it's poled interface by the system, comes up once
+every milliseconds, a packet full of keys. Unfortunately it's
+a small packet contains only six keyboard keys by code, it's
+normal binary. It's also automatically developing
+interface. If you see the same key twice it will strip it out
+that means at this stage the same problem as we had before. I
+need transport protocol for the keyboard. This case the packet
+-- I'm jumping ahead of myself. It is still Unidirectional going
+inbound when I originally wrote the paper I hadn't seen
+implementation where someone has done exfiltration of data
+through scroll lock, cap lock and Num lock. Can't use the
+status which I haven't done. Create binary payload. That
+brings us down to three bytes per packet per millisecond.
+Which gives me -- and we need to correct for the duplication I've
+done my own compression and rehydration which is all in the
+paper that you can find online. Again, the packet is tiny we
+don't want to steal a bite for a header I'll book mark a stream
+of these rather than putting a header in each one and we'll
+ignore everything to do with file-based transfers what I want
+to do get run data into the system. I don't want to be
+limited to that 32K chip. At the top there I've still got
+Leonardo at the bottom USB serial adapter. The attacker can
+see a serial port, binary data going out of that serial port
+goes into the keyboard device and gets converted to typed
+keys. Combined keyboard buffer. I exposed number of internal
+controls for the framework to make it faster. And now it's
+binary interface for the attacker. Before we augment
+TGXF, to stripped out all of the file controls for that as well
+now I've got a treatment for TGFX and stream for TKFX. We'll
+join them together as a single application. This is what we've
+got. On the attacker's computer on the left, you'll find TCP
+socket listening on that system, anything received through that
+TCP socket will be sent out of the USB serial port heading for
+the keyboard stuffer, whatever is typed in is received on the
+organization side, decoded sent out of a packet -- out of TCP
+socket on that side, inside the organization. Whatever comes out
+of the organization is render the entoday encoded and rendered
+to the screen. Output of the soccer on attacker's device.
+This is a through console, through screen and keyboard,
+native TCP socket. The reference implementation is limited to
+example protocols, 12 kilobytes up on the keyboard side, 32K
+down on the screen side. There are ways that I've suggested you
+can improve. We have bidirectional serial connection
+with native socket interface. Within same portability and
+massive vulnerability. I know guys through PPP example in a
+moment. The ESA context. Get back to enterprise security
+architecture, they are a storage-based channel attack.
+Some people referred to it as overt channel because it's so in
+your face. But then where's the enterprise in all of this. So
+far we've been working from a local computer, I gave you one
+example that ran over a thin client and over the network. But
+in the enterprise we ab tract the screen and keyboard so that
+throughout the organization we stretched that screen and
+keyboard to look something like this. If I'm an off-shore user
+today, I'm in that managed I.T. service provider off shore, what
+I see after I VPNed in, Citrix, SSH, all the way through every
+single one of our gates, all the way through the deepest part of
+your organization, the keyboard key strokes I type in here go
+through all these tunnels to the back, the screen pixels render
+back come all the way out to me off shore. A completely clear
+tunnel through the organization. This is console abstraction. In
+practical terms on the bottom of this picture if you can see it
+is an attacker on the left and enterprise on the right. What
+this means attacker device isn't the end user computer device
+that you gave me off shore. This PC that you gave me off shore is
+the one perhaps babe the VDI doesn't matter which is the
+machine where you gave me the DAP, the AV, the anti-malware,
+where you got all your controls. I'm not going to attack this
+device. I'm going to plug in a keyboard and point a camera at
+it, the attacker's device is in my hand not connected to the
+network. Inside organization, that was on the left, on the
+right in the deepest part of your organization where you have
+given me access to manage your infrastructure, is the other end
+of this client which is right next to my goal which is where
+you don't have DLP where you don't have anti-malware
+detection. Example. On the left in the red is attacker's device
+with no network connectivity. In the green-yellow tags the HP
+thin client my end user compute device, next to applicationer is
+R server that SSHed to. I have the keyboard stuffer plugged in
+a camera on a couple of Pringle cans pointing at it. At this
+stage I've run PPP on that TCP Socket, we just negotiated an
+I.P. address. My attacker PC with no network connection now
+on the same I.P. network as the application server. I'm now
+running SSH over that I.P. connection. Apologies for the
+blurriness, I'm not a very good elbow model. It will come clear
+in a moment. You'll see negotiation, there's the request
+on the left on attacker screen saying, do I want to accept that
+SSH key. Another few packets come and go. That's the request
+for the password. Type the password. That's the log in. The
+attacker's PC that has no network connectivity at all,
+just SSH into the application server. [Applause] Solution two.
+New for Christmas 2014. When you present these things people blog
+about them they say, it's interesting. But I can stop QR
+codes that's what I put in the paper. When I went to Kiwicon I
+released something new that was an ASCII version. So, I believe
+this is an unsolvable problem. This was another variation to
+demonstrate that, so at this stage TGFX is transported
+protocol, I've got my data gram protocol on layer three I'm
+changing from QR code to ASCII character. So, text. 0s or 1s.
+Now it could have been graphics, I threatened to do pixels
+because that would be significantly faster it could
+have been images, I'd love to see organization out there
+trying to filter fortune 500 logos. It could be letters,
+words, phrases, whatever you choose I can adapt. In this
+particular case I've chosen ASCII characters to prove it was
+possible. This is client list because at this stage I no
+longer need a substantial client that works up to 300 bytes, I'll
+show that you. Minimal service, I indicators are compromised.
+But simply some dash script or could be PHP or doesn't matter.
+And demonstrates futility of QR code detection. There's the bash
+code. All I need is display a counter and some data and I can
+make it run. I've got particular set of font and colors because
+I'm using optical character recognition. It's just for the
+proof of concept you can throw that away. I've switched from a
+camera to the AVA media game capture media device, anyone
+that doesn't know these, so you can plug your Xbox HTMI cable,
+it captures it for your replays. But it saves to a USB key that's
+tiny little key at the front of that picture. This example is
+designed to capture data at one kilobit per second. That will go
+into speeds, I've got 19-10-80 display. I'll show you example
+of that shortly. My recovery runs a lot slower but it doesn't
+matter what I've stolen it as is the kilobit per second. I'm
+going to recover this to MP4 file in Linux. Now the red room.
+Last year at Black Hat, about late one night gentleman pulled
+me aside I was telling him about this he said, look, seriously,
+but what about the red room. My organization has a red room. We
+see this thing off shore. Red room is the room that has the
+secret sauce, it's got the special recipes, the place you
+have to go to access certain data assets. Off shore we tend
+to have rooms that classified to certain specification we put
+certain physical controls around them. With variable success.
+Anyway, he was focused on the red room. The rules for the red
+room are device can enter the red room but has to be formatted
+everything except the firmware. Which means we can get the tools
+and technology in.Nd the didi advice can leave it has to be
+blanked again, the question, how am I going to get that USB mass
+storage out. My response to him was, well, be creative. If you
+don't note the reference you'll have to watch the movie. This is
+an example of that bash upload. Been given password just as
+piece of content to send. I've put that bash script on the key,
+just popped it in for me. What you can see on the left is
+clearly a counter in binary, 0s and 1s on the right is data in
+binary I'm get one bite per packet effectively. When we
+decode that, you can have a look on YouTube. Now what I've got is
+Linux system, I've opened the video, I'm processing it one
+frame at a time now doing optical character recognition on
+each frame. If you can see it, I don't know how clear it is on
+those you'll see a little rainbow colored boxes floating
+around the letters on the screen. That's where it's
+recognized characters is attempting to process them. On
+the left-hand side this is indeed bug mode every line of
+password that comes out on the left you'll see another line of
+it appear on the screen. That data is coming up line by line
+as it's processing the video. No need for -- [ no audio ] It's so
+slow. I don't care. It wasn't the point. At Christmas I got
+bored I was watching "Deep space 9" I think for the third time.
+So I went for the pixel threat. Assumed it wouldn't be too hard,
+certainly wasn't very difficult at all now what I'm doing is a
+pixel at layer three, so, I'm using HGML java script. I've
+left text but now if what I had that VDI in the environment or
+web browser I can now encode data visually and send it back
+out. It uses about 20K, that's now about 30K of java script. It
+feels big to be clientless that's just a single file and
+HTML you can plug in a key and upload the whole thing. Again,
+demonstrates futility of targeting a specific
+implementation. Now I tried the same box, this is -- 1.3
+megabits per second now using two frames per second one bit
+per pixel this is simply black or white. That's $120 box. The
+Ava media I'm using 12 by 720 at 60 frames her second. As you'll
+see, we recover at the same way. Slightly different encoding.
+That's me plugging in the key and typing in the client. This
+is a web browser at the moment it's Firefox it works in chrome
+with F11 mode it's full screen. I'm doing a local file upload to
+the browser itself so the java script can process the file. And
+that's what the data looks like in black and white. Looks like
+just a static TV, right? I'm going to let this one run so you
+can see the progress actually counts upment speed as well. The
+content of this file is the 5.5 megabyte I wrote last year on
+TGFX. That file has been uploaded, that was 1.37 megabits
+per second. Easy enough to do. Downloading is the problem. Here
+I've got the same program framework only I've ditched all
+the optical character recognition on the left you can
+see the line by line frame marking, that is each individual
+frame of this video and what I've taken away from it. This is
+debug output. First thing you'll see I upload the big red box.
+Allows my software to locate the region on the screen that
+contains the packet. So I can find layer three. There it's
+found it. Then what we'll do is every single -- control messages
+going past that we can't see. We've got those now. There's
+full screen of data. Now, there's a CRC in this protocol
+you can see this 20 lines before successful line before
+successful frame that we've miscalculated we haven't got
+full data. As the over media captures you have about 50%
+through this transfer you'll see that the picture starts to Res
+up it's like it takes ten or 12 frames to completely capture I
+think there's internal bit rate in this. You'll see loads of CRC
+errors before we get the one frame that works. In the bottom
+corner you can see the PDF slowly being restored from this
+file transfer. Now I'm getting more errors, there's loads of
+errors I'm also going a full updated frame. A full updated
+packet. Before I get a valid packet. If I push this one more
+frame per second faster it's not successful. Ticking, ticking,
+that's transferring. Very close to not successfully recovering
+each individual frame. Almost complete. And the last packet
+will be the CRC 32. That's successful. That's a big list of
+CRC 32 validations on the file. There's the PDF. [ Applause ]
+But that's not good enough for DEF CON. That's what I had when
+I submitted to DEF CON I thought, this is pitiful. I'll
+show you why this should be substantially higher. For $30
+more you can get professional capture card, unfortunately I
+didn't read the fine print this is YUV capture card even though
+RGB data source is one bit per pixel without getting whole lot
+of mess. However, by being a better card I can do eight
+frames per second that works out to 4.7 megabits per second. Same
+resolution, same packet size, 100 kilobytes per frame. So the
+low price of ten times that much, you can buy the 4K extreme
+4G this thing designed to capture realtime, 60 frames per
+second, 4K video frames. This thing will capture the next
+couple of generations of what you're VPN users will use. Same
+resolution. QR but in and out three bits per pixel, ten frames
+per second. So I'm up to 300 kilobytes per packet. And a
+total of 12.1 megabits per second in the demo. Only reason
+why I'm not showing you today a one gigabit transfer because I
+couldn't properly pass the AVI file. FFM peg came closest to
+converting the file I was able to get the three bits per pixel
+reliably. I couldn't get ten bits per pixel reliably. Which
+this card will capture but I couldn't convert. This is where
+I've left it. That's the same file with this card capturing
+it. Let's recover that file. You can see I've already captured
+the frame. Resize this picture fast enough. There's the
+control. You'll note that there are only two CRC only two times
+I didn't correctly get the frame with this capture card. That was
+12 megabits per second. Architecture, look, we need to
+leave out the PP example. The PPP example is not part of the
+solution. Because it requires privilege. Require privilege to
+set up interface on system, to leave that aside before we had
+that we already had PCP socket was working between two nodes.
+Just having a bit of fun. But important thing to note the
+technologies I've shown you do nothing for privilege. They can
+only do exactly what your users can do today. What you can type
+and read is what I can type and read. I haven't changed
+privilege at all. Distinct properties of the delta seem to
+be along volume, accuracy, structure and utility and the
+paper goes into a few views on that in the cat and mouse games
+that you can play on that. The problem we have in Australia, in
+the Australia privacy act and I believe -- there's a distinction
+drawn between use and disclosure. It's considered use
+and safe if the user comes into your system, into your
+environment and works with the data in your system. That is
+considered to remain in the off shore case that data remains on
+shore. It's not off shore. Even though the screen is displaying
+it that's use. Haven't left your system. Disclosure however when
+that data is taken from that system, taken off shore and user
+can do whatever they want with it. Obviously tools that I've
+presented today are designed to completely destroy that barrier.
+But I haven't done anything with the privilege on that. Now in
+the Australian privacy act, if the data is taken off shore,
+Australian entity is actually liable for that data going off
+shore if they didn't take reasonable steps and the only
+one of these steps that seems to make any sense in this context
+is monitoring. The questions what is reasonable monitoring.
+In 1973 I wrote a note on confinement problem, brilliant.
+Brilliant work. His conclusion was, at the time they were all
+looking at multi-user systems and trying trying to provide
+levels of difference between clearance, not being able to
+leak data, his conclusion was it probably cheaper if possible at
+all to just to leave it -- to accept the risk. For this type
+of problem. His work was rolled up in to the TCC specification.
+For B and B3 trusted systems. The conclusion that document
+came to was that a hundred bit per second data leak or hundred
+bits per second was considered a high leak. Because a hundred was
+valid terminal. If you had valid terminal that was leaking at the
+speed of a valid terminal, then they can't possibly be secure.
+Now, out of all the example I've given you today, none ran under
+a hundred bits per second. Not one. Including text one that
+will run through SSH. HTMI at 1920 by 1080. By 24 bits per
+pixel faster than a gigabit. In terms of acceptability. The TCC
+spec said that the maximum bandwidth accept for is one bit
+per second. And any covert channel that was above one bit
+in ten seconds had to be auditable. So if you are in your
+environment today, the question I put to you today is, do you
+have the ability to see every single key change, caps lock
+light change, pixel change, any delta in your environment that
+runs faster than a tenth of a bit per second. Not in any
+organization I've known. The business impact. I'm going to
+refer to example from April this year here in theist, the FCC
+went after AT&T because if I remember correctly their off
+shore centers in Mexico, Colombia and the Philippines
+lost 280,000 records. The lawsuit settled at 25 million.
+Which was then reported as the fine. If I took one of those
+users off shore, that works out to about in rough numbers, $89 a
+record. Per personal record lost. If I took one of those
+users working today with A4 page I'm writing down whole records,
+two kilobytes per record, full bits, eight bits. That works out
+to -- a thousand words a day, five kilobytes a day. The worst
+damage I could do to you in four business days would be ten
+records. Multiple output by ten, still talking less than $10,000,
+still less than 100 users stole in in four business days.
+Assuming the FCC doesn't give bulk discounts then what we've
+done in the last 45 minutes is take that to 12.1 megabits per
+second. I'm now moving in the same grid of time, 87 million
+records with a cost to the U.S. organization of almost $8
+billion in fines. But I don't have to work in business days
+because they're just business days. They're eight hour days, I
+can now work in 24 hour days, I can start this transfer at 9:00
+this morning pick up the results at 5:00 tomorrow afternoon when
+I go home. In terms of 24-hour days we now talking about one
+fifth of the U.S. population being able to be downloaded per
+24 hour day of fine around $6 billion per day. And that would
+be entire U.S. pinched in one week or Australia in eight
+hours. [ no audio ] Once it's been displayed it's been
+uploaded to the room. So far as off shoring, right sourcing,
+Bestshoring, whatever you want to call it if you -- as a name
+for remote access for untrusted users to trusted data on shore,
+if you want your data to be yours and yours alone then this
+is not currently an unlikely to ever be safe. I'd like you all
+to consider how many bits per second data loss is too many to
+accept. Thank you very much. [Applause]

@@ -1,0 +1,105 @@
+>> VAAGN TOUKHARIAN: Good day. My name is Vaagn. >> TIGRAN GEVORGYAN: And my name is Tigran. >> VAAGN TOUKHARIAN: We will talk about HTTP
+time bandit but before we start our talk, I have one thing to ask. This is our first talk at DEF CON. So don't be nice to us. Be very, very, very gentle to us. Please. Thanks. (Applause). So about us. Tigran and I work for Qualys. We break stuff for fun. Sometimes we fix them too. We are interested in time travel and we'll
+talk about that a bit later. And we both love to tri, we do triathlons. So what we going to talk about? The presentation short, but effective maybe. You will judge by leaving the room or not. It's going to be about another application,
+DOS method and we'll then show you the tool. We'll go through some stats and we'll talk
+about what are good or bad uses of tool or method and then we'll glance over the defense
+against this method. Why? Why do we do this? It's obvious because we wanted to have time
+machine. We couldn't buy any on eBay. We could, but it was similar to what you see
+on the screen. And that really doesn't work. So we thought we will make our own time machine
+and I think we succeeded. The time machine that we have, does one thing
+and does it well. It can give you the future state of your web
+server given the resources you are going to push on it. About it a bit later. So we going to talk about application layer,
+DOS tool or method. For us, DOS tool are two different kinds. There are some that are not that smart and
+another group that is a bit smarter. Not smart apart is pushing your resource over
+and over and over and hoping the resource will die. And then you do that from multiple instances,
+it works. But that doesn't have feedback. And sometimes a load is near symmetrical. Smarter bots like slow loris and slow HTTP
+test, and PKI abuse, they are smarter and they are asymmetrical in nature. Our proposed method is going to be striving
+to be asymmetrical. >> TIGRAN GEVORGYAN: So how do we do this? So the point of this talk, the information
+from future is picking the resources out of all the available ones, picking the ones that
+are most painful for the server. While people say, oh, servers done feel pain,
+we all know they do. So how do we do this? We spider the website, we collect, compile
+a list of the resources and then we start measuring certain things, for example, the
+download speed or the start to download time. What this gives us is a lot of data and what
+deals very well with a lot of data and that's statistics. So we use statistics to filter through the
+data. We calculate the average of all the download
+times. That gives us a baseline, what is a normal
+transfer time. And then we can tell ‑‑ oh, these resources
+are slower or faster. So we use to formalize this, we use the ‑‑
+we used mean as the measure of central tendency, and we calculate this standard deviation. The resources that have high standard deviation,
+that means that they are inaccurate in terms of they can be fast or they can be slow, but
+we can't really tell. So we throw them away. We select resources that have slower download
+times or start to download times and we think that this is related to CPU load, and the
+reasoning is that all the transfer delays are the same for all the resources, the network‑related
+ones. So if some resource has higher transfer time,
+that must be resource specific and that makes it interesting. So this, for example, is a chart of resource
+download for a website and you can see that the majority of resources fall close together
+in some middle range. There are some outliers, so fast outliers
+and some slow ones. The ones that are interesting are the slow
+ones. The question is. What causes these resources to be slow? Is it the CPU load or is it just the sleep
+standard on the page. So small demonstration and not to anger the
+demo Gods, we did a video. (Laughter). So here the tool is running against a locally
+hosted web server and when it's done it, generates a list of URLs with the measurement mean,
+the standard deviation. While this is nice, it's not very, very useful. Instead, the tool can be constructed to output
+this information in the HTML. We see it in increasing order. So the HTML resources down at the bottom are
+the fast and the PHP resources are near the top. And this is because PHP requires the PHP interpreter
+invocation, which takes some additional time and the resource at the top are some artificially
+made pie calculation, which understandably takes a long time. And so XML is very nice because it can be
+head into some other tools and I have one example which is an XXLT which transforms
+this information into something that can be visualized. So you will see a scatter chart of download
+speed and standard deviation and there are four quadrants here. The top quadrant, the top two quadrants, they
+are the resources that have high standard deviation, which means that the measurements
+were inaccurate. So since we cannot trust these resources we
+throw them away. Instead we concentrate on the resources on
+the bottom half. On the right side, these resources are fast
+resources, and consistently so. So they are not bottlenecks. Instead, we concentrate on the resources on
+the lower left quadrant, and closer to the zero zero point, the better ‑‑ I mean,
+the painful the resource would be for the server. So the tool also can be ‑‑ can generate
+data for visualization in other means. For example, the next one, whenever it comes,
+it will be ‑‑ the tool is instructed to generate graph dot language graph. So here you can see a small website with transitions
+and each transition is marked with a transfer time. So slowly the resources could be highlighted. I couldn't do a good job here, but the capability
+is there. So next, the tool is going to scan real website,
+built with concrete CMS, and so we give it the URL to start with, how deep into the website
+to go into and how many measurements for each resource to take and write it into concrete.xml
+which will be processed later. So once it's done, it's crawling right now. Once it's done, it will generate the XML and
+then what can be done with this XML is, again, feed back into the tool, which will correlate
+and find out which resources are slow in its opinion, and it picks some PHP resources out
+of that. And so it will start sending paralyzed requests
+to these resources and measure whether some service degradation happened. It will output, what was the original measurements
+and what were the new ones. So by looking at these deltas, you can figure
+out whether this is truly CPU heavy resource or not. So now a bit about asynchronous nature. So this slide shows three screens, the top
+one is the top utility output of the web server. The bottom right one is the client. You notice the client has 9, 9.5% usage, and
+that's mostly because of the recorder. I'm launching the tool five times to why the
+most heavy resources and the load on the client side, it was not ‑‑ it goes up to 9.5%. So negligible, but the load on the server
+side goes up to 80 to 82%, which is, you know, asynchronous in my book. Okay. So this concludes the demo. >> VAAGN TOUKHARIAN: And now that we saw the
+tool, let's talk about what can be done with it. You can use it for the good of the humanity. As a QA tool, for example, or to figure out
+if you are vulnerable to attacks described a minute ago by just going in and taking all
+of those CPU hogs and debugging them or getting rid of them, rewriting them. Or you can use it for bad which is almost
+what Tigran showed two minutes ago, where he paralyzes the resources and tries to see
+if the degradation happens, imagining that being all automated and one click, boom, you
+go find the worst resources and then do more analysis by figuring out which ones are the
+worst in real life, which ones degrade, and then you push them even more. And then, of course, there is the ugly, which
+is the bad, but distributed basically. So that is what we have right now and what
+we were thinking of on adding on the tool or a method is a couple of tweaks. One would be the measurement of degradation,
+more precise measurement of degradation, in parallel testing, which will go to nuances
+like understanding load balancers. We don't know how load balancers would behave
+right now, how our calculations will be affected by load balancers. Those things need to be worked out. Then we have a couple of other things that
+would be nice to add, like SQL wildcard injection into forms that we think are search forms,
+or in any way are fit to SQL query. And then another thing would be figuring out
+if state reset is pricey, to see if when you are forcing an application to generate new
+tokens for session ID or whatever, it takes any CPU load. That has to be calculated, estimated, or guessed,
+or doctored. And now let's talk about defense. Well, what can be done on the defense side? Load balancers are probably good measure here. Our guess would be mod security here, and
+you can use the tool to identify and fix memory, DBCPU hogs make your application work smoother
+and be less vulnerable to this attack. And slide deck has a reference number one,
+which has a link to very simple mod security setup that most probably going to cover 90%
+of cases. It's done by some other guys but we find it's
+effective. And then there is one more thing that Tigran
+thinks can be done. >> TIGRAN GEVORGYAN: So I'm lazy, right? If I can off‑load something to the computer,
+I prefer that. So the idea here is to design a mode security
+extension that will keep track of the website usage, meaning it will keep track of what
+resources ‑‑ the chain of resources that was requested, the response times that were
+witnessed and all that, and it will track and tag out of place requests. For example, if a resource is requested all
+the time through some chain of events, and this resource is requested immediately, that
+would, you know, warrant some special consideration. Same goes for state coherent checks where
+a resource is always requested with some state and now the request comes in without a state. That's an indication to pay some close attention
+to that as well. Yeah. With that, we thank you. >> VAAGN TOUKHARIAN: We are on time. Thank you very much. (Applause)
+Thanks to Sean for setting up the lab for us.

@@ -1,0 +1,364 @@
+All right. Good evening,
+everybody. How are we doing? Good? Good. Awesome. How many
+people [ inaudible ] today? How many first timers? Ctf area.
+When I came to my first Defcon and all the lights and everybody
+hacking everybody else, it's the coolest thing. The Defcon ctf is
+about the hardest contest in the world. And this team has won
+four times. Four different times. One of the best things I
+like about Defcon and coming and finding people are just better
+at stuff than we are. Here we are all learning from everybody
+else. It's my pleasure to introduce Atlas with some
+technical stuff. Give him a big hand [ applause ] >> Hey, y'all.
+How many have participated in capture the flag? How many are
+doing so right now and coming to see me? Thank you that's very
+hot. How many of you are government? [ laughs ] I saw
+that. Well, welcome. Today we will talk about symboliks
+analysis. The creator of which who were threatening to show up
+today. Dodged that bullet. How many of you have heard of
+symboliks execution? How about symboliks analysis in larger
+scale. Is symboliks execution the only thing you've heard of?
+Today we will talk about some of the difficulties with doing
+binary analysis and doing some of the holy crap. I'm closed
+captioned. I love it. [ laughs ]. So today we will talk about
+symboliks analysis and it's used to determining interesting
+things about binary. Um, a little bit about me. Very fast.
+I'm a Jesus follower. Walk out if do you like. One wife. Father
+of three I have goats and chickens and I ride a Honda
+shadow 2002 but that's not why you are here. I'm also this guy
+like to tear things apart. Make and break things in interesting
+way. And learned from some of you in the crowd. I'm fucking
+rock star. This is about. This is cool shit. Let's make good
+use of it. Once you want to kill all the bugs and let them lead
+long productive lives, hopefully this will help out. I'm tripping
+over my tongue as well. Reverse engineering I my hardware,
+radio, firmware, software and cars medical devices, smart
+meters the whole thing. I'm a bit add. If it weren't for my
+wife, I would probably be dead. I'm a core developer created by
+invisigod. Binary analysis framework. It is written in pure
+python, you can poke at and figure out how code flows
+through your binary. It provides scripting options. And written
+from scratch to be collaborative, there's a client
+server model and shared space model. It includes a multi
+platform debugger. Emulator for multiple platforms a gui for
+those who want one. Focus on program analysis. We want to
+write programs that finds and exploit it. Yeah. I think we are
+in the right time. Give it the colorize version because the
+last one was so hard. I'm going to through some codes at you
+early on so it's familiar to you so you can go back to the slides
+later and start your binary and your own interactive. To start
+vin bin. Don't bring up a gui so that it slows down and analyze
+the crap out of it. For today we will be talking about stage 5
+from 2005. It creates.viv file which is a list of events that
+happen from the creation. It means it's not fully implemented
+yet. There are ways to back out changes, those who know, you
+know why that's important. Can you see vulnerability in this
+slide? Yes. It's too small. Look again. If you can't read it,
+that is a push 2047 a call to, pushing an input buffer, bushing
+rx zero which is the socket and then reading. So we are reading
+2047 bytes. It basically goes on forever. This is not a buffer
+overflow. Down below load effective address. Blah. Blah.
+Blah. That's basically a [ inaudible ] and then a call to
+scan f. Scan f reads in. Well up to the end of the string, right?
+Causing any stack mash and easy to implement exploits. Here's
+how I like to view this. Most often I will have two ways of
+accessing this. The viv gui so I can scroll through analysis.
+Poke into a server which handled and command-line tool. I make
+changes in the gui and command-line, it all updates, 2
+gui changes when I run my analysis stuff. If you are using
+python and not I python, i'm sure please consider seeing the
+light. Important viv, cli that's standard python stuff. We create
+a vivid sec work space. We then load from a file and it will
+look for, pe, an I hex or a binary a blob. And it just puts
+the loadable modules into the work space and does nothing
+else. I then call analyze. It does automatic analysis. And
+then I call say work space and it saves out all the events that
+have happened during analysis including the loading. There we
+go. So that's enough about viv for now, enough to get you
+started. Symboliks. What are the core for this is nv
+disassembling framework. In order to make this module you
+are supposed to great an emulator. It's amazing when it
+does when you are analyzing particularly in arm. They have
+conditional everything and there's hopping back and forth
+between arm and thumb mode. The idea of symboliks is the
+dragging of system state from a beginning of a code path through
+to some end state. So maybe that's from an entry of a
+function, return, and many of you will know there are many
+ways through a function that has beginning and end. So we choose
+one. But for this point, just think of a list of assemble
+instructions that will get executed in a roll. Those
+assembly instruction transfer to the symboliks effects they would
+have on the underline processor. For example, cvp shout out if
+you know what that is. Yes. Sir. It's function prologue. Exactly.
+So we translate these into symboliks effects. And then
+later I translated this into applied effects and we will talk
+about the difference. So it becomes set esp to esp minus 4
+and then memory location the esp points to now it has holds the
+edp values. And then we update that with the new esp. I have a
+fly and it's bugging me. So we have to talk about graft theory.
+The single threat of program can find vulnerability in an
+especially crafted thing. What we are trying to do is execute
+code path as many as we can that are valuable and to do so we
+rely on graph theory. Have you heard of graph theory? I hope
+so. Graph theory is amazing. It's not necessarily easy. It
+covers some complex problems. There have been times where I
+found, a while back, didn't do a good a job of creating a graph
+for a particular problem and it caused me great headache so
+there's where the first bullet came from. You've probably
+interacted with certain visual aspect of graph theory. You
+turned apart a function and you've looked at graph u, it is
+kind of a visual representation of a graph. A code graph. It is
+a graph obviously. So you can all hold your applause until
+later. You see at the top we have a code block that has a
+decisionary either goes right or left. They remerge and end up
+exiting the function. Very simple view of the code graph,
+it is a directed...did I skip that already? Yes. It is a
+directed graph, which means that edges flow in one direction.
+Very important because if you could actually make your code
+flow backwards then we have a hole different class of
+vulnerabilities. So to take this back to stage 3 just briefly.
+What you can't really read is the code graph from the child
+handler in stage 3. So I said that it's not quite the same
+thing to have a code graph and have an ida graph the reason is
+ida and viv don't follow every call and there are things that
+are conditional that don't necessarily show up as a
+different node as they should. If they are conditional they are
+either execution able or not. Compare change it 86 just show
+up in the code flow. So if we were to take this graph, calls,
+and linked them to other parts of the graph and have more code
+flow from there and back into this graph, it would be more of
+a specific or an exact code flow graph. If we were to take
+specific instructions like branch, for example, jz, if we
+jump, if the zero flag said in reality, that's kind of its own
+thing, it deserves its own nodes because it may or may not [
+inaudible ], because that would be hard to follow. [ inaudible
+]. So as we are analyzing a code path, we drag through the
+initial state through symbolically modify register
+values, they are modified and represented and stored in terms
+of the initial state. So eax started off as zero, all of your
+state throughout each instruction would be aware that
+eax started out as zero and reference eax as off sets or
+whatever as you subtract to it because it needs to maintain
+that initial state in order to do the analysis that we need. So
+when we are walking through code, we first translate a
+binary up code into a simple of effects. As we hit conditional
+flow, we add constraints. So as the graph branches, based on a
+yes or no, a constraint added path goes left and opposite
+added a path that goes right. That allows us to determine a
+code path that we want and figure out what the hell gets us
+there. So I keep showing you things that are not really, what
+is that? It looks different every time. I don't quite
+understand. Well, lizie and his wonderfulness created all of
+symboliks to supply a rep version and string version what
+they need. This helps in developing because it allows us
+to see a second notice what the state of symboliks is. So the
+top part here we are looking at the repper version of it and
+it's created that you can copy/paste it into another
+interactive python shell or audio code and recreate the
+symboliks state because of all the symboliks -- can I get some
+water? If we print symboliks state, you notice these are
+constraint paths at the top. In the pretty version down below,
+it's t same. It says all that goodness repeat python symboliks
+state this is what they mean. Return to none zero. They didn't
+have vodka in the speaker room. I was kind of depressed. It's a
+lot easier to read than the top one. Leading back to working
+with the system, creating the code, tears apart code, very
+powerfully and easily and easily to bug. So a little bit more
+example. Set variable eax. To a constraint one. Set variable esp
+to be subtraction of constraint via the top of the stack. I'm
+using tools that actually turn the top of the stack that turns
+into something easy that most of us had to jive with. So we are
+subtracting from esp 4. Setting evp to evp. Then we add to, oh,
+man, i'm not even going to continue. Look at the bottom
+one. It's the exact same symbol, using print. Eax to one, esp
+minus esp minus 4. Evp blah, blah, blah blah, blah, blah
+blah, blah, blah. Much easier to read. I think you will agree. So
+I have to call out, though. Symboliks have two different
+ways, stages in symboliks analyses bot of which is
+powerful. We translate binary opcode to search effect and then
+apply to symboliks emulator. And extrude every single effect. So
+you left with simple effect and I know this is push evp and
+subtract from esp 4. It doesn't actually keep the state and then
+pushes into the memory location of esp. The applied effects are
+the ones that keep this state all the way through. So to give
+you a couple of things to type in when you go home and want to
+play around with this. Once you set up your workplace, you
+disassemble the opcode. On equals -- and you give it a
+virtual address. And to simple effect having a translator and
+executing translate opcode that you did. Giving a list of
+applied effect. Mu, effects, translator and it spits out a
+list of applied effects. Basically symboliks architecture
+independent. The only god to there is the name of things
+change to the architecture. R 15 on arm would be pc or irp or 86
+or s 64. So how was symboliks put together and why do I care?
+So he used many powerful thing in the python language the
+arithmetic functions that every object has, addition subtraction
+x or whatever. And I'm jumping ahead of myself. I'm in the
+middle of ctf. So python, symboliks has the following
+primitives. Constant, we have a variable. Which is a variable of
+whatever name. It could be a register. It could be some known
+symbol in the work space. A memory object which represents
+memory. [ laughs ]. And we have a call. And this allows us track
+where a call may fit into the symboliks state and finishing
+the calls before we do the analysis path. And r means [
+inaudible ] function. A c not effect which is [ inaudible ] is
+the opposite of that. So r, eax, your register and you say not
+eax you end up with c not. And then an operator. So our
+operators are aware of looking at python methods come into
+play. So basically we have an operator o under score add.
+Which is used to represent the addition of two symboliks state.
+O under score sub ratcheting the subtraction of symboliks state,
+the orders are important here. Implement here using the
+symboliks state, python class of symboliks component subclass.
+And simply over loading the under score add function and I
+add. Because it doesn't matter [ inaudible ] in this case. We
+have effects and these are the things that actually happen. We
+have set variable, read memory, write memory. Call function and
+constraint path. So the constraint path obviously is
+where you hit an addition case and you have to choose where to
+go from there. Your constraint are little objects well little
+names anyway called eq or e not equal, great or equal as you
+know. When you run into unk or not unk. What the the constraint
+is orthometrically. Or or x or. Some of the bit wise effect. So
+let's talk about how to made powerful about this. I like to
+use symboliks interactively. I get code that I don't know what
+it does. Throw into a code path that's interesting. Symboliks
+emulated and see the effects. The symboliks state is what I'm
+interested in. Well that can be overwhelming and I'll tell you
+why. Our applied effects gets run through the emulator. We
+then have the option to run reduced on this symboliks
+effects. This takes ex-or eax equals zero and things of that
+nature. If mathematically you can combine them easily, then
+they can be reduced. Why? That kind of sounds nerdy. Because
+this effect right here is enough to blow your mind. And yet it
+reduces to something exceedingly simple. We are also given the
+capability of solving. The symboliks state maybe discreet
+or not how do we solve it. If it is discrete, we run the number
+through. If it is not discrete, symboliks give you the ability
+to compare even though they are not discrete. And this is using
+the hash of its basic repper. So for example, var can't be
+discrete and spits out a long integer of sum of its thing. We
+can also update symboliks state using an emulator that already
+has data. And as of about a year ago, create substitutions. Now
+in my opinion this is should have been called solve as well
+because we put together a set of values that a symboliks variable
+can have and then we ratchet that into the symboliks state
+solver and we get back a generator which gives us all the
+different things that those values would have provided.
+That's weird. So here's an example of using substitution. I
+use this in switch case analysis in my branch. Basically, I put
+together a list of ranges given a constraint, for example when
+you are looking at a switch case, you generally start at
+zero index and you roll through, you know, o-, 3, 550 different
+options. I don't know how many of you done the work to analyze
+switch cases. But when they happen there's an often print up
+into like groups. Because if you have a switch case that has a
+0-case in a 32,000-case you don't want to have 32,999 if
+there's just two. Or like a pocket of five or 20 around each
+one. So generally they represent different code path and they end
+upstarting at zero index with some relative base. So we come
+through and you can see the debugging here. See how good my
+laser scale are. I'm not used to being this far. Debugging here
+with the print of variables of the given state. We create a red
+range and we roll through every index that we've identified that
+this switch case handles and by solving that we are able to see
+what the out come of the switch case is. If it's a switch case
+zero, then there's some place in array that has a pointer, to a
+code block that handles switch case zero and so on and so
+forth. So we ratchet through that so we create cross
+references in the viv sec work space. So I won't talk more
+about this right now, but I recommend that if you check this
+out, look into arch in module that lets you do a lot more
+independent. I know firsthand that it's been used to solver
+completely the function comparison problem. So why do we
+care about this? I know i'm a nerd. Well, vulnerability
+research and reverse engineering they basically are solving
+problem and/or answering questions that are very
+difficult to answer. Reverse engineering is identifying
+behavior and vulnerability is finding vulnerability behaviors
+so we are hunting juicy behaviors? Absolutely. We have
+couple case studies here. Who has dug through looking for
+that? Yes, we all have. It turns out by searching through a
+binary and executable area of binary, you can trace symboliks
+state up to some known terminator point and ask very
+specific questions about what that little code does. So rather
+than starting at a rett and stepping back byte by byte by
+byte and making sure that it's still decodes into a rett after
+some things and trying to figure out oh, this is a really cool
+gadget and does this thing. It kind of writes this thing and
+update these things that I'm interested in. You can use
+symboliks to do analysis on code snippets and pit out. Hey, this
+moves evx into eax and it's 3 instructions long. You can do
+actual calling of rob gadgets using a symboliks state engine.
+For example...forgive me. So for example, we roll through a
+snippet of code. And then we dig into the variables that are
+discovered. So we say symboliks state what things have been
+written to. We then look for hey, is that thing this
+register? And is it writing to a register? And we know that we
+have a register copy. And hey, if the value of the second
+register ended up in the first register we know we have a
+change. These things are problematic and solvable by your
+own code. And just to give you something else to think about it
+but not dig into these. But...we already talked about switch case
+analysis. So basically what we are doing is we are trying to
+tell the computer to do the things that we do in our own
+super magical portal, our brain. So in switch case analysis in my
+branch we start off at every dynamic branch. Then we say,
+dynamic branch can be call to b reference or whatever your
+architecture reference are. So in that pass we've already
+identified these things. Virtual address set. So we pulled what
+viv had already given us and we back up until we are able to
+identify which register is used as a index pointer. We then roll
+through looking for anything that modifies that index. And it
+gives us constraint that say well this is like from 50 to 75
+so our switch case is 50 to 75 in this case. So let's now start
+at the beginning and ratchet through all this one code path,
+over and over with different indices and it gives us the next
+code block that gets executed for every different index and we
+are able to wire up the function, code block edges and
+that helps us a lot. And that leads us back to stage 3. So as
+you've been hearing about the cyber brand challenge, this
+whole idea of automating and discovering vulnerability is a
+pretty big hit list. How do we do that? There are many [
+inaudible ] couple of different ways. Some people I have taken
+to just basically symboliks fuzzing. You start at some place
+and keep going through different code path until some desired
+effects like for example, I don't know, eip equals something
+of a input. We can do that. And it can be a very impactful way.
+I know computers do awesome things repetitively over and
+over. There's this halting problem. With graph theory and
+code path tracing we end up running into code past that may
+never end and we also can mean ander all the cycle in the world
+and still not find what we are after. So I prefer starting at
+where we are trying to go and back up and seeing if where we
+want to go with particular code path can provide us with the
+behaviors that we are after. So we start with meme copy. And
+with a good graph we are able to say this meme copy is called
+with two fix buffer -- okay. Not vulnerable. Move on. Find
+something that will allow us to compare and look for a dynamic
+sized either source destination and move size. Now it can be a
+little complex. That's a fairly simple way. Definitely one of
+the analyses modules. But back at our stage 3-case study, the
+vulnerability is the fact that we've allowed creating of a
+string up to 2047 bytes and then run s scan f on that string and
+put the output into [ inaudible ]. So we have to identify the
+size of our destination and our source and the constraints on
+them because our source is actually unconstraint. It's
+huge. But we have to be able to copy then into a buffer that is
+too small and not have constraint applied that keep us
+from overflowing and over writing rett. So here's that
+example. The call to read. 2047 bytes. S scan f. Oh, I forgot
+the bacon part. We all love bacon, right? So since bfbfebe 4
+is 1052-byte from the top of the stack which is rett then we
+overflow by 95 -- bytes. We can do this problematic. I'll show
+you code for it. You'll write your own. So as I said, starting
+where you want to go and backing up is my preferred method.
+Starting at a known entry point and go forward is also powerful.
+It turns out the combination of the two is probably the best
+option. So I leave a couple things for your play time. Input
+viv as vivclv. [ on screen ]. Vw.load. Some binary. I like to
+turn on this load. And then call vw analyze. Input this. Input
+that. Create symboliks context. Create symboliks graph. And then
+get some symboliks paths going. Adds you interactively going
+create symboliks paths and you review this symboliks effects. I
+think you will see just how powerful you can be. And here
+are couple of places to go look. Thank you very much. [applause]

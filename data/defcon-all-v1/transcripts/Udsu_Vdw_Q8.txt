@@ -1,0 +1,829 @@
+All right, well, I think we'll
+hear another somewhat technical
+talk about the Open True Crypt or rathe The Open Crypto Audit
+Project. You guys have already
+seen if you use true crypt at all that there has been a little
+bit of a change with that
+project and now it's something I think we're all interested in,
+whether you are using it to do
+holistic, protect your own data or if you do things like me and
+do forensics and need to
+transfer data and need a secure, trusted way and easy way to get
+muggles to understand how to use
+crypto. Crypto usually served that purpose for me so this is a
+pretty important project and
+well we only have half of the original slated speaking team. I
+think Mr. White will do a great
+job for us, so let's give him a big party track welcome!
+(Applause) 	>> Go Hello, DEF
+CON. I want to send regrets for Matt, we thought up until about
+a week ago that he was going to
+be able to come. Unfortunately he wasn't able so it's me.
+Hopefully we'll have a good
+lively discussion. I have quite a bit of material and also
+really great swag for questions
+at the end. The idea is I want to tell a little bit about the
+history of what we've done, how
+we got here and kind of the community aspect. There is a
+technical element here. I'm a
+security engineer, not cryptographer so we'll do a
+reasonably deep dive into some
+of the technical material but I'll be the first to raise my
+hand if I'm cheated by my weight
+class here so here is what I'd like to do. Sort of go over some
+basics for security engineering.
+This may be old hat for people in the room but sometimes I
+think people go through this
+cycle in their career where their foundation for ideas and
+sort of guiding ways to think
+about things that are kind of memorized but not really
+applied, takes a while before we
+start to see the elegance in I guess simple ideas. I want to
+talk a little bit about
+revelations, specifically around crypto and how that impacts and
+then obviously what people are
+here is for true crypt story because you can't make this
+stuff up and then a little bit
+about our project and people that are behind that. 	Then as
+we go. So just couple things
+about me and Matt. I have been around the scene for a while but
+I haven't done tons of
+presenting. My first DEF CON was about ten years ago. I have a
+weird background, I just confuse
+recruiters in HR departments and so a lot of training in signal
+analysis, lot of work in brain
+and biomedical imaging and sort of distributed systems. I spent
+a fair amount of time working on
+cardiac safety, ECG analysis and in that world, people think a
+lot about secure systems, right?
+When you are evaluating medication to see if there is
+tiny microdifferences in heart
+wave rhythms, the kind of principles one applies to
+software assurance is a really
+different class. Have done a fair about of software
+assurance. More recently I've
+been working on public cloud security so location systems for
+Amazon and Google Compute. Most
+recently with the OCAP project, we're working with the Linux
+Foundation core infrastructure
+initiative. We'll talk about that and then on the private
+side I have some disclosures in
+terms of NGOs, so doctors without borders, couple of other
+familiar ones and I'm doing some
+work with them. 	So, yes, I like to work on strange signal
+problems like ECG and direct
+safety. Little bit about Matt. Most people know him here by
+reputation but for the record
+his background, research interests, not his Dachshunds
+but he has pictures of his
+Dachshunds. He does not have pictures on the website. 	These
+are my two hounds, I was telling
+Jack Daniel I think I was channeling him. Just to give you
+a little perspective on getting
+here, I think that yeah, so Wednesday drove across country
+in the wagon with two dogs.
+	>> Would have! 	(Laughter) 	>> Landed, unpacked, kissed
+everybody good-bye and hopped on
+the plane. So it's been a good journey. This is the spirit of
+what I want to frame things. I
+think we have a lot to learn from lots of different levels of
+technical background and this
+quote from Jack I thought was really apropos. 	So if you have
+seen these I think they are
+called 10 rules of security engineering. Scott Culp has a
+great quote and I want to
+emphasize this a little bit, too, because we can get so
+caught up I think sometimes in
+mechanics of these projects that we have to keep things in
+perspective. I added a slightly
+minor addition to that which is "Even with this crypto, we have
+got to keep an eye out." These
+are classics I think people generally know these but people
+that may not be familiar with
+security engineering. 	So this particular one is more I guess
+for an Archeological statement,
+I think there's no one in this room that is all aware of these
+but if this deck turns up
+sometimes with the future, we'll have more context of what we're
+doing. But crucially around the
+mass surveillance. What drew a lot of attention in the academic
+crypto world were the
+revelations around bull run and intentionally subverting the
+processes and committees around
+our critical security systems. EFF has a fantastic timeline so
+those are the entire spectrum.
+	So besides the sort of sociological and political
+pieces, I think a lot of people
+kind of woke up when this came out and said we're actually
+going to be this entire body in
+existing of cryptographic work. This was late fall of last year.
+Presence of committees implied
+that you know these were serious issues and then eventually with
+the deterministic, random
+regenerator, one of the official standards was just pulled so
+which brings us to TrueCrypt, so
+I think people generally know but it's a piece of software for
+file volume and full disc or
+whole disc encryption. Sorry. It's been downloaded about 30
+million times, been around for
+about ten years. In the open world, there is -- it's
+literally listed as Fedora and,
+Debian, umm, license archives as forbidden items, you have to go
+out of your way to include it
+and we'll talk about that in a second. 	But it's you know it's
+a really popular tool. It's used
+by quite a lot of people. Not just human rights workers and
+activists but corporations, too.
+This is a snapshot from this morning, so if you want to get
+bulk data in and out of Amazon
+Web Services this is what they officially support. So this
+stuff is out there. The problem
+is looking at trusted systems and sort of the history of
+things we realize late last
+summer, maybe this wasn't news to some people but for many it
+was, the TrueCrypt network may
+have been audited, you see a lot of things with tech press,
+statements about maybe this is
+about compliant or maybe someone adopted it for a PCI thing or
+whatever, but if you cut through
+all that, it turns out at least through last fall there had
+never been a form of
+cryptanalysis on TrueCrypt, so people are relying on it in some
+cases it was basically activists
+putting ... there were huge stakes riding on this. 	There
+were issues around the different
+versions of whether we got with the binary or the source, volume
+set of differences in the
+different platforms, originally by the way Windows project and
+it was eventually imported to
+Mac and Linux. 	Bruce and Colleen a few years ago did a
+formal cryptanalysis on the
+deniability aspects so there's an idea one can create a hidden
+volume and then within that or
+adjacent to that you could also have a volume that is known so
+you give up your keys or
+password and the idea is that you can still have secure
+information and plausible
+deniability. It's not a great  umm ... the implementation was
+not that strong. 	Around the
+time it was kicked off, just a few weeks after the project
+began, Xavier did an amazing job
+through his blog and look at the process in some cases seven and
+7 or 8-year-old RSA headers and
+fairly obscured dependencies without which you just cannot
+compile this code on Windows.
+The last license reviews from 2008 that attorneys from Red Hat
+and fedora and OpenSource
+groups... would have said language in this license is so
+unconventional we can't have
+any -- we can't make any assurances about litigation and
+just said it's not a free
+license. 	So there are some really, really strong elements
+of this. This is from what's it
+called (inaudible) Jeremy's and (inaudible) company that does
+these monster cracking systems.
+This is 8 Radeon 290X's, so the numbers on the right are hashes
+per second so straight, you
+know, UNIX, descrypt, 952 million per second, TrueCrypt
+with this particular chain
+together, 17,000. So if the as word is strong, at least by
+cursory measures, you know,
+that's pretty interesting that the contenders is OSX, by the
+way, that's as I understand it
+actually adjusted on a permissioning basis or
+calibrated to your CPU. So it's
+at least from people who have looked at this initially there's
+not... there doesn't seem to be
+obvious bypasses for this in terms of raw brute force. 	One
+other thing that is interesting
+about this is the development team. If you just go on
+Wikipedia there's a ton of
+information out there, right. So what we know is some of the
+original developers were
+interviewed, these things are on multiple gethub repositories.
+There are trademark filings, and
+in the UK, France, China, Czech Republic, U.S., and it was set
+up to be an entity about a year
+and a half, maybe a year after the project kicked off. It was a
+piece of software called
+encryption for the masses and you could do a whole talk on
+that. But only to say that there
+was some controversy around how clean the code was and why it
+was included and there was very
+early on some sort of fairly serious threats of litigation
+against the TrueCrypt
+developers. I think that in combination with what was very
+common at the time which was
+sharing and download sites would sort of highlight that this is
+TrueCrypt or whatever the
+package was, and then maybe there's bundles or other things.
+In a way, there is almost like a
+brand dilution. Like people weren't really clear what the
+official sources of the code. To
+be fair, for the first year and a half, it had sort of a you
+know had sort of a quirky
+source. This was created, a non-profit organization, so
+therefore there are public IRS
+filings, there is the original announcements that are still
+archived. Here is the thing a
+lot of this information is sort of hiding in plain site. So some
+people on this first day or
+second day when it was announced are still quite active on
+Usernet with the same e-mail
+addresses. We did a little digging and there are some
+published academic papers with
+colleagues and there is actually acknowledgment and a few
+dissertations and thesis that
+say no, thank you so and so for working with me on this and on
+TrueCrypt. And so the
+information is out there. 	But some things were not at least I
+won't be quite as comfortable in
+sharing, why is that? Well, remember this, right, everybody
+get a good laugh and a few days
+later this story sort of died down, the official mailing list
+or form or whatever, Dorian
+Nakamoto, people forget it was a weird story and not the best
+journalism but a lot of people
+forget this part. Within hours of that story breaking, Dorian's
+house was surrounded in this and
+I think crucially this: He had some serious health problems as
+a result of potentially serious
+financial problems, his life was turned upside down. All that is
+just a way of saying there's a
+huge amount of information already out there, endless
+discussions and forums and
+things where as I said, these public records can be obtained.
+I don't think it benefits anyone
+to try to a docsync I want to leave the last 20 minutes or so
+for questions so we can talk
+more about that if you like. 	Back to the code. So this was I
+think attributed to (inaudible)
+...shallow, well, in the crypto world, one thing that I have
+come to appreciate is it's a
+very, very small community. Security engineering is fairly
+small anyway. But cryptographic
+engineering is a very different beast. Cryptography engineering,
+it's a very very special narrow
+area. 	So it's not the case that with just lots of people
+looking, bugs will be found but
+some of the subtle, you know, cypher chain and implementations
+for random generators, you know
+they will be missed. I mean, there is value in the open
+community and there is value in
+all that. But it's not the same as really really you know highly
+skilled, highly trained crypto
+engineer. I love this picture. This is from 1920, Sam
+Reshevsky, he beat 14 chess
+masters at the same time. So, I mean, the point of this is there
+are some skill sets which are
+just orders of magnitude different than others. 	So we
+talked and we said, you know,
+this is important software. People seem to be using it. We
+have people on the project using
+it. We really didn't know a think about it. 	So let's do it.
+	So there was a conversation on
+Twitter with Matt and I, I sort of announced it, Matt threw some
+money. We were contacted by a
+group called FundFill and I didn't realize at the time but
+they were just starting out,
+startup company. And then anyway this went out so Matt noodled on
+it a while. Couple weeks go by
+and he was like we need to talk about this. There's something
+here. So we blogged about it and
+it hit the front page of Why Comminator and then the
+Internet showed up, umm yeah. So
+we were assuming the conversations would be around
+the code and analysis but what I
+didn't fully appreciate and what I now understand is the enormous
+amount of work is sort of the
+community piece of that. We advertised rather, we sort of
+promoted the idea that you know
+this, here are basic goals, basic cryptanalysis, some bug
+bounties would be a good idea.
+The dream would be if we could raise enough money to have one
+of the few security engineering
+firms in the world who not only have the skills but whose
+reputation is with people we
+trust and are likely to say, yes, this is credible. So there
+was no shortage of people
+wanting to help, no shortage of firms stepping up saying we have
+a free static analyzer or
+whatever. 	There is a very small number of professional firms
+that do this sort of work. 	Then
+set up a thing on indigogo and he says well maybe we can offer
+people T-shirts if they get to a
+certain level or DVDs and sneakers and things and, wow!
+So, yeah, in the first,
+arbitrary number of days for a campaign. We set it for 60. This
+is day one. Like in the first
+four hours, okay. We really struck a chord here. When we set
+a bitcoin you have to understand
+this was nation mechanism, sorry... this was the history
+through the year. Right. So
+coming out here. So this is April and the project started
+around here. And we could talk
+about the speculation and the market price of Bitcoin, but
+when people are sending
+literally $5 donation and $1 donations and you know really
+sweet elderly ladies from
+Yorkshire are asking for an address to send a check if they
+are not really online, you take
+a serious responsibility. So in that context, we are taking
+Bitcoin and this starts
+happening. You know, we're not like some investment house, so
+people there's -- I don't know
+if it makes sense to hang on to this. For all we know this was
+the monster crash that happened
+and there were some crashes but anyway the point of all that is
+to say we took it very
+seriously, um, the people had trusted us with you know their
+support. 	Anyway now we are
+still in like a week into this, right, eventually within a few
+days our technical guys, the
+economist and nature pick up on this, and then one morning
+there's 30 grand in the Paypal
+account, what! How much? So, yeah, we hadn't really thought
+about it seriously. At the point
+we were like, this isn't just a couple thousand dollars sitting
+here and there for a bug bounty
+this is serious, we created a non-profit corporation and one
+of the ideas was that it doesn't
+make sense to spend a significant chunk of money on
+taxes because it's not what
+people intended the funds to go for it. We have a mission
+statement, a charter and by-laws
+and so forth, and all the standard things that you have,
+that's on the website. Nice
+logo. And one of the most important things we did was Matt
+and I said, you know, we have
+some interest and expertise in area X but Y,Z you know, A, B,
+C, D, E, F, we were out of our
+element. Ah, yes. Okay. (Laughter) (Applause) 	>> Yeah,
+yeah, yeah. Yeah. 	>> Very good
+with it. (Laughter) 	>> I guess we have a pause. All right.
+	>> First-time speaker at DEF
+CON! 	>> Woo-hoo! 	(Laughter) (Applause) 	>> Oh yeah! I like
+it. 	>> Congratulations.Good
+Luck at getting back to your talk. 	>> Where were we? Dammit.
+Thank you, sir. I don't know
+what give short shrift to the incredible people that stepped
+up and offered to help in ways
+small and large. I really want people to go to the Open Crypto
+Audit website the people page.
+This is an extraordinary group of people who stepped up and
+offered to be technical advisors
+and part of what that means is we knew we'd be compiling a
+report. We knew we'd be dealing
+with a lot of different material but we also knew that would span
+basic cryptography, security
+engineering, protocol engineering, legal reviews. So I
+don't know if people know but, I
+mean, Jim Denaro is one of the top sort of IP and sort of
+security-oriented attorneys and
+he's also a CISSP and a practitioner which is really
+amazing. Thomas Ptacek, if you
+don't know them, definitely check that out. It just came out
+a couple days ago at BlackHat
+they are going through level eight. It's an incredible
+program. Runa Sandvik, formerly
+with Tor, Nate, I mean, it's just an incredible line up.
+Moxie even said, you know, I'll
+take a look and see what you got and, you know, give you some
+thoughts and ideas as we get
+further along. Jo is here from his group. 	It's an
+extraordinary group and if you
+don't know Trevor Perrin, he's one of the brightest in the
+world in cryptographic
+engineering and crypto protocols. So anyway, just
+incredibly honored to be working
+with people of this caliber. 	Because we have a non-profit so
+we need officers and Matt and I
+stepped up and then we put a call to Marcia Hoffman, she is
+still special counsel for EFF
+and she's been extraordinary. 	Then we had our first board
+meeting. This is how we roll.
+Take that, Man! So, you know, lots of connections. There is
+sort of the problem with the
+history of the project and trying to make sense of things
+and obviously lots and lots of
+questions began. 	So we did as I said we reached out to a small
+number in the organization that
+can do this. We had tremendous response. If you don't know
+iSech, find the... you know,
+find someone who you really, really, really respect in the
+crypto world, and ask them about
+iSech. They've been extraordinary partners.
+	Technology fun stuff happens,
+we have an arrangement with iSech, we've done some, I mean
+we have existing contract
+mechanism, we're actually willing to kick in a match grant
+so you can double the amount of
+engineering hours on this and that will be our contribution. I
+don't know if I actually put
+this in but we also did -- fairly in the audit we got a
+$10,000 donation from Austria.
+And some other large donations, I'll get to that in a second.
+	So fast-forward, I don't know
+if people have seen this but it's online. We spent many, many
+weeks working with iSech on
+standups, going through each of the different sort of pieces of
+the, their part of the project.
+It's important to say, too, what we talked with them about and
+there was the group and there
+was pretty broad consensus with the group, there's a long
+history of you know security
+failures that have nothing to do with crypto but they are in
+crypto products. So, you know,
+this was all sort of post Heartbleed and around this time,
+too, preHeartBleed but that
+tradition is very well known and so while crypto is hard, all the
+other things on sort of the
+foundation of this stack are also very hard and also easy to
+get wrong. 	So this is what we
+wanted them to focus on. 	So, you know, memory management,
+construction of the different
+classes, data structures, these are not random number
+generators, not you know
+multiple cypher block chains and that different suite. But more
+sort of the foundation elements.
+	So couple of their engineers were augmented by peer-reviewed
+by senior principles and looked
+at this and they basically came up with, well the way the volume
+header is derived is maybe not
+so strong. But again, remember the issue a lot earlier with the
+number of hashes per second.
+These things are all relative, right? 	So there was some
+discussion about information
+being paged out. So the idea is that let's say you have true
+crypto and you have a volume
+open and keys in memory or passwords in memory. Say you hit
+a malicious website that is
+doing XML entity, explosion like a -- quadratic header where you
+declare a single entity in XML
+block and then the way that is invoked, you can basically
+exhaust memory, you can max out
+CPU. The idea was that particularly on Windows systems
+it's easy to contrive very
+simple proofs of concept where memory is just getting paged
+like mad. 	So when that is
+happening you could get raw key material being saved to disc, to
+non-encrypted disc. The
+decompression system not unlike libLZ, which is very prominent
+int he Linux world and, I mean,
+we have systems all over that depend on that. 	The particular
+one you used was sort of
+deprecated but again this has been around for ten years. Some
+of the core elements were built
+six or seven years ago. There were several places where they
+are using mem set to clear data.
+So the idea is I have a password or key, do manipulation on it
+and say mem set and wipe that
+out. I'll show you in a minute why that's a problem. 	But the
+thing is none of those actually
+address the true crypt security model. Because one of the
+reasons I spent time on the
+fundamentals earlier is let's say that scenario plays out and
+you have true crypto and the
+volume up and you have true material in memory. You hit a
+malicious website. Well, the
+fact the vector is very specialized in paging memory to
+somehow get those keys to disc
+which can be five or eight hours later, take a step back. You
+have hit a malicious site that
+is, you know, running an exploit on your machine. It is just not
+a TrueCrypt model. It's not part
+of the security guarantee or the security promise. 	What does
+that mean? In aggregate, none of
+those vulnerabilities discovered are, I was gonna say part of the
+security model. If you had
+physical access to the machine, to the amounted volume, like the
+machine was in sleep mode, they
+already contain exploits for that, like $200 but that's not
+just TrueCrypt. That's bit
+locker, that's others. Deluxe family of Linux. All major disc
+and all this encryption
+implementations have similar attack vectors. 	So if we're not
+really weak in the things that
+are actually you know in the security promises, again, the
+key derivation, we could
+probably on the password drive key you know increase the
+iteration count, you already saw
+in the group force, it's going to be decent. It can be improved
+but there's no show-stoppers so
+this is around the time, you know we have sent them
+manuscript for view, team looked
+at it, I signed off for the peer review and then the great line
+by John Lennon, life is what
+happens when you're busy making other plans. TrueCrypt.org gets
+dark, my Twitter starts lighting
+up, what's wrong with the website. Did you guys -- did you
+do this? Are you kidding me? You
+don't know how much pain we went through because you never know
+what, what people are gonna have
+us spend time on. We went through a fair amount of pain to
+harden our site. It's basic like
+HTML and like not some ancient WordPress or something. 	I'm
+looking like what are you
+talking about? Our site is fine. Not your site. True crypt
+organization. What? Yeah, at
+first it didn't even show this. The morning or afternoon this
+happened, I don't have a
+screenshot of it basically we had an error message source code
+saying this may be a malicious
+Web page and I guess they have like automatic intrusion
+software that says, if your
+volume is more than like this, and then one day it shoots
+towards magnitude and it's a
+header redirect, looks like a crawl, pop-up messages, this was
+the message you see on source.
+	You go to true crypt.org and get redirected to sourceforge
+where the project was originally
+launched but years ago, it sort of was not abandoned but sort of
+there was a -- there were
+basically directions, you know, the official website
+truecrypt.org. But look at the
+language here. Not secure, may contain unfit security issues.
+What? What are you talking
+about! So the I got my phone and Matt's and, you know, got the
+whole board was just everybody
+is getting pinged on this, like what's the deal? 	The short
+answer is we don't know. We had
+an official line of communication, official e-mail
+contact but the mail exchange
+went offline, too. Well, if your official line of communication
+has gone silent and you have
+some people's personal e-mail addresses, okay, we can try
+that, too. Some other people
+were involved that just when the story broke we're curious too,
+they started contacting people
+and there were some other lines of communication but it wasn't
+really clear because some of the
+conversations we've had with people who are listed in the
+public record were like, well,
+the key to, well our developer keys have been destroyed. We're
+not even sure if we have access
+to the site anymore, meaning TrueCryptOrg, how do you not
+know if you have access to the
+site? What does that even mean? 	And so there is all this
+speculation. So we sort of took
+a step back and we said, okay, whatever this sort of
+sociological equivalent is,
+maybe it's middle-aged guys that just said, meh, I don't need the
+headache, I don't need the, you
+know, one of the messages was XP has been stopped; and that's
+sort of what it has been built
+around. But there's so much, so many strange inconsistencies on
+here, there were just so many
+question marks. But you know, the thing is we have a project.
+We have, you know, we have
+stated goals. We have taken support from people around the
+world. So we talked about it for
+a while and we said what, you know, doesn't matter. I don't
+care if someone flipped out or
+someone rage quit or an agency got to somebody, you know, I
+don't -- if it's an internal
+battle. All these things we are sort of speculating and many of
+which could have been
+possilities, we're in the middle of an audit so we'll continue
+on. We have the findings from
+the iSech team, we'll start phase 2, the formal crypt
+analysis so one of the other
+things that is a real drag about this is, you know, there were
+lots and lots of documentation
+and examples and sources and materials on the website. All
+that got wiped. I mean, there
+are mirrors that people have set up. One of the first questions
+was, well, what the hell code do
+you use? You can't use the stuff on sourceforge because it was
+labeled 7.2. That's read-only.
+It only has popups. If you install 7.2 TrueCrypt it has
+popups and you basically don't
+use this, it may have issues. 	Then literally they ripped out
+the, you know, the right in the
+update code. No! You know, whatever issues existed the day
+before, and whatever security
+guarantees could be made the day before in the announcement. They
+are still there from a pure
+software perspective. So we had a couple delays and I was hoping
+to give more update on phase 2.
+But basically Thomas and Nate are kind of mentoring or
+organizing phase 2 but that will
+be full crypt analysis that we'll be looking at the
+cyberchains, excuse me, at the
+random number generator instructions and the protocol
+instructions and so forth. 	We
+have talked about several post-audit scenarios but what we
+can't do is we can't support the
+development of a project now that's a moving target. The
+people who contributed to the
+project said, we want a verdict on true crypt 7.1, this is used
+by several million people. So
+we're going to give you a verdict on true crypt 7.1. We
+can't tell you it's absolutely
+secure, rock solid or not. But what we can say is we looked at
+these 10 things and didn't find
+any issues. And as much as that is possible, we'll do, we can
+do. 	Obviously lots of
+questions. But we have had some conversations with the I think
+originally they were calling
+themselves the next crypt organization in Europe but they
+have sort of announced they are
+holding off until we finish. You can't audit an ongoing live
+project which is just, you know,
+ripping out core classes and things. 	So I want to spend just
+a minute or two on some secure
+coding pieces. And I want to explain a little bit more on the
+Isech findings and then we can
+open it up for questions. 	This is a great quote! I think it's
+Maciej, founder of Pinboard,
+I'll let you read it but "There's no difference from the
+attacker's point of view,
+between gross and tidy errors. Both of them are equally
+exploitable... This lesson is
+very hard to internalize. In the real world, if you build a
+bookshelf and forget to tighten
+one of the screws all the way it does not burn down your house."
+I love that. So one of the
+things people thought about is there are all kinds of tools,
+tons of tools. Static analyzers,
+dynamic analyzers, intelligent static analyzers , and yes, some
+of those help. Some are
+crucially needed. The world is not for lack of auditing tools.
+	I highly recommend people take
+a look at the examples. But prepare yourself before you do.
+I will also go through this
+quickly. This is a quote by the former director insurance
+director. Basically saying
+"Source code is interesting and sometimes helpful but computers
+don't work on source code, they
+won't. (Laughter) They work on machine code. So real quick,
+consider hypothetical. Does that
+work or not? Well, depends. Depends on the compiler, depends
+on the flags, your primer, tour
+optimizations. I'm going to show you several real quick from the
+64 group. Visual studio, I know,
+they have to deal with Windows, here are Windows, example one,
+example 2 using that security
+secure set. Mim set just gets optimized out so this is a
+simple example pop-up of a
+dialogue box but what if it are the earlier example, password,
+key, mem sech clear? Meh, this
+is where the function would have started. This is where the code
+returns. You didn't do anything
+with the memory you set so therefore we won't bother to do
+the inline compile and actually
+do anything for you. 	Secure zero memory does. This is not a
+slam on GCC, it's not a slam on
+the studio or any particular one but these are complex tools and
+have lots of non obvious side
+effects and even if they have been around for, say, four or
+five years, your OS may not have
+anything posted, a current version. And learning from other
+people. From the Tor project, I
+see six. Five, yeah, I see five key files. That's a problem.
+Yeah. NSS, that's a problem.
+Then you get to stuff like this. Basically the issue there?
+(Pause) All right. So just a
+couple thoughts on trust. This is true. It's really depressing.
+This is a -- it's not Unicode, I
+forget but there's a coding standard. This is accepted as
+legit from every major mobile
+system, every major desktop browser. Do you have any idea
+who that is? I don't. More on
+trust. Linksys, net gear home router, see that? Pcap utility
+built in. Thats diagnostics. It
+randomly sends other frames back to the mother ship just for
+diagnostics. What? As recently
+as February, if you were running Red Hat, sent OS, Amazon Linux,
+Oracle Linux, you were actually
+running Hubble-open ssl because there are upstream requirements
+with the shift of actual
+controls. 	Anyway, HeartBleed, so this is a board, cipher,
+which was happy to give out the
+goods. So takeaways. Again, most of the catastrophic failures,
+were secure coding errors, they
+were not crypto errors, we have a long tradition of that. Tools
+report but they are not enough.
+And subject matter expertise is crucial. Also in terms of unpaid
+volunteers, hey, volunteers are
+also crucial. They are not enough. What we really need and
+we have been working on, we're
+in talks with the Linux Foundation, core infrastructure
+initiative as well as some other
+organizations. I'm really developing a working model for
+public code review.Because this
+is important stuff and particularly in the crypto world
+but security engineering
+broadly. 	Because even with a great chain, um... (Pause)
+Right. Oh, just gonna tell you,
+we have a few extras. Probably not your threat model. We can
+talk about that if you want.
+(Pause) Then we can add in, so reports released, we are working
+on the reports. In phase 2, so
+we can open it up. Five minutes? Five minutes for questions. I
+have for a really good question,
+I have original vintage movie posters of war games, I have
+sneakers DVDs and T-shirts. So
+questions, please. 	>> So you mentioned that there is all
+these static analyses and demand
+analysis tools and they're great but they're not enough and you
+also mentioned that a lot of the
+errors are not crypto errors, they are coding errors, ignoring
+crypto errors for the moment,
+what do we need to bridge the gap between what tools can find
+now and just general coding
+secure coding errors to the point where your average coder,
+because there's a lot of people
+in the world who don't spend time learning how to code
+securely, so what tools are we
+missing to make your average coder able to run a checker and
+have some reasonable assurance
+they haven't made stupid errors? 	>> I think one of those crucial
+things are project initiatives
+like Tessa challenge or crypto palace. I can't say enough about
+the service to the community
+that Thomas and the group is doing. We could talk more about
+it afterwards but I think is
+really, it's a training and visibility thing and awareness
+and a lot of it is things that
+are not obvious. But I think there are some tools, I think
+awareness and training are
+crucial but we also need to work on a better model in general
+because I think the model is
+broken. 	When Cisco takes a week to literally just count they had
+60 plus devices post HeartBleed
+just to enumerate how many other systems were affected --
+(Inaudible) -- AG, then the -- I
+mean, yeah, we have got to be rethinking the whole way we
+approach systems. 	Come on up.
+	>> What sort of steps have been taken to address either incoming
+legal or governmental requests
+that information not be disseminated toward or to the
+public or what are your plans?
+Is there a fallback plan for when these challenges do occur?
+	>> You mean on the project
+itself? 	>> Right. 	>> Obligations or security letters?
+	>> Uh-huh. 	>> Seen the
+national security letter which was already online. We have
+Signed statements from the Isech
+team and other people on this project so we have not been
+served or noticed by any
+government agency. I suppose if we were, we have some of the
+best constitutional attorneys in
+the world working with us. I don't know if that's a great
+plan but it's our plan. 	Come on
+up. 	>> Do you guys have any plans to after this is all done
+continue on with other open
+source projects and audit them, because I think that's a
+problem. There are so many open
+source projects and if we all just go on faith that they're
+good -- 	>> No, no, I appreciate
+that. Thanks. I didn't even mention I'm sorry we're
+auditing open SLL, the Open
+Crypto Audit Project is doing it. It's one of the most
+ambitious security projects in
+history. We're doing it. That's great. (Applause) And I think by
+the way there are probably 12
+other like runners-up that are really involved in that
+position, too. I think we'll do
+a couple more and I'll be in the chill cafe and we can talk as
+long as you guys want. 	>> Real
+quick. How do you get involved with this open crypto audit
+project? 	>> For phase 2 it will
+be a mix of sort of guided sort of exercises but it's going to
+have much more of the community
+kind of full participation. We needed the sort of phase 1 to go
+and it did. The second one will
+not be near as much professional services although it will have
+some of the top cryptographers
+in the world working and coordinating but basically
+reaching out and contacting.
+Matt and I are online in Twitter and crypto audit.org. We are
+talking to people. Be patient,
+we get flooded sometimes with requests so you know you won't
+hurt our feelings if you ping us
+again in a week or two and say what can I do to help? This is
+by no means Matt and I. There
+are many many people that made it possible so far. Last one?
+	>> First of all, just want to
+say thanks to you guys for doing this. Two quick questions. One
+how can the community support
+you? Two, can you offer any comment on the possibility of
+TrueCrypt support for GPT and
+UEFI? 	>> You know, I think that's maybe a Matt question on
+the last one. 	The first one
+again, sorry. 	>> How can the community support you guys while
+you work on it? 	>> Get involved
+and stay aware of things like the core infrastructure
+initiative. This is looking at
+every core element of the stack. From you know the most basic,
+all the way up to staff. There
+will be big announcements coming. We're getting approached
+by sizable organizations and how
+they can help. For phase 2 it will be a global you know, bug
+hunt, by the way we still have
+like $30,000 so there will be way to pay outs for the next
+couple months. Ideally we get
+more but that's where we are so far. I think we'll stop there.
+I'll take questions out and then
+so all that swag. Thank you. (Applause)

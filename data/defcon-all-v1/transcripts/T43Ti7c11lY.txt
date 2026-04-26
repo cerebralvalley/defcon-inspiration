@@ -1,0 +1,373 @@
+>> PUKINGMONKEY: I am "Pukingmonkey" and we
+are going to talk about how your car is tracked today. Originally I noticed license plate
+readers a few years ago. I didn't know what they were, then I did. I build a detector,
+so when my toll booth thing was "red" it notified me. Then I noticed other ways we are tracked
+with smart phones and even "dumb" phones. I tracked down, you have the right 
+to travel. You have the right to travel anonymously. And, generally, it's yes, it's if you're driving,
+because you have licensed. Taking a commercial flight, as we all know, to get here, or crossing
+an international border. Otherwise you do not need to have ID. License
+plate readers if you are not familiar with them basically are an OCRs on steroids. They
+use infrared and optical to find the license plate, do an OCR on it, track it where it's
+been found through GPS and coordinates. And if you get enough data points, they can track
+you whenever you've been. Here is some pictures of some New York City
+license plate readers. New York City tends to use a company called L‑Sag North America.
+You can see the back of the car, the one on the left is an older model, the one that's
+larger is a medium model, it's not the newest. You can see how they're mounted to aim toward
+license plates. And you can just see back ‑‑ on the back of it, this is actually another
+jurisdiction, this is by federal PIPs system and you can see it's under the light bar,
+there are three of them, left, right, and side. And that's L‑Sag's newest model and
+if you look at most of these they look like they have ‑‑ get the other one. They
+look like they have ‑‑ this is the old model. Which has two cameras in it. There
+is a visible light and infrared light camera and April bank of infrared LEDs and on the
+back of it says "do not look at this" the infrared LED radiation.
+The new one ASP on the light bar and looks like it has a single camera so I haven't figured
+out if it's ‑‑ it's probably just IR. If you get it just right you can see on the
+back the nice, red glow of the infrared LEDs and they pulse say the. These are fixed cameras
+at 40 Wall Street the Trump building on Broadway and that's the same three cameras at night
+that you can see the glow. When I told people I found these cameras, they say "I see them
+everywhere and they're not" these are traffic control cameras, look for your car instead
+of the loop in the ground, to change the lights. These are not license plate readers, either,
+these are red light cameras, what's the big deal with capturing the license plate information,
+they have time, location, and they keep it forever. New York City keeps it five years,
+Jersey keeps it five years, and I couldn't find data points for anything lower than 2009
+where they had 108 fixed and 130 mobiles and I'm sure this number has not gone down and
+it's impossible to opt out. As you drive by you get read. So is it legal to do this tracking.
+Turns out it is, because there is no reasonable expectation of privacy of your license plate
+in public and these are the cases of why it is and people say, I heard that you can't
+GPS track my car without a warrant but that's different because the warrant was needed to
+put the GPS on the vehicle, not to actually track it. And the other question was they
+said they couldn't use infrared technology to look into my house and that is true but
+those are constitutionally protected areas and your car on a public street is not a constitutionally
+protected area. So FEMA has been funding this to local police
+departments for the last couple of years, 100% cost of the license plate readers has
+been coming from FEMA. This is a grant to Vermont for $6.6 million. This is the Vermont
+side of it saying, yes, we will use 100% of the proceedings from this to fund license
+plate readers and this is Burlington, Vermont, they purchased two for ‑‑ I know you
+can't read it, for $45,000 for two. So the retention data ‑‑ New Hampshire has a
+general ban on this, people of New Hampshire said no, which is great. I hear they're trying
+to ban them in Montana, working on that. Maine has a lot of these. You cannot store this
+data for more than 21 days in Maine if there is no criminal investigation. In New Jersey
+they must retain all data for five years and after five years it must be destroyed. Not
+sure how that works, I guess they don't have back‑ups. New York City retains it for five
+years even though they have video cam remarks video feeds, after 21 days if there is no
+crime involved in a video feed they claim they destroy the videos but they will keep
+the license plate data for five years. Now they have this data, and it's actually
+public data. Minneapolis released the data to the public and recant and I'll show you
+that later. It can be discoverable because it's data about you. Generally if there is
+an investigation about you, you can ask to see what the police have on you, in New York
+it's called "Rosario" and it's statement by them, and the police department has claimed
+this is not a statement but you cannot use it to discover it so they're using it investigate
+you but it's not a statement so you do not get it from them to see what they are investigating
+about you. And Minneapolis, the first column is the license plate number and the text,
+the time and the GPS coordinates with a picture of the license plate and the back of the car.
+They have fixed ones, too, and this is how they redacted it so you cannot find where
+their fixed license plate readers were. You can just look for them. It may not matter
+if there is retention or not because there is a commercial market for this there is a
+company F company called Vigilant Solutions and their sole customer is law enforcement
+and tow operators use this to find cars to be repo 'ed and law enforcement will buy it
+whether they have it retained or not and you can buy it from TLO.com for $10 a pop and
+you put in a license plate number and they will tell you where it has been seen. They
+say they have 1 pill I don't know data points, TLO. This is not law enforcement, this is
+one of the cars from Vigilant and they have their own license plate reader and it's infrared.
+I went about building my own and it's hard to avoid them because there is a lot of them,
+but at least you know there and because they're always on. I had a lot of failures, full sunlight,
+I have my detector, I'm detecting my remote control from 80 feet and I can't detect the
+reader but I had to use optical filters, the LEDs they're using are not standard that you
+find in remote controls, they're near IR, 755 nanometers, and the filter blocks everything
+below 720 nano meters and you can see it glows but there is ambient IR there and I got another
+filter that was 30 and you can see it shines right through so I use that to do it and this
+is why ‑‑ I'll describe this graph. The magenta is the standard infrared detector
+that you would find in commercial stuff, the bright red is the wave length of where the
+L‑Sag North America ‑‑ you can see I put up where the visible was and it's just
+above the red and the green is the filter and the black line is the detection of ‑‑
+I bought a wide‑range photo diode, and the detector looks like this, and I will be at
+the hardware hacking village today and go over the full specs of this. That's the detector
+with the filter on it. I super glued it on to it and put it into the little old DSL splitter
+case, put LEDs on it and this is the proof of concept.
+(Noise! ) >> (Away from microphone.) Actually what it's
+doing in the IR is not pulsating it's ramping up from zero to full because they're trying
+to get the best exposure of the plate. It look to us like ‑‑ it ends up looking
+like a 3 Hertz frequency on it. So eventually it turned into this, because I tried to prevent
+false positives so anything between 3 and 9 Hertz will set it off and I use the monkey
+to tell me I got red and these are the same 3 and you can see in the next video where
+it is, there is a TGIF's on the right and scaffolding and it's right before the light
+but you get red near the TGIF's because it's angled.
+(Noise) There is the scaffolding on the right and
+the monkey screams! (Laughter.) (Applause.) Is there anything you can do about your license
+plate being read? There are things you can. Steve Jobs never had plates on his car. California
+had a law that you did not have to have a plate for six months, that's now been changed
+to 90 days but he got the same car over and over so he got a new car and he never had
+plates so if you have enough money you don't need plates in California. So maybe will he
+will he can help us, these are the guys that are running these devices and I found personal
+vehicles of police I blocked their license plate numbers not for their protection but
+for mine. This guy ‑‑ most of them are near police stations and they usually have
+tinted windows, they usually don't have inspection stickers, parked illegally, so they're easy
+to find. This guy doesn't have front plates he has a cover on his license plate that's
+dark, another illegal thing and you can see all except his windshield ‑‑ he has a
+PBA shield in his windshield that is not although indicative of a cop put this guy is and the
+windows are illegally tinted. This guy has the things that shift on the back and I know
+he's a cop because he's tinted up and parked in an MTA police only, otherwise he has a
+lot of balls! (Laughter.) This is the front and back. You can never
+get the full license plate number you would have to put it together. This guy is tinted,
+no front plate, back is there and I know it's a cop because he's standing next to the car.
+(Laughter.) I like this one. You can see the police car
+in the background but I only like this because he didn't care about his front plate he cared
+about the back more and he has "EFF" plates, I don't think he knows what that is! (Chuckles.)
+This was a uniformed officer making a right turn I captured and he's driving with his
+tail gate down and he has a piece of wood preventing whatever is in the back from rolling
+out, and he has stickers that says New Jersey state police and "hero" and I find out that's
+common. You can see him standing near the car in the top photo, he has occasion
+(Cutting out. ) Front plate and even his windshield is tinted
+black. He has his tail gate down, too, so you can't read it. Maybe he's just parked
+there because the other guy was driving, this guy was parked, maybe he's getting something
+out, few days later, I found it different spot, tail gate down, same car. Another one,
+it's illegally parked completely black no inspection sticker, no front plate and he,
+as well, has a darker cover on his back plate. This was the one that scared me because he
+came out as I was taking the picture and he said "what are you doing?" And I said "this
+car is absolutely beautiful I love it!" I'm glad it was a nice car and not a piece
+of crap! Thin blue line, front plate, completely black ended windows, windshield, and PBA license
+plates and ‑‑ (Away from microphone.) ‑‑ has a black shield over the back plate.
+What these cops do is typical, what I just said but you can't do any of this, this will
+get you pulled over in most jurisdictions. They can do it because no cop is going to
+give them a ticket, they're going to get professional courtesy. You can try and do temp tags but
+you run out of time and they're not always great because New York temp tags are not good
+in Massachusetts, they will impound your car as unregistered and uninsured, and then you
+have to tow it home. They tend ‑‑ the registrations tend to be one‑use numbers.
+I ran across these temp tags, I have no idea ‑‑ they have an expiration date there is no number
+and it seems to be from a company. Or maybe they just don't care. Or maybe it's
+Georgia doesn't care, because it's from Georgia so you get 90 days and most people can't go
+through there. You can get commercial plates so they aren't registered to you and there
+are problems with commercial plates because in New York commercial vehicles have a different
+rule set than vehicles and you can see, police check point, all commercial vehicles must
+stop and they look inside each struck this is not just to check documents. Since it's
+not usually theirs, they comply, sure you want to look in the back of my truck, go ahead,
+they want to get their job done. The other things that are hard for the LPR,
+North Carolina took a bunch of plates and ran 'em through to see what LPRs had difficulty
+reading. If you have a nonreflective plate it's invisible at night and it's difficult
+during the day. Nonrefrequent active plates are uncommon now.
+If you decide ‑‑ you can remove the reflectivity but it's a crime in California to do this
+and if you're in Massachusetts you will fail inspection and you have to get a new plate
+and go through. Low contrast plates, the color of the letter is close to the color of the
+background, red characters it tends to have trouble with and if you have three or more
+stacked characters because they tend to be small it tends to miss those and if you put
+registration stickers like Missouri I think puts it right in the middle of the plate near
+the letters and that tends to screw it up, too, so they have trouble with that. 8 digits
+or more, narrow letters are not great and great if you have a front plate, only read
+half the time. These are the states that have ‑‑ the greens are the states that have one plate,
+red will have Nevada is special because they have ‑‑ there are rules for it. And these
+are the states with legal, nonreflective plates that are still valid, not very many. You can
+try manufacturer plates but this is the date of the youngest car you can have, for California
+it's ‑‑ you would only going to 1962, so that doesn't work, either. See a lot of
+obscure plates, people using ‑‑ whether they're doing this on purpose or not is unknown
+to me but this causes problems. You get salt spreaders, plows, monkeys, tail gates, I'm
+not sure what the front of one of those is but the bicycle things make it impossible
+to get a read but these are all ‑‑ these can all get you a citation, they tend to be
+not moving violations, obscure plates, it's a $100 fine, no court appearance, you pay
+it and move on. Or you can get some plates that is not your number. This is the University
+of Michigan plates but the it leading "M" on both of those is not part of the registration
+number. They can still get you because they have a full number, it will be figured out
+eventually. You can do bumper guards if you're parked because they read 'em when you're parked
+they ride down the street reading the plates. More bumper guards but don't drive ‑‑
+I have seen people driving down the road with that covered, and the other worry is if you
+have no plates on your car, every jurisdiction no plates cars are abandoned and subject to
+confiscation. You can legally ‑‑ if you have Easy Pass
+in your jurisdiction you can usually legally obscure your front plate and there is a law
+for it and there is one exception and that's for the external EZ Pass reader. Don't do
+this, these are government documents and you will be charged with tampering.
+So I built a camera to see what the license plate readers are seeing but most commercial
+infrared cameras are 850 so I bought the 750 nanometers LEDs to see what shows up with
+that and the 735 LEDs, the 420 guys like this for grow lights so I'm on some other list
+now too! (Laughter.) You can buy these things that say "hey, no
+red light camera" put this on the back, it's clear, it blocks above 850 nano meters but
+since the license plate reader is below that, the first one it's regular, this is ‑‑
+the middle one is with the 730 and if it's 850, these kinda work but they're illegal
+as well. You can see what they do on other plates.
+I ran across this by accident using the camera on plates during the wintertime since I'm
+from a place that salts their roads and this is a license plate with a whole bunch of salt
+on it. Visually it doesn't look too much different on the top, this is with the flash and that's
+with the IR. That's a moderate amount of salt because it looks like the salt absorbs enough
+of the IR to make it unreadable and that's with "a lot" of salt.
+I don't want to go through those. You can get ‑‑ these are states that have stacked
+characters, you want the one like New York that has NYPD makes it difficult to read,
+the Jerseys once aren't great, easy to detect. You can get special characters that are hearts
+and ampersands, and they're sometimes IPR'd, and some states have those. You can change
+your plates as much as possible so it won't avoid detections and you won't have that big
+of a history. In Florida it's country by country but one of them I think it was Mississippi
+it's $1.25, you can change your plates every day at lunch. (Laughter.)
+If it weren't for the DMV taking four hours. Manufacture them are reasonably priced. These
+are the states with the eight‑character plates, not very much and that's it for the
+license plate reader. Then I moved on to the EZ Pass, electronic toll collection tags,
+most people forget they're in the windshield and it's at 915 megahertz and most of them
+don't have batteries anymore, I took mine apart, has a nice battery, has a switch and
+figured out the current draw of when it was being read and not, you shouldn't do this
+because it's not your property, you have to return these and I basically built a low side
+voltage detects and when it went off it would setoff the timer and make the cow moo. The
+circuit integrated into it, put an on and off switch on it so I can turn it off while
+I'm driving and drove around and found where it got read. This place, there is no tolls
+here, but it would go off underneath the sign so I stopped on the side of the road and looked
+backwards and it may not be on purposes but you can sigh there are two readers behind
+the sign, white boxes there. These aren't hidden, they're just out there. This is the
+access to the Lincoln Tunnel from the Jersey side. If you're up top, you're committed to
+going through the tunnel to pay the toll, and there are three here and you can see the
+one that reads you but it's not going to charge you the toll.
+You will get charged the toll at the toll and you will get read at the entrance of the
+tunnel. And they want to know, because this is the last exit, there is one at the exit
+for the last exit in Jersey, so it's being watched. You drive around New York City and
+you will see them hanging from lights. And I made it easy to see, another one. I got
+tired of taking pictures of them. These are from a company called Trans Core. They can
+read all the protocols including EZ Pass which was a closed protocol until a few months ago
+and they had it reversed engineered, and it will read the Sun Pass from Florida and that's
+why New York City likes it, they get everybody. I didn't like I had to be detected, it was
+like a ping, so for me to find out if I was being read I had to give my position away
+as well so I got a 915 megahertz radio and put it in a tin with a little meter on it
+and we'll do a proof of concept here, the Adrena One is in the cow on the left and the
+one on the right I built. (Noise. )
+(Cow mooing.) And right under the sign, as predicted, it
+gets red. We will go through the Holland Tunnel again, maybe we will do that again, to show
+an EZ Pass works just fine. (Applause.) On the 
+first one I showed you I circled the tag and the cow on the bottom is already going off.
+I did a rundown 7th avenue from 44th Street Time Square area to Madison Square garden
+and you will see how often it gets read. It's going already. It moos only a couple of times
+but as long as the nose is on it's being read. This is a 5‑minute journey, so it's being
+sped up. Still on. (Mooing, mooing, mooing)
+(More mooing! ) I'm in traffic.
+(Mooing, mooing) (Mooing, mooing)
+(Mooing, mooing, mooing) It goes off as soon as you pass 31st street
+and remains off until the Lincoln Tunnel, which is not a toll, and this is exiting from
+Manhattan at the Lincoln Tunnel. (Mooing, mooing, mooing)
+The New York state Department of Transportation admits they do read your easy pass but I didn't
+expect it at every intersection. They say they do this for travel times. I have never
+seen travel times in the middle of Manhattan! (Chuckles.)
+What do they do with this data? Do they retain it give it to the NSA, the "New York Times"
+said they did! (Chuckles.) This is easy, if you have these things you
+put it in the antistatic thing they gave you, it can't be read or if you have a sticker
+you're going to have to build the cage around and it I got that idea from the car rental
+company they have these fold down things so you can pop it up and it won't be read, but
+if you do that, it gets read before the toll, at the toll and after the toll so if you're
+doing that, you're not showing up at these other places you may be a person of interest.
+If you're only seen at the toll. Then we come to your tires. Back in 2000 Firestone
+had a strike and replacement workers made their tires and they tended to blow up.
+Something got passed called "Tread" and they wanted toe track who made the tires because
+there was never any ‑‑ there is no serial number on tires, they're molded, the mold
+from 10 years ago is the same as today so you can't tell when it got made. So there
+are a couple of things in your wheels. First one is the tire pressure monitoring system
+that's not in the tire that's part of your rim on the backside of the valve stem. This
+transmits at 315 megahertz and it's unique per rim. This is not so bad because to get
+your ID somebody has to some to your car and get the ID, but they could. Then the tire
+manufacturers are putting RIFDs in the sidewalls themselves. There is a unique serial number
+in each, Michelin uses 915 megahertz, Good Year could not get that 
+to work, if you get your tires from Ford, Chrysler, they put the VIN number in the tire
+so now the VIN number that goes to your state ‑‑ I know of no one that's doing it but if I
+were somebody that wanted to track I would be putting sensors at sides of roads and this
+is a tire pressure monitoring system. This was a picture showing a run flat tire and
+you can see where they cut away the run flat it's a transmitter, it's like the EZ Pass,
+has a circuitry, battery in it. You can't take your tires off and put them back on yourself
+you need somebody else to do that and if you disable your tire pressure monitoring system
+you will have that light on the your dashboard the entire time and if you have an automobile
+inspection you probably won't pass it because in Jersey if you have an indicator light on,
+check engine, low tire pressure, seat belt indicator does not work you will not pass
+inspection. You might want to try and jam it. I was unsuccessful
+at doing that, that's for later. You can try an EMP pulse that maybe the chip is in the
+sidewall of the tires but rubber absorbs RF very well. There are other RFD things around,
+parking passes, hang tags, you can get a radio to see if that's what happens if it's a hang
+tag and something opens a gate for you it's probably an RFID. There is a community that
+used their parking permits because they had so much counter fit parking stickers for the
+street they put RFIDs in them and put them on the cars you want to park on the street
+you're going to be detected, too, it's tough to get around it. Italy is doing this and
+Texas was going to put them in their inspection stickers but I don't know if that passed.
+So you need to not use those if you can. I came across a company called Inrix and they
+collect position data from 100 million devices. Google maps uses them for their traffic flow,
+six of the auto manufacturers with built‑in nav uses Inrix, 8 out of 12 in the top navigation
+apps in the iStore use these people, and they track dumb phones with contracts with the
+cell phone companies. And they originally started by tracking commercial truck fleets.
+So they have lots of data on you. If you use any of these apps, you've giving it to them
+and they know who you are. So at the end of the day, you need to assault your plate, bag
+your tag, jam your tires, turn off all electronic devices. And that's it! (Applause.)
+I will take questions if you have them. >> AUDIENCE MEMBER: (Away from microphone.)
+>> Lighting the back of the car with LEDs you can do that to block it, you're going
+to need both of them but many states have ‑‑ if you jam a red light camera you have committed
+a crime. >> AUDIENCE MEMBER: (Away from microphone.)
+>> The back of the lights, no, it's usually open worded saying if you can defeat a red
+light camera any means any way you have committed a crime. So they're illegal and if I was the
+LPR guys and you think you have IR and you used 850, if I was L‑Sag I would put the
+same blocker you put on your plate to block that and I won't see your LEDs because 740s
+are uncommon. Wait, it's coming. >> AUDIENCE MEMBER: You stated the toll collection
+is shared with NSA. Does that apply to LPRs? >> I don't know that. The only reason I know
+it was shared is because "New York Times" said in one of the articles written after
+Snowden that they get EZ Pass data, most people think it's at the tows, big deal, but it's
+much more than that, but it tend to be government data and since FEMA is fund it's part of their ‑‑
+for this money we want your data, too. I have no documents saying that.
+>> AUDIENCE MEMBER: How about Frisnel lenses or dust covers ‑‑
+>> PUKINGMONKEY: All these things ‑‑ every jurisdiction has an obscure plate law so if
+you obscure your plate ‑‑ >> AUDIENCE MEMBER: (Away from microphone.)
+>> PUKINGMONKEY: To ‑‑ depends on the jurisdiction. Most of 'em ‑‑ like if
+the red light camera can't get ‑‑ one of them is Pennsylvania, that's the one I
+knew well because basically it's broad: Anything you do to defeat a red light camera is illegal.
+It's a misdemeanor but it's more than a moving violation; it's a crime. That would fall under
+that. I think California has the same law, too, but don't quote me on that. I read a
+lot of state laws and they all start with to blur together.
+>> I would suggest you check your sources on the "New York Times" article as far as
+the availability of the toll tag reader ID to NSA. I know the people who built the system.
+>> PUKINGMONKEY: Yeah. >> We don't keep any of that data.
+>> PUKINGMONKEY: Is that New York City DOT? >> Yes, along with the system ‑‑ the
+DOT, the last thing they want to know is who the hell is driving that car.
+>> PUKINGMONKEY: But they said EZ Pass data ‑‑ if it was actually ‑‑
+>> All toll tag datas are scrubbed, so double‑check the source on the "New York Times" and also
+with the Inrix data, you might want to double check that source, too, because I challenge
+you to find anyone at Inrix that can pinpoint a vehicle.
+>> PUKINGMONKEY: I'm not saying they can't. All I'm letting you know is you are being
+tracked, at this point. >> AUDIENCE MEMBER: You're being tracked on
+your Android phone, but I think Google has a better chance of identifying you than Inrix.
+>> AUDIENCE MEMBER: (Away from microphone.) (Applause.)
+>> Where do you want to go? (Laughter.)
+>> AUDIENCE MEMBER: I was wondering if you've done any experiments with putting, like, a
+coat of clear coat paint over a layer of salt to stabilize it so it doesn't watch off?
+>> PUKINGMONKEY: No, I actually want it to wash off because let's say you have to go
+through a car inspection. You have to wash it off but these are up to ‑‑ I'm not
+saying to do any of this, actually, this is just ideas. (Laughter.)
+These are just ideas! >> AUDIENCE MEMBER: (Away from microphone.)
+>> PUKINGMONKEY: I'm not sure how they detect if it's reflective or not, right, because
+it's a laser beam that says if I get enough back it's fine, at a corner, all I know is
+that is part of their inspection criteria, Massachusetts.
+>> AUDIENCE MEMBER: Is there any state law that says you must keep your license plate
+clean? >> PUKINGMONKEY: It's the same as the obscured
+plate law. You cannot put mud or stuff on it. Typically it has to be visible and that's
+why I liked the salt because visibly it doesn't look like it, and in states that have winters
+it's kinda common to have salted plates, not probably very common out here.
+>> AUDIENCE MEMBER: My question is how did you salt your plates to maintain deniability.
+>> PUKINGMONKEY: Water, salt, super saturated, pour on the plate, off the car, let it dry.
+>> AUDIENCE MEMBER: Thanks for speaking with us. I had a quick question about the data
+and how it's available. If we can contact our local counties and get this information
+for free? As far as when our plates were read? >> PUKINGMONKEY: I don't know how ‑‑
+they typically will not give this data out. Minneapolis is the only one I know. They did
+it briefly and then recanted and said we're not going to provide this anymore, so I know
+of no one that is proving it to people, but the company, TLO.com, you can purchase that,
+but it's privately collected data, which there is no laws against any of that.
+>> AUDIENCE MEMBER: Thank you. >> AUDIENCE MEMBER: You put effort into investigating
+state‑by‑state the rules for changing license plates and I appreciate that but what
+is the perceived advantage? >> PUKINGMONKEY: You have less of a history.
+You can still ‑‑ if people have a routine that's every day of the week you're detected
+very quickly, but they could go back and say, well, he's only done this for a week if you
+change your plates every week. But they also have all your previous plates but I don't
+think that's a common practice to change your plates a lot so they might not say, let's
+go back and look for all his old plates but it would be trivial to do that query, here
+is his ten plates, run 'em all. >> AUDIENCE MEMBER: Do you know of any paint
+that you can use on the infrared spectrum that would be transparent on the visible spectrum?
+>> PUKINGMONKEY: Myth busters did this and busted it so I didn't go down that road. They
+said they had a bunch of things for a red light camera, some sort of spray that did
+not work and I saw it advertised, I did not purchase it or try it. That's usually for
+speeders trying to avoid laser detectors. >> AUDIENCE MEMBER: A lot of questions focused
+on trying to prevent reading of your plate and as you mentioned every state has an obscured
+license plate law, what about a different approach, feed it go bad data, lots and lots
+of bad data. >> PUKINGMONKEY: That's one of the things ‑‑
+the detector is trying to find your plate so if you get reflective material about nonreflective
+numbers on it, it will probably find your plate and read the other bad data along with
+it so you will still probably be captured, but as well as your bumper sticker, that you
+tried to say semi colon 1 equals 1 to try to dump on it, but you gotta do that in, like,
+eight characters. >> AUDIENCE MEMBER: My questions is about
+sanding down license plates. I have a bunch of people in Arizona that sand 'em down, everything
+around the numbers. What's that about? >> PUKINGMONKEY: Sanding the plate will remove
+the reflectivity. >> AUDIENCE MEMBER: (Away from microphone.)
+>> PUKINGMONKEY: Yeah, it has the numbers though on it, right? Visibly. One of the ways
+detectors are looking to find it on the back of the car, one of the ways it does that is
+by reflectivity. (Applause.)

@@ -1,0 +1,827 @@
+>>I present you your speakers.
+Daniel Romero and Mario Rivas.
+[applause] >>Can you hear me? Yeah, Ok. Well, uh, hi everyone
+and thanks for coming to our
+talk “Why You Should Fear Your Mundane Office Equipment”, where
+we are going to present
+enterprise printer research. Ok. Thanks also to Def Con for
+giving us this great
+opportunity. Ok first of all, there’s there’s a reason to care
+about who we are. This is Mario
+Rivas and I’m Daniel Romero. Um, both work at a Security
+Consultant and Researchers at nc
+group in the Madrid office. Ok. Here you have our contact info
+and emails but you want to know
+us better, we are always up for a beer, so just ping us. Ok,
+this is the agenda, this uh
+really classical agenda, first introduction about uh about our
+research and the attack phase
+that we have covered. Uh the test methodology. Mario will
+present the test methodology and
+some fuzz we have developed and have a way to crush the
+different vulnerabilities that
+we have found. And after that we will show you some exploit we
+have developed. And just finally
+a brief conclusions. Let’s go with introduction. Ok. Um, the
+main goal of the research was
+testing enterprise devices. Ok. Um, figure out the current state
+of security of them. For this
+reason we thought that printer would be a good target. Ok. Um
+we selected 6 di- 6 different
+medium size enterprise printers and we decided to focus these
+research in a red teaming
+approach. Ok. We will show with it vulnerability research, it’s
+protection, plus exploitation.
+Keep in mind it was not an assessment, so we only need one
+vulnerability to provide us
+remote code execution. We don’t need to find all the
+vulnerabilities that the printer
+have. Ok. And why printers. These are really good questions.
+Printers has been real eh- well
+extended sa- many years ago around the the companies. And
+they are usually connected to eh
+different networks, different VLANs so we can use them in
+order to eh, pivot and solve the
+different department the company could have k? And obviously the
+information that could be
+managed by um a company is really sensitive. We have
+corporate information, personal,
+financial, customers. And don’t forget information which was
+inc- or is include within the uh
+configuration. We can have uh domain accounts, creation,
+password and eccetera. Ok. And
+well usually uh printers are considered lower static so
+probably they are not included
+within the patch cycle. And uh they probably are not configured
+cyclically or properly. Ok. And
+then we have uncontrolled devices. Managing really
+sensitive information and
+connected to the most of the company’s networks. These are
+example of this quick, where
+Microsoft catches Russian state hackers using printers in order
+to attack companies for example.
+I’m going out. Some vendor-, some vendors decided to make a
+statements like this one, so it
+is a challenge for us. The most important probably. Ha ha. Ok,
+let’s go with attack surface. Uh
+first of all this command that we identify two different eh uh
+operation system within our
+printers um. The real time operation system, RTOS and
+Linux. And obviously we identify
+many different attack surfaces. Like web applications and web
+servers, web servers sorry.
+Mobile applications, file parsers, updated firmware
+analysis. Printed language and
+services, external services like the Google CloudPrint or
+AirPrint. Management services,
+telnet, SMP and others. Um proxi- proximity attacks like
+wifi, USB, NFC and et cetera.
+And we also decided to include other two tasks, post
+exploitation and hardware
+analysis. Ok. But obviously we have enough time to go over all
+these attack surfaces. And we
+finally decided to include the following ones, those ones are
+gray because we didn’t include
+them in all the print testing. Ok. Uh these are mortitalic
+picture about our attack surface
+where you can see the difference element we called in these in
+these research, uh for example,
+for the printed languages and file format we decided to
+include the PJL, PJL, PCL and PS
+language format. Ok. Let’s go with the testing methodology.
+>>So this the methodology that
+we mainly uh use during the research. Uh we started with the
+state of the art on uh setting
+up our printers and then we chose uh the scope of our attack
+surface as we just told and then
+in a second process uh we started searching
+vulnerabilities uh passing
+different protocols and finding some crashes. Then analyzing
+them um then trying to exploit
+them in order to gain more knowledge of the device. Uh all
+these while also analyzing the
+few were in the cases we were able to obtain it and also eh,
+using the hardware to get some
+more useful information. Talking about fuzzing. Um, we started
+with dumb fuzzer first. Uh which
+are very quick to launch, but also uh, well, and we continue
+dev- developing uh smarter ones
+uh, which require more time, but ge- give better results. But
+Linux gave us great results, but
+we also find that we were spending more time that eh we
+should. Uh, so we decided to
+create our own fuzzer. While looking at the state of the art,
+uh we found two amazing tools.
+Uh Sulley and BooFuzz. By the way, um, Joshua Pereyda, uh the
+maintainer of BooFuzz and car
+vision were here yesterday. Um, these two tools have great uh
+model use and great uh
+functionalities. Uh, but we were taking a lot of the code, so we
+decided to to fork, BooFuzz and
+after Sulley and Boo eh the next one was Wazowski so we called
+this Fuzzowski, uh we wrote it
+in Python3 and we changed eh, improved some of the models like
+the strings fuzzing libraries
+and um, we also made fuzzer modules to keep all your
+protocol fuzzers under uh single
+program with a similar behavior. And between the rest of the
+changes uh we wanted to solve
+some difficulties that we were having. Different
+implementations of the same
+protocol behave uh different in different targets and when a
+device crashes it can load to
+tear it down or maybe the the service may a stop answering or
+maybe it just print us stacked
+arrays in some bug interface. For this, um, we made a main
+program with a lot of arguments
+to uh, avoid touching the code. Um, for different targets and we
+made monitor modules to
+constantly check the target. And then when the device crashes um,
+a lot of times we boo- need to
+reboot it manually. So we made restarter modules um, to for
+example, turn off a known an a
+smart black another to any necessity we were having. And
+then, uh to give usability to
+the to the fuzzer we made a a nice console where we can post
+and control the fuzzing session
+and do things like re-test uh suspect packet uh suspect escape
+detection of a device. And do
+other things like printing human readable formats the packets we
+are sending. And uh we can also
+save standalone scripts uh that we can for example uh send to a
+manufacturer. So let’s with uh
+very quick demo. Before that, uh you can see here um, a typical
+BooFuzz uh, test case. Uh,
+printing and below um, the our console with the test case, the
+number of test cases, our target
+and some more information of the actual test case. Let’s go for
+the demo. That’s it. Ok. Um, so
+we can see a below a ping to the uh to the target and we can see
+above um, the help with a lot of
+the commands and the options that we have. Uh the different
+modules, the fuzzer modules that
+we have, uh developed. The restarted modules, the monitor
+modules and all the options. We
+are going now to launch uh the fuzzer tool target. The printer
+1 and the port 631. Using the
+internet printing protocol uh fuzzer. Uh and the get printer
+attributes command of the IPP
+protocol. And we are also using restarter module that turns off
+a known and a smartplug. When
+the device goes down. We can see here cool logo and the console.
+Where with a lot of the commands
+that we implemented. We are going now just test the
+connection sending a known fast
+packet to a printer. And after checking that the connection is
+ok, uh we are going to go to a
+different test case and we are going to continue the execution
+from from there. We can see here
+uh the different test cases that we are sending, uh, like in very
+similar tool fuzz. And after
+sending two of them we will see below uh that we will stop
+receiving icmp messages and that
+printer has gone down and now we cannot connect to the target and
+we are going to use the
+restarter module to restart the target. After that it will wait
+for it to recover and um, it
+will continue the execution automatically. But we don’t want
+to do that, we can control C, go
+to the console uh and we can for example bring the suspects where
+you can see the 5 phoning one.
+And we can also print these, uh test case in a human readable
+format. Uh, you can see all the
+the code packet and the longest line, uh, is you can see we are
+sending 10,000 Cs and so there
+are full value which was in. Uh we can also say uh see a proof
+of concept. Uh we can copy and
+paste into a script and for example send it to a manufacture
+or use it in a in a split. Then
+um, after this uh recallers, we will retest it to see if it was
+this test case which was uh
+causing the crash or it was any other reason. For that we can
+use the fuzz command and uh we
+are going to launch the fuzz command for the 501 we will just
+test the test case and after
+that we stop passing icmps again. Uh we have fall back uh
+in this case it was uh pbuffer
+flow. And we can also save the [indiscernible] script into a
+file with a crash command. And
+um, disable this element to not test it anymore because we
+already know it’s vulnerable and
+we don’t want to spend more time with this. So. That was the the
+main demo. Uh we you can find
+all the code after the talk in our external github. And let’s
+go for just a bit of hardware.
+We took a very good look at the hardware, mainly searching for
+things that will help us with
+the exploitation with things. Like debug interfaces, like uh
+serial ports, UR attack data and
+other uh information that will allow us to damn the uh firmware
+or other useful information from
+their memory. And while doing that um, we also were having too
+much fun uh playing with the
+hardware. Um, we did something that we shouldn’t and uh one of
+the printers will never print
+again because of that. Um, we will say maybe kill printer safe
+at three. I don’t know. Um, so
+one of the first things that we did was uh looking for exposed
+memories. Like in this case
+where we use at uh buspirate which was connected to one of
+the tips. And through spi
+protocol we downloaded the firmware through that. From the,
+from that memory. We also found
+uh serial ports in three of the six printer uh tested. Which uh
+also we found uh founds some
+data ports that seemed to be disabled and uh serial ports
+were extremely useful as they
+give us a lot of information. Uh debug information, uh errors and
+uh stack traces. And this was of
+course useful to us for some of the vulnerabilities that we
+found. Uh also one of them had a
+interrupted shell that allowed to write and read to memory. And
+also to give from arbitrary
+positions so we decided to make a hardware backdoor with this
+and which could be implanted
+with by someone with physical access to the printer in 2 or 3
+minutes. For this we use a
+Raspberry Pi, uh, as you can see in the picture, which was
+connected to the to the serial
+port and was also power byte, so whenever the printer is on, our
+Raspberry Pi will be on. And
+then this Raspberry Pi an ac- an access point and from there we
+could just uh access to this
+console and have this this capabilities. That was a very
+quick look at the hardware and
+let’s go for some of the most common flaws found in most of
+the printers. Um, we are
+starting with the web applications and we found really
+weak default configurations,
+exposing almost services have hilo in the printers, um more
+than 20 in some cases. And we
+also found that it was giving access to the management panel
+with default or without
+credentials. Uh we got the feeling that it was like the
+product security of 20 years
+ago. Um, and of course we found a lot of the typical issues in
+our web like uh cross-site
+request forgery, lack of access control in some functionalities
+like um, ah, one that a load
+test stood a lot of full back of the configuration including uh
+passwords in clear text of
+course. And uh all that inf- things like cross-site scripting
+issues, like 1, 2, 3 and 4. And
+a bit more interesting path reversal uh which allowed us to
+to load some files, but
+unfortunately we were only able to download some specific
+extensions and we are not able
+to further exploit this to get closer to our objective which
+was uh to get remote execution.
+So these issues are not bad, but we are looking for something
+that may allow us to get uh full
+control of the device, so looking at the frameworks, we
+found a few lengthy, more
+interesting functionalities. Like this one, you can see there
+are a lot of information, uh, a
+lot of debug information like authorization and security
+locks. Including sysdebug uh
+cookies. And also more information like activity
+authority logs, kerberos logs,
+the full list of processors running in the machine and more
+information about the underlying
+operating system, uh Linux in this case. In this second case,
+was very similar to the first
+one, um, with different functionalities and their
+different URLs. And this was uh
+very useful to exploit one of the vulnerabilities that we will
+see later. And this third one
+was even better because it directly allowed us to download
+the full memory of the device
+containing any secret, eh, passwords, uh anything in that
+at that moment. We also used
+this as a memory leak issue to defeat ASLR uh one, when
+exploiting one of the issues. We
+will see also that later. And of course, all this was uh
+accessible without any
+implications because it’s not even in the menus or anything.
+So. So going for the memory
+corruption issues, we found a lot of them in a lot of
+services, not only in the web,
+but also in um, in other services like printer protocols,
+IPP or LPD or SNMP the Google
+Cloud implementations. Basically a lot uh more than we can
+handle, or investigate so we
+really stopped searching for more um, we we had basically
+vulnerabilities everywhere.
+Which leaded to crashes everywhere and also some useful
+traces in the debug interfaces
+that we found, like this one. Where you can see that the PC is
+overwritten and this is from a
+exploit that we won’t uh show you today, but don’t worry,
+Daniel is now going to to
+explain two others that are nice. >>Ok let’s go with the
+couple of uh expolita- example,
+de- eh- sorry. A couple exploit examples that we we fo- we
+developed for this research.
+This uh first one this the easy case and was found by one uh web
+application file scan. As you
+can see in the image in the uh HTTP request, and we uh with a
+long cookie value we were able
+to uh crash the print. So probably this is a parsing a
+stack buffer overflow. Ok. But
+looking to the framework we identify that the developers
+forgot to include vulnerability
+checks in the whole code. So probably this is strug- this is
+string copy here, eh, which is
+copying the cookie value into stacker, right could lead to us
+attack buffer flow. Ok. And uh,
+important another important point here is the count
+variable, the count variable is
+the is the cookie size, including the cooke name, the
+equal symbol and the eh cookie
+value. Ok. And it for ex-, it is for example used in some paths
+within the within the string
+copy ey- function like, within the, the size argument. Where,
+where eh, 15 byte were extracted
+from these for these variable ok. Question here, will be, do
+you really think there is only
+one bug here? Answer obvious is no. Imagine that we replace the
+equal symbol by a semi colon
+symbol ok? The count value will assume 14. 14 minus 13 is a
+negative number. So the 15 copy
+function will copy a really huge and special number into the
+local array. So we have two
+different vulnerabilities in the same line. Here you have to
+separate concepts. The first one
+just sending a really long cookie value and the second one
+just replacing the equal symbol
+by eh by a semi colon symbol. Ok? And thinking about
+exploitation uh so looks looks
+like we are going back to the 90s code which scares and let’s
+go to take the different
+difficulties that we came across. The first one is us we
+identify ASLR within the stack
+and heap within a half um software debug and we hope to
+exploit a real time operation
+system. We so we need to reverse engineer the firmware in order
+to identify some potential
+functionalities for example and use the that functionality or
+shell code. Because we don’t
+have a shell here. Ok. Helpers only we have a direct PC
+overwritten, potential rewrite,
+NX serial table and the whole space of memory and we we have
+the stack table. Ok. Finally, as
+Mario mentioned before, the same printer we identify memory leak
+vulnerability, that provide,
+that allow us to get the full memory. So what what code wha-
+what we’re going to do here is
+try to use this memory leak in order to bypass the ASLR. Ok. So
+the exploitation chain should
+be, we’re going to send a shellcode to a printer between
+patterns ok. We’re going to use
+the memory leak vulnerability in order to dump the the memory.
+We’re going to try to identify
+in dump memory our shellcode and where and try to look into into
+where our shellcode was located.
+We’re going to try to uh trigger the buffer flow and after that
+jump into our shellcode. Ok? Ok
+eh uh, but for our regiment tools we want something more.
+And, but so what is the most one
+of the most important data managed by a printer? Obviously
+the documents. And so when don’t
+create a shellcode that they steal all documents into the
+printer and send it through
+reverse shell. Which sounds like a good plan. Ok, let’s go with
+the demo. For this demo we are
+going to have two different machines. The first one is the
+attacker machine, which is going
+to execute exploit. And the exploit hardware that we will
+take the the data from the
+printer. Ok. and the second machine is, eh, victim machine
+that we’re going to send th- the
+document to the printer. Ok. Let me check the that is the. Sorry.
+[mumbling] I can take well. And.
+[mic noise] Uh. ok. Here you have. De- demo, sorry for this.
+Ok. Uh. This the the demo uh,
+here you have the uh, the attacker machine. Which uh which
+uh, IP address and below you can
+see the exploit. Is pointed to different arguments for what is
+target IP. The target port and
+the reverse IP, well you to include here the ta- the um, the
+target machine IP others. So we
+are going to attack the printer one and the port 80 and after
+that the we’re going to include
+the printer machine. Before execute this exploit we are
+going to execute or exploit
+handler that will receive or uh all data sent from the printer.
+And listening the port 1337. Ok.
+And after the execute this exploit you can see in the, uh
+third line, we are ex-, we are
+using the memory vulnerability in order to find eh, operating
+memory. Ok? So we have now
+receive uh connection from the printer. Got the sentence, hack
+the planet friend. Because it
+was included within the shellcode. Ok. this is now the
+um, the attacker machine, that
+saw the victim machine uh with a different IP address, whe- whe,
+what we are going to do now is
+send in these document to the printer. Ok. we are going to
+send document to the printer 1.
+It is second one and after send the document, you can see here,
+for example, how the exploit,
+how they receive some data. Data from the printer. Ok so I’m now
+converting this data a pdf. And
+so after 2 seconds, you can see here how we were able to a steal
+all data, all documents sent
+sent to the printer. Ok. And the printer continues to print them
+normally and all exploit
+handler, auto forward, all data sent to another printer
+controlled by the target. So we
+were able to steal all data, all documents to a printer.
+[applause] Thank you. Ok. Let’s
+go with the second exploit. This was the case, this going to be
+the tricky case. Um as we didn’t
+have stolen hardware debug and other protections and
+difficulties was implement this
+uh this printer. So this isn’t going to be easy to explain, uh
+but we will try ok. So be
+patient please, because it’s a bit tricky. Ok. we found a
+similar in the same place, but
+for this printer, but in this case we have two different parts
+in the cookie value. Ok. The
+first part is the the first part is on the like a hash and the
+second part seperated by a a
+comma. It’s something like uh base 64 is string. Ok. After
+reverse engineering the printer
+fr- the printer frameworks, we identify some potential
+vulnerabilities the code
+contained this vulnerability. Ok, but the most important
+function was the function that
+the code the base 64, the code value. Ok? Uh, after analyzing
+these function, we identify how
+extract was based as argument to these to the function to the
+base 64 to code function and
+this has different elements included within this truck. The
+first uh, elements, the source
+pointer, which is the base 64 string, the second is the
+destination pointer which is the
+result of the base 64 string and that will-, this will will be
+filled within this this
+function. This source len and the destination len. Ok? But
+this function, the base 64
+function was called by the code in the highlighted area. As you
+can see here, when calling the
+base 64 the code function and we are passing a struct as
+argument, ok? And the buffer
+flow course because the destination point there which is
+here, was as you see into a
+local array. So we send a really long cookie value base 64 end
+code, we are oper-, we are eh
+um, the the base 64 function will overflow this stack. Ok?
+So, this was analyzed locally,
+so we need to corroborate this dynamically ok. So we use the
+the unicorn framework in order
+to emulate so some framework that you know the unicorn eh uh
+this framework allows you to
+emulate different special code as in the the resin- for
+example, the resistance. And we
+decide to create in the script that they um emulate the the get
+and check the second part, the
+cookie, the string len, the base 64 decode and other functions.
+Ok. and after the good is uh um
+the script we’re we place 100 eh 100 ace as uh base 64 as
+argument wi- we are able to
+identify that the PC resistor the brown code resistor was
+[inaudible]. Ok. We can also see
+how the uh stack pointer on- only included with stack pointer
+we can control all this data.
+And uh the r4 the r4 or r5 resistor we’re also operating by
+by ace. Ok? This is because the
+instruction instruction execute before before taking over this
+uh pop instruction, we’re just
+popping the r4, r4, r5 and the po- register. Ok. So we have now
+all the information that we need
+in order to our shell code. But everything become insane here.
+We identify that the stack
+wasn’t executable. We also identify that we try to to use
+many firmware addresses in order
+to create our shell code to our rope change. But that doesn’t
+work properly. Ok. Uh we also
+identified the this uh the the printer was using uh a modified
+t kernel RTOS, but the most
+important point here is that these uh non mono- monolithic
+system and different tasks
+executed the same time. So probably which the coordination
+here is take uh a code from the
+framework and execute this code in memory in a different
+address. Ok. So this iteration
+because we were not able to use eh, thing others to create all
+all the shellcode. Or the
+change. So therefore, we didn’t know where and how our shellcode
+can be execute. We have
+something like ASLR or or NX. We have uh NX and we didn’t we- eh-
+we could not able to identify
+valid addresses to create a ROP chains. But we need we need to
+identify by the re- other
+registers in order to do that. Ok. So thinking about rate going
+thought about different approach
+that we’re going to use for example. Reverse engineer the
+t-kernel structure, but
+obviously we didn’t have enough time to do it because it could
+takes weeks. Uh, reverse
+engineer the bootloader in order to identify potential static
+addresses, identify static
+memory, but we did not want pemi- like configuration for
+example, but we did not want
+permission code we assisted to that piece of code or memory.
+Sorry. Brute-force random
+addresses, like we’ll see now are looking for helpers. Ok.
+Helpers like this one, this the
+infinite loop that we found within the the bootlogger, so uh
+without the equally good option,
+use this infinite loop in order to create a blind exploitation,
+ok? Imagine that we have a code
+that we don’t know if it executed or not properly. What
+we can do now is just after that
+code, we’re going to try to jump to our infinite loop ok. If the
+printer reminds up, that means
+the code was executed properly. If the printer crashes, that
+means the code was not executed
+properly. So it’s something like a blasted injection, but with
+memory corruptions, ok? Um, Ok.
+Uh, we decided to mix the the infinite code helper with the uh
+the following approach of brute
+force in the PC register with potential firmware addresses and
+figure out what instructions
+were executed. Let me explain, ok? Uh, the main goal here is
+uh, we’re going to helping us
+with the code called the infinite loop uh co-helper, we
+are going to try to brute force
+in the PC register ok? And we’re going to to to try to guess or
+identify what instruction was
+executed or in memory blindly ok. So remember that we can call
+to the PC register on all that’s
+included within this tag point there. Ok. Imagine that we we
+brute force in the PC register
+we finally jump into the pop instruction, but we don’t know
+this is pop instruction, ok? And
+we’re going to include some data within our step pop in like
+three set of arrays and after
+that the infinite loop others. It works good this code, the PC
+re- the R0 register will be
+operated by the first set of arrays ok. Be- eh and the second
+a um, the the PC register wi-
+will be operating by the second first of fi- se- second set of
+face. Sorry. And so the printer
+we be all the printer crashes ok. But in order to solve this
+and try to guess what
+instruction was executed in moment, we can change
+information includes in included
+within the stack pointer. This is an a another example. Uh, but
+for this case, we’re going to
+just include one set of face within the stack point and not
+in the infinite loop others. It
+works a good the same code, the same address after the execute
+this address, the r0 register
+will be re-written by the first set of face and the pc register
+will be overwritten by the
+second, I’m sorry, by the second address which is an infinite
+loop so the printer will remind
+up. So using this methodology we are able to identify that in
+memory eh we are execute in
+memory our pop register, ok. Which is pop in our one register
+and after that the in the pop
+encounters. So using this methodology uh our approach we
+were able to identify three
+instructions in memory. The first was is address 12, which
+was an added section. The second
+is uh an add 2 uh a 14 string uh which was uh a pop instruction
+and in a research of 500 bytes
+we were able to identify another pop instruction. Ok. so our main
+goal here is to identify the
+same pattern that we have found in memory in our framework. Ok.
+and we finally were able to
+identify this pattern, but in another address. That means that
+the kernel is execute in this
+code, the kernel is applying an upset to this to this code. And
+we now know that address that
+that exact address that the kernel is using. Ok. This
+provide us useful ROP gadgets in
+order to create our sh- our shell code. Um, but it provides
+helpers to continue with the
+task execution. Sorry for that but this is the way that we
+found in order to create our
+exploit. Ok, but it was not enough. We need more gadgets in
+order to create our exploit. And
+that th- this moment we remember that as Mario mentioned before
+we remember that another
+function identified vulnerability which allow us
+would provide us some some
+useful information was found in the same printer. This um,
+memory leak or or or information
+leak vulnerability provides when exactly uh images and gif were
+uh located in mobile. Okay. So
+we can use this information in order to bypass the ASLR
+protection for example. And why
+not.we can also use this information in order to create a
+ROP change. Ok. Or we’re going
+to do something that exploitation with images. Ok. So
+we are going to download all the
+images and gif to our laptop and we are going to use the ROP
+gadget script in order to find
+some interesting ROP gadgets. Ok. Already these not coher-
+code coherent code because they
+are images, but we were able to identify some useful useful ROP
+gadgets to create all for
+exploit. Ok. But we came of course with another problem.
+This was the last problem. I
+promise you. Haha. Eh um, we identify, uh, we came across
+with caches ok, so we need to
+flush the caches, then some options here, like call ARM
+instructions or different uh,
+functions, like sleep, mprotect and others. Or continue with
+execution flow, which is
+probably the most harder, but the most proficient option and
+we choose this option. Just
+quickly, eh um, in order to continue with execution flow, we
+need that shell code implement
+three different eh um, paths. The first one is our exploit for
+example, we can use, um we can
+create something like for the previous uh, exploit, where we
+are going to code the print
+function ID and steal all data for reverse connection. The
+second part, uh, should change
+the address that we were able uh were able to report with the
+vulnerability in order to jump
+in the value function. Then we want to continue with execution,
+so we need the value function
+that we can get it here, ok. And the third, uh the third part,
+the umm, we should align the
+step pointer again to a previous pointer. Because we have for
+example, execute or payload or
+change some addresses, so we need to align this task stack
+pointer to our previous estate,
+ok? And after that just trigger the vulnerability as many times
+as you want. Ok. As you work
+with the demo uh for the previous um exploit we try to
+attack the document drop of our
+printer, but for this demo we’re going to attack, to try to
+attack all the information
+included with the within a printer. Data. Uh let me check
+demo. Ok. For for this demo we
+implemented three different function items within the within
+our exploit. The first one is a
+write so we can write byte into the into the printer memory and
+after that jump into that to the
+memory. For example we can right uh a set uh a set code and after
+that jump into our shell code.
+The second is similar to the first one but we can write a
+file that we have in our
+computer, for example, into a a piece of code. And the last one
+is the grid functionality. This
+allow to us to read some data from the printer memory. But we
+need to wait in order to locate
+the memory or copy the memory. Ok. So what we did here is we’re
+going to try to copy the memory
+that we want to read in a known place. We know where exactly
+images and gif were affected so
+we’re going to use this piece of memory in order to read the
+information. Ok. Oh uh what
+[inaudible] and after that they um this size um here you have
+the uh the image that we are
+going to use in order to to exploit this this function uh
+here you have see- you can see
+how it is a normal png header ok. So we are going to, we are
+going to use the read code to
+read this address. Uh read in 500 bytes as you can see here
+for example how we are reading
+the information the others that we have set and writing this
+information in other in one of
+the others which is the image. Ok. And after that we are going
+to download again the the image,
+as you can see here the information in the included
+within the image changes and it
+is now uh eh certificate included within our printer
+memory. Ok. So with this
+function, we were able to read credentials to my account uh uh
+and other uh sensitive
+information ok. So let’s go with the second uh the first function
+writing which is the write we
+can write the circle for example but for this demo we are going
+to just write a a sentence. The
+Hi Everyone sentence. We are not to jump to this this code
+because it is uh it’s uh it’s a
+sentence and after write this information uh wll load again
+the image we can see for example
+how the Hi Everyone sentence uh was write in the first um, in
+the first line of the image. Ok.
+And let’s go with the the uh this this other example. Which
+is the write file. Which is what
+we’re going to do here is we’re going to try to overwrite an
+existing web portal image ok. Uh
+so we are going to select the uh ad- uh global kit we have in
+memory uh going we are going to
+try to overwrite an existing image in the in the memory. It
+takes a bit so we are straight
+in hello hello and we are writing the the information
+with- within the load and uh
+known others. Let’s go to mode uh firmware because it takes a
+bit and after two seconds we are
+going open the the uh the web portal image which is this one,
+that we are going to, we are
+going to rewrite and if we refresh again this image, we can
+see how the nc group logo
+overwrite the image that we have in memory. So we can so we can
+control all the information that
+we have in the printer memory. In order to read this or or to
+write this eh eh into into our
+printer, ok. Let’s go with the last part, the conclusions.
+>>Ok. I hope you’re all still
+alive after Daniel trying to explain this. Last exploit um,
+let’s go with the responsible
+vulnerability disclosure. Uh, we started this process in February
+and we got a very mixed response
+from the vendors. Some of them had a very mature procedure for
+this and were really quick
+fixing the issues and producing patches. Special mention to
+LexSmart which response was
+great. And on the other hand some others we could just say
+that uh it was easier to find
+the vulnerabilities than their security department. So uh there
+is some work to do in that area.
+Um. we already published all the security advisories. Um, most of
+them two days ago. And as a
+quick overview as you just saw uh we found a lot of issues in a
+lot of places, which uh lead uh
+in most cases to remote conne- code execution issues. And let’s
+go for the CVE party. Um, we
+found uh fi- uh well we got fifty uh CVEs. Um, most of them
+high critical risk ones and just
+don’t take the number per manufacture as an indicative of
+their state of security bec-
+because some of them grouped different vulnerabilities and
+are the same entries. Um. Just
+for a reference, the full list, I’m going for the main
+conclusions, um, these research
+aim to show how the state of security of common office
+devices uh such as printers
+which are presenting most if not total organizations is a still
+very much mature and largely
+not. We found a large number of critical and high risk issues in
+all the printers tested. Uh we
+got uh proof of concept for four of them. We show here, uh we
+showed here two of them. One for
+documents and one for other data within the printer. And we run
+out of time to um, to show a to
+develop the exploits for the two others. So but anyway, there
+were issues that correlate
+easily to that. Uh, a lot of CVEs and we stopped searching
+for vulnerabilities so it was
+important to is a lot more of issues eh waiting in there. And
+we only attacked a few services
+uh there is a lot uh more things to research here. And by what we
+saw, uh, the first one looking
+at this will probably find gold in there. And only attack
+printers, but we do not expect
+the same manufacture having implementations for some of the
+protocol sites such as IPP or
+different web applications, et cetera. So probably the number
+num- uh devices affected by this
+issues is huge. Um, mo- much bigger than the number gave by
+some of the manufacturers. We go
+so say, to some vendors that list marketing and more security
+um, and the main recommendations
+for for manufacturers will be to simply invest in securities
+necessary in all the development
+uh faces of our product. Uh for organizations, they should list
+out consider the threats they
+are um they have a lot of sensitive information, um, not
+only documents but also eh
+important eh, information, the configuration, like passwords,
+the main credentials, et cetera.
+And they are connected to their corporate networks. So they are
+really high risk and normal
+risk, uh devices. And finally, for hackers, uh this is a very
+much your field. If you spend
+some time with a devices and start from the, with the very
+basics that you will probably a
+lot of issues uh you will learn a lot. And there is a lot of fun
+in here. So usually with a try.
+And about internet, as expected a quick server search revealed
+lot of these devices connected
+to internet. And we then saw that um, some different vendors
+uh seem to be using the same
+code for some things like this web application two different
+ones. Which as you can see is
+quite similar so maybe we tested more vendors that than we
+thought. And finally
+acknowledgements, uh, thanks uh to the Madrid Office to Matt
+Lewis and Phillip Moss for all
+their help. And support. Also, thanks to Mario and Chris who
+suffered us the most. And last
+but not least thank you to Alvaro Felipe eh, who as part of
+the research in the first days
+and also helped us with great ideas uh during the this
+exploitation phases. So it was
+very difficult to put this talk in this months of research in
+just 45 minutes, but uh thank
+you for suffering us. That’s it. [applause]

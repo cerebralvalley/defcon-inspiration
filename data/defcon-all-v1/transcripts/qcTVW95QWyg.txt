@@ -1,0 +1,270 @@
+>> MICHAEL SCHRENK:
+Thank you for coming to my talk. It's always a treat to be able to do this.
+I've had the opportunity to do a lot of really cool things in my career and with bots. But
+the one thing that gave me more satisfaction than anything else I've ever done is the time
+I wrote a botnet that purchased millions of dollars' worth of cars and defeated the Russian
+hackers. So let's have some fun with this all right?
+I'm going tell you a story that involves hacking. It involves cars. I like cars. It involves
+Russian hackers which is pretty cool. And more than anything else it involves screwing
+with the system. (Applause)
+Thank you. Thank you. Or as I like to tell my mother, creating competitive
+advantages for clients. (Laughter)
+That's important. It's easier to get a loan that way, too.
+So I've been writing bots since about '95. Started out doing remote medicine bots if
+you can believe that. I've been involved with privacy, fraud detection, private investigations.
+I've done work for foreign governments. I've got a fair amount of my business that is with
+automotive clients. What makes me a little bit different ‑‑ I mean, a lot of people
+write bots. What makes me a little different is I actually talk about it.
+Unfortunately, the only projects I get to talk about are things that are in‑house
+projects that I've been doing. It's really rare that I get a chance to talk about a specific
+project that I've done for a client. But I got permission to talk about this one. And
+it came about largely because when my last book was done, this one, No Starch Press by
+the way, they approached Linux magazine and said man Mike write an article for us? I really
+didn't have anything ready to write for them. So I approached this old client and I said,
+you know, enough time has passed. It's been, like, six years. Let me write about this for
+a change. And they agreed to let me to do this. But that's really key. Because when
+you've got a piece of technology that provides a competitive advantage or allows you to screw
+with the system strategically, you don't want to tell people about it right? Because that's
+a trade secret really. So if you want to get a little different view
+of this project, you can pick up one of the old copies of Linux magazine, I write about
+it in a little different way than the way I am presenting it here tonight. What are
+you going to learn? You are going to learn what makes a good bot project. I'm going to
+have to give you a little bit of insight in how retail automotive works in order for this
+whole thing to make sense. You are going to get an awareness of commercial bots and botnets.
+And they actually do exist. And I'm also going to talk a little bit about if I were to do
+this again today, how would I do this differently? Because keep in mind this happened, like,
+six, seven years ago. So what makes a good bot project? The very
+first thing you need to know is that you cannot be afraid to do something different. Okay?
+If your company has an internet strategy, assuming it has an internet strategy, that
+just involves browsers and things you can do with a browser, you are really missing
+out. Because you got the whole big wide internet available to you. And everybody uses the same
+tool, the browser, right, to access it. And if you expand your scope a little bit and
+do things outside of the way browsers work, or do things outside of the way websites are
+presented to you, you can create a lot of really cool things.
+Don't assume ‑‑ just a raise of hands. How many people here have written a screen
+scraper? Okay. Cool. How many people have written a Spider? Wow. Cool.
+Just if you've got a client, make sure they realize that just because you know how to
+scrape screens and can write a spider it doesn't mean you can make a copy of the internet.
+Okay? And you will be surprised ‑‑ I get people approaching me all the time with
+ideas for projects. A lot of them basically want to create a copy of the internet.
+So if your project requires both batch processing and realtime results, you've got a problem.
+Or if you've got a project that requires just ridiculous scaling, you've got a problem.
+Because unless you've got one of these, your project's going to fail. You know, you are
+not going to replicate Google unless you've got one of these.
+Then I tell clients after I say you really can't do this. It's like why not. I'll say
+because Google spends about a million dollars a day on electricity. That's why. That's why
+your project's going to fail. Realize that you don't own ‑‑ I refer
+to targets as the subject server. Don't assume that you own that server. Okay? For example,
+I had a potential client approach me a few years ago. And he wanted to monitor prices
+on Amazon. For about 100,000 items. I thought, that sounds really like a useful thing to
+do. This guy was a big‑time Amazon seller. Until I found out he wanted to do this every
+five seconds. (Laughter).
+That's not going to work. It's not going to work. For lots of reasons. If you did something
+like this, Amazon would actually have to build additional infrastructure to support your
+project. And you'd end up in court with what they call a trespass chattels suit and you
+want to avoid that. It's very illegal. Okay. Number four. This is maybe the most
+important thing. You have to have a realistic profit model. You notice I'm saying "profit
+model" and not business model. Why do I say that? This is why. Okay?
+If I'm showing my age here a little bit, you can look at these. Myspace actually made the
+list twice. I think that's pretty impressive. (Laughter).
+That's staying power. Why is it important you have a realistic profit model? Why is
+it when people approach me and they want to do something that could just as easily be
+done on EBay for example, this is important because the developer has to get paid. Okay.
+It's very important. Okay. About automotive retailing. Just a little
+bit here without this the project doesn't make sense. New car sales are not as profitable
+as people think they are. Even if you combine service with that. Because it's incredibly
+capital intensive. And it's super, super competitive. But you need to have new car sales. So you've
+got credibility if you want to sell used cars. This is particularly true if you want to sell
+high‑end used cars. Nobody wants to go to the corner lot for that kind of stuff.
+The thing that I learned ‑‑ and I didn't realize ‑‑ I just assumed they'll used
+cars on a car lot were all trade‑ins. Well that's not the case. It can't be the case.
+Because you can't grow a business if you are going to do that, right. And it's really limiting.
+Car dealerships spend tons of money acquiring good used cars to put on the car lot.
+It's kind of bizarre the way it works. Because you walk in to a car lot and you know what
+the price should be for a particular car because it's very well documented. You can go to Kelly
+Blue Book or anyplace. So dealers don't have a lot of space to work on the price, the final
+retail price. But down on the wholesale side, that's where the profits ‑‑ that's where
+the margins are made. If you are good at buying things for a great price, that's how you make
+money with used cars. And that's what this project is about.
+So a car dealer came to me he had this great opportunity. Found this wonderful website.
+It was part of the national franchise. They were getting in used rental cars, two years
+old, 12 to 16,000 miles, perfect cars that you would want to have on your lot. Well maintained.
+Unfortunately, there was a lot of competition for these cars. Because all the people in
+that dealership chain wanted the same cars. And the website was horrible and made it almost
+impossible to buy the cars. So there's a lot of frustration.
+This is kind of the way it worked. There would be maybe two to 300 cars presented every day.
+And the cars would have little display ads like this that gave a little bit of a description.
+And there was an enactive buy now button. Okay? And at exactly sale time the button
+would appear. Okay. But the problem with this was it wasn't using AJAX or anything. You
+had to physically sit and refresh the browser constantly to get that button to appear. Well
+this led to another problem. In that there was incredible server lag.
+My client and I think he was probably pretty typical of all of them in this chain, he would
+grab every person he could find, people out of parts, off the sales floor, administrative
+assistants, he would sit them all in front of computers and each one was assigned maybe
+about six cars. So they would have six browser Windows open. And they're all sitting there
+frantically hitting the refresh button constantly. So, if you think about this, okay so this
+would have been roughly the equivalent of 36 users for one dealership. I don't know
+maybe there were 750 dealers that were doing this. So that was almost 30,000 simultaneous
+downloads that were happening at sale time. What made this worse, I mean, servers should
+be able to handle that right. But I think there was some inefficiency with the database
+possibly. Some bad queries were being made. This caused a ridiculous peak in server lag
+time right at the point where you don't want to have it. It wouldn't be unusual for it
+to take 15 or 30 seconds for the screen to refresh at sale time. Sometimes it would just
+time out. So this was a real problem. The other problem is that out of these, say, 200
+cars that were up for sale every day, there were maybe five that every single dealership
+in the country wanted. Either because they were the right color. Probably because they
+were a really great price. Or for whatever reason. I don't know. But every dealership
+would want these five cars. So he had a lot of competition for the same cars. Plus, server
+lag, bad web design. Had to involve a lot of people to do this. So this particular client,
+I had written a number of bots for him in the past. And he gave me a call and said can
+you help me out, Mike. I said let's take a look.
+So the problems were ‑‑ the system was way too manual to begin with. So the way this
+would work, he would have to manually go and select the cars that he wanted to buy. He
+would have to distribute the VIN numbers to the various people. He would have to call
+people off their normal duties they would be doing. They would be dedicating probably
+a good 15‑20 minutes hitting the refresh button every day. So that wasn't good. Plus
+the buy button took way too long to appear because of the server lag.
+So we ended up with two solutions. One of them because it worked. The second one because
+we had competition. So let's look at Phase I first here. Again, this is not, like, classic
+bot design. Keep in mind this, was done, like, six years ago. So I don't develop like this
+anymore. So here's what I did. I came up with a web
+interface for my client. If you look here, this is basically just for HTML frames that
+were independent from each other. And, you know, they could just go to the URL, pull
+this up, and by the way, I say botnet but this was all done on computers that we controlled ‑‑
+not controlled, we owned. There's a difference, right. (Laughter).
+In fact, all of the bots that I write, they're all commercial bots. We own all the hardware.
+Just want to let you guys know that. So instead of hauling in all these people
+to hit the refresh button constantly while they should be doing something else, my client
+was able to pull up something like this. And quite frequently we would have two or three
+computers set up with this in the browser. He would select what cars he wanted. The first
+step was to log on. They had several accounts for ‑‑ it was a closed sale basically.
+They had several accounts they could use. The first thing they would do is they would
+pick which account they wanted to use for this particular bot. And the next step was
+you would pick the VIN number of the car you wanted. And it would go ahead and it would
+validate that that was an actual car for sale. That's important. Because any time you are
+writing a bot you don't want to do something that could not possibly be done by a human.
+And if there's a car that says is notice available for sale, you don't want to try to buy that.
+Because some system admin somewhere is going to say how did they do that? What was that
+IP address? They're generating a lot of traffic. Really good traffic. So it's important to
+validate stuff like that. So as soon as the VIN was validated, a little
+start button would appear. So instead of being, you know, right on time when the sale was,
+you could do this hours in advance, hit the start button, and then it would start to count
+down. The way it would do this is it was basically synchronizing its clock with the server clock
+of the sales server. And this was really simple stuff. In the meta refresh, the HTML meta
+refresh, it would just start refreshing every so often. And it would get, you know, as the
+sale got closer and closer, it would refresh more often until right at the end it was,
+like, right lock step with the server clock. As soon as it timed out, it would go ahead
+and would attempt to purchase the car. Now this shows just one bot client. Basically
+the bot clients acted as triggers for the server that actually made the purchase. And
+there may have been 16 to 30 of these bots running, triggering the server. Sometimes
+we'd miss one. But more often, the sale was successful. And we would send an email confirmation
+to my client saying you bought this car. And we would also arrange for financing for him.
+And while we were at it, we made sure that the car actually was shipped correctly back
+to his dealership. So the bot provided a lot of utility in that regard.
+So how successful were we? Well before he wasn't getting anything. And this was really
+frustrating for him. Because these were cars he really wanted and he knew he could make
+a profit on them given the price they were selling for. After we were getting probably
+about 95 to 97 percent of the cars he was trying to buy. So the difference was phenomenal.
+It was so much fun because even after I was done developing this I would get a call every
+day from my client 15‑20 minutes after the sale and he would say, Mike, we bought
+five out of six today. We got seven out of seven. We got nine out of 12. I'm, like, settle
+down don't get greedy here. Don't kill the golden goose.
+So why were we successful at this? Well the main problem with the old one is that people
+had to wait for that stupid refresh button or that buy it now button to happen and there
+was so much problems, so much server lag that that was the problem. And usually whoever
+got the buy button first was the person that bought the car.
+So, basically, what we did is we got rid of the buy button. We just got rid of it. And
+we replaced it with a timer that was automated so he didn't need the person hitting refresh
+all the time and it would just know what time to buy the car and it would go ahead and buy
+it. This type of a bot is typically called a sniper.
+Ever heard that term before? I remember back in the day when I was doing this we were testing.
+And I was going to write him an email that said something to the effect of I've got six
+snipers waiting to hit cars at noon. (Laughter)
+Hopefully we'll make some hits today or have some kills or something like that. I was just
+about ready to send that email. And I started thinking about carnivore and some of the stuff
+happening back then. And I thought no I'll just give him a call.
+Today I would never send an email like that. Never. I'm not even sure I'd make a phone
+call. So watch your language. Okay. So everything worked great for about
+six months. And then all of a sudden things weren't as rosy anymore. We started not, you
+know, my client would call and he would say, you know, we only got two out of seven today.
+Something's wrong. And he did some research. And he discovered through his connections ‑‑
+he's got lots of connections ‑‑ that there was a group of Russian hackers that
+were hired to write a competing bot and they were some place out in New Jersey or the dealership
+was out in New Jersey or something. Competition is good right. That leads to innovation.
+That was the kind of thinking, yeah this is going to be fun now we've got an arms race
+going on here. Here's part two of the solution. What I did differently is while I was synchronizing
+clocks with the sale server, I started looking at lag time. I got to the point where I got
+really good at estimating how much lag time there would be at the sale time. In other
+words, what I was essentially doing was estimating how many users were on the system. And with
+that information I would not set one attempt to buy the car but for each bot I would launch
+maybe between ‑‑ I forget what the real number was because I haven't looked at the
+code for ages. But I probably launched between five and seven attempts to buy the car. And
+based on the amount of lag time that I was going to anticipate at the sale time, I would
+launch them just a little bit before, incrementally before the sale time. And this was real successful.
+So now there will be a number of bots and each one of those basically had a warhead
+that launched multiple attempts to buy the cars. So our success rate prior to making
+this fix, during the competition was about ‑‑ he was getting about 50 percent. After it
+was were back right on the money. We were getting every car we wanted. And it stayed
+that way through the duration of this program. So how successful was the bot? These are all
+guesses okay because I don't have any hard facts here. But I know it was in operation
+for about 40 weeks. And they were buying roughly five cars a day. So that's about 800
+cars, I'm going estimate, were purchased with this. If you figure the average wholesale
+cost of the cars they were purchasing was probably around $16,000. So in a 40‑week
+period, this bot purchased almost $13 million worth of cars. And that has a huge impact
+on a small dealer like this one. So this is a great example of not accepting
+the web as it is. Not using browsers the way everybody else would. And doing something
+different and not being afraid to step outside of the box a little bit.
+So what would I do differently today if I was going to do this? First there were things
+that were done pretty well back then and things that I still do today. I really like having
+very light weight clients. The lighter the better. Everything is easily updated because
+it was all online. And it was easily distributed. I could make changes on the server. It would
+get distributed everywhere. Because basically these were just ‑‑ these bot clients
+were essentially just web pages with some java script and stuff going on.
+One of the things that I really definitely would do if I were to do this over is I would
+build in some analytics and collect metrics. So I would really want to know exactly what
+our success rate was. I would want to know exactly how much these cars were purchased
+for. It would be really great to also know how much they were sold for. So I could actually
+show value. That's something I really wish I had done.
+The other thing I think that would have been nice if I were to do this over again is build
+in some process that actually assists in the selection of which vehicles you want to purchase.
+So, in other words, maybe what I would have done is I would have also had my bot look
+at Kelly blue book and figure out what the good wholesale prices are for cars and look
+for discrepancies. Locate the ones that are under priced. That would have been a really
+good thing to do. The other thing that occurred to me actually
+within the last week is probably the only thing I really needed to do here is make that
+buy it now button happen, right. I could have done that simply by making the server act
+kind of like a proxy. So as the HTML is coming in with the grayed out button, I could have
+just replaced it with a real button and sent it off to the browser, right. That probably
+would have worked. The problem there is that conceivably you could have bought cars before
+the purchase time. And that may have been allowed. But that is something you don't want
+to do for the same reason you don't want to buy cars that don't exist. You don't want
+to show your hand. The website, the target was a very traditional
+website. It used HTML forms which were really easy for me to emulate or submit using just
+PHP and curl. Today you don't find that so often. You find a lot of JavaScript. You kind
+a lot of AJAX. There's a lot of java script validation of form data before it's submitted.
+Makes it a lot harder to do this kind of thing today.
+So today the kind of approach that I take now is I end up with a task queue which is
+basically a table and a database that keeps track of what needs to be done. And there's
+a web interface into that. In this particular case my client would essentially be loading
+a task queue. And that task queue would be fed to individual computers which I refer
+to as harvesters. And they can exist anywhere. They can be on the cloud. They can be in a,
+you know, in a closet. They can be in your office. They can be anywhere.
+What I have them do now, since there's so much more complexity in websites and so much
+more use of client site scripting, I do a lot of stuff in I macros. Anybody here use
+I macros? It is the most amazing tool. It's just an add on to your browser that essentially
+lets you create a macro for your browser that you can just play over and over again. And
+what I do now is the harvesters will dynamically create that macro. So you can get them to
+do some very specific things. Once I learned how to do that, there was not a single website
+on the planet I could not manipulate. It was like the Gods handing me fire. Like here.
+Here, Mike, you have been a good boy. So that's what I do now.
+And so I actually communicate through Fire Fox so it's very easy for me to emulate human
+activity now with bots. So I would have them hit the sale server. The difficulty there
+would be to get the timing down correctly. But I think that could have been done.
+And then the harvesters after they do their thing with the sale server, the target server,
+they report back to the bot server and the queue is updated and that's how you can tell
+what the results are of what you did. If you are interested in how that kind of
+stuff works, go on YouTube and look up my DEF CON 17 talk. That's all about manipulating
+I macros in that way to do screen scrapers for very difficult to scrape sites or difficult
+to automate kind of sites. So that's my talk. Thanks all of you for coming.
+Thank you to the call for paper goons. Thank you.
+(Applause)

@@ -1,0 +1,893 @@
+>>Good afternoon everyone. Thank
+you very much for coming. Uh my
+name is uh Christopher Wade I’m a pentester with a company
+called Pen Test Partners. Um you
+should see my slides in a second I think. Um and today I’m gonna
+talk about um attacks like-
+attacks against NFC. Now what really I’m going to talk about
+is how you can take very
+rudimentary components, like those that are not generally
+used for creating NFC based
+technologies and use them in order to create attack tools
+that can be used to um basically
+attack NFC readers rather than do things like um attack NFC
+tags themselves in order to uh
+get their contents. Now um this is- I th- I think my slides
+aren’t coming up here. Um.
+[applause and cheers] And that’s my talk about PowerPoint thank
+you very much. [audience laughs]
+So yeah we’ll talk about um tag-side attacks against NFC. So
+basically we’re gonna talk about
+how you can take some very very basic components in order to
+make um NFC analysis and attack
+tools. So firstly, what is NFC? Well we all know what it is.
+It’s contactless communication
+between usually a card and some kind of reader that um
+illuminates the card in order to
+power and communicate with it in order to do things like pay for
+things, open doors, or other
+applications that are quite useful. So um I don’t know why
+I’ve got a picture of some gates
+there, but it’s pretty much the main purpose of this. Um we’re
+gonna show some techniques for
+attacking things, mainly to do with door control access
+systems. So first we’re gonna
+talk about uh some ISO numbers so we’re gonna talk about
+ISO-1443 um which focuses on 13
+point 5 6 megahertz NFC communication. It defines the
+characteristics of the
+communication basically how it works, how the protocol works
+and it’s split out into 2
+sections, A and B which are used for different purposes and have
+different protocols on both a
+higher and lower level. Um the most common of these is
+ISO-14443A uh which is uh mainly
+used for Mifare classic, Mifare Ultralight, and other Mifare
+systems. Um so low level
+communication basically works on ISO-1443A which I’m gonna try
+and stop saying, um by powering
+the uh tags with electromagnetic induction. Literally powering
+the device with the same
+mechanism it’s using to communicate with it. So
+communication is performed by
+essent- basically cutting power to the tag every so often, in a
+fast enough manner that it
+doesn’t turn off the tag but allows it to receive data back.
+Now the responses are performed
+by the tag by modulating the amount of power being drawn from
+the reader to the tag.
+Essentially uh modulating on that in order to send responses.
+It’s sort of a 1 way
+communication by uh receiving more power from it. Uh they use
+2 different coding schemes;
+Modified Miller coding which is designed specifically in order
+to um uh produce the amount of
+power um loss that’s gonna happen, and Manchester Coding
+cause it’s good because of uh
+timing issues that may occur. So Modified Miller coding basically
+yeah it minimizes the power
+loss. Um it has a very strange um like um protocol basically. 0
+after 0 bit means that it’s low
+for the first quarter of the transmission and then high
+again. 0 after 1 bit high for
+the ent- entire transmission. And 1 uh 1 bit is high for the
+first half of the transmission
+followed by low for 1 quarter of the transmission and high again.
+Basically this is done in order
+to no matter what the communication is, not have a
+small space between the off um
+sections of the communication nor to prevent there to being
+glitches or problems with the
+power as it goes along as this can cause problems for the
+readout protection. Manchester
+coding is uh done in order to prevent timing issues. Basically
+this is used among all other
+kinds of radio technologies including AVSB which you may
+know if you like UART or SDR
+technologies. Um and basically uh how they use it is to
+modulate the amount of power
+being received in order to um communicate either a 1 or a 0 by
+basically uh modifying the uh
+phase of the signals. So basic ene- enumeration of the uh NFC
+we’re gonna look at today is
+basically a requi- it starts with a request or a wake-up
+command. Which basically
+requests any tags that haven’t spoken or are ready to speak.
+And ATQA which responds the
+initial part of what the tag does. A select which requests
+the unique identifier from the
+tag. And a further select in order to select that specific
+tag depending if there’s more
+than 1 on the reader. And then a final sak um value which
+basically says the final
+information about what this tag does. And then contin- continued
+enumeration and communication
+based on what’s happened there. Now this could be extended
+unique identifiers or more
+cryptography. A big thing that I found when it came to this was
+uh, a feature called called anti
+collision which basically exists when there are 2 tags within a
+reader that haven’t spoken yet
+causing issues which um uh could uh stop the reader from being
+able to uh decide which tags are
+on the thing. So for instance if we look at the request that we
+made, the first thing that
+happens is the tag sends an ATQA response. Now because both tags
+don’t know they’ve spoken yet,
+both will send a tag- er response at the same time.
+Basically causing uh corrupting
+communication from both. Now how it’s- this is resolved is by the
+reader specifically um
+requesting specific bits from the tag in order to find ones
+that don’t match, as these
+identifiers are meant to be unique. So there’s a couple of
+different ways of um encrypting
+autheti- and authenticating depending on what the tags are.
+So there’s Mifare Ultralight
+which is extremely simple. You send a password to the tag and
+it says either yes or no. Now
+this uh can often increase the counter which basically locks
+the chip and stops it from being
+used again. This is a common technology in things like
+amiibos that you fi- find on uh
+Nintendo products. Um, there are other ways of doing it. There’s
+having no communication
+whatsoever, just reading and writing in data. Or newer
+versions like Mifare Ultralight
+C allow you to um use um more stringent encryption and
+authentication methods. Uh
+Mifare Classic which we’re gonna focus on quite a lot today
+because it’s an older technology
+but a technology that’s used everywhere. Um uses the uh
+Crypto- 1 algorithm that’s often
+called the Crapto-1 algorithm for the fact that it’s got very
+very very weak encryption, weak
+keying. Um basically the reader requests authentication, the tag
+responds with a 4 byte nonce.
+The reader responds with a random value, followed by an
+encrypted number that’s
+generated from that original nonce. And then the tag responds
+with another encrypted number
+from that data. Basically it’s a mutual authentication scheme
+where both the tag and the
+reader know that they both have the same key they’re working
+with. All the further
+communication after this is encrypted in order to prevent an
+attacker from basically being
+able to read or write attack even when they’re not allowed
+to. There’s Mifare DESFire which
+is probably 1 of the later technologies and 1 that’s used
+all- in all sorts of things. I
+live in London so it uses, it’s being used in Oyster cards in
+order to um work with the
+transit systems. And that’s it’s got much stronger encryption
+authentication. If you use DES,
+triple Des or AES and can do it all based on very specific
+sectors of the data. Um multiple
+keys can be used on each section and it- some- it’s authenticated
+similarly to Mifare Classic. Now
+crypto-1 has a lot of issues with known plaintext attacks due
+to the fact that streams like
+them but when you’re using things like DES, Triple DES and
+AES, uh plain- known plain text
+becomes not very useful and it’s not really been broken in any
+meaningful manner via crypto
+analytic techniques. So we’re gonna talk about creating the
+analysis tools that I worked
+with for this project. So obviously there’s a few we know
+about there’s the Proxmark 3 and
+the Chameleon Mini which are probably the most well known of
+these uh uh NFC attack tools
+that people see. There’s HydraNFC which is something more
+of a hobbyist’s product, but is
+very very useful. I use some of this in the technology we’ll be
+using today. SimpleNFC which has
+some similar hardware to what I’m working with and is a very
+interesting product in and of
+itself. And Emutag which also has some uh benefits to it. So
+let’s start with the absolute
+basics. If you take an LED and a coil of wire and solder them
+together you can detect an NFC
+field. That’s all you need to see that NFC is working. It will
+literally light that LED as soon
+as you put it within the field’s reach and show that it’s
+working. But if you want to go
+higher level and get more details about the communication,
+you can create a passive
+sniffer. Now I did this with an RTL-SDR which we all know is a
+very very basic very cheap SDR
+tool that’s definitely not meant to be an SDR tool. Uh this is a
+device that is basically reverse
+engineered from uh uh TV tuners that people use via USB um but
+it has some very great libraries
+that basically allow you to work with it as an SDR tool. There
+are some problems with it, that
+it can’t tune down to the exact frequency that’s being worked
+with for NFC. It can’t r- cannot
+run at the low sample rate required for NFC. And It’s
+bundled with a really weak
+antenna so it's not really useful for many purposes. It’s
+also not built for purpose for
+being an SDR in the first place, it’s built as a TV tuner,
+meaning anything we do to it is
+gonna be very uh difficult to work with. So what I ended up
+doing is because I couldn’t tune
+down to 13 point 56 megahertz because the range was 25
+megahertz to 1700 megahertz, I
+tuned to 27 dot 12 megahertz which is a harmonic value of 13
+point 5 6. Um as long as I had a
+coil within the uh vicinity of the reader or a tag within the
+vicinity of the reader, the
+power throughput was enough that I could analyze the uh
+communication from the reader
+using this uh methodology. And by setting the sample rate to uh
+double what it should be I could
+still get the correct sampling for what I was trying to
+communicate with. I didn’t
+require any antenna modifi- modifications because of this I
+used a traditional antenna and a
+coil of wire wrapped around it. Nothing else. Um the problem was
+I couldn’t actually re- get any
+responses from tags to the readers because the harmonic
+values and the nature of the um
+the uh antennas we- I was using just weren’t capable of it. So
+here’s some uh basic output of
+how this came. So this is fr- uh output from the tool I made out
+of the RTL last year. Showing um
+a request uh message a select message, a uh halt message, and
+then there’s the request
+message. Now this is done in order to um find any tags within
+the field that haven’t spoken
+yet without waking up the ones that already have, basically to
+prevent the anti collision from
+happening. There is then the wake up command which wakes up
+every tag in the field so that
+it can communicate with them again. So I made some analysis
+tools I wanted to make a tag
+myself out of components that you wouldn’t traditionally use.
+Now some people use things like
+PN 532 boards and other NFC boards which are great but
+you’re not getting down to the
+raw level, you’re basically communicating with something
+that’s meant to be a tag. Um so
+I wanted to use no NFC chipsets, but obviously I’d need to use a
+micro controller, but I wanted
+to build it with as minimal components as possible. If I
+could do it with like a w- piece
+of wire, and a microcontroller I would have. Unforfunately wh-
+that wasn’t possible. Um I had
+to implement the full Crypto 1 authentication um which would
+add quite a lot of complexity to
+the project and mean that I’d need a micro controller with
+sufficient power to do it. Um by
+imp- fully implementing this I hope to find some weaknesses
+that other people haven’t found
+or introduce ones that people have found but haven’t fully
+implemented yet. So there’s a
+few things that happen when you need to uh work with the NFC
+field versus inductive coupling.
+Now this is for um producing power and fortune switching the
+communicate- communications back
+and forth. So it’d need to be d- demodulated by the amplitude
+because uh basically power and
+powering- off the uh field in order to communicate with it is
+essentially the same as on off
+keying used in traditional radios. Because of this I would
+need to um use uh some amplitude
+um detection technologies. Uh I’d need to have a decently fast
+micro controller with enough
+power to do um uh encryption calculations and enough storage
+in order to do encryption
+calculations. And I would need enough sufficient memory on the
+device to store any attacks that
+I’ve made. So we’re gonna go from the basics of how this
+circuit would work. So the first
+thing we would need is an LC circuit. Now this is for
+inductive coupling with uh, uh a
+NFC reader. It’s made of an inductor and a capacitor so
+that’s what LC circuit L for
+inductor and C for capacitor. And basically the q- uh con-
+inductor was a coil of wire and
+then we just used a 10 peaker for a capacitor in order to uh
+attune with that. The resonance
+we checked with a logic analyzer rather than a um uh a scope
+which you would usually use even
+though it’s digital information you can at least check that the
+frequency was correct, 13 point
+5 6 megahertz. Alright we then need to demodulate this so I
+basically took and made an
+envelope detector. Now these are traditionally used in um AM
+radios and that kind of
+technology. Um can be made from a diode, a resistor, and a
+capacitor. This will rectify the
+signal and then um basically smooth it in order to get the
+actual signal that’s trying to
+be transmitted. Basically instead of having the uh AM wave
+as it wa- as it was. I via trial
+and error found out that I wanted to use a 1 k resistor and
+a 220 pico-Farad capacitor and
+that seemed to work very well. Again I just took the circuit
+and plugged it into a logic
+analyser and I got exactly what I wanted. Now that communication
+there is a wake up command uh
+basically modulated via the Modified Miller protocol and
+encoding schemes. So that’s the
+full circuit that you'd need to use in order to connect a
+microcontroller on to the NFC
+technologies that are being used. Now I don’t often draw
+circuits so it's not perfect but
+it does seem to work. I would then tie 1 pin to a GPIO input,
+um and then that same pin to
+GPIO output in order to um uh modulate on the power uh being
+received, and then just to the
+ground on the other 1. I’ve- while I said that I wanted to
+use a- a microcontroller with
+sufficient power, I actually went for the ATTiny84 which is a
+very very very small very weak
+chip. It’s got an 8 kilobyte program space and 512 bytes of
+RAM, which is nothing, that’s 1
+and a half tweets. So not much to work with. It can be
+programmed with an Arduino or a
+ISP programmer although this makes it very difficult to debug
+with. And it can use external
+crystals basically in order to get it to tune it to the
+frequency you want. It’s also in
+DIP package so I could build this on a breadboard, test it,
+and then solder something
+together as I need it. I could literally just attach the
+circuit I made before to the
+GPIO pins and receive the data. The interruption and timings on
+it were very good, but the
+debugging capabilities were quite lackluster. Um because it
+was um an 8 bit architecture
+being used, uh encryption calculations were very very uh
+unuseable on it. So I took a 13
+point 5 6 mega- megahertz crystal and their matching
+capacitors required in order to
+um work with it on this microcontroller and soldered
+them up. Now I could set all the
+um fuses in order to make sure the ATTiny was performing at the
+exact frequency we wanted. I
+then took the receiving circuit and connected it to an input and
+an output pin in the ground. And
+due to the lack of UART I searched in GPIOs to basically
+make a software based ace- SPI
+master in order to uh print out any debug strings that I
+required. Which was very slow
+but was good in the early stages of this in order to see how the
+communication was working. I
+then added an LED just so I knew when the thing was working and
+not crashing. Uh the state
+machine that uh was used for enumeration, the authentication,
+and everything else, was
+implemented and allowed the device to behave as a tag as
+needed. 1 of the big problems I
+had was the uh the timing issues. A 13 point 5 6 meg-
+megahertz crystal um with an
+ATTiny is gonna have a lot of clock drift, just because it’s a
+very non standard frequency and
+it’s not 1 traditionally used. Um basically what I was trying
+to do was at predefined
+intervals 847 and a half kilohertz which is the uh data
+rate of the communication, I’d
+read the value of the GPIO. Now this worked about 50 percent of
+the time to get an accurate read
+of the communication that was going on. But eventually it just
+got out of synch and it just
+wouldn’t work anymore. So what I did was I um took all the times
+the power was uh taken down and
+um checked the timings between each 1. And this basically
+helped me build up
+communications just for time as it interrupts and made it
+possible to be very vague about
+the uh timings between these things. And it basically by
+doing this I got 99 percent
+accuracy which was enough to keep the tag and the reader
+happy and communicating fully.
+So um Crypto-1 eh was meant to be a proprietary library and
+people have reverse engineered
+it and created the Crapto-1 library which is an excellent
+name for any GitHub project. Um
+there are lots of papers involved with this that made it
+very easy to understand what was
+going on. And it’s really not a good encryption algorithm even
+from the get go. It uses a 48
+bit key scheme but separating these 24 bit keys into 24 bit
+keys that are cycled between as
+authentication goes on. Uhm which also made um the ATTiny
+have to do some very strange uh
+calculations in order to work with it. Um the big problem was
+that um when you have a micro
+controller like the 32 bit 1 when you’re working with things
+like 16, 24, and 32 bit
+calculations, things can be done very quickly. There are some
+problems that mean that an 8 bit
+uh calculation will take like at least 3 to 4 times in order to
+perform the same calculations.
+Um especially this happened with the bit shifts that happen. Most
+things that are microcontrollers
+can do multiple bit shifts in 1 operation whereas the AVR uh
+microcontroller set can only do
+1 bit shift at a time which is very slow. The problem with this
+is that um most readers want a
+response within 17 microseconds when you uh- send a request. And
+so I had to make sure I did this
+very quickly. I identified that the big problem was in the
+filter function of Crypto-1.
+Which has a lot of um multi byte shifts and calculations going
+on. So I identified all the
+parts of this where the- everything was going too slow
+and all the communication
+wouldn’t work and I calculated these and took them in order to
+uh work out how I could improve
+the speed using assembly rather than C. So all the Crypto- 1
+code was converted to C- from C
+to assembly by hand in order to make sure that I could uh speed
+up anything I needed to. Now we
+all know that if you write uh- assembly by hand rather then
+letting the compiler do it,
+things become a lot more efficient. I used the SimAVR um
+emulator which basically allows
+you to um pretend you’ve got an AVR microcontroller apart from
+the important hardware parts to
+print out data as it was going along so I can test and do unit
+testing against keys from the C
+version and the assembly version. I took all the
+calculations that woulda been
+treated as 32 bit when they could have been 24 or 16 bit and
+converted them to 24 bit
+operations. Basically this meant I could use 1 register or 2
+registers whereas usually they
+would be using 4. Um all bit shifts were converted as needed
+so a 16 bit shift can just be
+used by 2 move instructions, 8 bit shifts 1 move instruction, 4
+bit shifts the AVR uh micro
+controller has the SWAP command which SWAPs the upper nibble and
+lower nibble of the byte. Um the
+2 bit shifts could just be done with traditional shift- um bit
+shift operations. And 1 bit
+shifts, just a shift operation. Uh basically I’m actually making
+the thing 10 times faster by
+doing this. Here is some of the assembly kit that was used. It’s
+uh not pretty but it is very
+effective as- as needed. Um here are the uh prototype boards I
+made. Now the top 1 um has the
+program header and a button to switch between tag versions and
+tag data, and the bottom has
+everything you need to emulate a Mifare classic attack using the
+platform. You don’t need
+anything more than those 5 or 6 components that are on the
+board. Um these worked very
+effectively and allowed me to basically emulate anything I
+needed to. So I could take an
+NFC reader now this is the NFC reader that I took to DEFCON
+China recently and discovered
+that it is the same 1 they use in Beijing airport which was
+very fun to get through customs,
+believe me. Um [laughter] they did question it but they let me
+through anyway. Um I basically
+could make it print out your IDs by um sel- uh putting an NE- NFC
+tag on top of it, and I took my
+device and laid it over it and got responses. And I want to do
+a quick f- uh demonstration
+video of this for everyone. Um. Hopefully. Nope. Oh. 1 second,
+sorry.So literally I could wave
+the thing on top and the NFC reader would print that out and
+that allowed me to know that it
+was communicating effectively and that the reader was working.
+Uhm. So there were ha- some
+hardware limitations with this. Ultimately I made something that
+could emulate a tag fully but I
+couldn’t now make an attack tool out of it. Basically it was too
+slow and didn't have enough
+memory to do it. I used 400 bytes of the RAM and 7000 bytes
+of the Flash which seems like a
+lot but I would only have about 100 bytes of RAM left and 1 k of
+Flash left to work with, which
+wouldn't be enough to make any real attacks from this. Also the
+EEPROM on the device just didn’t
+have enough to store an entire NFC tag. So a Mifare classic tag
+um uses 1k of uh data uh except
+in very specific um uh instances and because of this I wouldn’t
+be able to store a whole tag but
+I could perform some attacks on it. So I was in a sort of catch
+22 with this thing. Complex
+functionality on an AVR microcontroller, especially
+debugging, it’s just not
+possible. Um unless you’ve got a much more expensive set up than
+I did. I was using the most
+basic and cheap tools I could find. And the number of pins on
+the thing which was a total of
+14 just wasn’t enough to add any extra functionality I’d want to.
+Uh the slow responses from the
+uh the tag were just making it very difficult to work with very
+specific readers which meant I
+couldn’t make it work in all instances. So I decided to build
+a better device with something a
+lot more powerful. I used the STM32L496ZG which is a
+development board um and uh uh
+and a microcontroller which has a huge amount of power and a
+huge amount of capabilities for
+a very small price. Um it’s about 18 pounds on Amazon and
+nowadays that means it’s about
+18 dollars as well. Um it has 1 megabyte of flash and 320
+kilobytes of RAM, that’s 640
+times more than the ATTiny, which is really crazy when you
+really think about it. The clock
+speed can go all the way up to 80 megahertz which would allow
+me to uh basically not have to
+use an external clock if I was clever about it. And the 32 bit
+architecture meant that I could
+implement all the encryption authentication without having to
+do anything too clever like
+write assembly. Um it has USB and UART capabilities meaning I
+could make it a proper attack
+tool with commands being received and sent. And it’s got
+proper printf debugging so if
+you plug in to the ST link at the top, you can debug this
+thing fully extremely easily.
+The Ping configurations on it can be set using the STM32Cube
+software suite which basically
+allows you to click on the chip, decide which 1 you are gonna to
+work with, and set what each pin
+does, like if you want to be a timer, an external GPIO and set
+the clock rate. Uh now the clock
+rate is very important because this thing wouldn’t be able to
+synchronize with a strange SP
+like 13 point 5 6 megahertz. So because of this I decided to
+find a- the clockspeed that it
+would support that was closest to what I wanted. Um when this
+occurred I basically um decided
+I didn’t want to use an external crystal, the thing already had 1
+and it would have incor-
+involved some SNB soldering and it could have broken the device.
+Because of this I wanted to uh
+look at all the range of frequencies that um it could run
+out, which is this huge amount,
+and find the 1 that had the most suitable candidate. Now this was
+important because um Myfair
+classic and all other NFC in this area uses uh Manchester
+coding for the responses which
+means it’s inherently got this ability to uh keep track of the
+timing and the frequency that’s
+going on, so that if you get out of synch with it, eventually it
+can pick it back up again. So I
+looked through all the possible values it can be and found that
+72 megahertz was the fastest and
+the least uh problematic um value I could use. So it was
+only um gonna be about um what
+50 percent of RAM speed. So this the DUART side again extremely
+simple big coil of wire, a
+capacitor, a diode, resistor and another capacitor. And that’s
+all I need to conf- needed to
+convert this device into an NFC tag that would be used to
+perform attacks in this
+platform. It’s extremely simple but effective and I really
+didn’t want to do anything far
+too complex because it just wouldn’t be necessary. I wanted
+to have a lot of different
+features with this, especially ones that weren’t present in
+ama- existing commercial devices
+like the ProxMark and the Chameleon. Not because these
+devices aren’t excellent but
+because if I’m just covering their work, it’s just not fun
+anymore. So I made it so that it
+can emulate more than 1 tag at once, now this is a very useless
+uh ability but it would mean
+that I could m- put it on a reader and the reader would
+think that there was 2 uh tags.
+This could have caused authentication issues,
+communication issues, uh make
+the thing just get very confused. So this can be handled
+by just taking the same state
+machine that was being created, and making sure that the
+responses uh matched what would
+happen if there were 2 tags in the field. So this would by
+either forcing anticollision by
+sending randomized data when selections were made, or by
+cascading requests, so 1 tag was
+selected the way it could be selected and then bring up the
+other 1 in it. Th- there was not
+a huge amount of weaknesses I could find on this but I thought
+it was quite interesting. Dynam-
+dynamic Crypto-1 key generation was another 1. Now this would
+allow me to uh make a number of
+different UIDs and basically cycle through them while also
+changing the encryption keys
+being used. This would allow me to quickly work out how the uh
+authentication was working and
+help me more easily generate tags based on what I wanted to
+from random data, but also
+changing the keys to match. This is because a large number of
+these devices um authenticate
+using keys generated from their unique identifiers. So that it’s
+not the same for every single uh
+tag that’s being put in the field. Now this is very useful
+but um it can cause some
+problems with authentication in general. I wanted to implement
+DESFire which has been
+implemented on a few um uh uh forked versions of ProxMark and
+Chameleon Mini but not in the
+main land versions as far as I know. Now you can make the thing
+pretend to be 1 of these just by
+modifying the SAK and ATQA values that the tag would
+present and make sure the
+response values matched as needed. Um I basically uh wanted
+to replay any legitimate
+responses I could get from a reader, so I took a DESFire tag,
+put it against my phone and see
+how- saw how it read and sort of replicated that as I went along.
+As it um basically just went
+through each part- section of this. Um the authentication
+functionality is well documented
+and as their source code about an hour to work with this, it
+makes things a lot easier to
+work with. I took the Mifare DESFire- DESFire tool which uh
+is um an Android application you
+get in Google Play, and basically taped my phone to the
+S1032 device, and basically ran
+it every so often to see how I could me- mess with the
+responses in order to get the
+thing to work. Literally taking my phone and sticking it on top
+of the device. Now let’s talk
+about security weaknesses a bit so we’ve gone through how we
+built these tech tools, let’s
+talk about some interesting security weaknesses on this
+platform. Uum so Crypto-1 which
+is still used everywhere in Mifare classic tags has been
+well known to be absolutely
+useless. It has little to no f- uh security in the same way that
+WAP keys no longer do. And it’s
+important that people still know why they’re weak, for the same
+reason that we should still know
+why WAP is weak. So it utilizes a 48 bit keys split into 2 24
+bit keys that cycle between as
+authentication encryption is happening making things a lot uh
+stranger than you’d see in a
+traditional keying scheme. Um it’s vulnerable to replay
+attacks, if the same requests
+are made from the reader, you can respond to them in the same
+way. But there are weaknesses in
+the nonces authentication mechanisms that allows you to
+recover 32 bits of they key
+stream then use that key stream to generate the keys eventually.
+So key recovery for a sector can
+be achieved basically by allowing the authentication to
+get to the point where the
+reader has sent its response to the nonce during the
+authentication. Uh you then take
+this value, um and generate that’s encrypted value yourself
+because you know what the nonce
+is and you know the amount of cycles you need to go through
+the PRNG XOR it with the um
+values being sent by the reader, and this allows you to have this
+key string you can work with.
+You then take the 2 24 bit keys or the all the 24 bit keys you
+can think of, this is only 16
+million which isn’t a huge amount, and for each alternating
+section, that’s 16 bits out of
+the 32. Um you try and find all those keys that would
+potentially match that auth-
+that string. Now this’ll create about 200,000 if you do it 1 way
+and about 33 er- 30,000 the
+other way. And this um basically can be used to get you enough of
+the 24 bit keys to reduce from a
+48 bit key even trying to sift through just something like a
+48- 40 million keys to search
+through, which is a lot quicker. Um then you can rollback through
+the initial authentication cause
+you know how that works, and get to the point of the state of the
+key stream where the keys are
+what they would be when the thing started and that makes it
+gives you the keys. So
+authentication is requested, a simple nonce is sent back, um
+the randomized data as the um
+encrypted nonce is uh sent by the reader, and that’s all you
+need in order to get onto this
+and start attacking the keys. [applause] Oh ok. Huh. I’ve not
+got to the good part yet, you
+know? [laughter] Believe me. Um so this can be used for offline
+cracking. So rather than having
+to stand next to an NFC reader you can go up, wave a device in
+front of the reader, get this
+authentication, go away, not for very long even about 10 minutes,
+and get the keys back. Um it’s a
+bit more complex than that but that’s the long and short of it,
+really. Um this is more
+efficient than reader based attacks which often have very uh
+weird scientific and statis-
+statistical approaches and is more like traditionally cra-
+cracking in the same way again
+as you would crack a WAP key, just attacking the screen site
+that’s being used. Um this
+functionality is already available and well known but
+it’s never used because it’s
+really really not very efficient to work with. I decided to
+implement this with a bit of a
+demo with um a few toys I had around my flat from my uh recent
+visit to Japan. So I had a uh
+Mifa- Mifare Classic reader from a Japanese video game uh based
+on the Kamen Rider series which
+I’d never heard of before. Uh this was basically a USB device
+you would plug into your
+Playstation, and it would um communicate by you putting tags
+on top of it which were shaped
+like toys, giving you access to those characters in the game.
+The readers identified to use
+the USB and allowed me to uh use man in the middle attacks using
+my Beaglebone Black and the UZ-
+USB Proxy tool chain which allows you to basically p- um
+man in the middle USB
+communications between a uh hoax device, usually a black box hoax
+device, and the uh USB device
+itself. Analyze the entire protocol, allowing you to
+reverse engineer it and make
+your own uh lib- USB based tool to attack this. Um I did that
+and took my um STM32 and just
+laid it on top of the board so that I could then send
+authentication requests to it by
+using the reverse engineered USB protocol. Um so I made it print
+out section numbers, information
+basically from the STM32 based on what’s been requested by that
+USB reader from what I’ve told
+it to. This allowed me to um reverse engineer more about how
+the key generation worked, but
+also very quickly brute force a huge number of keys based on a
+huge number of UIDs which I
+could use to basically emulate anything I wanted to. Purely for
+the purposes of showing that
+these uh uh encryption keys are just weak, like to a terrible
+extent, and yet if you go to
+most places in England which have door access controls,
+you’ll still- still see this
+technology being used. It’s very surprising. See, um so here’s uh
+how it works. It got the
+authentication uh round through all the uh um authentication
+encryption data and got a test
+key out in under 10 minutes which is incredibly fast. And
+that was on a 1 core I 5 laptop.
+Um improvements that could have been made to this uh algorithm
+include increasing the uh key
+size significantly even bringing it to 64 bits which wouldn’t be
+hugely stringent, would have
+made this a lot harder to do. Which would make things more
+secure and make some of these
+attacks just not possible. Using a single large key rather than 2
+keys that played off against
+each other would mean I’d have to brute force every single 1 of
+the keys in that bit uh bit
+range rather than 2 24 bit keys which is just 16 million values
+and very quick to do. And an
+improved PRN- PRNG would have prevented the replay attacks
+that could occur from occurring.
+Removing any known plaintext from authentication remove the
+opportunity for exploitation as
+well. Now this is important especially when you look at
+things that are newer like
+DESFire which have somewhat similar uh known plaintext
+issues basically based on how
+the tag works but because AES, triple DES, and DES really
+aren’t vulnerable to known uh
+plaintext attacks in the same way, there’s no real problem
+there. So let’s talk about some
+raw protocol weaknesses. Now the raw protocol weaknesses are
+important because even with like
+traditional NFC chipsets that are dedicated for that purpose
+you can attack things like NDEF
+and other more high level issues but you can’t attack the
+enumeration level cause if they
+haven’t implemented that then there wouldn’t be very much
+point in having an NFC cha-
+chipset in the first place. Um the big thing is that initial
+enumeration that’s sending
+requests to identify unique identifiers uh is performed by
+all tag types of this range.
+Meaning that if I found an attack there that was viable on
+the readers, that would be very
+useful in a lot of places. Um a big thing as well that I noticed
+was I could send a lot of uh
+data basically fuzzing responses for requests in order to see if
+the uh device would crash or get
+confused. This sometimes happened but it wasn’t really a
+viable attack. I found that the
+greatest weaknesses lie in the anti collision procedures
+myself. Now I like this bit of
+the documentation of Texas Instrument’s uh pseudo code for
+tag detection. Umh the note is
+extremely important. Due to the highly recursive nature of the
+anti-collision algorithm, there
+is a risk of stack overflow. It is highly recommended that the
+user implement the
+stack-overflow check. Which is not very good cause they never
+bloody do. What they often do is
+just ignore this technology entirely and don’t use
+anti-collision. But when they do
+they’ve never done it properly and it’s always got problems. So
+what I ended up doing was making
+my tool respond over and over and over again to any
+authentication that happened
+pretending that there was an infinite number of tags on the
+reader at that time. By
+basically every time it add- uh tried to use anti collision on
+it forcing it to just send
+garbage data. By doing this over and over and over again
+eventually the reader would just
+keep asking for more and more data past the maximum size for
+unique identifiers, eventually
+allowing the device to crash and I’m fairly sure if I tried
+harder I could have got some
+really cool buffering weaknesses from this. Um as I said before
+there’s high level weaknesses
+that are basically um usable on traditional chipsets, um even
+some Android phones, including
+NDEF data which has some uh issues with memory corruption
+and authentication mechanisms
+which can be worked with on all sides. Um the big problem that I
+found was that most tags just
+haven't got enough power in them to do proper authentication or
+anything like that in them even
+if they were dedicated for that purpose. So, I made this, it’s a
+sonic screwdriver, a toy 1,
+which is now full with all the tools that I’ve just talked
+about. And I’ve got it with me.
+It’s got 4 modes so far. It’s got traditional NFC tag,
+fuzzing, transmission of uh ASK
+uh data basically it’s got an ASK transmitter in the handle
+which transmits any
+authentication being sent from a reader to the device, allowing
+someone with a laptop and an SDR
+like far away from me to get the authentication keys back. And um
+done with the data. Now I
+decided to use a much smaller but still quite powerful chip
+for this, an M- STM32F070 which
+is a very small t cell chip but has way more power than even the
+ATTiny, which was a lot larger.
+So 32 K of flash and 6 K of ram. Um had a recommended clock speed
+of uh 48 megahertz but it could
+be pushed a lot further, like 72 megahertz, so I could basically
+copy and paste a lot of the code
+I’ve done tradition- before and make it still work. And by dry
+soldering onto a breakout board
+I could literally load it into the sonic screwdriver and get it
+working. Um I decided to um
+basically uh make it programmable from the top so I
+could add extra features as I go
+along. I’ve added more features since these slides were made, so
+it- so up there it says 3 now it
+has 4. But because it’s got 3 LEDs on it, I could get up to 7
+if I really wanted to. Um I
+managed to use the internal clock on the device rather than
+having to use an external 1,
+keeping the amount of um- uh hardware inside it very low
+which was necessary because
+there wasn't a lot of room in the case. It’s using a uh
+lithium ion battery in order to
+power it, in order to keep the power high, and what’s
+interesting about it at the
+moment is it’s using the battery from my Nintendo DS because at
+the last minute, the battery I
+had in it exploded. Um, I want to talk about some future work.
+I’m gonna release all the source
+code for this, hopefully uh soon. And I’m gonna design some
+boards to go along with it to
+make it a lot easier for people to work with, um because if I
+can make a simple DIP package
+board that people can solder themselves it’d be a lot more
+fun for people to work with. I’m
+going to work with DESFire more and try to implement it fully
+and try and find attacks on it
+and see if we can find any tag types that I haven’t yet worked
+with. Um I’ll take some
+questions now but um I’m also gonna be in the Hardware Hacking
+village at 5 oclock to answer
+any questions and do a follow up talk where I go to the really
+really really low date- um low
+level details of what I did to develop this project. Um thank
+you very much. [applause] Any
+questions? Oh. >>[indistinguishable offmic
+voice] >>Umm I haven’t, no. Now
+LibNFC is a great tool that’s used by most people for their um
+that makes their NFC
+communication, I just haven't had a chance to look at it yet.
+Unfortunately. Anyone else?
+Fine. Thank you very much. [applause]

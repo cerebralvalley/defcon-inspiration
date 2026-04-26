@@ -1,0 +1,721 @@
+>>Alright I’m gonna hand it over
+to your speakers please give
+them a warm welcome. [applause] >>Uh hello. Uh today’s talk, How
+the 4G Module Could Be Hacked.
+And uh here is our team and uh we are from the Baidu security
+lab. I’m Shupeng. >>I’m Huang
+Zheng. >>Uh ok. Uh uh let’s introduce first. Uh here’s the
+agenda of today’s talk. First of
+all we will introduce the fundamentals of the 4G module.
+Secondly we will introduce the
+new attack surface of the 4G module. Thirdly we discuss what
+needs to be done in order to
+carry out the other surface attack for example obtain the
+firmware, get some shell and so
+on. Fourthly we will uh talk about some various ways to
+discover the 1 pin test. And
+last we will provide some best defense practice based on
+experience. Ok uh this uh
+picture show- show you more than 50 v- various 4G modules and the
+USBs we have studied. Uh the 2
+just about uh some 4g routing device and uh some we call 5G
+devices. Yes, many
+vulnerabilities of the 4g module uh we mention today uh also use
+it on 5G. Uh in the middle there
+are some card deposit and some puzz ball wifi devices. Uh down
+the bottom uh there are all
+kinds of open or 4G modules. About 30 of them. Uh most of
+them are PCE interface and as
+they say packages. So uh what we have found we have found several
+general vulnerabilities or uh
+different uh baseband chips, and the uh risk in several V2X 5G
+modules and RCE- RCE in more
+than 5 cars’ T-Box and uh uh vulnerabilities in uh all parts
+of the 4G modules. Uh because
+vulnerabilities repair it’s a long process uh so we just show-
+uh just to show you the 1 bit
+test which will fixed uh- in this lab. Ok uh why did we do
+these studies? First of all we
+found that not man- uh not many people have done relevant
+research in this direction
+before. And uh no one is aware of the security problem and the
+wide impact of the 4G module. So
+we want to shed a light on more uh directions of security
+research for example, uh cars
+now have uh networking traffic- uh networking functions. But uh
+uh it seems that no one has
+attacked the T-box uh it’s called- sometimes it’s called
+TCU. Uh there are also security
+issue with uh baseband. Baseband security is usually important,
+such as you’re like how the
+baseband security on Qualcomm and the same stuff. In fact
+there are many other baseband uh
+chips such as uh intel, [inaudible], MTK, uh Marvel,
+bluffs and the so on. And
+compared with mobile phones it’s easier to analyze through the 4G
+module. Uh we will also
+introduce some new and effect- effectual attack interface and
+methods. In short the goal of
+the threat is not only to ensure there’s some threshold on the
+base of the 4G module but also
+to provide you with some new ideas methods for SS attacks. Ok
+we can see the 4G module
+everywhere. IoT devices could connect to the internet so uh 4g
+driver- um modules. For example
+we can control a car remotely by the APP. It seems the
+communication system of a car,
+it’s on like all the time. Maybe some process is table shed and
+lemon test are long long yen to
+the connection. Uh there are other devices such as like 4G
+WiFi, 4G routers, TK’s vending
+machine, uh our laptop and then some instructional uh devices,
+even the slot machine in Las
+Vegas. Uh there are- there are many things interface. Uh
+interfaces in fact the internal
+structure is the same, we will see later. Uh on the left is the
+circuit board dress of the
+vending machine. Uh we can see a module with many pieces of
+interface plaid here in the red.
+Uh there is act- actually a AM processor motherboard uh running
+Linux on Android system. On the
+right uh is a Tesla model 3 uh 4g module. Uh which implements
+uh navigation, mobile remote
+control system, upgrade, and other functions. Uh the module
+is uh attached directly to the
+motherboard. Uh in this slide on the left is the industrial 4G
+router. Uh we can this uh mini
+PCI-E interface module on the motherboard. In fact it’s a
+common router as this- allows to
+implement the function we [inaudible] assess. Uh the
+device on the right is a bit
+special. It’s a powerful wifi device but it doesn’t have
+several of the 4g module. It
+uses CTE’s echo chipset. In fact, it's also a 4g module, the
+chip in the module is uh
+attached to the PCI-E valve, which uh implement-uh implements
+manual key driving wifi, run
+your RTP source, and other functions. Uh there are many
+other devices that [inaudible]
+in this way, such as uh some local safari router. Uh let’s
+look how the structure of the 4g
+module. In fact, uh the 4g module is a company’s uh
+computer system, ARM CPU and the
+baseband system are integrated in the main control chip. They
+all use uh anti flash which has
+a large shortage of space? and the locals. And uh they are ooh
+uh they are other chips such as
+power management, uh radio frequency chip, and the so on.
+Uh let’s look at the software.
+Um most of the 4g module uh embedded Linux system and a few
+RTOS systems. Uh ok this is a
+picture of the internal uh intuct- uh uh instructions of
+the Qualcomm EC20 module with-
+with uh top of shade remote. Uh the memory chip is an NAND flash
+plug uh TRIM memory which is
+integrated into a chip. Uh but looking at the module the flash
+is uh BGA 162 point. Uh if we
+are- we want to read or modify the data inside, we need to pair
+the con- the chip socket. Uh so
+how do the module work and how should they be used? We can see
+that the upper left corner is
+the OS system module. It builds a minimal system for you too,
+includes you know power, uh
+supply, a sim card, UI interface, yes? How do you ask-
+communicate with the 4g module?
+Use a USB cable. First, we need to install the corresponding
+drivers in the operating system.
+Uh when the module is pliant uh the operating system loads the
+corresponding driver uh
+according to VID, PID, and the interface number. Uh then the
+system uh generates a network
+card and gives uh the cor- corresponding IP address. Then
+this has the internet. Uh the 4g
+module will respond to multiple connection modes and each mode
+has different k- kernel module
+or drivers. Uh for example, uh the upper part of the slide
+shows the PPP and RMNET modes.
+Uh when the tunnel is successful the device will get a IP address
+from operator just like the IoT
+device directly gives your public IP address. Here uh the
+uh one zero network system is
+also considered a public network address. Another way for example
+in RNDIS or EISM modes, the 4g
+module usually has 2 network cards, uh when they are forced
+to get the public address from
+the operator, and the other network card is connected to the
+IoT device. Using one and two
+network systems. It uh looks like the 4g module became the
+router and the IoT device was
+sent through this router. This second path is the path we can
+assess. Ok RNDIS on the ECM mode
+because this- uh these 2 modes don’t require additional
+drivers. Uh but we are
+recommending to us so now most uh most of the 4g modules are u-
+using the modules. Uh using this
+mode uh the T box in the car is uh this way. So you see the
+security of the 4g module has
+turned into the security of the linux system uh as followed in
+the network. Uh let’s go into
+some new attacks- attack surface. As we stated earlier
+that uh m- most of these 4g
+modules have higher impact in their system. So whether their
+operating system uh manages and
+such as supporting 2, 3, 4g which requires a computing
+result and for example,
+automobile manufacturers often need to run their own program in
+T-box to achieve remote control
+and other functions which requires- uh require modules
+with secondary development. Uh
+now let’s uh analyze the attack surface of the 4g module. As we
+said, just now, other kinds of
+4g modules have a complete linux sys- eh- linux operating system.
+At the same time we found that
+most the modules now use RNDIS or ECM mo- networking modes.
+It’s- it means that the module
+will be a send a separate IP address. This provides a
+challenge for attack. Linux
+operating system also has some listening ports, or uh connects
+to the car for OTA updates or
+remote management. Uh now it has a seperate IP. Uh we can
+directly access the- this path
+uh intercept its IP link and do some MITM attack and so on. So
+now the the the the attack is uh
+essentially the test to analyze the outer systems- system
+security. Uh when the Linux host
+uh is exposed to the internet or intranet. Uh but wait it seems
+like we can’t utilize the- the
+separate IP unless in the same lot slash uh wifi hotspot. Uh
+let’s talk about s- some more
+intended attack surfaces. Uh the 4g module is a wireless cellular
+device connected to the
+operator’s network. But some operators due to uh
+configuration errors don’t have
+network isolation so clients can access IPO, ISH, uh or- or other
+devices. And other 4g modules
+support 2g GSM mode uh because of the security problem with oh-
+GSM it can use a fake base
+station to monitor and modify traffic. Uh also it can alter IP
+links in the set path. And there
+are also many sur paths, uh service, and ID to the module.
+Such as the car control service.
+Uh now let’s list some uh attack ideas. First of all we need to
+collect enough information and
+[inaudible] vulnerabilities show uh under epolites so when
+vulnerabilities will get shell
+firmware, analyze network, internet- uh network traffic on
+this and so on. Uh there may be
+lots of rewards engineers will hear um on the process of virus
+that’s an impulse. Then maybe we
+can see there how to run uh our attack or the code and uh we
+introduce the uh traditional
+methods. Uh many in that network such as wifi hotspots and uh uh
+to assess the- the path of the
+4g module to attack. And the the new attack method we can use the
+incorrect configuration of the
+operator network to transform the local LAN attacks into a
+very wide rendered remote online
+attacks, which can generally increase the scope of the
+attacks. Uh in addition because
+of 4g’s because of 4g spots uh we can- we have a way of- a way
+to fully control the IP link of
+the nearby 4g module. We can directly- directly assess its
+path and direct our attack to
+code. With these attacking ideas it seems very easy to attack the
+4g module. Uh let’s first talk
+about using fake base station to attack. Uh because clients can’t
+identify whether the base
+station uh uh is real or not in GSM mode- network, we can build
+a fake base station system to
+attack and control traffic. Uh interestingly this attack is ef-
+effective for all- all 4g
+modules and the- the problem will uh proceed for a long time
+regardless of whether the
+operator shuts down the 2g base station or not. It’s not too
+difficult to build a fake base
+station but previous people uh have not solved the problem of
+auto attachment. If it doesn't
+attach uh automatically uh client need to select to the
+fake base station manually. Uh
+inspired by Pseudo Base Station in China, we can improve the C2
+uh parameters in GSM or
+broadcasting channel, and the client will automatically
+connect to our fake base
+station. Uh C2 is the cell reselection for REM2 uh the
+larger the value the more client
+tends to connect to the base station. Uh we can build uh our
+fake base station via a software
+radio such as the BladeRF and uh YateBTS system. But we needed to
+change uh the value of C2. This
+parameter is not set into YateBTS. So let’s hardcode it uh
+in the source code. Uh set it to
+maximum and uh recompile it. Here we need to remind you that
+uh it’s illegal to build a fake
+base station although this attack is very ef- effective we
+can tell you to use a shield box
+as shown in the figure on the right. In order to force the
+downgrade of the 4g module to
+2g, you need to be able to interfere with a sort of uh
+radio incrementer such as
+sending some, uh white noise interference in the current uh
+3g and the 4g path. Uh this is
+also illegal, you just need to know that uh this method is
+effective. Finally the 4g module
+automatically attach to our fake base station, like the lower
+part. Uh the lower red- uh red
+figure shows that the C2 value is already very high, usually
+around 70. So it can now fully
+control the IP link, monitor the IP data transmission, access the
+port, run our exploit, and
+modify the data. The most common approach used is to assess the
+path such as SSH and other
+service. Let’s talk about uh uh attacks through the operator’s
+intranet. Alright we have just
+implemented IP links to assess nearby devices, but is there a
+way to attack remotely? Uh most
+uh operators uh assign uh uh assign uh 1, 0 also 1 7 2
+network uh system to uh system
+to address uh to client. But many of them don’t have a
+network uh isolation. So uh such
+as China unicom and uh China telecom. At the same time most
+4g module don’t have a firewall
+enabled. This means that we can directly assess the part uh or
+other class or other paths
+again. The picture on the right is the result of scanning open
+path on ADB and telnet stories
+on the uh intranetwork of the operator. You can tell that many
+clients have the the path open.
+Uh more interestingly we can measure a wide range- wide range
+of attacks through private uh
+private- private APN. Private APN is uh attack uh technology
+that clients connect to their
+intranet server directly so operators tunnel that, just like
+the VPN connection, client and
+the server are communicating with each other on some well
+known equipment. Special SIM
+card and APN side point are required. This kind of
+connection is widely adopted by
+most car comand- uh most car companies and uh are commonly s-
+seen among well known IoT
+equipments such as China’s YouPow vending machine. And uh
+uh all cars in this uh intranet
+are equipped with the same type, are made by the same company. So
+we can move forward with this in
+such device that lends to multiple attempts, as a result
+we gain full control of these
+devices. So how can we guess the configuration of the APN or set
+point? For example, so for my
+uh- from our analysis and our log analysis and how to connect
+to the- hack into a private APN
+network, uh we can detach the e-SIM chip on the motherboard
+and uh attach it back to our 4g
+module. And uh use uh AT command to configure uh the correct APN
+or set point. So now we can
+connect to the manufacturer’s private APN network and start
+the parser again and hack. Uh I
+just introduced some new attack surfaces, let’s implement the
+attack, the pre- attack
+preparation work. To get ready for a successful attack, you
+need to complete some- at least
+1 of the following. Get some firmware, get some shell, or
+obtain network traffic. In
+general guys getting the shell is the most beneficial out of
+getting the shell it’s easier to
+get firmware on the net update but sometimes it’s uh not uh
+always possible to get the
+shell. Uh let’s take a closer look at how to achieve it. First
+uh uh I will introduce several
+methods for obtaining firmware. If this method- uh if this
+method don’t work, there is an
+alternate method, an NAND flash dump. Uh we can get firmware fr-
+by downloading- uh by
+downloading the firmware updater program from the official
+website and uh unpacking it.
+This figure shows the firmware update software program of a
+well known 4g wifi device. Uh we
+easily get the Linux system part- uh partition um instead of
+uh unpacking the dot exe file
+with a pin block. Uh the firmware can be obtained through
+the manufacturer’s update-
+upgrade tools. Uh most of manufacturers have provided the
+upgrade tools to the developers.
+For example, Qualcomm [coughs] Qualcomm's uh module has uh 9008
+recover mode which is a s- a
+side by a short circuit some solder points. We can guess the
+up to data tooth from the vendor
+tears apart uh which contains the initialization test for all
+uh partitions. We can see uh
+that the tool contains the initial we made on our
+partition. We needed to focus-
+focus uh on system dot IMG. This file used the UBIFS file system
+it can use the UBI reader to- to
+successfully extract the file format and get the final Linux
+file system. If we can’t get uh
+upgraded tools there is uh an alternate solution. NAND flash
+dump, NAND flash dump uh is more
+complex to read and uh modifies like EMI say flash. Uh the lower
+right common chip is a common PG
+6 3 chip it’s very small and it needs special NANAD program to
+read and write. After dumping
+the uh uh after dumping the chip we can use a binwalk to identify
+the file system. Uh let’s
+introduce how to get the shell. Uh. Where do we get the shell?
+If we can get the shell, it may-
+it will be more convenient for us to real process field
+networks and then debug all of
+our- our programs. It’s very intriguing that many 4g modules
+use a common password,
+oelinux123. And then eh sometimes passwords may not be
+required. In addition to serial
+ports you can also use some remote management tools such as
+ADB, telnet, SSH, and so on. Uh
+these services can be obtained uh by parser scanning. Other
+methods such as getting shell
+from AT command. After the module is connected, the USB
+interface will be uh virtualized
+with several serial ports such as dev TTYUB0. So which AT
+command can be sent? According
+to the manual, we can send an AT command to open the ADB service
+uh or some module could uh have
+cured system commands through sending an AT command. If now
+this works basically you have uh
+[inaudible] to uh modify NAND flash and a telnet process to
+the start of the scrape and then
+re-attach the NAND flash pack. Let’s look at uh- let’s look at
+how to gather manual traffic. We
+can build a 4g base station system uh where is a 4g base
+station. Because it’s used for
+the search. Uh compared with a 2g base station building 4g will
+be more stable coming in and
+fast. As you can see in the figure on the right, our work
+can automatically connect to the
+4g base station and gets the IP address. We can use version to
+monitor the traffic. We use the
+srsLTE 4g base station system in this method, which is much more
+convenient uh uh installation
+than OEI. FInally we need to write a sim card. We need to buy
+a writeable SIM card and a
+reader. Uh not uh less uh no size less than card are only
+used for- for security testing,
+not for other illegal things. We needed to write the correct IMSI
+KI OP to the SIM card to ensure
+that uh this parameter uh the same as those in the srsLTE.
+Finally we start our 4g base
+station and uh it works perfectly. In fact no matter
+whether it’s a 2g base station
+or 4g base station, it contains a large number of configuration
+attempts. Uh time solution time
+relations in this talk we only can learn the most important to
+you. Now let’s have our recap uh
+what information can we gather from this uh preparation. Uh
+most likely uh the shell will be
+captured, then the firmware system and the network traffic
+will certainly be captured.
+These are essential for the full vulnerability menu. Ok. >>Ok
+Shupeng just talked alot about
+attack surface and preparation for attacking 4g modules. Now
+let me show the critical
+vulnerabilities we found in detail. Uh let’s focus on system
+management service uh
+vulnerabilities first. Usually, 4g modules uh runs Linux
+systems. Uh Linux systems
+probably uh stopped many remote management so as- so as is- uh
+such as SSH, telnet, and the web
+server. We can use fast skin tools- uh fast- faster skin
+tools uh like uh mass scan uh
+which can scan the port opening status in just a few minutes. Uh
+for example uh we found uh a 4g
+module are open port 23 uh which means the telnet device is
+started. Uh in most cases, uh
+telnet uh need password to log in. Uh we can extract the ATC
+password file from the firmware
+and then crack it by using hashcat tools. And if you are
+rich, uh you can buy a lot of
+GPU to speed up the crack. Uh 4g modules uh generally are not
+using 1 machine, 1 secret key,
+or 1 secret password. Uh strategy. So if you successfully
+cracked the password uh which
+means that you have just cracked the password of all 4g modules
+of this manufacturer. Uh once we
+get the password, uh we can successfully login to the file
+system uh login to the system
+remotely and this device is ours. Uh in addition uh we find
+that many well known
+manufacturers of 4g modules have open remote ADB devices by
+default. Uh we only list uh some
+of them in this table, uh in fact some manufacturers, uh some
+automobile uh manufacturers uh
+when it course. Also open remote ADBs devices by default. What’s
+the consequence of this? Uh we
+can simply use ADB tool to connect to port 5 5 5 5 of this
+module and in most cases, uh
+without authentication, uh we can get the shell remotely. So
+we can hack it. And there are
+many other types of system management devices
+vulnerabilities such as a weak
+password for web management devices, and even SSH that do
+not require password uh I find
+it on some case. And some manufacturers in order to
+convenience the repair of the 4g
+modules, uh they hide backdoor, they hide backdoor in some
+external monitoring port. Uh
+maybe you can use the backdoor to open telnet or do something
+dangerous. I will talk about uh
+an inter- an in- interesting case uh like this on the next
+page. This is uh this is this
+bug was caused by a secondary development of 4g module. On a
+car T- box, T-box. Uh we
+reported this problem to manufacturer 6 months ago and
+the manufacturer has completely
+fixed it. Uh now a days some cars can unlock and open its
+engine remotely through mobile
+phone APP, uh which aroused our interest. We bought this car T-
+box uh from uh from the uh auto
+parts shop uh with this capability uh the capability is
+it can use a mobile phone APP
+tool open its uh door uh and start its engine. Eh. First we
+dumped with firmware with a NAND
+program- programmer, and we find a process listening on 24xxx
+port uh and when we used IDA-
+IDA to scan the string of this process, we find uh a telnet
+related string. Uh let’s analyse
+it. As you see we find a dangerous function. This
+function passed the receive data
+from that port and appear to command to execute. As the
+picture shows, uh it can be used
+to open telnet, these device. We analyzed the logic of the
+protocol uh uh of this port
+actually it used a PKI system RSA certifications and uh uh AES
+encryptions. Uh but we find
+there are multiple vulnerabilities in uh this such
+as uh the AES key is hardcoded
+in binary uh and we get the RSA private uh private key from the
+file system. And the password of
+the f- of the private key we can guess it so we can use it to
+generate public key. Uh and we
+used these problems to bypass the TRS uh certification
+successfully. After we was
+engineering uh we like to explore code like this uh as
+expected we finally start up the
+Telnet these device on this T-box, through this port and
+using uh by using this exploit.
+However uh telnetd in this mode requires password verification
+so here’s comes the new pa- uh
+problem, what the password is- is. We use the most powerful for
+p-soft Nvidia 2080Ti graph sick-
+uh cart to crack the password. A day later we finally uh got the
+password. The password is very
+complex; uh include- include big and little case charts, numbers
+and special charts. Uh so now we
+have our root shell of this T-box. So how can we control the
+car through uh this root shell?
+First uh let’s- let’s learn how remote control of the car is
+implemented. First, uh the red
+dotted line in this figure uh represents the 4g module. It has
+a long connection with the cloud
+server. Uh the uh 4g module loc- located in the T-box and located
+in the MPU of T-box. Uh when the
+door uh when the open door instruction is issued from
+mobile phone APP uh the 4g
+module uh receive the instruction. A process in MPU
+communicates with MCU through uh
+the series port, uh another process in MPU uh yes uh.
+Another process in MCU that
+receives the instruction and pass it and dispatch to to
+combust and the door open. I
+think this could be the easiest way to uh control the car. As we
+can get shell of the MPU MPU so
+we can write a program to record the data- uh the data that MPU
+write to MCU. So when we want to
+hack another car, uh the step is we used uh uh exploit we write
+before to start this telnet and
+get the shell, and execute- execute a new program to replay
+the data uh we recorded before
+so the door will open. The most important question is: how to
+run our attack code? Or how to
+access that port? Do we remember that attack surface uh attack
+method that Shupeng uh just uh
+uh mentioned before? Uh through our fake base station uh
+operating intranet or wifi
+hotspot, we can access that port by running uh the exploit
+without touching the car. Uh if
+the car manufacturers use the private APN network without
+isolation, uh everything will
+become simple, or terrible. Uh in the right picture uh we
+emptied a private APN network of
+this T-box. Uh so we can scan the port 24xxxx and we find
+there are many devices will open
+this port so we could attack many devices at the same time.
+Uh maybe we can use these things
+attack methods to build zombie cars, team, just like the things
+in Fast and Furious 8. Next,
+let- let’s talk about the vulnerability in FOTA. FOTA is a
+way to upgrade firmware. We find
+that uh some 4g modules frequently check whether uh the
+cre- the credentials is the
+last- latest. Uh some devices check update when the device
+start up and some uh every 40
+minutes. In this case, afterwards engineering we find
+uh that he logged in to our FTP
+server to check for new firmware version. Because FTP, username,
+and password is hardcoded uh we
+can use it. We can use use FTP password to l- login the FTP
+server successfully. And after
+login we can download all the versions uh we got. Wait for a
+second [sniffles]. Yes uh we can
+download all versions of the firmware of all devices. So uh
+we probably get the old firmware
+version, uh but this is not the craziest thing. Uh we find that
+this FTP account has right bar
+paragee so we can uh and uh another good news uh the 4g
+modules uh did not verify the
+firmware file uh in the FTP. So we can use a rewritable
+privilege to upload a new
+firmware with backdoor uh to the FTP server and uh uh there are
+many many 4g modules of this
+manufacturer. We are download the new firmware automatically
+and upgrade to it. That means-
+that means we can hack all 4g modules uh of this manufacturer
+in just uh, uh less than 1 day.
+Uh. So that's a n- nice day probably. [applause] We have
+just talked about uh problems on
+the FTP s- uh FOTA server side, let’s look at the vulnerability
+of the FOTA client side. We find
+that some 4g modules listen to some ports for FOTA uh for
+example in this case we find
+this 4g module listened to the port uh 45xxx and it used to
+receive the upgrade m- command.
+Uh this port was originally used for interprocess communication,
+but it was incorrectly bound to
+public- bounded to 0 dot 0 dot 0 dot 0 dot 0 not local host so we
+can send data to this port
+remotely. And after crack the data exchange protocol to this
+ca- uh this port and we was
+engineering the structure of the uh upgrade uh firmware file. Uh
+as you can see, the structure of
+this uh firmware file is very complicated. It- it costs us a
+long time but we finally get it.
+So we can- so now we can make a new firmware file with backdoor
+and force the 4g module upgrade
+to it. So we hacked it a- again. Almost every 4g module has its
+own AT command uh processing
+process. And some manufacturers eh impl- un implement some
+custom ca- capabilities for
+example uh only the factory engineers know- know- they they
+know some hidden AT command. Uh
+if you can find them out maybe you can open the ADB device uh
+through the hidden instructions
+or open t- open ADB or something. Uh we mentioned it
+before. Uh in another case, AT
+command injection vulnerability is also allowed. For example,
+this fallen picture uh in the
+left uh, is an introduction for adding route in the development
+document. Uh we analyzed it we
+analyzed the system command called here deeply we find
+there’s a command injection
+vulnerabilities. In the image on the right we append LF stream to
+the AT command uh and the
+routing content shows the LS command executed success-
+successfully. That proves
+there’s a code injection vulnerability in AT command
+parsing. In general, the AT
+command can be only executed uh on the- the USB serial port, uh
+but some 4g modules uh they
+support, uh they support use of SMS to execute AT commands. It
+use- it’s usually used for
+remote control. Uh. If we can find a AT- if we can find an AT
+command injection vulnerability
+in this scenario uh we can exploit the bug remotely by
+sending an attack message to it.
+In fact we did find such per- uh we did find some uh some problem
+in some 4g modules like this. Uh
+this is a 4g module that supports- use SMS to execute AT
+commands. In this case we find
+it requires a password in the content to verify- verification
+uh if the password is right uh
+it will execute the AT command in the uh SMS. But the way uh
+the way he uses the verification
+is too weak still to solve the problem. The password is
+hardcoded in binary and every
+device the- the pa- password is the same. And we can get it from
+uh uh uh from the firmware once
+we get uh 1 device. Uh this is that that that 4g module support
+uh AT command uh using SMS to to
+control it. Uh actually we find a command injection
+vulnerability in parsing SMS AT
+command. The command name is SETFCSN. And finally we can get
+a reversed shell by simply send
+a text message to it. We hacked it again remotely. There are
+many other successful case of
+attack. Because this talk uh limit of 50 minutes I can not
+talk about them detail 1 by 1.
+Let me talk about some other interesting c- cases quickly. Uh
+such as, we can use uh the
+jammer to attack the 4g module. Uh using and then using the man
+in the middle and combined with
+uh some browser vulnerabilities, such as 0-day or end-day to
+intercede to intercede the IO
+firmware of a car. And the debug process on the 4g module is also
+an attack surface. Uh DDoS it’s
+2 deaths, that may cause the car lose connection uh with the
+cloud server for a long time.
+Uh. And the IPV6, even if the 4g module has en- enabled IP table-
+IP table as firewall, uh but
+sometimes we can still access the- that port. Why? Because the
+IP6 tables are not enabled. We
+can simply bypass the firewall by using IPV6 address. And
+almost every 4g wifi used 8
+digital password. 8 digital password. That means the
+password is only number- n-
+numbers. It’s it’s weak password. Uh we can use DDoS
+attack to get the handshake
+packet and then crack the password with uh many uh classic
+uh crack like an 2080Ti in a few
+minutes or a few seconds. After crack the password, we are in
+the same intranet of the 4g
+module. We can launch the uh further attacks such as we can
+attack the um system management
+of the 4g module. Uh we can attack uh all devices connected
+to the 4g module. Uh uh in the
+next chapter, let's talk about the suggestions for defending
+against those attacks. Uh we
+have talked about uh a lot of attack mechanisms and
+vulnerabilities detail before,
+and it seems that there are many problems. So how should we uh do
+we- uh we can avoid those
+problems. After command kit with many 4g module manufacturers
+hardware manufacturers and car
+manufacturers. Uh we find that they did not realize there is an
+complete- uh complete operating
+system in 4g modules. Uh sometimes there are many, uh
+there could be many operating
+systems on the motherboard. Uh for example there could be uh 3
+uh 3 operating systems on the
+T-box motherboard. Uh so if 1 of the system has problem, it may
+affect each other- uh it may uh
+affect each other. So- so first of all we must identify uh those
+systems, their IPS, and next we
+should check the listening port. Uh ex- especially uh those ports
+that can be accessed remotely.
+Uh we have found many many high risk vulnerabilities in most uh
+of the listening port- listening
+port process. Uh if not absolutely necessary we should
+not listening port. >>How much
+time do you have left? 2 minutes? >>Yes. And be- uh uh
+and be a- aware of uh network
+ac- access by using 4g interface. Uh many people think
+that 4g channel is safer uh but
+actually hacker can play man in the middle easily through the
+fake base station. And another
+problem is that we find that 95 percent of IP tables used in the
+4g modules uh are empty, it's
+dangerous. So uh we think, we think the simplest way, we think
+the simplest way to defend
+against uh uh attacks is to uh let the developer learn how to
+use IP tables uh well. [siren
+sound] Uh here uh thanks to our team’s members uh uh you know
+this is uh teamwork. We have 4
+ana- analysts over 50, uh 50? 50 yes 5 0 uh devices. This is our
+talk about security re- uh
+research of 4g modules. I hope that our work can give you some
+in- inspiration. If you have any
+questions, uh you can email us

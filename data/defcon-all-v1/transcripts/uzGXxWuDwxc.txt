@@ -1,0 +1,629 @@
+>>Paul McMillan is going to talk
+to us about attacking the
+Internet of Things, seems to be kind of a theme today but he
+brought in light. So he wins and
+this demo is going to go just fine for him plus we had plenty
+of prep time. For the last talk
+of the day in party track let's give a big party track welcome
+to Paul McMillan. (Applause)
+ >> Okay. So I'll talk about timing attacks and the Internet
+of Things is a great place. I'm
+a security engineer at Nebula. I work on building clouds. This is
+not directly related to what I
+do in my all-day job, I do security. We'll talk about a
+number of different ways you
+can -- there are lots of kinds of timing attacks. The one we're
+talking about is a string
+comparison timing attack. One property is that it takes a
+while to run so we'll get the
+demo started first and can you hear me from over here? No.
+Okay. There's a mic. One of
+these. Yeah, okay.  So what we have -- the demonstration we're
+doing today is using the
+Phillips cube network light bulb controller in order to
+demonstrate I have nothing up my
+sleeve I'm resetting it there. And turning the lamp on. Now
+they are not connected and there
+are no user names or anything other data in the controller
+here. The rest of the setup I
+have here is a extension for my PCI express bus which allows me
+to run server-grade network card
+attached to my laptop. We'll get to that in a little bit why
+that's useful but the most
+important part is that the network card allows me to do
+hardware assisted time stamping,
+all the packets that come in and out of the device. So talking
+about timing attacks, at the
+most basic level asking a computer to do any operation
+takes time, a measurable amount
+of time. Timing attack exploits this by noticing differences in
+the amount of time it takes to
+process something. This is a typical example of user
+authentication flow.  You start
+with the getting a user name and password from your attacker. You
+look up the hash in the
+database. You compare the hash you got from the hash you have
+in the database and then you
+return. I know there are issues but it's the basic work flow.
+ The obvious timing attack here
+is that if the user doesn't exist in the database, this will
+take a lot longer or take a lot
+less time to run. An attacker can use this kind of work flow
+to enumerate, guess a bunch of
+users in a database and use that to accelerate attacks. That's
+not the kind of timing attack
+we're talking about today. There are lots of other kinds as well.
+We have blind SQL injectiong,
+CPU timing cache attacks against crypto. What we are talking
+about today is string comparison
+timing attacks. This is a pretty typical implementation of the
+string comparison function. I
+pulled it from the source code for the device sitting over here
+and this is the relevant bit.
+ The most important thing about this piece of code is that
+rather than comparing all of the
+pieces of the string together at once and saying they are the
+same or not, atomic CPU
+operation, it starts with the first two characters in the
+string, first in each string
+you're comparing, compares them if they match it moves on to the
+next two and so on until you get
+to the end of the string or they don't match.  The important
+behavior here is that we have a
+very small timing difference when you have a string which is
+partly correct but not all the
+way correct, and the string which is not correct at all.
+They, the amount of time where
+it either tries to do that next comparison and fails or just
+stops doing the comparison is
+something we can exploit.  If you look at properties you get
+out of this, this means when you
+are trying to brute-force a credential if you can do a
+string comparison timing attack
+on it, the time it takes to run the operation goes from an
+exponential function to a
+constant function of the number of items you have in the string.
+ There are a lot of, you'll see
+recommendations to make the passwords ten characters long.
+The thing about that is adding
+another two characters to an authentication credential that
+is vulnerable to a string
+comparison timing attack means it only takes two more of the
+constant amount of time rather
+than raising to another power of two.  So this is a very powerful
+method if you can do it. The
+problem is it's really hard to do. A lot of people will tell
+you that this is only a
+theoretical vulnerability. Not really an issue. I kind of just
+explained why I think timing
+attacks are interesting. The drawback is they generally make
+a lot of noise. You have to take
+a lot of samples of whatever it is you are trying to compare,
+whatever it is you are trying to
+attack before you can make a decision, a statistical decision
+about whether or not the data
+you have means anything.  So let's talk a little bit about
+time.  The -- sort of
+intuitively we know getting from San Francisco to New York takes
+about 70 milliseconds, we know
+that getting data off a scanning disc takes about 13. Going down
+further RAM latency is 83
+nanoseconds and then getting cache in CPU you are in the 1
+nano second area. Then down to
+the CPU cycle which is one-third of a nano second. By the way the
+reference is for everything I'm
+speaking of an my slides which will be on get hub after the
+talk.  So go down a little
+further. We have speed of light in a network cable. In a meter
+it goes about five nanoseconds,
+takes five nanoseconds to move meter and so when -- getting
+lost here.  So the other thing
+to remember when we are talking about network latency here is
+that usually the peaks you are
+working with are generally captured in milliseconds, not
+nano seconds. Wireshark will
+show you nanoseconds but generally that's when you've
+done a bunch of work to make
+that but that's not the case.  So the string comparison,
+timing difference I talked of
+earlier does, you know, it's on the order of nanoseconds. Of a
+difference. But that's on a
+three GHz machine. This device down here is only 120 MHz,
+running a little embedded
+processor,it doesn't do multi dual processing, it is not very
+smart.  Um, so here is a picture
+of it. The way the system works is that the base controller
+connects via a wired connection
+to the network or in this case my attack system. And then the
+controller speaks the ZigBee
+protocol. At the moment the light bulb just acts like a
+normal light bulb and comes up
+when you turn on the power. It looks like the device has
+finished so I'll start actually
+attacking it. Give me a moment here. (Pause) Unfortunately, I
+can't show you both screens at
+once. What I'm doing over here is starting a TCP dump, starting
+a TCP dump session to collect
+the network traffic between the network card, the network card
+and the hue. The important thing
+about that is that this is the very latest version of TCP dump
+which allows you to capture
+nanosecond-level differences if you have the hardware to support
+it. So once I have started the
+TCP dump, I'm going to also go ahead and start my data
+collection script. What the data
+collection script -- so to back up, the Hue API is very simple.
+It's just to access the device,
+you send a get request and put the authentication credential in
+the URL and that's all there is
+to it. Only one authentication credential, it's ten characters
+long, and it's not -- not hash,
+not encrypted. And so I have a python script here that is
+starting trying to do a whole
+bunch of requests to that authentication credential,
+starting with a set of known
+characters and we're collecting data now. We're guessing the
+first couple character sets.  So
+let me make the data over here... (Pause) So we are not
+getting data. I was hoping to
+have this computer do the analysis while that one collects
+data. What I'll have to do is
+analyze the data on that computer as we go.  The downside
+to that is I can't use both
+CPUs. If I run the analysis on that computer it's kind of noisy
+and pollutes the data a little
+bit.  While we collect the initial chunk of data here,
+we'll talk about network timing
+precision.  The milliseconds you get for the kernels default
+drivers are not what you want to
+the TCP dump, they're not what you want with the dump, they're
+not what you want for this kind
+of attack. The details you're looking for are as I said
+earlier nanosecond range. You
+just are really going to lose a lot of data if all you have to
+work with is milliseconds.
+ There are lots of things that can make your data collection
+imprecise. Graphics drivers,
+background networking. Basically you want to turn as much of the
+machine off as you can. Then
+once you have verified that you can actually conduct the timing
+attack, then you can move it
+back to being a more normal system and design your
+parameters so that works. The
+other thing that is really important is using the hardware
+time stamping. Default software
+time-stamping is really noisy, you get -- you're not top
+priority and that's just the way
+it is. The hardware I'm using here is the Intel I 350 NIC. A
+lot of the newer laptop drivers
+are starting to have precision time support. These are getting
+added because NTP doesn't cut it
+for a lot of data center needs. The data sheet on the I 350 says
+it can capture at precision of
+around eight and a half seconds. I'm thinking that's probably a
+little bit optimistic but it's
+not too far out.  I didn't put the picture here. I wanted to
+get the demo working more than I
+wanted the slides to be pretty, so I hope that doesn't bother
+you too much.  So I already kind
+of explained it but the other thing that is relevant here is
+the express card to PCI express
+adapter is just the direct bus adapter, not a very complicated
+piece of hardware. We're not
+going through other protocols to do that which allow this to
+retain the performance that we
+need for the network card.  So I talked through what we're doing
+for the data collection. When
+you go to look at the code you'll see a couple really
+simple scripts doing individual
+things. The idea was to break it down, not give you a giant
+monolithic thing you have to run
+on the same attack machine.  We have a traffic generator, just
+repeatedly sending different
+variations of the guess for the next character in the
+authentication token to the
+server. We have the data collection which is TCP dump and
+then we have the separate
+analysis script and then the idea was we would feed that back
+through the analysis script on
+this machine and update the next guess as we got enough data to
+assume that or to prove that we
+knew what the next character was. Unfortunately I'm going to
+have to do that by hand because
+the machines aren't talking to each other.  I'm -- I'll let
+that run for a little bit longer
+here.  So things to make this work. You need at least Libpcap
+version 1.5. TCP dump 4.60 or
+otherwise you don't have hardware time support and you
+don't have the ability to
+capture the nanosecond level. They work on 1404, I haven't
+tried them anywhere else, and
+TCP dump 1.6.1 just came out like a week ago. So that's a
+pretty good choice. So
+nanoseconds turned out to be really invent to work with.
+Scapy doesn't like to read the
+PCAP files. Doesn't like the new format with nanoseconds from TCP
+dump. Wireshark will read it but
+it's not a generally useful packet parsing library that you
+can use in other things. For
+better or worse I ended up doing that and what I'm using to parse
+these packets in the analysis
+script is a package called T shark, command line version and
+a router called pie shark, I
+think. Another thing to remember when you work with these numbers
+(Pie shark) You can't convert to
+flow because you lose precision, easy way is use use in
+nanoseconds and subtract a large
+value from every value work with or just deal with the
+differences.  And the other
+problem is oftentimes you don't realize you're converting if you
+call out to data analysis
+libraries. It's better to convert these into smaller
+differences when you are
+actually going to work with them.  This is the Hue API, very
+basic, the networking stack is
+very interesting and I mean that in the nicest possible way. It
+always return the http 200
+status code. It doesn't really mind if you just don't send AK
+packets. It just kind of keeps
+going. It, as I said, it's just the user token. There is no user
+name and password and it's not
+very fast. Depending on how the device is feeling during any
+given day it's between 30 and 60
+requests per second. So this is the other limiting factor, it's
+nice it's slow because the
+timing track we're trying to exploit is more obvious but it's
+not nice because it takes a long
+time to collect the data.  Other things about the Hue. It's
+running FreeRTOS 6.05. SSDP
+implementation which I'm using to discover it on the network
+here is pretty much someone
+looked at some traffic and said oh that must be how it works and
+didn't read any of the
+documentation.  The behavior with the http responses is very
+interesting. As I said before
+the speed you can get out of it is variable and the properties
+of the network stack seems to
+have is rather than buffering packets in some kind of sane
+manner, you send a request, it
+gets a request and sends back a few hundred bytes response which
+is always http 200, doesn't even
+think about that. Then it cuts and makes a packet break and
+goes and thinks about it for a
+while longer. Now, any time it's thinking about it and
+constructing the rest of your
+response, if you send the ARP packet to that initial part of
+the response, it will stop
+processing, go back to the network stack, dump whatever is
+in the network buffer, send it
+out and go back to processing. This might make sense or work
+out well but if your machine is
+a lot faster than it, you can spend most of the response time
+having it switch between that
+and the thing it's actually trying to do, and you get
+very -- an extremely variable
+amount of time that the whole process takes. It's really
+problematic for your precision.
+ Let's see. Other things. Yeah, http stack basically ignores
+whatever headers you send in.
+Doesn't pay attention content type of anything like that.  It
+sometimes sends out the wrong
+ethernet sequence and it sends a lot of random stuff even when
+not connected to the Internet. I
+have noticed occasionally when it has an IP address it will
+still be trying to the TCP. It's
+always looking for open DNS even when it knows where it is. So
+let's go back to the principles
+of the attack we're doing here.  I think we collected about five
+minutes of data here. I'm going
+to start the first of what will be several statistical analyses
+on the data we have collected
+and I will show you what we're getting.  So we're stopping the
+packet capture here because I
+would normally be doing it on that machine but it's not
+working out. The other thing
+that takes time as I mentioned before I can't use a normal
+packet, nothing supports the
+nanosecond time stamp magic cookie at the top of the file,
+rather than building A parser by
+hand I figured for the demo it was okay to use someone else's.
+The process of converting raw
+packet data to something I can parse is going through T shark
+and then turning into an XML
+representation of the packet, then turning that, parsing that
+XML and pulling out a few stats
+and writing them back to the file. Ends up packing CPU on the
+machine that is doing it. I
+would like to do better but I am more interested in the
+properties of the perfect
+concept rather than the actual time it took to implement it.
+ Let's talk about statistics.
+The statistical things that we're going to do to the data in
+a minute are not going to be the
+ones that immediately spring to mind. You can't use the T test.
+You have to be very careful. You
+have to read about statistical methods a great many of them
+require your data to be normal.
+Your data in this case is most fundamentally assuredly nothing
+like normal. The distributions
+are banded and striated and I'll show you what they look like in
+a minute.  The statistical test
+we'll be using is called the Comogeral Smirnoff Test and it
+is a test which allows us to --
+the hypothesis, it allows us to assert whether or not a pair of
+samples come from the same
+distribution. Doesn't allow us to say anything more about them
+other than if they are -- other
+than whether or not they appear to be the same, from the same or
+different distributions so in
+this case we are going to be -- so we have -- to back up, let's
+talk about the hue API. That
+user token, what we are using for the token right here is a 10
+randomly chosen characters 0
+through 8 and so for our hypothesis testing, we are
+picking, we're generating a
+random user token and starting with a guess from each of these
+categories. Once we have parsed
+the data, the -- we sort the results that we got from each
+test into buckets based on what
+the first character in the first character that we're
+investigating is in the string.
+ So this means that what we're trying to do is say which of
+these, which of these data sets
+and in this case it will be several probably several tens of
+thousands of data points, which
+of them is different from all the other ones. (coughing) We're
+trying to identify it. So as I said
+before we can't use the -- requires data be normal and the
+Smirnoff test is the best one
+that I have found. I've tried a number of different things and
+the ones identified in the
+literature from 2009 their box test didn't work super well for
+my data. Not sure whether my
+data looks very different from there's or what was going on
+there. But KFS work pretty well.
+Where are my graphs? So this this is still parsing.  Once
+we've collected this data what
+do we do to actually prepare it for running into the algorithm?
+We can't identify the timing
+difference by taking all the data putting it into the
+algorithm and say sort it out
+and collecting more samples until we get the difference
+we're looking for. Unfortunately
+that takes a very long time. When I submitted the talk, the
+amount of time it took to do a
+single, identify a single string that was different took me about
+eight hours worth of data. I
+have gotten that down to about 12 minutes if the parsing works
+right but unfortunately I have
+to go back and forth through that.  The various ways you can
+prep your data, lot of ways to
+screw it up. If you filter data and then you end up, so you have
+time series data but you're
+treating, the KS test does not care about the time series. It
+is just sorting your data and
+dealing with it. So if you have data where you have a jump in
+the overall processing time for
+a while, and you do a linear filter, you know, just an upper
+and lower bounds, you end up
+with samples where you have a lot of samples from a time
+period that is not well
+represented by the rest of your groups. This really screws up
+the statistics and if you do
+that you end up with data that just isn't useful.  The Code is,
+is up int the repo or it will
+be. I showed you how it separated out. The code is
+really starting point for the
+analysis. It's not a full-blown click it and run tool,
+especially not against some
+other device. The -- let me actually show you some of this
+code here. (Pause) Looks like we
+have finished the initial analysis of the first round of
+data so I'll go ahead and see if
+I can plug the laptop into the projector to show that to you.
+The script we're doing now is
+the Calculate Guesses Script, which is taking the -- this was
+working earlier. Okay. Start by
+looking to see what the process data looks like. This it what
+data looks like after. What
+these are showing is these are showing relative differences in
+packet arrival times as we
+interrogate the unit. If we look at the raw data for Wireshark we
+can see the conversation that I
+was telling you about with the device here. You get requests,
+we get back this one part of the
+packet and then get back the rest of the packet and have
+other network connection
+handling. Device doesn't know how to keep the socket open.
+ What we're looking at when we
+actually analyze data is that we are taking this time between
+this first packet and the time
+that the rest of the packet arrives. A lot of times it will
+say look at the total time that
+the request for response cycle takes. In this request just the
+difference between those two
+response packets provided a much better signal. Um, the...
+(Silence) I don't know what's
+wrong. Very frustrated. Huh? Yeah. So what that should have
+shown us and immediately after
+the talk I'm sure, what that should have shown us was a
+collection, a set of the KS test
+analysis for each of the combinations of the data points.
+We have eight different guesses
+so zero compared to 1, zero compared to 2 and so on, all
+combinations of the data. In
+general what you see when you do that is that the as you gather
+more data, the values fluctuate
+and so you have a p value from the KS statistic but the p value
+from the KS statistic is not
+going to be the one that you look at for the overall result
+you're looking for, because
+the -- it's only relevant to that individual comparison
+because you're making the
+combination of that many comparisons. Your overall p
+value has to be much lower. Your
+overall expected value has to be much lower than the system. So
+the way that we -- the way that
+I handled choosing which one is different is I take all those p
+values, pick a threshold and say
+when the threshold, when the values are at the acceptable
+threshold, we count that as a
+vote for each item, being different from all the others.
+As you see when you collect data
+as you get up into about 10,000 packets the thresholds start to
+become very obvious. You start
+to see that everyone is saying this one, whichever one it is is
+different so in general when the
+system is not broken that takes on the order of 12 minutes per
+character to brute-force the
+system. If you want to be really really sure and not accidentally
+choose the wrong character, if
+you go up to 15 minutes, the statistical difference starts to
+get just ridiculously obvious.
+So I will get this working and post a YouTube video of it
+later.  We'll go through some of
+the things that I learned while implementing this attack. If you
+can keep the socket open, do it.
+Anything to reduce noise, anything to reduce the number of
+packets that you have while
+you're interacting with target device makes your life easier.
+Difference is you are looking
+for a really small, do everything you can.  The -- is
+this not -- no, not... (Pause)
+I'm just reading the slides anyway so... (Pause) When you
+are configuring your network
+parameters use the hardware time stamps, turn off the queues and
+hardware assist on the network
+card, obviously use nanoseconds and just everything that you can
+do make everything quiet. If
+your device is multithreaded it turns out using Solaris to tie
+up everything except for the
+thing you're trying to do worked pretty well. This thing can't
+handle multithreading but in
+other things I've tried it on, that helps. In this case don't
+run extra stuff, don't try to
+analyze and capture data at the same time. I probably should
+have done that and the demo
+might have worked but the other thing is profile your victim.
+When you are -- when you look at
+this thing you can actually see that the it has noisy periods
+and quiet periods and you can
+discard the noisy periods and the way you want to do that is
+picking a time around when the
+noise occurs and discarding that as opposed to just filtering
+values that are too high or low.
+Reason you don't want to filters values that are too high or low
+for discarding things around
+noisy periods is then you end up biasing your data towards the
+sample that may not be relevant.
+ Another thing that helps is if you get it warm before you
+start. The differences are
+fairly small but as it heats up it changes. If you don't warm it
+up before you start data
+collection you will have more trouble getting statistical
+certainty.  Again, finding the
+simplest request possible. It doesn't have a lot of processing
+power. Shorten the length, you
+get better results. In this case I took away all http headers
+except for the first and second
+lines and it didn't notice. Again, the most common mistake I
+think that I ended up making as
+I was working through different ways to analyze data was
+accidentally making assumptions
+about normality. Assuming data was normal, picking a test that
+assumed it was normal, doing
+things that required data to be normal.  Another thing that is
+important is to gather data on
+all hypotheses concurrently. If you gather all data on A, B, and
+C, because they are not linked
+in time you end up with sort of macro level drifts which mean
+that you can't compare the data.
+It's completely worthless. In the code I'm using here it
+randomly resorts my array of
+things I'm testing every time it cycles through them but doesn't
+just randomly pick. It does make
+sure it runs each hypothesis about the same number of times.
+ Another thing, don't overwhelm
+the device. If you slow down and give the device time to process
+the request, you end up with
+less noisy data. In my case the way I did that was by setting up
+firewall to block packets
+because they were making the data noisy. The other thing to
+remember about this is don't
+forget you can just stop and brute-force a token. You don't
+have to do the timing attack all
+the way to the end and 10-character password if you can
+do the first five the rest of it
+may be easy to do online brute force depending on the size of
+the key space. Another thing to
+remember is not the case in this device but in many devices, the
+code will short-circuit if the
+strings you are comparing aren't the same lengths so in this case
+you know how on the
+authentication token is. It's worth sending a full token with
+each request. Some code will
+short-circuit in that case.  I talked earlier about taking a
+moment to let the device breathe
+between requests, once you have the statistical tests, you can
+very easily tell the data that
+allows you to do hypotheses testing and say if I do this one
+thing does it make data better
+or worse and verify it as opposed to just relying on your
+gut feeling.  The other thing
+about this is it's really easy to get fooled by your own data.
+You'll sit there, you'll gather
+data, analyze it and go, I have a way to analyze this data that
+tells me the right answer
+because you know what it is. And then you'll gather, you'll write
+it down, apply it and gather
+more data and find out that the test you came up with, which
+relied on some magic numbers and
+maybe a multiple of something totally only worked for that
+collection of data you had. When
+in doubt always take more samples and take samples,
+analyze them, and then take more
+when you change method. Don't assume you have a method that
+works when you have the data
+that you have fit and give the result you want. I like this
+quote because I think it
+explains that really well. If you try hard enough eventually
+statistically significant
+findings will emerge from any reasonably complicated set. When
+result are analyzed the results
+simply cannot be interpreted. At best you have to treat the
+findings as a hypothesis to be
+tested in future studies with new data. So that's the end of
+my slides and looks like I'm out
+of time so other than the non-working demo, does anyone
+have any questions? >>Yep? >>Are
+the tools for this online? >>I'm going to make the get hub repo
+with all the embarrassing code
+in it public as soon as I step away from the mic here. >>Would
+this work on a wireless network?
+>>You would have to work very hard to make this work on a
+wireless network. It's probably
+possible. The things you have to do to make network cards
+consistent enough would require
+a lot more samples than what I was trying to demo today. You
+would probably be looking at on
+the order of days' worth of data to analyze a single character
+difference. >>So you said there
+were some graphs you had of the data plotted. Can you show us
+the statistically significant...
+oh then the next character must be a port or something. >>I may
+have miss placed all of that.
+That may not be here. (Silence) >>Yeah, I don't think I have the
+graphs handy. Sorry. Yeah? >>I
+have to design a system to defend against an attack, which
+is very difficult to do. What
+would you do? >>To design a system to defend against this
+attack you have to make the
+correct and incorrect paths take the same amount of time. A lot
+of people say I'll just add
+random amount of delay, which that has a predictable
+distribution, then I take more
+samples and the random amount of delay goes away. Adding a fixed
+amount of delay doesn't change
+statistics at all. Makes it just about the same. Anything else?
+ >> All right. (Applause)
+ >> Thank you! (Applause)

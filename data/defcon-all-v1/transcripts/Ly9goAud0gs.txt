@@ -1,0 +1,457 @@
+- Let's welcome Christopher on and he is a first time speaker, so everybody knows what that means. (audience applauding) How is it going? - Good cheers. Good evening everyone. So I'm here to talk about SCCM, a couple of passwords that it stores. How to get them from different
+attacker perspectives, and a little bit of my story in figuring out how this all works. So I started my career in cyber security around eight years ago,
+as a penetration tester with an interest in internal
+infrastructure testing. Quickly pivoted to doing
+some red teaming as well, and part of that skill set was needing to develop
+the ability to attack AD. And after doing a couple of
+assessments in that line, I realized that oftentimes AD Security isn't necessarily controlled by AD itself, it's controlled by the configuration of large scale enterprise
+solutions like SCCM. So my story with SCCM started
+in a client engagement where a client had configured
+it to use network boot. So for the uninitiated,
+like I was at the time, this is what that looks like. If we're connected to the
+same network as a SCCM server that's set up for network boot, we can prompt to do a network boot, it'll get an IP address, figure out where the
+network boot server is, and then start downloading an OS image that it's going to boot into. After it's done downloading that OS image, it proceeds to boot it, and at the end of this
+boot process we end up in something called a Windows
+Preinstallation Environment, so WinPE, it's a stripped
+down version of Windows that has like the bare minimum
+libraries, no Explorer, and it can run things like a Configuration Manager
+client like this one. at the end of it's set up we get prompted with this password screen. So if we look at the screen, it's asking us for some random password. On that client engagement that I was on the only thing the client gave me was the password for the screen. So put in the password, click through a couple of dialogue boxes and I ended up with a VM
+that was domain-joined that had all of the
+clients security software and software installed. This kind of blew my mind at the time because I knew that if I'm ending up with a domain-joined machine, then there has to be some
+domain codes somewhere that are doing the domain-joining. So I chatted to the client, we figured that let's go
+searching for the creds, see what the creds are, and
+that's where the journey began. So one of the first
+things that we discovered is in a lot of these
+Windows PE Environments, if you press F8, it
+will pop a system shell. Now, that's more or less useful depending on which part of the
+deployment process you're in, but it gives you the ability to interact with the
+environment and run tools. One of the interesting
+things that you can do once you have this command shell there, is you can dump out the
+environment variables. So after you start an
+operating system install, you can write a VB script file that dumps out the environment variables, and one of the really interesting ones is _SMSTS reserved one and reserve two Those are the Network Access Account creds that the Windows PE Environment uses to talk to the SCCM server and download the software
+that it's going to install. So this is stuff like the
+operating system image, and the individual software packages that need to get installed. This however, is not the
+set of creds that are used to domain-join the machine,
+so we carried on our search. And eventually, after
+interrupting install midway and mounting it in a different VM, I figured out that if you look
+at the Unattended.xml file after you've started an
+operating system deployment in the C Windows Panther
+Unattended folder, you actually find the domain-joining creds that this machine is gonna use to domain yeah, to join to the domain. That was really interesting in this specific client's estate because it ended up being that these credentials had
+workstation administrative access to all the workstation and laptops across their entire AD environment, which was a big deal for them, they had spent a lot of effort
+trying to harden their AD. Over the years, we've seen
+this kind of story repeated, so I've pulled the Network Access Account on certain clients and in one estate, it ended up having administrative access to the SCCM service itself, and then we could do some lateral movement and credential theft to get
+domain administrative access. In other states it's actually configured as domain admin out of the box. So kind of the TLDR of this is, there was sufficient evidence to figure out that these
+kinds of credentials that are exposed to the
+PXE boot environment, a lot of times have
+quite privileged access over the active directory
+environment that they're in. So they're kind of like a
+worthwhile target going for, and it's worth understanding how to pull those
+credentials consistently. So that was my target, I knew what I wanted to go after. And the specific thing
+that we're looking at here is Microsoft Endpoint
+Configuration Manager, or SCCM, or System Center Configuration
+Manager, or Config Manager. In this talk you're gonna
+hear me use all of those terms they refer to the exact same product, it's basically a software
+management product developed by Microsoft
+that is used to deploy, update, manage, and manage
+software on workstations and servers across an estate. It's used to patch all kinds of machines from the most critical domain controllers and exchange servers to every single employee
+workstation and laptop. So probably the most important thing that we need to know going into this is, what kind of credentials are we targeting? We've already talked about two kinds, the network access credentials and the domain-joining credentials, but I've actually found three locations where credentials can be configured where those credentials
+will be pushed down to Configuration Manager clients. So the first is the
+Network Access Account. Again, this is used
+primarily by Windows PE because it's not domain-joined, so it needs some sets of credentials to talk to SCCM to download software. There's a lot of recent
+research that come out on how to pull those credentials. And I'm going to in this talk add kind of the operating system deployment and PXE deployment method
+of pulling these credentials to the current view. In order to properly
+understand the second place that credentials can be configured, we need to understand how
+task sequences work in SCCM. So task sequences are
+ultimately a set of instructions that allows us to take a blank machine and apply certain steps to it in order to make a domain-joined machine that has a bunch of software installed. So inside a Network Boot Environment, the task sequence selection screen is effectively what is shown
+in the screenshot here, and practically speaking
+in real life environment, each of the different types of machines that you want to build will end up having an
+associated task sequence. Those task sequences are made
+up of task sequence steps that define the order in which
+you need to do operations in order to get a working machine out. One of the steps is to
+domain join the machine, this is actually called
+Apply Network Settings and there's a nice convenient box inside the Configuration Manager console, where you can set these credentials. There's also additional places where these credentials can be configured, so I'm just gonna run through
+them really, really quickly. So one of the features that SCCM supports is the ability to make
+a new reference image. That reference image needs to be written to some kind of network
+share in order to save it. And in order to write to a network share you obviously need credentials, so it allows space for those
+credentials to be configured. The second place where you
+can configure credentials is that when you build a
+machine, you can obviously set the local admin password of the machine. This happens before any
+software is installed, so lapse would take precedence over this, since it would happen
+after the machine is built. You can run arbitrary
+commands as any domain user, but then you have to
+provide the credentials for that domain user. And lastly, you can connect
+to an arbitrary network folder in order to pull files down, if that's part of you
+building a new machine. And as part of that, you need
+to provide the credentials that you're gonna use to
+connect to that network folder. And lastly, in order to
+understand the third place that I found credentials, you need to understand
+how collections work in Configuration Manager. So collections are a concept where we want to apply certain settings to an entire group of machines rather than to machines individually. So what we can do is, we can create a collection
+of those machines, add all the machines that we want to apply these settings to, to that given collection, and then apply things like task
+sequences to the collection. Now, collections have
+an interesting feature called collection variables, these are effectively
+environment variables where you can specify a name and a value for that collection variable, and these get pushed
+to all of the machines that are in a given collection. Now, there's nothing
+specifically requiring these collection variables
+to store passwords, but interestingly enough, SCCM treats it as if it's sensitive, so it still encrypts it. It's possible to use
+these four credentials, if they exist and they're configured, it's worth pulling them down to see if there is
+anything sensitive in them. And the last thing before we
+dig in to how things work, and how PXE boot in
+Configuration Manager works is some terminology. So as we have discussed
+something like a task sequence needs to pull down software from a server in order to apply it to this
+machine that you want to build. That software, whether it's
+an operating system image, whether it's an MSI,
+whether it's EXE installer is what is known as content. Content is downloaded from a
+specific server role in SCCM called distribution points. A Configuration Manager client, like the one that we saw running inside the Windows PE Environment has to authenticate to
+the distribution point in order to prove that it has
+the authorization, I guess, to access the content that
+it's trying to access. Similarly, in terms of other things that a client needs to do, that might have a bunch
+of configuration settings that it uses to control
+which software packages it decides to download. And those configuration settings are what's known as a policy. So policies are not downloaded
+from distribution points, they're downloaded from
+a different SCCM server called a management point. Again, the Configuration Manager client needs to authenticate
+to the management point to prove that it is authorized to ask for the policies that apply to it. All right, now that we've
+covered all of that, how does network booting actually work in Configuration Manager? So one bit of context that's
+kind of useful to understand is that network booting
+and Configuration Manager is actually part of a
+broader set of functionality that Configuration Manager supports called operating system deployment. Operating system deployment mostly is made up of a task sequence that is aimed at deploying
+a new OS to a machine, and the policy settings that are needed in order to make sure that, that task sequence applies successfully. There's multiple ways to kick this off, the video that we saw in the beginning was using network boot in order to kick-off
+operating system deployment, but you can actually make ISO files, or WIM files, or a USB drive that has the necessary files
+on that you can boot off of in order to start a new
+operating system deployment. What's important to note about this, is regardless of what method you use to start your operating system deployment, all of them boot into a
+Windows PE Environment, run a Configuration Manager client, and then start to talk to
+SCCM to figure out what to do. Okay, so how does network booting work? Well, first let's say
+we have a blank machine that doesn't have an OS on it. We plug it into the network, and the first thing that we're gonna do, is we're gonna press the key that makes the machine
+ask for a network boot. It's going to do a DHCP request to figure out its IP address, and to figure out where
+the network boot server is. It's then going to, after it identifies where
+that network would server is, it's going to make a specific DHCP request to that DHCP server to tell it, "Hey, I'm a PXE client, "I wanna figure out what's going on. "Please tell me what I need to download "in order to boot successfully." And then after it gets
+that information from, in this case a distribution point, distribution points are responsible
+for running PXE as well. After it gets an information
+from a distribution point, it will then use TFTP in
+order to download the files and kick off the operating
+system deployment method. So once we get all of that done, we'll boot into an environment, it will run a Configuration
+Manager client, and the Configuration Manager client will ask for some kind of password, okay. So what's this password for? It's not a username and a
+password, it's just the password. So what is being protected
+with this password? Well, if we investigate what's
+going on, on the SCCM server, when it receives that specific
+DHCP request from the client, it turns out that there's
+a specific folder, RemiInstall, SMSTemp
+and inside that folder specific files are being generated. So we see two files, a
+.var file and a .bcd file. The bcd file is your standard
+boot configuration file that tells the PXE client how to boot the image that it received. But the var file is
+actually quite interesting. this is what is known as
+a media variables file, and it actually contains
+all of the configuration information, I guess, that the client is going
+to be configured with so that it can authenticate
+later on to SCCM. Turns out the password is
+being used to derive a key that is used to encrypt this file. We can confirm that that's
+kind of what's going on because using our nice command shell that we have inside the WinPE Environment, we can start to analyze the
+files that are included. So WinPE is Windows
+running inside a Ram disk, it actually uses the xDrive by default, or at least SCCM WinPE does. And inside there, inside
+that specific drive, there is a Configuration Manager
+specific folder called SMS that contains all of the
+binaries and configuration data that this WinPE Environment needs in order to successfully boot and continue the operating
+system deployment method. Inside one of the bin folders, there's a Config file
+called TsBootShell.ini, and that defines the first command that's run inside WinPE. So we see that there's a reference to something called TsmBootstrap, and this is what the
+Configuration Manager client is inside a WinPE Environment, so that screen that we see
+that's asking for a password is the executable TsmBootstrap.exe, and we can see that it's
+called with reference to a different configuration
+directory XSMSData. Inside that folder there's
+a file called variables.dat, which suspiciously looks the same as that .var file that we saw earlier. And it turns out that this executable does all that DHCP stuff,
+pulls the .var file over TFTP and renames it variables.dat. So the password we type in the screen is then used to try and decrypt
+variables.dat, all right? So we know how it works at a high level, how do we turn this into an actual attack? Well, the first thing is we
+know that the password is used to try and decrypt this
+media variables file, so we need to get our hands on this file because we need to use
+the contents of that file for any kind of attack
+that we want to perform. I've written a set of Python
+tooling called PXE thief that I'm planning on releasing
+sometime this weekend, that implements all of these
+DHCP requests that are needed in order to first find
+where a PXE server is, and then prompt the
+Configuration Manager server in order to generate
+this media variables file and find the location of it, so that we can download it over TFTP. It looks like this, so if I run this video,
+yes, that worked properly. We can see that there's kind
+of like two main steps here, we issue a DHCP discovery request to find the location of an SCCM server, specifically a distribution point. And then once we figure out
+where the distribution point is, we issue a specific request to that server in order to generate
+the media variables file and find out where it is stored on disk. How does this work? Okay, first thing we
+need to start off with is with a DHCP discover. This is a very general thing, but if you try and prompt
+for a network boot, what is effectively happening is you're issuing a DHCP discover request with DHCP option 66 and 67, so you're asking for those options. If that environment is set
+up to support PXE boot, the main DCHP server will point
+you at the PXE boot server in the DHCP option 66 in the response. Once you have the location of that folder, you can then talk to a port on that folder that sets aside specifically
+for PXE support 4011. So we generate another DHCP request, but this time it's a request
+packet, not a discover packet. And we provide the options 93, 250, and 60 inside our own request that
+identifies us as a client that is attempting to do a PXE boot. The only really weird option
+there is the DHCP option 250, it's a random binary string. Looking up the documentation, this is like a Microsoft specific thing where they identify the
+architecture of the machine that's asking for the network boot. I haven't actually run into any issues. The very first DHCP request
+packet that I captured has worked on every single SCCM server that supports PXE boot that I've run into. But yes, if theoretically
+it only supports x64 or x86, the string would need to, the string would be
+set to different values in order to match the
+architecture of the machine that's asking for a network boot. All right, so if we
+provide correct information and SCCM likes it, then
+inside the response, we get a DHCP option 243, which is another random
+binary string or hack string. Now, this hack string is kind of special because there is a field, a portion of it that is demarcated, it starts off with a hex bite 01, and then a length identifier. And then following that
+is the actual location of the media variables file on the DHCP. So if the DHCP server likes, if the SCCM server likes our DHCP request, it'll actually tell us where
+the media variables file is in this portion of DTP Option 243. All right, so that allows
+us to use any TFTP clients to download it because
+we know where it is, and then we can move on to the next step. Now, the important thing is, we can't really use a password as it is in order to attempt to decrypt the file. There has to be some kind of
+key derivation that's going on. So in addition to writing Python tooling to prompt the SCCM server into giving us the media variables file, I've also written a custom Hashcat module that implements the key
+derivation, so that we can perform a password guessing attack against it. I decided to use Hashcat
+because I like GPU support, and Hashcat seemed pretty
+far along in that space, so I went with it, it looks like this. So first obviously, we need to start off with getting the data into Hashcat. So my Python tooling
+can extract the portion of the media variables file
+that's kind of the header, so we can confirm that the
+encryption is what we expect because we can check
+certain bites in the header to make sure that it matches
+what what we're looking for. And then the last portion of this string is effectively some of the encrypted data. To jump a little bit forward,
+the media variables file is effectively just an XML document. So we actually know the
+beginning of the string, it's always going to be constant. So because we have known plain text, when we are developing a Hashcat module, we can treat it as a hash because we can take
+our key that we derive, encrypt it, and then
+compare that encrypted value to the known value here,
+and if that matches, it means that the key that was derived was from the same password,
+so we figure out the password. Okay, so we have this data, and we need to feed it into Hashcat. So I just write it to a file, and then I start running Hashcat. I'm gonna skip ahead because it takes a while to initialize. But when it actually
+starts running the attack, what I've done here is I've run my Hashcat module using Roku, it doesn't really matter, the module supports all
+kinds of cracking options. You can crack with rules, you
+can crack with dictionaries, you can do a brute-force attack,
+all of that kind of works. Sorry, I didn't want to do that, let me skip forward again, sorry, okay. So struggling with PowerPoint media. Okay, so yes, we can run through Roku.txt with the known password
+at the end of the file, it cracks successfully. If we do a benchmark of
+the same Hashcat module, we can see that this is running at about three giga hashes a second. It's not the fastest thing in the world, it's definitely not cracking
+at the rate of an NT-hash, it's not MD4, but it is still pretty fast. It's about 50% faster than
+cracking an NTLM challenge, NTLMv2 challenge/response. So if it's a weak password,
+it's probably gonna fall, and you can actually crack
+using dictionaries pretty fast. How did I figure out
+how all of this works? Well, there's one thing to note, which is SCCM is probably
+one of the most logged pieces of software in the world. So both on the server side
+and on the client side, everything that each of those pieces of software is doing is being logged. If we dig around the WinPE Environment inside C Windows, Temp, SMSTs log, we find a text file that contains the log of what the client is trying to do. Looking through that at some
+point, there's a entry called loading media variables from
+X SMS, data variables.dat, which is exactly what we're looking for. We know that it's trying to decrypt that, and exactly after that, it
+logs a call to crypt decrypt. So crypt decrypt is a function
+in the Windows CryptoAPI that is used in order to, yeah,
+attempt to decrypt the file. So we know that it's using
+Windows crypto (laughs), it's using CryptoAPI in order to attempt to decrypt this file. Now, because we have the shell, we can actually inject custom software inside the WinPE Environment. So I used x64dbg loaded it on a random CD, the CD drive is accessible
+within the WinPE Environment. So we can actually run x64dbg, and since we know that we're
+running TsmBootstrap.exe, we debug TsmBootstrap.exe, and we can search for
+all intermodular calls. Here highlighted in red is effectively a series
+of intermodular calls, where it seems to be setting up and initializing the crypto functions, then calling them deriving a key, and destroying what it's initialized. So that looks like roughly
+what we're looking for. So how does it work? Well, if we actually debug
+these individual calls to try and identify what's going on, one thing that we'll notice is that when CryptCreateHash is called, the second function, the second parameter that is passed to it
+is the hex value, 8004. If we look at the function
+definition CryptCreateHash in the Windows documentation, the second argument is
+an algorithm identifier, and 8004 corresponds to a SHA-1 hash. So we are creating a SHA-1
+hash of the actual password that we're passing in. So the argument to CryptCreateHash is the password that
+we typed into that box. In this case, I typed A, so we see A as, the there's a pointer to a string value. So we are hashing A with SHA-1, and then we are calling
+CryptDeriveKey using that hash. The second argument to
+CryptDeriveKey here is 66OE. The Windows API functions are
+actually pretty consistent, so it turns out that CryptDeriveKey, the second argument is also
+an algorithm identifier. And if we go look up that
+algorithm identifier, it is telling us that we're deriving a key for an AES-128 encrypted value. Okay, so we have an
+idea of what it's doing, but we don't really know
+what CryptDeriveKey does in order to get its key. Turns out if you just scroll
+down in the documentation, Microsoft was kind enough
+to actually document exactly how the key derivation works. So we take our shell and hash,
+do a bunch of stuff to it, and then we get an AES-128 key out. What the Hashcat module involved doing, was re-implementing this in OpenCL. Hashcat is great, it has some really nice
+standard cryptographic functions built into the libraries that it provides. So we can actually use all
+of those standard libraries in order to perform the same actions that are documented here. And then at the end, we'll
+get a key that again, we can encrypt a known value, compare that to the data
+that we provided in. And if it matches, then we know that we've
+guessed the password. If we've guessed the password,
+we've guessed the key, which means that we can
+decrypt our variables.dat file, that we were going for in the,
+yeah, that we were going for. So which are the important variables that we wanna pull out of this? Well, they're highlighted in red. The most important is not the
+one that's highlighted there, it's SMSTS media PFX, which is a public private key pair that is effectively the
+certificate that the client uses to authenticate itself
+to the management point in order to pull down policies that PFX, as most PFX's
+are, is password-protected. There is a value called SMSmedia GUID. Let me actually just
+highlight this, laser pointer. Okay, so I think you can see that. Yeah, so SMS media GUID which is a string value that
+is used to encrypt this PFX. So the first 31 characters
+of the media GUID is used to encrypt the PFX. And then lastly, there
+is a value called SMSTSMP that points at the media, sorry, the management point
+that we need to talk to in order to pull down the policies. So we have, at this point, all of the information that we need to actually successfully
+start communication with SCCM, because we have the certificate, we have the server we need to talk to, and we have the password
+for the certificate. Okay, so how does client comms work? Well, let's go back to our password screen that we started off with. One good way to figure
+out what's going on here is to actually start using wireshark, to monitor the HTTP traffic that's passed between our Configuration
+Manager client and the server, so we type in the known password. What we see then is this HTTP request, this is a CCM post to CCM system request with a request assignment's XML message, this request assignment's XML message is effectively the client asking for, "Hey, I'm a Configuration Manager client, "please tell me what
+policies I need to install." This request is actually authenticated by a bunch of signatures. We see client token signature, we see CCM client ID signature, and we see CCM client timestamp signature. All of these, if they are
+provided, are kind of verified by the SCCM server to make
+sure that they check out. Okay, so assuming that all works, we will receive from the SCCM server a reply assignment XML document, and that contains a bunch
+of policies with some URLs that point to where we
+can download the policies that our SCCM client should apply. Now, we already discussed this, there's actually three policies that we're specifically interested in because we know that
+they result in passwords ending up in our client, task sequences, Network
+Access Account config, and collection settings. So we can filter our reply
+assignments XML document to kind of figure out these
+are the sensitive policies that we're interested in,
+let's go download those. And if we actually download one of them, we again need to authenticate. There's some signatures here, but the data that we received
+back is an encrypted blob that is encrypted using the certificate that we already have. Okay, so we have a high-level
+picture of how it works, how can we use it to pull out passwords? Well, like this. So because we have our
+media variables file, we can take our media variables file, take the password that we cracked and provide it to PXE Thief. It's able to then issue requests to the, well, generate the signatures
+that we need to authenticate, issue requests to SCCM to
+pull first the assignments that it needs to apply,
+and then the policies, the specific policies
+that we're interested in. And then after it receives those policies, sorry, let me just skip forward. It is then able to take those policies and decrypt them in order to
+get the clear text passwords that are stored within those policies. Okay, so the key bit to understand here is how does the signature work, because that's really the
+thing that's stopping us from doing this just out of hand. Turns out that if we go using x64dbg, if we go on an active debugging spree, we can see that
+CryptSignHash from CryptoAPI is used to generate these
+hashes, these signatures. So we have some kind of known value, like for example, let's
+take CCM client ID, it's provided to us in
+the media variables. We take that value, we sign
+it using the PFX value, we provide both of them
+to the SCCM server. And because it also has a
+copy of the certificate, it can verify that this
+signature is legitimate. Okay, so that's how we authenticate. Now, how do we decrypt
+these encrypted policies? Well, again, if we go on
+an active debugging spree, we figure out that the, yeah, that binary blob is encrypted
+using crypt, encrypt message, which we can decrypt with CrypDecry message
+using the certificate. That leaves us with a
+plain text policy XML that will be dependent
+on the specific policies that we're looking at. Most of these will just be
+clear text at this point, but if they can contain passwords, SCCM isn't done with the encryption yet. So in this case, I've
+highlighted the value here, TS_sequence it's marked as secret. And that means that they've implemented some kind of obfuscation to make sure that we can't
+just read it outright. It starts off with the
+Hex value, 89130000, which will be relevant later on, which is why I'm telling you now. But effectively again, if we go in this active debugging spree, we'll figure out that the string is actually just tripled DES encrypted with a key that's inside that hex string. So we can pull the key, decrypt the value, and get the clear test task sequence. Once we have the clear test task sequence, things start to make a lot more sense. If we look in the
+Configuration Manager console, there's a bunch of steps
+in each task sequence for the steps that can contain passwords, we actually just get the straight
+care text passwords here. So in this case, I've highlighted the domain-joining credentials
+that are associated with the applying network
+settings task sequence step. Okay, now, the interesting thing is that I've discussed how to do this
+when a password is required, but you don't necessarily need a password. So if we look at the
+specific place in SCCM, in the SCCM console where you set up PXE, you can untick the box
+that says require password. So when you boot into it, the Configuration Manager
+client just tells you, this media is not password
+protected, click next. How does that work? Well, if you encounter an
+environment that has this setup, we can actually just
+go from the first step all the way to decrypting variables. Because there's no password to protect it, we can pull the key, I'll explain how, and then we can just
+immediately decrypt it and get clear text, creates out. Now, the secret here is
+essentially in that response to the specific DHCP message that, we send to the SCCM server. I already said, there's a portion that starts with 01 that points us at our
+encrypted media variable file. The media variable (chuckles) media variable file is still encrypted in the case where we
+don't require a password. But the key is actually sent
+as part of DHCP option 243 in a portion that starts with 02. So 02 a length field, and
+then we have an encrypted key. Now, SCCM at least encrypts it because it realizes this is
+being sent over the network, so we don't want to expose
+the media variables file straight off the bat, but we can't really do much to prevent this from being decrypted because the client still
+needs, at some point, to access it, and there's no
+real secret involved here. So it turns out that there's
+another layer of obfuscation, and going on an active debugging street, we can find a function called extract password inside TS.PXE.dll. Inside that function, there is a call to decrypt buffer that references a hard coded
+key inside the same file, and then refers to this
+DHCP option portion that we just discussed. So it turns out that this is encrypted using the hard coded key there. So what we do is we take
+the DHCP option 243, pass out that second option, decrypt it using the hard coded key, and then we have a random key that is used to encrypt
+our media variables file, but because it's being
+sent in that DHCP response, this is easy to do straight off the bat once you know what's happening. Okay, so now we've run through everything that can happen with network booting, but if you remember in the beginning, OSD isn't just network booting, it does include media
+files that we can use in order to initiate
+operating system deployment. How does that work? So inside the Configuration
+Manager console, you can take a task sequence and generate a media file that is used to initiate this OSD method. There's three main
+types, standalone media, bootable media, and pre-stage media. Pre-stage media is a
+file that we can ship off to a laptop manufacturer so
+that when the laptop comes up, it will attempt to contact
+our specific SCCM server and complete the installation. Bootable media is effectively
+an ISO file or a USB that will just boot
+into a WinPE Environment and start a client like
+we've seen already. And standalone media is probably
+the most interesting one where it is designed to not use network communications at all, but still complete an
+operating system deployment. So it needs to package all of the software and all of the policy
+settings onto that ISO file in order to be able to
+do it completely offline. If we look at the contents of these files, so I went and I generated one of each. If we look at it, we actually see a lot of
+similarities with our Ram disk that's sitting inside WinPE. So there is an SMS folder, inside that SMS folder
+there's a data folder. And for both the bootable
+media and the pre-stage media, there is just a variables.dat file and then a configuration file, our TsmBootstrap.ini
+that's just telling us how to run the client in the first place. If we look at the standalone media, there is also an additional
+file called Policy.XML that contains all of the policies that this media needs to apply in order to successfully
+deploy the laptop. Okay, so how do we turn this into creds? So I'm going to talk about
+standalone media primarily, because that's the interesting
+one that has the new file. It turns out that both bootable
+media and pre-stage media have a certificate inside
+their variables.dat file. And we can use that certificate to perform the exact same attack as we would once we
+obtain that certificate from a PXE perspective. Okay, so in the case of
+a standalone media file, we can take, if we know the password, again, we can perform
+cracking if we need to, because the variables.dat
+file for media file is generated in the exact same way as it would be for a PXE file. We can generate, once
+we know the password, we can provide the password to PXE thief. It can derive the key and
+decrypt both the policy and variables.dat files. And then we are, because
+all of the policies are sitting inside that Policy.XML file, it works exactly the same as if we were operating
+in a PXE environment. Again, with our media files, we can also choose to not set a password. If we don't set a password,
+there's just a static string. So we can take the static
+string, derive a key from it, use that to decrypt the policy
+and the media variables file, and then we are off to the races, we can decrypt our policies. Now, the important thing to note, actually for standalone media is unlike when a password is set, there's a different key that is used for the Policy.XML and
+for the variables.dat. We always use the password
+to decrypt variables.dat, but in the case of a standalone media that doesn't have a password, we take the SMS media GUID
+from that variables.dat file and use that to derive a new key that's used to encrypt the policy file. Okay, so at a high level, bootable media, pre-stage
+media, we get a certificate, we use the certificate,
+pull policies, get creds. If we are on a standalone media, we have to decrypt that
+Policy.XML file somehow. How do we turn this
+into a realistic attack? Well, if we're sitting in an environment where we can do a PXE boot, what we need to do is we
+need to prompt for PXE boot, find out where the SCCM survey is, get our hands on that
+media variables file. And once we have the media variables file, crack the password if there is a password, or use the key that was
+sent to us to decrypt it. If we crack the password, we can then use the certificate
+and get all the creds. If we have low privileged
+domain credentials, we have a number of other
+options available to us. We can actually, I showed you the folder, Ram Installed SMS Temp, that in general is actually
+a share on the SCCM server that all domain users can read. So even if you're not in the position to prompt the SCCM server for a PXE boot, you can use credentials to go look at the contents of SMS Temp. And if there's a variables file in there, you can download that file
+and attempt to crack it. On the other side of things, obviously, these media files are files that are lying around
+somewhere on the network. If we can find those files, we can attempt to, again, crack,
+if there's a password set. If there isn't the password set, we just use the default string and cool. We have the certificate, or we have the decrypted policy that gives us the
+credentials that we want. Okay, is there any post-exploitation
+potential with this? Turns out that there is. If we have administrative
+access over the SMS, SMS server (chuckles), the SCCM server, we can actually ask for
+specific registry keys. And the certificate that we're looking for is actually just stored as a registry key that we can access remotely. So we can pull the identity.Guid, which again is used to
+encrypt the certificate. We can pull the certificate bite, try and import it, use the
+password to decrypt it. And cool, we have the cert that we need in order to persistently
+be able to do this going into the future. Now, the reason this is
+useful for post-exploitation is because it's actually a really nice persistence technique. If credentials are stored
+within task sequences, the Network Access Account
+collection variables, you can reset all of the passwords across the entire active directory domain. If you're updating the passwords in SCCM to make sure that it's still functional, this certificate will work to get those credentials after the fact. Another thing that's kind
+of interesting is that if we look at the SMS DP Identity key and the value reserved one. I mentioned earlier, anything
+that starts with 89130000 is probably just using obfuscation, so it turns out that
+the actual PXE password is also stored inside this registry value. So we can just feed it through the same deobfuscation function, get the clear text password. And again, nice persistence technique because even if you're
+recovering the domain, you're probably not
+resetting the PXE password. So you can use this to
+perform the exact same attack. And lastly, can we get
+credentials on endpoints? How does this work? Okay, so the really well known method is to pull the Network Access Account, the Network Access Account, and most SCCM configuration options are stored inside the WMIC
+database on a given host. So if we ask for the SCCM
+Network Access Account clause, we can see the Network
+Access Account password, and the Network Access Account username, these are marked as policy secrets. And if we look at the actual
+data that is being protected, it's actually protected just using DPAPI. There's a lot of tools
+now that can decrypt this, Benjamin Delpy actually released ages ago, like about a year, over a year ago, he built this functionality into MiniCat so that it can decrypt
+that specific DPAPI blob. Recent research from SpecterOps Subat0mik has built SCCM decryption of that specific
+information into SharpDPAPI. And I'd say one of the most interesting pieces of recent research
+is by Adam Chester, where he's looked at how to register an arbitrary certificate for a new domain-joined machine into ECCM, so that we're able to
+perform those HTTP requests in order to pull policies. So all of these is targeted towards getting the
+Network Access Account. But if you remember, I
+said, there's three places that we can pull creds. So it turns out the collection variables can also be pushed to endpoints, so if we query instead of
+CCM Network Access Account, if we query CCM collection variable, we can pull the collection variables, these are also marked as policy secrets. So we can decrypt it using DPAAPI as well, and task sequences might
+be pushed to endpoints. So if we query CCM_tasksequence, there's a value called TS_sequence that is also a policy secret, and is also encrypted using DPAPI. Okay, so let's tie everything together. We've talked about a whole bunch of ways to pull out credentials. What are the issues? Well, the very first
+issue is the fact that could the accounts configured in SCCM might be overly permissioned. So right in the beginning, I discussed how the Network Access Account can be domain admin, or it can have administrative
+access over the SCCM server. At the end of the day,
+this is just an account that is used to download
+software off the SCCM server, it doesn't need privileges, it needs the ability to
+log onto an HTTP endpoint. It should only have those privileges, never mind the fact that you don't even need a Network
+Access Account anymore. And that applies to every place where you can configure credentials in Configuration Manager. The Microsoft documentation on how to configure these
+accounts is really good, I've put the link to the page that discusses this in detail here. Read it, it's really good at informing you how to configure these accounts so that it doesn't contribute towards a privilege escalation vector. Another issue is that we
+often have entire teams that are dedicated to setting up SCCM. So because they're responsible for setting up all of the
+accounts that SCCM uses, they might set the same password. So we might use different accounts that are even appropriately permissioned, but if we're taking our
+administrator account for SCCM and setting the same password
+as the Network Access Account that is exposed in this way, we can just attempt to use that password to gain access to the admin account. And if they were set the same, cool, we have access to the admin. Lastly, we often see that an
+account configured in SCCM is used for multiple purposes. So it is pretty well defined, you can set a domain-joining credential, a Network Access Account, a set of credentials that's used to connect to a network folder. All of these are really well-defined, and the problem comes in when we decide, we don't actually wanna use
+different accounts for this, so we'll create one account
+that fulfills all these roles. What you're really doing there is you're adding additional
+permissions to accounts that don't need them. And if you compromise that,
+you compromise all of the roles that, that account is being
+used for, not a great idea. Okay, key takeaways. Configuration Manager, super powerful, there's a reason it's used so widely. I think Patch's management
+on Windows estate is actually pretty painful
+without using this, so it's gonna stick around for a while. As long as onsite AD is still the thing, Configuration Manager is
+probably gonna be a thing. We've seen here that
+operating system deployment is viable for attacking
+corporate networks. So if we guess the password, we can get the certificate,
+we can pull the policies. If the accounts are badly configured, we're going to get sensitive credentials, and that's going to allow us to privileged escalate in the environment. It's a really, really, really good idea to set a password, and
+to set a strong password and to make sure that you're following
+good password practices. Something like using an
+enterprise password manager here where the creds are
+rotated every now and then, and everybody that needs
+access to these media passwords can actually access those passwords is probably a good idea. If this password is guessed, obviously that certificate is compromised, and these certificates generally at least have a lifetime
+of around two years. And it's very, probably
+the most important thing, is we should make sure
+that the specific accounts that are being pushed to endpoints do not have elevated
+privileges associated to them. None of the accounts
+that we've spoken about, that you can get access to
+need admin access to anything. They don't, do not put them
+inside these policies (giggles) because they are exposed,
+not just to PXE clients, but also to every client, if you configure task sequences, for example, on Windows endpoints. If you want some more information, I've written up a lot of the stuff around the HTTP communications at my company's website, MWR CyberSec, go have a read at my blog post. Again, the tool is going to be released on my company's GitHub. I'm not there yet, planning
+to release it this weekend. If you wanna know exactly
+when it comes out, feel free to follow me on
+Twitter or follow my company. And that's it, I'm done. (audience applauding)

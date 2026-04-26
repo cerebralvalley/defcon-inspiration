@@ -1,0 +1,318 @@
+>> ERIC VAN ALBERT: I'm Eric Van Albert.
+>> I'm David Lawrence. >> DAVID LAWRENCE: And unfortunately, Rob
+couldn't be here today. He contributed a lot to the project. We're just two MIT students.
+We don't have more credentials than that. Playing with locks is a hobby. If you'd like
+to contact us locks@mit.edu. Hope you enjoy this lock. How many of you guys were here
+for Marc and Toby's talk. Fantastic. I'm going to talk about how pin tumbler locks work.
+We can do more of a quiz and a informational session here. When you have a pin tumbler
+lock you have a pin and body and stacks constraining them together. If you select the key, you
+raise the pin stacks up to the interface between the plug and body which allows that to turn.
+What's that interface called. Wonderful. We have I a video here. This is a cutaway lock
+so you can see the pens inside of it. As you insert the key, you can see the pins move
+up and down. When it's not inserted all the way there's a split above the shear line so
+the bottom pin is blocking the pin from turning. If you insert it all the way the splits line
+up and you turn the plug. Everybody see that? Great. These locks are vulnerable to a lot
+of different things, one thing as Marc and Toby talked about is key duplication. You
+can take these keys to any old hardware store and they'll copy them for you. Another thing
+you can do is picking. >> And inserting long wires in the key way
+to the tail piece. >> I'll go over those quickly since Marc and
+Toby didn't talk about them a lot. Picking is where you exploit the mechanical defects
+in the lock. By applying torque to the plug you can cause all the pin stacks to bind.
+In a perfect lock they would all bind at the same time and at that point you'd be screwed.
+But because the holes are slightly misaligned, when you put torque on the plug, only one
+of them is going to bind. And if you use a pick to then raise that pin up to the shear
+line, then it will set the plug will turn a very small amount and it will trap the top
+pin up and the bottom pin down and then you don't have to worry about that any more and
+you can repeat that for every pin until the lock is open.
+Impressioning I'm not going to go into great detail on that because I'm not very good at
+it. It involves taking a blank key, wiggling it up and down a lot and using the torque
+and binding action to produce marks on the key and you can file down those positions
+until you up with a working key. So pin tumbler locks is a necessary background
+for the sleighing prime us because if you look on the stop of the Schlage Primus key
+there is a standard top bidding, the SCHLAGE as an independent locking mechanism, which
+is the squiggly line on the top of the key. We're going to call that the side bidding.
+Now an important part about the Primus key is you can completely separate these two things.
+In fact, we've cut a couple keys in half so we can play with just the side bar or just
+the top bidding. Now, here's a side bar only. And then here is a full key, actually a blank
+key with just the side milling on it. Can anybody pick a Primus lock, anybody done it
+before? >> One guy in the back.
+>> I salute you. Much more skilled than I am. We cannot pick Primus locks. I have one
+friend who can do it. He's very good at it but we have to resort to more primitive methods
+of opening these. Now, what we're going to do is we're going
+to not look at keyless entry, we're going to look at key duplication attacks. So this
+is basically using information that you know, you gather somehow about the key and producing
+a working key to the lock. There's a lot of things in place to restrict this. The way
+you get these keys from Schlage, you have to send them proof that you are who you say
+you are. And you're entitled to get keys, and they'll send you a blank key. This key
+is blank in the sense that it doesn't have any top bidding on it. But it does have a
+side bar. Schlage claims they're the only ones who can produce this side bar and they
+go through great extents and charge you a lot of money to get side bars. In order to
+attack this lock, we go through four steps, first we have to figure out how the side milling
+work and how it actuates the parts of the lock. We're going to create a 3D model in
+the Primus key which is the first step in any good manufacturing process. Then we're
+going to look at additive and subtractive processes and implication of this for Primus
+and mechanical locks anywhere. >> All right, so we'll start with reverse
+engineering the Primus, we're calling it reverse engineering but there is nothing difficult
+about this. There's no great amount of Intel convenience required. So start out with a
+Primus key as you don't know anything else about the lock.
+And what does it say on it? Primus, do not duplicate.
+Actually, we may have to end a little early now so thank you all for come.
+(Laughter) The third line of the key is quite interesting.
+A U.S. patent number. I'm guess Schlage thinks this is more secure. But actually U.S. patent
+filings are public. So you look it up and you get ‑‑
+(Laughter) This is one of about 20 pages of technical
+drawings and documents explaining exactly how it works. So you can see that on this
+key there are the usual 6 cuts on the top of the key. There are 5 additional cuts on
+the side of the key. And there's a second independent mechanism on the side of the lock
+which is indicated by the cuts on the side. We'll take a closer look at that soon. You
+read through the patent and get a basic idea how it operates. But there's a lot more information
+that's easily accessible. So suppose you do a Google search for Primus
+service manual. Well, there you are. They have it up on their Web site. And if we look
+inside there, there is some fantastic technical drawings that they've provided to us. So here
+you can see how that side mechanism is actuated. There's an L.‑shaped pin called a finger
+pin which rides up and down in the grooves on the side of the key. That meshes into this
+side bar very similar to the side bar in the previous talk, if you were in here.
+And when those finger pins are lined up properly with the side bar, as you can see in the drawings
+at right, the side bar can retract and the cylinder can open. If the finger pins are
+not aligned correctly, they will block the side bar and that will prevent the lock from
+opening. So the fingers pins have got to be lifted to the correct height and rotated to
+the correct angle. They have two degrees of freedom. So let's take a look. Here is a cutaway
+lock and side bar and so you can see in there the finger pins. You'll see them moving and
+you can see they're going to be misaligned until the key is all the way in and suddenly
+all five of them will be lined up. Until you rotate it back and forth a little just to
+get the right angle of light on them. >> You see there they rotate.
+>> Until the key is all the way in and not until any other circumstance and if the wrong
+side bar is us used of course they won't line up.
+>> That's basically it for the operation of this lock. If there are any missing details,
+you can of course take one apart and look. But it turns out that the awesome folks at
+lock Wiki already did that and put up ‑‑ >> Thank you, datagram.
+>> So all you have to do is look around for Schlage Primus photos and you can see exactly
+how this side bar works. It's got little notches in it and there are bumps on the finger pins
+that fit into those notches exactly as long as the bump is in the right spot. This is
+the lock and Schlage believes that because of the side bar it's quite secure, resistant
+to duplication and manipulation attacks. And they're almost right. So next thing we'll
+take a look at is 3d modeling Primus keys. So that is now that you have an idea how it
+works, figuring out the exact dimensions that are needed in order to align the finger pins
+and the pin on the top as well as to make a key that will fit into the lock. So we'll
+start out with a top because that's the easy part. This is a page from the service manual.
+This is backwards compatible with nonprimus Schlage locks so none of this is secret at
+all and this is all the information you need for the top of the key. The side of the key
+is a bit more interesting because all Schlage tells you is there are six positions for each
+cut. They can be left, center or right. And high or low. So what we did to figure out
+the dimensions for this not using any special tools, we put the keys on a flatbed scanner
+run them through a 1200dpi and exact the parameters. We got nice results. Here they are. Now you
+know. You can also see here a picture from the service manual showing how those different
+positions map on through a key. This is side bar 64246 deep right, deep left, deep center,
+deep center, deep left, deep right. And that's about it for this side pitting. There are
+a couple other things we have to take care of in order to make a key that can be used.
+We have a minimum slope on the ramps leading down to each cut because these pins have the
+freedom to rotate, that's got to be steep enough to slide down to the bottom of the
+cup. Otherwise, the friction will keep it misaligned. There's also a maximum slope there
+because if it's ‑‑ the ramp is too steep, the finger pins will get hung up and the key
+won't be able to go in and out. So because there's this rotating pin you have to balance
+out these two factors and there's only a fairly narrow range of slopes that work. And finally
+the bottom of that cut has just got to be radiused to match the curvature of a finger
+pins in the lock. So we went through and figured out those parameters as well
+And that's it for the dimensions you need for all of the control surfaces of the lock.
+With this, you can put all the thought pins in the right place. All the finger pins in
+the right place and then it's open. Of course, the last piece is we do need a key cross section
+that will fit in the lock. Now, eventually, Schlage has this LPQA that fits in all of
+their standard Primus locks and if we just remove a bit more material from that, it fits
+in the restricted key ways as well. And we speculate that the reason this is possible
+is that the side bar mechanism imposes such severe constraints on the key and that the
+key has got to have this I'll show you the real one. This one. There's got to be a big
+hole in the side of the key so that the finger pins can ride on those grooves. There's got
+to be side bar ‑‑ there's got to be material here for the side cuts. There's very little
+flexibility to remove additional material around the side bar. So in that respect, the
+side bar is actually making it less secure than a regular lock where there could be a
+very complicated wording blocking a key. And once we have that key cross section, the last
+thing to do is to put all these pieces together into a 3d model. And to do that, we used a
+really cool program called open S cut. Open S cut is a programming language way C‑like
+syntax that compiled to 3d models. It was first used to model keys by a guy named Patel
+in 2011. So we saw that and thought it was really cool and went ahead and implemented
+the Primus key. It was only a few hundred lines of code. Not a lot of work. Considering
+the purported security of this lock. Here's an example of what it looks like. This
+is our top level function called key. Which is taking the top code and side code as arguments
+and it's calling out to a bunch of different functions that are going to draw the top of
+the key and the side of the key and subtract out all of the bumps that need to be subtracted
+out. And this is what you get. You call the function key and get a 3d model of the, working
+Primus key (Applause.)
+>> Now, in order to make this useful, we'll tell you about a bunch of different methods
+you can use to easily and cheaply fabricate these.
+>> Three D models are great for eye candy but useless if you can't make it. Has anybody
+filed keys? Show of hands. Take a file, work it for a while. It takes a steady hand, a
+pair of calipers and a little bit of your time. Now we thought that hand machining a
+Primus key would be impossible. Until one day our friend Rob sends us an e‑mail with
+a key that he cut by hand opening a Primus lock. And we're like wow, how did you do this?
+He used very complicated tools, actually. He used a dremel, a pair of calipers and a
+hardware store key blank. Only material cost is a stock Schlage blank and he basically
+described onto the key with the calipers all of the dimensions for the 3d model and went
+at it with dremel for about an hour speaker and stuck it in the lock and it worked. He's
+done it a few times now where you hand him the 11 numbers describing the key and in 45
+minutes he'll hand you a key that will open the lock. It's fantastic. Here's photos of
+the process. You can see the stock Schlage key blank doesn't
+fit in the Primus key way because they add additional wards to prevent you from breaking
+the key mechanism. Thin it down using the dremel. You see the complicated tools we have
+in the lab. It also happens that 0 you are key duplication lab doubles as our kitchen
+table. So once the key is thinned down enough to fit in the Primus key way you can start
+cutting the valleys for the finger pins to setting into and here we've got two of them.
+And you basically scribe onto the key with the calipers, scribes more measure repeat
+ad nauseum. Here it is with almost all the cuts completed just sort of polishing it up
+and then we ‑‑ you stick it in the lock and it opens.
+>> And we have that to show you now. Here's the hardware store key blank. This one I think
+was 25 cents because we got it online. Here is the result. There's the part we dremel'd
+out. >> Here's the stock key from the Schlage factory.
+See that biting there compared to ours. >> And let's put it in the lock.
+>> Here's the stock key blank opening the lock. That works fine. Here's our key opening
+the lock. (Applause)
+>> So that's it. Yeah, you can dremel it. >> If you've had a couple too many cups of
+coffee, you can do this. This is how Schlage makes their keys. They mill out the side bar
+using computer numerical control. If you are interested outsourcing this job to a machine
+shop, you'll find the setup cost is enormous simply because you have to ‑‑ there's
+a lot of work in fixturing the key and a lot of common milling machines don't have the
+spindle speeds necessary to operate the small tool diameters you need. And so the ‑‑ a
+better tool than like a large needs style mill is probably a desktop micro mill and
+these are slowly percolating through the market. Keep ap eye out for ones in the near future
+that will run you probably a thousand dollars or a little less. The other shown here is
+another mill by other labs which will be capable of milling down a stock Schlage key blank
+into a Primus key. >> This is not out yet. It's a funded kick
+starter project. But the most exciting thing we tried is 3d printing and that's a new space
+because it's only recently that 3d printers have hit the levels of precision necessary
+to open a high‑security lock. So we took that 3d model and just sent it to our favorite
+3d printing Web sites. Shapeways.com and iDotmaterialize. We got keys back in three different materials.
+We tried two different mastic processes and titanium which was pretty cool. And well,
+it turns out that they all worked. (Laughter)
+So we're going to show you that now. (Applause)
+>> The first material we tried was the shape ways process called frosted ultra detail because
+we wanted to get as much precision as we can here. And this is a stereo process secured.
+Very expensive. There's a 5‑dollar setup cost and it's going to run you two per key.
+>> How much is it going to cost you to get keys duplicated at the hardware store. $3?
+>> Precision was excellent. We measured it. It was great. Issue was it was not that strong.
+It was plenty strong to attack the side bar and attack the cylinder, but when it comes
+to pulling back a latch or freeing the half spot at rust padlock, we'd be worried it would
+break off. But there are a lot of things that don't require that like figuring out whether
+you have the correct key for a lock or removing the cylinder from interchangeable core system.
+What's it it looks like. We don't put the bumps between the guts because they're useless
+and just add friction. There it is. There it goes going into a Primus lock and it's
+open real smooth. (Applause.)
+Next thing was different shape ways process, this is wide, strong and flexible. This is
+laser centered nylon. This is cheaper. Only $3 total. The issue here was the precision.
+This is not a very high resolution process. It's not high resolution but it's enough.
+It's less smooth going into the lock. Sometimes you've got to give it a jiggle but it works
+and it was strong enough to operate most locks because it's more elastic material. So we
+can take a look at that. >> See if you can see the side bar there.
+It's hard. >> Yeah, there is a side bar. It's just ‑‑ hiding.
+>> Little harder to insert into the lock but once it's in, it opens fine and it's quite
+strong. >> By the way, we got old FL. This is a key
+that doesn't open anything but just to give you an idea how brittle the first one was.
+That's it. So you don't want that happening in a lot of cases where you might be using
+a plastic key. And then the third thing we tried just to sort of geek out is this titanium
+process which sounded amazing, you're going to deposit titanium powder and fuse it together
+with a laser. And that turned out awesome. The down side is it ran us $150 for one key.
+But ‑‑ you want to show that? It is ‑‑ an amazing looking thing. We measured it and
+it was more precise than my calipers so I can't actually tell you how good it is. But
+it's certainly within the ‑‑ >> Better than the Schlage factory, most likely.
+>> Yep. Here it is. We go into the lock and no problem. This stuff is super strong.
+(Applause.) >> So there it is, 3d printing three different
+ways. I suspect there are many more ways you could get this ‑‑ a lot of these outfits
+are just starting to do lost wax casting where they have 3d printers that print in wax. And
+maybe they'll even give you a key out of brass. So we have no reason to suspect that any of
+these other processes wouldn't work just as well. And we also expect to see these prices
+drop quite soon. Because the two laser centered processes which is the white 1 and titanium
+are currently covered by patents so there's a royalty fee that's part of these costs and
+those patents expire in 2014. Historically speaking, when the FDA patents expire those
+prices went down 25‑30%. >> And we start seeing things like makerbot.
+>> So that's going to be exciting. Maybe we'll get down to a 1 or 2‑dollar key here. Finally,
+let's take a look at what this means. So first for Primus locks, key decoding is easy. We
+know all of these dimensions now, all you're going to need is a key or else a picture of
+a key or else a good look at a key if you've got a sense of you know, how deep those cuts
+are. But it's not going to be hard. Especially if you're decoding that side bar which is
+the high security part. Because there's only six possibilities for each cut and they look
+quite different. Of course that means key duplication is going to be easy ones you've
+opened your key you're going to need the open code and a few dollars to ship off to shapeways
+and that's it. You've got your copy of the key probably even easier than going to the
+hardware store because you can do it from home.
+So one thing this means is that master key extrapolation is easy. It's standard attack
+that can be executed on a regular pin tumbler locks in which you start with your known change
+key and a couple of key blanks and you can use them to test out one pin at a time to
+find where the master code is. In a master system, the side bar is the same on every
+key because that's built into the key blanks now that we have the ability to produce blocks
+with that side bar you can execute the same attack and this is effectively just a regular
+pin tumbler lock. >> Have you seen the Matt blaze paper. Matt
+blaze master keyed systems. (Talking simultaneously.)
+>> But keyless manipulation is still hard. These are still a pain to pick. So we're just
+looking at starting with some sort of the information contained in a key. Although note
+that's not going to be too hard to come by there's been other work in decoding keys from
+photographs, there's a key at Berkeley I believe with a project called sneaky which may have
+been at one of these conferences a few years ago. They successfully decoded a regular pin
+tumbler key from a guy sitting at a table in the street from the roof of a 4‑story
+building across the street with a telephoto lens. If you see anyone walking around with
+keys hanging from their belt, you could probably get a copy of one of those. All right. So
+we're going to have to recommend that you probably don't want to use a Primus lock for
+high‑security stuff. If you're using Primus locks already, definitely consider what it
+means if anyone at all can go duplicate a key. It's not new that you can duplicate a
+key. You could get a machinist to do this before. But what's new is anyone can do it.
+There's no barrier in terms of knowledge needed. No cost barrier, anyone who feels like it.
+But the interesting thing is this methodology is not specific to Primus locks. There's no
+specific weakness in the Primus that we're exploiting here. Any physical lock with a
+physical key can be modeled and printed. So it's an industry wide problem that's probably
+going to start cropping up now 3d printing is really just starting to have these precisions.
+Key duplication will be much more accessible. It will be like pirating movies. It still
+takes one person who can go and decrypt the Blu‑Ray disk or take their video camera
+into a theater. But as soon as they've done it, the entire Internet is going to download
+the movie. It takes one person to model a key and the entire world can go and download
+and print them off. So I think we'll find those people to make the models. Physical
+security is going start depending on information security. We're breaking into physical systems
+here by writing code for a key. I think that's cool. Patent protection is a useful buzz word
+for lock companies because they can use the patents to threaten legal action against people
+who are making physical reproductions of their patented key design. I don't think they'll
+be able to go after people who are making 3d ‑‑ that's the same information included
+in patent filing. Go after each individual person that is known to have printed one of
+these keys. But I don't think they'll be able to do anything to stop the distribution of
+these models even 0 on a patented key. >> But we're not lawyers. You should talk
+to Marc Weber Tobias. >> Lawyers can make your day suck even if
+you didn't do anything. Here's other keys this is a space starting
+to develop. This is all recent work but you can 3d print a car key. This is for a mini
+Cooper. This does nothing about the chip in the key this fellow had to keep the real key.
+It works for the physical section. This is used commonly in bike locks. Other stuff.
+People have three d printed handcuff keys. Field is wide open. Anything that's a physical
+lock, you can model that, put it up wherever it is we'll be distributing key models and
+people can print it out. We have audience projects here that would be cool if someone
+else wanted to do. We'd like to see 3d models of other keys here in open S cat because it's
+not that hard. Especially Medeco which a lot of people think is the highest security of
+high security locks. If you've ever looked at Marc Weber Tobias's book, he's published
+most of the dimensions you need. Probably print out a model of that in a day if you
+wanted. It would be neat to integrate models to make the process fully automatic especially
+for regular residential keys. That should be fairly straightforward. Maybe there's a
+market for and Android app. iPhone app. Take a picture of your key, get a new key in the
+mail. It would be neat to have a place to go to get these 3d models for pirate bay for
+keys. And here's some food for thought. If you're from the New York area you heard about
+these. There's a lot of people who got upset because a retired locksmith was selling keys
+on eBay. Called him the master keys to New York. These are keys that are used by law
+enforcement personnel, fire departments in New York City, fire overrides in elevators
+and keys to electrical circuit breaker boxes and other cool things. People were getting
+upset that a single set of these keys leaked out. But what's going to happen when someone
+makes the 3d models for these keys? These have got to be in hundreds of different buildings.
+There's no way to change these locks. The interesting thing is this picture here published
+by the New York post has probably got enough resolution that you could go ahead and do
+it right now. (Laughter)
+(Applause) Also, one of the major voting machine manufacturers
+uses the same key on all their voting machines and I believe that they put a picture of this
+key on their Web site. >> On their online storefront.
+>> Even if not, how long will it be until a single key is out there. Models it, dollar,
+two dollars, buy a vote keying machine to play it. If three d printing keeps picking
+up we don't see how this isn't going to be a major change in the field of physical locks.
+So I think that's about all we have here. We have a couple people to think.
+>> Yeah, sure. A lot of people worked on this but it would be silly to have all 6 of us
+up here. I'll like to thank Gabe, Vicky and Brian and of course Rob who couldn't be here
+but also Vincent who was the person manufacturing with the dremels we showed and Schlage for
+publishing all their fantastic drawings and the MIT lock sport community for getting us
+interested in this in the first place. Thank you very much.
+(Applause.) >> So we have quite a bit of time to take
+questions if you want. >> We have about 15 minutes to take questions.
+But, if you want to come play with our cutaways and see how our stuff works, come to the lock
+pick village in half an hour, we'll be there. >> If we e‑mail you, can we get the code.
+>> The code is on your DEF CON CDs and file distribution and posted on my Web site.
+>> What bit did you guys use for your dremel? >> The highest speed you could get. There
+was a diamond coded abrasive bit but you can also use small.
+>> 3/64ths or less. You talked about an app ‑‑

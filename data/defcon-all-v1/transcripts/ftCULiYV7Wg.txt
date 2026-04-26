@@ -1,0 +1,881 @@
+>>This is Sound Effects,
+Exploring Acoustic Cyber-Weapons
+with Matt Wixey. [audience cheers and applauds] >>Ok uh hi
+everyone. Yes so this is sound
+effects exploring acoustic cyber-weapons. Uh my name is
+Matt Wixey, I lead security
+research for PWC UK cyber security practice. Uh I’m also a
+part time PHD student at
+University College London which is there, where this work comes
+from. Uh prior to joining PWC I
+worked in law enforcement in the UK for a few years. And
+previously spoken uh at Black
+Hat and DefCon and other cons as well. So a few disclaimers
+before we get started, this work
+was undertaken as part of my PHD research at UCL. Uh it wouldn't
+have been possible without my
+supervisors and co-authors for this project, uh Professor Shane
+Johnson and Professor Emiliano
+De Cristofaro. Uh what you’re gonna see here is presented for
+educational purposes only and
+um, you’ll also notice throughout this talk that I
+mention uh words like caveat and
+possibly and potentially quite a lot. Um that’s kinda for two
+reasons, the first is not to
+kinda spread uh fear, uncertainty and doubt about the
+topic of this talk but also
+because this is really early first aide research in an area
+where there is also uh a really
+blurred line between correlation and causation so that's why
+those caveats are there. So why
+this talk? Why this subject? Uh so a couple a years ago at
+DefCon I did a talk called see
+no evil, hear no evil which was about uh using light and sound
+uh to exfiltrate data and mess
+with drones and bypass air gaps and that kinda thing. And as a
+result of that kinda got really
+interested in uh in ultrasound and infrasound, kind of
+unconventional uh uses of sound
+generally. So why should you care about this talk and this
+topic? Uh potentially it’s a
+novel class of attack which we have done some exp, uh empirical
+experimentation on. Uh it’s an
+increasing attack surface as well. Uh and it builds on
+previous work on malware and
+physical harm, acoustic harm more generally, and uh digital
+physical crossover attacks. So a
+brief bit of background. Um, probably kinda one of the
+earliest uh one of the early
+examples of digital physical malware was Stuxnet, obviously
+in 2010. Um also things like
+Mirai, uh the IOT botnet. Um, more recently some work that was
+done on things like MRI
+machines. Um there have been examples pri, um prior to those
+of malware uh accidently uh or
+inadvertently affecting physical kit so the Conficker worm in
+2008 infected uh hospital
+equipment as did Wannacry to some extent. Uh there have been
+um vulnerabilities found in
+medical implants, things like pacemakers, insulin pumps, that
+sort of thing. Um and various
+vulnerabilities in vehicles as well which potentially would
+allow an attacker to take
+control of them um and eventually cause harm. But
+typically with kind of research
+there’s an indirect relationship between the attack, the effect
+uh, and the, uh potential harm
+it’s caused. And to some extent what my research focuses on is
+trying to take out um one of
+those steps and instead looking at malware or attacks that can
+directly affect human beings
+either psychologically or physically. Uh and some examples
+of the kind of things that would
+fall under that bracket, uh would be Kevin Poulsen’s report
+in 2008 on attackers who
+uploaded uh flashing gifs to an epilepsy support forum. Uh and
+those gifs flashed in patterns
+consistent with those known to induce uh photosensitive
+epileptic seizures and a number
+of people had seizures as a result. Uh, similarly, uh
+Oluwafemi and others in 2013 and
+Ronen and Shamir in 2016 looked ay hacking smart light bulbs. Uh
+and specifically found that they
+could make those flash again in patterns consistent with uh
+photosensitive epileptic
+seizures. More recently, Rios and Butts in 2017 uh in their
+kind of um uh ongoing research
+on IOT vulnerabilities found that they could uh attack an IOT
+carwash um and cause it to
+strike a human being. So when you think about sound as a
+weapon, um this isn’t my chart,
+um this is a kind of pretty simplistic view uh of how long
+you should be exposed to sounds
+at certain levels. Um now this uses decibels. Decibels is an
+often misunderstood measure of
+sound because it’s not an absolute measure, it’s a
+relative measure. Depends how
+far away you are from the source of the sound. But you can see
+when you get up to something
+like 115 decibels, really you can only be exposed to it for
+around 30 seconds before either
+temporary or permanent harm starts to occur. And another
+chart, again not mine, just
+shows you kind of where some of these sounds are categorized in
+terms of the effects they can
+have. Um, so starting with um [audience laughs] starting with
+uh 50 decibels um you have a
+floor fan which is kind of background noise. Lawn mower and
+chainsaw, possibly damaging
+sounds, again depends how close you are to it. A jet taking off,
+uh again depending how close you
+are it could cause pain. Um 200 decibels potentially could be an
+instant death. And then the
+loudest sound known to humanity is the Windows XP startup sound.
+[audience laughs] Ok so um,
+acoustics and harm and perceptibility. So what can we
+hear? So you’ve probably heard
+the terms ultrasound and infrasound before. And
+traditionally they’re defined as
+being sounds which either above or below uh human thresholds of
+hearing. Traditionally that
+threshold is 20 hertz to 20 kilohertz. Um however it’s a bit
+of a misconception um as we’ll
+see you can’t kind of put these arbitrary cutoff points here. Um
+threshold is very widely and it,
+depends a lot from person to person what frequencies we’re
+able to hear at what stage in
+your life as well. Uh in, in this talk if you see HFN, high
+frequency noise, that means
+between 17-21 kilohertz. So from near ultrasound, just above true
+ultrasound. And if you see LFN
+that means 60 to 100 hertz. The problem with um with ultrasound
+and infrasound is that basing a
+definition on a lack of a property is a problem. Um,
+because the mechanisms of people
+understanding high and low frequencies or perceiving um
+high and low frequencies is not
+fully understood. People have reported being able to hear
+sounds as low as 1 point 5 hertz
+and as high as 25 kilohertz. Um and there’s also been some
+research which suggests that at
+some level uh we are aware of sounds even as high as kind of
+40 kilohertz. Whether that’s
+kind of consciously or subconsciously. And there is a
+significant variation in
+individuals as to what sounds you can hear. It depends on the
+volume, it depends on the
+background noise, it depends on the environment you’re in. So
+what the walls are made of for
+example. Um, you may perceive sounds in different ways to
+other people so with low
+frequency sounds you may feel it more as a vibration than
+anything else. Um you may
+perceive what are called audible subharmonics, which are kind of,
+you can think about them as kind
+of side effects of a dominant frequency. Um and as you um grow
+older your ability to hear
+higher frequencies declines. Um so younger people, children um
+are much more likely to be able
+to hear higher frequencies than adults. Now there have been a
+lot of reports here, adverse
+effects with high and low frequency noise. Um these do
+come with a lot of caveats, um
+so bear that in mind. Um, the susceptibility from person to
+person will differ uh, as we
+said, um particularly with age as well, um there are some
+reports to suggest that uh
+higher frequencies can have an adverse effect on hearing. It
+could cause something called a
+temporary threshold shift which is where your kind of audible
+range will uh will shift
+temporarily. Um at more uh uh um increased volumes and amplitudes
+there have been reports of
+physiological changes as a result of high frequency noise
+including things like cardiac
+neurosis, hypotension and functional changes in
+cardiovascular and central
+nervous systems. Psychologically high frequency noise has been
+reported to cause nausea,
+fatigue and headaches, tinnitus and ear pain, irritation um and
+decreased amounts of
+concentration. These are subjective effects so bear that
+in mind. Uh with low frequency
+noise it’s um been associated with temporary threshold shifts
+um with heart ailments and
+insomnia and with elevated cortisol levels. And
+psychologically the most common
+uh reported effect of low frequency noise is annoyance. Or
+irritation. But it has also been
+associated with headaches and palpitations, uh deterioration
+in performance, um depressive
+symptoms and distress, and interestingly these effects have
+been reported even at very
+moderate levels of sound. Um so somewhere between 40 to fo, 45
+decibels. The caveats I
+mentioned with all of these adverse effects, if you go back
+and look at the papers, uh the
+date is often anecdotal. Um it’s often done through the form of
+questionnaires or surveys after
+the fact. Uh very easily misinterpreted. We don’t always
+know uh the noise dose, which is
+the um, amount of time that someone’s been exposed to these
+frequencies and at what level.
+Um and many researchers have found that these effects are not
+reproducible in a lab
+environment. Uh and there’s a number of reasons why that could
+be. Um the first is that there
+are ethical restrictions quite rightly placed on researchers
+exposing human subjects to
+sounds which they have good reason to believe could cause
+harm. Um so in a lab environment
+those levels would be attenuated um and therefore might not cause
+the effects that have been
+reported in the literature. The other example is that some
+people may have experienced
+something called a nocebo effect so they either believe uh
+they've been exposed to a
+certain uh level of noise or they are being exposed to it and
+expireen, the, experiencing
+these symptoms but the two might not necessarily be related. That
+being said, there is a
+significant base uh evidence base to suggest that in at least
+a subset of the population, high
+and low frequencies can cause some adverse effects. As a
+result of that uh a lot of
+researchers and organizations have developed exposure
+guidelines which are uh a
+basically kind of a um define the maximum levels at which you
+should be exposed to sounds of
+particular frequencies. Now there are problems with these,
+uh there are uh big differences
+in the way that they’re calculated and implemented.
+Typically they focus solely on
+the workplace. They don’t focus on the homes or public spaces or
+schools. Um they’re often based
+on very small samples and those samples are most often uh adult
+males. So they don’t take into
+account children, for example, who as I said can here uh higher
+frequencies that are um, much
+mo, they’re much more likely to hear higher frequencies than
+adults. This is a compendium of
+some of these guidelines. Uh this was compiled by uh an
+academic called Timothy
+Leighton. And you can see across the top you’ve got the various
+different frequencies. Now these
+are not precise frequencies that the sensor of a, a range of
+frequencies called a third
+octave band um and then on the left you can see the uh
+guidelines that go all the way
+back from the mid 60’s right up to 2015. This isn’t necessarily
+an exhaustive list but just by
+looking at this you can see two things. The first is that um, as
+you increase the frequency the
+maximum exposure goes up to some extent. The second is there’s
+big disparities between some of
+these numbers because they’re calculated in different ways. So
+just a quick thing on weighting
+as well. If you’ve ever done any sound measurement you’ll be
+familiar with weighting. Uh
+sound weighting is a way to either attenuate or emphasize
+certain frequencies when you’re
+doing a measurement of sound. Um so A weighting is the most
+commonly used if you buy a sound
+level meter online or a hardware store or somewhere like that, it
+will most probably use A
+weighting. Um and as you can see A weighting uh significantly
+underestimates lower frequency
+sound um because ih, it kind of the curve decays away at the
+start. And then uh it works to
+underestimate higher frequency sound that decays away at the
+end. Um C weighting is another
+example, you can see there’s less of a decay but it still
+does decay to some extent. Um
+you’ve also got Z weighting which is uh mostly what we used
+for this experiment because it’s
+a flat frequency response so it doesn’t attenuate or emphasize.
+So um, yea as I said, so with uh
+A weighting it’s inappropriate for measuring higher frequency
+noise because it underestimates
+those higher frequencies. Um so Z weighting is probably much
+more appropriate. With low
+frequency noise there are less guidelines available, fewer
+guidelines available. Um a
+possible reason for that might be that the main effects of low
+frequency noise are subjective
+at moderate levels. Um but again, even with the ones that
+have been published, the
+methodology used to calculate them and implement them differs
+a lot. So uh for this experiment
+we used a reference curve proposed by Defra which um took
+into account a lot of previously
+published curves. Um measurements of infrasound
+specifically use something
+called G weighting which is a nicer standard specifically for
+infrasound. Because we were um
+going higher than that we didn’t use G weighting. So this is the
+uh the guideline for low
+frequency noise published by uh Moorhouse. Um and as you can see
+some of these levels are, are
+pretty low um, particularly when you get to kind of 50 hertz, 63
+hertz um you’re talking about
+kind of 43, 42 decibels, something like that. [speaker
+sniffs] Ok uh so some previous
+work looking at sound in security research. One of the
+most common uh uses of high
+frequency noise particularly in security research has been as a
+covert communications channel.
+Um so Deshotels in 2014, Hanspach and Goetz also 2014,
+looked at kind of covert mesh
+networks and how uh devices could communicate silently with
+each other using high frequency
+noise. I at my DefCon talk a couple of years ago I did a
+similar thing um with eggat
+bypasses and exfiltrating data. Um and an interesting kind of
+finding from a lot of this
+research is that many consumer devices um are capable of
+emitting high frequency noise
+even up to kind of ultrasonic levels. There’s also been a
+research looking at the
+disruption of echolocation systems which use ultrasound. Um
+so again in that DefCon talk I
+showed that with drones. Um Yan and others in 2016 looked at it
+through Tesla vehicles. Um
+Bolton and others in 2018 looked at corrupting data being written
+to hard disk drives using both
+high frequency and kind of audible audio. And then uh
+there’s been a number of studies
+on looking at ultrasonic tracking beacons as well which
+are used for uh for targeted
+marketing. So some questions I always get asked um before we
+kind of get into the, the main
+bit of the um, uh the talk. First is the brown note. Um I
+can, I, I can hear some laughs
+so I, I know some people are familiar with the brown note. If
+you’re not familiar with it,
+it’s this kind of mythical tone or mythical frequency [speaker
+sniffs] that causes people to
+lose control of their bowels, hence the name. Um, in reality
+um no one’s kind of been able to
+find this, this mythical frequency. Um part of the reason
+for that probably is that um any
+sound potentially, if it’s loud enough, could cause you to feel
+sick, could cause your body to
+vibrate and potentially have that effect. Um but there’s no
+kind of one frequency that would
+work for everybody. If you’re kind of playing sounds at that
+volume, you’ve probably got kind
+of bigger pr, uh bigger worries basically. Um another one I get
+asked about as well is the link
+between infrasound and the paranormal. Um sometimes the
+infrasound is referred to as
+like the ghost frequency or the horror frequency. Um it’s often,
+well it’s, it has been used in
+things like horror games and horror movies as well. Um, I’d
+kind of direct you to a couple
+of really interesting papers on this. Tandy in 2000 and Parsons
+and others in 2008 who um looked
+at the possibility of infrasound at resonant frequencies causing
+people to have hallucinations um
+also kind of sense a presence in areas associated with paranormal
+experiences. Um it’s this object
+that gets debated a lot um in that, in that field but it worth
+kind of having a read over. Um
+and the last one is the US Embassy in Cuba and kind of what
+happened there. Um I would
+direct you to a paper by Timothy Leighton in 2018 which goes into
+some detail about um the sounds
+that were recorded in that area and um the possibility or not of
+that being uh a sonic attack. So
+when it comes to kind of acoustic weapons in general
+there are a lot of
+misunderstandings around them and a lot of myths. Um as
+researchers have noted there are
+kind of significant practical issues associated with actually
+deploying them. Um which uh to a
+large extent applies to this research as well. So the fact
+that attackers can cause
+something like threshold shifts is probably not of interest to
+them generally. Um and it’s
+really challenging to cause kind of directional targeted effects
+with acoustic weapons. With low
+frequency noise uh that can propagate very easily, can
+spread over miles potentially.
+Um but overseas got very low directionality as a result, and
+uh you would need to build
+massive kind of audio equipment to be able to do that. With high
+frequency it’s got very low
+propagation, it doesn’t deal with obstacles well um which is
+why it’s used for echolocation
+because it bounces off of objects. Um so again there’s,
+there’s uh an issue there. So um
+moving on to our experiment. Um so this is kind of how we built
+the um uh the hypothesis for
+this. So we said, ok given that some high frequencies and some
+low frequencies might be
+imperceptible to at least a subset of the population. And
+given that above certain levels
+they may be associated with adverse effects. And given that
+some consumer equipment has been
+shown that it can uh emit at least high frequency noise,
+possibly low frequency noise as
+well, is it possible, is it feasible for an attacker to
+develop malware that can cause a
+targeted device to emit these frequencies at levels exceeding
+those in some of these maximum
+guidelines and therefore potentially cause adverse
+effects? So a rough outline of
+what we did is we developed uh attacks and malware. Pretty kind
+of trivial um malware targeted
+at certain devices which was able to control the system
+volume and the speaker output of
+those devices and as a result play wave files containing
+certain frequencies which we
+then measured with a sound level meter and compared that, that,
+compared that output um to
+maximum permissible levels. So we didn’t use any human subjects
+for this experiment, um because
+of ethical restrictions uh quite rightly. Um we did a full risk
+assessment um we had various
+safety precautions, we wore ear defenders, we used an anechoic
+chamber which I’ll talk about in
+a bit. Um and we’re not releasing either code of the
+attacks that we did or the
+brands or models that we tested these attacks on. So some
+scenarios where an attacker
+might want to use this, and again this is kind of caveatic
+quite heavily, um if they were
+seeking to affect the performance of productivity of
+targeted or generally uh
+employees or staff of organization um or at scale. Um
+targeted harassment of certain
+individuals or potentially as kind of low grade uh cyber
+weapons that could have some
+physical effect. Uh worth noting that, you know, if an attacker
+is in a position to execute code
+on a device then there are more likely going to be things that
+they’re more interested in
+doing. And even when it comes to sound uh there may be things
+that they’re more interested in
+doing um than this attack so they may be more interested in
+kind of um, you know, C two
+channels with that um or something else. So just um a
+description of some of the
+devices we tested on the left hand side. A laptop, a phone, a
+bluetooth speaker, a smart
+speaker, a pair of over ear headphones, uh a vehicle mounted
+public address system, a
+parametric speaker and a vibration speaker. And um you
+can see some of the attack
+vectors and rather this was kind of remote or local. Uh this was
+our anechoic chamber. Um has
+anyone ever been in an anechoic chamber before? Oh wow. Ok quite
+a few people. It’s weird, right?
+Like, really weird. Um so if you havent been, um I really
+recommend you, if you get the
+chance to do it, do it. Um so basically an anechoic chamber is
+a sound proofed environment but
+it’s designed specifically to get rid of echoes. Um so these
+kind of wedges on the walls are
+fiberglass wedges that, that um bounce echoes back and forth
+between them so that they
+dissipate. Um and essentially what this means is you can be in
+this room and the ambient noise
+level is below the threshold of human hearing so it is kind of
+one of the quietest places in
+the world. Um you can hear your own heart beating, if you kind
+of move your head you can hear
+like your spine creaking in your neck. Although that kind of
+might be more something that I
+should get checked out um [speaker and audience laugh] But
+um. Yeah. Um so it’s really
+cool. Um and what’s kind of really kind of creepy and cool
+about it is um if you kind of
+close your eyes or you turn the lights off then uh acoustically
+an anechoic chamber is an
+infinite space because there’s no walls or obstacles to bounce
+sound off, uh which I just think
+is really cool. Um so for our uh Windows malware, which is on
+laptops, we embedded these tones
+as wave files. We had a really trivial C two channel and all
+the malware did uh was it would
+get a command to play a certain frequency, it would increase the
+system volume of the laptop to
+100 percent, play the tone for 10 minutes and then restore the
+volume afterwards. Android
+malware did exactly the same thing. Our smart speaker, uh the
+one we used had a known
+vulnerability um that allowed us to control the audio. So for
+this to work in practice the
+attacker would need to either be on the local network um or
+attack an exposed speaker on the
+internet or do DNS rebinding or something like that. Um there
+was a python script we used to
+scan for speakers on the local network and if inactive stream
+returned from an attacker
+control web server. The headphones, um were over ear
+headphones connected to laptop
+over bluetooth. Because they’re headphones we placed these much
+closer to the sound level meter.
+Uh we had vibration speakers which are really cool if you
+haven’t used these before. Um so
+these don’t have a diaphragm cone. Instead they have like a
+coil on a movable plate so
+whatever surface you use, whatever surface you put them
+on, that becomes um the kind of
+the source of the sound if you like. Um parametric speakers,
+again these are really cool if
+you get a chance to play with these. So these use ultrasonic
+carrier wavs at 40 kilohertz. Um
+meaning that you can use them for kind of qua, high intensity
+directional audio. So kind of
+like a beam of sound. Um the one we tested didn't have smart
+capabilities. Um but given that
+it is fairly low profile and fairly uh low cost and that it
+can be directional, it might be
+attractive to an attacker as like a portable acoustic-weapon.
+Um a vehicle mounted public
+address system. So this didn’t have any network uh interfaces
+instead it also plays audio from
+an inserted storage device you would need physical access um to
+it. Some additional attacks that
+we thought of but didn’t test, the first is using uh the HTML5
+audio tag to autoplay audio. Um
+so this would involve like uh a social engineering attack with
+an attacker getting a victim to
+uh a website and have the sound play automatically. Um this
+would obviously depend on the,
+the currently set system volume. Um so not guaranteed to work.
+And then [speaker clears throat]
+we also used um manipulation of pre-existing audio. So this
+would be uh either something
+where an attacker has access to like your uh I guess your music
+collection or something or where
+they’re kind of creating a YouTube video that they know
+people are gonna watch. And what
+you would do here is take the legitimate audio, lower the
+amplitude of it and then insert
+a very high amplitude, uh high frequency or low frequency sound
+um which would look like this uh
+second picture here. So the kind of intended effect of this is
+that the victim, uh using their
+headphones or speakers or whatever, would turn the sound
+up so they can hear the
+legitimate audio and then inadvertently expose themselves
+to high levels of whatever
+frequency it is. Uh just another illustration of that there. So
+for measurement we use class one
+sound level meters. Um these are precision grade, they’re spot
+calibrated, uh they’re really,
+really expensive to buy um but we hired them. Um so we hired
+one for the low frequencies, one
+for the um uh high frequencies. Um and if you ever feel like you
+don’t have enough excitement in
+your life, um have uh a courier call you and tell them that they
+don't have any record of you
+sending this stuff back um and that you might owe a company
+20,000 pounds and it puts
+everything else in, in perspective. [audience laughs]
+Um so we placed each device in
+the anechoic chamber with our sound level meter and in viral
+attacks we played certain
+frequencies um for 10 minutes. We also measured the surface
+temperature of each device
+before and after the attack because there was some anecdotal
+evidence that um, or some uh
+anecdotes to suggest that particularly with higher
+frequencies, devices could heat
+up if they were playing high frequency noises. So we used Z
+weighting for the measurement.
+Um the only thing we didn't use Z weighting for was for
+measurements at 21 kilohertz
+because that’s outside the range of uh Z weighting so we used the
+proprietary high pass filter for
+that. And these are the results um for higher frequency noise.
+So instances where the levels
+are um above those in maximum guidelines are in bold. So you
+can see the smart speaker at 17
+kilohertz and the headphones at 17 kilohertz um both exceeded
+those maximum guidelines. And
+then the parametric speaker did the same for 17 kilohertz, for
+21 kilohertz and for 40
+kilohertz as well. Now uh what we’re comparing to here is a
+mean average of that big list of
+uh guidelines I showed you earlier. Um that was in the
+paper by Timothy Leighton. So
+you can see things like the laptop and the phone are not
+capable of producing sound
+exceeding those maximum guidelines so it’s a minority of
+devices um in a minority of
+frequencies that are capable of doing this. With low frequency
+noise uh similar story. So again
+a minority of devices. Here it was the bluetooth speaker at two
+of those frequencies, a smart
+speaker at all three and the headphones at 100 hertz. Now um,
+particularly when you get to
+kind of the upper range of um the, this, this kind of low
+frequency noise, this might be
+more audible um and will therefore be less suitable as
+kind of a covert attack. Um and
+I’ll speak a bit about aud, audability uh in a minute. Some
+other results of interest, so
+the vibration speaker uh is no good for low frequency because
+it vibrates so much that it
+falls over. Um so everytime we opened the, the chamber door the
+speaker was lying on the floor.
+Um the smart speaker, uh when we opened the chamber it was a
+really strong smell of burning
+plastic. Um and when we kind of uh tested this um we found that
+it was actually permanently
+damaged. So this is kind of what happened in the 10 minutes um
+that this smart speaker was
+being tested. You could see the damage starts to occur in like
+the second minute this was at uh
+17 kilohertz. After five minutes of some sort of critical event
+where a component burns out. And
+then immediately there the decibel level drops uh and never
+recovers. And what we had
+actually found was that we had permanently damaged the speaker.
+Um and we had made it unable to
+reproduce frequencies above five kilohertz. Um so we took
+recordings of music um before we
+did the test and after we did the test and looked at the
+spectrograms uh and on the top
+is before the test and on the bottom is after the test. So uh
+this is a permanent effect as
+well so we’ve kind of permanently impaired that
+speaker. Um I’d love to be able
+to play it to you, because it’s copyrighted I can’t.Um but it’s,
+kind of sounds like someone um
+singing like under water or in kind of like a metal uh tank or
+something like that. So it kind
+of really makes a difference, the audio quality. So we
+reported that to the
+manufacturers who were really responsive and they told us the
+um updates have been rolled out
+to addressed it. To address it, sorry. Um now looking at audible
+components because this is kind
+of a key thing for this attack, um part of kind of the premise
+of this as a successful attack
+is relying on the fact that users wouldn't be able to hear
+it so depending on the device
+you get more or less audible components in kind of audible
+ranges. If you look at
+headphones for example, this big spike to the right is the target
+frequency which was 17 kilohertz
+so that’s kind of an intended effect. Um and then you can see
+to the left you’ve got kind of
+um uh different frequencies there. Um which are pretty low
+so if you’re wearing headphones
+and this happens you might kind of notice something, it might
+kind of appear as kind of
+distortion or popping or something like that but um it
+wouldn't be that noticeable.
+Conversely if you look at the parametric speaker um the
+intended tone is still high but
+there are um, much higher levels of other more audible
+frequencies which means this
+would be kind of less suited for some kind of stealthy attack. So
+implications of this with the
+headphones um, that it’s a significant concern because
+headphones are increasingly
+used. Particularly like by young people at high volumes and to
+some extent they’re device
+agnostic so you can kind of plug, plug it into a laptop or a
+phone or something. Um it might
+be possible for an attacker to kind of in, encr, um improve
+that malware by for instance
+only triggering certain frequencies when uh headphones
+are connected um so when that
+kind of device registers. Um with the parametric speaker um
+it does produce a lot of audible
+components but it might be attractive to some attackers as
+kind of a portable low cost
+acoustic weapon. In any case the fact that it’s using kind of
+those ultrasonic courier wavs at
+40 kilohertz at pretty high levels means that it could be a
+uh public health risk. With the
+bluetooth and smart speakers um, more difficult to attack. With
+the bluetooth speakers you would
+obviously need to kind of pair with them um with the smart
+speakers though um we could
+permanently damage them with a high frequency noise um
+potentially that burning out of
+components could be a fire hazard as well um and other
+models might be vulnerable. So
+in terms of feasibility um the attacks that we discovered were
+viable on a minority of devices.
+So out of the, the kind of 10 tests that we did you’re talking
+about kind of a handful of two
+to four devices. Um for this attack to succeed you’re relying
+on attackers not, oh sorry, on
+victims not perceiving uh the sound, on them being susceptible
+to the adverse effects of that
+sound um and for them being exposed for long enough to that
+sound for it to have an effect.
+Remember that our tests were only 10 minutes. So for example
+if I kind of played a 20
+kilohertz tone in this room now uh, you know, a fairly high
+level, um some of you would hear
+it and, and not be affected by it, some of you would hear it
+and probably feel uncomfortable,
+some of you wouldn’t hear it and wouldn’t notice, some of you
+wouldn’t hear it and might feel
+uncomfortable. So it’s a real kind of spectrum um so yea it’s
+kind of a lot of obstacles for
+an attacker to overcome for this um for this attack to work. And
+as I said some attacks require
+kind of physical or local access as well. And crucially attackers
+might be interested or more
+interested in other avenues. Um so if they have kind of code
+execution on a laptop for
+instance or a phone, it’s likely that there’s other stuff they’re
+interested in. Um ok so moving
+on to countermeasures. So uh Deshotels in 2014 uh suggested a
+number of kind of applicable
+countermeasures for these kind of attacks. The first is to
+limit the frequency range of
+speakers. So many speakers have a frequency range that’s uh goes
+up to kind of 20 kilohertz or
+above. Um which in most cases is not needed uh depending on what
+you’re using them for. Uh
+visibly alerting users when speakers are in use by an app or
+uh a software program. Doing
+some kind of filtering uh during processing to remove high or low
+frequency noise if it’s not
+needed. And uh with mobiles specifically, some kind of
+permissions restriction so that
+if an app wants to use the speaker you have to kind of
+explicitly grant it permission
+to do so. On the heuristic side um it’s very rare that an
+application, a legitimate
+application, will need access to volume levels. We kind of
+thought of uh a few examples so
+one would be like a muting app for instance. And there are some
+legitimate uses potentially for
+ultrasounds so Google Nearby Messages uses um ultrasound in
+addition to some other commerce
+channels. Um but generally speaking um there’s kind of not
+many legitimate use cases for
+that. You can monitor the environment for high or low
+frequency noise. Um so most
+consumer sound level meters will not go as high or low um as the
+levels we tested and you do need
+specialist equipment. That being said, there are a couple of
+android apps that we used in our
+pilot study. A ultrasound detector and infrasound detector
+which we used with the, a pretty
+cheap, external microphone for the android. Um and there is
+some studies that suggest um
+that one of the smartphones might be ok for occupational
+noise measurement at least um as
+long as you kind of accept that there are caveats with that and
+limitations and that you won't
+necessarily get a, a, 100 percent accurate result. Uh we
+developed a proof of concept uh
+Windows program um that listens to sound uh coming in from your
+laptop microphone and pops up an
+alert if it hears frequencies uh above a certain level and above
+a certain amplitude. Um it’s
+adapted from another open source application. Um we are gonna
+kind of release this on GitHub
+in uh either this evening or tomorrow morning but obviously
+don’t use it to evaluate if
+there’s actual risk of uh damage or adverse effects to you um or
+for safety compliance
+assessments. If that’s something you want to do then you should
+really be speaking to a trained
+professional who’s got the right equipment. Um but the uh
+application will be available
+there. It does, it’s accuracy and its kind of performance does
+depend a lot on the uh
+microphone you’re using and the sound quality you’re using and
+that kind of stuff. Um but if
+you wanna have a play with it and kind of see how it works
+then uh please do. At the um at
+the policy level um it’s really important that, uh I think, that
+these guidelines are reviewed um
+and that there’s some kind of standardization um put in place
+for these. Um because as noted
+before they’re often inadequate due to their methodology. The
+fact that they underestimate
+certain frequencies because of the weighting that’s been used.
+Um, the fact that they uh
+predominantly around occupational context, and that
+the samples are very small and
+based on adult men, um and in no way kind of um give you any kind
+of uh indication if you’re
+somewhere outside of an occupational context as to what
+sounds are kind of tolerable for
+health. Um depending on what area of the country you’re in,
+sorry, depending on what area of
+the world you’re in um you might have legislation that pertains
+to uh sound exposure um whether
+it’s low frequency, high frequency or just in general. Um
+and ideally your employers would
+um as uh a result of that conduct regular checks. So uh to
+sum up then. Um this was a first
+stage bit of research uh on a very small scale. We looked over
+a limited number of devices, we
+looked at very short exposure times of 10 minutes um without
+human experimentation. There’s
+also the note that, like the smart speaker, uh if a device is
+forced to continually play high
+or low frequency noise then it may burn out anyway um but it
+may take kind of several days
+for that to happen. Um so we also didn’t do any human
+experimentation on uh
+perceptibility as to whether uh humans would be, actually be
+able to hear this sound. And
+that's just a kind of limitation reassociation in the field
+generally. Um because of kind of
+ethical concerns. So more research is definitely needed on
+uh the risk of high frequency
+and low frequency noise. Um that can include like a wider range
+of equipment. Um so in addition
+to testing um the devices that we tested you could look at
+things like IP phones for
+example and it wouldn't necessarily have to be an attack
+against them it might just be
+kind of injecting uh tones into a conversation um you could look
+at kind of uh attacks on a
+larger scale. Whether that’s something like uh a kind of uh
+worm attack against, you know,
+50 laptops in a, in a sound proofed environment. Whether
+it’s looking at kind of big
+devices like um public address systems um or on a big scale
+though logistically obviously
+that would come with some challenges. Um testing it’s
+overheating effects on the
+devices would be really cool to see if that um that’s something
+that’s common across a lot of
+speakers. Um some more work on countermeasures so, you know,
+one of the encouraging things
+about this research is the uh whilst the attacks we developed
+are pretty trivial, there are a
+lot of caveats around it and the countermeasures are also
+trivial. Um [stutters] in, in,
+in many um cases so that’s kind of encouraging as well.
+Obviously the ethical
+restrictions to make kind of extrapolation to real world
+effects pretty challenging. Um
+it’s difficult to be able to say whether or not these attacks
+would actually allow you or
+allow an attacker to have any effect on people um because
+there are so many variables. Um
+so we’ve only really kind of scratched the surface in terms
+of what can be done in this
+field. Um so definitely if you’re kind of interested in
+this field, you want to kind of
+chat about it a bit more then, then get in touch with me. So
+just a somewhat, um so it’s
+likely that um attackers might become increasingly interested
+in leveraging vulnerabilities
+against humans um and kind of having digital physical effects.
+Certainly the attack surface for
+these devices is likely to grow and potentially any device with
+a speaker um obviously depending
+on, on kind of it’s sound card and, and um complexity could be
+used for this kind of attack. Um
+[speaker clears throat] and crucially the lack of consensus
+from kind of adequate safety
+guidelines is a real challenge. However, as I said, kind of
+countermeasures are available.
+They will work um and the real world consequences of this is
+attack is something that is yet
+to be uh ascertained. So um thank you very much. Um if you
+wanna get in touch with me
+that’s my Twitter handle and my email address. Um I’m gonna take
+questions uh at the far end of
+the hall, uh of the hallway. Um if you’re interested in any of
+this stuff there is uh an
+exhaustive list of references at the end of this slide um at the
+end of this slide deck um which
+cover kind of acoustic weapons, ultrasound, infrasound, human
+effects of those um and various
+other bits and pieces as well. Um I can play with more
+references if you’re interested
+um but there you go, so some more reading for you. So um
+thank you very much for
+listening um and as I said I’ll take questions out in the back.
+And thank you very much.
+[audience applause]

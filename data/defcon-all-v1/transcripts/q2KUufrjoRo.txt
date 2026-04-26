@@ -1,0 +1,971 @@
+>>We’re gonna get started this
+morning with what looks to be a
+very exciting talk, with a couple ah, couple-couple of
+recorded demos because these
+guys are smart and they don’t do live demos at DefCon. That
+is-that is >>We’re not allowed
+to >>Well, you're allowed, but it's just a really really
+terrible idea. [Laughter] Um, so
+if you if this is your first time in track four, which we are
+calling fancy track. Here in
+fancy track, you cannot vape, you cannot smoke anything of any
+kind. Ah, you are not supposed
+to be having any kind of outside beverages other than water.
+There you go. Um, like I said,
+if you want to kinda move towards the centre so that
+people can get in and out, that
+will help because we’re gonna, have a lot of people coming to a
+lot of really good talks today.
+With that said, let’s get Topher and Michael up here. Um, how
+many people use antivirus at
+work? How many believe it does anything? There we go, how many
+people use EDR at work?. Yeah,
+how many people b-believe it does something? A-ha [Laughter]
+Suckers [Laughter] Let’s give
+Michael and Topher a big round of applause [Applause] >>Have a
+good time bro >>Thank you >>Oh
+my gosh. Alright, thank you for coming, ah. On an early, ah
+Saturday morning, this is, ah
+EDR is coming; hide yo sh!t. Um, I’m really happy to, ah be here
+this year. This sort of, ah came
+about as a hallway conversation at DefCon last year. We had some
+ideas, we talked it over, it
+turned into some research and, ah here we are and that’s pretty
+exciting. So, go out there and
+talk to all the people and have all the ideas and submit
+something next year. Alright,
+so, um who are we. Well first of all we-we don’t speak for our
+employer, these are, this is
+speaking all on behalf of ourselves and nothing that we’re
+saying is to be construed as,
+you know, from our employer. I, I-I’m Michael Leibowitz, I like
+to ah w-on my, in-in my free
+time write, ah armaic hardware implants, reimplementing NSA, ah
+hardware implants and I’m a
+principal trouble maker. And? >>And, ah I’m Topher Timzen. I
+like doing, like C sharp Malware
+stuff, so hilariously enough some of the things you're gonna
+see in this talk I've talked
+about, ah previously at DefCon 23. So, it’s kinda like the old
+is still new. Ah, I’m a
+principal vulnerability enthusiast, we both work on Red
+Teams. And as you can see by our
+matching attire, we, ah we just want to drink coffee and write
+malware. [Laughter] >>Alright
+so, ah here’s what we’re gonna go through. And we have a-a lot
+to cover, so we’re gonna go
+through it pretty fast. Basically, what EDR is, why we
+care. Ah, UEFI and the thing to
+know about UEFI, is that UEFI is cross-platform, which is why
+we're doing a-a Windows and a
+Linux demo and why we have a Windows and Linux payload. Of
+course, you know, what
+everyone’s wondering, what does this all mean. And then, you
+know, some mitigation or
+whatever. And then future work and then conclusions. [Laughter]
+>>Ah so, we’re gonna kind of
+start off with talking about EDR. So, a lot of you raised
+your hands that you use this
+and-and think it works, So, we’re about to, you know, kind
+of ruin that for you. [Laughter]
+Um, so kind-kind of, ah so it’s ten o’ clock, the slides are a
+little bit hungover. So, ah EDR,
+is endpoint detection and response, not enterprise, ah
+think slides been up early with
+us. Um, the biggest thing about EDR it that it’s really just
+defensive tooling that focuses
+on like detecting, investigating and mitigating suspicious
+activities going on within an
+environment. The big thing that it really provides Blue Teams is
+a hunt capability. So, this how
+and a lot of, ah organisations they’re making like lar-large
+scale-like correlations for hunt
+stages. So, like oh this machine over here is doing these sorts
+of things that’s not really
+typical this alert fired on our SIEM, let’s go and investigate.
+Um, typically it really just
+means that like for us on Red Teams that Blue Teams gonna find
+you and we don’t wanna be found.
+Ah, so we’re gonna sort of look at how we avoid that. Um, and
+then like the one big thing with
+EDR, is that typically everything's mapped to, ah like
+MITRE Attack and if you’re not
+familiar with MITRE Attack, that’s essentially just like
+this huge knowledge-knowledge
+base of ah of things that attackers tend to do based off
+of real-world observation. So,
+like you probably hear the term like TTP’s thrown around
+everywhere. Um, in essence, it’s
+really just this huge table that lists things that attackers like
+to do. So, you kinda like think
+back to a previous life when you’re in kindergarten and you
+get like a gold star for like
+turning in your homework on time and like being polite. It’s
+essentially like that but for
+like us as bad guys, we get gold stars when we do like
+persistence, we get a gold star
+for privilege escalation. Ah, so like we wanna fill out all the
+things but not have anybody
+know, so we don’t actually get the gold stars. Ah, we just
+wanna do it. Um, so like, I’m
+saying like EDR’s really just tuned like in actuality for like
+processes, commands and API
+Calls. So, if you’re like running say like ah cmd dot exe
+or PowerShell or doing like some
+registry stuff or trying to set up persistence. Because those
+are like TTP’s in the MITRE
+Attack Framework. Those tend to be flagged and mapped and then
+alerted on for the-the Blue
+team, um and we wanna make sure that none of that actually
+happens. >>So, ah a lot of
+people talk about, you know, the Risk Curve. And, um, you know,
+this is the Other Side of the
+Risk Curve. Basically, you know, no-no attack, no breach lasts
+forever right? You can see from
+the right side of the graph that eventually you’re gonna get
+busted. And you, you-you land
+your shell. You know, that’s kind of the highest risk time
+you move around a little bit and
+eventually you sort of settle into persistence. And like the
+longer, you hold on, the more
+chance it is that someone’s gonna roll you up. And really
+what we want to do is, you know,
+make this curve flattened a little bit. And, you know,
+what-what does it mean when, you
+know, the breach gets detected like no-ones sleeping well
+tonight, this is-this is
+terrible. You know, you’ve lovingly crafted payload becomes
+the analysts' sample, you’re
+like very upset because all these months of work and
+crafting that, super awesome
+payload are just down the drain and the analyst is like, oh
+shit, there goes my Friday
+night. [Laughter] No-Nobody’s happy. So, what we wanna do is,
+we want to modify this risk
+curve. We want to make it such that, you know, you, we’re not
+gonna flatten that initial shell
+pop kina-kinda part. Like that’s kinda the same, but we just
+wanna, we just want to hang onto
+the good stuff for longer. Eventually, eventually we’re
+gonna get rolled up, but we’re
+just, just hang out and chill out for a little bit longer [
+Laughter] >>So, as we were
+investigating ways that we can hide from, ah UEFI, oh from EDR,
+Mike and I had some pre-existing
+platform experience. A particular UEFI platform
+experience, so like platform
+firmware. Um, so in sort of this research, it’s like, ah we were
+thinking that we can utilise
+this sort of functionality to evade all of these detections
+and make that risk of, ah and
+the dwell time for us last a little bit longer. Um, so, if
+you’re not familiar with UEFI,
+ah I have to include this awesome diagram of it, because
+John Lukades told everybody ever
+talking about UEFI that they have to. Um, essentially if
+you’re not familiar with UEFI,
+it’s essentially what modern BIOS is now, so it does all the
+things that you don’t really,
+ah, care about like CPU init, change your memory, it loads a
+bunch of option ROM's from like
+your PCI devices. Ah, there’s other talks that go over what
+this actually means. Ah, but
+what we’re concerned about is if you look at the bottom, there’s
+this notion of runtime services
+and after the OS boots those are exposed at the operating system
+level. Some of the things that
+get exposed within the runtime services stage of UEFI are, ah
+UFEI firmware variables. So,
+these are persistent variables that actually live within your
+NVRAM on your, on-on your
+platform. Ah, that are accessible both to UEFI
+applications like, if you're
+familiar with secure boot, all of your secure boot like
+variables and stuff live there,
+so like boot order, like your, ah the keys that secure boot
+utilises, things of that, ah
+nature. So, we’re gonna take advantage of the fact that we
+can persist within NVRAM within
+the UEFI platform that we can then access it operating system
+run time. Um, so sort of like,
+you’re probably thinking at this point, well why UEFI firmware
+variables? Well, like I was
+saying, it- it’s a way that you can hide your payloads from all
+of these detective capabilities,
+cause its a-it’s a blind spot for all of them. Nobody looks
+here, like really at all,
+especially within AV and EDR platforms. Um, if you’re not
+familiar really with what UEFI
+firmware variables are either, it essentially consists of like
+a name and a GUID. So, it’s like
+this 2pl and if you are able to set or get that, ah that 2pl,
+you can pull the contents of
+what that variable is out of NVRAM and we’re gonna kind of
+showcase that we can execute
+those live on the system, to both stash our stuff and to sort
+have like the persistence, ah
+mechanism. >>So, really quickly, ah like UEFI firmware variables
+have a couple of types. There’s
+authenticated and unauthenticated. This isn’t so
+much important but we kind of
+just wanted to briefly touch on it. Ah, just in case you’re
+concerned at all with the
+specification of what we’re doing. Like, um if you’ve heard
+of like authenticated variables,
+these are signed like x509 certs that, ah that perform like a
+certificate check when writing.
+Ah, we’re not gonna worry about those, there are unauthenticated
+variables that are also, um
+present, ah at that runtime stage. These have no
+verification on write, the
+majority of variables on a platform is we will show you in
+a demo, are unauthenticated. Ah,
+so it’s not really abnormal for these to be there and it's not
+atypical for things to
+necessarily be writing or reading from there. Um, if
+you’re like, a platform
+researcher or something, you know about this. Ah, there’s a
+couple of attributes as well to
+verify firmware variables, ah within the specification. We’re
+gonna really just focus on three
+out of the six, because as I’ll showcase in the Windows ten API,
+ah you have to have non-volatile
+boot service access and runtime access in order to have, ah UEFI
+variables that persist within
+the Windows runtime, after boot on your NVRAM. Um, so just note
+that those three are gonna be
+utilised and that’ll be shown in the demo as well. Sort of the
+hilarious little thing here too,
+with the why we sort of started thinking about UEFI as a, as a
+way to hide from EDR. Is a in-in
+an old old life we’re were walking, you know, with some
+Blue team, ah folks and we’re
+talking about ways that we’ve been-been tricky on engagements
+and sharing some techniques.
+And, we’re kinda talking about like, ah IoT devices and how it
+would be cool to hide in like in
+IoT firmware. And they were like, yeah that’d be cool but
+like please don’t ever hide like
+in platform firmware, you know, Mike and I kind of stopped and
+we were like, oh shit.
+[Laughter] Ah, so we’re gonna do Windows and Linux like Mike
+said, ah UEFI is platform
+agnostics so it doesn’t matter what it's running on. it’s-it’s
+part of your platform, it helps
+boot intel like processors, it also works like on AMD. Ah, it’s
+kind of different there, its,
+it’s a specification, whatever. Um, so UEFI on Windows.
+Basically, um I was re-looking
+at the MSDN articles for Windows ten and I recognised. So, they
+had taken this off and then they
+reintroduced the ability to do UEFI platform stuff with an
+1803. Um, so I was kinda like
+reading the documents, they-they listed all of these requirements
+for actually been able to use
+this-these API function, this API functionality within Windows
+now. So, it’s kinda concerning
+cause there’s-there’s a lot there that they say you need
+this otherwise it won’t work.
+Such as, you need to declare firmware read and write in your
+application manifest, you need
+to have it be protected App, so like a signed App that the
+Microsoft store signs, it needs
+to be signed. You need to be an admin that has access to this
+special privilege SE System
+Environment name, ah like privilege token in your process
+space. So looking at it, it was
+kinda daunting cause it’s-it’s such a long list of
+requirements. But, you know,
+we’re hackers, that doesn’t mean anything. Ah, so we started
+looking at w-ways to bypass
+this. This like spectre ops puts out a lot of like w dot
+byapsses, which is a way to
+execute signed Windows binaries but that will unsign Windows
+binary, so like unsigned Windows
+binaries you can still execute. Um, obviously on Red Teams we
+sometimes jump to conclusions or
+we me make, ah some leaps forward to speed up engagement
+time with like assume breach
+type, um scenarios or sort of the methodology in thinking that
+we’re gonna wind up being admin,
+why don’t we just become admin now. Um, so like that sort of
+stuff for our purposes of doing
+this sort of thing on Red team engagements wasn’t necessarily
+impactful. So, we just kinda
+went with it, with the assumption that we’re gonna be,
+we can be an admin on a box and
+we’re not gonna need it to be assigned a Windows application.
+So, like ah just to showcase
+what the read and write firmware variable API looks like from the
+MSDN articles. You can do set
+and get firmware variables from NVRAM. Ah, really the key thing
+here is you just have like the
+name in GUID 2pl, that I was mentioning earlier. Um, and for
+a set, all you do is you point,
+ah the buffer you want to write into the variable, you give it
+the size and the attributes that
+you want it have to be declared as and it just sets it in NVRAM
+for you. And then forget it's
+the same sort of idea, you give it a name and a GUID 2pl and
+then you give it the buffer you
+want to read into and then it reads the NVRAM out into some
+memory buffer that you control
+as the attacker and, of course, you’ll wind up executing that
+once you get the variable out of
+NVRAM. Ah, these are the attributes, not really
+important, it’s on the slide
+more for reference, but this is from the MSDN article. Note that
+for variable, ah attribute
+runtime services, it says if you want this to be accessible
+during RT, it needs to also be
+accessible to boot services. So, that’s kinda why we’re gonna
+have to set all three in
+Windows, so, NVBS and RT variables. So, when I was
+initially implementing this, ah
+it was sort of the decision between if I wanted it to be in
+C plus plus or in C sharp. So, I
+initially implemented all of this in C plus plus just because
+it was, it was easy, cause the
+MSDN articles basically just give you the code you need. But
+as I was kinda doing the
+research, it occured to me that C plus plus wasn’t a viable
+option cause AV flags it very
+easily. Um, like one thing you have to do, obviously if we’re
+getting a firmware variable is
+you need RWX memory. So, doing a lot of calls to like Virtual
+Alloc, Virtual Protect is kinda
+a red flag right now, especially for EDR products cause they
+start querying all these APIs.
+Um, like most applications are at like making an RWX memory
+buffer and then executing it
+like it was shell code. So, we’re not gonna do that. Um, C
+sharp can basically do
+everything C plus plus can, either with P/Invoke or
+reflection. And having C sharp
+malware experience in the past, was like yeah lets just do it in
+C sharp. Furthermore, most of
+the C sharp bypasses or some of the, most of the WDAC bypasses
+are in C sharp anyway. So, that
+kind like checked out that flag off for us. And then in order to
+make things kind of easier for
+all of our Red Teams friends to use, particularly on Windows
+environments. We wanted to make
+sure that they could, that they could use it in C sharp is like
+kinda the direction that, ah
+malware authors and Windows are kinda going for Red Team
+engagements these days. Or-or
+goaling. Um, but there’s reference code for both in the
+repo, which we will showcase
+later after the talk. So, essentially the steps for
+writing a UEFI variable in
+Windows, is really easy once you have that admin privilege. Ah,
+you essentially just need to
+obtain the SE System Environment name with SetPriv. Ah, this is
+the only case, of like P/Invoke
+that we’re gonna be using. Um, furthermore, like I was saying,
+like in the manifest where you
+needed read and write capabilities. The MSDN article
+is weird in that it lists all of
+those things for C plus plus applications, it makes no notion
+of ever doing the stuff in C
+sharp. So, I’ve never had to declare those things and I don’t
+really know what Microsoft is
+stating in that, so just ignore that completely. You don’t need
+it for C sharp. Ah, you can then
+get the address of your pinned buffer, so that’s our payload
+and then we just write the UEFI
+variable to NVRAM and now it's persistent storage. So,here’s
+some code really quickly to set
+the privilege. Um, it just P/Invokes, you get process, you
+say that you want the new-the
+new token privilege, you set it, boom we’re good. Then you can
+get the address of your, ah
+pinned buffer in C sharp. Like I said, this was your payload. So,
+you initialize an end pointer,
+you call, ah InteropServices to get a pinned array of your-of
+your buffer that you want to
+write. You pin it, so the garbage collector, n-nothing
+can-can touch it as you’re
+working with it. And then you just simply write that UEFI
+variable with the set firm
+variable call with the-the 2pl. And in this case, it’s gonna be
+C sharp UEFI. And then I have a
+super secret, ah super secret super secret QUID, say that five
+times fast. Um, that you can
+Google and figure out what it is. Ah, so the stuff for
+executing UEFI variable are
+pretty much similar. You still need that token and the first
+thing I did in C sharp was I did
+P/Invoke with Virtual Alloc to obtain an RWX memory pointer
+that I can execute. And then I
+was just obtaining that UEFI variable back into that buffer
+so I can execute it. Ah, so the
+first step, same idea, you need that privilege. Second step, is
+I start P/Invoking some memory,
+so I have RWX. Oh, but you can’t actually really do that in C
+sharp because it’s abnormal to
+bring things into your import address table that are in
+actually C sharp specific. Um,
+so like all of the Virtual calls are more suspicious than getting
+a new process token. Cause, ah
+within like C sharp there’s no real way to do like process
+token stuff, you have to pretty
+much P/Invoke, so it’s not suspicious. It is suspicious for
+EDR products, that you’re doing
+Virtual Alloc, Virtual Free and Virtual Protect within C sharp.
+It’s like woah, stop right
+there, we’re gonna tell the Blue Team about this and they’re
+gonna hunt you down. So, we
+can’t do that. Hilariously enough, as we were going through
+this research, um OJ is working
+on like a-a C sharp C alarm interpreter. And he was dealing
+with some stuff and he also says
+the same thing, like don’t P/Invoke your dot net apps. Like
+EDR is gonna find you, like as
+he says it’s the proverbial solution for them hunting you
+down. Ah, so we were not gonna
+have, we’re gonna lose the ability to P/Invoke to get RWX
+memory. Ah, which is kind of a
+problem. So, we can’t do step two anymore, but fear not, ah
+the CLR and C sharp is fantastic
+for malware, so. We gonna actually just now, instead of
+doing any virtual calls, we’re
+gonna use reflection within C sharp to obtain RWX JIT memory,
+which just in time compilation
+leaves RWX memory pages if you’re not familiar with it. To
+read the UEFI variable into
+that. Then we’re gonna write the UEFI variable into a method
+table printer and then we’re
+gonna execute the method as if nothing actually ever happened.
+Ah, so those-those are the
+steps, we’re gonna actually go through that in detail cause
+that was probably a little bit
+jarring. Basically, in C sharp if you’re not familiar with it,
+because it’s an intermediate, ah
+level language representation of code, it has to get just in time
+compiled to assembly code before
+it gets executed by the processor. So, within C sharp
+there's a huge method table that
+contains all the methods that the C sharp application knows
+about. And all of those contain
+a JIT stub for those class’s methods. So, essentially what
+that means is at the time of
+just in time compilation the method table gets referenced.
+You then get a function pointer
+to the executable assembly code that the processor will run,
+which is RWX due to the notion
+of JIT. You can grab that method pointer, dereference the
+function pointer that the
+assembly code links to,which is, ah just a location of the method
+that you’re clobbering and
+override it. So, this essentially means that we can
+declare a method that we don’t
+care about, force it to just in time compile, get the pointer to
+it and then override it. Ah, so
+it’s basically like read to libc but in C sharp and it's like
+more fucky. [Laughter] So, the
+steps for that look like this. We are essentially going to now
+obtain an RWX JIT memory page,
+read the variable into. That’s gonna consist of defining a
+method, ah to overwrite, JITing
+the method, obtaining the pointer to the method and then
+overriding it and calling it.
+So, we’ll define a method to overwrite, this is in the code
+that I’m going to be releasing,
+it’s just called overwrite me, it does nothing. We’ll JIT the
+method. So, here you can see in
+reflection I’m doing a type of, the program I’m in get method
+overwrite me,I call compile
+service runtime helpers, prepare method, which is essentially
+just gonna to JIT that with the
+method handle. So I have my method dot method handle that’s
+dereferencing one of the
+pointers. And then I obtain the pointer to the method, which is
+just get function pointer once
+I’ve JITed it. So, now I have the location of the raw assembly
+code after JIT and that RWX
+memory location. So, now I write the UEFI variable payload that’s
+stored in NVRAM enter the
+pointer to method, so I just enter get firmware variable EX.
+Ah, you can see the third
+argument there, after the 2pl is pointer to method. With then,
+the fourth argument being buffer
+length, that’s gonna take the NVRAM out, plop it in and then I
+can just execute the method
+called overwrite me as if it was actual C sharp code and I hadn’t
+done anything malice. So, we’re
+gonna do a quick demo, what that looks like, ah to kind of tie it
+all together in Windows. Um,
+step one, you obtain your shell on target. Ah, we’ve already
+done that, so step one’s kind of
+skipped. We’re then gonna run write UEFI C sharp. You’ll see
+this with the-with the writer
+binary that I’ve written. Ah, in an actual like Red team
+engagement, or in a campaign
+you’d probably do this with like whatever C2 framework you were
+using. So, you can use the C
+sharp code say like in Cobalt Strike with some of the
+functionality there and do it on
+Windows boxes. Um, you’ll then do some sort persistence
+mechanism for the reader binary,
+which is going to go through and do the steps I just demonstrated
+with reflection. Um, it’s like a
+four kilobyte binary, you’ll use for persistence. You can, you
+know, we’re not giving you
+persistence mechanism. I’m sure all of you have lots in your
+bag. Ah, you just need to throw
+this binary somewhere and-and run it. And then we’ll, ah we’ll
+run it to showcase what it looks
+like. So, the Windows demo. Is, this one. >>Computers are hard
+>>Computers are hard. So, here I
+am on Windows. Um, I’m gonna first go through and write a
+really quick Chipsec module. If
+you’re not familiar with Chipsec, it’s a UEFI platform
+security tool that helps
+security researchers analyse platform firmware. Ah, it does a
+lot of cool things for UEFI,
+particularly variables. So, what I did here, I just ran a module
+to dump and list what all the
+UEFI variables currently on my system are. You can see that
+there’s a lot of them. Do note
+that most of these are NVBS plus RT. Ah, so most of them are
+accessible, ah at runtime
+services to the operating system and they’re, of course, because
+they’re persistent they’re
+persistent in NVRAM. So, there they are, you didn’t see mine.
+Here I’m gonna dump really
+quickly the variable is to show you that there’s content to all
+of these variables. Like, this
+one is kinda funny like test zero, this is a test. Um, so
+there’s lots of variables here,
+nobody really ever audits them. Like I said AV and EDR doesn’t
+look here. So, now what I’m
+gonna do is I’m gonna run write UEFI or UEFI write C sharp,
+that’s gonna write a UEFI
+variable to NVRAM. I ran Chipsec again to show you that it’s now
+there. There it is, ah C sharp
+dash UEFI. So, now that that’s there on box, I can execute what
+the payload is. Um, but first
+I’m gonna show you what that there's actual like, ah
+shellcode there. So, I'll go
+into the UEFI variables directory with Chipsec, I’ll
+dump it out and there you can
+see that I have some shellcode there that I’m gonna execute out
+of NVRAM with the-with
+the-the-the reader binary. Ah, that payload for demo purposes
+is gonna be our-our favourite
+demo. Ah, metasploit, so it’s just an interpreter shell that
+I’m gonna spin up. I’m gonna go
+through run UEFI read C sharp and then as you can see from
+that, ah I successfully just
+executed a payload out of NVRAM with like a four kilobyte binary
+using a reflection. [Applause]
+Thank you. So the fun doesn’t actually end there. So because
+this is a persistence mechanism
+and it’s persistent, ah in NVRAM. This means it’s gonna
+survive reboots, it’s gonna
+survive reinstalling your operating system. The only way
+to clear this out, is to like
+clobber whatever that variable or, ah pull NVRAM with like a
+dediprog and we, ah like rewrite
+your UEFI, um variable space. So, I’m gonna shut down the box,
+reboot it, go back to my
+metasploit shell, Um, re-run the console and then it’s a cooking
+show, it takes a lot of time for
+Windows to boot, so speed up, ah you know, I just put the payload
+in the oven. It’s gonna be done
+pretty quickly. The machines booting. Still booting. It’s a
+cooking show, wait a minute,
+there it is. Let’s see. And there we go, I just executed my
+payload out of NVRAM again, ah
+with a persistence mechanism out of a UEFI variable. [Applause]
+>>Woo hoo, fresh cookies >>Yay,
+cookies and shells. I baked some shells, awesome. Um, so we kind
+of like have hand waved the
+persistence thing. We’re gonna leave that as an exercise up to
+the reader. Like I said, w dot
+bypass’s are a great way to do this. Ah, in actuality, ah your
+payloads a UEFI variable, like
+good luck have fun analysts. Ah, we love you still though,like
+we’re gonna help you but this is
+fun. So like what about Windows EDR products? We haven’t
+necessarily touched on that.
+Like obviously this is a way to mitigate detection. Um, so we
+looked at a couple of, ah EDR
+vendors and we found no relevant information pertaining to the
+usage of either these API calls,
+executing at a unified variable or anything of that nature. The
+only thing you’re really going
+to see is that you’re executing this binary. Ah, but like
+there’s binary’s executed on
+systems all the time, that’s not really something too relevant
+too-relevant that’s gonna
+trigger a hunt. Um, furthermore, ah there’s a lot of ways
+currently to sinkhole or to
+tamper with EDR products. So, here’s like a five line power
+shell script that you can use to
+like sinkhole EDR products. This works on a lot of them. Ah, like
+EDR products are things of
+software running on a box. Software have configs, configs
+can be tampered with, so just
+tamper with configs a lot of the times and you can get away with
+anything on a box on Windows.
+Um, there’s a lot of other ways to go about it, we can chat like
+after the talk about it. Ah,
+this isn’t really a talk about this, so it’s a talk about
+hiding your shit. And that’s how
+you hide your shit in Windows. Um, some WDAC Bypasses just for
+references. Ah, now that I’ve
+talked about hiding your shit in-in Windows, ah Mike’s gonna
+talk about some Linux stuff.
+>>Boy Windows is silly [Laughter] Let’s, let’s-let’s
+talk about Linux-Linux is you
+know everyone knows that’s where the real loot is. So, let’s talk
+about the problem Space. Ah,
+basically let’s introduce our players here. We have, you know,
+the kernel, we have the EDR and
+we have on the right, we have, your sample. And, you know, EDR
+is looking at your sample and
+that’s-that’s bad that’s what makes it your sample and not
+your payload. Um, and you know
+the EDR and your sample are actually kind of peers right?
+We’re both running as privileged
+processes and the EDR has some hucks into kernel space to help
+do, help it do its job and so
+that’s what that sort of rectangle just above the
+eyeballs is. Eyeballs are
+obviously EDR. [Laughter] And so, like what does our solution
+space look like? Well, you know.
+What we really want is just to make, you know, just to sucker
+punch the EDR a little bit, you
+know, while it’s not looking, make sure that it just doesn’t
+look at us at all. And then,
+then it’s back to being our payload. So, you know, how are
+we gonna do that? We-we need to
+like, we need to show up early to the fight, right? So that it
+never sees us coming. So we need
+to infect something. So, you know, how does your computer,
+how does your computer boot? And
+what can we infect? Well, the first thing that boots, is
+platform firmware and that’s
+signed by the OEM, it can’t really infect that easily. Boo.
+The next things that’s signed by
+Micro, the shim, that’s signed by Microsoft and it pivots the
+key over to the distro. That’s a
+little bit harder to infect. Ah, grub, you know, signed by the
+distro, no good. The kernel
+signed by the distro, no good. But the ramdisk is generated on
+system and not signed. This
+sounds like a good time. And then sometime later, some shit
+happens in the EDR’s is started.
+So, obviously what we need to infect is the ramdisk. So how’re
+we gonna, what capabilities do
+we have? What-what-what-what tools do we have at our disposal
+in the Linux environment to-to
+make things happen and-and-and make the EDR not look at us? So,
+ah the first sort of, ah
+wonderful sys call to, ah introduce is ptrace, right. And
+this is, you know why we say the
+90’s are back again, like ptrace, ah exploitation of
+processes been like, ah as-as
+old as time itself. But, you know, in-in it’s-it’s tapered
+off in the, in the modern era
+because we have policies that prevent you from doing it. We
+have like YAMA and SELinux and
+AppArmor and silly stuff like Smack and Tomoyo and whatever.
+But the best part about all this
+stuff is the policy is implied, is applied in user space.
+Alrighty. So, let’s-let’s-let’s
+go through this, um, let’s go through this in flow chart sort
+of land. So, we have, um the
+ramdisk is actually the original Pid one, that’s actually where
+ah, a init starts from. And then
+it finds a root file system, you know, draw some pretty stuff on
+screen, like make sure you have
+the right fonts, whatever. And then it does,it actually deletes
+everything out of the-out of the
+root files system, except for the target directory and then it
+moves the mount from the target
+to root. And then it exec’s system D. And that will come
+again in the sort of deleting
+everything. And then like system D starts and like, you know the
+thumbs down is the policy being
+loaded that prevents you from attacking the EDR and then, of
+course, our eyeballs here are
+the EDR. So, let’s-let’s talk about some other things we have,
+fanotify. Fanotify, is kind of,
+ah a obscure API, but like it’s designed for AV. I don’t think
+any AV actually uses it, but,
+you know, who cares. Ex-Exploding using security
+API’s for unintended things is
+like one of my favorite things. [Laughter] So, basically what
+this let’s you do is this let’s
+you, um, you know do the AV thing, right. Like a-a file is
+accessed, you get to stop that
+process from accessing that file, decide whether it’s okay
+and then you can say, if it is,
+to go ahead, which is effectively allows us to inhibit
+start-up of other processes. Ah,
+another fantastic utility is, ah memfd create. Um, this has been
+talked about a lot in-in, in
+the-in the hackers scene but essentially like you can create
+an, ah anonymous file and, ah
+this works like a file, get a file descriptor. Ah,and then you
+can actually access it through,
+you know, proc pidfd, ah even from other processes. This is
+fantastic. Ah, and you know the
+best part is, like everyone says, never touch dis kids.
+[Laughter] Ah, and then another
+API that we can use is, and this is also somewhat obscure and not
+really security relevant, is, um
+a PR Set PR Timer slack. So we need some marker for our
+process. Ah, to say, to the EDR,
+don’t look at this. And so we need something that’s
+inheritable, right. So, you
+know, you can-you can have your malicious shell, you can catch
+shadow and wincat does, cat also
+inherits the marker. So, um, we do the set timer slack that’s
+basically, ah controls how often
+you wake up the CPU. It’s designed to save power, but I
+don't care about that. And then
+lastly like the config EFI VARS, this is the final config to make
+the EFI VARs file system, you
+saw what a pain in the ass it was to do stuff with UEFI and
+Windows. Windows is dumb, it’s
+just a file system, you just read and write files, it’s super
+easy, you can do it form a shell
+script. [Laughter] And then I talked previously about MS Move.
+Like basically, um this, if you
+look in the code, this is labeled as black magic fuckery.
+Um, [Laughter] I can go through
+these steps but it’s really convoluted. But essentially, um
+if you want to have a malicious
+processes survive pivoting the root system out from under you,
+there’s a whole lot a of really
+weird stuff involving containers and chroot’s and namespaces and
+weird stuff to do just so that
+your malicious process sees the real root file system as opposed
+to seeing the init root file
+system, which has nothing in it. Um, funny story, like even
+though you can never have two
+root file systems. Unless if you don’t do this, you have two root
+file systems in that process.
+And, ah the-the real one and the init one and you, and nothing is
+there, it’s like really messed
+up. So anyway, let’s go through how this is, how-how this works
+in practice. So, a little, ah a
+little devil emoji here. I like emojis. Ah, is our malicious
+daemon. This is, this is
+effectively stage one. Um, we, in the-the init script in the
+ramfs forks and execs that. We
+open the, ah EFI virus, we actually mount the EFI virus
+file system, ah and mount proc
+and all that. And then we fetch it out of the, ah. We fetch
+stage two and three out of EFI,
+out of UEFI land. And then we just kind of stay there and we
+cross that boundary between init
+REM MFS land and, you know the real system land. And that
+execs, you know our friend
+system D, which then spawns all kinds of other garbage. And when
+it spawns the policy load, which
+we detected through fanotify, we give as stop signal to sysctl,
+right. Sysctls’s gonna apply the
+policy that says you cannot be ptrace. And there’s our EDR over
+there. You think you can figure
+out the next step. Ah, we’re gonna ptrace the, ah the EDR end
+then like have our with it.
+[Laughter] So, ah what ptrace allows us to do, is basically we
+stop the process. You can see,
+ah we probably end up stopping it right after or before a-a
+syscall. And we can just back
+up. Ah, we can just back up to the syscall and we can c-control
+the IP back to the syscall and
+then we can just set EAX and set what syscalls we would like to
+make. So, we’re effectively
+coercing syscalls into the process. So, we can call memfd
+create. Then in our other
+process because we can access proc fd, proc pidfd, we can
+shove stage-stage three in
+there, which is embedded in stage two. Which, by the way,
+never touched disk. [Laughter]
+And then we can do an mmap. Ah, fortunately unlike in-in
+Windows, ah, mmapping
+rewrite-write execute pages is like totally normal, libc does
+it all the time. Um, and then we
+can just put our shellcode in there. And then we set, oop, I
+went too fast. Then we set our
+EIP to the sled there. And we actually just jump over. And
+then we effectively return to-we
+return to dlopen as um, as-as-as,as we learned
+yesterday. And this I kind of
+already new, like [Laughter] Ah, I’m sorry I forgot the speaker's
+name who talked about it
+yesterday. >>Tommy-Tommy Newcart >>Tommy Newcart, oh no, I’m out
+of sync, anyway. [Laughter] So,
+ah lipc has an internal dlopen, we can do, ah the old school, ah
+ld preload trick, accept for
+without ld preloading we can call the internal dlopen, then
+we can and hack our malicious
+SO. And that malicious SO can clobber whatever we need to
+clobber. And then we return,
+alright. So, now we can send the continue to our, ah policy load
+and load the actual policy that
+prevents us from doing this. And our EDR is actually now looking
+the other way. So, basically, um
+if you look in the code and you see our payload, um and this is
+sort of a-a point that also
+Topher t-touched on. That, ah you don’t wanna there’s two
+options here about clobbering
+the EDR, either the input stage or the output stage. And the
+input stage is complicated you
+have to understand how it processes information from the
+kernel. The output stage is
+super simple, you-you’ve already looked at the logs, you know
+what they say. You just wanna,
+you know compromise its ability to write things to the output
+log, or things you don’t want to
+the output log. And then there’s our malicious process and
+everybody’s happy. The EDR is
+look away and we can plunder away. So, ah, let's do a little
+demo. Um, what I’m gonna do is,
+ah we’re gonna, ah tune up auditd. Auditd is our example
+EDR, ah you know, I know that
+like auditd is not a commercial EDR vendor and your wondering
+does this work on commercial EDR
+vendor, yep, probably. Ah. And, ah we’ll install an implant,
+we’ll reboot, we’ll set the
+marker. We’ll done, do the exploit again and we’ll show
+that we’re invisible. Alright,
+let’s do the demo. Okay, ah, oh god how do you do this? Windows
+is hard. Oh god >>Do it, okay,
+oh god, what did do. Oh god. [Laughter] >>I-I know how to use
+Windows [ Laughter] >>This
+Windows shit is complicated. Alright, here we go. We got the
+analyst on-on the right, we got
+the hacker on the left and um what we’re gonna do, is the
+analyst is gonna turn on the
+audit rules. He’s gonna tune up audit so that’s it just, ah has
+every exec. Then we’re going to
+tale the audit log, we’re going to exploit the enterprise tool.
+You can see we root, we’re
+making all this noise, it’s terrible. You know,
+they’re-they’re gonna roll us
+up. You can see it on the right, all that noise. Then we’re gonna
+run our infector binary on. Our
+infector binary is gonna make a whole lot of noise. But, um this
+noise is actually really normal
+because, ah systems generate, ah init REM MFS’s all the time. So,
+it’s fine. So, it’s gonna make
+basically all the noise that it makes on a, ah, on ah UEFI or on
+a init MFS update. Ah, this is
+kind of a lot of reuse harness from my horsepill talk from a
+few years ago. But, you know
+it’s as true today as it was there, and like you know
+everything’s affected, have a
+nice day. [Laughter] And then we’re gonna reboot.
+Do-do-do-doo, let’s do some
+quicky showtime, let’s see-let’s see if I edited this video well
+enough. Well, here we are,
+waiting, okay waiting. I’ll-I’ll edit it tighter next time. Okay,
+and again we’ve tuned up audit
+and you can see we-we’re, um displaying the audit, ah, log
+there. Let’s, let’s see make a
+little space there, do-do-doo. Okay, and then we’re gonna do
+the same thing. We’re gonna
+exploit, ah, actually we’re gonna set our marker first and
+that’s gonna make a little bit
+of noise. But once you set the timer slack, that’s what that
+prtcl call is, you can see, ah
+the marker’s set and you can also see that there’s no noise
+in the audit log. We’re- and
+then I- I- I gain root again. And you can see again, no noise,
+we’re-we’re invisible. We can-we
+can do all those nasty things we did before. Invisible, it’s
+awesome, ta da. [Laughter]
+[Applause] And then, ah, we can show that we can show the policy
+is applied. You can see like
+mmode three, it means ptrace is completely disabled in the
+system and that is true. Like
+ptrace is now completely disabled in the system, but we
+inhibited the policy load that
+prevented us from doing that. And then, ah like I said
+everything’s a file-a file
+system, or everything's a file in Linux. Like there’s an EFI
+file system if you look like, ah
+somewhere in there should be a lol key, yeah there it is. Yeah,
+right around there. Cause
+hacking is funny. And then ta da, we did it. [Laughter] How do
+we get back to the slides. Okay
+[Laughter] [Applause] Thank you. And, you know, everyone on a
+Saturday morning at DefCon is
+always thinking to themselves, what-what does this all mean?
+[Laughter] You know, we just
+want to bring happiness to everyone. [Laughter] Everyone’s
+gonna sleep well tonight this is
+a net happiness increase, you’re happy. The, the analyst is
+happy, that-that payload that
+you spent months working on is still your payload and not their
+sample. Everything is good,
+that’s what we’re all about. Bringing happiness to the world.
+[Laughter] Alright, I don’t
+really care about mitigation, so I’ll have Topher talk about
+that. >>Ah, I mean I don’t
+really care either but we felt it necessary. Um, there’s a
+couple of things that you can do
+to mitigate this. Like, the one biggest thing is, cause we’re
+utilising UEFI variables, is to
+actually monitor and audit those against your organization's
+fleet. That would, ah, that
+would be like the first step to sort of mitigating these risks
+that we’ve presented. Um,
+furthermore, EDR vendors, if any of you are out there, you should
+be detecting UEFI APIs and this
+functionality in Windows in Linux bases if you happen to be
+doing, like Linux EDR. Um, it’s
+not really common for applications to set and get
+firmware variables. Um, and
+furthermore, like after the installation of a platform. Ah,
+NV, BS and RT variables being
+set is-is pretty weird. Ah, I’ve never actually seen that in
+practice. If you have seen that
+in practice come talk to me about it, cause I’d like to know
+where cause I want to abuse it.
+[Laughter] Um, furthermore, as we kinda showcase EDR tamper
+resistance is not at all
+effective. Ah, it’s very easy to like sinkhole, ah the sensor,
+kill the sensor. As Mike showed,
+it’s very easy to ptrace the sensor. Um, so vendors really
+just need to work on securing
+their, ah agents and their processes a little bit better.
+Um, furthermore, um Mike kinda
+said this in his horsetail talk at Blackhat a few years ago.
+Assembling ramdisks on systems
+is just silly. Stop doing that if you’re on Linux distro. Um,
+so like as far as closing and
+the rest goes, ah we have some future work. >>So, you know, the
+system firmware is, ah a great-a
+great place to-to hide and there’s all kinds of goodies in
+there. And we’re just touching
+the surface of it. And it’s interesting like, as we were
+doing this research a lot of
+companies started announcing that they’re going to start
+looking at the firmware space as
+a place to hunt. But, you know, this is a cat and mouse game
+and, ah as far as I can tell the
+ah. Are we the mouse or are we the cat? Anyway one of us >>
+Depends on the day >>is already
+ahead [Laughter] and I think it’s us. I’m not sure we’re the
+cat or the mouse. [Laughter]
+Alright. >>So, like in closing we’re bringing net happiness to
+everybody. We're gonna have
+ourselves a UEFI dot party. We’re plundering away our loot,
+we’re sucker punching that pesky
+EDR. Um, and all of our code is located on this GitHub link. Ah,
+perturbed platypus or you know,
+as we like to call ourselves aptpp. [Laughter] Ah, we-we just
+pushed the code, we just
+confirmed it. We had a- we had a timer on a-on a box that pushed
+at exactly ten forty five. Ah,
+it’s live so go-go have it. Plunder away. Ah, here’s some
+references you can look at. Ah,
+that-that’s all we got for ya. [Applause]

@@ -1,0 +1,301 @@
+>> Thank you for coming out and
+give a big hand, this is Chris.
+	>> Come on, get that going? (Applause) 	>> Thank you. These
+lights are bright. I just took a
+shot. This is The $env:PATH Less Traveled is Full of Easy
+Privilege Escalation Vulns. I am
+a security researcher, Chris Campbell for the Harris
+corporation. I am not do not
+represent them in this talk, this is all personal research,
+standard disclaimer applies. Any
+former red team people here? None. They love me so much. I'm
+one of the developers at
+PowerSploit -- does anyone use PowerSploit I'm on Twitter
+normally yelling at people at
+obscure sec and my blog is obscuresec.com. This is my first
+time talking here. I've wanted
+to talk for many many years, I'm excited and terrified at the
+same time. So let's start with
+Windows sucks! 	(Laughter) (Cheers and applause) 	>> As
+someone who has been forced to
+work with it for over a decade I can say that with great
+authority. It sucks a lot.
+Windows 8 is terrible. But it does suck a lot less now because
+of power shell. Right. Everybody
+using power shell now? Finally we have a full shell like the
+rest of the worlds. PowerShell
+is awesome and it's definitely moving Microsoft's product,
+their flagship product, forward.
+And gives us a lot more power but moving forward in the next
+version of Windows in Windows 9,
+we're going to have some new and exciting things in the form of
+OneGet. It is already shipping
+with PowerShell version 5, a package manager. Has anyone ever
+heard of 1 get?	 	>> Woo-hoo!
+	>> Wow, that's more people than I thought. How many people have
+heard of chocolaty nuget? Yeah,
+how about PS Get? All these utilities have lots of purposes
+and the reason I put this talk
+together was to highlight these things because every con I would
+go to I'd mention it and people
+had no idea. Full disclosure chocolaty nuget was written by a
+friend of mine. I do beat up on
+it in this talk but he's a good guy and he has patched all the
+vulns before today. These things
+will help simplify if you are an admin or pen tester and you want
+to advocate how to patch third
+party applications moving forward this will be a way using
+1 get to patch Adobe, Java,
+Flash, all the third-party apps you are paying money for other
+products. OneGet will allow you
+to patch those on a regular basis with easy scheduled tasks.
+It also is great for researching
+vulnerabilities. I'll tell you one story about how I used it in
+a few slides and another way is
+to build quick CTS. I do that quite often. Once I find a
+vulnerability and I am building
+a little environment for people to play around in, this speeds
+this up and gives you the
+ability to randomize what is on each box to make it look more
+real. 	These are quotes from the
+Oneget page. A new way to discover and install software
+packages for Windows. It's new.
+Except everyone in every other language -- every other
+operating system has had it
+forever. But it lets you see mostly in stall and uninstall
+with single PowerShell command.
+It ships with version 5 which is in beta right now, you can get
+it and download it and it's
+actually open source which is really cool. Give Microsoft a
+hand for starting to open-source
+some products! (Applause) So it's on get hub if you want to
+check out source code. At the
+bottom. All right. 	My favorite package manager is Chocolaty
+Nuget. This has over 4 million
+downloads and over 2,000 unique packages it's written by Rob
+Reynolds, over 30 contributors,
+open source as well and recently Microsoft declared that it was a
+supported open source project. I
+really don't honestly -- not a knock on Microsoft, I have no
+idea what that means, if it
+means money or what. But Chocolaty is out there, if you
+have never used it, it's great
+but it's got a few problems. 	PSGet is specific to
+PowerShell. I just included it
+just to be complete. PSGet is for like PIP, it is just a bunch
+of functions that have been
+screened by a few people you can grab easily and download and
+use. All right. So I was doing a
+long-term engagement and discovered chocolaty knew gat
+being used and they had their
+own private repo server in an enterprise. Has anyone ran into
+any of these on a package
+managers on a pen test ? Anybody? Nobody. Yes. So you
+probably will run into them in
+the future so it's great you are here. I saw it was being used, I
+found some privilege escalation
+vulnerabilities on their main baseline and then later
+discovered they kind of came
+from their use of chocolaty nuget, I reached out to Rob, and
+told him hey I'll do tests, he
+was like cool I didn't realize Rob was paying for his bandwidth
+so that first day I just started
+downloading every single package and just shot his bill sky-high.
+All his numbers on his website.
+I also blue-screened the VM because in my infinite wisdom I
+decided to do it all from one VM
+so I just said you know download start and install them all. So I
+tried to install 1800 binaries
+on a single Windows 8 GM and I got the frowny face pretty
+quick. 	Let's go over a couple
+problems. It is 2014, is it not, can we stop using http to
+download installation files?
+This is currently on the website. This is how they
+suggest that you install PS get.
+What you are doing is you are using the .NET and you are
+downloading the content of the
+Get.ps1 script, and you are piping it to IEX, which is a
+alias for invoked expression so
+you are basically downloading a script from a http and executing
+it. It is 2014, people! Below
+that, though, you have chocolaty which had a similar problem but
+he immediately fixed it as soon
+as I brought it up, but the installation itself was pulling
+down a NUP KG package which is
+just a zipped up PowerShell script over http so it, itself
+had the exact same problem. But
+that's been fixed. 	All right. So the next thing I decided to
+do was to make this more
+parallel so I created a bunch of Windows VMs, some of them using
+Azure and got a nice call from
+the Azure abuse team. But I decide today use Windows 7 and 8
+because not all software
+supported Windows 8 at that time. And then I still had a few
+blue screens so the first thing
+I want to do because it's my friend's repo was no one was
+doing quality check on the code
+or the actual binaries, packages being submitted. 	I wanted to
+see if it was being abused
+already with malware. So I scripted hashing every single
+one in there, tons of tools to
+do this. One is built into sys internals so I was able to find,
+I scripted hashing all new files
+and found 100 that when I submitted MD fives it didn't
+know about. So then I scanned
+those and 31 of them had detections. A lot were admin
+tools but there was full-blown
+malware including one that was straight you were on the
+binaries that someone built a
+package for and put it up there. 	Most of those I believe are
+removed. I think Rob and the
+other developers are doing a good job looking for that now. I
+also wanted to use this
+opportunity to write a new tool to look for escalation
+vulnerabilities. Aspen testers
+that's something we do on the box a lot. You are Fishing and
+you have to escalate. Every way
+I've been taught is run a series of commands to check to go
+through manually so power slate
+was missing a module so I looked for the common path-based file
+permission base service
+preloading and found a bunch and a lot of this talk would be
+about that but I had a lot of
+push-back from vendors so you can beat me up about it but I
+really got tired of dealing with
+them so I'm not disclosing any of the silly vulnerabilities in
+silly products and not giving
+them any press at DEF CON. Most of the applications were so
+obscure that no one here really
+would care. 	But the talk I followed mostly was this one.
+Has anyone seen this talk? On
+Encyclopedia of Windows privilege escalation. Couple
+years old but still very valid.
+Great talk. I wanted to give that talk a shoutout. Here are
+other resources, Chris Gates and
+Rob fuller gave a talk a couple times, I believe it was add is
+the new black. That talk is
+great. Rest is mostly about subverting the path. I wrote a
+blog post about that couple
+months ago at the bottom. Those other two are great resources
+for privilege escalation. There
+were already -- there was prior work before I submitted this to
+DEF CON. I actually took this
+code almost completely and just rewrote each thing in
+PowerShell. So this was Windows
+check from pen test monkey. Has anyone used this? Couple people?
+It's actually really cool but it
+kind of defeats the purpose in that you have to either compile
+it as a binary, put it down on
+disk or have Python installed on the box. With PowerShell we
+don't need that. I wrote a
+privilege escalation module I was planning on releasing here
+but then this guy who is awesome
+harmjOy, wrote power up. Has anyone seen power up? Couple
+people. All right. 	Well,
+hopefully more people, it's already on version 1.1, Will
+added a ton of stuff and it is
+way better than what I wrote. What we are doing right now is
+porting all that, adding things
+and that will be the next privilege escalation module in
+power suploit but it will be 95%
+of Harmjoy's work, download it, it works great. So back to the
+package managers. 	The problem
+that 1 get suffers from already and it hasn't been released yet
+is the repo server has to be
+trusted and right now there's so many people already using
+chocolaty repo servers they have
+decided not to stand up their own yet. Maybe they will do that
+in the future. We saw that over
+four million people have used Choclaty repo's to download
+stuff but Choclaty repo allows
+anyone in this room to build a package and deploy it. So right
+now with 1 get, you have to
+explicitly go and say yes, I trust chocolaty repo but it's
+already there, really easy to do
+and there are a bunch of guides on the Internet, just trust this
+repo but bottom line is all
+packet managers whether written by Microsoft or anyone else,
+they inherit all vulnerabilities
+from both repo and the packages themselves. So here is probably
+can't see that at all can you.
+	This is what a chocolaty package looks like, two things,
+XML document with different
+descriptions. And then it's a PowerShell script to install it
+and all the different switches
+and flags to install it silently. That's really all it
+is. So it would be really easy
+for an enterprise to stand up their own repo server and deploy
+their own for all internal
+tools. So let's talk about the path. Really easy to see what's
+in your path. And this
+screenshot, I have a few things, anyone see anything problematic
+that is in my path? Say it
+louder. Python. Check your box right now, see if Python is
+sitting on the root of C. If it
+is it probably inherited the permission which allows the user
+to write to any binary in that
+folder. Now we have created not just a DLL preloading problem
+but we have created a problem
+where every service that is using the path to pull its TLLs
+can actually be abused. 	There's
+something else that uses the path. PowerShell version three,
+really easy way to find in
+problem and deal with highjacking and other
+DLL-related issues is use
+process monitor. There are lots of guys on the Internet that
+show you how. In this case
+PowerShell version 3 will check for PS console host reline.PS 1,
+P MS1, PST (?), blah, blah,
+blah. Anyone have a guess as to wait does as it finds it? It
+would not execute it, would it?
+(Pause) So any user on this box could just write PS console
+host.cmd, and make it be net add
+myself to local admin and sit back and wait for an admin to
+just open PowerShell, as soon as
+the console shows up, that's executed and you have just
+escalated. 	So the vast majority
+of packages, I'll show you but so up top is what it used to be
+install for chocolaty used to
+look like and at the bottom is what it currently looks like.
+The problem with chocolaty and
+all its packages and why they were almost all vulnerable
+including things like sys
+internals, if you are using chocolaty, you might want to
+check those out because they
+didn't go back to fix permissions. They were dropping
+everything with, in C chocolaty
+bin which any user has the ability to write to. So anyone
+who was using chocolaty or
+OneGet with chocolaty and installed packages, all those
+packages are vulnerable to
+privilege escalation to the tune of hundreds and hundreds and
+hundreds of them. The fix was
+actually really simple. He's using all users profile. Can you
+guys see that? Yes, you can see
+it? 	Before the fix, that does not look great on this screen
+either. 	Before the fix cinst is
+the command to install something, CINST, you can go
+into the actual chocolaty files
+and go in and change and add whatever commands you wanted and
+then the environment I was pen
+testing they were running commands remotely to execute
+this locally to update
+everything. So I was able to get domain admin by just writing a
+net user add command to add
+myself to domain admins and sitting back and waiting one
+day. In this case I'm just
+popping. So I really have no idea what I'm doing most of the
+time. So I have lots of friends
+and friends are good. So I'll start with Rob. Rob wrote
+chocolaty, and he has done a
+great job fixing everything that I find and telling me when some
+of the stuff is just plain
+stupid. Matt Graber, really good friend of mine. Joe Bolakirks
+from Microsoft, help me a lot,
+Will who wrote Power Up, and Will Peteroy and Lee Holmes from
+PowerShell security team who
+worked through removing that feature from PowerShell version
+four and all of you guys who
+came to my first DEF CON talk. I hope to have many more and
+hopefully the next ones are a
+full hour. But thanks, guys! (Applause)

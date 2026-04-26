@@ -1,0 +1,120 @@
+>> You all know the drill by now. So we have decided to change it up a little
+bit today. So, raise your hand if this is your first
+DEF CON as an attendee. You liars! All right. You on the end. Yes, you. Get up here. (Laughter)
+>> No, no, get him up on stage. I mean, come on. You can dream, can't you? Here are 1500 of my closest friends. What are you doing? All right, pour him another one. You don't ‑‑ dude, slow down. Holy shit, he's taking a ‑‑ you know
+what, hold it. Don't give it to him until we are ready, because
+he's scaring me. All right. Our tradition is, first time speakers ‑‑
+>> Where is mine? First time speakers, how about a round applause
+for our first‑time speaker and for our first‑time attendee. (Applause)
+Good luck with your talk! (Laughter)
+>> PAU OLIVA FORA: The person type writing this will have a hard time now. (Chuckles). >> I want to point out, he had no accent before
+that shot. (Laughter)
+>> PAU OLIVA FORA: Yeah, sorry, guys, my English is Spanglish. (Laughter). All right. I'm going to talk about SEAndroid, which is
+as you might know security enhancements in the Android. It's now been renamed so the name is security
+enhancement for Android. My name is Pau Oliva Fora I'm at POF at Twitter. Some of you follow me. If you don't, you should. I'm mobile security engineer with via forensics. I do R&D in Android security. And I'm also a co‑Arthur of the Android
+hacker's handbook, which will helpfully come out later this year. I brought these postcards. So you are welcome to come after the presentation
+to grab one. I have a bunch of them here. This is the agenda for today. First, I will talk about in which devices
+I have tested the Android, most of them. Then I will briefly talk about effectiveness
+and weaknesses of SEAndroid, and then to the details of the implementation issues I found
+on most of these devices. So, first thing that you will might want to
+care about the SEAndroid, you can compile it from public services which is AOSP, Android
+open source project and the bitbucket, that the NSA controls. You love the NSA. They are the contributors of the SEAndroid
+and they host it in bitbucket. So there is the SEmanager application, which
+sets it in enforcing mode and SEadmin, which has replaced the SEmanager. It's better because it runs the device administrator,
+while SEmanager runs as a system application. I have also tested SEAndroid in the Toshiba
+AT300 tablet. This tablet here. This was first device in the market with some
+SEAndroid. It's a bit weird. It's not the same as the SEAndroid we have
+seen in other devices. It uses Sealime, Linux security module. It's based on an early implementation of SELinux. It runs as a Linux security module. And finally, Android 4.3 came last week and
+as you might know, it comes with SELinux by default. So I have also tested it a little bit before
+coming here, and found little things. Yeah, you might know that SEAndroid is effective. It's good to enforce fine‑grained mandatory
+access control which is different from the discretionary access control that we use in
+Linux and UNIX system and also in Android with file permissions and user IDs. So in SEAndroid, you have also three different
+branches to test mandatory access control, install time of application and intent and
+content providers. It is good to prevent privilege escalations
+by isolating context. So a context is a process runs inside a context. So, for example, we can say, a trusted application,
+we can define a rule to set if we allow this entrusted application to access files open
+the SD card or access the radio interface, whatever, if we would allow it do or not. So as every application runs confined in this
+context, this allows to prevent privilege escalations since it can not access the file
+outside of this context. It's also good to do permissions checks on
+IPC, on the process communications operations which mainly binder on Android and it's also
+good to do permission revocation, or installed applications but, yeah, not everything is
+so good, as it might sound. The most known thing, it runs kernel levels. So it doesn't protect against kernel vulnerabilities. If an attacker is able to get arbitrary code
+execution in kernel LAN, it's very easy for him to disable the security of the Android. So for this, it needs to be enhanced with,
+for instance, the typical is to have a secure boot mechanism that makes sure the code we
+are running, the kernel is not tampered or modified in any way and also some runtime
+integrity check, which can be hypervisor, to make sure that the kernel is not moot or
+modified at runtime. Yeah, also vendors or companies deploying
+policies for employers using this bring your own device thing, they don't know how to write
+policies, right? Because in a commercial device, there can
+be, like, thousands of policies, and it's hard to write them, and hard to not make any
+mistake when there is a high number of policies. So that is what vendors are more ‑‑ having
+a hard time, right? And that's where they screw up as well. So this lets us to see in the implementation
+issues. First thing, okay, when you have all of your
+SEAndroid app working properly, you set the system to boot in enforcing mode, and some
+vendors, some people are setting these apps forget about the recovery image. If you boot in enforcing mode also, don't
+get your recovery to be in enforcing mode. Leave it in permissive mode. I was going to do a demo here, but this is
+what I will use. It doesn't need a demo. Another thing is policies screw up of vendors. They say, okay, my device is running in enforcing
+mode. So I'm preventing, the root user. They set a mode saying the root user cannot
+set the device in permissive. So the user cannot use the set enforce mode,
+but then they get about system user. So again... (Laughter). Again, as you see here, we have the ID command. Our root, if ‑‑ if we do our set enforce
+0, it says permission denied. We just have to do the system, once we do
+system, we can do setenforce. So a typical screwup, right? Also, this is another issue that I have seen
+sometimes. This comes because a lot of people has used
+the SE manager application, and they rely on this application to set the system in enforcing
+mode. So you should never set enforcing mode from
+a system application, right? We will see now why. So if we combine these with fail number one
+which if you remember was the recovery was left in permissive mode. It's very easy to reboot into recovery, and
+pull the system APK of the SEAndroid manager, just to, and then remount the system mode
+and then and they just have to remove the system that sets it in enforcing mode, so
+we have it permissive. What if we don't have recovery? Or what if recovery running in enforcing mode? Well, no problem. This ‑‑ sorry. (Laughter). Here these is a Galaxy Nexus. We put the system? Enforcing mode. So in this shell here, first I check if the
+device is running in enforcing mode. So I use the come and get enforce. I see it says "enforcing." So now I reboot the device and I set 19er
+to check every second that get enforce command. So we see it says "device not found" because
+the device is still booting, but when the AP Diamond is running, we will see that the
+system is booting in permissive mode, right? And now the Android system, when it finished
+the boot, it broadcasts a boot complete event to our application that has resisted to receive
+it. So it is now in enforcing mode, because the
+C manager application has received the boot complete event and has set the system in enforcing,
+but you can see that we have a window there. So we can take this window, while the system
+is booting, which is still in permissive mode, and we reboot the device again and we will
+use this window. We have a little race condition here but we
+have plenty of time. So we prepare this command, which uses the
+manager. So in the upper terminal, we see it's booting
+in permissive, he execute the command but it says error because the package manager
+is not loaded yet. Now it says, okay, new state disabled. We have disabled. The SEAndroid application manager which is
+a system application, the system is still fully boot and still in permissive mode. So it's as easy as this to disable a system
+application, which sets the system in enforcing mode. So this should be always set in init. You have to set enforcing mote in init, right
+before the AP Diamond starts. So this single one liner here will do this
+same work we have done in the video. You can over complicated this and write an
+Android application with a higher priority and boot procedure and do the same thing from
+the Android app. But system, from the shell it's easier and
+faster. Now, the Toshiba tablet, if you remember,
+this was the Sealime model, that does not allow us to do some things, like, for example,
+mounting the system par missioning, even if we have root. Have so this is possible to do on any Android
+system but on the Toshiba tablet, it does not allow us to do this. So I have ‑‑ wait. I have a demo here. Yeah. So we will 
+use the Toshiba tablet and we will disable these Sealime module which is based on SEAndroid. Okay we run an ATP shell, we see the Sealime
+module is loaded. We try to remove it. And it says it failed, right? It doesn't allow us to remove it. So we try to mount system partition, it says
+the operation not permitted. To try to list the proc as SEAndroid and it
+says operation is not permitted. Okay, now I will compile this exploit. It will be available after the talk. So don't worry. So I just ATV push this exploit into the local
+folder and access the ATV shell again. Just give execute permissions to the exploit
+and then run it. And now we have overwrite counterpointer and
+run the security ops symbol, which now disables the Linux security module and allows us to
+reboot the system, in the SEproc. So we have effectively disabled this. This works because in a lot of Android devices,
+not only this Toshiba tablet but a lot of vendors, there is the config strict def mem
+kernel memory operation which says if in doubt say yes, but they have said no. So this allow for full access to memory on
+a root process. So you can poke the kernel memory as you wish. And finally, the Android 4.3. This implementation issues that I have found
+real quick because it came last week. One thing is that the ‑‑ over the air
+update from 4.22 to 4.3 leads to unabled file system. We see here LS/system and we see that all
+files there are unlabeled. This is because the recovery of Android 4.2.2,
+the recorded image of 4.2.2 is not compiled with Sealime Linux support. And so this happens. We have reported this so ISOP, and we says
+it will be fixed in the next release, because the Android 4.3 is already with Linux support. And finally, if you want to play with it,
+you have to know that the enforcing mode in the Nexus devices isn't really enforcing. If you pull the SC policy file, which sometimes
+is a big binary file, which all the policies compile in it and you run the SE info command
+on it, you will see that, for example, this is for a Nexus 4. We see that there are 44 permissive domains. So every single domain is set to permissive,
+and everything is in confine. So enforcing isn't really enforcing here. Right? So if you want to play with this, there is
+a tool, by Joshua Brindle, which is the SC policy inject that allows to you inject your
+own policies into this or you can also compile from ISOP, because ISOP includes all the Android
+stuff. And that's it. Thank you very much for attending. (Applause)
+And if you care about Android security, you should follow these guys here. They have helped me in their research and
+in the making of this presentation and also at the URL at the bottom, at the via forensics,
+I will publish the exploit code and video later today. Thank you very much. (Applause). If you have any questions, feel free to ask
+them. Oh, and don't get to come and take the book.

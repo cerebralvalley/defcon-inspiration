@@ -1,0 +1,668 @@
+>>So, uh, I'm going to talk
+about Bluetooth low energy 5
+PRNG today for fun and jamming and maybe more. So, for those
+who don't know me, I am Security
+Evangelist and also senior security researcher, digital
+security, uh, French IT security
+company specialized, uh, in the, uh, IUT and I'm also the main
+developer BtleJack, or "Beetle
+Jack", uh, which is a BLE Swiss-army knife. So we are
+going to talk about the BLE 5
+and, uh, especially what's new in BLE 5 specifications and, uh,
+we will go through some specific
+features. And also some, uh, some interesting stuff in this,
+uh, in this protocol. So, first
+of all I am going to recap what BLE is for those who are not
+familiar with this protocol. So,
+this protocol has been introduced in 20, in 2010 as,
+uh, "Bluetooth Smart" so this
+was the first name of this protocol and Bluetooth Core
+Specification version 4 point 0
+and it has evolved since then. Other version 4 point 1 in 2013,
+4 point 2 in 2014, version 5 in
+2016 and last, version 5 point 1, you know, this year. Uh, uh,
+in the beginning of this year.
+So, it's, uh, evolving very quickly, uh, as a protocol an,
+uh, it's, uh, it's designed to,
+to, to be very effective so, people behind this protocol
+produces, uh, produced a lot of
+different versions. But the, uh, industry, uhm, it's difficult
+for the industry to, to keep up
+with this, uh, evolution. This protocol provides some secret
+mechanisms such as pairing so
+you can exchange keys between 2 devices for, to, to be able to
+encrypt communications. And
+this, uh, pairing mechanism can be done with a pin code, so this
+is, uh, something, uh, very easy
+- you just exchange a 6 digit pin code between the 2 devices
+and derive some keys from. Also,
+from, uh, from out of bin data and also, uh, edit some,
+Elliptic-curve Diffie–Hellman
+negotiation. This is, uh, something provided by this
+protocol and it's cool. Some
+version of this pairing, uh, are not very secure, uh, as it was
+demonstrated before, years
+before, uh, before but some of them are pretty strong such as
+the elliptic-curves. This
+protocol also provides secure connections - so that means you
+can secure connection between
+devices and this is, uh, very interesting because this, uh,
+secure connection, BLE secure
+connection is a, a pretty strong when, when it's correctly
+implemented uh, in the, uh, in
+the applications. And this secure connection provide
+encryption and authentication -
+that means nobody can tap into an existing connection of even
+inject some malicious packets in
+this, in, uh, you know, in specific connections. And, last
+but not least, there is also
+what we call the "channel selection algorithm". So, to
+make this clear, clear, uh, this
+Bluetooth low-energy protocol uses channel hopping to insure,
+to, to, to, to make these
+connections reliable. Uhm, this channel hopping mechanism is
+very simple - when 2 devices
+create a connection they are going to jump from one channel
+to another. Uh, in order to
+avoid packet collisions, so, this, uh, the'll have a
+connection to be, uh, steady,
+you know? Even if there are a lot of devices in the same room.
+And this channel selection
+algorithm, is not the security mechanism when the, but when it
+comes to sniffing - when you are
+trying to sniff, a, uh, BLE connection. This can make, this
+can be an issue because you,
+from, you didn't need to know what this, uh, algorithm is and
+how to recover from this, uh,
+hopping sequence that will follow an existing connection.
+So, this makes sniffing
+complicated. There are also well-known attacks, uh,
+especially on BLE 4, which is
+the first one, sniffing you can easily sniff BLE connections, so
+this is pretty straightforward.
+Even secure BLE connection - when the pairing is not so
+secure. You can also jam an
+existing connection - this is what I showed last year at
+DefCon with Btlejack. So it's
+possible to disconnect 2 devices and once uh, uh, the device is
+disconnected it advertise again
+and you can connect to it and take control of it. But you can
+also hijack a connection - that
+means you can force a disconnection from one device to
+another and then exploit this,
+uh, connection without the other device noticing the
+disconnection. So it's possible
+to take complete control of, uh, a device this way. So, again,
+uhm, you can do this with a lot
+of different, uh, various hardware. On the left of the
+screen there is the Ubertooth
+which is a well-known device used to, to sniff BLE
+connections. In the middle
+Bluefruit LE sniffer which is the, one of the, one of the
+first ADM bluetooth low energy
+sniffer available on the market, uh, costs around, uh, 40 bucks.
+And, uh, on the right of the
+screen with the, the micro bit which is, uh, which is
+broadcasting company, uh,
+sponsored, but the developed to, deigned to, to teach UK students
+how to code. Uhm, Betlejack uses
+this last bomb, this Micro:Bit to allow attackers to sniff,
+jump and hijack the, uh, some
+connections. Let's go back to the new features introducing BLE
+5, BLE 5 introduces, uh uh, a
+better throughput, at 2, 2 megabits per second, uh, better
+range up to 800 feet or 240
+meters, and an improved coexistence. And we going away
+shortly, uh, uh, for this, first
+2 better throughput, better range. Basically it add, it adds
+2 new files, uh, to the, uh,
+bluetooth low energy protocol - the 2 megabit per seconds, uh,
+uncoded PHY that that was the
+speed of, uh, uh, the any BLE connection and more data in the
+same amount of time. And, uh,
+also, the LE Coded PHY, which, uh, improve the range times, uh,
+4 times the actual range for BLE
+4 but, uh, 125 kilobits per second speed. And, uh, 2 times
+the same range at 500 kilobit
+per second. So, this, this is some kind of trade off you you
+we do between range and speed.
+If you have a look at the packets sent around this, uh,
+two new files, uh, that would be
+the LE Coded Phy which is, a, a new PHY introducing BLD 5. And,
+and there is, there is another
+PHY - the LE Uncoded PHY which is the actual, uh, the BLE 4
+PHY. And in these packets, you
+would find, uh, an access address which is a 32-bit value,
+uhm, identifying a connection
+between the 2 devices. But the problem is that the hardware we
+are using, such as the micro bit
+or even the other , uh, blue, blue, blueframe LE sniffer. This
+other, cannot cope with these
+new PHYs and that's pretty much the issue, the issue here. So,
+the other may be useful but for
+these new PHYs, it's going to be a problem. So, we're going to
+cover this later. The main point
+here is that the BLE 5 protocol in, introduces a new channel
+selection algorithm. Of the old
+one, as mine shown here, this is a, a, uhm, very simple, uh,
+sequence generator based on some
+modulo. The new channel selection algorithm introduces a
+PRNG-based random generator,
+PRNG-based channel selection algorithm. This is based on, on
+a random number generator. This
+is, this is, uh, a problem for us because, as Mike Ryan showed
+in uh, 2013 it was very easy to
+recover, uh, a very, uh, a key value of the first channel
+selection algorithm which is
+the, uh, "hopinc" value mentioned in this slide. But,
+with a PRNG, the, the, uh, task
+is much harder because you, you need to break this random number
+generator to, to be able to
+sniff, uh, hijack and jam an existing connection. Luckily,
+the devices implementing this
+channel, this channel selection algorithm, uh, advertise the,
+uh, a very specific bit. And if
+this bit is set, the ChSel bit then this device hop on this new
+channel selection algorithm.
+Luckily, the devices implementing this channel, this
+channel selection algorithm, uh,
+advertise the, uh, a very specific bit. And if this bit is
+set, the ChiSel bit then this
+device hop on this new channel selection algorithm. So,
+basically, what are the
+consequences regarding known attacks on BLE 5? First of all,
+there was a completely different
+new hopinc button used, so basically the old version, the
+first channel selection
+algorithm generates a 37-channel sequence. and this new channel
+selection algorithm then
+generates a 65 536 channel sequence. And, basically the
+device will loop over the
+sequence, so this is, a, uhm, more complicated and our first
+approach we, we got when we are
+developing th, uh, BLE 4 tools, uh, couldn't work here. So,
+sniffing new connection is still
+possible because you only need some software able to, to follow
+this new channel security,
+channel selection algorithm. Because, at the beginning of a
+connection you get everything
+you need to synchronize with this connection and follow
+packets. But, as an attacker, we
+won't be able to jam or hijack BLE 5 devices, because the
+connection is always, is already
+established and we don't have these values use, uh, used to
+compute the, uh, sequence of
+channels. The, uhm, we need to go and synchronize and follow a
+connection. So, we also need a
+new hardware that support, supports BLE 5 new PHYs but, uh,
+that's another question. It's,
+uh, just like some guys at BTC decided to introduce this PRNG,
+uh, in order to mess up with
+the, the actual tools. Well, this is what, what I believed
+when I uh, started this, this
+research. So, let's see, let's have a look at the random number
+generator. First of all, it uses
+a channel identifier, value, uh, value as a seed - which is a
+16-bit value. Uh, this, uh,
+random number generator relies on basic operations, some add,
+multiply, XOR, bit permutation
+and so on. And it also uses some, uh, channel remapping but
+this is the same with BLE 4.
+This channel identifier value is computed from Access Address,
+so, you, this, this is the
+32-bit value identifying your link between the 2 devices, so,
+basically identifying your
+connection. Uhm, and the, the computation is the following -
+you take the access address 0 to
+15 and you XOR this value, the XOR this value with 16 to 31 -
+so you, you get a 16, uh, 16-bit
+value. And then we are going to use, uh, a lot of, uh,
+computation and, uh, specific
+routine called MAM for "Multiple Add Mod" and basically, this
+routine performs some
+computations and takes 2 values - A and B - 16-bit values and
+produces an, a 16-bit output.
+And this is just 3 times in a row, uh, these are some other
+computations in between to
+create a random number. Based on this random number, then we
+compute the actual channel for a
+given counter, a given value of the counter used here. So, when
+this, uh, when this channel
+selection algorithm generates a sequence it goes from, uh, a, a
+counter from 0 to 4k and then
+generates every possible channel and this, this creates a, uh, a
+sequence of channels and the
+devices we go over, loop over the sequence. So, when I saw
+this, uh, I was like, "Wow!
+What's this stuff? What, what the f**k?" And I wasn't alone,
+I, I found some people on
+Twitter also complaining about this specification and
+especially this PRNG. Well,
+there's something to do. Uh, if you have a look at this, uh,
+generator then you may have
+noticed that the channel identifier, which is a 16-bit
+value, is computed from the
+Access Address which is basically public. So, we need
+this to sniff the connection,
+so, this a known value. And, also, the next value, uh, is
+generated from the, next random
+value, is generated from the counter, so not from some
+internal state that, usually,
+PRNG used to, to, to create another random value. So, since
+access address is public, then
+we can go from 32 unknown bits to 16 unknown bits - so this,
+uh, quite easy and this PRNG,
+uh, uh, is it really a PRNG if you really look at the, uh,
+specification, then we know that
+the channel identifier is constant since it is derived
+from the access address. And
+what, uh, this function does, it, it generates a fixed
+sequence of 60, of 65 thousand
+values indexed by a counter. Normally, this counter bears
+random number counter generators
+are used to parallel, parallelize, uh, sorry in
+French. This is a very easy
+excuse but, anyway, uhm. [laughter] Yea, for this, uh,
+this generator fixed sequence of
+values, uhm this is very interesting for us for, for, you
+know, something type. But that
+function does, in fact, just randomise some channels, and
+that's it. So what do we need to
+break it? If we consider the, uh, just consider the channel
+identifier as known, you know,
+this is derived from the access address. We are left with a
+16-bit unknown value which is a
+counter and if you can figure out where we are in the
+sequence, of, uh, 65536 values,
+then we would find out what this counter value is, and once we
+get this value, it's done. You
+can synchronize with a connection and then follow a
+connection and then jam, hijack,
+and do whatever you want.. So, how to guess the counter value?
+As an attacker we can only
+monitor, uh, some events, uhm, and these events are the
+following - we can determine
+when the packet is received on this specific channel. And,
+based on this, you can also
+determine when, uh, the time between 2 packets received on 2
+different channels, so,
+basically, we can deduce something from, uh, some
+measures we can do on this, this
+specific connection. If all 37 data channels are used, then
+the, uh, channel selection
+algorithm uses a very simple equation or simple computation
+to, to derive the channel for a
+specific counter. Uh, but if not - if this, uh, this channel are
+not all used, this is more
+complex. But in fact, this, uhm, this doesn't make things more
+complex, more complicated, uh,
+uh, in this way. But I will, I will focus on the first case.
+The first case that we are going
+to use all the 37 data channels to make things, to make things
+simpler. My first approach was
+to use a sieve, uh, I'm quite sure you're, you all know about
+a stent, a sieve used to find
+prime numbers, we are basically doing the same. Our goal is to
+eliminate every possible
+candidate in multiple rounds and in the smallest number of rounds
+to be more precise. The program
+decides to do this is to be able to, uh, to, is to know the hop
+interval value which is
+basically the time between two hops in the, uh, in the hopping
+mechanism. So, how it works, we
+are going to consider control of 0 - so, just say that, that it's
+0, its, uh, hypothetical - that
+is not a real value we are looking for. And we compute, uh,
+channel C 0 from this PRMG
+function with this candidate counter and, and based on the,
+uh, channel identifier of
+course. And we wait for the packet, so we get the packet
+that time, T 0 on channel 0, on
+channel C 0. And we do the same on the next channel, so, we
+increase the, the counter with
+control of 1, we compute the next channel and then we wait
+and we get the packet at time T
+1. So, we're then been measuring the spent in between, so, data
+T, it was T1 minus T0. And since
+we know the hop interval, the time between two hops then we
+can deduce the number of hops
+between these two packets. So, by doing this, we can create a
+pattern, the, uh, would be very
+useful to, to see the sequence. So, basically, just, uh, by
+going through the sequence and
+looking for a specific part, composed of two channels -
+channel C 0 at, uh, uh, say
+index 200 for instance, at 200 plus "n", so C1. By doing this,
+you will get, uh, between 200
+and 400 candidate values for this counter. So, remember
+we're, we are looking for the,
+uh, counter used at T 0. And we do it, uh, we repeat the
+operations, we take the first
+candidate out of the, uh, remaining candidates and we
+complete C 0, C 1 - we get a
+packet a C 0 and then C1. And then we apply oursieve again. We
+are going to filter these, uh,
+all this cand, candidates and keep only the matching ones and
+you do this until one candidate
+is left and this candidate is the, your, your, the value of
+your counter at T 0. So, since,
+uh, I, I had no BLE 5 devices, at this time, I decided to
+implement, to simulate this, uh,
+this attack. So, I will show the result for his, uh, simulation.
+So, I wrote my, uh, I wrote
+everything in Python, Python 3, and I created this script to
+simulate PHY. So, basically, I
+just thought, uh, a counter randomly generated, which is the
+13600, and I will go through
+every candidate, uh, each run reducing the number of
+candidates. sorry, here 21, 11,
+6, 3, 2 until we, uh, get a single candidate. And this
+candidate is found in 600 which
+is in fact the value we're looking for, for T 0. So that's
+good! [applause] [whistling]
+Yea, I, I love when a plan comes together. The problem here is
+that we need to know what this
+hop interval value is. Uh, I suppose this value was known
+during my first simulation but
+in fact I don't know this value. So, how to guess this value,
+well, it's uh, some basic math
+you have to do. Since we are going to measure time
+differences between packets
+received on various channels then we can, uh, do so, we can
+compute the GCD, the Greatest
+Command Divisor of all these measures and since this measures
+of time are normally multiples
+of the value we are looking for, we will get this value. So,
+again, I simulated this, uh,
+this computation but it's very quick, so I, I have no video for
+this one but, uh, by doing only
+10 measures I rather want to recover the hop interval. And I
+performed a lot of tests, and
+this test show that, uhm, if you're here for only 5 measures,
+if you counted 5 measures then
+you get, uh, approximately success rate of 95 percent of
+success. So, this is critical,
+if you're, if you get 10 measures, then you are quite
+sure to get the correct value.
+But, that's cool, so, basically, what I got here is that a way to
+recover the approximate value
+and the, another way to get the counter value, uh, the value of
+the control, sorry, uhm, at a
+specific time. So, let's do it and practice! With a real
+device! Uh, the problem in fact
+is the version of the protocol has been released in 2016 and
+still there is no compatible
+devices, uh, else, on the market. So, uh, I wasn't about
+to find something to buy that
+implemented this, uh, this protocol. So, uh, I'm sorry,
+there is, there is, uh, there is
+no video for sex toy hack this time, or drone hack, uh, but
+anyway. So, uhm, based on my,
+uh, first research, uh, I decided to try to apply this,
+uh, these attacks on some, uh,
+BLE 5 devices, see that they are not devices I'm going to make
+some. I, uh, I ordered, so, on
+the site, uh, on the internet, the 2 data man board from
+Nordic, uh, which support this
+new protocol with the correct ASDK and the correct stack. And
+uh, uh, uh, just as I program
+this, uh, this board with a very basic examples, uhm, 1 - making
+a, an LED blink and providing a
+BLE 5-compatible device. And another, uh, able to connect to
+the first one. So, basically,
+two devices that can create a connection in between and
+transfer data. And I also
+decided to improve my BeetleJack tool by, uhm, by implementing
+some features - new features for
+BLE 5. So, uh, Beetle, BeetleJack can do the job but
+only for the legacy PHY which is
+the 1 megabit per second uncoded PHY. But, doesn't matter, my
+diplomat board is compatible
+with this file, so, it's okay. And I modify BeetleJack to
+compute these hopinterval, while
+this uh, this tool, was mapping channels because usually when
+you are attacking, uh, an
+existing BLE connection, you need to know what channels
+aren't used. Now, remember I
+suppose that all 37 channels are used but that is not always the
+case. So, by doing this, uh, I
+modified the, the code to, to be able to get this, uh, this, hop
+interval while mapping but I, I,
+first problem, uhm, this problem is that nobody when you are
+using CSA and algorithm. This is
+37-channel sequence and you look over this this sequence but
+there is no doubles, you know?
+Uh, each channel only appears once in this sequence so it's
+very easy to determine this
+hopinterval value. And you measure the time spent between 2
+packets received on the same
+channel and then you divide it by 37 and it gives you the, the
+value you want. But this is not
+the case with this random number generator,uh, a channel can
+appear twice or maybe more. Do,
+during the sequence. So, I had to compute automatically the,
+uh, uh, timeout, to be sure
+that, uh, uh, a channel is correctly used. Anyway, and I
+tested in this CDC-based
+technique to cover the, the hopinterval and it works pretty
+well, once, in fact you smash,
+uh, when, once you, uh, solve, solve all the, all the issues
+bit on timeout. So, this is an
+example output of what I get, what I get, uh, when I, uh,
+tried this on some recovery
+system, on this, uh, this connection, so... I get a hop
+interval for 160 which is, uh,
+pretty much it, so that's good. Great success for first time.
+But, the main part is to be able
+to recover the counter used, uh, at specific time during the
+connection. So, Implemented this
+algorithm, the sieve algorithm, and I started trying this, uh,
+this algorithm. So, the first
+round, uh, went pretty well, I, I went from 65-thousand, uh,
+candidates to about 250
+candidates. Which is, which is what I'd showed you, uh, a few
+minutes ago. So, that was pretty
+cool but the next round's completely messed up. Uh, I
+wasn't able to get any data. So,
+I was a bit puzzled and it turns out my filter routine took a
+h**l of a time to execute. And,
+integers, uh, delay and I, I get lost in the connection. So, uh,
+this is a, uh, uhm, simple
+algorithm problem, so yea, I was a bit p*****d at this time. Uh,
+uh, so, I, I decided to redesign
+my attack and to solve this problem I moved form sieve to a
+pattern machine algorithm, which
+is basically what I was also using. So, normally, during my
+sieve attack I, uh, I measure
+and then I, uhm, filter all the candidates. This time I'm going
+to do all the measures in, uh,
+during the first part of the attack and then filter all the
+candidates just at the end. And,
+by doing this, I get, uhm, more complex pattern but in fact, uh,
+I'm quite sure to get the
+correct value. And, by doing this, you end up with 10 data T
+values, so, some, times
+difference between packets that was sent in various channels.
+And, based on this, we look for
+this hopping pattern in our sequence and we did use a
+counter exactly as we, as we did
+before. Yea, that rocked! I was able to guess the counter value,
+uh, so, we'll show, I will show
+you an example of this later. So, that was pretty cool! So,
+from this, uh, uhm, I do massive
+jazz, that's good! You'll get the control value, uh, get the
+control value - now this is
+easy-peasy everything you need to, to do is just to synchronize
+with the existing connection.
+Well! Good! So, I develop my, uh, uh, the firmware and in
+order to synchronize with the
+connection and, uh, yea. There was some kind of issue here,
+uhm, didn't work at all. So, I
+got the, uh, correct hopinterval value, I got the correct, uh,
+counter but I wasn't able to
+synchronize. And, uh, I looked at my code a bit, once more, you
+know, just to be sure that I
+didn't f**k it up. And I stumbled upon this part of the
+code, this is the filtering
+routine. What this code does is just going through all the
+candidates and filter this, uh,
+this candidates, so they sent the signal version of this and I
+need to, to go through the
+65-thousand, and 5, and 5536 candidates and it takes a h**l
+of time, again, and by doing
+this, I will just, uh, 13 hops away from the correct value - at
+the moment I was trying to
+synchronize. So, by doing this, just adding 13 to the, uhm,
+counter value, I was able to
+synchronize to an existing connection. And, that's pretty
+much it for this, this, uh,
+recovery. I will show you, now, uh, a video of, uh, everything
+working with this, uh, this
+firmware. Uh, for the video, uh, purpose of the video, I just
+provide the channel map and the
+hopinterval value. So, as you can see, uh, this, uh, this tool
+is trying to recover the PRNG
+internal counter, which is the, unknown values, 16 bits, it
+takes some time, uhm, generally
+less than a minute to, to deduce this, this value. So, it's
+pretty cool because if you are
+trying to attack a, a real life and you have to be next to or
+near the device to, to attack
+it. So, if it takes less than a minute, it's okay, should be
+very short. And once the, uh,
+counter has been recovered, then we capture data sent over these
+devices. So, by doing this we
+got the correct value for the hop interval and then we get the
+correct value for the counter.
+So, that's pretty much it, you, you get a, a way to sniff...
+Yup, sorry. You get a way to
+sniff, uh, data over BLE 5 connection, but remember, it's
+only on the, on the 1 megabit
+per second, uh, uncoded file. And you can also try to jam a
+connection. So, basically, once
+you, you're synchronised with this, uh, this connection, you
+can, you can inject packets as
+well. And this is what I do, I did last year, uh, for, you
+know, when I was attacking some
+devices. And, this can also be done, with, uh, my BLE 5 devices
+while it's, uh, how do you say?
+This is, yea, uh. [chuckle] Something very special! Because,
+uhm, I got my device on the, on
+the screen here so I'm gonna, going to recover, the PRNG
+internal counter and you can see
+some LEDs, uh, normally at the, uh, bottom right of the screen.
+Uh, this LED which, when it's
+LED 2 that is, uh, uh, lit, then it means the connection is still
+active. I'm going to jam this,
+uh, this connection and... [chuckle] And pay attention to
+this, this is, this will be very
+quick, there is, uh, some LED blinking, uh, turning as the,
+the connection has been, uh,
+lost and disconnected so, here, uh, I successfully jammed, an
+existing connection BLE 5
+connection, by using Beetlejack. [applause] Uh, yup... back to
+the slides. So, uhm, since, uh,
+everything went smooth with this, uh, this attack, I decided
+to release a new version of this
+tool of Btlejack, version 2, including this, all this
+research, I made on this, uh,
+this channel selection algorithm number 2. So, it's, it's
+working, but I tested it on a, a
+very few devices, I only get 2 of them, so, uh, I dunno what,
+uh, if this tool work with, with
+any type of devices BLE 5 compatible devices. So, uhm, I
+give you the code, I give you
+all the tools and, uh, this version of the software has not
+been published on paper, and
+just not to mess with, uh, the actual version because I, I'm
+not sure since I made a lot of
+modifications on firmware I'm not sure that the, uh, this
+version may, uh, alter the, you
+know, the behaviour of, uh, the actual BTLE, uh, Btlejack
+version. So, just to make
+things, things clear you can, uh, clone this repository and
+then, uh, install, uh, the
+device by using some python automatic installer, uh, Python
+MSI and that's it. So, yeah, all
+the code is available, open source, that's its URL. So, to,
+to conclude, not so quickly,
+but, uh, anyway. Uhm, what this talk, uh, demonstrated is that
+the TABLE 5 CSA number 2, sorry,
+the second channel selection algorithm, PRNG is weak. Uhm,
+but there is a reason for that.
+Remember, at first, at the beginning of this research I was
+just thinking, thinking that,
+uh, this PRNG has been introduced in this version of
+BLE to p**s hackers, uh, trying
+to attack BLE devices. But, in fact, uh, after, after the, uh,
+uh, uh, I had some other
+thoughts about this, this, uh, this PRNG, uh, well, it's not
+really a PRNG, uh, as it's used
+here. And, of course, 16 bits out of 32 is easily guessed and
+the last 16 bit is a counter so
+this is very easy to, easy to recover. But in fact, this PRNG
+has been designed to improve
+coexistence, not security, the goal of the, uh, the guys who
+designed this protocol, not this
+protocol - this channel selection algorithm, and this
+PRNG, uh, in particular was to
+improve the coexistence of devices in this, say, same
+space. By doing this, yea, it
+works, you can get a lot of BLE 5 devices and with this system
+you can get a lot more devices
+that we will use to, to have in uh, uh, with the BLE 4 version
+and also the counter-based
+random number generators are easier to implement and
+consumes, uh, far less uh, power
+and memory. And so, in a, in the IUT world - this is something
+that makes sense. So, is it a,
+uh, a vulnerability? We'll, I don't think so. I, I don't think
+it's a vulnerability but in
+fact, it doesn't stop, uh, hackers, uhm, to jam or hijack,
+uh, existing connections. Uh,
+future work will include, uh, some, uh, a lot of development
+for Btlejack - as I said, there
+really are two new PHYs introducing this BLE 5 version,
+BLE 5, uh, protocol, and this,
+uh, new files are supported by a new ordic system and chip,
+called the uh, nRF52840. And
+this, uh, this chip is, uh, very interesting because, it, uh,
+implements all the PHYs
+natively, so we don't have to do some, uh, some, uh, SDR stuff or
+anything. We can just use the
+features of this, uh, of this chip to be able to decode, and
+alter the data packet over the
+air. So, this quite interesting, but the fact is that, uh,
+demands a lot of work to probe
+Beetlejack to this new platform because, uh, both of them are
+made by Nordic but there are
+some differences in the way these chips handles BLE, uh, BLE
+protocol. But, luckily someone
+called Marcus Mengs made some research recently on Logitech
+unifying devices and this, this
+guy, this dude, made a lot of, uh, uh, of code compatible with
+this chip and I talked with him,
+we exchange a lot of memes, and uh, and this guy has a lot of,
+uh, some piece of code ready to
+use to implement this, so, uh, I think, uh, I think if he is kind
+enough to share with me some
+tricks he did on this, on this chip, I will be able to port
+Beetlejack to this new platform
+and get rid of the micro bit, uh, stuff. So, this, is, uh,
+this is, it. Uh... I think I
+said, uh, almost everything I wanted to say. Uhm, the research
+materials, the, all the notes
+scripts I wrote, everything I showed you with, uh, Python
+scripts is also, uh, also
+available on, uh, uh, GitHub repository, which, uh, is the
+following "BLE 5 dash research",
+uh, research, on GitHub which, uh, you can get everything, uh,
+I developed and try it. Insult
+me if your, uh, your code is, is, you know, dirty and I'm not
+that clear. But, in fact you
+can, uh, simulate, uh, everything the way I did and
+test it against some, uh, I
+dunno, maybe some new attacks you're, uh, looking for. So,
+thank you very much for
+attending this talk, and, uh, I hope this was, uh, yea, cool.
+[applause]

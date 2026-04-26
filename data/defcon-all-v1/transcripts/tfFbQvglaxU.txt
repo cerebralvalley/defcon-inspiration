@@ -1,0 +1,607 @@
+[Applause]. DEFCON 22. So I came
+up with some stuff between when
+I submitted my slides and the conference so I did a little bit
+of deviation here from what you
+guys have but I've got a really awesome tool and I was like I'm
+not going to sit back and not
+release it so I'm still going to share the page table shell code
+stuff which isn't new. I did do
+that. I held new stuff back just for you guys, DEFCON 22
+exclusive on finding what is
+really running on your system. We will kill the Root- kit. Oh,
+any Rootkit I believe we're
+going to be able to handle in the future quite decisively. I
+believe that we have a defensive
+mode, defensive exploit that you can now use to actively find any
+attacker in your infrastructure
+in a very high assurance way. Specifically the tool that's on
+the CD then I've got an updated
+version you can download on the source code as well, whatever.
+And I am reimplemented in dot
+net so you can run it in Linux, or mono and all that stuff. It's
+designed around solving the
+deacon type Rootkit problem, there was some work earlier on
+32 byte similar to this and then
+the papers you could read my slides there's some references.
+Just follow the slides, follow
+the slides, follow the links. Those authors left it a little
+short mode, you know we're going
+long. The thing about the 64 bit long mode is we have so many
+more bits we can check. We've
+got so many more places to identify that if you mess with
+the bits that we're checking the
+system just won't run. You will get a blue screen, a reboot,
+whatever. So it's based on
+properties of the MMU, the virtual management system and I
+wanted to throw that up there so
+I can get you engaged. I will talk about the road to this
+discovery. So, Barnaby Jack,
+forever in our hearts and mind  ‑ ‑ [Applause]. ‑ ‑ you know he
+would talk about or he would
+talk about it's about the journey not the destination. So
+you know with that I'll have a
+little bit of the journey here. Thirteen years ago I was here at
+DEFCON I guess I invented or
+first released a tool kit for shell code and put it into a
+version you probably are
+running. So that was 13 years ago. The more things change of
+course the more they stay the
+same. You know? And a lot of these attacks get recycled and
+brought back and, you know,
+when  ‑ ‑ before I made the discovery on this Rootkit
+detection stuff and you will see
+how that links in with the page table stuff, you know, um, I
+thought about even just like
+doing a new patch. Hey 14 years later I still get the same code
+I'm talking about. I thought
+that would be a little bit funny. But, you know, I just
+wanted something a lot more
+practical so...  What you guys have now on the CD I would love
+to get some feedback on what
+your experiences are with the detection technique and it's
+definitely a million times more
+practical than just another attack, just another encoder,
+just another thingy. You know an
+attack  ‑ ‑ attack is hard and people get a lot of kudos for
+their attack. But it all ends
+up, it's fun. You know, exploiting stuff is definitely
+fun and getting that shell code
+and getting those root shells, I mean it's fun until it's scary I
+guess. Fun scary. And defense is
+just a hard stress. That's the hard part of defense. And I'm
+going to try to energize you
+guys and try to change some of the way we're kind of thinking
+about defense. You know everyone
+is like attacking for fun and profit. I don't think I've ever
+seen a defense for profit or
+defense for fun. I've never thought defending my network for
+fun. What? Really? So, you know,
+it's obviously the quarter back usually gets the headline. He's
+making the point. The defense
+just grinds it out. So I got this a couple times in here,
+let's hear it for the D. DEFCON.
+>> Defense. >> I say D. Help her out. She lost her voice. >> I
+lost my voice. >> : The idea
+here is that the tool that I've given you on the CD or if you
+want to download the .net
+version it has two different modes, less bit checking and a
+little bit of logic. Anyway... 
+Sort of a defensive exploit. Anyone that's going to exploit
+it, anyone that's been exploited
+or hacked, it sucks. It sucks getting exploited. And some
+things that you can do though on
+the defensive side is, you know, you have this historical
+knowledge and you have an
+ability to maybe talk post process some of these events
+and, you know, the future.
+Storage is cheap. I will keep my memory from any incident ever
+because maybe there's something
+I missed. I'm fanatical about that. Hey, did I miss something?
+When I do like a forensic or
+look at the memory the physical memory of the machine, it's like
+how do I know I looked at
+everything? I'm always checking myself. Like I'm one of the
+worst programmers ever and that
+makes me a good code auditor because I'm like, you know, like
+checking man cages like every
+line. No problem. So what we've got today is the def of Dcom,
+process hiding is dead. Anyone
+doing process hiding Rootkits? That's like you might as well be
+a rapper or something else like
+easily detectable. I don't know. But that technique is
+effectively dead now. There's no
+hiding from it. I will digress a little bit. Also 13 years ago
+this insane bash assembler thing
+kind of blows my mind. Right? What goes on  ‑ ‑ you know, this
+guy wrote an assembler in dash
+and so you just think about things, people have been kind of
+doing this stunt tricks for a
+while and that was kind of my talk. It was going to be like
+this stunty thing. So anyway... 
+That's probably a little bit why I'm cutting it a little short. I
+didn't want to be too happy and
+too just like another stunt. I'm giving you something real. This
+is something super real. Okay?
+We're going to find out as best as possible all possible code
+running the machine. There would
+be no code running that we don't know about. There's ways to
+inject DLLs but that sort of
+attack is handled by hash checking pretty easily so I
+don't want to spend a whole lot
+of time on hey this is an integrity check as well, blah
+blah blah. Hash checking is kind
+of like what everyone is accustomed to in files so it's
+also possible in memory so... 
+The other thing I wanted to talk about is procedurally we can
+devise a system that resists
+attack, resists back doors. I noticed  ‑ ‑ I went to the EFI
+talks earlier and I know the
+Intel and Miter guys are brilliant, awesome work. But
+practically if you're an
+administrator on my host, you know, I mean it's game over. So
+I'm not really like at that
+point I don't believe an attacker is typically going to
+be escaping the guest on me. You
+know? If you're using a VM, a cloud, some kind of virtual
+hyperviser even something maybe
+with a more weaker track record like, you know, I don't want to
+call out virtual box but I know
+it sometimes crashes more than other VM's. Even not I'm
+probably not even a great enough
+target to waste a virtual box exploit on. Right? So if we use
+the hyperviser‑ if we use these
+systems we can establish a number of things and I'll talk
+about device verifiability,
+verifying devices and that's why this stuff is really cool. It's
+not really applicable in a lot
+of real world cases. I don't know. There's 3 pillars here.
+Structural analysis, physical
+memory traversal and integrity checking. We need to analyze
+memory from the physical memory
+side because I don't want to deal with IDTLB issues, being
+trapped by like another threat
+in the kernel, being evaded on, dumping memory. So dumping
+memory analyzing memory from a
+VM snap shot is vastly simplified unless you do a dump
+of your ram or something like
+that. So here are the practical concepts, again. The weird
+machine attacks are awesome. I
+mean finding the hidden machine in custom application or you
+know code data intermixed in a
+font and that somehow triggers the GPU to do some pixel shading
+to like anti alianize your
+retina display and that somehow enables that code to like inject
+into some other memory and
+yad-da, yad-da. Yeah. I mean like the more esoteric those
+attacks, that's awesome. Right?
+Let's say it's the cool stuff but in the real world,
+procedurally we want to adapt
+the home field advantage to use defensively  ‑ ‑ I mean I've
+been using a hypervisor for 10
+years. I don't know. Everyone else probably the same. So
+default handler don't work on
+VMs. The snap shot will collect everything. If it did work the
+VM wouldn't function so you know
+that you're not going to have that shuttle walker issue. The
+EFI stuff doesn't work. A lot
+don't support SMM. People talk like it still goes on. A lot of
+times you can't get in SMM. So
+you will need that VM escape. Well I'm not the DOD and you're
+not China probably and you're
+not wasting that exploit on me. Maybe those guys do but...  Um
+another couple cool properties
+about this thing you will see is that nested page tables, it's
+not really an issue either.
+Things like that. So the page table shell code stuff was, you
+know, something devised to work
+on just evolving our understanding of systems and go,
+okay, this is cool. I can kind
+of implant memory up until windows 7 by just  ‑ ‑ it's sort
+of a complicated thing but I'm
+just going to go over it quick but the motivation was to help
+understand physical memory
+systems. So until windows 7 or after windows 7 none of the page
+tables shell code stuff worked
+anymore and I was kind of like deincentivized to work on an
+information disclosure on how to
+make it better, how to make it like awesomer. If you want to
+look at this other reference
+here that's a mind melting paper. They found a way between
+the interaction of the page
+fault handler and mapping the TSS and GDT and doing this crazy
+faulting so the faulting itself
+in the CPU that would normally be like bringing pages in and
+dealing with invalid
+instructions and these sorts of things, that would actually,
+that interaction actually read
+and wrote memory. So all you needed to read and write memory
+and you can kind of coerce that
+into a weird machine. And they wrote a compiler for it. It's
+pretty amazing stuff. Um, here's
+an explanation on what the virtual address base looks like
+on X64. I took this off code
+machine an interesting site with other low level stuff. We can
+see here that, you know,
+obviously Microsoft has done pretty good. The second row here
+you can see that the space
+nonexecuteable. They've been doing a good job of reducing the
+surface area of what's kernel
+space. Other people talk about sign drivers and there was an
+attack there was code injected
+into the hibernation file which was awesome but they've been
+working on reducing this stuff.
+So again they did catch this stuff. One interesting thing I
+want you to look at on this
+slide is look at the left hand column. That column there those
+addresses aren't just random.
+Some of those ranges, what that correlates to is entries in the
+root global table and they can
+mark security at that root level to kind of adjust the
+permissions in the entire
+address space. And here's the actual page table shell code
+weird machine. We can actually
+emit shell code or emit code into the kernel on Windows 7 and
+earlier. So I know  ‑ ‑ I was
+not going to upgrade to Windows 8. I don't know if anyone else 
+‑ ‑ I was like I'll wait for 9.
+But I'm telling you they did a lot of security. Windows 8 is a
+lot better in the kernel and
+there's a lot of interesting things they did. 8.1 they
+brought back the start menu.
+It's like oh great. By just doing a virtual owlen user space
+not as an administrator, you
+know, unprivileged user, remote user, even a remote user if I'm
+interacting with a service like
+a web server when I send a request for that server when it
+allocates memory to receive
+that, that allocation emits executable information into the
+kernel space. So what that means
+is like I can do a ROP right through that. I can get code
+into the kernel by just
+reserving memory which is pretty powerful which is pretty
+interesting. Those there means
+it's executable. Then, you know, it wasn't bounded by the amount
+of physical memory. Just by
+reserving the space you would have that area as well. This
+number here on the left if
+anyone knows what that number is, feel free to yell it out.
+You can't see it? Sorry I
+assumed people had the slides and stuff. I'll explain later.
+So again it's dead. Frowny face
+or indifferent face. If you do want to kind of look at how the
+kernel in windows 8 interprets
+exceptions and page fault and how the page fault handler, you
+know, the internals of it work
+feel free to step through it. In this particular stack trace I
+was actually pretty perplexed
+for a while why if it was patched I wasn't getting a
+straight abort exception. This
+is actually I guess a DOS. It will spin a thread to infinity.
+Again I spent time wrestling
+with, okay I'm going to do this as 80 mutate update. They
+released this dot net compiler
+thing. Maybe I'll do a compiler. Maybe I'll do it as a bash
+script. I was like well it's
+really hard to deal with the nulls and bash and...  So what I
+did find along the line was this
+upcoming technique and I'll show you in a second. I will build up
+to it. This is going to be the
+longest build up to one lined code than you've ever saw. This
+whole technique is one line. Big
+one line but...  So...  Instead of doing another attack, instead
+of trying to be like just how
+cool my hacking is, this is how cool my stunts are I will give
+you a defensive exploit. I'm
+going to obsolete process hiding. Anyone that does
+forensic, anyone that does
+incident issue, you know, dealing with hidden processes,
+dealing with APC thread or
+whatever you want to call it is kind of a pain and now like
+after this talk you can
+qualitatively say absolutely you fucking found everything. I did
+look at everything. There's no
+hidden process or maybe there is something new and no Rootkit is
+safe that I know of at this
+point. And again in a hypervisor if you're dealing bare metal,
+you know, maybe you're a
+masochist. I don't know. Let's hear from the D. >> Fence. >>
+Come on everybody. >> So there's
+a sign code example in D64. I will forward this to other
+detectors soon. The other reason
+it doesn't work on all immediately because the
+properties I'm detecting is
+something to do with the MMU and on different operator systems
+it's on a different offset. If
+you are a harsh kernel debugging with Linux and you want to help
+me like that would be great. And
+we're definitely closing the door on the conference today.
+We're closing the door on the
+Rootkit and, you know, keep your interesting memory dumps around
+so that sometime in the future
+you can deal with them. And these are some issues again, you
+know, sometimes I personally
+feel like I recap stuff too much. Maybe it's because I know
+this and obviously I wrote these
+slides. But, um, dumping memory is really a pain physically.
+Please use a hypervisor. Please.
+I'm not really a super fan of docker unless it's used in a
+hypervisor deployment. The zones
+or whatever that's not really the most efficient possible
+thing around. Several different
+ways to detect hidden processes have been proposed in the past.
+>>: [Off mic] I was told if I
+came up here I would get a shot. >> Wait a minute. Raise your
+hand if you're a first time
+speaker at DEFCON. >> No you're not. You spoke 13 years ago. >>
+Raise your hand if you were a
+first time speaker at DEFCON like 15 years ago. Oh, wow.
+Alison gets a shot too. >> So
+dumping memory is a pain. >> Oh, no. >> Spill in aisle 3. >> (not
+audible) >> Hope not. >>
+Scanning can be slow and it's a pain. The technique I have
+single pass. A lot of other
+techniques along this path are multi-pass. Multi-pass is like
+traversing the memory multiple
+times. Link list pointer traversal is easily confused but
+also super fast. I will back up
+again and say what is a process. >> What's a process? Holy shit.
+[Laughing]. I guess we're in
+DEFCON 101. Anyway...  [Laughing]. Hey listen it is
+really hard to get accepted to
+DEFCON. I'm sorry back up. You're one of the guys that's
+been here so long you've gone
+back to zero. How about some love? [Applause]. >> It
+definitely is an honor and
+privilege and thank you very much for having me and that's
+especially why I wanted to bring
+you something fresh and new and not just another stunt hat. >>
+By the way if after 15 years you
+still don't know what a process is...  >> The reason I put this
+up will become clear in one
+slide. A lot of people talk about a process as a thread
+container. Right? But a process
+is also an address space configuration. It shares common
+address space and that's why we
+have to lock and do things like that. So they're a container for
+threads. It is difficult to know
+if you have all the processes. Especially if someone is doing
+this decom thing and everything
+else. Process detection for a lot of guys kind of boils down
+to these techniques here, the
+volatility. Great these are great techniques. People should
+be using these tools, especially
+in forensic type situations. The only caveat here is these are
+logical identifiers. This is a
+link list. These are operating system constructs. I mean so
+we're in a cat and mouse came
+we're always in. Attack, defense, I found this other
+table process thing, K thread,
+G  ‑ ‑ I don't even know. And this is what was said when you
+analyze memory and try to find
+out what's in there there's these little things like
+flipping a bit here, flipping a
+bit there in these advanced sort of low level areas, debug data
+header, 64 thing where I think
+with just like one bit this guy like crippled all the software.
+But it can be crippled by the
+technique which is a little unfortunate. So again to fully
+wrap it up before I go on I
+wanted to make sure I did the appropriate thing and invited as
+many people as possible that had
+led up to this and prior work before me the PMO dump that's a
+32 bit one is great and
+everything but 32 bits we just don't have the assurance level
+that we do on 64. So please go
+to 64, use a hypervisor, high assurance. This technique that
+I'm going to be showing in one
+more slide the integrity of it, how easy is it to attack this
+thing? Well can I make it
+nonabortable? Yes I can. The current check is really good and
+I would appreciate anybody
+coming to me with some updates or everything else. This is a
+quickie to just show you what a
+PFNs it's a page frame number. This is a physical address in
+the memory dump. Virtual
+addresses are the bigger numbers usually but a PFN is what the
+hardware specifically looks like
+when it's like number 1 is the first 4K, number 2 is the next
+4K. And then here's a slide from
+Microsoft where it almost shows everything. Essentially what the
+detection has is based on self
+mapping page tables. This CR3 register is the register in your
+computer that when you switch
+processes this register changes and gives you a new address and
+this is what actually gives you
+the process isolation. So at the root level CR3 then we got these
+other pointers that are like you
+see this one kind of pointing back to itself. So that's really
+handy. It's pointing back to
+itself in a way that we're going to be able to leverage that to
+identify any point in time where
+we can find a page table. And because each process has a page
+table inherently we're going to
+find every process by detecting every page table. It doesn't
+matter if it's a kernel process.
+There could be two supervisor processing or something like
+that, super weird but definitely
+we will find anything. Any of the Linux guys out here, you
+know, if you want to help me
+evolve this technique for Linux or something like that. Here is
+a huge paper on Linux and it is
+cross platform, cross architecture process detection.
+And this quote here kind of goes
+down the line of like the kernel developers really wanted this
+flexibility when they're dealing
+with managing memory. Right? Having this pointer in there
+really makes it flexible for
+them in leveraging, you know, memory allocations and dealing
+with processes, whatever. So the
+great thing about it is it is for all processes. If you know
+when the bug or some other
+debugger and during your kernel debugging you can go exclamation
+process 0, 0, this gives us
+these registers, the CR3 base registers, the page table base
+pointer, whatever you want to
+call it. It's a really long thing we say all the time. CR3
+is a lot shorter. So !DQ is the
+physical memory dump. !DQ is dump physical quad word. What we
+will see here is when you do
+that at the base register for CR3 this is going to be the
+first quad word. So null is
+always happened because null needs to be mapped in the
+virtual memory system because if
+it's not you're not going to appropriately be able to handle
+like null, null violations and
+things like that. Right? So that's always going to be there.
+This is the magic number here
+f68. For windows at least. At this address which is the base
+CR3 page table DQ on that, f68,
+the response is here. What we see. The blue bits here are the
+bits that are option bits. You
+can see there's quite a number of them. This middle section of
+blue bits this is 32 bits on its
+own. So you can see this check is very high assurance.
+Essentially, at least double.
+The current was found in physical memory so just by
+looking at each 4K by itself at
+this offset checking a very few amount of bits, in this case it
+looks like I'm checking a lot of
+bits. If you do the download this is the mode 2, mode 1 only
+checks 1 bit. So, you know, I
+would like to see that. So based on this app I can identify the
+current PFN by looking at
+current memory I can identify all page tables for every
+process. So PFN for the win,
+defensive exploit. D. >> Fence. Come on guys. >> Dead Rootkits.
+Everywhere. Again a more
+powerful thing. You will have a lot of nulls unless you have
+tons of memory so those are
+additional bits. I know how big the input is I'm looking at and
+it's always going to be
+incrementing and things like that. If you try to attack it,
+you know, we could do additional
+checking. I would love to see someone come up with an attack.
+I'll do additional checking. If
+you want to do attacks you go banged. There's no eq. You can
+dump a quad word. You can't edit
+it. If you want to modify the page table entries on a kernel
+debugging you could bang ED that
+same offset from F68 then play with the bits and see if you can
+actually run your system. For me
+the system bsaud every time. That's a help to your assurance
+level that you're doing good and
+everything like that. Here's the implementation of the code and
+it's also, you know, it's on the
+CD and everything like that. The managed version is on‑ line. You
+can download it. This is the one
+line right here checking in the middle. Pardon me? >>: [Off mic]
+>>: Tennessee. On your phone or
+something. I don't know. I'm running short on time. Here is a
+couple other cool properties.
+This is me dumping. This is also format. Unless you've got some
+space memory dump like some
+virtual memory system might have which would be an issue here  ‑
+‑ so VMware is not an issue,
+what we will see here is detected values and then this
+disk thing is also really
+important because it allows us to do something very important.
+It allows us to detect memory
+runs. A memory run is like a gap in memory so the hypervisor
+establishes these runs so that
+physical like PCI cards and things like this have their
+marked areas of memory which
+aren't in the physical memory they're in the card space or
+whatever. So we can see here
+this jump disk jump and we can round up and round down these
+other values and we can
+automatically get the memory down. So again there's a blog
+post on neighbors the butt there
+was with finding memory runs. Well shit now you can use this
+and we're all good. Another
+interesting property is you can actually detect processes in
+guest memory in a VM guest from
+a host dump. If you really wanted to get really like super
+awesome with this you can
+actually look at this header file for virtual box and this MM
+page full thing and, you know N
+is where you're going to look at and essentially this is dumping
+a memory dump from a cloud
+server. The system has 64 giga and these diff values you can
+see are aligned. The first 3 are
+aligned. If you can't see them I'm sorry you will have to pull
+up the slides on your phone or
+something and then we see the skew here because the VM doesn't
+necessarily, um, you know, it's
+allocating memory off the heap on the host. It's not doing it
+physically. Right? So these
+discs start to skew and that's where you will have to use the
+MM internal dot h to d muks and
+it will have other things that handle whatever and you can see
+this 187 here  ‑ ‑ 187, I don't
+know it's like the fucking physical patriot number for
+kernels. For some reason 187 is
+always like the PFN for kernel. Oh, okay. But then you can see
+down here this is because they
+did a dump and there's a realignment again. These are
+host processes that the disk is
+realigned. The underlined ones are in the guest. Guest memory
+doesn't necessarily wipe on the
+way out. The future is kind of like, okay, well these weird
+machines are still happening.
+You know, this is a tool that Microsoft research guys have.
+They have access to the source,
+they have a lot more data than we do. That means maybe we can
+use public symbols to the
+rescue. Sort of RTTI, you know, there's a lot of antiROP attack
+that we can then leverage. An
+antiROP attack kind of needs to understand the stack and be able
+to analyze return addresses and
+make sure they're in the appropriate place. So someone
+doing ROP they're so easily
+detected not even funny. In summary there are issues
+possibly with GPU. I'm not so
+sure the EFI stuff is going to work that well from a guest and
+again finally, you know, we've
+got these defenses kind of active protection system that
+you can also try to use which
+combines this process detection with integrity checking. There's
+a link on there. We call it
+block watch. Let's hear it for the D. >> Fence. >> A couple
+more slides that I will kind of
+blow through. Hypervisor. Self map detection. There is one
+possible thing. If you have a no
+paging process that means that the MMU is not involved in that
+process. There could be
+something there. So if you are going to rewrite your Rootkits
+to be no paging Rootkit I would
+like to see that. Remote DMA. Please, no. Network cards,
+remote and everything, oh man
+just don't expose that stuff. Authors, editors in here?
+There's a page and they talk on
+doom about how it's difficult and stuff like this. I would
+like to see, you know, preDEFCON
+22 hard. Post DEFCON 22 easy. Very hard and difficult to very
+easy to detect in one day. If
+anyone has questions or anything feel free to grab me after. I'm
+going to show you something,
+just some eye candy maybe. This is our tool that we have. This
+is the TDL Rootkit. This is our
+analysis. It's free. You can go ahead and download it. Whatever.
+This is a preWindows 8 so the
+kernel executable space, I don't lie about what is executable in
+memory. I will not hide things
+from you. Here is the Rootkit database that's executable. Here
+are different processes. This
+red bit is modified. Things like that. But if you want to play
+with it, help us evolve our
+detection mechanisms, help us evolve the defensive side of
+things, um, I'm very confident
+that there's not going to be a Rootkit problem if you're using
+a hypervisor. If you
+procedurally developed your systems you don't let people
+execute on your host into your
+EFI. I'm pretty confident you're safe. So...  Anything else it's
+pretty much it and thanks for
+coming and yeah the death of the Rootkit. >> : Yeah. >> : We did
+it. >> : We finally did it. Yes.
+[Applause].

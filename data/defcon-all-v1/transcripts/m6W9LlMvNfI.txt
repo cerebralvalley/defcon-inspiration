@@ -1,0 +1,554 @@
+All right. So next Gerald is
+going to talk about some computer forensic stuff. How
+many people do forensic stuff here? I do. I do. Yeah. And pass
+the hash tags, how many people have used pass the hash tag
+before, raise the other hand. Yeah, everybody's got a reason
+to listen to this. This is going to be pretty interesting and a
+bonus, this is a Linux lap top that hooked up to the projector
+the first time. That's big. That's big. Can't believe that.
+Let's give Gerald a big hand. [Applause] >> Hi. My name is
+Gerard Laygui and I am hear to talk about Forensic Artifacts
+from the Pass the Hash Attack. Before I start I would like to
+thank the organizer of DefCon for allowing me to present this
+topic at DefCon 23. Um, standard disclaimer, the views and
+opinions expressed in this presentation are those of the
+Author and does not necessarily represent the official policy or
+position of the company that the Author works for, so I have to
+read this. I have to read this in order to present. So what's a
+hash? Basically the hash is any function that can be used to map
+digital data of arbitrary size to digital data fixed size. In
+the case of windows a password is stored in either a LAN hash
+or HTML hash format. Okay. So basically you type in your
+password. A password is not stored on the system in plain
+text. What happens is it's converted to a hash function. A
+hash function goes through it and that's what's saved in your
+system so basically hash equals password. Where the hash is
+stored, there are a bunch of places where they're stored. And
+here they are. I don't have to read it for you. Here are some
+of the best examples so the best examples I have ever heard of
+hashes in what they look like in the real world would be the
+coffee cup. When I was doing any CISSP, Sean Harris talked about
+this where you get a coffee cup, that's your plain text password.
+When you drop it, that's the mathematical function that it's
+going through. When it hits the ground, that's your hash. So
+when you log into a Windows system, it's not comparing your
+coffee cup. It's comparing the splash on the ground. The
+splashes on the ground match, you're in. So pass the hash is a
+hacking technique that allows an attacker to authenticate to a
+remote servers service by using the underlying NTLM or LAN man
+hash in a user's password. The associated plain text password.
+Like I said before in this case, hash is equals to password. You
+can get your hands on that hash, you really don't need that
+person's password. So one of the things that I have done in my
+demo environment was I did a bunch of log-in changes. Out of
+the box if you do not change the log in, you will not catch
+anything. Microsoft even goes as far as to tell you that. That's
+why I actually included the KP article that says this. So
+basically they give you, hey, you might want to turn this on,
+you might want to turn that on. Because if you don't, you're not
+going to catch anything. So a lot of these artifacts that I'm
+going to show you guys, some of them don't even appear unless
+you turn on the log-in. The log-in doesn't add that much to
+your logs and also because you're going to put more stuff
+in your logs, you need to increase the log file size.
+Microsoft also gives recommendation on that. Okay. So
+in my demo domain, I was going to do a live demo but the
+problem is the screen size is not going to work so the demo, I
+will show a video and it's Windows 2012 Native Mode Domain.
+So the people that are admins out there, it's native mode.
+That means the LM hash don't even use that. That hash is
+weak. So this is MTLM. The domain name all knows thats
+internal. So for this one over here, you're going to see the
+boxes that I'm going to be playing with are Windows 7
+client, member server, Win2K 8 R2 and Win2k 12 Domain
+Controller. Theres going to be a user, called Im a user.
+He basically has access to the client box and hes the admin
+on the client box and hes also an admin for an application
+on the member server. This is like a lot of people out there,
+a lot of corporations, a lot of businesses have users that have
+to administer applications on servers. So this is, you know,
+this is what's out there. The admin domain admin, even though
+he has access to all the stuff in the domain, usually you'll
+see him on the Win2K, youll see him on the domain
+controllers and every now and then you will see him on the
+domain servers on the member servers rather. That might look
+cool because you're saving and you don't have to make a
+separate account. But for this attack this is what's going to
+catch you is your domain admin doing work on a member server.
+It's that intersection that you get caught. Also for people have
+that tab in small, medium or even large corporations what
+happens is they have what's called a golden image. On this
+golden image what they do is they have the same local admin
+password so for all the clients out there, hey, they have the
+same -- we call it the SID 500. If you look in Microsoft stuff
+for well-known SIDs, anything that has the 500 at the end of
+it, that's the administrator account. So what you could
+probably do is that I'm going to show it to you later on when I
+dump the hashes, you're going to see an account that says
+administrator but it doesn't have 500 on it and there's going
+to be another account with my name on it that has 500 on it.
+The one that has my name on it, that's the real local
+administrator account that's just been renamed. Same thing
+goes for the servers also, people do golden images and the
+reason why I mentioned this is when you pass the hash,
+Microsoft fixed this last year you can't pass the hash using
+local accounts except for the 500 account. That's the reason
+why you need to know 500 accounts so when you talk about
+hash-to-hash sequence, what happens is usually there is a
+compromise that comes to -- that hits one of your clients. I use
+the social engineering tool kits, that I owe Dave a hug and
+a beer and a bar just so you guys know. Basically if you use
+-- so what happens after you do a compromise, they're going to
+elevate privileges, right? They're going to go from the
+user -- because usually when you do a compromise, the compromise
+usually takes place in the scary context of the user. The
+attacker is then going to elevate privileges. Scrape
+hashes and do recon at that time too. Once he's on the recon,once
+hes on the recon hes going to try to either remunerate the
+domain or find out places where he wants to pass the hash to.
+Once you pass the hash to the next pass you do, what's you
+going to do next is the same thing that you usually do which
+is elevate [indiscernible] recon. All these boxes that you
+pass through, here are some optional stuff, leave back in or
+you can leave back doors just in case you want to visit that box
+again. You can crack hashes. Cracking hashes, yeah, they're
+kind of cool cracking hashes. Once you have done all of these
+events, what you're prepping for is the final assault. The final
+thing you want to do is get a domain admin hash. You want to
+pass that hash to the domain controller. Once you're on the
+domain controller what you're going to do is actually abstract
+active directory. Once youve actually abstracted active
+directory, you can do some really cool attacks such as
+golden tickets and skeleton key attacks and those are I think
+of them as ultimate persistent attacks. So what I'm going to do
+is I'm going to try to pull out my video and I'm hoping that
+it's going to show... let's see. Trying to put full screen so
+maybe you guys can see it. Is it not working? Can you guys see
+the words that I'm typing out there? I mean, on the video or
+-- no? Or is it good? [Inaudible] Okay. So what I'm
+going to try to do is I'm going to try to play it as fast as I
+can. So the demo on this thing because the resolution is not as
+good as it should be, full screen it? Okay. No. Thats,
+no that was full screen. [ LAUGHTER ] >> Okay. That's about
+as full as it's going to get for me. Sorry, guys. So basically
+what I have done is already compromised the box. I go in
+through my back door. What my back door does is it's kind of
+like a sticky key thing or a variation of it so as you can
+tell I already feed to the box and I get a shell. Every time I
+already feed through the box, using certain key strokes I get
+a shell. And what I'm doing I'm going to try to extract the
+hashes, okay. So when I try to extract the hashes, I have a
+script on the box that I pre-put on there that I put on the
+boxes. I'll have these videos by the way so you guys can see it
+and I'll post it to my friend's website at the end of this so
+you guys can actually see it and I do narrate on it what I'm
+doing. Sorry about that. So what I do is I run my script. Dump
+the hashes. I'm going to notice that hey, I don't have the
+domain admin hash. Okay. So what I do is I say let's put the
+domain admin hash on my box and I log in as the domain admin on
+one of these boxes. So once I log in as the domain admin,
+what's going to happen is I'm going to go back to my counting
+box and I'm going to scrape the hash again and once I scrape the
+hash, it's going to show that it's there. What you should have
+been seeing is that 500 thing. Unfortunately I can't show it to
+you. So basically when I run the hash scraper again, this time
+it's going to show up and I'm going to grab that hash. So I
+really apologize that you guys can't see it. But basically it's
+going to grab -- it's going to show the hash over there. At
+that point, I'm going to grab the hash and then once I grab
+that hash. Let me stop this. There is a script from Core
+Impact, has a python script so you can use. So what I do is I
+got the hashes and hopefully you guys can see these hashes a
+little bit clearer. What Im going to do is Im going to
+run a tool on core impact and what it's going to do is it's
+going to hash, that hash all the domain admin account to the
+domain controller. Once it does that, what's going to happen is
+that, you know, I'll be able to extract the active directory
+information database. The way that this particular script does
+it is that it goes through the dialing channel copy and once
+again, we can't see nothing. I'm so sorry. One of the things that
+I was going to talk about if you listen to the video, I'm going
+to talk about something called the care-V TTG account and it
+creates all the curveers tickets so once something gets on top of
+your domain controller, they can actually, once they have this
+hash, they can make golden tickets where they can
+impersonate any particular -- any user in your network and you
+will never know anything about it. So basically once the
+attacker gets to the domain controller, it's over. It's
+pretty much over. Your domain is unreliable. Microsoft won't come
+out and say it. But you know you can do some things, but there's
+other attacks that you can do so that you can maintain
+persistence in the domain once you get to the domain
+controller. I'm just going to skip these videos already
+because I can't see nothing. Okay. So...okay, so at this
+point I'm just going to start talking about forensic evidence.
+So there's two types of forensic evidence out there: Volatile and
+nonvolatile evidence. Volatile stuff is when you turn off the
+PC, it's gone forever. When you go to a PC or a server that
+you're going to grab evidence from at the very least, these
+are some of the very least things that I usually grab. The
+best thing is grabbing the Ram view or Ram cap, hibernating the
+box so you get a hiber fill [indiscernible] if it's a
+VM-ware image, you can suspend the VM and use the VM file for
+it. For nonvolatile stuff, at the very least you can log and
+retrace some info, best get a disk image. That's one of the
+best things to grab for nonvolatile stuff. For VM ware,
+just grab the DMVK. For the analysis tools for volatile
+stuff, I've used the FD pro and mandate [indiscernible] to dump
+memory. There is a bunch of tools out there. If you look at
+memory dumpers. To analyze memory, volatility. Cool. It's
+free. It's great. It's the right size to actually do a lot of --
+most of the analysis for most of the stuff that you need.
+Volatility is great. If you need to go deeper HP [indiscernible]
+Pro is a very expensive program. But most of the work you can do,
+most of the IOCs you can find, you can find it with volatility
+and it's free. So $10,000...free. Okay. So
+creating disk images a lot of times a lot of people will just
+pull out the disk. You can use Linux to just, you know use DET
+to grab the image of it. Really nice or you can use N case or
+FTK Editor, those things are nice also. To analyze it, you
+know [indiscernbile] autopsy, locked time. I kind of like log
+to time line. It's great. Puts everything together for you. N
+case and FTK, those are pricey things again. What I'm going to
+start doing is start showing you guys what kind of pieces of
+evidence you're going to find as you go through those stages that
+I talked about like the compromise stage and all those
+other stages so for this one, the compromise stages, Windows
+security event log, processes a lot of success. If you guys turn
+this on, this is what you'll see. Any time somebody does
+something, you'll see a -- you'll see a process creation
+followed by who, created that process and what's the image of
+it right here. What was the name of the file that was executed?
+This is really cool, from this one over here, this is when I
+used Kali I believe to create a you know, to create and
+interpreter shell. That's what it looks like. You know, left
+this artifact out there. For the compromise part II, what you can
+do is look through the disk for something called the pre-fetch.
+Every time a computer program runs, a disk artifact is created
+in the Pre-fetch for client systems. For service systems,
+they don't use pre-fetch. If you get an SSD on a client system,
+there will be no pre-fetch. I mean, there will be the
+pre-fetch directory, but there will be no artifacts. Okay. For
+this one over here, for this example, this is what it looks
+like in N case for me when I look at it. You can, here is the
+base entires over there on the timestamps. If you look on the
+left side, youll see that hey, ping was run along with
+PowerShell. That might be normal for some systems but if you're
+talking about your admin systems running these program, that's
+bad. Another thing that you can talk about, so like if you don't
+have the pre-fetch, how can you prove that something ran on your
+system. SHIM cache and it's called the application
+compatibility cache but the nickname for the SIM cache --
+the reason why it's nicknamed the SHIM Cache is because of
+what it does and when a program executes, when you want to
+execute a program, the operating systems takes a look at it and
+tries to shim it to work with the current operating system.
+Now, the shimming process is saved in memory, okay. It's
+usually saved in memory. Once the system powers down
+gracefully, notice the word gracefully, that part of memory
+is purged to disk, to the registry. Okay. So what you can
+do is you can parse it using volatility if it's still in
+memory and if the system has been shut down already, you can
+use something like called Regreper. Regreper is something
+with a bunch of pro script out there. It's free. Free. Free is
+good. And this is what it looks like in Regreper over here. It's
+pretty cool because this one over here it was from -- this
+was also from, oh maybe it was another slide. On this one over
+here you can see that the program -- this one tells you
+that this executable, this right here, this time was executed on
+the system. So that's one of those things I give you proof,
+that hey, this actually ran on your system. So another thing
+that you can use is volatility is this thing called the Map I
+command. Its a pretty cool program. Pretty cool --
+volatility is that it goes through looking for executables.
+Okay so the MZ header means that for people that dont know,
+means that it's an executable so what we have here is a program
+with something injected into it, you know, so the first part it's
+kind of -- it's already Hokey to begin with and the second part
+that inside this hokey program thats executable, there is
+another program nested within it. So these things are pretty
+cool because a lot of times if you use certain programs you'll
+find that the DL host or SPC host you'll see so many process
+hallow and put a program in there, you'll see that MZ
+header. Back doors, a lot of times what I have seen so for
+back doors some people, what they -- you know, they don't
+want to do anything special, dont want to put any malware in
+the systems, so what do you do? Make a user on the system.
+That's kind of cool, but one of the things is that you can make
+a user and just get into the system later on. Make a local
+user. Making domains is hard. Making a local user is easy
+because you have already compromised the system. What
+this log entry will tell you is, hey, which user created the back
+door and gives you the time and date stamp so that's pretty cool
+so a lot of people -- some people will do this just to get
+around security. Another thing that a lot of malware tends to
+do is put bug keys out there. What the run keys will do is
+that -- well, when the system starts up, it will execute their
+malware to do whatever it needs to do like call home or open at
+port or something, you know. Another thing that happens also
+is that a lot of people like to install services on the system
+so that when the services are on the system, what we can do is
+use Redgreper to find out what is the last time these services
+were created and this way we can find any of the back doors that
+were created as the attacker is passing their hash through. A
+lot of times you can't pass the hash in one day. That's why
+they're called ADP. It takes several months to just keep
+winding and winding through your network. So when I talk about
+privilege escalation, we're talking about going all the way
+to the local system account. So usually when you pop a box using
+a java exploit or if a user clicks on, hey, UPS bill has
+arrived by ACP, you know, usually they're users. Youre
+in the user context, so what you have to do is sometimes have to
+escalate to the administrator account and from the
+administrator account you can escalate all the way through the
+local system account. Once you're in the local system
+account, you'll be able to scrape hashes. You can't be
+administrator. You got to be the system account to scrape those
+hashes. Because of that -- oh, by the way, somebody wants to
+ask me how do do it in Kali so I actually put this in the slide
+deck so if anybody wants to, basically you have to pop the
+box first. Once you're a user, you can do these steps to
+escalate yourself all the way up the system. So for privilege
+escalation, this is what it looks like when you privilege
+escalate on a system. This event ID by itself is not bad. You
+know, basically when you privilege escalate, you'll get a
+46-11 and a consent UI and you know you get this little detail
+thing over here. By itself it's not bad. When you patch your
+systems, you'll see this. Now the trick is looking at it, you
+say hey, I got this, but where is my patching? And that's when
+you start looking for those artifacts to find out, hey, why
+did the consent IU get popped so those are the things like so for
+forensically, there's not one thing that says you see this
+thing, it's bad. It doesn't work that way. You have to look at it
+and check the context of it. On this one over here where I'm
+scraping the hashes is used something called the Windows
+Credential Editor. So a lot of people are contesters, they like
+to use other peoples' tools but they don't understand what
+happens behind the scenes. So if you have advanced log-in, what
+is is that certain artifacts get left in the event log. On this
+one over here whenever you run the Windows credential Editor,
+something gets left in the system event log an event ID
+70-45 and when you do that itll say hey, servers got
+installed, only in the context of the local system. And it will
+also tell you what program is it pointing at to run. So just
+remember that somebody's running like off-the-shelf malware,like
+Windows Credential Editor, you'll see these type of
+artifacts can populate into your event log. But also just
+remember though in order to see this you have to turn up the
+log-in from the default. If you don't turn up the log-in from
+the default, you will never see this event ID. Ooh... >> Keep
+talking. >> Okay. Okay. I will not break the tradition. So once
+you run the Windows credentials editor, you will see the service
+key installed. The service starting and the service
+stopping. So what they're doing is scraping the hashes. If you
+look at it though they're doing it as the system account. So
+when they do it as the system account what happens is that
+like I said before you have to scrape hashes as system. Yes.
+Meme cats. One of my favorite tools. And Im supposed to be
+a White Hat. But Meme Cats is a really cool tool. Anyone whos
+every used Meme Cats will know you can scrape cases with it
+right? Like over here, when I use meme cats, I got the unknown
+user, windows and his hash, NTL hash -- >> Now it's time to stop
+talking. >> Okay. >> Give me that. All right. Who knows
+what's going on here? [CHEERS]. >> So we understand that it is
+your first time speaking at DEFCON. >>Yes, it is. >>Well,
+congratulations. It's very tough to get in here. So how about a
+round of applause for the new speaker. [Applause]. [CHEERS].
+>> Now -- oh, I'm sorry. [ LAUGHTER ] >> Really, wow... no,
+not yet. >> Okay. Go ahead. >> Okay. So with meme cats, it's a
+pretty cool tool. When you use volatility one of the key things
+you can do is use the console command. It's just like right
+behind the typing, okay. >> You just ran on like nothing
+happened. That's just amazing. He'll be coming back I'm pretty
+sure. [Applause]. >> Okay. So these tools by the way, you can
+find them, if you just, you know, if you just Google it, you
+can find it. You will, however, need to turn off the malware
+prevention plan on your Google Chrome, or Firefox, they will
+not let you download this thing for some odd reason. [Laughter]
+One of the cool things about this is like I said though is
+that it will scrape, it will go through memory, scrape stuff for
+you. One of the additional things that I have seen meme
+cats do that is really awesome, is it will scrape something
+called the web digest process or the W digest process. The W
+digest process, if youll notice here, I got that user.
+Here is my user. Here is my domain. But look, there's my
+password. It's not crypted. So it's going to -- you know, meme
+cats has the ability to scrape plain text passwords from your
+system. So if you ever see meme cats on your system...ahhh.
+Okay. And please don't on the console command, when you want
+meme cat, it goes into its own shell. Most of the console
+commands actually shows you what's going on inside that
+shell. So that's one of the cool things about the console
+command. Remember when I said about one of the optional
+activities you guys can do is crack hashes. Many, many years
+ago I used John the Ripper, which is a CPU cracker and it
+took one weekend to crack a nine-word cracker password which
+was a simple one too. On the weekend I was like, oh, my God,
+that's too long and then I discovered something called OCL
+hash cat. OCL hash cat. Here is the numbers off their box. If
+you're using a Bunto 424 box, using 8 [indiscernible]. 8 of
+those [indiscernible], each one is about 500 bucks so if you
+think about it, for about 10 to 20 grand, you can hash at 183
+trillion times hash per second. That's Awesome. Put it into
+context, 8 character passwords, nine hours with just one box. If
+you have a cluster of these boxes, do what you call a meet
+in the middle attack, 9 character, 8 character password
+is really quick. There's also rainbow tables out there for
+these 8-character passwords. So scale it up to what a nation
+state could do and how fast they can crack something and you will
+expect to see that this is kind of bad. [Laughter] Okay. So on
+this one over here I use the consoles and command scan again
+to how I recon the boxes. So when I did a read out, as soon
+as I compromised the box, what I did is I looked at certain
+artifacts on the box, you know, just because you have somebody's
+hash, you need to know hey, where can I pass this guy's hash
+to, right? Some of the things I looked at is something called a
+default RDP. Default RDP states the last place you actually
+already RDP to. Why is that important? Well, think about it
+this way, if you can RDP into a box, more than likely you are
+the administrator of that server and that's why things that I do
+as a -- somebody that's doing recon. Another thing I look at
+is I look at shares. If I see you mapped to a dollar sign
+share, you're probably admin on that box. So that's a box that I
+probably want to pass my hash to. Another thing that I usually
+do is, you know, I enumerate the domain and I try to find out
+where every single domain control is and in this
+environment there's only one domain controller. So it shows
+up over here and it tells me it's the PDC immolator. So
+there's five boxes on here, there's five roles that windows
+administrators know about. It's called the Fismo. Fismo is a
+single master of the operation roles. One of them is the PDC
+immolator. If you going to do a skeleton key attack, PDC
+immolator is the best place to do it from because what the
+skeleton key attack does is basically everybody has two
+passwords. Their own and the password that I set and this is
+the best one -- usually once you do a skeleton key attack, you
+get all these replication issues. But if you do it from
+the PDC immolator, less chance of that. And one of my friends,
+I won't say where he's from, he actually showed me an APT some
+of the commands that the APTs used to do. This kind of data is
+2011 time stamped on the side. But if you look at the commands
+that they're doing, what the APT is doing is they are looking at
+the domain, enumerating the domain and finding out who the
+domain admins are. You want to find those out, you want to find
+out where every controller is and every computer out there and
+every user out there because if you can find all the users and
+all that, you can find which people, you know, which command
+are admins and stuff like that. So this is some of the things
+that people do for recon. These commands by the way do not work
+on a Windows 7 box anymore. But you can still PowerShell and get
+the same things from -- you can still PowerShell on a Windows 7
+box and get all this information here that this thing was doing,
+okay. Lateral movement...so some of the things that we do, once
+somebody has compromised the boxes and passes hashes, they
+look at the user so that's the bad thing. Once they grab your
+hash, they look like you. They are you for all intensive
+purposes so you, who knows, you could get busted for doing
+something you never did. Somebody can impersonate you.
+Once they have your hash, they can do whatever you can do. They
+can read your e-mail for all they care. If you look at this
+one over here, ID 2624 log-on when you log into a system, you
+get these type log-on types. Type 2 is interactive. 3 is
+network log-in. Here is a lot of things that a lot of people
+don't know is on the domain controllers it makes it really
+hard because when every time you log into the domain controller
+what happens is that you have to get into the script directory to
+run log-in scripts. That results in a type 3 log-in on the domain
+controller so it makes it really hard if you're trying to trace
+if it's the person logging in or if it's a real attacker doing
+stuff on your domain controller. Also another thing too is that
+if you RDP into the box, that's a type 10. So a lot of people
+like to do RDP pivots once you crack hashes. RDP pivoting is
+the way to go because if you think about it, your IDS is RDP.
+That's normal, thats normal background stuff so a lot of
+times a lot of people what Ive seen a lot of attackers,
+what Ive seen them so is if they can get, if they can crack
+your credentials and pass -- you know, they don't need to pass
+hash, they can just pivot using RDP. One of the things I am
+going to talk about is on this one over here it will tell you
+which workstation you came in from. So and you know what IP.
+So that's how you can track, thats how you can backtrack
+their lateral movement. Okay. Other logs in Microsoft land.
+Usually people think of logs as security application and system
+logs. Microsoft introduced a bunch more logs and some of
+these logs, I have it listed over here, but what they list is
+when you RDP into a box, they'll tell you who the user is and get
+the important part right here, they'll tell you that IP address
+they came from so that's another way you can trace when
+somebody's pivoting into your network. Another thing too is
+that with the RDP pivots, they tend to leave artifacts behind.
+So if you got a person that's never ever used RDP before, when
+they use RDP and default their RDP file, the RDP gets created
+and in there it lists down the last IP that they RDPed to. So
+in that case, you know, you can find out where they have been
+to. You can also look at something called shell bags
+which I won't get into it. What the shell bags can do is that
+they'll tell you -- you ever notice when you have RDP, you
+know, you keep RDPing, all these short cuts get created? Well,
+same thing happens to an attacker that's using your box.
+All these shells are created so you can find out where theyve
+been and lastly what we'll talk about is something called the
+BMC cache. A lot of people don't know about this. But when you
+RDP to a box, one of the things that it does is it stores bit
+map images so it doesn't have to send it all over again. So what
+we can do is we can parse that file and take a look at that
+picture of what the attacker was looking at. So I grabbed one of
+these pictures over here from something that I have seen
+before. And you can tell over here, that this is prime for an
+attacker, right? Remember the thing I said about the dollar
+sign shares -- the dollar sign shares? Next thing is if I saw
+this picture on a box that was compromised, I'm going to look
+at those boxes because they're most likely been compromised
+also. The attacker, you know, we have got pictures here that
+shows the attacker might have been there. Another thing too is
+that you see the see user directory over there? If they
+switched user context, we could catch him and if you look at the
+bottom, that's somebody's inbox in Microsoft Outlook so that
+means that the attacker was reading that guy's e-mail. So in
+closing, these are some of the artifacts that you can find when
+you pass the hash. You know, hopefully if there's one thing
+that you want to take away from this is turn up logging. If you
+leave it at the default, youll never see if somebody's
+going through your network. How much time do I have left seven
+minutes? Okay. Any questions? [Inaudible question from
+audience] No. Then pretty much escalate up. No. You can. So
+what you would do is you'd find a way to get the user to admin.
+You know, you might use a 0 Day or some other thing to move up
+to become an admin on that box and then [indiscernible] the
+system, so just -- it does help though. I'm going to tell you
+right now, taking admin, making sure that all your users are not
+admins on their boxes really helps a lot. Most malware over
+there, they're scripted so that they take advantage of the fact
+that most people are lazy and are admins on their boxes. So if
+you take like for all my kids and their network and my network
+at home, none of them have admin. I don't have admin. And
+so, you know, I don't have admin. I don't have flash. I
+don't have java on mine. Everything I do -- [Applause].
+>> Yeah, everything I do is in the VM. Everything I do is in
+the VM. When I'm done looking at the stuff I need to look at, I
+roll it back. As far as the privileged escalation goes,
+yeah. It really helps but to determine attacker, it will not
+stop them. But it really helps. Things like, you know, if you're
+going against people that use, you know, automated malware
+like, you know, like Zeus and stuff like that, banking
+malware, they usually don't go that extra step to see if you
+can compromise the beyond user, which is good. Yes, over here.
+[Inaudible question from audience] >> There's what? Laps?
+[Inaudible] Oh, I have never used that. I have used Emit.
+[Inaudible] That probably works pretty good. Huh? >> Can you
+repeat the question? >>How good is it to use Laps, right?
+[Inaudible] >>Oh, how efficient of a counter measure is it to
+use Laps? Laps is pretty good from what you've been explaining
+to me. It's a good policy that scrambling the local
+administrator account, right, so if it scrambles the local
+administrator account, so you can't pass hash from workstation
+to workstation because the 500 account, the local admin account
+is scrambled but that means also that nobody else can use it if
+it's scrambled. Okay. And like a lot of people that are in IT,
+some odd reason they kind of fixate on that 500 account and
+they kind of like it and that's one of the bad things. Last
+question right there. [Inaudible comment from audience] >> Oh,
+okay. I didn't know that. I haven't been in admin for a
+while, so -- [ LAUGHTER ] >> Okay. And that concludes my
+thing. I think I'm out of time and thank you for coming to
+listen to me. [Applause].

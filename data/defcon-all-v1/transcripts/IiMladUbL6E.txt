@@ -1,0 +1,636 @@
+- Hey, what's up DEF CON? This is Cedric Owens, I'm
+super humbled and excited to be here, and I'll be talking about, basically giving a perspective of what red teaming looks like
+in macOS environments here in the year 2021. Some background information on myself, I'm a full-time offensive
+security engineer on the red team side, and I've been dedicated red
+teamer now for the past four, almost five years. Prior to that, vast
+majority of my career's been on the blue team side
+doing incident response, threat detection, threat hunting, both in the intel community
+and in the private sector, and so even as a full-time red teamer now, I highly value
+collaborating with blue team just to help uplift
+each other's trade craft and move the needle forward
+in our organizations. I personally enjoy macOS post exploitation as an interest area of mine, that and infrastructure automation, so whenever I do have free time, I'm typically working on projects that fit into one of those two buckets. Also as an early '80s
+baby, I do enjoy '80s and '90s nostalgia such as what
+you see here in the picture, just reminds me a lot of my childhood, and it's even cooler now
+to see my kids playing with a lot of these same toys
+or watching these same shows, and just kinda cool to see the legacy of these things live on. I am on Twitter, handle @cedowens where occasionally I'll post blog posts or tools that may be of interest, so check that out if
+that's of interest to you. So what I plan to talk about
+today, first one being, why do we even care about macOS, especially in a Windows-centric world? Why are we even here for this talk? Overviews of common tech environments and what the tech stacks
+look like in organizations that are heavy Mac users. Options for macOS payloads
+and post exploitation, and I look at how the
+different options you pick usually will have a pro and
+a con associated with it. We'll also look at other attack vectors, so things in macOS environment
+that become attack targets that may not themselves
+necessarily be macOS, but you'll find them often
+in macOS environments, and then we'll end off talking
+about detection opportunities to look at from a blue team perspective. So again, first question
+is macOS, why do we care? And to your point, if
+you're asking that question, most Fortune 500 companies
+today are still Windows shops, and you may find there that maybe 90% of their endpoints are
+Windows, maybe five Mac, five Linux or Chromebooks, but in the, there's a sliver of companies
+in the San Francisco Bay Area, your Silicon Valley companies that are basically the opposite, where you may find 80 to 90%
+of the endpoints being Mac, may find five to 10% or somewhere around there
+being Windows endpoints and you may have Chromebook
+and Linux mixed in, so essentially it's the
+flip of what you'll see in your Fortune 500 environments. It makes it for an interesting
+environment to assess from an attacker's perspective because there's often a mentality, well, if we're not a
+enterprise Windows shop, then we're more secure, and
+I can understand the line of thinking there, but it really depends on how you implement your
+Mac/cloud environment. In other words, if you
+have keys laying around that are in code repos
+or other easy places for an attacker to find, you may find that even
+though you've migrated off of a Windows enterprise environment, your environment can still
+be easily compromised, so we'll talk about that a
+little bit more as we go. It is a slowly growing trend that, at least that I've been seeing, where newer companies are adopting more of a quote unquote non-Windows
+enterprise environment, and what I've noticed
+is that Active Directory is typically gonna be there because it usually is
+the best LDAP solution for enterprises, so even
+in these environments, you will have Active
+Directory which will be used to back your authentication, but just your typical
+end-to-end enterprise rollout of Windows will be different here. And I like it too because
+it allows, as a red teamer, it allows you to point
+out different vectors that really have nothing
+to do with Active Directory and compromising domain controllers, but other very interesting vectors that can still be impactful
+and in some cases devastating to your organization, so I think it's a very
+interesting environment from a red team perspective. So first we're gonna look
+at common tech stacks and what you might encounter
+in a common tech company in a Silicon Valley area. First thing is there's a concept
+of realms or environments, and so you may have a
+corporate environment, a dev or stage environment,
+production environment, and so here's an example,
+we'll walk from left to right where you may have employees that remote in using an
+identity as a service solution. Two common IDaaS solutions
+are Okta and OneLogin where the employee authenticates
+with their username, password, and a 2FA token which is usually gonna
+be a Okta verify push or a Duo push to their mobile devices. Once they log in, they're
+now inside of their identity as a service portal, and
+they have access to a lot of different productivity
+applications like email, you may have Atlassian products like Jira, you may have Salesforce, internal Git, even custom application servers, all accessible to the
+user based on their roles in Active Directory. Then you also, on a production side, you may find a combination of
+cloud-based production hosts and on-prem, and you may find a lot of different things there,
+but typically in production, you're gonna find your customer-ready code and maybe even customer
+data that's stored here, and you're gonna find things
+like your build hosts, your CI/CD pipeline, you may
+find some cloud-hosted services and servers there, you
+might find HashiCorp for managing application secrets, and of course you may
+have some on-prem stuff, you may have Jenkins on-prem
+or even in the cloud. We have some Windows servers, segmented environment of
+Windows servers there, so a lot of different things going on here and it makes it interesting because of course there's
+a lot of complexities, and sometimes with more complexities
+comes more opportunities from an attacker perspective. Another thing to point
+out is on the bottom left, I have rough percentages
+over the different endpoints, so I'm showing macOS being
+80% and Windows being 15 and Google Chromebooks
+being 5%, just a rough, rough numbers there. Some organizations you may
+actually find Mac being higher or closer to 90%, and the Windows population
+being even smaller, so it's interesting because with Mac being
+such a high percentage of endpoints in tech environments, and engineers using their Macs often to either do dev work locally on a Mac or log into a cloud-hosted server or an application server or a jump box, or from other places that they can do their
+development work from there, you typically may find that
+there are sensitive keys, tokens, credentials, things
+like that that are stored on the endpoint, so really end-to-end, this makes for a very
+interesting environment to assess from an attacker's perspective. Next, gonna talk quickly
+about some different ways that macOS is deployed from
+an enterprise perspective. One option is custom deployment
+where you hire your own team and they build out some
+custom solution to manage and hook into Macs and control
+them and push policies, et cetera, and basically loop
+back into your LDAP solution. Organizations that do that custom tend to be maybe like your big five in tech, so something like your Apple
+or your Facebook, Google, may all be custom, where
+they have the money, the resources to throw at that. But typically what I find
+is outside of the big five, most organizations in
+the Silicon Valley area, most companies there
+tend to use a solution that they purchase, such as Jamf Pro which is really the most
+common that I've encountered, but I also notice products, other products that are
+up and coming like Kandji, and so we're gonna take a look at those. I also wanted to point out
+Calum Hall and Luke Roberts and their Black Hat talk this year, did a really good talk on abusing
+Jamf for remote management and how an attacker can
+leverage that to control and compromise managed Macs
+in an enterprise environment, so highly recommend checking that out. So here's a very high-level overview of common Jamf deployments
+that you may see. You have, typically have an admin server. If you're in an
+environment that uses Jamf, you can run Jamf, check JSS
+connection from Terminal and that will return the URL
+to your Jamf admin server. You also have your endpoints, which have the Jamf agent on them that receives the configuration
+for the admin server. You also have self-service
+that runs on the endpoints, and allows users to
+install software versions that their IT department
+has already vetted, so essentially they don't have
+to open tickets for these, they can just install
+them from self-service. Really nifty way of doing things. Also, Jamf does include the ability to have remote management, where admins can remote
+in to do screen sharing or other troubleshooting on the endpoints, and typically that is
+through an admin account that has SSH access into the endpoints. Often times from what I've seen in enterprise macOS environments, SSH is enabled on the endpoints, and the IT team will use
+an account that can SSH in and it has pseudo-rights on the macOS host where they can perform administration, so that's a very common thing that I've seen in
+environments, and of course, one thing to be aware of is if that is how your
+environment is set up, because very similar to the problem on a Windows side years
+ago about dealing with SMB and local admin passwords and LAPS coming out being a solution to randomize those passwords, well the same thing would apply here if remote management's being used, is it a static password or is there random passwords being used, and of course if it's static password, then that means if you get that password, you can now access any Mac
+in the environment over SSH with pseudo-rights, and the
+SSH has full disk access, so it bypasses privacy protection, so that could be really
+bad for the environment, so just something to think about there. Another thing, another aspect
+to look at here is if you run, as a red teamer you
+run a phishing exercise and you target Jamf admins, which is usually a Active Directory group in your environment that
+limited people have access to that that organization has
+identified to administer Jamf, and you phish them, you gain access to their
+Active Directory credentials, and then you use those credentials to log into the Jamf management
+server, Jamf admin server, and depending on the environment, that admin server may be behind Okta where 2FA push is required, or it may not, may just be locally in the
+environment without 2FA, and you can get access that way, and then from there you
+can start to push policies and scripts to run on the
+endpoints, and really, there you almost, you
+essentially do have full control over your macOS environment,
+so this is something, an attack path to think about as well if you're in an enterprise
+Mac environment. But now, even when it comes to Jamf, there's really so many different
+ways to implement Jamf, there's really no one way to do it, so we're just gonna
+look at a few examples. First example is probably the simplest where macOS hosts are
+bound directly to AD, and in that case, you
+can run different DSCL or LDAP search commands to
+pull AD information directly from the domain controllers, just as you can on the Windows side, like for example with net
+user commands like that. You can do the same here,
+and tools such as MacHound, which is a macOS port of Bloodhound, or Cody Thomas's Bifrost which
+does Kerberos manipulation, those tools would work and apply in this environment since the host, the macOS hosts are bound
+directly to Active Directory and can query it directly. Another example is via, access
+via a tool called NoMAD, where in this case, macOS
+hosts are not bound directly to AD, so if you try to
+query Active Directory from these hosts, you won't be able to reach
+it directly that way, and essentially the user logs in locally with a local account and then
+they do network authentication for access to resources,
+which is where NoMAD comes in, and that, NoMAD then performs
+Kerberos authentication on our behalf, and so, and this, if this setup is how your
+environment is configured, then there are files
+that you can read from that you might find
+interesting on an assessment, such as different plists
+that I have mentioned here. Also things like klist, KCC,
+Cody Thomas's Bifrost tool that does Kerberos manipulation, those tools would still work, since Kerberos is still
+happening from your endpoint, so something to think about there. Another example, same
+setup or similar setup here where your macOS endpoints
+do not have direct access to Active Directory to query
+domain controllers directly. In this case they have
+Jamf Connect on them, and Jamf Connect is synced through Okta, and Okta does the syncing
+with Active Directory when it comes to authentication. And so a federated model there. And what's interesting here
+is, just in this example, the Active Directory controllers are, domain controllers are
+walled off by firewall rules or VPN access, maybe a specific
+VPN profile that you need, so again, if you try to query
+directly, this would not work, but if this were how your
+environment's set up, there still are some interesting plists and files on the system
+that you could pull from to learn more about the
+host and the environment that you're in, such as what's your, the two files highlighted above. So as I mentioned, AD is still present in macOS environments, but it just looks a little bit different from what you see in your
+enterprise Windows environments, and I enjoy it because it
+gives me a chance to focus on something else outside
+of Active Directory. And of course when you're in
+these types of environments, they're heavy Mac and
+cloud implementations, so a lot of interesting things to look at, so let's talk about that. First thing we talk about, initial access, in this case targeting our
+identity as a service portal, so the two most common
+are Okta and OneLogin. A tool that is pretty
+popular here is Evilginx 2 by Kuba Gretzky, and what
+it does is you point it to a target login portal,
+it clones that portal, and as, and you basically send out a link to the fake portal, and as
+people log into the fake Okta or fake OneLogin portal, it
+captures the username, password, and it authenticates
+it to the actual site, and does the same thing
+for your 2FA token. So then the attacker's able
+to grab the token for Okta or for OneLogin, import it into their browser using a
+plugin like EditThisCookie, and now you're the compromised user. And what's so interesting
+about this attack path is, once you're inside of someone's identity as a service portal,
+you have access to a ton of different productivity
+apps, so you got Slack, think about the credentials,
+configuration files, secrets, things that people have shared in Slack that may be pinned in different channels, think about Gmail or Google Drive, people may email themselves passwords so they don't forget or
+sensitive information, you have access to search all of that. Imagine, your Confluence,
+your Jira tickets, things that may have
+interesting data there or Wiki, all sorts of juicy information
+there, and as a red teamer, you may opt to take this path and essentially meet your objectives without ever even needing to land access on a macOS endpoint. So this is definitely worth
+running in your environment from both a red and a
+blue team perspective, and one of the big wins for, from the blue team side is allowing, basically running through
+your procedures to see if you have visibility into
+this attack path, and if you do, do you have the ability to
+revoke compromised tokens, because in this case,
+password resets are great, but if you don't revoke
+the compromised token, you're not gonna be able
+to boot out the attacker, so a good way to test your detection and response procedures. So I mentioned a lot of interesting data in your productivity portals, and there're some tools
+that people have written to actually automate
+this if you're using this from a red team attack perspective, one being a colleague
+of mine, Antonio Piazza, he wrote a few different,
+what I call thief tools of GD, GDir, and Conf-Thief to simulate or speed up downloading sensitive files from those platforms. Also a colleague of mind, Brad Richardson over at
+Credit Karma wrote a tool called Slackhound that
+does a similar thing, if you find a Slack token
+on a host, you just feed in and it uses API calls
+and things of that nature to pull down data, as well as SlackPirate, so a lot of different and
+interesting attack paths on this vector. So now, we talked about
+identity as a service briefly, I'm gonna pivot over to the
+macOS side of the house, and talk about some of
+the basics around macOS from a security perspective. I like to break it into three
+different areas, prevention, detection, and removal. Gatekeeper, on the prevention side, is essentially the engine that, or the, I guess you'd say the service with, since Policy D is behind it as the engine, it evaluates certain file
+types like application bundles, installer packages, Mach-Os, et cetera. It looks for files that have a com.apple.quarantine
+attribute appended to them, which the operating system
+appends for any files downloaded from the internet, so if
+a file is of the types that Gatekeeper evaluates,
+such as Mach-Os, apps, installer packages, et cetera, and it has that quarantine attribute, then Gatekeeper enforcement kicks in. It checks to see if it's
+signed and if it's notarized, and if it's not, it will
+block it from running. If it does, it still does a popup, but what's of interest here
+is that even for a non-signed, non-notarized, like app packages, installers, Mach-O binaries, et cetera, they usually can still right-click open and click through one other prompt to run it despite Gatekeeper. On the detection side, you have XProtect, which is also a part of Gatekeeper and it's really more of
+the malware definitions and blacklisting that I
+guess you could say comes from Apple intel, from
+real-world malware resources, or malware sources that
+they have analyzed, and then you have the
+malware removal tool, MRT.app that does the remediation. From a red team perspective, the prevention side of it
+really is the hardest hurdle to overcome. XProtect and MRT.app usually are not much, usually not big factors for red teamers because we tend to write
+our own stuff for macOS, since it's kind of a niche
+space, and since XProtect and MRT.app tend to
+look at existing samples for their intel, usually when
+you write in your own stuff, those two aspects become less of a factor, it's just really Gatekeeper
+that becomes the pain and headache from a red team perspective. Other things to think
+about is the concept of TCC or privacy protections, so, and that, essentially you have certain folders or certain places on
+disk that TCC protects, so you have things like the
+user's desktop, documents, downloads, all sorts of
+other places on the system that TCC protects. What's of interest though are
+things that are not protected, so the home directory itself,
+and within the home directory, certain other subdirectories
+like a .ssh or .aws directory. Both of those would contain
+credentials, and the ability, if they're captured, to
+provide lateral movement, a temp directory is also not protected, which is why malware
+typically is dropped there, so just something to
+think about because again, if TCC is enforced, a popup
+will show up to the user where they can allow or deny
+if that directory's requested, but for not protected folders, there's no notification to the user and access is not prevented at all by TCC if it's not protected by TCC. TheEvilBit and Reggi did an excellent Black Hat talk this year on 20 different ways to bypass TCC, so definitely check that out. They'll dig way more into what TCC is and different methods for
+bypassing, so check that out. From an initial access perspective on Mac, a lot of different options here and they all have different pros and cons. You have your Mach-O binaries, which are checked by Gatekeeper, but you typically need a delivery method, because most of the time your Mach-Os are not gonna be double-click friendly. I mean there are some tricks you can do, but just generally speaking, you'll use your Mach-O as
+a second stage payload. Apps are checked by Gatekeeper. They're pretty
+remote-friendly, because again, they're app packages and
+they're double-clicked usually, and so they are remote-friendly, but they are checked by Gatekeeper. Installer packages are also
+checked and remote-friendly. They allow a user to double-click. You got weaponized PDFs,
+shell script trickeration which we'll talk about later. Essentially that is a bug that I found in Gatekeeper this year
+and reported to Apple and worked with them to get it fixed. You also have your scripting languages that are not checked by Gatekeeper, things such as JXA which is
+JavaScript for automation. Cody Thomas did an excellent
+job a couple years back of highlighting how powerful JXA is on Mac and how it's essentially like
+an AppleScript alternative, and some, it's kinda interesting because sometimes I'll
+view JXA as the replacement for AppleScript, but
+they're both still around and they'll probably both
+be around for a while. Of course Python is not
+checked by Gatekeeper, however, Mac or Apple will remove
+Python from base macOS installs at some point in the future. Don't know when, but from
+an attacker's perspective, it's just something to keep in mind if you're heavily relying on Python. Office macros are not
+checked by Gatekeeper, but it is sandbox, meaning it will be, if you gain access
+remotely via Office macro, you'll only have access to
+certain parts of the disk and certain binaries, et cetera, so a lot of different options here. Got AppleScript browser extensions. One thing I wanted to point
+out was that on macOS, D00MFist Leo Pitt wrote a
+really neat tool called Mystical that is a payload generator for several of these types of payloads
+where you can provide in information that will
+generate the payload for you. I also wanted to point
+out Mythic by Cody Thomas at SpecterOps, is what
+I consider at this stage to be the king of macOS
+command and control because of its innovative use of JXA and has a lot of other cool
+features with how it's built and how it's managed, so
+definitely check that out from a red and blue perspective. Quickly gonna jump into
+some different examples, so the first example
+being installer packages, and I'm gonna briefly
+talk about script only, because they're the most common and pretty simple example here, but you have a pre-install
+and a post-install script, and both require the shebang
+at the top and exit at the end in order to run successfully. They run as child processes
+of the installer packages, so whatever scripts you have running, and it runs elevates as root
+from an attacker's perspective, which is a nice plus because
+any installer package that a user detonates and, to install, they end up authenticating, and usually in macOS environments, the user is the local admin,
+so when they authenticate, that installs with elevated
+or root access on a host. As I mentioned before, this check, installer packages are
+checked by Gatekeeper, but they can right-click and open, and that's a common technique
+that's used in the wild with real-world malware samples, so Patrick Wardle and Objective-See have
+a lot of good examples of real-world malware samples for macOS, so you can look through
+their Mac malware reports of 2020 and 2019, et cetera, and look for different
+examples for how these types of things done, like an image is included and the user's instructed to
+right-click and press open in order to run a non-signed, non-notarized installer package. Here's an example of pre-install script, so we talked about
+pre-install and post-install. This is an example on
+the pre-install side, and it essentially just
+pulls down a unsigned, non-notarized Mach-O binary, writes it to the temp folder
+and sets the executable bit. On the bottom is a example of, with us being remote these days and so many employees being from home, this is an example of how you
+could add a guardrail in there to check for the host name to ensure that it's not running on
+someone's personal machine but on a corporate machine. If it's found to be running
+on a personal machine, it will exit, if not, then
+it will perform the pull down of the payload and set the executable bit. And here's an example of
+a post-install script, where it just runs the
+Mach-O binary backgrounded. So once you have that set up, you can just run this
+package build command here to generate the package,
+host it, get it to the user, they detonate it, they
+authenticate, right, or basically double-click and authenticate through the installation, and it detonates in the background, and as you
+can see at the bottom here, this is my Mythic, I
+screenshotted my Mythic C2 server, and the payload detonated
+as root level access. Another example, you have app bundles or app packages where you have the app, the name of it with content/macOS
+and then a Mach-O binary at the bottom, and so to
+do this, a very simple way, you could go into Xcode,
+create a new project, in my example I'm using Swift here, and then you would design a
+window with buttons, icons, text, et cetera, for a
+user to interact with. Once you have that
+designed and ready to go, you go into info.plist for
+any app transport security, so app transport security
+are restrictions on Apple to limit the types of outbound connections that app packages can make, so
+if you're trying to talk out to a non-HTTPS server, so just plain HTTP, it's certain entries you have
+to put in there to allow that, and even if you're
+talking to an SSL server, it does not like self-signed certificates, so you actually have to get
+a valid signed certificate for that to work. And then of course you set
+your sandbox accordingly, or the settings there that you need, and then you can add code like here below that uses a dispatcher,
+and gain access Swift as a background task to
+execute a JXA payload that's hosted on a server. And here's an example of the
+window that you can design for the user to interact with, and as you can see it
+can be very convincing. When the user clicks Update
+now, then the Mythic command and control server receives
+a callback from the user. So again, app packages
+are checked by Gatekeeper, but as you can see here, as I mentioned, same with installer
+packages, same with here, you can right-click and
+open, so here's an example from a Shlayer which is a
+common macOS malware family that's been around for a while, the simple image to
+social engineer the user into right-clicking and
+opening to run an unsigned, non-notarized app package. Of course you have
+Microsoft Office macros. They still work, they've
+been around for a while, and even today, when you, I like to do tests with macros
+where I just will attach it and see, let the email system's
+antivirus filter scan it and see if it detects it as malicious, and one thing I've noticed is that simple string
+concatenation is usually enough to get it around those filters, so if you're taking the word exec and doing E plus X plus
+E plus C for example, that will get around a lot of the filters. We'll look an example a
+little bit later for that. No Gatekeeper concerns,
+but as I mentioned earlier, it is sandbox, meaning you
+have limited disk access and limited functions or binaries
+that are available to you. You can still access things
+such as osascript curl, screen capture, Python, so
+still a lot of potential there, and Adam Chester who's currently at TrustedSec did a blog
+post a couple years back where he looked at entitlements
+that Office products had, and he found that they had one entitlement to drop files outside of the sandbox if the file name was prepended
+with tilde dollar sign. So really good research, and that technique still
+works where you can drop files on disk outside of the macOS
+sandbox using that technique. A colleague of mine, Madhav Bhatt, who's also at Credit Karma, he recently published a sandbox escape, where essentially you create a zshenv file that executes a payload. You zip it, and for that zip file, you prepend the tilde
+dollar sign in front of it, you drop it to the user's home directory, you add it as a login
+item, and then on reboot, when the user restarts, the login item extracts the zip file, drops the zshenv file to
+the user's home directory, and then when the user opens the Terminal, you have non-sandboxed
+callback to your server. So definitely check it out,
+a very informative blog post and does still work. An example, Office macro
+generators for macOS, MacPhish has been around for a while, and honestly that's where I learned, I took a lot of my cues for
+how to write macro generators from MacPhish. It's got a lot of cool options where you can generate
+Office macros that use Python or curl or osascript or
+combinations of them. I also wrote a couple
+macro generators as well for Mythic that uses curl and osascript, and I did my own for
+MacC2, which is a command and control tool that I wrote for macOS that leverages Python. I did highlight Python
+in red, because again, Python will be eventually taken
+off of base macOS installs, so just, I like to highlight it in red so you can be prepared when that happens, which is why things like switching to JXA for example is a good option because that will be around for a while. Also, when it comes to Office macros, AutoOpen subroutine is useful so that when the document
+is double-clicked, the Office macro can be executed, and here's an example here of how I concatenated the
+word Python and the word exec, and you see long strings
+of base 64 characters, or I guess in this case
+hex characters, excuse me, long strings of hex characters,
+and what those do is, in this payload that I've
+written, I basically read from a, I read the actual payload from a file, read it into a long hex string, and now it's just breaking that hex string into smaller chunks. So now I'm gonna quickly
+talk about CVE-2021-30657. This was the bug I
+reported to Apple this year that was Gatekeeper bypass
+around the March timeframe, and kinda where the
+idea for this came from was I started thinking about, well, here's the typical
+structure of app bundles on macOS. You have the app name, you
+have the contents directory, macOS directory, and then
+there's a Mach-O inside of that, so when you double-click an app bundle, the Mach-O inside of it is what executes, and it just has all these
+other wrappers around it like info.plist, et cetera,
+so I started thinking, what if we put something else here, something that's not
+checked by Gatekeeper, because Mach-Os are checked, which is why when you download
+an app from the internet and try to execute it,
+Gatekeeper will pop up, like if you just try to normally run it. But in this case, what if
+we put something like Bash or Python in place of the
+Mach-O binary since neither of those scripting languages
+are checked by Gatekeeper? So I did that. That's kind of what led to the bug, I found that it worked and
+it did bypass Gatekeeper, and I reported this to
+Apple March, I believe, of this year and they
+fixed it in short order in Big Sur 11.3 and in Catalina updates. From the Apple Security Bounty website, they have a section there for
+user-installed applications and access to sensitive data. $100,000, all right,
+really big bounty payment, but they have a very, you see the two asterisks
+there next to that first line, I wanted to highlight that because Apple has a very narrow definition of what they consider sensitive
+data, and in my opinion, it's much more a consumer
+focus versus enterprise focus, because they only consider
+contacts, mail, messages, notes, photos, or location data to
+be sensitive information, which makes sense from an
+individual consumer perspective, but when you're starting to look at Macs in an enterprise like what
+we're talking about here, macOS environments where
+organizations have thousands of users that are using Macs and they're doing development
+and engineering work with sensitive data on the host, this definition certainly
+should be expanded. And in my case, my app
+detonated, got remote access, and then I was able to
+access sensitive data, which is things like SSH keys,
+AWS keys, Azure, GCP keys, other files in the user's home directory, the user's shell history that contains sensitive
+information depending on what they've done, so
+a lot of different pieces of sensitive information that
+this payload had access to, but because of Apple's very restricted and limited definition, kind of consumer, individual consumer-focused
+definition of sensitive data, I received a tiny bounty
+payment in this case, nowhere near that 100,000 there, so just wanted to point that out. For researchers, if you're
+submitting things to Apple, to just be aware of that, and
+the reality is Apple may say that this is the small breadth of sensitive data we care about, but from an attacker's perspective, you may have a bypass and
+you're able to get things that are outside of that window of Apple, in terms of their definition
+of sensitive data, but it's still sensitive
+data, and so that can happen in your case as well where you receive a small bounty payment, so just wanted to give
+you a heads up with that. Some interesting things
+about this payload, so I mentioned it does bypass Gatekeeper and app transport security
+that we talked about earlier, where the system restricts what
+websites an app can talk to or what types of protocols
+it can talk over, those things don't apply,
+also you'll have access to non-TCC folders so
+you'll have the ability to grab things like SSH and AWS keys, et cetera off the host,
+and it's very convincing, so as you can see here,
+just by copying icons over to my fake app and it's
+got the OneDrive logo and it looks pretty close. And so serves as a really good payload that a user can just
+simply double-click a DMG or a zip and double-click
+the app inside of it, and that's it, so it's
+not, no need to right-click and do all these other things, which made this a very powerful bypass. And I, in my tests, I did both
+with trying a shell script at the bottom of the app
+bundle as well as having Python at the bottom of the app I'm doing. In both cases they work,
+because neither Python or Bash scripts are checked by Gatekeeper, so I was able to get a
+callback in both cases, and here's an example, just kinda walking you through
+what the payload looks like, and I'm just showing you here that Terminal does not
+have full disk access, it did not have any folder access as well, and Gatekeeper's set to App Store which is the most restrictive level, so just wanted to show that
+there's no trickeration going on in the background. Here is the payload that pulls down curl, or uses curl to pull down the payload, and runs it backgrounded, and then there's an
+osascript message there which is a fake prompt to the user, saying thank you for installing this app, so you'll see what that looks
+like a little bit later. Next, I'm using this masquerade script. It's a slightly modified
+version of a tool called Appify that's been out for years, that
+basically took shell scripts and put them in the bottom
+of an app bundle structure, and so that's what I did here is just ran that masquerade
+script and created a fake app that has the structure of an
+app, but instead of a Mach-O, it has the shell script
+downloader at the bottom of the bundle. Now what I'm doing is taking
+the icon from OneDrive and I'm copying it over
+to remove the default logo in my fake app to make it look
+a little bit more realistic, and notice that the operating
+system labels both of them as apps, even though in my case, I don't even have an info.plist. Just there, it just kinda
+follows the app bundle structure, so now that I have my
+fake app with the logo, what I'm doing now is
+copying it over to a folder, and then I'm gonna go into Disk Utility and essentially create a
+DMG file to host the app. So that's kinda what I'm doing here. I just moved the fake app over
+to a folder called hosting, and now I'm saving it there and I'm gonna give it a
+new name called RealApp, so it'll be saved as RealApp.dmg. So that's what's happening
+here, so now that that's done, you'll see RealApp.dmg was dropped there, so the next step will be
+to show that when a user, basically to simulate a user
+downloading it from the web, so I'm gonna host the RealApp.dmg to a local web server here
+using simple HTTP server, and that way I can click it, download it, and when I download it, it will have the same quarantine attribute that a user would have if
+they had to download it as part of a phishing
+exercise, for example. So I just hosted it. Here's me accessing it here locally, and you can see there's RealApp.dmg, so just single-click it, it downloads to the Downloads folder, and now we'll just confirm that the DMG file does have
+the quarantine attribute that Gatekeeper checks. We'll take a look at that now. And as you can see, it does have the com Apple
+quarantine attribute appended to it, so now we're
+ready to take that file that we just downloaded and detonate it and see what happens. So you detonate the DMG,
+outside the DMG is the fake app that we created here in the
+demo, we double-click that. Notice no Gatekeeper popups
+anywhere, and as you can see, you got the fake popup
+there that says thank you for installing this provisioner, it fakes to be from the IT
+team, and in the background, I get a callback from my Mythic
+command and control server. So again, Apple has fixed this, but I just wanted to show you
+what the bypass looked like when I submitted it to them. Other things to keep in mind from TCC, a lot of this we've already talked about of what's not protected. Another thing to mention is SSH is often, kinda touched on it early, but in enterprise macOS environments, SSH is usually running by
+default on the endpoints, and SSH daemon was recently pointed out in the Mac security community that the SSH daemon actually
+has full disk access, so if a machine, if you're on a machine and you have credentials of the
+user and you SSH in locally, using those, that set of credentials, you now can have full disk
+access and bypass TCC, so something to point out there. The quarantine attribute, using curl does not append
+the quarantine attribute, just downloading through
+browsers or through Bluetooth, sharing files from one
+machine to the next, which is AirDrop, things
+like that will append it but using curl does not, so
+that's something to keep in mind because I used that in
+my Gatekeeper bypass, and from signing and
+notarization perspective, you could totally sign
+and notarize your payload if you want in order to get
+around some of the controls, but in my personal experience,
+I found that it was pretty, a pretty painful process, and when I did sign and
+notarize my red team payload, I had about a week before
+Apple retroactively found it and deactivated the developer account and revoked the certificate, so just something to think about. I personally believe it's
+probably not worth the time since real-world malware samples
+are often using unsigned, non-notarized payloads
+and social engineering that right-click open
+execution of the payload. Once you're on a host, lots of
+different things you can do. You can, again, you can
+grab the system credentials from the host, so like
+AWS credentials, GCP, Azure credentials, you can look
+through users' Bash history, you can look for maybe
+sensitive files on the system, sometimes users might save
+tokens or passwords to a file, MangoPDF did a really good
+blog post on cookie crimes, things you can do there
+with, for Google Chrome, so definitely check that out. I have a link in the
+resources section later to that blog post. Course you can prompt
+the user for credentials, you can do it via osascript or you can do it programmatically to not leave any command line artifacts. You can also search for other
+interesting files on the host, and even this file here on the bottom, this login data Chrome database,
+contains a stats table, and that stats table contains
+the username and the login URL for various sites, and it's,
+of course it's unencrypted, and you do not need root to
+read it, and it's not protected by TCC meaning any non-sandbox
+payload can now read from that table, which means if you already have the user's password, considering often times
+passwords are reused, that table now provides usernames to try that password
+against for different sites. Also if you have root access, you can grab the keychain database and take it offline using
+forensic tools like chainbreaker, and so you can gain root access
+via either installer package which we talked about,
+that gives you root access because you use authenticate, or if you get normal
+user access, you can use, you can basically prompt
+the user for credentials, and once you get those
+credentials, you can then, through tools like Mythic, you can run elevated
+commands since the user, via the username and password, that user is usually root on their Mac, so then you can use that
+to run elevated commands and pull of the keychain, so
+something to look at as well. When it comes to persistence, lots of different options
+beyond just launch agents and launch daemons, which
+are probably the most popular for macOS. TheEvilBit did a really good
+long-running blog post on, titled Beyond Good Old
+LaunchAgents, which goes, it's like the Mac version
+of Beyond Good Ole Run key on a Windows side and looks at all sorts of interesting
+persistence options on macOS. Leo Pitt or D00MFist also
+has a PersistentJXA repo, looking at JXA implementations
+of a lot of the techniques that TheEvilBit talks
+about in his blog post. I also then took a subset
+of D00MFist PersistentJXA and did some Swift implementations, so I have a repo now
+called Persistent-Swift, so you have a lot of different
+resources there to play with, different, to look into
+different persistence options and different implementations for macOS. Lots of other options here
+like Vim plugin persistence, SSHrc persistence, profile
+persistence, Xorrior, Chris Ross, he has a really cool
+authorization plugin that, he did a lot of research there, so a lot of different options
+to look into for persistence. So some other attack vectors
+beyond Mac that you'll, typically will see in a macOS environment, one being the build pipeline or also known as the CI/CD pipeline, and the way I like to describe
+it is this is the process that an initial concept
+for code goes through from the initial draft,
+thought, or concept, all the way through to
+being customer-ready, and it hits various stages
+and checks along the way, and what makes this so
+interesting is there's a lot of interconnections here
+across different hosts, so if you can access one of these hosts, chances are you'll get a lot of access. And sometimes your build environment, your CI/CD process will
+traverse environments depending on what you have implemented
+in your organization, and as I mentioned, a lot of integrations, like there may be some
+internal Git integration, and of course internal Git
+becomes a target internally because there tends to be more
+trust for your internal Git than your external Git, meaning
+that since it's internal, people may feel like posting
+or committing secrets in your code is not as
+damaging, but ironically, that's gonna be one of the first places an attacker will look in a tech environment is
+looking through Git repos. Jenkins is often commonly
+part of the build process and is usually misconfigured in some way that will allow easy access, and often times Jenkins will contain a lot of different secrets on it, given that, given its role in the environment, and then of course you have workstations where engineers may be doing
+development from their Macs, and there you'll have local
+keys stored there as well. Quick look at Jenkins, two
+common misconfigurations, this is the first one, allowing
+unauthenticated build jobs to be executed, so if this is
+present in your environment, you could hit the view default newjob URL in your Jenkins host, and
+it will bring you to a page that will allow you to
+run a new build job, where then you can add a
+single step to executor shell, and you put whatever shell
+command you want in there, could be running a remote
+shell, reverse shell payload, it could be catting
+out files on the system that are sensitive, it could be querying for metadata service IAM credentials if your Jenkins host is
+in a cloud environment. And so you execute it and you can see the console output there. So essentially, this will allow compromise and access to secrets which
+can then be used to pivot to other parts of the environment. Another misconfiguration for
+Jenkins that's pretty common is the script console page
+allowing unauthenticated access. So if you, if this is
+configured in your environment, you can just hit the script
+page of your Jenkins console, Jenkins host, you'll be
+brought to the console, and then here you can run groovy script and essentially get reverse shell access, you can cat local files, query
+for IAM metadata credentials and the metadata service, so all sorts of different
+things you can do here as well. A few other juicy targets,
+of course internal Wiki, so thinking about all the
+organizational information, system environment information, credentials that are there
+that can be leveraged by an attacker, thinking about your
+internal ticketing system. Imagine the environment information that can be learned there, or processes and architecture information. Slack, of course, we mentioned
+that earlier, credentials, keys, VPN profiles, all that
+stuff can be found often times in Slack. Another one, if you have
+Docker in your environment, if Docker's configured with
+unauthenticated API sockets, then those hosts can be
+hit on port 2375 or 2376, usually default ports,
+but those hosts can be hit and shell commands can be
+run unauthenticated on those, and potentially extract secrets out from your containers there. Of course we talked about internal Git, so a lot of different
+juicy targets once you're in a macOS environment
+outside of just macOS. And of course you have cloud-hosted. Usually if you're in a macOS environment, there's gonna be a good
+amount of cloud there as well, and so the entry points for cloud keys often times
+can be phishing payloads like grabbing cloud keys
+off a compromised endpoint, maybe code internal repos
+for your internal Git, so finding secrets that've
+been committed there, of course your build hosts like
+your Jenkins as an example, sometimes even build logs
+will write the cloud keys that it used during the build, so that's a misconfiguration
+to check for as well. And it's good I think to also test from a blue team perspective to see what your cloud visibility
+and detection posture is, so can blue team see things
+like accessing secrets in the environment and using
+those secrets to pivot, different post exploitation
+examples, like on the AWS side, like looking at secrets
+manager or parameter store for additional credentials
+which may provide access to another environment or
+a higher level of access, assuming into other roles, so maybe, let's say red team has
+access to an AWS role, that role has the ability
+to assume into another role. The role that they can assume
+into has higher privileges, so that would be a form
+of privilege escalation or lateral movement, to see
+if blue team can see that, attaching policies to users or roles, all sorts of different
+things here that can be done. And I think it's worth
+running through these types of scenarios proactively or even looking at the MITRE ATT&CK matrix
+for a cloud that they have. I'm looking at some common
+privilege escalation and lateral movement techniques for different cloud environments. So other recommendations
+on the blue team side is I definitely recommend leveraging the Apple endpoint security framework. It's good both from a personal standpoint, so let's say you have
+a payload, a red team or a real malware sample payload, you wanna understand what it does, you can take Patrick
+Wardle's process monitor or file monitor that he
+wrote and you can take it on a sandbox macOS system, detonate it, and then you can look at the endpoint security framework logs. It's almost like the
+equivalent of Sysmon for Apple or for macOS, so
+definitely check that out, and then you can look for things like suspicious
+command line executions, persistence methodologies,
+we talked about repos that you can use there,
+parent-child relationships, so things like an Office
+document spawning VEN SH for example, that would
+be something to key in on. Course, network detection, so looking for one host
+accessing one or many ports on multiple hosts over a short period of time might indicate
+scanning or sweeping activity, course identity as a service
+abuse, we talked about Okta, OneLogin, so being able to
+see if you have the ability to see compromised tokens, and if so, do you have the ability
+and procedures in place to revoke those tokens? Of course Jenkins abuse, so getting visibility
+into script console abuse, or build jobs running
+suspicious shell commands, and then within a cloud itself,
+like AWS or GCP for example, looking at your common post exploitation and privilege escalation
+methods, and auditing, you could even proactively
+audit your roles and see what, like you can work with, I guess, if you have a cloud security team, you all can work together
+to see what the state of your current IAM roles are, what roles they could assume into, and look for easy
+privilege escalation paths and see what can be done
+to reduce those paths. Lots of different resources here, lots of cool people I've
+done a lot of awesome work in the macOS space, so
+this is not all-inclusive, but just wanted to shout
+out some good resources for people who are
+interested in delving more into these topics. Definitely check those out. So thank you all for
+listening, appreciate it, and if you have any questions,
+feel free to reach out.

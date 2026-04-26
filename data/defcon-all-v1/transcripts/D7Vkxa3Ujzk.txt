@@ -1,0 +1,600 @@
+Good morning, everybody. How are
+we doing? All right. So how many people have looked at closed
+captioning all weekend? Do you like that? What software is
+that? That's not software. That's meatwear. On the other
+end of the wire someone is typing that in, and they've been
+very patient and probably typing things they normally don't type
+out in a regular day-to-day. So why don't we take this
+opportunity and ask or person to do the transcription what have
+you thought of the conference so far? >> I've learned a lot. (
+Applause ) >> Well, thank you very much. Since this has been
+going on, it's really helped out, and it's really add the to
+the conference experience for everybody, and we're really glad
+you put in the time to help us out. Let's give them a round of
+applause one more time. ( Applause ) Great. Next Geoff and
+rob talk about web browsers and encryption. We're at a spot
+where a lot of people, certainly or mugle friends at home look
+for the little green lock. If it has the green lock, it has the
+same security banks use, therefore it's secure, right?
+Military grade. Yes. We're going to talk about why that may not
+be the case and maybe some things we can do to make sure
+that when you see that little lock that it might mean a little
+bit more than it's locked. Let's get Geoff and Rob a big hand. >>
+What's that? >> I hope that's not premature. >> No. I'd hold
+your applause until you see what happens. First, I'd like to say
+I'm sorry to the person typing everything I'm about to say. So,
+you know, welcome to the Canary, which is our project we started
+doing. It's the theme of keeping your Dick pics safer. I don't
+mean to look relaxed, but this is the only way I can talk into
+the mic. We'll have a little intimate conversation going on
+here. So I am evilrob and you may see me walking around. I'm
+the director for health care and biomedical security for an
+antivirus company called zilense. It's not McAfee. I
+don't mean to insult you. I'm turn it over to Geoff real
+quick. >> I do stuff with computers. >> He is barely awake
+I assure you. So I'm glad you all decided to make it here in a
+semi conscious, hungover or fully awake kind of state. This
+is one of the greatest quotes in all of reporting, I think, that
+there could be. How many of you saw the actual interview that
+this was taken from? Was it not amazing? It was truly the best
+thing. I was rifted the entire time. Aside from the quantum
+project and everything the NSA runs, I want to know whether my
+dick pics are collected? >> The answer is always yes. >> The
+answer is always yes. We want to talk about better ways to take
+the dick pics collected so they're intrigued, what angle to
+take them at, if it's better from the side or up top. Always
+put a penny or something next to it just to enhance that. So
+realistically, you know, why are -- why this? Why this project?
+You know, things we like ourselves, obviously, and some
+of you, a very small percentage but you're out there, and
+systems that are not not built on blind trust. I mean, the
+whole reason we started looking into this and the whole reason
+that we built this project is because a lot of the
+infrastructure behind the Internet was an add-on and
+addition well after the fact. They're like, yeah, okay, so I
+can see that web page, but I really need to transmit
+something securely. We could re-engineer it, or just tack it
+on? It's fine. Just use the same communications, mechanisms and
+protocols and throw some things in it and we'll sign some stuff
+and it's all great. You know, I'm sure there's no other system
+out there like that, other than, you know, the PKI. >> Other than
+everything. >> I was trying to give them the benefit of the
+doubt. Things we don't like ourselves, which is why we put
+on this talk, more of you. Things that fail without
+warning. You know, I'm okay for systems that have failures and
+flaws and errors as long as they yell and scream when those
+errors actually occur unlike most things. So why? You know,
+I'm sure a large percentage of you of the did you know it was
+compromised by a lone Iranian hacker. One guy. He's like, you
+know what? I'm bored today. I could look at fortune, or I
+could hack in and issue a bunch of certificates for no purpose
+other than boredom. 531 was the count came up with, and it was
+used to intercept Gmail users in Iran and only Iran. You
+compromise an entire certificate authority, and that's all you do
+with it. I'm not sure what's -- we'll talk that technical
+failure. >> About that time frame there was little things
+going on, and intercepting Gmail is what hackers do when they're
+really bored. >> This was on a bored Saturday night. He's like,
+I hate these people, and I want to read their e-mail. Second
+thing, Turk trust, right? 200 certificates were issued out of
+this. They were used at man in the middle wildcard, Google.com.
+How can that be a bad thing? Obviously, Google doesn't mind.
+It was detected by some of the technology built into Chrome
+with the pinning they do with certificates, so only their
+applications will trust it. We'll talk about pinning. Just a
+quick precursor of what we'll talk about. Google has done a
+lot of work in this, and what we're doing is not to detract
+from anything they're doing. It's just their project will
+take a long time to get to the end. Obviously, issuing the man
+in the middle certificates for Google with a wildcard was for
+totally legit purposes like this. Another instance where the
+Brazil ministry of mines and energy allegedly -- >> Alleged.
+>> Allegedly was used to target individuals and organizations
+the same day. It's the same theme we keep going over. Your
+entire certificate system is based on trusting someone.
+Seriously? That right there is the epitome of everybody like,
+don't worry. It's safe. It's full of kittens and nothing
+could go wrong. We like to point out that these are just the
+attacks that are public, ones we know about because someone
+detected them, Google or Microsoft detected them or there
+was some system out there, some organization looking out for
+realistically their own self-interests. They weren't
+looking out for you. They are looking out for reputation
+damage and looking out for protecting the systems. They're
+going to say they're looking out for you, but realistically
+there's not a lot of systems out there to protect you as an
+individual. It will give you the power to figure out what's going
+on. CAs are run by companies, agencies, people, organizations,
+staff. How many of you work in a corporate environment where
+they're like, we'll load our certificate on it, and it's
+cool? You'll get some e-mail from it. It will be great. We
+can contact you wherever we want. Don't worry. We're not
+doing anything we shouldn't. All people regardless in all
+organizations are vulnerable to corruption, common mistakes,
+issuance of bad certificates because they got lazy that day.
+So those are things you really need to look at with this type
+of certificate. It's just computers and software and a
+bunch of signatures and hashes and things that get moved
+around. The way the system is built is we just blindly accept
+that, and from an attacker's perspective -- I'm not saying
+that bored Iranian hacker himself, but from an attacker
+that may want a mass collection or something like that, CAs are
+high value. They are absolutely high value, because if you can
+get to the root CAs or the intermediary CAs, you have a
+tremendous amount of power over anyone that connects and
+authenticates through those CAs, which is basically everyone. >>
+You also extended certificates to be used for other purposes
+such as software signing and things that can actually be
+invented in your operating system. Being able to divert
+those has a proven track record of allowing you to do some very
+nasty things. >> Even as we bring up an example, your
+citizenship to a country is controlled by a PKI certificate.
+So, you know, what is a certificate? I'm not going to
+bore you with all the details, but in general it verifies
+ownership of a key associated with a resource. It's issued by
+a certificate authority at some level that is trusted, trusted.
+On your computers they're used in applications, used on your
+cell phones and software updates. They're used for
+anything that needs to establish a unique identity of something.
+You know, so, again, it's all built on trust. It doesn't
+actually work, and it's super broken but I can't go out and
+say that right away. So legit certs are signed by a trusted VA
+or life or the large ones that collect money for doing this
+time and time again. Our browsers that trust anything
+signed by these CAs by default because they are inside of our
+root of trust, inside the browsers, et cetera, et cetera.
+Sessions get negotiated by magic. I say that because my
+talk is not to talk about how broken TLS is and all the
+protocols but just the infrastructure around them.
+After you get that lock symbol or you get that it's all good,
+you're free to send your very secured dick pics through them,
+and that's what we're really here for. >> From the user's
+perspective they've been trained. If you see the green
+lock, this is considered progress. If they see the green
+lock, they know it's okay to type in their password and do
+their banking or whatever else online. >> If you get on the DEF
+CON network and see the green lock, you're good to go. Bally's
+wants to make sure you have the room number and credit card with
+you all the time. We call this the chain of fools, right? It's
+I'm the root CA for whatever I'm doing. You pay me some money.
+It's a lot of hard work to sign those certificates, so I search
+your cert and take your money and it's trusted by everyone
+because I'm in your root store doing whatever you do. You can
+be whoever you asked to be. The wildcard for Google.com, a
+computer that uses that as a reference for trust or if you're
+being funneled into that proxy, you're not going to know. Your
+browser will give you the same, hey, it's all good as the search
+said with Google issues. That's because to your browser under
+certs it has loaded into the root store, it's legitimately
+okay to have Google is this computer over here not
+collecting your data whatsoever. I got to credit citric for this
+to prove my point. I think they were trying to sell a product to
+the Belgian government to help them do the VA infrastructure
+and verification. You have the global signed root. You have the
+Belgian intermediary root CAs, and you have a bunch of citizen
+CAs that verify the citizenship of the people at the bottom, the
+Army of people. If you took control of a Belgian CAs, one of
+the citizen CAs that has the ability to say this person, this
+EID is legitimate, what implication does that have for
+border control? What implication does that have for actually
+whether or not somebody is who they say they are. You know
+you've been trained not to be able to trust the physical
+picture. You've been trained not to trust the paper in front of
+you because of how easily forged it is. If you had control of one
+of these CAs, it's like six lines of code and you generated
+a citizen. I say this in a broad kind of way. That's the world on
+fire perspective in this type of example. >> This also violates a
+level of trust we put in technology and this system is
+very complicated system of systems. They spy on it to make
+high level decisions and do high level verification of someone's
+identity and citizenship. >> Yeah. It's not like you can
+harden these CAs and stick them away and put them somewhere no
+one can touch them, because at some point it has to connect to
+another system to another system to another system that will tell
+you where the one with the ( inaudible ) and you can target
+that organization and do it. I'm sure there's been 50 other talks
+already about that type of stuff. That is the root and the
+sequence of trust that is the world we live in today. So, you
+know, again, I'm going to do a basic overview of things. We
+have SMTP, FTP. They're not encryption mechanism. They were
+not designed to encryption systems. They were protocols. At
+the beginning, you know, everything is all about how do
+we talk? Anytime an application developer builds a program, how
+do I get to A to B? I got to A and B, and my design goal is
+done. Security is here. I need A to B in a somewhat secure way.
+We use SSL certificates and TLS and it's cool and fine. It's
+great. At the core at the end of day, everybody is just concerned
+with how do I get from A to B. How do I get the dick pic here
+to here and make it look good? That's really the concern people
+have. The secure tubes work, right? It's SSLA. It cape from
+netscape. This stuff was tacked on. If you watch Moxie talk back
+in 2011 he found the actual doctor from netscape, the Ph.D.
+that wrote the original SSL libraries. He admitted, yeah, we
+just tacked it on. We need some security, and we put it to the
+side, and that was one point out. A sense then you had the
+RFC 6101, 6176 and the TLS 13 which is the new, new draft
+coming out. If you need bed time reading go ahead. >> It's not
+hyperboly to say SSL is the reason we have the Internet we
+have today. Business is conducted because people feel
+safe putting their credit card online and getting it to a
+website. They see the green lock, and they know that their
+credit card can't be stolen. >> Yeah. Anyone who says that
+marketing doesn't deserve money has not been paying attention.
+Seriously. You can see ice to an Eskimo if you have the right
+marketing, guys. Why is it old and busted from a protocol
+perspective? SSL has a problem with using identical keys for
+messages and encryption, lack of protection from the handshake. I
+won't list out specifically the version, but it's wonderful for
+attacks, and suite cyber attacks and something about -- >>
+Something about a Poodle. >> Something about a Poodle and
+beast and fire sheep. Creative names really. TLS is the
+solution. It's not SSL, and it took researchers like a year to
+be as broken as it was before. But it's broken in interesting
+ways. >> It provides the same certificate authority
+infrastructure. >> Right. It doesn't matter if we create TLS
+55, it still is using the same certificates if you bought the
+same things with the same problems we're discussing
+before. So interception. >> I can't play the music. It's too
+much. >> We were going to do it for this, but unfortunately,
+it's not conducive so what we're working with. When I did an
+inventory of iOS it trusted about 226 certificate
+authorities, about. I didn't get an exact count at the diversion
+I had last looked at. You can go to Apple, and they list all the
+ones they look at. My favorite is the Hong Kong post office. If
+the Hong Kong post office wanting to be Google one day,
+they can be Google. Fire trucks, FireFox trusts about 180. You
+can go to that link. They list all of them. It's nice from a
+transparency perspective that most of these manufacturers of
+various systems actually list out the certificate authorities
+in their root. Unfortunately, it's still a shitload where they
+get added every day. Countries are like I need you trust these
+five organizations and the browser for interoperability
+sake has to put it into their root. It's very rare, and I
+think Microsoft was one of the first people to do it, to
+actually pull certificates out during a refresh. You know, one
+of the things to consider, too, from an issuance of certificate
+authorities is they're subject to many laws. They're subject to
+local laws, state laws, federal laws, international laws, what
+have you. If an organization decides that, you know, for
+lawful purposes they want some form of interception, they do
+all the government forms and you tell them SCA and the rest of
+the world, no I'm not going to comply with this. It only takes
+one globally trusted root authority to issue a bad
+certificate for lots and lots of people to have a very bad time.
+>> If you've ever looked at the lists and for a little more
+paranoia, go to one of these links. Google it and look for
+yourself. You can see which certificates Chrome trusts and
+FireFox and which one are embedded in Windows and various
+other iOSs. You can see how many there are. They're in so many
+different countries under different jurisdictions, it will
+make you worry. >> Something to also consider that we didn't
+actually bring up in a corner case, the computers you're
+using, the manufacturers can put their own certificate on it and
+basically tell that system to trust it no matter what for
+updates and everything else. >> They would do that. >> But that
+type of activity, whether malicious or not, if implemented
+incorrectly, can wreck havoc in terms of what gets trusted. If
+you could possibly be intercepted without realizing
+what's happening. So there's a subversion of secure
+communications in the sense that there's basically two
+categories. There's the illegal reasons to do it. You all go to
+work, and you decide, I want to use the work computer. They make
+you sign some forms and they're like, okay, we can monitor
+everything you're doing. You hit a blue code, it proxies it out
+and you're being watched. If our browsing porn, seriously. >> For
+the past five or six years of my professional life, recommending
+a lot of places do this. It's a good thing if you have to
+protect a corporate network. >> You have good policies in place.
+>> You're subverting the security inherent into the
+communication protocol. >> Right. It would be ideal to have
+it end-to-end, but that doesn't work for more corporations.
+That's where you load balancers and front end it out. Now all of
+a sudden its secure from this point to this point. It's only
+secure until it hits the perimeter is no longer secured.
+While you browse Gmail and everything, it's on the clear
+network. The last potentially reasonable expectation is a
+government request that has its own geopolitical issues I don't
+want to get into. >> We go to the next cat gear. >> The not to
+good but maybe secretly legal. The government request versus
+government demand. Criminals, you know, the loan Iranian
+hacker that wants to break into something and my personal
+favorite advertisers. It's much easier if you're not secured to
+target more ads to you, which makes more money for them, which
+makes more money for other people and so on and so forth.
+They have a secret agenda and not so secret agenda to make
+sure that -- >> I didn't money was secret. >> They like to play
+it off as it's better for you and the economy. A good example
+of that is actually no script. No script, I believe, or add
+block plus, one of the two, is working on what constitutes a
+good advertisement. And what can go through because it's not
+obtrusive. These are systems we rely on to protect ourselves
+from malicious drive-byes and all kinds of other attack
+techniques we hope it blocked. We're like, it's okay because
+this is only -- there's nothing bad going on here. That's the
+same approach with the PKI and everything else. It's okay
+because somebody else has our best interests in mind. The
+depressing reality check is most people are just conditioned to
+click okay. When something bad happens, they look like this guy
+over here. >> When this happens, you you know that people are the
+weak link always. >> This poor sheep's credit card was used in
+Bulgaria, and the bank won't give him back his money. That's
+how he looks in the end. Solutions right? I stand up here
+with a doom and gloom perspective for anything and
+everything. The convergence project that we mentioned
+earlier, Moxie did back in the day, I high lie recommend you
+get it. It's some great work and takes a different approach to
+what we were really attempting to do and our Band-Aid. The more
+encompassing project, the certificate transparency
+project, Google has some power and just going to put it out
+there. The certificate transparent.org, while not fully
+implemented or public in any way in the sense that they have
+something to grab and easily and insert into everything you're
+doing, they do have it built into Chrome and use a
+certificate extension for things they control called the HSTS,
+which allows them to do a form of pinning to say this is a
+trusted one and I it belongs to me. I highly recommend you look
+at it. >> What are the problems with the current infrastructure?
+>> It was HDKB. P. HP -- KP. Thank you. Sorry. >> You can't
+remember everything? >> I got it all stolen at Mandalay Bay. I
+haven't got to the slide yet. >> One of the problems with the
+current infrastructure is a certificate can be issued in
+secret. There's no way to see that a certificate has been
+generated. So these 531 in the previous examples and God knows
+how many others generated exist. They won't be noticed until
+something goes wrong, until a user notices that the
+certificate is by the wrong authority, which just doesn't
+happen. Or they try to hit Google, which has a certificate
+pending which is a great way to detect when chicanery is going
+on. The cool thing is students can't be issued that. All the
+peers involved in the system, the ginger actions are visible
+and public, and because of public they can be verified or
+noticed when something bad happens. >> Exactly. Go look at
+it seriously. In the end it will be that or a project like that
+associated with the infrastructure we're using. So
+pinning. Technically it's a -- every application inside should
+use a form of pinning, but it's a little cumbersome to get done.
+At the core of it is trust this and only this certificate to say
+that I am who I am. >> This model works really well with
+mobile apps. They're dedicated on your phone or Twitter. It's
+easy to pin a certificate in the app, because the app developer
+is the up with providing the service. They can embed that,
+and it's truly the end. >> It's great. When it works, it works.
+Unfortunately, it is relatively hard to configure if you go out
+and they tell you how to do the pinning and it's a giant web
+page. From a normal administrator's perspective,
+it's going to turn into one of those I could but type of
+situations. In the end we really do not want. Implementation
+varies obviously. The Google I mentioned incorrectly acronymed.
+The example before, the Hong Kong post office could not send
+my dick pic application, which is really what we're here for in
+the end. So we're not developers. We're hackers. I
+write scripts to achieve an end goal. I write a code to achieve
+an end goal. I don't right it to do enterprise products, which is
+why we put this out there in an open foreman so others can
+really contribute. We have no power. I do not represent Google
+or Microsoft or the IETF or anyone like that. We're trying
+to find a temporary solution to what seems to be a permanent
+problem that we can go with. Canary, our application and our
+project, is not the solution but it's a fairly better one than
+what is currently out there in the failing you never know who
+you're trusting type of approach we use today. Yes, I got there,
+and there's some various ideas as to how that occurred. The end
+result is that stuff got stolen out of my room, and I lost my
+laptops and had to rewrite 300 or 400 lines of plug-ins last
+night. I should have tried to do a repo or something. If it looks
+hodgepodging, it's balls I was up most of the night. Articles,
+protect your dick pkg -- pics. We want to make sure you realize
+the site you're going to and the certificate sheet is what you're
+going to. It's stopping shady shit. The whole structure is
+meant to be a good idea and turned into a horribly abused
+idea. >> It's so meant to be trustworthy. >> Yeah,
+trustworthy. What the tool does, the tool is build in a client
+server model. We built it that way so you could specifically
+leverage or infrastructure and build your own plug-ins and do
+what you're going to do. We'll show it in a section. There's a
+cert comparison compared on what you sigh and what our
+distributed system of service is. You go out, and it basically
+will keep -- it will collect your searching locally and send
+it to your server and compare them, and if you're matched
+you're good. If it doesn't match, you might have have a
+problem. Version 1 says you have a problem because what you see
+is what the rest of the world sees. >> If the Canary dies,
+then you have a problem. >> No one wants to kill the tiny,
+cute, fat bird, but if it dies it dies. It doesn't protect you
+from compromised sites. I can't tell you Facebook.com is jacked
+up if it is around the world. It does not protect you from
+subpoenas, warrants, people kicking down your door, someone
+controlling the AS from a routing perspective. It will not
+encrypt or protect your Dick pics at rest. That's not what
+our application does. >> All Canary does is proceed multiple
+perspectives. If your link is being hijacked or intercepts or
+routed through a transparent proxy, submit a query to Canary,
+which one will be outside of the jurisdiction and compare what
+you see to what the world sees. If they're different, there's
+probably something going on and something wrong. >> We are going
+to release their server he code back on the repo. If you want to
+spin your own up, you can spin of your own up. Obviously some
+nefarious organization could spin up servers and put them
+where they can control them. Realistically I'm not that
+interesting. That's too it. Maybe they will. Who knows. So
+the goal is a globally distributed network outside the
+jurisdiction of one individual organization, power, agency,
+control, area, what have you. It is scalable, and it's designed
+to be able to accept many, many requests for second and the
+return is basically 100, and that's good or bad. That's V 1.
+We would hopefully build in certificate history chain so it
+keeps track if any changes occurring in the change and some
+of the mother featured Round Robining across the globe and
+stuff like that. >> Have you heard of the SSL observatory?
+It's a very cool project. One of the developers I contacted him
+about using some of their code. We didn't end up using it. They
+scan the Internet looking for SSL web servers and gather those
+certificates and keep them in a database. They've done that for
+a long time. They have multiple snapshots and a running history
+of certificates, which you eat a lot of certificates. The Canary
+has the potential to do the same thing. Rather than doing the
+actual scanning to build the database. It's focused on the
+most commonly used and popular websites. >> It's not meant to
+be a stand over time but as it happened. I don't want to
+compare the serve from a month ago. I want to know what you're
+being presented at this particular moment >> This is the
+Jazon structure. This is all it takes to commit a query to this
+and get a shot back. >> I'd like to take this time to thank Red
+beer. >> I'm not learning it. >> Yeah. He was instrumental in
+helping us get it done on time. >> Yes. I can't think Geoff and
+red beer and focus and various other people that recovered from
+the enterprise. And I helped to make this be possible. Thank you
+to the man in the beard up there. ( Applause ) >> It's very
+straightforward. We don't want your information or log. If you
+look at the code there is no logging other than a query was
+made. All you have to do is whatever language or tool you
+want, you can construct this that has these fields and this
+form. We go and grab from the same website presented in the
+query. Grab the TLS certificate and compare it to what you gave
+to us. If it matches, we return it yes. If it doesn't match, we
+will turn it one. It's as simple as that. >> The only IP or name
+it keeps is the target we have to pull the certificates from.
+It doesn't keep yours or a history on anything else. Once
+they have pulled it, we keep the host name in the certificate
+chain and don't care about the IP anyway. If you want to move
+on. This is essentially the plug-in I was writing last
+night. It's a FireFox plug-in. It turns out the NRO does not
+have a security website apparently. So your dick picks
+could be stolen. It's mostly because our system detected it.
+It will warm you the same way. Basically it throws a red banner
+up around it. It gives you a job description, and it's Job
+Descriptor or Python or DC. There's particular add-ones.
+There's no cert attached to and your Dick pic is taken by these
+guys. I really want to meet you. I think you would be a very
+interesting person to have a beer with. Just saying. >>
+Freezing. Look, you know, beer is beer. Especially the next
+version is a binary comparison, right. It goes up and hits it
+and say yea or nay. With the next one, this is a good place
+to submit your dick pics. There's a green border in this
+case. Green border says yes, we have taken the certificate chain
+and it matches. It matches what the server sees. If you want to
+put your dick pic here, it will be protected by the same
+certificates. >> This is where real developers can actually
+contribute. We know FireFox, and we could see there's hooks for
+intercepting the calls. We can enter is September the web
+requests before they go out, and if the certificate chain doesn't
+match, we can broke them. When you deal with an Android or iOS,
+it's a lot more difficult to intercept and transition it and
+move forward. If you move up the entire log-in into your bank or
+whatever, your password could be transmitted before Canary knows
+that something that has gone wrong. Your activity is logged,
+and it didn't serve its purpose. >> Yeah. The browser are okay.
+There's stuff actually built into the metscape libraries that
+allow you full controversy over some of the stuff with chrome
+and FireFox. It really is as Geoff was saying the
+applications where iOS has a tight control over the exclusive
+network and it's more after the fact we're working to get with
+and get around. So why use it, right? The hole of everything.
+Why use it? It's here to provide awareness. It's here to provide,
+hey, something isn't right. I'm looking at this sight, and it's
+not matching. It me or the rest of the world? We want lights on
+fire failures where it's obvious. It's super lightweight.
+The whole point is to take the code examples and throw it in
+and do it yourself or use what we have. We don't cash data
+requests. We might start cashing observed certs, but that has
+less to do with and more to do with the general infrastructure
+of the Internet. We'll never store your personal requests. >>
+This is the light part of it where it's more of an
+intellectual curiosity and to be able to speed up if it's
+popular, God forbid. Speak up and do correlation and history.
+When something changes, if it changes before the certificate
+expires, just general tracking. >> Yeah. Why not use it. I mean,
+really. Come on. That's what we're here for. That's why I
+spent all of last night writing this crap and he spent all week.
+No reason I can think of not to use it. That's why we're making
+it open and putting it out there for everybody and trust your
+coach and figure it out. Does it work for what you attempt to do
+or work for the goals to achieve? I can't change that
+opinion. Other people like myself like to know when their
+stuff is messed with. >> We didn't write this for just the
+general users. If you're concerned and have a real to be,
+disagree with your government and want to change it somehow.
+Some governments take a look at that and some take affirmative
+action to limit your capability and limit your ability to
+communicate in private. >> On if you're oat DEF CON network. >>
+That, too. >> Either/or. This is where you can find it. The
+TLSCanary.net is where we end up tossing, you know, instructions,
+kind of use your guides here and there, what it's there to do and
+some observations. Right now it's plain text and get had you
+been is where you pull the source from that will upload
+tomorrow or Tuesday. >> When do you get your laptop back? >>
+When I get my new laptop shipped in. It will contain client
+codes, our FireFox example and hopefully our other example and
+some of the code we're working on to do the application the
+iPhone platform >> It used lightweight. If you want to go
+to AC instance and run the code yourself and use your own
+private Canary, great. Have one. It works. >> The request
+structure is so light and what it's pulling is not context.
+It's certificates. So it's a very low transaction overhead if
+you want to run it yourself. So any questions? ( Inaudible
+question ) >> It will say that a self-signed cert does not match
+what I see globally unless the server also has the same. >> If
+you present us with this self-signed certificate and give
+you the same one, it matches. It's not your problem. It's a
+one to one, and that's what matters from the application
+perspective. >> So this is pretty cool stuff, guys. I was
+wondering if a guy goes along with OCSP, except for they
+employ with a security authority. This is more of
+gathering Intel across the community and sharing that
+information. Did you think of publishing this as part of an
+RFC to kind of standardize this as a method for additional
+checks. It will be cool in this information gets out there to
+where people make decisions on authorities and go, wait a
+manipulate knit. Those certificate authorities are bad
+and monitor those guys. Which one ares doing the proper things
+and which ones aren't. If they're not doing the proper
+things, get rid of them. >> Sure. The potential is out
+there. This is an open source and query searches and what we
+observe. Someone without authority wanted to go through
+and do that effort, we'd be more than happen to suspect that and
+provide whatever information to find. >> This is a Band-Aid. >>
+It is a Band-Aid and will require someone with power to
+actually implement those type of processes and protocols and
+procedures. >> I personally would rather see somebody like
+the Google transparency project move forward. >> We'll see if
+someone from Google is here and wants to din grate that. That
+works took. >> Something that solving the problem is and put a
+Band-Aid on it so you can detect when the problem is being
+exploited. >> First of all, thank you for helping protect by
+dickpics. >> That's what we're here for. If your slongis on the
+web. >> Did you contemplate that Paas part of the Canary
+exercise? >> I have revocation built into the extension. The
+Canary project on its own is a cert comparison tool. It could
+be built into the server, but it's one check to slow it down.
+If you already utilize the extension libraries, it can do
+the revocation check before it pulls it. In the example of the
+FireFox extension, it would just check it and say it's bad and
+not bother sending the thing up. >> We're not replacing. We're
+just augmenting. >> I'm curious in a compromised case where you
+have a mix of good state and bad state, how do you know what
+reality is? Are you going by numbers? It seems like since
+you're not logging any kind of identifying information or
+tracking information from users that potentially maybe your lone
+Iranian hacker can send five from them to you. >> In the case
+of -- I think I'm hearing you correctly. In the case to mix
+some are good and some are bad type of scenarios. You need an
+algorithm that says 5% of the world sees it this way, and
+what's the odds that 65% of my 300 sensors are bad? We're
+considering putting in the confidence of how good this is
+from what you're seeing. In V1 it's not something we put in.
+We're thinking about those problems. At what point and
+sample size do I need? >> There's the implications two
+Jackasses being an arbitrator of what is good or bad. This is
+simple. It presents the sitters and signature and serial number
+and verify if they match and send it right back. >>
+Fundamentally saying you won't ( inaudible ) you're limiting
+yourself. There's a lot you can do. >> We won't log. I don't
+care where they come from. When we do a phone grab, we grab it.
+Those will probably be cashed at first for efficiency and for low
+balancing and spreading the load. In the long time I'd like
+to see what they've done and start building the database and
+looking at how certificates change over time. It's academic
+and join the service and make it better. >> All right. Well,
+we're out of time. Come find us in the bar if you want if you're
+still here. I appreciate your time, and hopefully your dick
+pics will be safe in the future. ( Cheers and applause )

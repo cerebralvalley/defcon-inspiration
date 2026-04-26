@@ -1,0 +1,433 @@
+Good morning. Good afternoon. I
+guess at this point ‑‑ We are Lucas, Michael or McAtee. We are here to talk to you about
+Microsoft Windows Shares and how we use them on our internal pens. Briefly about us, my name
+is Lucas. I'm manager for a company called Crowe Horwath an accounting and consulting firm.
+We work as part of the security and privacy group inside that. I'm manager, in quotes. I don't
+manage a lot. When I do im probably bad at it I'm also a pen tester an ultimately a code
+monkey. I write a lot of script a lot of tool and other things. >> And my name is Michael McAtee
+and I'm a senior consultant a Crowe as well, an pentester and was a sys admin before that. so
+that's why this talk is on the Windows Share and we couldn't think of anything funny We just
+left a placeholder for something funny so insert your won joke there. And then please to
+contact us this is the obligatory go to the page or tweet us. >> Quick overview of
+what we're going to talk about. We will start off with a refresher on SMB and CIFS and
+Microsoft Windows Share with kind of as the same base understands the problem we were
+running into and why we built this tool and why we use this as one of our primary go to
+methodologies in pentesting now We will dive into how permission in window share work, share
+permissions version NTFS, how those are stored, what they mean, what we're pulling, what
+the tool is actually putting out, all that nitty gritty stuff. The problem we found,
+when we started using this data they end up troubles with other tools great at what they do but
+didn't do what we need them to do, and then we'll kind of detail our methodology, what we
+look for, why we look at shares, and tools, hopefully at demo or maybe a video instead. We will
+see how it goes. >> lets see if the Sacrifices for the demo gods were successful  ‑‑ >> Yeah. >>
+So, start off with CIFS, common Internet file system this was microsoft nice and pretty name
+put on SMB when they want it to make it a standard, and went ahead and sent the nice draft
+off to standardize it and let it expire and never made any other changes so It is almost open and
+almost to standard, but it's what everything its published against theres not a great
+define, here's how you implement cifs, its more heres how you get close enough that you can get a
+file share and figure out the bugs as you go along. Since Windows . Microsoft has had
+networking built in to Windows, and some kind of an SMB, SMB was originally developed by IBM and
+Microsoft took it and ran with it. Pretty much every major version of Windows with the
+release brings a new version of SMB. Especially here in the past few years with Windows 7 and 8,
+Microsoft was pushed hard on this as the core technology, not just for file shares and things
+of that nature. but they're backing hyper B‑clusters with it. i recommend it over using
+I-scuzzy or NFS And they put a lot of effort into cleaning up the performance. If you look at
+the specifications from to , they dropped the number of commands from over a to .
+so really cleaning up the spec trying to make it better. We'll get the sample later. and kind
+of start to follow that process just a little bit behind. So share types. Probably everyone
+has seen these before. if you see a share with the dollar at the end unless someone has done
+something funny that typically means it's hidden. Doesn't show up unless you go looking for it
+or have a tool that looks for it specifically. Another share that you'll see everywhere is the
+IPC$, its inter process communication. This is where all SMB session start. SMB is used
+for a couple of things, not just file shares but also printer sharing. You can also share
+serial ports, apparently over it. Microsoft has all sorts of random calls IPC$ is how you
+pull ‑‑ where R P C endpoints are in a windows environment. If you have a bunch SQL server
+instances running on a microsoft machine you are going to connect through SMB to IPC$ make calls
+against that and give you the information you need to go connect that so it's all that
+automatic finding fun stuff that happens all kind that goes through IPC$ . That's starting
+point of any Microsoft window SMB connection. The next is admin$. This is a special share
+that is kind of a core part of our methodology. So well get to those specifics. but this is on
+by default every version of Windows and it takes you to Windows system . It's supposed
+to be an admin shares. Some tools use it. for instance PsExec uses this. so if you use
+PsExec and you upload an executable its gonna drop that executable into admin$ sharing.
+you can open up wireshark you can actually see it mapped and drop and drop the file. Along
+that same line is other admin shares, C$, D$,E$, however many drives we have will pop up. and
+those are just administrative that are locked down by default to local administrators. They
+will allow you to gain access to the various drives. Here, until recently, you couldn't turn
+those off. You could disable. When you reboot, they come back. Microsoft, has released a hotfix
+though to fully disable them. A nice fix for work stations if you know they shouldn't be
+sharing anything. You don't want anybody to set something up they didn't know about. You can run
+this on all of your work stations and no more file sharing. Make sure you're not
+using them [Laughter] tools you will not expect to use them >> So if we start looking at a
+little bit more detail of share permision, there's actually a few things that we wanted to
+talk about. The first here is what's called the DACL, discretionary access control
+lift. A mouth full. This is how Microsoft stores permission for everything. It's part of called
+the SDDL, and basically it keeps permission for random stuffs, shares, files, services,
+processes,threads all have DACLS that can be associated with them. I was surprised when we
+started digging into this all of the places that these were applied. Basically, the way
+they're put together you can see here, it's just stored obviously when you print it, you get a
+string like this, and it is just key colon value, coma separated. And you will see a lot of
+different things. This case the example is for a share, and you will find the revisions well as
+basically the owner, the group that owns it as well as the ACL. This is actually the DACL as
+part of this. What this comes down to is all the stuff you can set in security tab is all this,
+condensed down into a computer. So inside the DACL we have the ACL, and each ACL has a single
+line called an ace or an access control entity. What an ace has is a principal. This stored as a
+SID. We reverse those because who wants to read SID's all day. It's the SID, and a colon. First
+number says allow or deny. In this case it's going to allow because it's a zero. This is
+what most people use. I feel most we do, we always see allow. Sometimes we do see a deny. It
+would be a . The second number after the slash is basically flags that are on this ace. The
+ones you see the most and the ones only relevant to what we're doing here are we inheriting
+this from above? Are we forcing a propagation down, those sort of settings. Finally, we have
+the access mask. It is a ‑bit mask that we use for all of the various settings what's
+important is this, the way this works is unified across all the different types of objects that
+Microsoft keeps permission for. Individual items within might change, but not necessarily
+beyond the specifications. Let's talk a little bit about files and shares specifically. Shares
+have permission, files have permission. In the end it takes whatever the lowest privilege is
+that you've been given. so if you have a share thats read only, but if your NTFS
+permission gives you full control, you are only going to be able to read from it. Shares,
+the permissions are pretty limited, limited to what we would do in old DOS days. We
+could read, change, execute. what you basically see is read,change and full control. On
+NTFS we have a lot more granularity that we can put in. These are the main ones,
+probably pretty self‑explanatory. but If you look at special permissions a
+lot, and with each new each new version of windows, you get even more I mean, a lot of stuff that
+they store. >> well how many people have ever opened up this security tab and what so special
+with .. well im not gonna mess with it right now. when you check that all these get enabled
+by default. That's why, so when you hit full control in that box is the only one that get's added
+from having read and write, that's all of these thats adding. >> Be aware. >> In
+addition to N T F S permission, also attributes that can be set. From the old days of DOS. They
+are still there, and basically the two that we really care about or read only and hidden.
+There are several others. Actually sometimes you will find some interesting things with
+archives because you can pull things back and do some other stuff if people changed
+versions. you maybe able to do some stuff with security controls. In general, read only
+and hidden are the only ones we care about, Shares and directories as well as files can
+all be flagged, so although mentioned earlier have a dollar sign after a share, that's
+likely how most people make it hidden. You can flag it. and although it gets a little weird
+when you look at it in Explorer. It will cause it to be hidden. The same thing with read only,
+if you have permission set, it will only be read only. It's a weird interaction between old
+DOS days and new days and keeping stuff backward compatible that you have these
+permissions. In addition to the DOS mode, recently they've started adding extended
+attributes or EAs. These things that are entirely accustomed. They can be added by different
+programs, extensions. We have seen back‑up programs that use it to flag you know when they've
+last passed this handle incrementals, anti‑virus programs. Lots of things can. In
+the end, for us, as pen testers, is ‑‑ it's not as much of a problem, it's not as big of a
+deal. These are things we are seeing in user space. We haven't seen any vulnerabilities or
+anything that we've done with it. There's probably some potential there. It would be
+awesome some someone dove into that. >> Especially going forward as Microsoft starts to
+dig it some more. >> A lots of internal tools and other things are using it. >> So if we get
+into the ultimate nitty gritty of DACL's and permissions. this is what an access mask looks
+like As mentioned before, it's ‑bits. In the end, it all comes down to this in the
+center, in the green, you will actually see what are the global or standard access rights. These
+are available on every single type of object. So the rights that you have are pretty
+generic. The first one, synchronize, basically what it says is are we allowed to access
+this object, synchronously or in asynchronously. did my thread have to hold or not,its not one
+or we've ever been worried about, from a file and directory perspective, you are pretty much
+always allowed to do it always synchronously , otherwise the system will break. The next
+one ‑‑ so the next one is are we allowed to write the owner? Can I change the owner of this
+object? Pretty straight forward. We also have can I write the DACL? Are we allowed to change
+the access permission and alter the ACL. so its a little meta and that the ACL includes the
+permission on can someone modify itself. We also have can I write to extend the attributes and can
+I read extended attributes? or read and write attributes? This is not extended attributes. This
+is the attributes talking about before, the DOS. This is hidden, read only, that sort of thing.
+Are we allowed to modify them? And then, finally, most self‑explanatory out there, can
+we delete the object? So those green ones are always there. The ones ‑‑ so the further to the
+left, in black is one that also ‑‑ is global. Always available. It says can I access
+the system access mask? This is one you don't see often. but basically There are DACLs and
+the there are SACL's. What a SACL is the name is misnomer in my mind is that it basically
+says am I going to audit when something happens? It drives a lot of stuff that goes into the
+Windows event log, that goes into other extended logs you have and turn on. It's not one
+we see often or worry about from our testing perspective, but it is certainly one just to keep in
+mind. Finally, [Laughter] if you look on the right. Not you, if you look on the right in the
+orange ‑‑ [Laughter]. >> If you look on the right in the orange, these are the ones the that are
+specific to files and directories. This is where you will see more of the stuff you
+will expect to see from a permissions perspective? Can I read and write extended
+attributes? Can I delete the file? Can I write new files? The ones you see listed up here are
+for files, the names are different for directories. The object type is different. Can
+you do a shot? >> Of course. [Laughter]. >> Give a round of applause. (Applause). >> And
+this is where the presentation went downhill. >> Give me about minutes and then we'll see.
+[Laughter]. >> Okay. So in the orange, the one that you see up here are what you'd expect. As I
+said, with files, those are the names you see listed here. With directories, well honestly on
+the file if it says can i write to the file? the permission on the directory says can I create
+the file? They map. They are standard. In some of the stuff we've done we don't even bother
+keeping the two names, but just in case you might decide to look at this in Microsoft
+documentation A, I'm sorry, B, note that the names are different. >> It is extensive
+documentation. >> i Made him do it. >> Go back. >> Sorry. >> Finally, the four blue on the
+right are kind meta permissions. These are the ones you would expect to see. you have write,
+you have read, you have full control, you have change So, really, if someone sets these,
+it sets all the other flags. They are assumed, though, that typically almost every program
+will implement it. If you pick the read flag, I think bit, . If you pick the read one,
+technically you have all the read ones. It doesn't bother to look at the rest of them. Pretty
+much every program on the planet will set the fact that you can read files, list directories, it
+sets synchronously, it sets reads extended attributes. So those are there also. Also
+important to note. This is ‑‑ A lot of time spent figuring out what the right document was.
+When we found it, it was actually quite easy. Okay. So we had to go re‑learn some of that
+and learn for the first time a lot of it because of a problem. Share scanning we keep finding
+as kind of a pentesters best friend. One its where all the information is typically. You
+are going to go after it for that. find somebody's Password .txt things like that. Images,
+pull creds out, all that fun stuff. There's other stuff you can do too. What we found was
+the tools weren't built to do everything we need them to do. There were some problems with
+some the tools that existed because they had been built to do this or that and didn't take
+into consideration some of the things. Some of those problems ran into. Some of the tools have
+immature or incomplete authentication libraries. so while they'll may not support LM
+or NTLMv, they may not support v or maybe they don't appropriately handle NTLMSSP
+that the security provider process. Even though library may support v, they never get
+prompted for v. it wont ever just kick in We ran this with a couple of tools. It includes
+often times these tools aren't share scanning tools. They are support scanner, vulnerability
+scanner, a generalized security framework. We will go through some of the tools later. They do
+other things. Inmaps, scans for open ports before it does any of the scripting stuff, ENS does
+some checks to see what kind of system it's testing so if you check don't scan printers and
+all that stuff, it knows it's not a printer. There's a lot of traffic that isn't share
+traffic. It will often time can tip somebody off on What is going on in the network
+something weird and malicious. We wanted it to be as clean. and all legitimate traffic so It's
+much harder to detect. >> We don't like getting caught. >> No. The other thing is slow.
+Other tools just wrap other existing tools like SMP client, some are written in scripting
+languages, whole library are, a crazy feet, kudos to the people who wrote those. They are
+slower. How many times you've gone to window file share,and slow and thats all written in C
+and optimized for years by Microsoft. Somebody implementing that in a scripting line, it is
+slow. We need it to be fast. And finally, almost none of the tools would go down to . If you
+have a folder structure that has , objects file and directories and all that stuff,
+these tools wouldn't find those for you. They will give you the share permissions, maybe the
+share permissions plus upload a file to tell you if you have the right access. They didn't give
+us all the information we wanted. So here's some of the reasons that we share. First one
+is obvious. This is why everyone looks at share sensitive data. You look for H.R. share. Check
+out the salary, the person who hired you. What is he or she making? What is the IT person
+yelling at you that you broke this or you broke that, what he's making, all that fun stuff.
+you look for IT shares The Windows administrator has that big installer package for SCCM,
+and you download it, now its gonna get to server installed on. he's working hours that
+day,so he just opens a share in his documents. Opens it up and dumps it in an application share
+somewhere. Now this has become a dumping ground. and just all his stuff is all in there Scripts,
+pass words, all that stuff. All of them come from Windows maintenance at am . >> Exactly.
+[Chuckles]. >> Backups. We see this all the time. A backup folder that if a permission was
+opened up, the tool X, Y Z can go and grab a visual machine and make a backup or do a backup of
+the specific share, or all these different things, and they dump it to a regular share or some
+piece of storage storage. No one ever goes and lock down those permissions. We have got in
+control of several admin passwords by grabbing a backup and dumping that out into a
+Windows image file or V ranger or something like that and pulling local admin creds,
+pulling sometimes cash credentials anything you can pull off a hard drive system,
+you can pull off these back up images typically. Finally one of the more fun ones, source code a
+lot in shares. Source code for vendor tools or stuff created by those tools, one the ones that
+was interesting is we found a very large help desk system that let you attach and track changes
+tickets and all this by default when you set it up creates a share that you can map and
+everyone has access to that contains all of those attachments. If you're change
+control system, putting here's our original router and here's the change we're going to make,
+a nonredacted configuration internal, we could get those. We did dump ‑‑ we dumped
+configuration for switches and routers, firewall configurations. >> Passwords. >>
+Yeah, new passwords. Audit for service accounts. We know eight passwords, we can't change them,
+and here they are. Common stuff you can find. That's only a portion of what we do. Typically
+it's do after we have taken over a network. The goal is not to take over the network. This is
+the other stuff we go through. Paragraph. >> I was going to say admin is fine. You come to a
+bank with every account number, they listen. >> So the first thing we always do before is
+system fingerprinting. Once 
+you have authentication. Anybody know the two shares that own
+every domain controller? Anybody? SYSVOL and log-on, You see those, you are looking at a
+domain controller. It tells you what that system is. If you see WDS, Windows deployment
+services, that kicks in. Deployment share is that one. SCCM, default shares hat they
+have put enabled. Older versions of IIS. Find the H.R. system, look for the IT share on one
+server or the H.R. share on one serve somewhere. You want to see where everybody's files are?
+Profile or users on has everybody's stuff. Sometimes those permissions aren't right.
+It will tell you a ton of what you are looking at. >> As a side note, if youre trying to be
+really stealthy, you can't do anything to actively identify Windows host use something like
+NBTEnum user info winfo and go to the domain computer groups, remove the dollar from the end,
+that will give you pretty much a full list of every work station and server in the domain. It's
+not going to get caught. >> You are not going to get caught. the only problem you're going to
+have with that is that if the dont clean their environment which no one does You will have
+half of them, disabled three years ago and don't exist. You can clean that up too. Okay.
+Beyond that, beyond what is the obvious shares, we have also found a couple of unique uses
+for us. We were actually talking earlier, probably about half of our attack vector two domain on
+all of our Pentest involve this. We will probably start to change, but the first one, the
+big one is, is the local administrator password reused? Remember the admin share. If you
+popped a box, got one work station, let's say it's through social engineering Or I don't
+know, you've got a share with WDS images and a local admin password. The next question is
+where is it re‑used? You can do a lot of different tools to find that. That's going to look like
+a log‑on attempt. It may get you caught. It may rise above the back beyond and radiation of the
+network. It's really simple, try and mount admin dollar on every work station with that account.
+If it works, bam, you know where it's re‑used. We're on pens all the time a thousand or ,
+work stations, what we will find is sometimes clients are pretty good. Maybe put I T local
+administrator password, maybe H.R. and everybody the same one, at that point, if I can control
+of your work stations, it's only a matter of time. The domain will log in. You have got
+to be patient. The other piece that you can actually help out with is you can start to learn
+is it rename this in the same place everywhere. AdminwhaAdmin is one that we found. >> That is
+my favorite local administrator. Everyone should use this, adminwhatadmin. >> My favorite
+is still ‑‑ we have had several clients, per our recommendation, renamed the admin account or
+disabled it, which is good. Disabling the admin account prevents a lot of lateral
+expansion of your access. Then they will go around and create new ones, help desk, one for
+anti virus updates and patching, and they're all local admins. We give them a blank stare, being
+like, okay, did you think this through? So we also find that all the time, where there's
+local account that are reused. Sometimes they're local users. We can work with that. but more
+often theyre not local admins, That's just bad. Also, we will also find where if we get one
+usage set of credentials, responder, you know about that? It's really cool. I suggest look
+into it. We will get a credential from that and manage to crack it. Maybe we will get
+some local cash cred, thru mimikatz that have come to us. sadly theyre Regular domain
+user. No one important. But, you will often find again, you have , work stations. How often
+do you think the admins have gone through every single work station and make sure that
+people aren't on local admin on it?. How can you make sure that work station haven't been up
+graded from windows N T and has the everyone group in the local administrators? It turns out
+pretty often that's the case. I would say consistently we will find one or two work stations,
+or maybe a server where everyone is a local admin or domain users have been put in that group. We
+are now immediately escalated up. We do something to get credentials. Half the time there
+aren't any in there. Again, what we will do here is as soon we get creds, passwords whatever,
+we start scanning for the admin dollar share across all of these systems to see where we have
+admin access. There's one more step. >> Before we start writing these tools, these are the
+tools, with the exception of winshare, we kind of have access too. Nmap has the NSC script.
+they have been working on the on the authentication piece. it gives you the default
+permissions for that share. Upload a file to see if you can write to it, let's you know if
+you can read to it. It's a port scanner. It does port scanning beforehand. It checks for random
+ports aren't related to Windows traffic. It's easy to look for traffic. to see if it is an
+actual share mounting. System internal sharEnum , very hard for a pen tester to use it. It's
+finicky. If you are a Windows admin and your wanting to review your own share permissions and
+look at things, it's a great tool. It's hard for us to use this at scale if looking at
+, Windows system. We don't have a domain machine to run it. >> It won't let you put in
+creds. >> and then Nessus, our bigger complaint is slow. Faster in the last year. It will go to
+some level of recursion. It's not clear how far it will go down. It will pull some files
+and folders and tell you permissions there. It will tell you if you have write
+permission. Upload a file to verify if you have write permission. It's a vulnerability
+scanner. If it's a novel system. It's pretty obvious that something that's not a Windows
+Shares is going on. >> The plug‑in will actually look for several common share names, so
+it's also easy to identify. It will try invalid shares just to see if they exist >> Mataspoint
+has a couple of different modules that we used to we use this before we wrote shareEnum.
+You can try log on, which is just failed log on attempts. If you don't do it write.
+Successful log on attempts if no activity. Suspicious if across a thousand work stations. It will
+try to mount or try to upload a file to see if you have write permissions. And it is also used
+to be slow. and now the threaded their's because they rewrote their SMB libraries.
+WinShareEnum is one that we found while we were writing this tools it runs on dot net ., I
+believe. It's difficult to get running, when it does, it's works. but It if it gives failed
+access attempt it will retry just to make sure if it really got the failed access Again,
+that just looks ‑‑ it looks malicious if you you are looking at logs, why four failed log ins
+in a row. It will try to bind whether you gave creds or not. It's not necessarily what we
+want. We want to some clean information from it without being too noisy. Finally, you
+can always use explorer net use and SMB client. If you don't use SMB client if you have used
+a command line FTP client, that is SMB client, you can list the shares, you can connect to them,
+and you can do M get, M put, it doesn't say the permissions, you don't have permission, it yells
+at you. If you have permission, it will download or whatever it does. That will take forever. >>
+Okay. These are a lot of the tools that we use. They were great tools, but they didn't
+meet the need that we had which was to do it in bulk without sending a lot of traffic. We
+thought to ourselves we could be like a lot of other hackers and do it ourselves. We are not
+crazy. We don't want to implement SMB or ruby or pearl. At that time that really wasn't
+there. There actually is a group of people that have done this already and done a damn good job
+at it. and thats Samba, They have Samba can emulate a domain controller. I have one
+client that handed it in ‑‑ They're crazy, but, smart. Basically what we decided is use
+the same library that SMB client does. An extraction library which provides a lot of
+functions that you can use to call all of these different things. It's a lot faster. They
+have compiled I D L's that allows them to make RPCcalls quickly. More native and written
+in C, so in general it's going to be just faster than using A and interpreted language The
+other really nice benefit here is Samba team worked hard to make sure they can support all
+of the same stuff that Microsoft does. They are behind because they had to implement specifics
+after my company soft comes out. It's open source. They don't have the army of programmers
+that Microsoft does. It supports all the cool stuff we need NTLMV… NTLMSSP. Our tool
+doesn't do it. If we wanted it to, it would support cobra soft. If you have it, good for you. We
+are not implementing it until we find someone who does It made this a lot easier for us. >> It
+works everywhere, almost every printer. You will find the Samba code in various versions on
+almost every code out there. It has been battle tested and optimized by everybody Windows
+Share. >> A side note, a remote exploitation in command objection vulnerability in
+NETBIOS name damon for Samba that was released this week. It might be interesting to take a
+look at. We gather the DACL's and parse the aces and nice SCB so you can go to your
+spreadsheet of choice and filter everything out. We do also recursively go and go as deep as
+you want. We have actually pulled every permission from a file server that had over half a
+million objects on it. It took about minutes. It was a gigantic C S C file excel
+complaint. We also support anonymous. We can use regular creds. We support the DACL
+that's out there. So we do have a demo. >> At least a video, hopefully a demo. >> Hopefully
+this is easy to read. >> Is it good? >> Can everybody see. >> We are irritated when people
+throw up a terminal and its point font, black background on green. [Laughter]. >> Okay. So.
+Push print here, again. We have a nice menu that tells you all the flags. Updates. Make it big
+so you can see what we're typing. Not as nicely formatted. The first one is just
+enumerating share, we have a set of creds, a list, a IT or host name for line file of the
+targets we want. Get that. >> Hosting a Test lab. >> one of these creds have access to what
+shares are out there. >> We do sharEnum. We give it a user. You can do without the domain, but I
+will do the domain. Escape. if you you type it right you will have lockout count. >> Yeah.
+Yeah. We have locked out counts too. >> The password. Super strong password. We give it an
+output file just a C S V and provide the targets we give that a run. You will see nice pretty
+colors. >> It pauses too to make sure you put the password in right. >> You will see it goes
+through and telling you what it is actually getting. If it has some errors because you didn't
+have access, it will tell you that. If it pulled objects and information, it will tell you
+that. We give you color to see if you are getting red X's or getting some data back. We will
+show you what that looks like here. >> While he's pulling that up, for each of these demos
+we're also going to talk about steps if you are on the other side. We like breaking into
+things. Both used to be admins in the past. We understand we don't want to come and break
+everything and leave. And say here. [Chuckles]. >> We prefer to at least help you along the
+way. So let's talk about this one. This is very difficult. You need shares enabled. Something
+one of our client did, took surprise. They actually logged whenever someone used C dollar
+or admin dollar. Basically if they saw more than five in a time period, C product,
+generated an order. That stopped us real quick. That's tough. >> Have the six up here. Provide a
+lot of information, some headers of the user you ran the account with. So if you're combining
+these into a lot to you have this, you can tell what user you ran it with, the host, what the
+share name is, what type it is. Right now it will just show file shares. It will say whether
+its's a directory or a file. We pull the D A C L's we talked about. Authenticated users. You
+can actually go through and filter it. If we want to look for all those admins we talked
+about, now we can tell where this user has local administrator access. If this
+was a pen test, we would go to the system and pull the local administrator test, which we've
+done for you. If I can use the screens. Again, this same user account we have provided the
+credential. This is the format, the same one that metaspoint uses, the LM hash colon, the M T
+L M hash. You provide it that. You copy it straight out of P W. Make sure there's no space
+password. Make sure you put that. Tool left that run. You will see we're pulling results
+again for each of the host with a hash there. If we look at that output, again we can filter this
+up, make it with the same user. Still this one account. If we had run it with it with actual
+local administrator, we would see that admin share every where. I tend to running a big
+host, I will have him open just looking for admi$ with right access. That will tell you, you
+have a system where you have local admin. >> Let's take a minute to talk about local admin
+access. This is difficult. More often than not we find our client are using it
+accidentally. It's not a situation where they wanted everyone to have local admin. It
+was a situation they needed it. They set it up once and turned it off. This is where were doing
+that review, a whole lot of tools you can do to do groups. We listed a few that do a share.
+You can filter on admin$ dollar. It's a good review. You can do it probably once on your
+network. It will take a while if you have a large network. If you want to get more granular, you
+can use expert pro, nesus will do it, pull the group membership on every system. A couple of
+hours, I know that's a couple of hours most of us don't have. To be honest, keeping people from
+having local admin is one where I say three top things to recommend. Keep your pen testers
+frustrated. >> So the next demo here is the recursion. You will see we added same thing as
+before, password user name. Added R flag. Go 10 levels deep. We will ride it against one
+host. There's a third way you can provide hosting. You can provide a file that is one gear
+host name per line. You can provide one target the host name and whatever system you want to
+look at. It will go on everything in that system. That is what we will do here and let
+that run. The last one you will see in a second is limit it to a share to folders deep in a
+share. You can give it the full path where you want it to go. It will go and do a recursion
+against those. Will you see there, theres objects it found. We will open that guy up.
+Paragraph. >> While he's doing that, the last mitigate we wanted to talk about was admin
+passwords reuse. I would put this in my top three. When clients have basically.. you are
+pulling from an image or you have it set in group policy and preferences setting the local
+admin. If I take over one work station, I am effectively taking over all, which is bad.
+Ultimately all networks getting broken into every day. We have to accept that. It's our goal to
+contain people. One of the first lines of defense you can do that is preventing them from getting
+access to other work stations. If your users are running as regular user was U A C set to
+and everything is perfect, I can still, hopefully, get access to the local admin hash and the
+local admin credentials. From there, you prevented regular users from doing things there,
+the attacker can get access to every station. The optimal solution here is to disable the
+account, coz that could be difficult unless you're reimaging the system, if they
+fall off the domain, you are screwed. You will not get it back. There are a few other
+things. One prevent that account from logging on over the network. That way got at local
+console, if the system falls off domain. You prevented an attacker from using it over the
+network. It works well. Sometimes you can't do that. Some people haven't been able to
+get to it work. Networks are complex species. The next best option is to start to group
+them, have a pass word for admins, for I T, H.R., have a pass word for accounting, so
+that at least you contained your access, to only access the only information they already had.
+You want to get crazy, Microsoft theres actually some power soft script that you can get that
+they've put out that will set every password on every system in your domain to a random
+value. >> They released it as part of when they pushed that update to quote unquote kill
+pass the hash. They, and far PGP update disables the ability to store password and group policy.
+They provided a power source script that go through every work station. It will run
+against it set the local pass word to something random and dump it and throw in a key pass
+and some encrypted store, if you have to log in, there is it. You will not need it that often, so
+it's fine. You will see here, C S V have directories files, file shares, the permission for each
+and who has permission. Same thing, some format for each one. In this one that object file
+start to give us full directories levels deep. Our last demo here, you will see ‑‑
+so we will give it a specific path. If you would look through the results that we have before
+you, a folder Smith. looks like a user directory, i wanna know everything what this user has in
+his user directory, We are going to run a hundred levels of recursion and run against this
+share. This has bitten me before where there's a file serve and go deep on one share, but they
+also have other shares that are massive and it will never finish if it has to run against
+all of them. You should be as specific as you want to be. So we've pulled that there. You
+notice that when you do a specific path , you have to do a SMB-colon-slash -slash which is
+standard. You have to add that. Let me pull up ‑‑ no. >> You're fine. >> Okay. >> So by the
+numbers. Right now this is some of the numbers we've pulled with the current version to see how
+fast it runs. It takes about seconds for a standard host and that includes Samba warming up
+and tools warming up. It will give a pause before you lock everything out. One host with
+some recursion for about objects takes about minutes, and a half minutes. This isn't
+quite as fast as we like it to be. We will try to make it faster. For what we're doing
+it's quicker. Finally a small network with limited lan links. We have remote locations
+connectivity. It took about or minutes to do window cells. We have used this in
+networks as large as , , work station servers. It will keep running. Sometimes it takes
+a little bit. >> As far as challenges, Samba is a big beast. There's a lot of stuff to
+it. More importantly, there's a patch that we are having to issue through Samba itself. The
+reason being if you try to do pass the hash, it supports it, but there is one portion where
+you pull extended attribute, DACL, start treating the pass word hash again and locks out
+accounts, so not good. Also it's written in C, haven't written in C in a long time, so terrible.
+Anybody has any questions, we will be around. Anybody here has written RPC code for Samba, we
+would like to buy you a beer. We have some questions for some other tools. Here is the contact
+info. Thanks, everybody. (Applause) .

@@ -1,0 +1,695 @@
+>> So this talk is about the two
+I'm tool I'm releasing called
+Veil-Pillage. It's the tool I always wanted on internal pen
+test. Real quick, a little bit
+about me, I'm a security researcher and pen tester slash
+red teamer for a company called
+Veris group in northern Virginia, and I work for a
+subgroup in there called the
+Adaptive Threat Division. I'm a cofounder of the veil-framework,
+hash tag AVLOL. Our main site is
+veil-framework.com. We kind of premiered our tool this year at
+Schmoocon 2014, under a talk
+called AV evasion frame work. And the other guy that works on
+the tool work with me is Chris.
+Hi Chris. So Chris and I co-wrote veil evasion. I wrote
+veil catapult which I'll go over
+in a little bit. I wrote a Powershell post exploitation
+situational awareness tool
+called veil power tool. We'll talk about a couple of the
+functions that are applicable
+here. And I wrote a window's (indiscernible) show called
+power up. Active Cortana and
+NovaHacker. Kind of the overview of we're going to go through
+today. A background on the frame
+work A. Genesis on how we got there and the thought process
+and the various components. And
+I want to go over a few quick slides on post exploitation.
+Kind of let everyone know this
+is the exact realm of the assessment cycle that we're
+operating in. I'm going to go
+over veil Pillage. And feature sets and a few interesting
+current modules. There's 59 of
+these so I'm not going to sit here and go through every single
+one. Don't worry. I will then
+come back and talk specifically about some of the functionality
+that deals with hashdumping and
+plain text spread covering. Demos a few videos. So I don't
+have to pray the demo gods so
+nothing would break. I'll wrap up talking a little bit about KB
+2871997. A Microsoft pass the
+hash patch. We'll see if that stops that much. I'll finish
+with going over a few of the
+upcoming module releases and how you can develop your own
+functionality for this frame
+work. And then I'll recap a little bit. The veil frame work.
+Is anyone willing to raise their
+hand who might be using the veil frame work for veil evasion?
+That's awesome. Our kind of
+branding for the tool set is we want to bridge the gap between
+testing and renting
+capabilities. So it started with the release of veil evasion.
+veil originally titled veil.
+Later renamed veil evasion. We released a few more tools since
+then that I mention. So the
+original motivation for this first part was our back door's
+were being caught by AV. AV
+started to catch up. So we built a modular framework that
+generated AV-Evading
+executables. So we have a variety of shell code injectors
+and higher level of pure
+Meterpreter stagers with that same logic translated into a
+higher language like power shell
+and pi THON. We debuted at Schmoocon 2014 with AV evasion
+with the veil frame work. We're
+excited. Kind of how Pillage came about. After dealing with
+AV evasion, our focus moved
+toward payload delivery. How do we get it on our target machine?
+Also released was a small tool
+called veil catapult which tied in with veil evasion that can up
+load and trigger executables
+and ‑‑ ‑‑ and do a UMC hack back and I'll go into more detail
+about that. And a few common
+tricks like everyone's sticky piece back door. The thing with
+that is it's kind of screaming
+for a more generalized post exploitation structure. And the
+attack cycle is my nifty little
+graphic and you have your basic recon, enumeration. Pillage
+doesn't deal with exploitation
+and numeration special specifically with the initial
+part of the assessment we're
+entirely operating with the post exploitation component. I'm not
+going to go through all of
+these. The slides are online. Our slide share via our frame
+work. This is a more granular
+way of breaking down these exploitation actions. The big
+point here is we want to
+demonstrate impact. If we have a relatively short engagement, we
+don't want to waste time
+scripting stuff up all the time or rerolling back doors and that
+type of stuff. We want to
+maximize time we can demonstrate impact. So exploitation stuff in
+plain English. This is one way
+to interpret it. If you have access or credentials to one or
+more machines in the net work,
+what can you do? You can execute a command on the box what kind
+of nastiness can you kinda tell.
+Kind of a quintessential example, local administer hash
+or several remote hosts on a
+network. And you want to grab plain text of all the users
+logged onto the host. How would
+you go about doing that? One option is using Metasploit.
+Connect to the box get a section
+install an agent. The advantages of this are its very flexible
+and powerful. You can utilize
+the entire Metasploit frame work around all those awesome
+extensions, all those awesome
+post modules some of the draw backs are service running the
+systems created. So that can
+create noise or logs and dis. And there's a lot of nonstandard
+traffic when you're staging an
+an interpreter. If the client has more in depth network
+filtering detection, that might
+get you caught. Also known malicious binary dropped. You
+can throw in custom things, but
+you're still touching disks. Another option is to use the
+tool SMBexecs to upload and
+execute a WCE binary. (Indiscernible) files after. If
+advantages are, you don't need
+to establish a full interpreter session, and it doesn't rely on
+the Metasploit binary templates.
+But, system level service is still created and known
+malicious binaries are
+throughout the disk. If you have a static binary that's touching
+disk, it's pretty easy for AV to
+write a static signature for it. Another option is using the PASH
+and hash kit. Awesome projects.
+The advantages are, use WIMS, no service is created. It's quiet.
+Also no binary's dropped to this
+if you're operating purely in powershell. Draw backs, it's
+incredibly powerful tool set,
+but the usage is not always is simplest. People who play with
+this it, there's a variable
+entry. There's got to be a way we can weaponize this a little
+bit easier. What if power
+shell's disabled or not installed. And the key here is
+all these options might work in
+certain situations, but often not every situation. The kind of
+what I envisioned we wanted in
+an ideal tool is a lot of trigger options as many as you
+can have. We use Win EXE. WIMS.
+SMD impact. We also want really good modularity to where you
+want it as easy as possible
+to implement additional exploitation act. We want other
+tools to integrate with ours.
+You can run a module and drop it in. You want this to be as
+flexible as possible. And also
+completeness. It would be nice if there was full automation and
+comprehensive log in and clean
+up. We want to know every single host we touch and what they did.
+And we want a way to repair that
+very easily in the ‑‑ I'll go over the (indiscernible) enough
+stuff and go over that later. My
+tool, Veil-Pillage, is the next iteration of catapult. It was
+kind of the genesis of it. The
+primitives that it's built on is using the pass in the hash I
+mentioned.  ‑‑ ‑‑ doesn't create
+a service. (Indiscernible) the equivalent of PS exec.it runs a
+system of binary DRO. Something
+that touches disk but not working. Also use S and P
+impact. Everything is extracted
+out to library methods. So when you're developing your module,
+what's the syntax for this and
+that, you can drop stuff in and use it on library. I'm going to
+be building this diagram up of
+all the components of Veil-Pillage. These are the
+primitives that the entire frame
+work is built on. So veil catapult, these are also
+catapults that, security
+essential castles. All the demo machines recorded on. And it
+still didn't catch anything a
+year later. So all of catapult's functionality has been modularly
+integrated. The EXE delivery,
+the powershell injector, the python injector. I'll talk about
+in a few slides. And everyone's
+favorite sticky keys. The catapult will now be obsoleted.
+We recommend everyone use
+pillage because it's a lot more flexible. A close up soon on
+transitioning and the difference
+between the two tools. And so yeah, I think catapult's cool,
+but those are a little cooler.
+EXE is core original function for catapult executables can be
+specify. Or you can take
+advantage of seamless integration. While shown the
+demo, you specify veil, it'll
+drop into the exact same interface. You can roll up all
+the options you want and drops
+right back to the veil interface. So the seamless as I
+can make it And triggered with a
+UNC backpack. What's this? So. (Laughing) I help create the
+veil frame work. And there's a
+veil vodka we found. So that's my shot. >>	No no keep talking.
+>>	Okay. Keep talking. So the
+UNC location. You stand up and kind of host the file
+temporarily on an SMB server
+that's set up and torn down transparently. When you trigger
+it, that's EXE is loaded
+straight on a memory into host. This gets some otherwise disk
+detectable EXE's right by
+antivirus. If you want to see a demo of this, check out our
+schmoocon presentation. The
+slides and everything is online. The python injector I mentioned.
+This take a strip down python
+environment in the strip and upload it to the host. >>	Ready?
+>>	Okay. First time Speaker DEF
+CON. Have a little love. (Applause.). we've got the veil
+vodka for the veil tool.
+>>	Thank you. >>	You're the first speaker to provide your
+own shot. By the way, that
+bottle is big enough for everybody in the audience. So
+if. >>	If anyone want AS shot
+after, come talk to me. I'm not going to drink all that. So the
+python injector. It'll upload
+the python zip and unzip the entire thing to disk into a
+temporary file. And then it uses
+a dash D option with python EXE to ‑‑ ‑‑ straight to memory. So
+this is basically a analog. It's
+very similar to power shell injection that a lot of people
+are familiar with. So what's
+nice about this is the only files that touch this are the
+trusted python libraries and the
+trusted known python interpreter. So this can help
+you get by certain types of
+reputation filters. Saying oh I didn't have I haven't seen the
+EXE before, I don't know if it's
+bad but I'm going to provide additional protection on it
+because it's unknown. And also,
+when you want to generate shell code, it'll drop right into the
+the veil evasion too. So just
+like one little line, you don't have to do any kind of heavy
+lifting. All kind of veil
+functionality built in if you're going out. So the fun stuff, new
+modules. Enumeration. So you
+know, if you have ‑‑ if you scan your net work with Medusa or
+incorrect or something like
+that, I think these credentials work in different places, this
+will verify if you can connect
+to the box. It connects them. Tries to create a temporary
+folder and immediately delete
+it. It's a little bit more accurate and a bit more slower.
+So scan and use this. ‑‑ ‑‑ User
+hunting is a very common activity that any pen testers
+I'm sure do if you have
+credentials that work on lots of machines. You wanna find okay a
+high valued user logged in on
+the network. You use this, it runs through a few boxes it
+works on. Validates, and it'll
+pop. Saying -- is here here here here here here here. Or if you
+want to do some kind of basic
+host enumeration reactions, it's the arch table, do the
+interfaces, that type of stuff.
+Management, occasionally, if you're an internal test, you
+might want to do enable disable
+UAC or RDP. Actually showed this in the demo. If you have net
+work level access on the chain,
+RDP may not be enabled. Maybe you want to set your sticky keys
+back ‑‑ there's certain actions.
+Also you might, in certain situations need to force users
+to log off, reboot the machine,
+shut it down. To trigger certain post exploitation actions. This
+is fun, persistent stuff,
+everyone's favorite little fun activity. We can throw up the
+bits in the back door really
+easily. To schedule a download job for an EXE. Sticky keys,
+it ‑‑ ‑‑ stick key keys binary.
+So it sets the bugger. The box for the system pops up before
+you could log in. Little bit of
+a lesser own one. UNC hijacking. If you append a UNC path to a
+packing variable on a machine
+and that machine reboots, system services or services and
+programs and stuff when they
+start up will actually look to that UNC path for dll's to load.
+So I have a tool in here under
+slash tool that is you can bring it up and it'll scrip wire shark
+and hijack opportunities. You
+host up a malicious DLL from your host, and you have your
+persistence. Powersploit ‑‑ ‑‑
+weaponization. So my solution is I'll set up a temporary web
+server and I trigger everyone's
+little favorite download string. It'll trigger that, re inspect
+your tacker box, running memory.
+Now click files out put. And then I run and grab it and clean
+everything out. So this makes it
+really easy to run powersploit across a large number of
+machines when you're on
+engagement. There's also clean up to kill off all the processes
+and stuff. Now this is really
+kind of the meat of the tool, all the modules and Powersploits
+stuff and enumeration stuff and
+those types of things. So here I'm going to go over a few of
+the new features I integrated
+in. So last month the veil team released a custom written higher
+level powershell stagers for
+Meterpreter. Reverse https. These don't utilize shell code
+and they work great in the
+passing the hash tool kit. That shell code can't be decoded from
+a file or something like that.
+Because it's not being run. There's also X86 and 64‑bit
+compatibility by default. You
+run this stuff, and then choose the correct string to inject,
+it'll choose the correct power
+shell binary to use for the injection. Output and cleanup,
+like I said, we're pen testers.
+We really like to have everything logged. We want to
+know exactly what happened if
+something goes wrong. Our client wants to know how we got into
+somewhere. These credentials
+were used on this box for this action. So Pillage has a
+universal activity log it also
+breaks it out by modules. So everything host and everything
+is broken down and time stamped.
+And also clients are pretty picky. They don't like malware.
+They don't like you leaving
+malware around the networks. They don't like stickykeys
+backdoor On a hundred machines.
+So every single action veil pillage can execute, has a
+reciprocal cleanup action that's
+output to a script. So universal cleanup file and cleanup file
+for module. You can type
+Cleanup give it the file or pull the universal file and clean
+everything up and remove any
+files and all that stuff. I'll show that in the demo. Random
+features, state preservation, if
+something crashes, you can always rage quit with control C.
+All the options are preserved.
+The current module that you're operating under is dumped right
+back to. All your targets and
+credential sets and options it's all preserved. When you start it
+up it'll prompt you do you want
+to restore this initial state? You can save those off and
+rename them. There's also
+Metasploit back end database interaction. Right now it can
+pull in any credential sets or
+targets from a Metasploit back end and you can add those into
+your target. A common thing we
+can do is SMB log in ‑‑ ‑‑ Every single thing will be tab
+complete able is tab complete
+able, cause I've had to type through this stuff so many
+times. There's reasonably robust
+air check. There's complete command line options. And just a
+really big UI focus. Pillage
+contains complete command line flags for every option you can
+set in the frame work. I Script
+up other tools beneath mine a lot of the time. I want people
+to be able to integrate all this
+functionality. So Veil-Pillage SH. It's really small but there
+for every option. You can set at
+targets, clean up stuff, state restores, veil evasion options,
+all these types of things. So
+that's kind of the last part of veil Pillage. We have the
+features and icing on top. And
+the modules on part of it. The functionality and primitives and
+all the good stuff. I'm going to
+back up just real quick. Some of the interesting core modules for
+hash dumping and plain text
+graphing. The hash dumping. There are a verse number of ways
+to dump hash on a system. A lot
+of traditional ways is dropping a binary. Deal with that is, AV
+start today flag or write
+signature should be static tool. So we don't always like to drop
+stuff to disk, you could get
+registry backups w/ reg.exe pull those files down. Or you can get
+a Meterpreter session, do it a
+little bit manually do a hash dump, wdigest and all that
+stuff. Some of the new hotness,
+power dump strip. You can hash dump using power power shell.
+Using WCE and Mimikatz binaries.
+And also, the power split project has Mimikatz integrated
+completely in power shell. Which
+I'll go over completely in a few slides. The thing, like I
+mentioned with hash company,
+different actions work in different situations. So if you
+want a universal solution, you
+need to expose all those options. But maybe you can
+automate some logic. Depending
+on architecture, Powershell Installation, AV installation
+can affect what they might do.
+And some of these like I mention involve dropping a well known
+close-sourced tools to disk. You
+want to always have options to fall back. We like staying off
+of disk as much as possible.
+Mimikatz, I saw your credentials, Mimikatz stickers,
+(indiscernible) is actually
+right here. Thank you for Mimikatz. Mimikatz and power
+shell is incredibly awesome. It
+utilizes WLS fire work with reflectivePEinjection to
+inject an architecture
+appropriate Mimikatz DLL into the system. This is just awesome
+you can harness the power of
+Mimikatz without having to touch the disk. You can do all that
+fun stuff. So for Pillage, all
+these users are exposed as modules. In case the users wants
+to force this for particular
+decisions. But there's also modules called autograph that
+tries to build this in. It'll
+check the power shell working. Not even just if it's install.
+But power shell command. If you
+can, I have a combination of power dump and powersploit
+triggered with that web
+downloader. If it's not, it runs a command to try to determine
+the architecture. And host is
+x86 or 64-bit binaries with that SMB server and just a U/nC
+backpack. Then it collects
+credentials and all unique lists and has all the raw out put as
+well. All right, demos, I'm not
+tempting the demo god. So this is starting at veil Pillage. I'm
+going to show a little bit of
+the interface. We have our version up there. Right now
+we're 1.0.0. We have the site.
+We have the number of modules released or loaded. In this case
+it's 59. I'll go over the
+release schedule soon. List is the command to list, either your
+modules target or credentials.
+Set, you can set a single target. You can also specify a
+target file. So if you have a
+giant list of targets from a tool output, targets being set.
+I'll show resetting the targets
+if you want to just clear it all out. This is the best way back
+into stuff. So the DB list
+targets will clear the database. It doesn't do a live link to the
+database it'll do a query and
+then I can add pull in that static set and choosing
+separated and it'll set that in
+an internal state and Pillage. So then I think I'm going to
+show how you use a the database
+interaction to actually set the credential sets. See this is
+output from successful SMB post
+log in or post module or enumeration module. So DBi creds
+can become separated. Set all
+those up. Administrative and hash. So now if you just type
+list or list module, see
+Powersploits, persistence, payload delivery, impact and
+stuff enumeration this is the
+module that had a little bit of logic built in called the
+autograb. Here are all the
+options available for this module. The other way you can
+invoke it is say using the
+number and use and tab complete and it'll tab complete out the
+entire trip. So I'm setting an
+option for the reach back. You can set SSL for HTTPS something
+like that if you wanted. So I
+just press control C so I just rage quit out the entire thing.
+It'll prompt the state ones to
+be restored. Or right back in to autograb. All the options are
+still set, all the targets are
+still set. All the creds are still set. I'm going to run it.
+It's going to prompt me to
+confirm. On that background defective power shell is
+installed on the first host.
+HTTP server. You see the Get actually coming back from that
+host, you don't have to
+configure the server or anything. Making it as easy as
+possible for the user. Killed it
+off. Gives it a few seconds and when you're playing around with
+L sats it might be just take a
+little bit. Move on to the next host. See Powershells installed
+again. You're going to set up
+that same server, reach back, you know with the different
+little randomized script name.
+So all these modules will have an output file. You can also
+display that out put immediately
+when you hit next. All the unique cashes. Unique apply to a
+nice list. The raw out put is
+going to be under the autograbber spreads. It'll show
+you the raw out put file and the
+host in the time stamp. So there's that one the host,
+you'll see the autograb.texy.
+All this stuff for veil is out put by Veil output. For veil
+Pillage, there's activity logs.
+It'll start building up. If you go into the the module folder,
+it'll be split up with that
+initial out put file in the time stamp we saw. And also it'll
+show the raw out puts. So
+there's all the nice raw MimiKatz output. Now, show some
+power sploit. I think I ‑‑ I'll
+shed the list targets again. And we're going to upload these
+demos to the veil frame work
+YouTube. We'll tweet out a link or something about it. So all of
+the nice powersploit modules.
+I'm going to use both invoke shell code MISL and use them,
+neat little.net reflections to
+execute shell code. I still have all my al hosts and stuff. And
+set, and one thing here, in this
+one handler, you set it to true, we'll autospawn you to hand
+learn in the background. You see
+here, we're dropping straight evasion for veil shell code
+evasion. You're not having to
+script up stuff and facing them. If you're more interested in in
+the evasion functionality, check
+out the smoothcon talk. I'm saying all the options for
+windows interpreter TCP.
+Autolaunchers a handler. All the options are preconfigured. Make
+sure it runs. when I hit this is
+the same kind of thing just like with the autograph. The host is
+reaching back and scribing that
+power shell snippet, running a memory to an out put file but
+then it goes in the graph. So
+there are all my interpreter sessions proving I'm not a liar
+actually as an interpreter. Now,
+if there's a clean up file or there's a clean up action
+associated with the module,
+showing output first exactly what was triggered where, this,
+we're going to invoke the global
+clean up file. You could have specified the global clean up
+file. Is it going to run
+through? It's going to kill everything off. All your
+sessions are dead. So
+everything's back out to out laws. Last one, sticky keys. See
+all the resistance options,
+adding users, main groups, UFC stuff. Stick key keys. People
+have used the sticky keys.
+There's no reason we can't up load our own binary to set that
+to be the bugger. So why don't
+we generate a stager to set that to be the sticky keys trigger.
+This now is dropping into the
+the full veil evasion menu. We're going to use our python
+tripper reverse CCP. It's just
+kind of that logic from the shell code translates to a
+higher level language.  into a
+pyinstaller executable here. All again in the background, I
+remember having to do this
+manually back in the day. It wasn't as much fun. That's our
+output. veil evasion. Press
+enter and we're dropped right back into veil Pillage
+transparently. This is up
+loading that payload file and naming this sys update.exe and
+uploading it to C:/ Windows. We
+have our out put again showing our binary. Show exactly where
+it's uploaded using more
+credentials. And I'll say, even though we can reach that host,
+we can't actually RDP it,
+because it's disabled. So I can use some of the management
+functionality, to actually
+enable RDP stuff. It'll set the firewall rule and all those
+types of things. Output again.
+Firewall accept ion already enabled. Let's try RDPing again.
+We're not even having to log in.
+We have our handler in the background. Press shift five
+times and we get our Meterpreter
+session. (Applause.) This is a little nicer because if you just
+leave the regular sticky keys up
+and anyone can connect to it. With this, at least control the
+IPs connect back to the state.
+So I'm going to go through clean up manually. I'm going to go
+through both parts. Both able
+the sticky keys. I could show you the clean up and repairs but
+I can show two steps. Specify
+the clean up file. I could have passed this command line. So
+cleaned it up. Shift five times
+and sticky keys is back. And binary's cleaned off. No
+artifact left on the machine.
+The second clean up file to redisable RDP. The box is
+exactly how it was when we first
+got to it. Nope, can't RDP anymore. So again, this isn't
+rocket science, but it really
+simplifies being able to weaponize log in techniques. All
+right, let's talk about
+KB 2871997. The oh my God us pen testers don't have a job patch.
+My boss freaked out. It's not
+that bad. It's pass the hash patch AKA the MimiKatz KB. It's
+a Microsoft backport of a lot of
+window's 8.1 security protections. It does stuff that
+makes it difficult to pour creds
+of veil pass. But the thing we care about in this context, it
+contains this line that TO say
+this patch prevents network log on and promote interactive log
+on using local accounts. The
+reason this sounds ominous is because this how you almost
+always spread laterally. You've
+done local admin hashes. You pop all your boxes and find your
+high value users. This is a
+screen shot of the Microsoft advisory. Originally titled
+update to fix. Someone yelled at
+them and a few hours later is now update to improve
+credentials protection and
+management. Someone luckily caught this. So is this actually
+a patch? We're pass the hatch.
+No. Even though they claim local accounts on the box in the local
+administrator's group you can no
+longer patch the hash with. As usual, the head 500 account
+which is the default administer,
+you can still pass the hatch with it if it's enabled.
+Window's 7n by default will
+disable this, but we've seen this rid 500 still enable the a
+very, very large number of
+enterprises. The reason is backwards compatibility. And
+security management and things
+like that. Also domain accounts and administer's local group can
+still patch the hatch. If you
+have the plain text for these local administrator accounts you
+can use powershell removing RDP
+you need a plain text. You might be able to crack or GPP.
+Obviously XP and window's 2003
+aren't affected. Pop the hatch is not hatched is not going away
+anytime soon. One of the things
+I realize I'm looking into this is it would be really nice to
+know what that rid 500 account
+is named in the remote machine. Whether it's enabled and what
+domain user accounts are in the
+local group for administrators. Luckily using the power shell,
+the most basic domain account,
+using no privileges whatsoever, you can use this neat thing
+called WinNT service provider to
+pull all of this information. You can get the full said for
+the admin account, whether it's
+enabled disabled and all of the domain users in that local
+group. You can also use ‑‑ if
+you have an account, again, this you can't use in like old
+sessions or something. You can
+also use the M map scripts, SMB groups and SMB users. All these
+power shell functions have been
+integrated in the power project. So there's one function you can
+grab them from a single host.
+There's one that will query AD at every single machine. That's
+sortable. Telling you every
+single host, every single local admin and all that stuff.
+There's more information on my
+blog humjoy.net. A few last things. So module releases we
+have something called V day. We
+released at least one new payload module. For pillage, the
+plan is for at least a few
+months try to release at least one new post exploitation module
+on the first. It'll be at the
+Gethub which I'll check at the end. veilframe work.com for
+dates. For module development, I
+want you to be able to implement whatever post exploitation fund
+you can think of. All the
+triggering methods, the file down loads, all available as
+library methods, you don't have
+to configure them or remember the syntax. There's a module
+template included in the tree.
+We're going to have a blog post up on how to develop them if you
+are interested if you do, please
+send a full request. So quick recap. veil Pillage is a
+flexible frame work for post
+exploitation for target machines on an internal pen test. There's
+three separate ways from
+triggering. New modules are really easy to implement with
+the common library. You can drop
+them in the tree. That enumeration folder and
+everything's split up and it'll
+load it right up for you. There's a lot of automation,
+which complete full lodging
+capabilities. Complete full cleaning capabilities. There's a
+really big UI focus. This isn't
+some random script they wrote a month ago and dropping for DEF
+CON. It's 30,000 lines.  There's
+150 internal on Gets, we've been testing this out for a while.
+I'm sure there'll be bugs. The
+code's up live. I'll have it at the end. Please report bugs. I
+want the tool to be as good as
+possible. So my real quick Shameless sidebar testing. You
+know, hit me up by e‑mail
+offline or talk to me later or come work for us. You're an
+awesome team. And that's it.
+(Applause.) Any questions, hit me up on twitter... @harmj0y
+Humj0y at veil-framework.com.
+I'm on Freenode a lot. Veil-framework.com. Personal
+blog, humj0y.net. Stuff that
+doesn't directly relate to the veil framework good complete
+write up for complete pass the
+hash stuff there's a really complete article with screen
+shot examples. If you want the
+veil-framework, go to GetHub.com/Veil.framework.
+There's also a veil super
+project, where you do veil frame works slash veil. Run the set
+up, it'll install all the
+dependencies, download all the necessary stuff for colleague
+which is the platform at this
+point. It does this all transparently and pass the hash
+tool kit and all that type of
+stuff. And hopefully everything should work nice together. Any
+questions? That's it.
+>>	(Inaudible). >>	I do not have pass the ticket yet. I heard
+about it just two days ago.
+We'll see if we can get that in. But I think with the Mimikatz in
+powersploit, because that all
+the functionality there, it shouldn't be too hard to set up.
+You won't do it directly from
+your Kelly box. But you can essentially kind of pivot that
+functionality on that target
+booth. >>	(Inaudible). Umm so, for us, if you're doing read
+teaming. Sorry the question is,
+value in exploitation, oh low medium bone scan type things.
+Everything has its place. People
+need to run bone scans to get the low hanging fruit. But all
+the attackers are doing
+post-exploitation. Red teams and stuff and all the ports you see,
+that's what they do. A lot of
+tests, I'll get a basic user account once I get there you
+know. It can just be a few hours
+to domain admin, their using things that will not apply for
+(indiscernible). Okay? I think
+that's it. Anyone else has any questions I'll try to be out
+there somewhere in the chill out
+room in a bit. (Applause.)

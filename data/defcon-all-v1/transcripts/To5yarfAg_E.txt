@@ -1,0 +1,723 @@
+>> First off, welcome to a tour through the
+dark side of the Internet, I'm
+Grifter, this is my good friend Meta Cortex, we're from DC 801,
+based out of Salt Lake City,
+Utah. We don't often get that reaction, so thank you! So who
+are we? We're these guys. >> Up
+here on stage. >> Yeah, up here. That's us. >> Yeah. Better. All
+right. >> We're going to show
+you something here that I think it's actually pretty funny. So
+this is us, we're explorers, we
+like to wander around in back alleyways and things like that.
+What's kind of funny is that
+we're both looking at the exact same thing as you can tell,
+like, this is in a back alley of
+I don't even know where in Tokyo, we were just wondering
+around. >> Shinjuku. >> Is that
+where we were? >> Yes. >> We were in Shinjuku. I wasn't
+paying attention apparently. But
+that's what we like to do, we actually spend a good portion of
+that trip, and I think it's a
+good metaphor for most hackers where we would get on a train,
+and then we'd say let's pick a
+random number, all right, 6 and we'd get off 6 stops later and
+just start walking. We have no
+idea where we're going. I don't speak Japanese, neither does he,
+we don't read it. We just went
+because that's how cool shit happens, so that's what we like
+to do. So I'm Grifter, DEF CON
+goon. Also, multiple DEF CON speakers, this is my 6th time on
+stage at DEF CON. Founder of DC
+801, way back in the day, I'm old. And the founder of -- or
+the cofounder of the 801 Labs
+Hacker Space in Salt Lake City. >> And I'm the same, a little
+bit, minus the creds. This is my
+first time speaking at DEF CON, so I'm really excited, a big
+portion of DC 801. [Applause] >>
+Helper on the hacker space in Salt Lake City. So if you're
+ever running through there come
+check us out and we will give you free booze. >> Like legit,
+we really will! Okay, so just a
+quick warning, I know this should go without saying, but we
+are going to talk about some
+things that are questionable. Now, who defines what that
+questionable is, you know, can
+be argued, but we'll just say, you know, we can't promise you
+won't be offended by what we
+talk about. We may talk about drugs, murder-for-hire, hacking,
+cracking groups, carding, all of
+the above. And so if that makes you a sad panda, then somebody
+else would probably fill your
+seat. >> Who in here is a fan of -- what's that show's name?   What
+is that show's name? (Audience:House of Cards!)   So this is a nice little clip from it, theoretically it should work. No
+audio! Brutal. >> Now we're the
+sad pandas. >> Let me turn that up a little bit. See if that
+works. >> Maybe. Maybe, oh! >>
+Help us audio guy, you're our only hope. It's the USB to the
+sound card. No, it's a bad
+cable. >> Please pause while we fix the audio. Doo, doo, doo,
+doo, doo, doo, come on guy, we
+look like asshats. [Laughter] >> Doo, doo, doo, doo, doo, doo.
+One more time. Nope. Well, that
+sucks.  CLIP >> 96% of the Internet, <inaudible>  in search engines most of it is useless, but it's where
+you go to find everything and anything. Narcotics,
+hackers-for-hire. >> How did you
+access it? >> Pretty easy. >> I can show you if you want. Yeah sure go ahead. >> Okay first thing you need is Tor. Some people prefer ITP But I think Tor is better. Yeah. So. >> Tor is very much
+better. >> Tor is very much
+better. What we love about that is they're at work, and dudes
+like -- >> Just like shift over
+brother and I'll just jump on like a darknet, like here at the
+office. It's totally cool, we're
+going to go check out hackers-for-hire and dark
+markets and whatnot. >> So am I
+on the desktop? My audio fails. >> It's really painful not being
+able to see that screen. >> Not
+see anything. >> What are we looking at? Desktop? There we
+go. There we go. Now I'm on my
+desktop. >> Okay. >> Better? >> Hey! All right. >> So we're
+going to talk about Tor,
+connecting to it, using it, onion sites, we'll get into
+that. Bitcoin and how it works
+and how to use it, mining Bitcoin a little bit, we're not
+going to get into that too much.
+So take it away Meta. >> We just went through these. All right.
+So finding what you're
+interested in, going out there and finding, you know, different
+forums, darknet forums that are
+various things that you can look up. Not all of them are
+nefarious, some of them are just
+places where government censor their citizens, and so it gives
+them an opportunity to have a
+platform where they can discuss issues that are relevant to
+things in their country or
+problems that they're having in their country without being
+black bagged in the middle of
+the night. We will also talk about things like hacker forums,
+carder forums, things like that.
+I'll even throw out a couple of ways you can find them, darknet
+search engines, how to find what
+it is that you want and marketplaces where you can buy
+physical things and actually
+have them, like, dropped shipped to, hopefully not your house,
+but somewhere where you can pick
+it up and nobody knows who you are. That's pretty much it. And
+we'll talk about some OPSEC
+stuff, tips to help you make you a little more anonymous. >> All
+right. Tor, I'm assuming most
+everyone here at DEF CON has heard of it, undertone anyway,
+it is the onion router, it is a
+series of routers on the Internet that anonymize your
+traffic and notice the little
+warning at the bottom, the NSA will pick you out and put you on
+a list for searching for it or
+downloading it. >> And we've been on that list for a long
+time so we're not really
+sweating it. Although when we saw the thing where you search
+for this or downloaded this in
+the last, like, it was like 3 years and you're on a list. And
+we're like whoa, we're going to
+like to the top of the list now, because we're telling everybody
+about it at DEF CON. >> This is
+a great diagram about how it actually works. The only thing I
+do not like about it is the
+little red an arrow going to Bob that says, oh, it's an encrypted
+traffic, if you are sending
+HTTPS through and it will be encrypted on that. So we like to
+think of Tor a little bit like
+this. [Music Playing] >> Now it's working. [Laughter] >> You
+know, we were just jumping
+through all of those little things. All those little boxy
+things. That's great. >> I do
+scream like that every time I connect it though. [Laughter] >>
+I've got to tell you, it was
+really annoying, like, while we're making this presentation.
+So how do you do this? There's a
+couple different options. You can use the Linux command line
+or Mac command line, and you can
+App get it or install binaries for it. And I'm mainly a Linux
+guy, so you'll see those on the
+slides. And XETOR, TORRC, are mainly where you do all the
+configuration for it. What it
+does is it starts a proxy listener on your local host, you
+can pinpoint anything to that
+port and you're running through Tor after its connected. Pretty
+basic, but even further to make
+it even more basic, they create the Tor browser bundle, it's a
+simple download, you download
+it, install it, run the EXE, it'll connect the Tor, launch a
+Firefox browser and that whole
+browser is running over Tor. It's pretty nice. It will come
+with some additional plug-ins on
+it as well that we'll cover. So more in depth, we'll run through
+these really quick because of
+demos, there's a whole bunch of information on configuring it,
+and let's see if we can connect
+to it live. The demo Gods usually have been hating on me
+today, so we'll try it. >> You
+realize you have to scream like a lunatic now when you connect
+that. Wooo! [Laughter] >> There
+we are, that's it. This browser is configured to use Tor. I
+clicked on it and we are now
+theoretically anonymous. OP delivers! Right? All right.
+Sweet! I mean, you are going to
+have to see that video. That's an old screen shot, I just
+updated this today. That didn't
+pop up just now after I updated, but that shows you connecting to
+the Tor network on older
+versions now. We don't need to play this video because it
+worked. >> All right. Once you
+connect, you will see with the Tor browser, you will see it'll
+have a couple of plug-ins
+already installed. The Tor options will be how you
+configure and use Tor. No script
+which is important, use it, and HTTPS anywhere. Which we'll try
+to enforce encryption through
+everything. It's very important to have even outside of Tor
+bundle, the Tor browser bundle.
+Another way to do it is Tails. Tails is a live bootable distro.
+It's Debian-based and it will
+try and enforce absolutely everything you do to run through
+Tor. It will fight you to write
+anything to the disk so you will not leave any traces and you
+will stay totally anonymous.
+It's great. It works really well right out of the box and comes
+with a whole bunch of software
+pre-installed, opening PGP, pigeon OTR, key pass, some
+important things, but true
+crypts and unfortunately, we're going to have to --
+unfortunately, we're going to
+have to pour one out. And Tails will land you on another list as
+well. That's what it looks like
+once you actually boot it up in the normal mode. Standard Debian
+desktop, nothing fun, but you
+can also force it to go to XP mode. [Laughter] >> So, you
+know, you're sitting in a coffee
+shop and you don't want anybody to know you're doing some evil
+hacks, no one is going to
+question an XP desktop. [Laughter] >> All right. We're
+connected to Tor. Sweet! What
+can we do with this? We can do a whole bunch of fun stuff. I like
+tunneling other restricted
+networks, that was fun, staying anonymous, you know, that whole
+bullet list that you guys see up
+there. Where the fun really comes in, in my opinion, is the
+Tor hidden services, this turns
+Tor into a darknet, these are sites that live exclusively in
+the Tor network and you cannot
+reach them outside of the Tor network, and you can't really
+trace down who owns them unless
+you have it offset. Most websites there will use the dot
+onion address to reach them. Oh,
+hey, we have a pin in there, we said put a pin in it and we
+didn't. >> Yeah. I mean, we put
+a pin in it. I don't know what the fuck the pin is for.
+[Laughter] >> There was a bullet
+point we wanted to make, we will move on. [Laughter] >> Our bad!
+>> Hidden services is -- you can
+see exactly how it works with some of the Tor documentation,
+it's kind of complex way out of
+the scope of what we're going to talk about today. So moving on,
+finding hidden services. This is
+currently some of the hardest things -- barriers to entry when
+you're getting into Tor. The
+notorious one is the hidden Wiki. Most people like to use
+that. I have found at times it
+is extremely out of date. Most of the links in there are broken
+or dead. But you do find some
+gems. Tor find is another one, Tor search. Grams, I actually
+really like it. It is dedicated
+to searching darknet marketplaces. So you actually
+type something in, it will
+search and index all of those marketplaces and show you what
+you want across all the
+different ones. Deep web links and Reddit, note, those are not
+in Tor. You will be tracked
+going to those because they are not dot onion addresses, but
+good nonetheless for links, and
+word of mouth. A lot of people, you know, spread onion sites by
+word of mouth. And links that
+they send their friends. There are some fun sites that are in
+Tor that I think are of interest
+that I just wanted to put in here for no good reason, Pirate
+Bay is on there. Also, keep in
+mind, if you're downloading Torents that may be illegal, run
+it through Tor. Just because you
+download Torent through, Pirate Bay does not mean you're staying
+anonymous. My favorite, which
+was actually down as of a little bit ago, the assassination
+market, it is a crowd-funded
+assassination website. Now, regardless of whether it's
+actually legitimate or not, I
+doubt it is. You pay Bitcoin in, and you say I want somebody to
+kill this person, and everybody
+starts putting Bitcoins in around it and whoever proves,
+however you do that, that you
+assassinated this person gets all the Bitcoins. There were
+some fun names on that list.
+Unfortunately, we can't pull it up, but Rent-A-Hacker is another
+good one. You will penetrate
+anything you want for any amount of Bitcoin. We might pull that
+one up later through the lulls.
+Here are some good forums you can go to, TCF is pretty much
+the biggest carding forum you'll
+come across that I've seen. It does require a $50 entry to get
+on to it. They did that because
+of spammers getting on there, so once you get in, you can buy
+credit card numbers, identities,
+all of that, a lot of fun, super cheap, we'll pull that up later.
+Intel exchange, a lot of people
+link to that one, it's mainly trolling on illuminati stuff,
+and the deep web and how to get
+to Miranda's web, which is fun. Hack BB is kind of another
+forum, they do things like run
+this sketchy executable and you will get backdoored to anything
+you want. Some marketplaces,
+most people are interested in actually buying stuff like this.
+You can check out the darknet
+markets, we actually have a listing on the side of the page
+with all the current markets,
+their statuses, whether or not somebody thinks they've been
+compromised, the quality of
+them. Super up to date. Most people use Agora though, version
+2.0. Agora is a decent one and
+my favorite, actually, Evolution, we have purchased
+some stuff through Evolution
+which we will show you later. So let's demo some of that. This
+should work. So I'm going to
+grab the silk road URL. Pop in the Tor browser. It could take a
+second. Hey, it works! So I
+created this. Nope. Haha, sucker! By the time you get on
+to DEF CON stage and you can't
+remember your password! Maybe not. I'm an idiot. Let's see if
+we can create one real quick. If
+I can remember my user name. I am a terrible speller. What is
+that password? Password 1,
+somebody just yelled it out. 1111, in case anyone cares. Oh,
+come on! [Laughter] >> This is
+terrible. [Laughter] >> What he doesn't know is that I changed
+his password, and this is
+actually a psychological experiment about stress. I'll be
+speaking about it later in the
+sky talk! [Laughter] >> Oh, restricted words. You can't have
+DEF CON in the name apparently.
+[Laughter] >> I wouldn't be surprised if someone is trying
+to register that right now, and
+it kicked me out. Hooray! [Applause] >> So what was that?
+>> He's saying is that how
+someone new would get an account? >> Yes, you just sign
+up from here. >> Yeah, that was
+a good demo, actually, perfect. Silk Road. As you can see on the
+left, a lot of people like
+buying their drugs through here, but we have a whole bunch of
+other fun stuff. We're more
+interested in the electronics and the hacker stuff, so let's
+go ahead and hit up electronics
+and we'll just see what they have today, it's always
+changing, we never know what
+they have. Oh, Wi-Fi hacking, sweet! SIM cards. Virtual Honey
+puffs, that's probably a book.
+Some Amazon gift certificates maybe, USB drives, a lot of
+anonymous reference, hey, a
+drone, that looks like fun. Hackers underground handbook. >>
+Oh, that sounds legit! >> Order
+me up one of those! >> So as you can see, there's various things
+on here, some of it is
+worthwhile than other things. You're going to have to sift
+through things to find what you
+actually want. On a lot of these sites we found that when you do
+find something that you're
+interested in, as long as the seller has been around for a
+little while, you actually get
+what they're selling, like so it's kind of nice, like, if you
+think you are going to be doing
+some back alley deal and you're not going to get what you're
+looking for and then it shows up
+and you're surprised but your also pretty happy. [Laughter] >>
+If you're not willing to lose
+the Bitcoin, don't spend the Bitcoin, though, I would say
+that. >> This one looks fun, the
+neuroscience kit, anybody actually going to try that. >>
+Yeah, sign me up for that shit.
+[Laughter] >> Plug stuff into my brain. All right. That's a good
+run through that. Continuing on,
+ha! You don't need a video, that worked. >> Almost. Almost needed
+a video. >> Carding sites, those
+are fun, you know, buy people's identities, credit card
+information, numbers, date of
+births, Social Security numbers at times. As I said earlier,
+TCF, the biggest one requires
+the $50, depending on, you know, the actual amount changes due to
+bit coins inflation or
+deflation. But it's always about 50 bucks. CC, another fun one,
+it kind of looks kind of sketchy
+to kind of buy something off of there, so I don't know how legit
+it is, but it's really good to
+actually see the prices of some of this contact material. So
+let's do that now. Yes. >> Who
+knows how to take a picture because I want a picture of us
+up here? >> We're so
+egotistical. >> I'm going to hand my camera to a stranger! >>
+Oh, that one went down.
+[Laughter] >> Because that one's down, we may have to do TCF
+which I'm not happy about, and
+I'm burning an identity doing so. No, I don't have to log in.
+I think I do have to see prices.
+Oh, well. I amousted. >> Terrible! >> Oh, that's just how
+I look, nevermind. >> All right.
+So let's check out some -- let's see if we can buy some stolen
+identities on here. Virtual
+carding, physical carding -- >> We do not condone the theft of
+identities nor the trading
+thereof, but what is very interesting about this is that
+we learned what your identity is
+actually worth to someone else. So try to keep that in mind when
+he starts pulling up the cost to
+purchase some of these things. You know, you hear about it in
+the media all the time, identity
+theft is rampant, and like how many millions of credit card
+numbers are stolen from
+different retailers every day, this is what they're brokering
+for and it's pretty telling. >>
+I've never actually seen it this low. $1 each. You're worth $1!
+[Laughter] >> Let that sink in!
+>> So here we go. Some of the stuff that they will actually
+give you a credit card number
+expiration day, CVV, name on the card, country, state, city,
+address, and zip. $6. And if you
+wanted European, that's 10. Everybody hates us! Say again?
+>> What are the chances that
+you're just not being ripped off? >> The chances are actually
+pretty good that it's going to
+work because they actually are reviewed, these sellers, there
+is a review system similar to
+Amazon where people will say like I actually got this or I
+had this and it worked for an X
+amount of time, so like we highly recommend you guys going
+out and doing this. >> Looking,
+looking guys, holy crap! Like, damn it! >> I forgot where I was
+for a second. Going out and
+looking, again, it's really interesting from a research
+perspective to go out and say,
+like, what are we trading at today, that kind of thing.
+You're like oh, the market is
+low today. But it's interesting to find out how these people
+think, how they work, what
+they're collecting, why they're collecting it, and when you
+start talking to them about what
+they're selling, you know, they're fairly open about it
+because they know they're
+anonymous, too. >> Sweet, moving on. Again, no video. But here
+are some fun things that I
+really like to look at. We can buy some fake IDs, what about a
+driver's license or even at the
+bottom, fake passports, what if you need to disappear to do some
+sketchy shit. [Laughter] >>
+Yeah. And not playing on Tor correctly. So these are fun.
+What I have heard is actually
+that our fake ID is legit and is super high quality from all of
+the confirmed vendors in there,
+so you don't have to go through Tor to get some of this. >> Go
+through Tor, they'll give you
+some of this! [Applause] >> We've got nothing! >> Thanks! >>
+Oh. >> Focus, so while we're
+pulling up fake ID sites, we're going to take some shots.
+[Laughter] >> Here you go.
+Sorry, I don't drink. Once again, Salt Lake City.
+[Laughter] >> But everybody does
+a shot! That means all of you, go ahead. >> Yeah. >> Right? >>
+Right. >> Look for a new
+speaker. >> Thank you! [Applause] >> That was really
+good, it had like the nicest
+blend of hydrogen and oxygen with it, it seemed like it
+almost doubled hydrogen. >> Oh,
+it's a 2014. >> That's a good year. >> Thank you, sir! >>
+Don't call me sir! >> I'm sorry,
+sir! [Laughter] >> So here's some fake passports you can buy
+from all of these wonderful
+countries. Let's look at the USA! USA! All right. We'll do
+that. Actually we found that the
+USA passports are the most expensive with all of our
+looking around and things like
+that, it seems like something about them makes them very
+expensive. >> That's weird, I
+wonder why that is? >> I will not confirm nor deny any
+activities. Because it's full of
+freedom. So that's like the scan of one of those fake passports,
+28 pages. >> Clear holographic,
+laminate. It should look legit. We've seen some people actually
+take pictures of thiers and
+they'll have all of the UV stuff in it which is awesome.
+Basically, you send them all the
+information you want them to put in there and a head shot and you
+get a passport theoretically. >>
+Yeah, we cannot confirm nor deny the quality of these documents
+but they're amazing. [Laughter]
+>> So there you go. Passports are a little pricey, $1,000 per
+for a U.S. Passport. Let's see,
+I like Japan, let's look at that. [Laughter] >> They like
+Japan, too. >> Yeah! $700 for a
+Japanese passport. Not too terrible, if you really need to
+get away and actually use it.
+Not bad at all. >> Could you list them all by price so you
+can see what the cheapest one
+is? >> There was somewhere that we could do that. Let me --
+let's see if we can pull this
+up. Yeah. They took that off. That's not coming up. I think
+this is the one that I like.
+Nope. No, that will work. So these are driver's licenses, so
+$200 for a driver's license.
+There we go, there's a picture of some of the UV stuff they can
+do. Let's try the last one. Oh,
+Lenovo power stuff, I hate you. That's what I get for using a
+work laptop at DEF CON! Oh, now
+it's on video, I don't know. No? Is that the one we already went
+to? And the middle one? I don't
+know. We're just pulling them all up. This is the one I like a
+lot! Free shipping! [Laughter]
+>> What a bargain! >> No. >> I'll get to work on that. Let's
+see what it says. I can't
+remember how to get there. Pricing. There we go. >> There
+you go. >> So U.S. 700 Euro and
+then you can get driver's license, ID cards, you can
+bundle them all together. The
+thing I like about this vendor is for more money down at the
+bottom, he will actually stamp
+it with other countries stamps to make it look more legit. >>
+It looks like you legitimately
+traveled with that passport, you can rough it up a little bit and
+make it look like it's been in
+use. You can fly under the radar a little bit better, spend less
+time, I can tell you from using
+my legitimate passport that when I had one that was nearly full
+versus having a brand-new one,
+they spend a lot more time looking at the brand-new one. >>
+Who was that? [Laughter] >> So
+this is where we were going to demo gram, but most of those --
+since we wrote these sites the
+passport stuff has fallen off of Grams and it's mainly drugs. So
+next slide. No video for you. So
+what can you do with all passports? I like to think of
+myself a little bit like this.
+(Car engine rumbling) [Music Playing] >> Sorry. >> Just
+enjoy! >> Yeah. >> Yeah, like
+that! [Laughter] >> That's what I'd do. >> Sweet. So now we have
+seen all of this awesome, fun
+stuff that we can actually get, how do we do it, you say?
+Bitcoin, obviously, most people
+on the Internet try to use it. They do not accept DEF coin as
+far as I'm aware of, that may
+change. Basically, Bitcoin transfers money into a wallet
+and when you buy anything, your
+Bitcoin goes into an escrow account, and when you get your
+item, the escrow releases the
+Bitcoin into the seller. And then you have them ship it to a
+location and we'll cover more
+details of shipping and the all tech stuff. Yeah, more on
+Bitcoin, mainly for reference,
+so get these slides wherever they're distributed, we'll keep
+going. More Bitcoin stuff, we're
+continuing. All right. But Bitcoin tumbling, that's another
+way to keep Bitcoin a little
+more anonymous. Basically, you throw money into a pot while
+everybody else is throwing into
+a pot and then they pay you back in certain small increments here
+and there so it makes it really
+hard to track, what goes in, what goes out, who it's going
+to, who it's coming from, things
+like that. If you're doing super questionable stuff, some people
+argue against tumbling, it
+doesn't hurt, you get most of your Bitcoin back minus a small
+tumbling fee. So here, we'll
+talk about some considerations with Tor to help make it a
+little more secure over some of
+the stuff. Correlation attacks, those are probably the biggest
+threat to Tor as far as I'm
+aware of. Currently, if someone owns an entry node and exit
+node, they can map that
+connection back through and see who originally came in to and
+where it's originally going to.
+There was a small semi-correlation attack that was
+talked about in the Tor blog a
+couple of days ago, where there were malicious relay nodes
+injecting headers into the
+packets to be able to track some of the darknet sites. They have
+patched that and kicked those
+nodes off the network, as of a week or two ago. Some browser
+exploits can identify you. If
+there is an issue in the JavaScript engine like there has
+been before, JavaScript engine
+in Firefox that will allow it to ping back a server, not over the
+Tor network. That'll identify
+you real quick. Some considerations of Bitcoin to
+make them a little more
+anonymous, but keep in mind the entire block chain for Bitcoin
+is public. You can track
+absolutely every transaction that's ever happened over the
+Bitcoin network. Tumblers help
+against that but a lot of people transfer large amounts of money,
+millions of small increments all
+over the place so it just becomes impossible for any one
+person to track all of it. Here
+are some slides. Some OpSec stuff. >> There you go. >> Um,
+let's see, so we're going to
+talk about some things to just be aware of, and behaviors that
+you can do to try to make sure
+that you remain anonymous. So stay updated on the Tor blog,
+obviously, making sure that
+finding out if there's any vulnerabilities, there was
+recently a large vulnerability
+in Tails, things like that, like making sure you're looking to
+see whether or not the tools
+that you're using are kept up to date, what features are coming,
+what features are leaving,
+things like that. So, you know, as Matt has stated earlier,
+keeping you're Tor browser
+updated and stay updated on the status of markets, and use the
+subreddit for that. Again, the
+subreddit itself is not on Tor so you're on the clear net
+there, so just be aware of
+whatever activities you're doing, but browse around and see
+what's going on there. Browser
+segregation. Obviously, don't log on to Facebook in the same,
+you know, browser that you're
+using to get on and browse dark markets on Tor, that doesn't
+make a lot of sense now, does
+it? >> No. >> Using a VM specifically for your Tor
+connections or Tails, this here
+is my Tails laptop. I think one of you guys were talking about
+Tails. I booted it up into Tails
+real quickly into the Windows 8 mode, so again, sitting in a
+coffee shop you don't look like
+you're doing something nefarious. These -- this laptop
+also does not have a hard drive
+in it, it literally has the Tails disk and that's it. So you
+can also boot to like a flash
+drive. I actually have Tails in my pocket. I do have Tails in my
+pocket and it's actually DC 101
+flash drive from 2 years ago, so represent! And then, like you
+were saying here, even better,
+use something like this, like have something that's dedicated
+specifically for, you know, what
+you're doing on Tor or just using Tails, that kind of thing.
+It's just another layer of
+security, and it gives you I guess a warm fuzzy feeling
+inside. >> Not only that but if
+you're host OS is compromised, you can see everything your VMs
+are doing. >> Indeed. So
+actually, getting items, so you can see up here we do have a
+couple of things, so we have
+purchased some stuff, this was the safest things we thought we
+could bring. So don't send it to
+your house. Does that make a lot of sense there? We got that
+clear? Do not send it to your
+house, okay? So like you're on a dark market and you're like oh,
+yeah, dude, yeah, sweet, drop
+ship that bad boy, oh, by the way, here's my address. And it's
+like, it doesn't make a lot of
+sense to be anonymous if you're giving away your address. But
+send it to a P.O. Box or a UPS
+store, so we would recommend also, do we recommend this? If
+you wanted to do this, where's
+my lawyer? If you wanted to do something like, let's say,
+hypothetically, you were going
+to get a P.O. box or a UPS box, order a fake ID and take that
+fake ID, burn the box and go and
+open up another box with said fake ID, now you have another
+layer in between you and your
+real identity, and space and that's a good thing. So you
+might want to do that, if you
+have access to an abandoned house or building or something
+like that to drop things to.
+Also swell -- >> Not right next to your house. >> Not right next
+to your house, not the neighbors
+or whatever, but if you happen to be lucky enough to live in a
+neighborhood with a lot of crack
+houses, fantastic! So never open your questionable content
+anywhere that you can be visible
+to others. That should go without saying, but it's like,
+oh, sweet, here's my, you know
+-- you know, I'm not even going to say, I'll leave that to you
+guys, get nasty. So wait until
+you get home. Try waiting a week or two weeks to pick something
+up, if you're anxious to get
+something, then you're going to be more likely to get caught
+doing whatever it is that you
+decide to do. If somebody is waiting for you to receive
+something, or there's an idea
+that maybe you are going to get something that you shouldn't
+have, you know, most agencies
+are not going to sit around for a week or two weeks total for
+you to pick something up. Also,
+if you want, walk in, open up the box, maybe, look at it, oh,
+it's there, or don't even do
+that. Just go up and say, did I get a package? Yes, you did.
+Okay, great and leave. Come back
+another time and pick up whatever it is that you need to
+pick up sometime later, pick a
+random day and go back then. Even more, don't reuse
+identities. >> I like that one.
+>> Yeah, don't reuse passwords, and disposable e-mails are
+available here. >> We already
+talked about this, but I already talked about this but opening
+the mailbox and using the fake
+ID. >> We bought some stuff. There's some stuff. This is our
+baby monitor. So it runs over a
+GSM network and you put a SIM card in it, you can call the
+number that is associated with
+the SIM card and it will listen to the room. So if you want to
+listen to your baby in the
+nursery, then you can call the number and now you have a baby
+monitor that works at any range.
+>> And it's small. >> Yeah. >> And it will auto dial you back.
+When it reaches a certain level
+of decibels it'll call you because it knows there's
+activity. So that's the mini
+baby monitor, that's what it looked like when we bought it.
+That's reviewing the order
+there. Yeah, that baby monitor looks great. And then here is
+the confirmation e-mail that was
+sent. So it's just saying, hey, this is when you're expected to
+get it. It actually looks pretty
+nice and professional to me. >> And UPS tracking. >> Yeah. UPS
+tracking, it's on its way. All
+right. We are just about out of time, so we're going to leave
+you with some parting thoughts.
+>> So clearly, everything we're talking about here is a little
+bit -- we've had some fun with
+it, we've had some laughs, a little tongue in cheek and some
+of it falls into a gray area.
+You decide whether it stays in the gray area or you take it
+further than that. Also, where
+you live or where you're located can change whether or not that
+gray area is no longer a gray
+area. So be aware of that, and stay anonymous. Like anything,
+darknets can be used for good
+and evil. The good side, again, if you live under an oppressive
+government then this is a
+fantastic tool for you to be able to communicate with people
+just like you who don't like
+what's happening in your country, and you can try to get
+together and maybe cause some
+change. If you're interested in what is going on in the world
+and you want to talk to people
+who are in these situations, darknets are good for things
+like that. Don't take the
+media's word for it, get out there and read it straight from
+people's mouths. >> Straight
+from their keys. >> Straight from their keys. So we have
+legit purposes. They're not just
+for shady shit, but there's a lot of shady shit! [Laughter] >>
+And in our view, Meta Cortex and
+I believe this is the future of how we will communicate, it must
+be the future of how we
+communicate. We can't trust our own governments, we think we
+live in the land of the free and
+we don't any more. It's sad, but a reality. So start learning
+this stuff and start being those
+pioneers who help everybody else, figure out how to be
+anonymous, encrypt their
+traffic, and stay safe on the Internet! Thank you! [Applause]
+>> If you're ever in Salt Lake
+City, look us up, seriously. We love taking hackers to dinner!
+Oh, there are some appendixes on
+the slide as well.

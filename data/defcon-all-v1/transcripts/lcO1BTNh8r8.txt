@@ -1,0 +1,124 @@
+>> MING CHOW: Good afternoon, everyone. My name is Ming Chow and I will be speaking
+today about NoSQL databases. How people here are using a NoSQL database
+such as Mongo, Redis, Cassandra, many, many, to name. How is your experience so far with them? >> AUDIENCE MEMBER: Good. >> MING CHOW: Yeah, so far, so good. They are fast. They are transactional. They are very easy to use. You don't need SQL to use them. You know, and if you want to insert data,
+search for stuff, it's all based on the computer science principle of key value pairs. Okay? So if you have never seen a Mongo database
+or a NoSQL database, typically how you want to find data is I'm connected to a financial
+news database on Mongo right now, but if you want to find something, it's going to be something
+like the database, the name of the collection, then the find routine, and typically, it would
+take in JSON. So the key is going to be screen name, let's
+say for the screen name is going to be CBS News. Okay? So what I'm going to do here, just a very
+simple example is to show how you find all financial news that's from CBS News on Twitter. And so what happens is those are all of your
+results. Okay? So really nice and easy, but that's only just
+one way, one of many ways to search for stuff in a NoSQL database such as Mongo. What about security of NoSQL databases? That's another story. That's all over the place. Right now we have a mixture of heterogeneous
+and homogenous security issues and that's what I'm here to talk about. Okay? I'm actually very surprised that the topic
+of just NoSQL databases has never, ever been covered here at DEF CON. Two years ago, I talked about building, you
+know, the issues of using HTML 5, which is the application side. There's a lot to just the database side of
+things and a lot has changed in two years. One thing that hasn't changed is we're all
+still new to NoSQL databases. You know, we're all new to this, and the only
+thing largely a lot of us care about is just making it work. Just making it work. And, of course, that certainly ‑‑ that
+has some, you know ‑‑ you know how usually that goes, especially if you leave security
+into the hands of developers. So a homogenous problem, a very simple one
+right off the bat, if you know database vendor, you know the IP address, you know the port
+number. You have almost won the game. Okay? Why? Why is it just knowing just the IP address,
+the database vendor and the port number is good enough? That's because of this next thing, which is
+authentication and encryption. It's almost nonexistent or extremely weak. If you use many ‑‑ if not all NoSQL databases
+out there, if you take them out of the box, you take them out of the box, and administrative
+user, authentication turned off. Turned off. Okay? Even if they do support features such as encryption
+and auditing, not only do you have to turn them on yourselves, but also, the scheme is
+really weak. Because for example, among still uses MD5
+in CouchDB. If you ever read the documentation of Mongo
+or Couch or Redis or Cassandra. We urge you to use this database system on
+a trusted environment. (Chuckles). That's from the documentation. Just read the documentation. It's quite mind boggling. Security is a complete after thought. How big is ‑‑ how big is NoSQL databases
+out there. If you do a search on Shodan, it's 40,000
+instances of Mongo that are out there, it has and there are also 20,000 instances of
+Redis running. So it's a big deal! It's already there. So this is a ‑‑ these are homogenous
+issues that we have seen that affects all NoSQL databases. Okay. So there's a lot of chatter on this thing
+known as ‑‑ okay. NoSQL ‑‑ not only do I not need to know
+SQL anymore, but this whole problem that I think you guys might have heard of called
+SQL injection goes away. Actually, in my humble opinion, the injection
+problem has gotten worse. Okay? Now, okay, sure SQL injection is gone, but
+now we have three ‑‑ I say three different classes of injection attacks. Okay. One is called schema. Now, NoSQL databases, how they work, they
+are based off of dynamic data model. Okay? If you insert a record or if you create a ‑‑
+if you create a database that doesn't exist, automatically create it for you, right on
+the fly. Okay? Yeah, it goes back to the original point that
+the NoSQL databases are really, really easy to use. It's very, very flexible. That's a good thing. Of course, a bad thing is, you know, you have
+flexible dynamic record and data entry. Also, if you can easily overwrite existing
+values for keys, very, very simply, last key wins. Okay? So I'm going to show you a few demos. Schema I will do last. You can do query, with many unsaved queries
+very simply by string concatenation and now this gem. I love this one. How many people are good at JavaScript here? Okay. Learn it! Okay. Learn it! It ‑‑ now a lot of these NoSQL databases,
+they have taken JavaScript functions as parameters to search and insert okay? And I will give you an example of using the
+where clause. Now, here, I am now going to give a quick
+demo on ‑‑ hopefully this works. Okay. Search by handle. So what I have done in this example is I have
+created a new search system, okay? There's a whole bunch of Twitter handles that
+I use by the Bloomberg terminal and I have actually stored 4,000 tweets in all. But let's say that I know that one of the
+Twitters on the Bloomberg handle is venture beat. I type in venture beat and hit search. This is a collection of all the news that's
+returned by venture beat, that has been tweeted out by venture beat for, I don't know, a few
+days. Okay? All right. Works well. CBS News. And so we have found 208 items. Okay? Now, how can we beat this system? One thing is, what we can do, if you want
+to see more records than you want, okay, and PHP is a very interesting beast working with
+Mongo databases. Let's put in for this query parameters known
+as search box, we add square brackets, dollar sign and E. And dollar sign and E in Mongo,
+means not equal to. You can use dollar sign and E to search for
+things that are not equal for something. What PHP does, any inputs that are within
+square brackets, they are automatically converted to an associate format. How will you read this is, okay ‑‑ so
+what this now ‑‑ this query will do, the original stuff I showed you was, okay,
+give me everything that is CBS News or venture beat. Now, what we just did is we just modified
+the query and we just changed it on the fly and we said, okay, give me everything that
+is not equal to CBS News. Hit enter. Now, we have all of these records, all of
+these news items that are from sources on Twitter that are not CBS News. Okay? We have returned back everything. So what's the culprit here? What's the culprit? So if I can show you the source, search by
+handle.php, and I'm going to show you the line, that one right there, "collection find
+array, search for screen name equals something." Now remember what I said, if you use square
+brackets for your query parameters those things will be in ‑‑ that will be translated
+into an associative array. What this will do will be the associated array
+will be screen name, arrow and the value will be in an array, an associative ray format. Not equal to as the operator and what did
+I use? I think I used CBS News. Okay? Now I'm going to show you an example of JavaScript
+injection. Okay? Search "hack me.php." Very, really plain looking box here. What you can't do ‑‑ I didn't give any
+directions on how to use this, but what we can do is this. We can actually use JavaScript functions. We will type in a few JavaScript functions. Function. Okay. Now let's say I want to return all the news
+items from, let's say NBC News. So we return this.screen name equals, equals
+and the string is going to be NBC News. Okay? Semicolon, close the statement, close the
+function and here we go. Return. Okay. This is what it's going to do. It will return all the news items that are
+from CBS News. But this is using JavaScript. Let's do one more. Let's do one more, which is pretty nice which
+is going to be function. Okay. Let's see if we get everything. Can we also do other mangling using JavaScript
+as well too? Sure! Why not? How about this one, this. Okay. Return this.text.we can do a regular expression
+matching. Okay? What we are going to search for is Apple. What this is going to do ‑‑ it's going
+to search for all the news items. All 4,000 plus records. Anything that has the word "apple" in them. Okay? Let's do some even more crazier things. We can also do this, function while one print
+more. Actually, I will put this in ‑‑ what
+this is going to do ‑‑ oops. Did I close? Nope. I'm missing one more. All right. Going. It's going. I'm going to stop this. You don't need this anymore. But what I can show you is this. If I SSH into the box, okay, probably going
+to get a password error. Oh, I didn't. Okay. CD/var/log. CDmongo db. See what did in Mongo in logs and more Mongo
+db.log. Oh, I don't like that. How about this one, how about tail. That was from ‑‑ you know, this is one
+result of using ‑‑ well, what you can do with, well ‑‑ if your query is based
+on ‑‑ in your injection is a JavaScript function. Now, I only have 20 minutes for this whole
+talk. What if you do this instead of PHP, if you
+use something like node, JS and express. Okay? Now, let's go back to the schema attacks. How about this one. I like this. I've got to show you this. So right now the server is at 19%. But what if ‑‑ what if ‑‑ if I run
+the script that I created using Ruby, okay, one of the nice byproducts, okay ‑‑ one
+of the nice byproducts of all of this, of schema attack, you know, of this whole dynamic
+model, okay, what it's going to do, I'm going to open up a word list of ‑‑ a Word list
+file, okay? And it's going to create a brand new database
+for each and every word in this file. One nice byproduct is you can exhaust the
+system resources on the server take up 100% of the space. Okay? So if you take a look, now ‑‑ oops. Not yet. Okay. We'll let this thing run. Let this thing run. Okay? All right. Heterogenous problems. Now, how many NoSQL databases there are? Too many to name. Different database systems, different NoSQL
+database systems and you are also dealing with different sets of term non, for example,
+Mongo, the whole idea of a table is a collection and the whole idea of a record is a document. It's completely different than Cassandra and
+Redis is just key value pairs and how about the results? I know different systems like, for example,
+CouchDB, they support different sets of outputs as well. Outputs that you can use JSON and binary JSON. What does it have to do with anything security? This infers this problem known as complexity. Now, in order to really understand the problem
+of NoSQL, you need to each and every documentation. Different systems, different features, different
+inputs and different outputs. Even MongoDB, some vendor specific items,
+MongoDB, Mongo DB, is tied to all the different interfaces. You can take a look at some really cool start‑up
+lab data and this local collection, okay? CouchDB, HTTP is actually opened by default. All right. So how do you actually protect yourself from ‑‑
+so what does this all mean? How do you secure the NoSQL databases. It relies on the full perimeter security. It's really, really important. Okay? Configuration, if you want to make NoSQL databases
+work right, configuration is very important. You can't just take it out of box and sit
+back and use it right away. The whole issue of validation becomes very
+important. Not only are you validating inputs now. You have more things to validate in terms
+of inputs, including JavaScript functions. Hey, for output, you also have to validate
+the binary JSON and JSON as well. So validation becomes even more critical. What does it all mean? Look, back in the good old days, the only
+game in town were Oracle, my SQL and you can build any applications using that thing now. But now they are not the only games in town
+and you have systems such as Mongo, Redis, Couch. You've got to use the right database for the
+right job, for the right application. Okay? Yeah, so not only did you ‑‑ okay is
+so you can't just assume that SQL injection has gone away. In fact, there are many, many more opportunities
+depending on what database system that you choose. But the thing that really, really bugged the
+living hell out of me, of these things, right now NoSQL databases are completely brand new
+but we have a problem right now with, A, we have technologies completely deployed naively. They are just out there. Especially if you believe the hands of developers,
+okay, we will not get hit. We will just put it out there. No, that's not the way, how it works. So now you have the technologies being deployed
+naively, and one last thing, a lot of people use NoSQL databases so we can get away from
+the whole idea of a database administration. Well, the DBA, death of a DBA had been greatly,
+greatly exaggerated because now, you have ‑‑ they have even more ‑‑ there's even more
+opportunities out there. You just have to read the documentation and,
+you know, for what this database system would support. Okay? So those are my points. And that's all that I have. Let's see if this thing actually just run. Nope. Still running. Still running. Still running. I don't know what happened to it. But what it will do, this thing will just
+exhaust 100% of the disk space on the server that I have. So that's all I've got. Okay? Thank you guys, so much. Thanks a lot. (Applause)

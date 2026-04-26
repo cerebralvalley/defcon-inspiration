@@ -1,0 +1,359 @@
+>>	I am Richard Klafter and this
+is Eric Swanson this is our
+first time talking here at DEF CON. Looking forward to it.
+(Applause.) In fact this is our
+first time being at DEF CON. It's been tons of fun. Anyway,
+today we're going to be talking
+to you about checking your fingerprints. Specifically we're
+going to talking about taking
+your GPG fingerprints. So, we are going to do a little bit of
+background Just to get everyone
+up to speed, GPG is an open source alternative to BGB. It's
+a general encryption and signing
+tool. And it's very important answer surveillance tool. That
+is it's used for both sending
+secure messages between individuals, corporations,
+etcetera, and signing packages
+and messages so that you get the message -- it's from who you
+think it is. There are lots of
+good resources online. This is not going to teach you how to
+use GBG . So, one of the --
+there are a few important things. First of all, GBG is
+used everywhere. It is the most
+widely used e-mail encryption package. It's used extensively
+for software package
+verification which is kind of some of the stuff we're going to
+be talking about. There's lots
+of people that use GBG other than privacy conscious crypt
+owners like me and a lot of you
+probably. Including journalists, lawyers, lawyers, activists,
+etcetera. I'd like to mention
+that these people don't write the software. They don't
+necessarily understand all how
+to use this. But I think it's important that they know how to
+use this competently and safely
+because their jobs and often their lives depend on it. In
+order to exchange a secret
+message, you must get the receivers key. This is normally
+done via the GBG key servers.
+And when you specify your V key on the GBG servers, you specify
+either a fingerprint, 32-bit ID
+or a 64-bit ID. You receive the key. And once you receive the
+key, you verify that it is the
+key you think the key is. There's two ways of doing this.
+The one is manually check the
+fingerprint, character by character and the other way is
+to use the web of trust. More on
+that later. And the big problem with this essentially is
+mistakes are fatal. If you trust
+a key that you shouldn't be trusting and there's no
+recourse, you lost, Which makes
+this key exchange part very, very hard. >>	So, the web of
+trust is the most commonly
+specified way to do a key exchange with GPG and its one of
+GPG's big innovations. Again,
+the whole point of this authentication is to verify that
+the key you got is from who you
+think it's from. So it's from somebody with the correct id and
+everything else. And the web of
+trust is the most popular decentralized method for key
+exchange. People have built a
+lot of other things on top of it and it's very cool but it's also
+very hard to use. In order to
+get into the the web of trust, you have to find somebody that
+you trust, verify their ID and
+verify that they will check other people's IDs. And then you
+can only trust them so far as
+you verify they perform the same steps and so on. And this means
+that a lot of those other users
+don't, the Lawyers and activists and the like don't join the web
+of trust and instead rely on
+less sophisticated mechanisms. Also, GPG as a tool has a
+somewhat complicated interface.
+You have to use some arcane command line options or the
+interactive mode are a couple
+other ways to verify that you trust a key. And it has a lot of
+complicated questions that again
+can scare off a less sophisticated user. And even
+Debian which is a well known
+being a pretty secure operating system tells users to ignore the
+message, no ultimately trusted
+key is found because that's part of the web of trust and they
+didn't want to get into it. And
+we've all seen what happens when you tell users to ignore warning
+messages . So, we promised a
+demo in this talk, and here's our demo. We're going to install
+puppet and its signature from
+our mirror and since we don't trust our mirror we are going to
+verify our signature with GPG
+like the documentation tells you to. So, first we need to get the
+two binaries and this is from
+our secretly evil mirror at evilmirror@32.com. Now we'll
+follow the documentation. They
+tell us to request the key by the 32-bit ID. And you'll see
+two keys imported. Now we'll
+verify the fingerprint following the documentation. And you can
+see in here, alright, let's see
+47 B 3. Let's see if we can get this a little bigger. 47B3,
+47B3, 20EB, 20EB, 4C7C, 375A,
+375A, and so on. Now, of course you should verify the full
+finger print but in the interest
+of time I won't go through it. And then finally we'll verify
+the source Tarball that we
+downloaded using the signature we downloaded against that key
+that we just fetch from the key
+server. And you see it says good signature. Now, there's this
+warning here saying it's not
+certified but both Puppet and Debian have told us "Oh, don't
+worry about that warning, it's
+no big deal". So it looks good, we can go ahead and install it.
+And we just got owned. Now, it
+turns out that when we fetched the keys, we received two
+different keys. You can see them
+both here. Here's one key's fingerprint and here's the the
+second key's fingerprint. This
+was the evil key. Unless you're paying particular attention, you
+might not have noticed there was
+a second key or you thought oh well there's two. No big deal.
+This one matches. The truth is,
+humans are broken, not the encryption. Humans make
+mistakes. We're bad at comparing
+long strings and particularly bad at noticing differences in
+output we see often. So, as you
+can see below, if you request the key with a short ID of
+10000001 from the PGP.MiT.edu
+key server you will receive two keys back. One for John Doe and
+one for Jane Doe. But if you
+import keys frequently, you might not notice that you've got
+two keys and you might not
+notice they were for two different people. But they're
+both in your key right now. GBG
+doesn't say anything to warn about this. They return to the
+same status code, everything
+looks normal. And slightly more worryingly, GPG doesn't even
+verify that the received key
+matches for the one you asked. So if you asked for the
+fingerprint, the full
+fingerprint, but there's for an example a man in the middle
+break. So in this case, we have
+a server impersonating PGP.Mit.edu, which returns back
+the zero bad beef key. Clearly
+that doesn't match the fingerprint we asked for, but
+again GBG gives no warning and
+this key is in your key ring. Since GPG doesn't verify
+anything, the key servers can
+tell you to import anything they want. And since the key servers
+don't use transport level
+security or anything else like that, they're vulnerable to man
+in the middle attacks. So for a
+practical exploitation of that, this line comes from Dokers
+install script. If you use act
+key advanced and you give it the received keys with a full
+fingerprint but again with a man
+in the middle break, you'll see we fetched the zero bad beef key
+and now that's in your ATP key
+ring. And again, this comes from the script dot doctor dot IO. So
+there's a few caveats with this.
+None of these examples on their own will result in a practical
+break. Both Puppet and Doker
+will give you their binaries over SSL most of the time. In
+this case, they're merely trying
+to check that GPG sign box. They're using TLS to give them
+the real security but TLS relies
+on certificate authorities. And we all know in various sign
+certificates authorities are not
+to be trusted. We love GBG and we want to have a good
+decentralized option that can
+replace certificate authorities. But when it was used like it was
+used in these examples, it adds
+nothing to the security. If the HTTPS weren't there, it wouldn't
+be secure. >>	Okay, So for
+finding these fingerprint conclusions and some of this fun
+stuff, we've wrote a tool. It's
+called scallion. And the generally way, during high level
+view is how scallion works is it
+generates five hundred million GBGs per second. It does this on
+the GPU. And for each key, it
+checks for partial fingerprint collision. Now, Scallion runs on
+any modern GPU cold bit coin
+hardware is prime. On open CL. And you can grab sources and
+such at evil32.com. A little bit
+more detail, essentially first step and generating the GPG keys
+is we generate an RSA key with
+libOpenSSL. We send the key to the GPU. And increase the public
+key's exponent. Hash the key and
+steps two or steps three and four we do five hundred million
+times a second. If there's a
+partial collision, we send it back to the CPU and bam you have
+a brand new GBG key with a
+partial fingerprint collision. So what are the implications of
+this? First off, 32-bit keys Ids
+are ridiculously broken. They've been broken for one some time,
+you can do this on a CPU. But an
+RGP with our software it takes a few seconds to do this. To
+demonstrate how easy this is to
+do, we've cloned the entire WoT strong set, which is about fifty
+thousand keys, in one day, on a
+four year old bit coin miner. You can check out our cloned key
+server at keyserver.evil32.com.
+So another way you could specify how to receive a key from GPG
+key servers with 64 bit key ID.
+So this is like the obvious path to go forward and make the more
+secure, use more bits, right.
+This one's already there. You can already use it. So at the
+moment, finding a specific key
+with a 64-bit key ID is not practical. However, let's say we
+wanted to find one of the higher
+keys. We have a list of a hundred different software
+packages and we just want to
+find a collision -- given 20 DPUs, looking for a hundred keys
+it would take approximately a
+hundred and seven days to pull this off. So like this is strong
+fairly at the moment, like. Not
+practically broken, but in the long run, this isn't going to
+work. >>	So this leads to two
+big classes of vulnerabilities. First of all, if the attacker
+owns the network, they can
+exploit the fact that GBG performs no verifications to
+send arbitrary keys back to you
+in response to receive keys. And this one might seem a little bit
+obvious to you but they can
+tamper with the fingerprints and documentation that are served
+over and insecure channel. I've
+seen a lot of cases where documentation for what
+fingerprint to use is just over
+http which doesn't add very much in level of security. And if the
+network is secure, then things
+are a little bit better. The attacker can still exploit 32
+bit key collisions to return
+multiple keys with the same ID. And as you saw the output looks
+very similar when this happens.
+And they could also upload arbitrary data to the server. So
+keeping with the big coin theme
+here, I looked at Satoshi Nakamoto's key, and his key was
+created in 2008 and there was
+two signatures on this key that start out. One in 1995 by Dade
+Murphy from hackers, and one in
+2001 by the Time Traveler from Usenet John Titor. So neither of
+these seem particularly
+legitimate, but the key server is happy to show them to you and
+GPG is happy to import them to
+you when you request the key. So, take away. If there's three
+rules to follow these will keep
+you pretty safe with GPG. First of all, always verify your
+fingerprints by hand. Follow the
+full fingerprint and make sure you get it from a trusted
+source. Or use the web of trust
+and understand what the implications of that are. Second
+of all, don't trust the key
+server. Even if you request a full fingerprint, that might not
+be what you get back if the
+network is not secure. And finally, don't use 32-bit key
+id's anywhere. Don't put them on
+your blog, don't input them in the GBG, certainly don't input
+them in your software
+documentation . For the people who need to fix the problem, GBG
+UI is broken up in a couple
+ways, first of all, it shouldn't accept 32 bit key id's anymore
+and it shouldn't display them by
+default . There is a format option that you can put in your
+config that will make it show
+64-bit id's by default but it will still accept 32-bit id's
+and it will still show you keys
+that colide. Second of all, if there are key collisions, that
+seems pretty unlikely. GBG
+should give you a warning if you ask for a key especially by
+fingerprint or by ID and get a
+collision. >>	Okay. So, we have a -- if you want to know more
+about the project, more GBGEUI
+hacks, get access to the key codes, source code et cetera.
+You can check our site at
+eagle32.com. There's additional material we didn't cover here
+today on this. So it definitely
+worth checking out. And I think we have a few minutes left don't
+we? Does anybody have any
+questions or anything? Umm, we have not looked into it yet, but
+that's kind of on my to do list.
+We are doing a presentation. But that seems blatantly obvious it
+shouldn't break anything. It
+should be pretty easy to do, you think. >>	So one challenge with
+that is you can request key by
+UID. By last name or e-mail. And it'll perform a search on e-mail
+and it will return those keys.
+So it is somewhat reasonable that you could want to import
+every key with a certain e-mail
+demand and use that but that would rely on you having a
+trusted key server, maybe an
+organizational setting or something like that. So that
+would be a little bit of a
+caveat. But I think that would be a good first step for GBG to
+do. Anyone else? Yup? >>	So the
+question was what kind of implications does this have for
+e-mail security? Most notably,
+it's problems in key exchange. If you can safely get the key
+from the counterparty, then
+there's no implications for this. GBG as a tool is very
+solid. The problem is the user
+interface and the social engineering exploits this opens.
+Does that answer your question?
+>>	Okay. If there's no one else, we can talk about the tool we
+created. If anyone finds that
+interesting? >>	All right. Scallion is actually, we wrote
+it, started writing it a couple
+months ago. Okay, more than a couple months ago. It was
+originally intended to generate
+addresses for tor hidden services. Which essentially
+consists of generating an RSA
+key and doing a sha1 hash. In order to generate enough RSA
+keys on the GPU, what we do is
+we increase the -- I screw that one up. And umm, we don't have
+to actually regenerate the key
+we just change the exponet. We can take the shot hash and check
+it. >>	That was pretty much the
+key insight was that we could take the public -- so an RSA key
+consists of a public module and
+a public exponent and then the private secret components as
+well. Which are the two factors
+of the modulus and also the private exponent. So the sort of
+insight was that we could take
+this public modulus, public exponent that were generated
+fairly slowly on the CPU and
+then again kind of came from bit coin as well we could increment
+that exponent as if it were a
+noss and look for other keys and just take the Sha on the GPU. We
+wrote some pretty clever code to
+give some limited regular expression support so you could
+match against regular expression
+patterns on the GPU efficiently. And this is what let us ask for
+all of the keys in the strong
+set in such a short amount of time. And then there's a couple
+of other things that are
+particular to GPG that for example the creation time is
+also part of the hashed packet.
+In general, this would let you make at least interestingly a
+vanity GBG key. You saw the 0
+bad beef key. And also any sort of collisions you'd like. So
+let's say maybe you're looking
+for a DSA key is looking a little bit long in the tooth.
+Maybe you would want to make
+another one in the same key ID. So you could make an RSA key
+forty ninety-six bit using the
+same thing. And the tor implications are pretty cool too
+in that tor uses, they kind of
+cheat on the key exchange problem, by making the users
+type in the full first eighty
+bits of the hash of the key in the address. So the onion
+address is the first eighty bits
+if the Sha1 hash of the public key of the hidden service. And
+this tool lets you generate
+various vanity sha1 hash's. So for example the silk roads old
+hash which was silk road I think
+eight or something like that they used another tool and did
+it on the CPU but we generated
+the same hash in like two minutes on the GPU. Alright, if
+there is nothing else we are
+going to be across the hall in the encrypto and privacy village
+they have a key signing party
+that starts at four so we will be over there if anyone has any
+questions. Thanks for watching.
+(Applause.)

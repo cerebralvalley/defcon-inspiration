@@ -1,0 +1,1177 @@
+Good afternoon everyone, My name
+is effffn I am one of the leads
+of the NOC. Thanks for being here. Uh the last time we had
+one of these was DC nineteen at
+the Rio so it’s been awhile. So, throughout the year we always
+get like questions like how we
+do the network here and the network keeps changing over and
+over, like different properties
+and things like that. So we submitted a talk. It got
+accepted. We hope you guys enjoy
+it. So, starting with the most important introductions, who are
+we? So, I said already who I am.
+So we are just going to go around. I’m going to ask each
+one of you to say your name or
+handle, say what you do here at DefCon How many years have you
+been gooning uh with the NOC or
+with DefCon. Ah, if you want you can say what you do for your day
+job and what you do exactly,
+right? If you are in offensive security, networking, blue team
+whatever. So turning over to
+Mack. >>Hey everyone, I’m Mack. I’m the number two in the NOC,
+uh responsible and this is like
+DefCon Eleven or sorry eleventh DefCon for me. Uh, so I am
+responsible for a lot of core
+infrastructure and overall planning of the, the network.
+So, John Going down the line?
+>>Yup, down the line. Get in the lineup. >>Hi, I’m John I’m uh
+Collin’s wifi bitch so I
+basically do stuff for wifi. Uh, this is my third year officially
+and I have been a friend to the
+NOC for a long time before that. My day job is working for the
+wifi vendor Aruba and I think
+the reason that they asked me to be part of the NOC team is they
+were too cheap to pay for a
+support contract and if they wanted like firmware updates
+[laughter]they know that I can
+get that stuff. So I can think of no other reason why I am here
+besides that. Hi, my name is
+Phil I, uh, I work with NOC. I am not part of the NOC I kind of
+am. I’m the, uh, regional
+infrastructure manager for Caeser’s Entertainment I help
+them set up their network around
+the buildings Escort them here, escort them there. Help them put
+their equipment in. >>Thank you
+Phil! Woo! [applause] >>Good job Phil with the screws. >>Hi
+everyone, my name is Monsi I am
+the NOC’s tribute. This is my third year. So all the Gaff tape
+and running around That’s
+essentially what I do. Thanks [applause] >>Hi my name is
+Price. Um, this is my third
+year. Ah, I took a couple of years off. Um, I’m a runner for
+the, for the NOC. In my day job
+I build automation frameworks from the ground up. [applause]
+>>Hi my name’s Collin uh you can
+find me underscore CRB on Twitter. I am the, I guess, boss
+of John uh I am the wireless
+team lead and uh my day job, I, ah, work for CDW as the wireless
+technical architect so I’ve been
+doing wireless for yeah, about ten years now. [applause] >>Hi,
+my name’s Jared, I’m an
+alcoholic [laughter] >>Hi Jared >>Hi Jared! >>Hi Jared!
+>>Welcome Jared! >>I’ve been
+doing this for, I don’t know, seven, eight years, something
+like that. >>You’re supposed to
+know >>Yeah, f**k, I don’t know. Um, I do wired side. That’s it.
+>>Hey, I’m Nick. Also, Um,
+c7five. This is my fifth year and I do wifi reg and other
+miscellaneous things. Um, my day
+job I’m the, I’m head of security at a cryptocurrency
+exchange called Kraken. Um and I
+also run um Drunk Hacker History here at DefCon [cheers] so
+tonight at eight o’clock, Planet
+Hollywood mezzanine stage. Join Us. [applause] >>My name’s Mike
+or Sparky. Um, I’ve been with
+the, the NOC for, for sixteen years Um, I guess that makes me
+the most senior one. Um, yeah,
+except for I am not the boss. Uh I run like operations set up
+teams uh for the NOC and my day
+job is Point of Sale applications. [applause] >>Hi,
+I’m Spencer uh I do most of our
+monitoring and wired switch config stuff. Um, not most of
+that I help with that [laughs].
+Uh for my day job, I’m uh reverse engineer for Cisco Talos
+[applause] >>Hey, uh I’m Wish uh
+this is my second year gooning um I help with all the taping
+and wiring and stuff like that.
+[applause] >>Hello, I’m Topher, I just showed up to the NOC this
+year ah, yeah.
+[laughter][applause] >>Woo! >>Hey I’m John uh this is my
+second year of gooning and I
+just work here. [laughter][applause] >>Um, I’m
+Fit for Death I am actually
+number two to Phil so I work for the Casino and do exactly what
+Phil does. So yeah, this is my
+uh sixth year. >>And I’m uh Dedication and I think I’ve been
+here for four years because I am
+really good at building network cables. [laughter] [applause]
+>>So we just want to highlight
+that the, the team itself has got a mix of backgrounds and
+skill sets and that’s one of the
+things that we really value inside the NOC. Um, you know,
+going to the, anyone can be a
+part of the NOC obviously there’s, there’s some some
+requirements but you know, NOC
+people can come from anywhere. So, we’re just like you. We even
+allow Canadians. Yeah [laughter]
+>>It’s true. >>Grandfathered in >>All right, so that’s about us
+um, you know, what do we do, who
+do we help out? Basically we provide the core infrastructure
+that all of the villages, press,
+contests, speakers, closed caption, DCTV, roots, everyone
+connects to um and we also
+provide the wireless for everyone, you know, anyone, any
+of the attendees here. Um and we
+have done a bunch of different things inside of each, each of
+these other requirements, their
+own needs and we try to satisfy and help out as many people as
+we can. Um, do you want to talk?
+OK, so a long time ago a long time ago being eleven years so
+that’s my memory. Uh, we’d
+usually arrive sometime around you know, Sunday night, get
+started on Monday and would work
+through the week. We started moving that a little bit closer
+uh in the last few years just
+because there’s a lot more properties, there’s a lot more
+people and there’s a lot more
+going on. But it really comes down to, you know, just like you
+build out any of the you
+foundations for other networks, you gotta have your wired in,
+you have to have your core in,
+you have to get your wired out to all of your edges, you have
+to get access points hung, you
+have to get them, you know, pulled back, you have to connect
+for everyone’s there. Um, and
+then the conference starts and it becomes a whole lot of, you
+know, uh last minute requests
+sudden requests, issues, eccetera, um, so this kind of
+leads into we moved a little bit
+earlier this year I arrived Thursday a week before to get
+stuff going um and its been a
+fairly smooth year I think although I am totally jinxing it
+right now. Um, so we will see
+what happens especially after the DNS talk then ended about a
+half hour ago. >>Atta boy! >>Um
+So that’s it, I mean there isn’t a whole lot to the complexity
+and we will totally go into
+questions in a bit and you can ask what you want about the
+infrastructure um, [laughs]
+thank you everyone. [applause] >>There you go! Thanks you guys.
+[applause] >>It’s, it’s nice to
+be the speaker. You have people bring you stuff, it’s cool. You
+should submit. >>Thanks you
+DCTV. >>[laughs] Thanks you DCTV. >>Um, so that, you know,
+again, not a whole lot there uh
+from the the complexity of the infrastructure side uh, or the
+wired side so now I am going to
+talk about the wireless. Collin? John? >>Present >>Yup, >>Sorry
+>>You’re up. >>Bring open a beer
+>>Actually, before that >>Oh sorry, what’d I forget >>No, no,
+co- come up. Part of this pres,
+this is not a presentation. The idea is to be like you guys
+interacting with us and asking
+questions and so on and so forth. So instead of like trying
+to break the ice a little bit
+wifi has a lot of information uh that I think is going to sparkle
+some questions in your mind or
+things that you already want to ask us, So John and Collin
+they’re going to go through the
+wireless stuff, but in the meantime takes notes uh we want
+to hear questions from you guys
+otherwise we are not going to be here for the remaining eighty
+minutes. >>Sure. So as Mack and
+Luis mentioned im, there’s a lot of precon stuff that we do and
+specifically with the wireless,
+if you guys have been coming here for a few years know we
+changed venues. We’ve expanded
+uh, we were at Caesar's last year, am I a little, little
+closer better? Um, so it’s a
+challenge for the wireless We’re trying to put RF in different
+spaces Um usually we’re gonna
+try and do some sort of a site walk through if it’s a totally
+new property just so we can get
+an eye on you know what things look like um I do predictive
+planning using a cool, a tool
+called Ekahau. So we actually take some time to see, you know,
+will this amount of AP’s cover
+where we think it will? We also have the fun sort of situation
+where I’d love to give you guys
+more access points to have more wireless, but we’ve got a limit
+on drops, there are not infinite
+amounts of drops and where I want an AP doesn’t mean there’s
+going to be a network connection
+to feed that AP. So there’s, there’s compromises on some of
+these spaces and we gotta kind
+of work with that as as necessary and things change from
+my original plans. On top of
+that I’ll tell you guys that the the folks that do the DefCon
+planning do a great job of
+accommodating and moving things around but what’s in what room
+is in flux so long up until we
+get here that I kind of take first shot at design and then we
+know we gotta change it. Um, we
+also stage equipment So all of our stuff gets stood up probably
+about a month or so before the
+Con. We make sure that we got new code on it We look at last
+year’s config make any changes
+we need to make. Um and then make sure that also integrates
+with the overall designs. So
+again, different venues the last couple of years, we’ve had
+different network, network
+topologies which meant the wireless had to adjust slightly,
+meaning we’re not just plugging
+in what we had last year. Um, and then, you know, as Max said,
+we get here a little early so
+that I was helping with fiber and getting APs out and
+inventoried as early as Saturday
+evening when I got in. Anything else we are doing pre-con? >>You
+might notice the lie that was in
+the previous slide The wired network is only there to support
+the wireless network. [laughter]
+That’s the only reason that they put wireless in. >>Um, these are
+the tools that we’ve been using
+this year, so, to do what we do we don’t have to have these
+tools but I will tell you it
+makes our life a lot easier. So down at the bottom left there
+you’ve got the Ekahau sidekick,
+thats uh spectrum analysis and some wifi survey work and then a
+bunch of netscout air fluke
+tools to quickly diagnose port problems and RF issues and as
+always there is a console cable
+in the mix and then uh a special console cable for our access
+points. And then just a little
+bit about the hardware we are using; we’ve got Aruba 7000s
+series controllers the 7210 is
+kind of the big boy, covers uh the larger of the venues, and
+then we’ve got a smaller 7005
+covering just the Flamingo uh right now we are running 6.5
+code We’re using AP 305s and
+we’ve got about 80 of them out this year, probably about 100 in
+inventory so when we have more
+ports, we put more out if we can. And then we are also
+running Aruba Airwave as a
+management. Just a little bit about the settings. So, I’ve
+seen stuff on Twitter after the
+Con talking about, you know I, I was on the wifi and nobody
+attacked me this year. Well,
+there’s a reason for that. So, uh DefCon Open is 2.4 Gigahertz
+only. We have client isolation,
+so that means clients can’t talk to each other when they are on
+that network. We’re blocking
+mDNS bonjour traffic. Ah, basically our firewall is
+saying, you can only go to the
+internet and obviously it’s an open network so there is no
+encryption, anything that you
+send over the air someone else can sniff. Our DefCon Secure on
+the other hand is 5 gig only, so
+that kind of takes a lot of the noise out of the cheap little
+devices from China that are
+really good at de-auth attacks like you have to be a little bit
+more specific to target that
+network. Again client isolation DNS, u mDNS blocking. Same thing
+with the firewall but we are
+using WPA2 Enterprise with PEAP MSCHAPv2. And then the back end
+of that is FreeRadius for our
+client auth. Um and then just sort of one underlying point
+that I wanted to make about
+these kind of networks that they are very quick to come up. Your
+standing there for a little
+while. The simplicity is the key in this. We don’t turn on a ton
+of features. We want to lock
+down the network. We want to keep it secure, but a bunch of
+the advanced stuff tends to
+cause problems with certain clients, then you guys have a
+poor wifi experience, so we
+uncheck about as much as we can, aside from the bare bones things
+that are going to keep you
+getting on the network quickly, getting you on the network
+securely and then just letting
+you do your thing. >>How many people use the secure wifi
+network this year? How many
+people used the open wifi network this year? So if I
+remember uh DefCon, I don’t know
+which number it was; it was at the Riviera when uh, do you
+remember AirPWN? When it first
+came out? Basically it was on a wi a uh, an open wireless
+network and what it was doing
+was essentially everybody that downloaded a page from the
+internet it would replace all of
+the pictures in any web page with uh with GoatSee [laughter]
+and so you would see I would
+just watch these guys sitting out there typing something and
+then all of the sudden they’d
+slam their laptop lid shut. And it repeated all over the place
+That’s why we don’t use the open
+wifi network at a hacker con. Use the secure network and
+things like that don’t happen.
+[laughter] >>And, and I’ll say I am proud of you guys We had like
+well over 2,000 people on the
+wireless so far this year. You’ll see better stats at
+closing uh and its predominantly
+on the secure network, like Good job guys. I’m, I’m glad to see
+it. >>Op, you got a question?
+>>Yeah. [inaudible off mic question] Um the wireless is
+not. I’m sorry yeah. The
+question was are we blocking DNS null queries? Correct? No. no
+the wireless is not. Firewall?
+No. [off mic question continues] Uh, we have not looked at it
+from the wireless. >>What was
+the question? >>Yeah, eh. I’m sorry. Um, are we seeing a lot
+of instances with Iodine? And
+I’m not familiar with it so ah. [off mic commentary continues]
+Oh, got it. So DNS tunneling
+out. >>We don’t really watch for it. >>Yeah, we’re not really
+watching for that. As far as
+going out, we kind of don’t care go out, like we’re letting
+people go out and do what they
+need to do. >>Yeah we get that, we get that question a lot of,
+oh, my applications not working,
+my something’s not working, we’re blocking nothing, anything
+you want to do as long as it is
+going to the internet is is allowed on, on this network.
+[laughs] >>Uh and hopefully most
+of you know about WIFI reg, it’s the way that you create your
+credentials for the secure
+network uh it’s there’s nothing really fancy to it, it’s a
+pretty simple web server, we’ve
+got a, a database in the back end. It goes live the week
+basically of the con so we
+usually do some testing staging before we get out here and then
+once we’re here we fire it up so
+that if you guys wanna do that password user creation you can
+do it on a secure network that
+you trust, so do it from home, do it before you get here, you
+know, whatever, you don’t have
+to do that off of our network. And then we’ve got a bunch of
+instructions so, lots of
+different client types out there, you know, how do you get
+your device configured
+appropriately to securely connect to the PEAP network? And
+sometimes we miss stuff, so we
+have got some feedback, so thank you for the, the folks that have
+said like, hey I think you’ve
+got a config line wrong um it’s usually a, a quick and fast sort
+of uh change of that page. So
+yeah we miss things, we appreciate you guys giving us
+good feedback about things that
+we miss so we can fix it. Um and then just some examples of some
+funny usernames you guys get
+like pretty good usernames that we see coming through the
+wireless controller [laughs]
+yeah [laughs]. Alright, this year we had added some stuff. So
+the lovely picture you see here,
+um we found out that we had to provide some WIFI over in the
+theater area, and kind of last
+minute threw up some access points. So, again, not an ideal
+scenario, if, if me putting my
+wireless engineer hat on, I’d want those in ceilings with
+directional antennas, I’d want
+about four times as much to cover that area but, when you
+have to do it in two hours, you
+work with what you’ve got. Yeah so actually I’ll let you >>I’ll
+talk a little about mounting
+because you see in the picture here obviously that’s not the
+way we like to mount WIFI access
+points and we see tweets about that sometimes of, you guys
+don’t know what you’re doing,
+you mounted the APs wrong. We do know what we’re doing but we’re
+limited by sort of what kind of
+um mounting is available so you know uh day one here I think on
+Monday they wanted to put the
+APs on the ceiling here like as high as possibly cou- as they as
+they possibly could, not
+optimal. Um we’d like them on stands, we’d like them up above
+the, the people, and we’d like
+them horizontal, and that’s sometimes tough just based on
+what types of uh stands we can
+get and how we can, you know, that we’ve used duct tape, we’ve
+used bailing wire this year, no
+no kidding, uh bailing wire to attach uh APs, so it’s just a
+matter of what we can get. >>And
+we got, we got some of these this year, so this is sort of
+our ideal, uh unfortunately we
+got them after all of the APs were up in the air, this is
+called the WIFI stand so like,
+very handy, hopefully you’ll see these next year, because they
+orient the AP exactly how we
+want, facing down uh they just made it here a little bit late
+so hopefully next year
+[laughter] that’s what you’re going to see everywhere. Um,
+yeah, the no no no chrome I mean
+maybe we could, you know, bedazzle it or something you
+know >>This is a hacker con
+[laughter] >>Um so, some of the other stuff we added this year,
+Android App, so hopefully uh
+everyone trusted that through the Google Play store [laughs]
+Um that was sort of a new
+experience for me, I borrowed that idea off of CCC um we’ve
+had troubles in the past with
+Android having such a large ecosystem, it’s really hard to
+describe how to configure that
+client when it’s different on so many devices so this kind of was
+a little bit more effort but
+made it a lot easier to say, we know that you have the profile,
+we know that you have the cert,
+we know that you’re doing the righ- right checking and it’ll
+work on pretty much all Android
+devices. So um that was hopefully something we’re going
+to keep uh going into next
+year’s. We added more config instructions for Linux, I think
+we’d only had WPA_supplicant up
+to date and we added some other stuff um and then Nick and Wish,
+you guys want to talk about the,
+er Nick and John, you want to talk about the Chromebook
+profile? >>Yeah >>Sure
+[laughter] >>So, Chromebook profile is new this year, so
+people had been, we saw some
+folks complaining on Twitter, that we didn’t have the config
+for Chromebook and so um how
+many people have Chromebooks here? Oh, handful of people. So,
+so thank John actually, John
+stand up. >>Yeah John! [applause] Woo! >>Yeah! >>For,
+for spending several hours
+wrangling with the Chromebooks um in order to get that to work
+but now it, it works. Yeah
+>>Yeah, thanks guys that, we were busy doing other WIFI stuff
+so they pulled the, pulled up
+the slack on that one. Um challenges for WIFI, there are
+challenges, and funny enough
+like we, we think as professionals these are not
+necessarily WIFI challenges,
+that seems to be the easy part, but patching is difficult, cable
+runs are difficult, um sometimes
+we ask for a cable and it’s in the middle of some space that it
+shouldn’t be there or it needs
+twenty feet of gaff tape. As I mentioned before that the amount
+of drops that we have that we
+can actually backhall to the switch, not never as many as I
+want um POE can be a problem
+sometimes, we have POE at every one of our switches, but if
+you’ve got a bad cable run or
+let’s say you terminated something wrong on one of the
+POE pairs, uh we had, John
+fought one of those for a good couple hours where the AP comes
+up, powers, never, never gets on
+to our controller because one of the pairs is flipped, and it’s
+not something you’d catch unless
+you had a tester or you know everything looked okay. >>I need
+to complain about my. I need to
+complain about because I’m sure some of you saw me on opening
+night in the chill out room
+nextdoor in Bally’s trying to screw with that access point on
+the fifty foot pool. Uh that
+thing, and we had three, three or four drops like this, AP
+comes up, power comes on, so POE
+works. It can talk to the network, that works fine, it can
+talk back to the controller,
+that works fine. It sends five packets, and it won’t talk
+anymore. Like the wires heat up
+and suddenly become non conductive or something, that’s
+the sort of problems we dealt
+with and changing out the cabling is the only way to, to
+deal with that. And sometimes
+it’s the last cable in the room so the wi- the wireless village
+this year was supposed to have
+an access point from us, we couldn’t, it was the last
+possible jack in the room, it
+went bad, so we ended up moving that out in the hallway. So um
+older hotels are no fun for this
+sort of thing. >>Yeah the WIFI is easy all the other pieces are
+hard um the the mounting, if you
+guys saw the stands that we have out there, a lot of them are
+pointed down which is what we
+want um some of them we didn’t have the little bit that we got
+from the Encore folks to kind of
+give enough ninety degree angle to drop down so we do have some
+that are facing, polarized
+incorrectly, you’re still getting signal, it’s just not
+ideal. So mounting is not easy
+and each of the different properties has different stands,
+so you know this would be great
+if it was just a single property, but we’re kind of
+dealing with four different
+groups in in some regard and that means the mounting may not
+be as consistent as we want it.
+>>By the way, he mentioned Encore, these guys are awesome.
+If you are people that hold
+conventions uh the Encore folks support all the IT for uh for
+the hotel >>Woo! [applause]
+>>Yeah! >>They have been here uh day and night with us uh hanging
+out in rooms, watching us plug
+cables in and that sort of thing but they’re just, they’re
+incredible so um those guys plus
+Caesar’s IT are wonderful to work with. >>Yeah, thanks uh for
+mentioning that John an- and
+those folks have come back working for us, Phil how many
+years have you, you say you did
+this? >>Uh I worked for Caesar’s for fifteen and I think I’ve
+done it for at least seven.
+>>Yeah, so Phil’s been around for seven years. So these guys,
+between Phil, Kevin, and uh and
+our Encore folks, we, we, they are part of the NOC, they they
+are here, they ask to come work
+with us every year, they, they know what we do, they know how
+we do it, they are invaluable to
+our team >>Cause letting a hacker con into your MDFs and
+IDFs like what could possibly go
+wrong with that so [laughter] into uh you know testicular
+fortitude. >>Uh let’s see I
+think I’ve got everything. Oh and the room changes, like I
+said, things change, right? And
+sometimes, rooms actually change during the con and you get
+things like this left on the
+floor with no access point there anymore. So, you know, we have
+to be a little bit dynamic in
+the morning or even in the evening, look, kind of look in
+and see what the alerting system
+has said, hey your APs are down, it’s because an airwall moved
+and they >>Those, those pictures
+there are from an MGM property, [laughter] I just want you to
+know that. >>So yeah, it’s
+always fun uh you know we don’t really get to sit back too much,
+there’s always something going
+on and we have to address it as the con goes on. >>You guys have
+done really good this year at
+not stealing our APs and we appreciate that too [laughter]
+>>Keep that up. >>Challenge
+accepted. >>Um just some miscellaneous thoughts and, you
+know, if you guys have questions
+this is probably about the time for the WIFI questions but.
+Everybody blames the WIFI and
+the reality is, you know, sometimes it is our fault but a
+lot of times it’s DNS problems,
+it’s DHCP problems um we work really hard so that we know our
+infrastructure’s solid and
+unless you’re in some area that doesn’t have our APs, like the
+casino floor, you’re not going
+to get our WIFI on the casino floor. >>That was a complaint
+last night >>Yeah, there was a
+complaint last night so, in, in the conference spaces we are
+providing RF, everywhere else,
+we are not providing RF. >>Yeah, i- is Wookie here? That was the
+Twitter user that reported it
+last night, that wasn’t working on the casino floor [laughter]
+>>Now is your chance to throw
+something. Alright so uh the other thing we we say in the app
+had it as a default password,
+DefCon DefCon, and we want to just assure you guys, that if
+you’re doing the correct
+checking in your sublicant because of rotating keys, you’re
+still secure using the same
+password that, that TLS tunnel is dynamic per session so you’re
+you’re safe if you’ve configured
+your end correctly and that’s always the sticky part. More
+about that. >>Is fart face here?
+You downloaded sixteen point two gigabytes over the WIFI over the
+last three days [laughter] >>We
+know what you’re doing >>So kudos to fart face I guess
+[laughter] And then just in
+future planning, so um we really would love to get a WPA3 network
+out there, potentially next
+year. You know there’s still a lot of client proliferation that
+has to happen um. I kinda want a
+stable code base for the Aruba controller that will support it
+well so that we can offer that
+uh and then we also wanna potentially do OWE which is,
+>>Opportunistic wireless >>There
+you go, oppor- opportunistic wireless encryption so it’s,
+it’s like an open SS ID, no
+authentication, but you get encryption. So you know try to
+move towards using some of these
+new technologies that will keep the onboarding process simple
+for the WIFI, but keep you guys
+secure. >>And we, we could have done WPA3 this year, we didn't
+want to just because the client
+situation is still in a bit of flux and um that’s likely to
+lead, every time there’s a new
+generation of kind of WIFI capabilities, it leads to
+compatibility problems and it
+takes a year or two for that to sort of work it’s way out so um
+we, we kind of made the
+executive decision, he did, that we’re not going to do it this
+year but I think next year we’re
+gonna, we’re gonna try. >>Yeah, it’s, it’s uh goes back to that
+simplicity idea if I turn on
+some new advanced feature, there’s going to be some devices
+that have a hard time with it,
+and then can’t get on the network and then that’s really
+hard to troubleshoot so >>It’s
+our fault >>Yeah, and then it’s our fault, right? Then, then you
+guys come to us and say, hey the
+WIFI’s broken and we say well you know you’ve got this client
+that’s not behaving correctly um
+try to avoid that at all possible uh cost but once we get
+that prolif- proliferation of
+devices it should be uh a little bit easier to suss those
+problems out if they do occur.
+>>Alright. >>I think that was my last slide, yeah? Okay. Any
+other questions? [inaudible off
+mic comment] >>Boo! >>Go to hell! >>So I I I won’t notice, I
+wanna like demonstrate the er
+point out the gear sitting on stage was a noose up until the
+last couple of years where it
+got refreshed by stuff that’s only slightly less as old
+[laughter] um so one of the big
+hurdles right now with IPV6 is making sure that we can do it in
+a secure way which means router
+advertisement suppression which none of our gear supports right
+now. You know IPV6 has been out
+there for what thirty years? People have been kind of really
+deploying it for the last, you
+know, five to ten, and you know it’s been secured for like the
+last uh I don’t know probably
+next year [laughter] um so that that’s kind of where it’s
+sitting uh the, the second thing
+is uh all of that would be tunneled because none of our
+immediate handoffs are V6 uh
+upstream. So those are kind of the two things right now. So
+we’ll go, I’m just going to
+point out? >>More questions? >>More questions? >>Two
+questions, one [question
+continues off mic inaudible] >>Okay >>Absolutely none
+>>[laughs] Yeah so uh so the
+firs- the first question is what additional privileges do we give
+to uh people who put out for the
+call for services or put stuff on the network uh re- yeah to
+the point realistically none. Uh
+if anything, we give them less privileged from the standpoint
+of we allow people to connect
+them, which is, you know, opening it up, right. >>[off mic
+question continues] >>Uh so the
+client isolation is really from like >>That’s wireless >>Yeah,
+that’s, yeah that’s strictly
+wireless to wireless >>Let’s talk about VLANs, how many VLANs
+we have like each podium has a
+different VLAN >>Okay so yeah I mean from, from the standpoint
+of, do you want to answer?
+[laughs] >>No >>Okay [laughter] uh fr- from the the standpoint
+of the though uh wired
+separation we pretty much separate as much as possible.
+Every drop coming out of the
+wall uh gets its own VLAN network- gets its own network
+all of that is uh layer 3
+controlled, uh stateful firewall in between them, and it takes it
+from there, so it’s a specific
+operation to open something up where the like the CFS comes
+into play, or the villages and
+contests. Over there. [off mic question inaudible] >>80211R,
+>>Question >>if it didn’t break
+the crap, oh I’m sorry, what advanced feature did we turn off
+that we wish, that we could use?
+80211R is a great example, it would improve roaming uh it
+breaks a lot of devices and
+there’s some security implications there too um
+management frame protection is
+another one, that was always the hey why aren’t you turning this
+on? It’s cause most clients
+don’t support it and then they cannot connect to the wireless.
+>>Discovery protocols. >>We had
+a conversation about turning on passpoint this year, hotspot 2.0
+type stuff where your phones
+would have sort of auto connected to the network without
+you asking them to and we
+decided that that would piss a lot of people off at DefCon
+[laughter] which was kind of the
+point but we decided not to do that >>Yeah we- >>So John, raise
+of hands, who would be pissed
+off >>Who would be pissed off if we, yeah, so if Home Depot does
+it to you though [laughter]
+>>We, we’re throwing, we’re knocking around the idea of
+maybe doing a talk about that
+next year so that we could run it in a very limited location,
+so if you guys came into our
+talk, your phones would probably get passpointed but uh not on
+the full infrastructure. >>There
+was a guy over there, had a question, yeah, you right there,
+got your arm up >>Real simple,
+how do you [inaudible question off mic continues] >>Gotcha. So
+there’s ah, there’s a couple
+diffs in uh sorry, dips in the uh WIFI user count graphs for
+year over year uh and the
+question is can we explain those >>No >>[laughs] Uh when the
+simple comments is no I- I- I’m
+trying to remember sometime back >>I’m pretty sure DC16 is when
+that air pwn thing came out that
+I was talking about >>Yeah could be the reason >>That was when
+they changed the encryption of
+the credit cards >>At Riviera DC16 and then Rio >>Space >>RIPs
+>>Spencer >>Bandwidth [laughter]
+>>Spencer! >>One moment please while we confer about a proper
+answer to give you >>Because of
+Spencer [laughter] >>Uh pretty much larger space, more APs, not
+necessarily people like, p-
+people used to be very skeptical about connecting to the WIFI
+network at DefCon >>Used to be
+>>Uh people understood that it was okay to do it, right? Um I
+think that’s part of it but it’s
+not one, one thing. We got year by year, we get better segway to
+the next slide, uh bandwidth, uh
+not great, but we keep trying to improve as much as we can, but
+if you guys have a great
+experience an- and it’s secure, right? Secure to the point that
+they were talking about. Your
+devi- your traffic is, the traffic is encrypted, nobody
+else can connect to your device
+to attack your device, and we are not looking at the traffic
+that you’re sending I think
+that’s fair game for this, right? Uh for us, on the other
+side, is availab- availability,
+right? We don’t want uh people like, we want the network up.
+The more this works, the more
+beers we have. So through, from Thursday last week through
+Thursday this week, it’s a lot
+of work that we do to make it work then we hope it doesn’t
+break so we can kind of watch
+talks and things like that. >>One of- one of the suggestions
+from our colleagues is that uh
+there are alternatives to the DefCon network uh particularly,
+you know, cellular coverage and
+whatnot, and during some of these, some of these years there
+was uh times where that was
+coming out and you could secure yourself easier than you could
+secure into, you know, your
+standard enterprise uh wireless network so. Let’s go. >>Ope, you
+got a guy straight ahead here,
+he’s kind of got his hand up, I’m not sure if he’s just
+resting it. There you go! Commit
+then. No, stand up, no, no, no, no, I ain’t gonna listen to your
+question, you stand up. There
+you go. [off mic question inaudible] >>Do we collaborate
+with the Black Hat guys like
+Grifter? Sharing resources >>No I’m going to move my microphone
+away [laughter] >>Uh not as much
+back when DefCon and Black Hat were a lot closer, there was a
+lot of, there was some shared
+stuff but uh corporate entities kind of forced that to be a lot
+more separate uh >>The timing
+doesn’t line up either at all for that >>We, we need to have
+our gear here, and running, and
+going, the same time Black Hat is running so. >>Do we want to
+mention that we’re not
+sponsored? >>Yeah, we’re, we’re also not sponsored, we’re not
+funded like Black Hat is >>Yeah
+this is beg, borrow, and steal >>I know. Alright. We’ll co-
+we’ll come back to number two
+over here [laughs] [off mic question begins] >>Stand up
+>>Even though your network is
+very much [inaudible] under attack, what kind of, how much
+do you actually see that
+affecting the network, I mean like, interesting one off story
+that you find of dealing with
+malicious hackers on your network >>Uh stories about
+disaster porn, okay [laughs] so
+the question is, given the attacks, you know, what are the
+attacks we’ve seen, what are
+some of the particularly notable ones? >>So um you, you mentioned
+something that’s very kind of
+interesting you said, under, undered attacked? Like, like, as
+in we’re not attacked? >>No no
+>>Is that, is that, is that what you’re, really? >>Well I’m
+sitting down here you’ve got
+plenty of time clearly >>[laughs] I’m not sure if you
+understand how alerts work
+alright? All of our phones here could. So um a few years back um
+we uh, we ran into an issue uh
+with uh a gentlemen uh that was, what was he doing in there? Was
+he, was it cloning or mimicking?
+>>Don’t, don’t spoof any of the casino networks. That’s a big,
+big, big no no. And uh the short
+and skinny of it is is that well we’re not attacked directly
+maybe um we have to deal with
+all the s**t you guys are doing on, on that network and it
+doesn’t necessarily stay in your
+nice little area sometimes, somebody learns a new skill set
+and they want to try to flex
+that out, sorry this is difficult to do and this. Um and
+uh sometimes, oh s**t, we just
+totally screwed Spence um [laughter] >>Thank you >>Oooh
+that’s a healthy shot, good luck
+um [laughter] It’s okay, he is actually old enough to drink
+folks before anybody brings that
+up [laughter] he has been carded. Anyways. Um no we uh
+we’ll we’ll go around and
+occasionally we have to work with uh Caesar’s um on helping
+mediate some of these issues.
+Now internally, Mack? >>Um so I mean from the attack’s inter-
+like we expect some of the
+network to be attacked an- and we kind of set it up and let it
+go that way, again the open
+network, if people are trying to attack that, it’s kind of the
+nature of what it is, it’s meant
+to be that, that playground for people to go with. Um then
+there’s other things where it’s
+like we, you know, there was a BGPA hijack a few years ago, not
+necessarily anything that we,
+you know that affected us er er whatnot but yeah we know the
+network was going through, you
+know, the upstream network was going through another provider
+um just to demonstrate it as a
+talk uh for the most part what we, what we look out for are
+the, the speakers who have some
+demonstration they want to do and those are the ones that are-
+that are kind of memorable. Um,
+lots of gateway attacks, you know spoofing, um you know, the
+traditional wireless de-auths,
+et cetera. Um. >>Why don’t you talk about what happened with
+eight dot eight dot eight dot
+eight this year? >>Talk about which one? >>The uh Google DNS.
+>>Google DNS, uh so yeah so, to-
+to what Sparky was saying is, we don’t necessarily you know,
+worry about a lot of the attacks
+that are directed against us, but if someone just happens to
+be doing an attack against
+outside, hitting up Google, hitting up, you know, uh
+Microsoft, hitting up any of
+those, you know, nice companies, they’ll see it as an attack and
+they’ll block, you know they’ll
+blacklist the- the DefCon egress networks. So, its like eh that’s
+the nature of it. Um >>Please
+don’t do that until tomorrow night. >>[laughter] >>So it-
+it’s always fun trying to like,
+you know, reach out to people we know, you know, someone who
+knows someone who knows someone
+can be like, oh yeah they can- they can allow that through. Um,
+because sometimes it is you know
+an exploratory attack, sometimes it’s just, you know we have
+thirty thousand people
+connecting into this network and doing a bunch of stuff and it’s
+become the practice recently
+that uh, the way to test your internet is to ping eight dot
+eight dot eight dot eight,
+right? Yeah after enough of that on the same network, Google’s
+like, why are you sending me all
+this ICMP? So, [laughter] it becomes interesting to test it.
+Uh, yeah, and then you know, I
+know we’ve also had uh, uh, wifi spoofing attacks >>We see WiFi
+spoofing, that’s most, I think
+that’s the most common thing with WiFi, de-auth attacks and
+then people will try to clone
+the Blackhat- or the uh- sorry, DefCon um network or Caesar’s
+network or things like that, so
+we see duplicate SSIDs in the air. Um, it’s- it’s silly, just
+don’t that. Because we can see
+which room you’re in if you’re doing that and if we’re not
+drinking or otherwise occupied,
+we’ll come and find you. Haven’t had to do that much this year,
+thank you. >>And if it’s the
+Caesar’s stuff, Caesars will come and find you and you don’t
+want that. >>No, they come with
+a lot more people. >>Yeah because if we, you know, because
+everybody likes to come out and
+hey let’s clone the hotel networks, you know, put up a
+pie, put up something, cherry
+pie, pecan pie, I don’t care what it is. But uh they get
+something rolling, think they’re
+cute you know- yeah it’s some kind of pie or something,
+whatever. I’m not hungry, shut
+up. >>We’re slowly getting drunker and drunker up here.
+>>[laugher] >>So yeah, so what
+they do is, you know, they do a one letter off and they try to
+get everybody else to try and
+authenticate to it because they don’t put no encryption on it.
+Uh, we’re we’re we’re we’re
+better than that we- >>Uh, from the back row there, basically
+the explanation there was you’re
+an effing retard. If you start trying to pretend you’re Caesars
+and wander around the floor, um,
+there’s a probability that somebody is going to notice, and
+they’re going to send a lot of-
+lot of dudes who you just don’t want to visit you, to come see
+you. >>Don’t- don’t sit like,
+like in one of the big bathroom stalls and do this, because I’ll
+just dump water over the door.
+And you know, it’ll be cold, it won’t be hot water, it’s going
+to be cold, you’re going to
+probably pee yourself two or three times while you’re sitting
+there but >>[laughter] >>So, I’m
+going to regret saying this but yes, please focus your attack
+attention on us, not on Caesars
+>>[laughter] >>Hey you heard it here first folks >>[Applause]
+>>We’re taking a bullet for
+Caesars. >>Yeah, and I’m going to amend that by saying if-
+don’t attack our wireless
+network, go to the wireless village and attack their
+network. >>Aw yeah! >>[Laughter
+and Applause] >>Next question >>Next question, um. No on the
+same token, it’s like again,
+802. 1X we make it as easy as we can for you to use, right.
+Eight- we don’t expect you to
+understand it, 802. 1X, it’s not that complicated but it’s not
+that simple if you’re not a
+wireless networking person. That’s fine. But last year, I
+was at Caesar’s going from my
+room to the NOC, and I’m walking by the buffet, if you were
+there, and some guy is on his
+laptop walking, and I’m like, whoa, you get- you get signal
+here? He’s like, what? Yeah! I’m
+like from the DefCon network, he’s like no. F no, I don’t use
+that network. I’m like, but
+you’re on the internet. He’s like yeah, I’m using the hotel
+WiFi. I’m like, the open one?
+He’s like yeah! I’m like, right on. >>[Laughter] >>Wall of sheep
+right there, wall of sheep.
+>>Let’s go, you have your hands up. Yep >>There you go. >>[Off
+mic, inaudible] >>Yeh how far
+out in advance to we do planning and design for the network >>Uh,
+the call is at what, a week
+after we leave here? First call? >>Yeah >>Alright so um, on
+average we do, mmm I want to
+say, well we should be doing… >>Eight months >>Yeah, about
+eight months our we eventually
+pull or shit together and get on the phone. Um, we actually go to
+an amazing conference, some of
+us, uh, out of Chicago, >>Woo! >>Uh, called ThotCon
+>>{Cheering} >>Oh yeah, maybe
+you recognize Nick, uh, and we go there and a lot of us meet up
+there beforehand and uh, and do
+a little bit of planning. And uh, uh- uh- it’s got an amazing
+VIP section um. >>I- I do the
+planning, you guys are there drinking. >>Oh yeah that’s
+actually- that’s right. >>I’ve
+got another wireless network to run. >>Yeah, yeah, Colin also is
+an oper over there and uh, yeah,
+we- we- most of us just get trashed and- shoutout >>Shoutout
+to Morgan and Videoman for the
+wireless at ThotCon. >>So pretty much tomorrow, all of us- all of
+us, are going to know where
+DefCon 28 is going to be at. That’s when we start planning.
+If it is the same thing, we kind
+of know what we’re doing and what- what worked and what
+didn’t work. If it’s a new
+place, or adding more places, then around December we start
+planning. >>[off mic inaudible]
+>>Excuse me, where are you guys going? >>[Laughter] >>This talk
+is not good enough? >>Uhh >>Awww
+>>You in the front there. >>Dudes come on >>Booo >>We
+don’t suck that bad. >>Shun them
+>>We just answered all their questions. >>Lots of activities
+>>Right here, >>Hey, what’s up?
+>>[inaudible off mic] >>[Applause] >>We got one of the
+guys that do the garbage dumps,
+he’s just in there watching stuff, he can’t touch nothing.
+>>Hotel hoarder right now >>Yeah
+what- what’s covered now, uh I mean, to a degree we have some
+monitoring telling us, you know,
+what is or isn’t going, and- and there is a whole lot of Twitter
+that would tell us what is or is
+not going on so. >>[Laughter] >>My phone is on mute now so I
+don’t know. John, do you have a
+question? >>I did have a question uh I was curious what’s
+the- >>Go up >>Go up >>Go up!
+>>[inaudible] >>Dude you’re like ten feet away, come on.
+>>[indistinct chatter] >>I was
+just curious, what’s the setup like between here and Flamingo,
+and, right? Because there is a
+bunch of vLANs, and maybe it’s all two, maybe it’s all three.
+Like how do people at Flamingo
+talk to servers back here? >>Alright, plant um [laughs] so
+>>Sorry >>oh we’ll skip through
+some of these, where are they, oh yeah, good pictures. Alright
+[laughter] we’ll come back to
+those, you can ask, if you wanna see those other pictures, ask
+questions. There we go. So this
+is what the uh this is what the current uh Planet Hollywood,
+Paris, Bally’s connection looks
+like. Um all of it is the same layer si- layer two segments, we
+have physical connections
+between all of these properties that we can extend all of our
+vLANs too um. >>Sorry, can you
+point to where the Flamingo is on that map? >>So the Flamingo
+is over here [laughter] >>Oh
+>>Uh i- it >>Show me the keyhole! >>Heh, Yeah [laughter]
+>>Where is the keyhole?! >>Where
+is the keyhole?! >>I- It is a a smaller property um and
+unfortunately it is not layer 2
+connected over there so what we do is we basically stand up an
+IPSEC tunnel between the two
+properties, we have divided route domains such that, you
+know, the, the hollywood cord,
+hollywood cord network um has one set of networks and the
+Flamingo has another set of
+networks and we do a lot of uh cross traffic, a lot between
+those, so WIFI reg is sitting in
+this building for instance, um so someone over in Flamingo
+signing up would, you know, come
+up to the firewall, hop across the IPSEC tunnel and then drop
+down into our WIFI reg um. So
+yeah. Other questions? >>[inaudible off mic
+question][laughter] >>Well what
+would you want to know about the other images? >>They look so
+interesting! [speaker laughs]
+>>Ope! We got a guy. Stand up, stand up! >>[inaudible off mic
+question] >>Oh, oh, wow >>Oh!
+Well thank you for asking! >>Could someone? Who would like
+to talk about the floor?
+>>Repeat the question! >>Ah, so the question was, what do uh,
+you know, we never have a
+problem, we talked about the, the infrastructure uh and like
+how many lines go to particular
+places and then once you get to that place you have to plug into
+the wall somewhere so we have a
+bunch of pictures of what it’s like to plug into the wall at
+some of these properties, or the
+floor, so sorry. >>Before we do this um we, we- we’d, like to
+say we actually really like
+Caesar’s and we enjoy their company >>Yeah it’s, it really
+is a stuff builds over time and,
+and these are the way properties become, everyone’s like this,
+right? Phil is that enough of a
+back track? >>Yeah >>[laughs] Alright Nick, I think, you >>So,
+some of us have to go around
+and, and test um drops all over the different properties and I
+took this photo um that’s a
+quesadilla [laughter] down in there and this was in Planet
+Hollywood um in the Celebrity
+Ballrooms and >>But Nick, what would you eat a quesadilla with?
+>>And then I went to the next
+one, and there was a fork [laughter] in the floor pocket
+and we’ve we’ve, over the years
+we’ve found also things like um shoes, um underpants, um random
+pills, and candy from God knows
+when. >>It’s the real DefCon scavenger hunt >>Candy
+[laughter] >>Step one is collect
+underpants >>Alright, other questions? [laughter] Yes ma’am
+[inaudible off mic question]
+Yeah so the question is how do we secure the physical aspect
+of, of all of our networking
+gear >>Duct tape! >>Duct, duct tape [laughter] >>Duct tape
+>>Most of us are viciously,
+viciously a**holeishness >>Bazooka bubblegum >>We try to
+keep it away from you guys
+[laughter] as much as we can, right? The distribution switch
+is core switches it’s everything
+like and within like unreachable places even to us, we have to be
+with Encore or the hotel to be
+there but access points and everything else, it’s a
+crapshoot, right? It depends on
+the property that we were at. Alexis Park was fun uh Riviera
+was much easier because they had
+no wall jacks at all so the picture that we saw around uh
+here. The background picture is
+a wireless controller that provides power over ethernet.
+>>It’s right there >>Yeah,
+>>Well >>Right there for them, um to all the APs that we had.
+So the APs were in the ceiling,
+that’s what he complained about because the APs were too high,
+but hey, nobody’s going to steal
+them, or unplug em and try to do something bad. And other places
+like the Rio that if you were
+there, the, the hallway that it would lead all the way to the
+back there everything like as
+reachable, right? So how can we secure that? Some of them we do
+like port secure, I guess? Some
+of them like we can’t, right? And good or bad we’re still sort
+of humans and we do
+misconfigurations and things like that so it happened before,
+one of the oops! moments is like
+people are like, Oh we hacked you! it’s like, cool, what did
+you do? Oh I plugged and I saw
+all of your access points. It’s like, fair enough, right?
+Because we have a vLAN for all
+of the access points and the port that we told you guys to
+use, instead of going to the
+internet, was seeing all the access points. Sure you could
+DDoS and bring down all of the
+APs but fair fair game I guess. >>Yeah and while you’re sitting
+there unplugging the AP and
+plugging your own s**t in, we’re watching that through the
+monitoring on either Labor MNS
+or um Airwave anyways so we know what’s going on >>Yeah you tell
+em Spencer [laughter] >>Your
+eliteness will only last so long >>Worst balls Spence! >>If, if
+you, if you do want to hack WIFI
+gear my company has >>What was the guy >>Bug bounty program
+>>Trashed so please do that
+[laughter] but not here [laughter] >>Alright so we got
+uh seven minutes left uh
+>>We’re, we’re like good enough >>We have 37 minutes left
+[laughs] >>Um 7, we, we have 7
+>>Thank you to, to DCTV um >>Yeah! [cheers] DC stand up DC!
+[applause] >>Nothing but love
+for DCTV um >>Stand up! >>But there are other departments at
+this conference just us putting
+that out there um and yeah, stand up, give em a round of
+applause over there, there we go
+[applause] >>Woo! >>Yeah yeah yeah yeah yeah yeah that’s
+enough, that’s enough. Um
+[laughs] there are other departments, you know, I’m
+looking at SOC, uh speaker ops,
+there’s like you know, a few other ones, just saying. >>Ouch!
+>>Alright >>Thank you >>Oh. Okay
+so we’ll say one last question, who wants to go out on a good
+one? If you’re holding your hand
+up, yeah! You have a purpose [laughter] >>What are some of
+the containers legends
+[inaudible off mic question continues] >>Alright, what are
+the legends that we pass down
+through the NOC team? >>Cover the ground! [laughter] >>Uncle
+Sparky, can you tell us a story?
+[laughter] >>Uh I’m gonna uh probably pass this on to others
+just because uh at Drunk Hacker
+History uh is where you come to get all of the amazing
+historical stories. >>There you
+go >>No uh some of the, the uh history, some of the past, um
+things have changed dramatically
+um since we started this little party um back in the day we
+used, you know, uh crappy
+d'links and um we used to race the scissor lifts [laughter]
+this is like well before uh
+safety and unions um [laughter] >>I don’t think it was >>uh no
+no it was pretty, pretty, pretty
+well back there um [laughter] we uh uh- plug the switches? What
+switches? >>What? >>No no no no
+>>Oh the switches to give away, oh yeah, I’m like f**k man jes-
+we’re like two thi- two thirds
+of us are trashed and I’m on that part of that [laughter] um
+no uh some of the history um
+some of the things we used to do in the past is um we the
+bathroom idea, there you go. Um
+somebody asked about physical security, well it was locked in
+the s**tter. So um it really uh,
+do you have a picture of that? >>There is a picture >>Yeah. So
+I ju- just before we go there, I
+just wanna say >>Sorry, are we skipping ahead? >>Well no I’m
+just like DC17 uh Wired did uh a
+spread on us and there were a lot of things like even some of
+these switches show up in the,
+in the Wired spread but one of the things that they really
+wanted to point out over at the
+Riviera was an IDF [laughter] >>Yeah, yeah >>Yeah you can see
+>>Um it makes working those long
+hours a little bit more comfortable [laughter] >>Right
+over here ope, sorry >>Um back
+in the day uh all the the tape that would be gaffed down um I
+would just drink a bottle uh
+cause it works really good in a gaff roll so you can just hold
+on to it and roll it out >>Yeah
+that’s why you were drinking the bottle [laughter] >>Yeah well
+that was it, yeah. Um that also
+made for so- a lot of wavy lines so uh it’s nice that we have
+professionals that do this now
+uh as opposed to us. >>K, alright >>You guys laugh about
+that toilet, it’s probably the
+cleanest one on the whole property that [laughter] Sparky
+had access to and you didn't.
+>>Yeah, have you got anything else? >>Nope. Five minutes
+though >>Oh, alright. Well, so
+that’s it, we’re gonna do, we’re gonna give away history here so
+um before we do that I just
+wanna say, thank you for coming to the talk, thank you for being
+a part of DefCon and using the
+network. Um we do this for you and it is it does feel really
+good to see it in use and see
+what's going on even with all the challenges [applause] >>And
+and before you guys leave, some
+of these switches were in Wired magazine so uh, you know,
+they're famous switches >>Yeah,
+centerfold >>These are like, these are centerfold style
+switches >>Centerfold spread. So
+before you storm up to the stage, raise your hand if you
+want a su- switch? >>Wow! >>Yeah
+>>Wow >>Too bad. >>Alright, no no no no >>You shouldn’t have
+asked the question >>Wrong
+question >>Oh wait wait sorry >>One one question from >>Now
+if, if you want a definite
+switch is anybody did anybody travel here from Russia? Anybody
+here from Russia? So we got
+nobody working the elections? Okay. You from Russia? Did you
+do anything with the elections?
+Put your hand down if you did nothing. [laughter] Okay you
+don’t get a switch. Alright,
+your turn. >>Alright, sorry. Raise your hand again if you
+wanna switch and you’re not from
+uh what Phil established here [laughter] alright. Uh keep your
+hand up if you are a student.
+>>Wow >>Oooh >>Alright, you guys are awesome, come on up to the
+stage [applause][cheers]
+>>Alright. That’s it? Cool.

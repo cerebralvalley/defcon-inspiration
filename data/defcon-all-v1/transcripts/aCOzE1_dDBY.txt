@@ -1,0 +1,693 @@
+>> We're going to be talking
+about hacking smart safes today. I've said the words safe hacking
+before and people are always like what are you talking about?
+Are you talking about practicing safe hacking. I'm not sure what
+that means. >> Not related to that whatsoever. >> These are
+physical safes that have smart devices on them. >> So really
+quick as a matter of introduction. I'm Dan Petro.
+This is Oscar Salazar. We're both associates at Bishop fox.
+We do pen testing for a number of things. These are the
+internet of thing, devices included. Without further adieu
+we can get into the meat of the talk. >> This is the CompuSafe
+Galileo. It's a similar brand of smart safe that we happen to
+come across. I wanted to start this off with an apology I
+guess. We tried really, really hard to get one of these things
+here on stage at DEFCON. But the thing is a tank and logistically
+would not have worked out whatsoever. It's 380 pounds.
+It's actually not that big. It's only like maybe 3 feet tall or
+something like that. For 380 pounds for such a small object,
+it's completely immense. You cannot lift it basically. You
+have to like roll it around. And these things don't have ramps if
+you notice, like these stages. It was going to cost like $400
+from the labor union to carry onto the stage and another $400
+to carry it off. Not to mention like shipping costs, it was a
+complete nightmare and we eventually had to give up on it.
+So just really sorry. We wanted to have one here on stage but it
+was not in the cards. That tells you a little bit about what this
+safe is. Just like -- it can legitimately withstand a bomb
+blast. The think is a tank. >> And essentially this thing
+handles money. You put money into the slot reader or the
+money dispenser thing at the top. It's like a reverse ATM
+essentially. You put money in. The money then is no longer
+yours. If you don't own that money it gets deposited into
+your bank account. And so because of that process, the
+safe itself can't be opened by the managers. It has a set of
+authentication and authorization where the manage can have,
+create new users and employees can put money in. This is meant
+to be kind of in retail stores. >> It's not meant to be
+something that you as a consumer can have in your house. It's
+like a cash management solution for a business like retail
+outlets. This is something sitting underneath the cash
+register at stores you probably go to. Like they're out there in
+the wild. This is something that take money from the till like
+after an employee has too much money rather than leaving it in
+the till or having them count it. That way they have lots of
+accounting problems, and you insert the money into the safe
+and it waits there until the carrier service carries it away.
+>> So the carrier service will come and pick up the money at a
+designated amount of time or when the safe reach as certain
+amount of money. And they'll take it away. In order for them
+to take the money out of the safe it requires both the
+manager and the armored carrier service, the car service to both
+sign into the application. >> That's important point to
+mention. Is that because the money for the safe is deposited
+into the store's account once money is inserted into it, then
+it informs two thing. One it informs the security model
+behind the safe. Like as Oscar said, the store manager is not
+allowed to open the top drawer of the safe where the cash is
+because the cash is no longer his money. Once the cash is
+inside that safe, it's already deposited into the bank's
+account and that's the bank's money. Just temporarily sitting
+around inside of that safe. So the way that the security model
+is worked out is it's like a nuclear launch facility. Two
+people have to simultaneously put in their keys and turn them.
+So both the carrier service have to authenticate to the safe,
+they have to type in their code or in practice they have a touch
+memory thing that we'll talk about. And in addition to that
+the store manager also has to put in their code. >> So we did
+this assessment as part of essentially a customer came to
+us, they had a point of sale system they wanted us to review
+and this safe was part of that point of sale system. We worked
+with the vendors to disclose the vulnerability and brinks has
+informs us they are in the process of releasing a patch and
+we actually tested the patch that fire king created that
+fixes one of the specific issues that was used to create this
+attack chain. >> Yeah, let's see, also -- so we have a safe
+that we had purchased off E-bay. With remarkably no questions
+asked. And that was the one that we were trying to bring here in
+person. I guess at another little anecdote to share with
+you about just how crazy and massive the thing is. We got
+this thing shipped. It has to ship via freight and it gets to
+our office over at bishop fox and I'm all super-happy and like
+finally the safe is here. I'm going to get to mess with it.
+And the dude comes around the side and says okay, we have this
+big package for you, go ahead and bring around your forklift.
+And bring it off the truck. I'm like a forklift? I don't have a
+god dam forklift? Why would you expect me to have a forklift? I
+didn't expect to need a forklift. So we had to schedule
+a completely different truck with a pneumatic lift that has
+to come by and it was a complete nightmare. Even getting it like
+10 feet from the truck into our office. So nothing about this
+has been easy basically? >> And so we're kind of disclosing all
+this information for educational purposes and informational
+purposes only. Don't try this at home. This is -- >> Definitely
+don't try this at your neighbor's home. >> You can try
+it in your own home if you own your own safe maybe. All right.
+We're actually going to go ahead and do a demonstration. >> This
+is where we hope we have audio. We don't. Let's see. I'm
+definitely plugged in. Let's see if we can get audio. I hear it
+now. Okay. Let's play this and see if we don't blow everyone's
+ears out. That's a reasonable level? >> Traditional safes like
+just about everything these days have technologically evolved
+into computerized smart safes which are currently being used
+by countless businesses across the country. A safe by
+definition is inherently safe. People trust them with their
+most valuable possessions and businesses trust them with cash.
+Large amounts of cash. You would think that smart safes are even
+more trustworthy and secure than the old fashioned kind, right?
+But how smart are they really? For the most part smart safes
+seem pretty secure. However one particular model has a sees you
+design flaw. The brinks CompuSafe Galileo has a USB port
+on the safe's exterior. This enables a malicious user to
+automate an attack on the safe's computer and quickly opens its
+doors. All someone needs to do is plug a programmed thumb drive
+into that port and viol‡. To learn more visit your website at
+WWW.bishop fox.COM? >> That was an awesome video. That is
+totally on our You Tube channel. Some company named Gravic or
+Gravok, I'm not sure exactly how to say it made that. They do
+like graphic design and info sec. Seriously. That is awesome.
+Cheers to those guys. They made that suite cartoon and
+everything for it. So we -- that goes really quickly through the
+major vulnerabilities that we identified in the safe. We're
+going to talk individually about every single step along that
+like. If you freeze frame that video you can see the exploit
+chain as it were. We'll go through it in more depth here?
+>> So what we want to talk about a little bit is how this is a
+combination of a bunch of different issues this. Is a long
+attack chain that ends with the safe opening. But each
+individual piece by itself doesn't lead to a full
+compromise. This is kind of -- hardware, software,
+configurations, networking, all of those things kind of are
+required in order to form this type of exploit. >> I think that
+is maybe something worth mentioning in terms of the
+internet of things. These are all areas that we as hackers are
+used to, right. These are the issues that we're used to
+dealing with. Now that you have these other devices that are
+coming out with people that are very used to making toasters,
+right and they're not used to making toasters that are secure
+against attacks over the internet. These are all issues
+that are going to come up in other data devices that we
+didn't used to have to care about. So all these sorts of
+issues. It may seem obvious and laughable to us, right, but keep
+in mind that these are sort of issues that are going to be
+coming forward more often. >> These are the types of things
+that we see across all types of internet of things devices.
+Right. The cars that can be hacked. That is something that
+was a space before that never had to worry about security in
+that fashion other than a car alarm and now you have to
+protect against hacks and attacks. >> And obviously big
+whiz bang objects like cars and airplanes get a lot of press.
+And maybe they should, right. But every day objects and things
+planted inside of businesses and homes also get a lot of
+attention as well. So this is a picture of the outside of the
+safe. The front panel has a touch screen. This is on the
+left panel of that touch screen. The way that the service pick up
+authenticate to it. Say if you're going to be picking up
+cash, you have this little contact memory key. Actually I
+have no idea what this was. I had to Google it because I had
+no idea what this connector was. And like it's a magnetic things
+that talks over some cryptographic protocol or
+something like that. And that's how like the drivers
+authenticate to the safe to say, hey, I'm here to pick up cash.
+>> I really wish we were up here talking about how we reverse
+engineered some really cool thing and like we were doing
+stuff with this contact key. But that is not what this talk is
+about. This talk is about the exposed USB port on the side of
+the safe. >> Right next to it. >> Immediately right next to it.
+>> That port is not like -- it's not behind a panel of some kind.
+It's not like hidden underneath something. You don't need to
+open the door to get it to. It's like right on the side of the
+safe. >> So having the ebbing posed USB is a pretty big deal
+in terms of being able to plug into the device, we saw this, we
+immediately plugged in a mouse and saw a curser pop up on the
+screen. Like all right, I like where this is going. >>
+Immediately liked where that was going. >> And we're like, okay,
+we're plugging in a mouse, moving it around, and plugging
+and unplugging that and plugging in a keyboard and typing some
+stuff. And unplug that and plug in the mouse again and it gets
+quite cumbersome. So we make like a quick trip, we got to
+solve this problem. We go to Best Buy and we buy a USB
+dongle, like a hub. That allows us to connect multiple devices.
+Problem solved. Great news. So we plugged that in and start
+working our way through. Shortly afterwards we removed the four
+Phillip's head screws from the side of the display. >> What
+you're seeing here is the front panel, the entire touch screen
+unhinges and moves forward. There is four Phillip's head
+screws not like security screws, not like epoxyed in. Just
+regular Phillip's head screwed. Unhinged the whole thing, you
+can get access to some computer innards there as well. >> This
+is like a picture from the top down. They also had the same
+epiphany as we did. They bought a USB hub and Velcrod it into
+the inside of the safe as well. >> It's literally Velcrod in.
+This is like a microcosm of what happened with the safe. I have
+this mental picture in my head of the safe being designed and
+manufactured and come the time that somebody is putting it all
+together they're like, oh shit, we needed two USB ports in the
+front and we only ran one in. They're like, oh, shit. Um, run
+out to best buy, Velcro in a USB hub and just call it a day. So
+this is really important because the touch screen itself is just
+a USB hit device. Like a -- that's what it is. The fact that
+like you can unhinge this and get direct access to that USB is
+really important. That's like built into the design of the
+safe. It's not like you can just easily remove that. There has to
+be a USB port leading out to the front of this panel and if you
+can just unhinge the front panel and get access to that USB it's
+like, good hardware access right there. That one is not showing
+up. Even more slightly less exposed USB port. On the back of
+the safe, like in the complete rear of it, the lower left hand
+corner there is a hole with an ethernet Jack coming out, serial
+port and another USB port. This one is like -- this is the third
+USB port basically coming out of the side of the safe, this one
+is less important because like it's in the back and these
+things are not meant to be easily accessed. They're bolted
+to the ground so it's not like you can pull it out to move it.
+It's probably in some sort of an enclosure. >> And if you're
+getting to the point where you're kind of pulling the whole
+safe out to connect to the USB, it's going to be pretty obvious
+you're going to have to do that in a sneaky fashion. >> These
+USB drives had full drivers enabled. It had the ability to
+plug in a keyboard and a mouse and it immediately recognized
+it. We had, we were able to plug in a thumb drive as well to get
+access to the storage. >> USB mass storage, USB hid. Basically
+full drivers enabled. Nothing restricted in any way. There
+wasn't a USB device white listing or like nothing like
+that basically. You just plug it in and it works. >> One of the
+big things is you can boot up both off the USB. At the bottom
+of the touch panel there is a button that allows you to reboot
+the device. >> A big red button. Right like underneath. If you're
+looking at the touch screen it's right underneath it and as soon
+as you get the big windows XP, would you like to log out,
+reboot, or turn off comes up. >> Before we pressed it, we're like
+is it going to eject the money? What is this? What does the red
+button do. It's unlabeled and there is a big red button. It
+was beautiful. So from there you can reboot the machine. You
+don't need to get access or authenticate. You can touch the
+button and reboot the machine right from there. And then
+plugging in a USB hard drive you boot from USB and do whatever
+you want to the safe from there basically. That's actually a
+really important attack combined with this. >> So the whole
+database or the whole safe essentially works off this one
+database, it's a MS access database 4.0 which is a little
+old. >> I hear rumblings in the crowd, oh. >> It's password
+protected but not encrypted. If you try to access it using MS
+access, then you'll get prompted with a password. It's like an
+opt-in password policy. If you open it on mac or Linux it
+doesn't prompt you at all. >> That is access' fault basically.
+That's like how the old versioned worked. They just
+decided to stick a password in plain text and cross their
+fingers and hope no one reads it. >> The very, very early
+versions had a plain text password and header and they
+started encoding it more and more and more. 4.0 is encoded
+but completely reversible as well so you can get the plain
+text password. >> You cannot use windows and it opens up the file
+just fine. >> This also handles, this database handles all the
+authentication and authorization. It's where all of
+your user information is stored. Has credentials in there. It
+stores all the logs about access to the safe. When you go in and
+put money in and make a deposit and when the armored car people
+come and pull the money out, all of that is logged into this
+database. Gaining access to this database is basically the keys
+to the castle. Once you have that database, you can modify
+this database. You're able to essentially open the door? >>
+You can imagine a world where like a safe were designed with a
+CryptoChip on the inside of it. A piece of hardware that can't
+be modified where it would do some sort of cryptographic
+challenge response like protocol. That way if the
+computer were to be hijacked it would like, you couldn't man in
+the middle that connection and plan retacks or whatever. That
+is not how this works. That is not how this works at all. The
+safe is essentially a COM port attached to the XP box that is
+beneath this thing and just sends the unlock command and it
+just unlocks. >> The compromise of the OS itself. >> If you
+compromise the OS, you compromise the whole thing. So
+we have a second demonstration here. >> This is just a break
+out. I'm used to the slides. Sorry. I'm getting ahead of
+myself. Go ahead. >> When we first plugged in the keyboard
+and mouse we're in this kiosk mode for this safe. We're trying
+to break out the kiosk mode. We try the regular things, we try
+control/shift/escape. We try alt/tab. Alt/F4. The windows
+key, a couple combinations and nothing seems to work. So we
+start feeling frustrated and decide that the hulk smash
+technique will work and just start pounding on the keyboard.
+>> Highly manual keyboard fuzzing. Technical firm. >> And
+it actually works. So something pops up and just to break out of
+the sand box we're like this is awesome. The kiosk mode on the
+application reasserts itself every once in a while. So like
+pushing in front -- >> It's like 60 seconds where it forces
+itself back to the foreground. >> So we're half way into
+breaking out of this sand box, we have explorer running and
+everything falls behind the kiosk mode again. Oh. So we try
+smashing on the keyboard again. Probably look like a bunch of
+idiots sitting in front of this thing. >> This is how we hack.
+>> Just like the movies. And unfortunately we can't get it to
+reproduce. So we have to find a more reliable exploit. And so
+this is what we ended up coming up with. So the way this safe
+works is ... There's a tutorial system on the safe. If you want
+to add a user or learn about how to deposit money into the safe.
+There is a tutorial button. So you click on this tutorial
+button. It brings you to a bunch of videos that will allow you to
+learn how to properly operate the safe. However they're all
+flash videos. So right clicking on the flash object there allows
+you to pull up flash settings. You go to about configuration?
+>> Something worth mentioning on the flash videos, one of the
+awesome things, they have help to help you do basically
+anything with the safe including like how to login as a manager.
+And in the how to login as a manager video that is on the
+safe, it says half way through it, don't forget, if you forget
+your password the password is 12345. I'm like ... Our safes
+still have that enabled on it. Though importantly this is just
+a store manager who doesn't have access to the safe door, so even
+though that's there, it doesn't really get us anything. >> So
+once we were able to go to the internet explorer, the about con
+fig for Adobe it pops up internet explorer. >> So it
+tries to go to Adobe.com in internet explorer 4 or 6. >> And
+from there you're able to kind of go through the motions right.
+Internet explorer to explorer and explorer to CMD and you're
+running as the administrator. >> Once you get up to internet
+explorer you can break into the operating system and it's pretty
+much game over from there. It is running windows XP, like an
+embedded version of XP so at least hypothetically it's
+getting remote back ports. But like still probably not great.
+Though it should be worth mentioning that windows 10 would
+not have saved the safe. There are a lot of other issues. The
+fact that it was XP tended not to be terribly important to the
+exploit chain. But there could have been a lot of other
+permissions maybe. Maybe the application could have been
+running as a lower privileged user, that way you couldn't
+break out and run other commands. So that was helpful.
+The fact that we could modify arbitrary things in the
+operating system? >> So opening the internet explorer is what
+fire king did as the patch to break the exploit chain to
+prevent this from going through the process of escaping the
+kiosk mode. So once you have access to the command line
+you're able to do things like add users to the database. Since
+we have the credentials for the MS access database that are
+stored in the headers. We're able to add on service accounts.
+And service accounts don't have the same requirements as a
+manager. If you're a service technician and you come, you
+have to work on the safe. You're the only person that needs to be
+logging in? >> There aren't any service accounts already enabled
+on the safe by default. So we just have to add ourselves like
+two new service accounts into the safe and call them hack one
+and hack two. Curiously you still need two service accounts
+presumably because they don't want just one service person to
+be able to open up the safe. You need two people simultaneously
+go, fine, we'll just add two accounts and login with both
+accounts. >> Which is strange. In the video you'll see that.
+You have to login with two different accounts. >> If you're
+going to work on one of these safes, you have to add your on
+account anyways. So there is no reason why you couldn't add two
+I guess. We're going to play through the video of the actual
+exploit now. We'll kind of pause it every once in a while and
+describe what is going on. >> We need audio on the computer
+again. It works, suite. >> This is the safe. Essentially we
+created a script abnormal a TINSI. I don't know if you're
+familiar with it. >> Speaking of printed materials we said USB
+rubber ducky. Turns out that the ducky doesn't do mouse
+movements. It's only keyboard. So we had to (inaudible) from
+that. The printed materials are out of date and we couldn't fix
+them in time. It's no big deal. Basically we had to switch to a
+TINSI which is our ADWINO board instead. That does mouse and
+keyboard. >> And so basically the way this works is we wrote
+up a script that's a macro, a blind macro essentially. The
+code is move to these coordinates, click, move to
+these coordinates, right click, type in this stuff and
+essentially created a macro that had no feed back from the
+system. And when we're recording this video we ran the recording
+software on the safe itself and it slowed everything down so
+much that we had to rewrite the whole script because all the
+timings were off at that point. So yes, this is essentially the
+way the breakout works. Went into the tutorial section,
+opened up the flash. >> Right click on that guy. Internet
+explorer comes up. It's running real slow because it's trying to
+run video through software like from the safe as well. >> So
+then we opened up a new page and make it system 32 directory. And
+from here, you know, open up [indiscernible] >> This is
+awesome by the way. The TINSI doesn't have capability to store
+files on it. If we have to run something we have to open up
+note pad and type out a script in VB. That is what it's doing
+now. >> The script basically creates the new users on the
+database, it closes up all the applications that were running
+that we used to break out of the kiosk mode and finally deletes
+itself off the file system. Right after that's completed the
+TINSI finishes the open, types in the passwords for the
+accounts that we put in. >> The primary thing that all this is
+doing is having the VD script that interfaces with the MS
+access database and adds two new service accounts into the back
+end of this. And all this is without us touching the safe.
+It's plug in the TINSI, walk away. And 60 seconds later. >>
+All the drivers for interfacing with MS access from VD is like
+totally already enabled on the safe. So this is the door
+opening. Those are the canisters that hold the money. >> So that
+was the main exploit chain that we used. There are other things
+that we had while looking through the system. So passwords
+were stored. Patched in the database with another column
+immediately beside it with a plain text credentials. >> That
+was a really. I just have this mental picture in my head of the
+developers writing the safe software and they have plain
+text passwords in the database and the manager comes by and
+says, like you can't do that, that's insecure. And so they're
+like all right, hit new column, add half passwords and calls it
+a day. Fixed that problem. Patched password is done. The
+ones that are not terrible relevant to our exploit chain to
+get access to it because all the credentials that are in there
+that you would steal are like the store manager accounts and
+like cashier accounts that don't have access to where the cash
+is. >> The armored car guys do not have credentials stored in
+these diabetics. They use their authentication keys. >>
+Magnetic. >> So you would only have access to manager accounts
+and that wouldn't open the safe. So also kind of turns out you
+don't need a mouse, you can perform all this because it's a
+touch screen after all. But right click is a click and hold
+which I think is the feature of the touch display and not so
+much a feature of the software itself? >> If you really wanted
+to you can do the whole thing from the touch screen. Just go
+to the flash and hold and press and pull up on an screen
+keyboard. It would be horrible. We didn't ever bother to go
+through that chain because it would take like a day or
+something. I can imagine trying to automate that by putting some
+device on top of the safe and press the buttons for it. It
+would be horrible. >> It would be horrible. >> The USB port is
+there to help streamline the entire exploit. >> So I think
+Dan touched on this earlier. The way that the safe operates is
+there is essentially a COM port that sends the open door command
+to the solenoids or whatever connects to the safe doors. So
+if you were to kind of use that instead, you could just have
+easily hooked into the DLL and issued the open door command. >>
+There is literally a DLL with an open door as a function. We
+didn't even bother with it, didn't need to as it turned out.
+The way we exploited it was by adding an account and logging in
+ask using the application. But of course one could simply send
+direct COM port traffic. That, like, implement your own comport
+driver. That is cleaner perhaps as an exploit but it sounded
+hard and we didn't feel like doing a hard thing. >> I guess
+we kind of touched on this earlier as well. The internet of
+things is this happening. They're smart devices or devices
+that typically haven't been connected to the internet that
+are in this rush to become smart get connected to the network,
+get connected to your home, give you feedback. The idea is I
+think we have to make this work as soon as possible, everyone is
+doing this. We got to get this out before anybody else does? >>
+To be perfectly fair that is the state of most large software
+developing houses. Right. They're just barely struggling
+to get things to work let alone getting them to work well and
+let alone getting them to fail well. As like this moves forward
+to every day household or business devices this is only
+something we're going to see even more of. >> And a lot of it
+is hardware companies moving into the space of software. They
+typically have been working on these safes that have been
+aren't for centuries around cars or a lightbulb or a toaster or
+whatever that never had to have a development team and security
+team. So as that starts to happen more and more, I think
+that we'll be seeing a lot ... >> I think it's easy to be
+flippant about it and think, come on, do we really need a
+smart safe. Like the old mechanical ones were doing just
+fine. That is kind of being a prude about it, right. This is
+going to happen. This is the future whether you like it or
+not. Right. So we as secure people can either help or not.
+These smart devices were in a way like the promise that we as
+technology people made to the rest of the world and we said
+all this technology was going to transform like households and
+devices in the world. This is partly what that means, right.
+So let's not try to shut that down. Instead try to help these
+devices out as we go forward into that world? >> I think
+that's everything. >> That is about it. Thanks
+...(applause)... >> I am told that we have a microphone that
+we're going to do for questions. I don't know where that is. I
+expect to see a goon frantically running around with a microphone
+any minute now. Until that maybe I could just like repeat the
+question. I saw a question here and I can repeat the question to
+the crowd. >> Autorun. There's a difference between autorun and
+autoplay as it turns out. The question is about USB autorun.
+If you plug in like a USB device it will come up with a prompt
+that is autoplay. What would you like to do with this device. It
+doesn't do autorun which is run the first executable you see on
+this CD. That would be really easy. That was the first thing
+we tried. But no, that did not work unfortunately. The pop up
+when it says what executable would you like to run on here,
+that comes up behind the application. So you still need a
+way to exit out of the full screen application or for that
+to happen. Looks like we have a microphone. It's in the front
+here if you want to ask a question. >> Hello my name is
+Fred Smith and I was wondering if you had a written, if
+everything you talked about in a written format or online that I
+could access? Like this entire presentation, is it written down
+somewhere that I could access? >> Oh the content of the
+presentation? >> Yes. >> I think they've been writing it over
+there. I'm sure it will be available on the DEFCON website.
+>> I hope so. >> You mentioned the USB port on the back that
+you said was hard to access because of the physical access.
+Did you ever try your ITC board on that port to see if it would
+work? >> Yes that one works as well. The rear USB port seems to
+be powered a bit more. Like if I have a regular USB device lice a
+concert keyboard, that works fine on the front port. If you
+try giving it like an entire USB hard drive that sucks out more
+power, the front port just doesn't work. I think the back
+one has more power. They're otherwise completely hooked up.
+>> Can you connect to the network ports to see what those
+do? >> No. We never hooked it up to the network. At least the one
+that we have sitting around the office. >> We saw a talk
+yesterday where they used a twin duct, a rubber duck in twin duck
+mode so you could amass storage and keyboard stuff. So basically
+like you stick it in the laptop and set up a new wireless access
+profile and all this crazy stuff on the machine. To basically
+pull in the machine. Do you think that would have worked as
+well for this. [indiscernible] clone. >> Yes. So once you
+bypass the kiosk you're running as administrator. You can easily
+think of a scenario where instead of having it immediately
+open the safe, you up load a piece of software that will open
+a door later or run any configuration files that you
+want. >> For our purposes we just wanted to demonstrate
+opening the door, so that was the first thing that we did. >>
+Thanks. >> First of all thanks for an excellent presentation,
+it looked like it was a lot of fun to tinker with. Did you, you
+mentioned brink's safe. You mentioned another company along
+the way, fire something that worked around and closed -- used
+the exploit chain if you will by breaking internet explorer. You
+demonstrated or alluded to there are several other avenues by
+which you could compromise this ridiculously poorly designed
+safe. Did they attempt to address the rest of the obvious
+low-hanging fruit there. Are we going to see you next year doing
+this talk again about how you loaded the DLL and called ... >>
+You're definitely not going to see us next year. At least not
+for this. Maybe something else. >> Next week? >> No, we -- we
+worked with the vendors involved to try to get a fix for that
+exact exploit chain. >> Ask they've been informed of the
+other things and they're working on it. >> It's on their to-do
+list somewhere. Eventually. >> Fun. >> Hi, you had mentioned
+the possibility of like replan attacks over the COM port to the
+safe. Do you look at that protocol and say is it the same
+commands for all of the safes? Is there an actual key for each
+one? Or a key for one do you break all of them? >> There is
+-- we didn't -- we tried looking at the COM port traffic a bit
+and I was crossing my fingers and hoping there would be a 4
+byte message that said unlock, but it was not that easy. It was
+back-and-forth protocol and it was hard. You have to look into
+it basically. >> The COM port communication ends up being a
+ping and like response. And like -- it's on a timer and there are
+variables as well. It's something that presumably could
+be done but we didn't really look into it. >> Presumably
+there is not a key involved there or if there is, they're
+the same. I don't really know. >> Thanks. >> I wasn't sure if I
+heard it correctly. It sounded like in the beginning you
+mentioned this thing having full-time network connectivity
+and normal operation like cell data or anything like that or
+just hardware? >> It's just hard wired. It's meant to talk back
+to the bank, right, so it knows how much money you have at any
+given time. As you deposit money into it the money is deposited
+into your bank account. Because of that it's always connected.
+>> Was there any evidence of support for other network
+methods like cell modems, that sort of thing? >> No. Cell
+phone. It's all wired. Like a phone Jack for old dial up as
+well if you had that in your store. But I didn't see any
+evidence of any cell phone or other ... >> A lot of point of
+sale systems still run off phone Jack basically. So they have
+that option. But primarily it's ethernet. >> Did you get the
+impression that if the network connection was in place, it
+would have reported your actions as you were functioning? >> Logs
+and such are sent out over the network. They could
+hypothetically. If you have complete control over the
+operating system, you could modify that to not report you're
+open open the safe, or not report opening the door. >>
+You're running it as administrator, once you break
+out of the kiosk mode that wouldn't be logged. And you
+should shut down the network while you worked on whatever you
+wanted to and then plug it back in afterwards if you wanted to.
+>> Thanks. >> Hi, did the vendor, seems like the USB
+facilitated everything. Did the vendor say there was a business
+need for the USB port on the front? >> There is definitely
+something to be said about usability versus security in
+that respect. Because it's useful, right. Especially if
+you're a service technician being able to have a mouse and
+keyboard present there. And so there's also something that came
+up a bunch is what happens with the hard drive crashing. Or like
+what happens if the computer melts down and you're locked out
+of your safe. Having like an external device that you can
+reboot into the bios is handy. You can then recover from that
+situation. So you kind of have a trade off between security and
+usability there. Do you want to have a safe that fails open in
+this sense, like if the hard drive fails you can still open
+it anyway, or do you want a safe that fails closed. And that's
+kind of the business decision to be made. >> Thank you. >> Since
+the -- gives provisional credit to the financial institution,
+can you see customer information, like account
+numbers? >> I didn't hear that. >> When they put the money in
+the safe the provisional credit transmits. >> Right. >> To the
+bank. Could you see account numbers? >> Account numbers? I
+don't remember. >> The customer account number. >> We didn't
+look too much into the actual mechanism of how it like
+specifically sends your money. Like they very well could be
+some web server that says deposit this money into this
+account and if you change the account bad things ... No idea.
+That is pure speculation basically. I would assume that
+it would have something baked into there. Like we would know
+what account you are. It has to know what account you are? >>
+What was the fix offered by the vendor? >> So they essentially
+broke the attack chain by preventing internet explorer
+from opening. So it's a blacklisted explorer. You go to
+flash and right click and go about configuration wouldn't
+pull up that portion and wouldn't have an escape out that
+way. >> But would you still be able to do something with the
+USB drive in that case or does that completely block it. >>
+Yes. The same attacks where you plug in a USB and boot from it
+and do that kind of attack would still be possible. But you have
+to figure out how to reverse engineer the software first. >>
+You could just reboot it with the red button, right? >> Yes.
+You can reboot the device. Yes. >> You do need physical access,
+right. >> Yes. That's true you need physical access to do the
+entire hack but at the same time you need physical access to
+actually carry away the cash. So like that's kind of required
+anyway. >> I'm just saying if you can plug in the you saidyou
+can also click that red button, right. >> Correct. There are
+other fixes that would be able to help against a boot from USB
+attack. Trying to put a password on a bios to lock down the bios.
+Maybe encrypting the file system. A whole number of
+things, right. >> That again plays into the usability of the
+safe. Right. If everybody has to boot into bios and plug in a
+keyboard and type in a password and all that stuff, then that
+might be a reasonable solution. >> Since they're embedded
+devices it's not necessarily easy to update the software as
+well. >> Thank you. >> Especially at the bios level. >>
+I see -- any other questions? >> So if you have like the USB
+drive that can act as keyboard or a mouse or whatever, why do
+you actually need to open internet explorer, why can't you
+send commands as a keyboard and do it in the background without
+any visible. >> There are some things on lock down. If you try
+to hit alt/tab like it doesn't work. That is in the window's
+registry as a keyboard. So going to internet explorer is a way of
+escaping out of the kiosk sand box of the application. Their
+application is just a regular windows program running in
+full-screen mode. So there is no way to run arbitrary commands
+just because there is no button to press to get there. The first
+step in being able to run arbitrary commands is escaping
+out of the sand box, pulling up internet explorer which then
+runs regular explorer which runs a command prompt? >> If you try
+to type commands, the application itself would
+register all the typing so you can't run it in the background.
+You can use the keyboard to like type many the user name and
+password if you were to plug in the keyboard, that's how you
+login as well. >> I assume you can do the run commands to
+execute? >> Yes. You can't use the windows button, the windows
+button is disabled as well. So you can't just hit the run
+command. Yes. >> Do you guys have any plans on researching
+how the one you guys deposited at the bank and what kind of
+issues can happen with the -- >> I'm sorry can you repeat the
+question. >> Do you have plans on researching how the money or
+the cash gets deposited to the actual bank through the network?
+I don't know if we're going to be doing too much additional
+research on that. I think we'll probably be moving onto
+something else pretty soon. But we're still working with the
+vendors to address the rest of the issues. >> Because with
+stealing the cash, there is only this much cash you can steal.
+But if you can replay and keep adding money to the account. >>
+Right. Are you saying if you were, were to essentially false
+fie how much money was in the account? >> Right. >> Since you
+have access add the administrator, you're able to
+essentially get access to the operating system, the security
+of the safe itself is at that point compromised. The security
+is based on keeping you in the kiosk mode and so, yes. >>
+Right. >> So if the hard drive isn't encrypted and you can boot
+from USB, couldn't you just move to a wired registry and break
+out of the same box? >> Yes, you can boot from Linux, like that
+is something that is pretty straightforward. We thought
+really hard about making a mine craft server that would run on
+the safe or something like that. But the specks on it aren't good
+enough. Certainly not a client. Maybe a server. You can run
+arbitrary software, like boot from other device and run a
+non-windows operating system. Even if the hard drive were
+encrypted, clobber the hard drive with an entirely new
+image. That's why things like this encryption you want
+something like bios level password, on the bios. At that
+point usually bios passwords are chuckled at because you remove
+the Cmoss battery or something like that. In this situation the
+computer is inside the safe, so you can't just do that. It would
+be a reasonable defense. >> Cool. Thanks. >> Considering the
+whole complicated solution, the safe, the manufacturer just
+locking, wasn't it simple just to place all the innards just be
+hind lock and key and that's it. Why not [indiscernible] just
+lock it in. >> Again it boils down to usability it seems like.
+Having access to an exposed USB port makes it easier for a
+technician to come in and do their work. But they could have
+just as easily had the technician remove the front
+panel and plug it into the back USB or do something else. >> Or
+give them just a key to which -- [indiscernible] that's it. >>
+Yes. >> Thank you. >> Real quick I'm hoping you sort of thought
+this out in the fantasy world, what would be your fantasy of
+real-world heist involving this capability and what if anything
+can you extrapolate. >> We want to emphasize we're not trying to
+like enable theft. We're providing the information for
+pen testers. If you were a pen tester and you have one of these
+safes I think it's abundantly clear how to reproduce our
+findings to be able to do this on your own but like, going
+through some actual, that scenario isn't something we want
+to encourage. Okay. We're out of time. Thanks a lot.

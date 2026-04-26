@@ -1,0 +1,762 @@
+>>>: Good morning party track
+how are we doing? How many
+people here came to learn about home alarm systems? Alright.
+You're not going to learn about
+home alarm systems. The spearker had a small problem with his
+employer to that talk is not
+going to happen I can guess and I'll summarize is even though I
+have not read the talk. Your home alarm system
+is kind of fucked. >>>: Oh, alright! Yeah.  >>>: So with that out of the way
+let's fit in a bonus talk ok?
+This is my good friend Zack, we go back a long way. He's going
+to give you the most
+entertaining talk about logs that you're all day. So let's
+give him a big Party Track
+welcome! (Clapping)  >>>: This is the most exciting
+one because there's no other
+one.  >>>: Okay, before we get started
+this is Logan. And we'll say hi
+to Logan. He was supposed to speak in this slot about home
+alarm systems. But last week
+this article came out and it sounds that we had to cancel.
+More recently NPR got an article
+with him, I pinged him a few times, we wanted to see if he
+wanted to share some
+information, but he didn't respond. So I wanted to post
+this NPR article quick because
+this summarizes pretty much what happened. He was supposed to be
+on stage but because of the
+pressure put on him he can't. So I'm going to leave those names
+up there for a second ... and
+we're moving on ... so in honor of Logan because he couldn't
+make it I decided to start this
+with a ridiculously good‑looking researcher so he can impress us
+with his smile. And this is your
+top gear top tip so if you're going to do this the top tip
+number one is follow responsible
+disclosure if you're feeling nice. And tip number two don't
+name the vendor in a press
+release unless your goal is to get your talk pulled and if
+you're going to give the talk
+and you're worried about legal action and go ahead and up the
+skate and make sure that you
+sell the job and if you're going to do what Logan did for the
+future maybe you're considering
+his talk or doing his talk, but instead you get me, logging by
+Zack. Yeah!  >>>: This is Party Track, isn't
+it? Okay, good. Okay, so I would
+like to talk start off with what this talk is and what this talk
+is not. So you don't have to
+spend the next 45 minutes listening to me ramble. This is
+going to be a defense focused
+talk. Okay, so if you're looking for some sexy Ode you're not
+going to find it here. We're
+going to be talking about collecting, storing, monitoring,
+parsing – having fun with logs.
+And make it fun and the reason is because it's a reoccurring
+problem we keep having it over
+and over and over. We're not getting good logging systems put
+together, we're not getting good
+logging data in most situations. Sure you may be the 1% here who
+is like "Yea I've got this shit
+covered." This talk is not for you. And if you know what "ELK"
+stands for and you're an "ELK"
+rock star then you may want to go get a few minutes elsewhere.
+Okay, this is going to be about
+a 200, 300 level talk on logging and big logging environments.
+This is not about hacking your
+alarm systems and the wireless problems with it. This is not an
+offensive security talk. And I'm
+not going to be addressing the challenges of dealing with over
+200 gigs of log data a day.
+And ‑‑ and that's going to be a whole different barrel of
+monkeys to deal with. So who am
+I? ‑‑ I'm Zack. I'm a managing partner over in Chicago. I do
+things and stuff and everybody
+has their big line of credentials. This is mine.
+Moving on. Okay, so offensives
+talks can get up here and rant about their cool awesomeness for
+a full hour about how awesome
+things are ‑‑ but really we're not going to use a lot of that
+stuff. Yea it's cool to hear
+about the insecurities and this and thatand when we come back to
+our day job we have to deal with
+protecting stuff so the vast majority of us need more
+defensive talks. So let's start
+with logging... and I'm going to say it with an Irish or Boston
+accent. Okay, so we're still
+having a logging problem, we're still relying on log data and
+log formats that are archaic ...
+and we've seen that the technical community has this
+figured out but not from a
+security perspective. There focus is on, you know we want to
+know if there's errors, what
+their habits are. But InfoSec hasn't really figured it out ...
+and I don't know if it's because
+we're lazy or haven't taken the time to look at it, but I
+figured let's dive into this a
+little more. We're not going to talk about generating logs,
+because that's easy. A
+configuration file and we could call it a day. And I'm not going
+to fill 45 minutes explaining a
+config file, it will put you all to sleep, even if there was
+music here at Party Track. We're
+going to talk about the collecting log and storing and
+processing and most importantly
+the actual monitoring and security events for logs. Why do
+we need logs? Because, Oh, I'm
+just storing them. It goes beyond security. We need it just
+from a management perspective to
+convince our bosses that we're doing what we're supposed to be
+doing and we're doing it right.
+A lot of the time we have to deal with the compliance stuff
+... okay, full disclosure I'm a
+QSA now ‑‑ and I can't say anything about it ... so. So
+logs are very short. Compliances
+is going to be a driving force for stuff a lot of times. And we
+can use that from a security
+point of view of hey I've got to meet this ICO, PCI, HIPAA,
+whatever it may be. Whatever you
+have to deal with—we can use that to say, hey I need a little
+money and time to do the cool
+security stuff that I want to do ... we need it from the security
+monitoring perspective duh,
+incident responses duh and from a technical operations side, Dev
+Ops has this figured out.
+They've got this figured out from the operational side. But
+they don't really share that
+information. Or we don't have a dev ops thing .... And let's be
+honest about our current state
+of logs. Most stuff just kind of sits there or gets deleted and
+we have our logs rotate stuff
+for 90 days because we have to for compliance reasons and it's
+getting deleted or we have to
+send it to some product that's a pretty little box or pretty
+little BM or pretty little
+software and we're storing it and when we have somebody come
+in to troubleshoot it or having
+an auditor or assessor come in and showing it to them. But
+let's be honest with ourselves
+and confess right now. We're not really watching them as much as
+we should. We don't actually
+watch them. And I think that a lot of it comes from the usual
+approach of watching a log. But
+so the traditional approach of using a syslog server and regexs
+and grep and sending alerts and
+if it hits a certain thing it doesn't really scale well. We
+can take and setup for multiple
+systems ... it really defeats the purpose and being able to
+search leverage those and again
+like I said we can love our vendor products. We have a lot
+of vendors. But a lot of them
+have great products out there. But they're expensive as shit.
+And the whole model to do it
+as a volume based licensing. If you want to log more it's going
+to cost you more. But I'm hosing
+my own data, it's going to cost you more. It makes sense from a
+business standpoint and it makes
+sense from an up scale standpoint but it can get very
+expensive quickly. I was talking
+to a friend the other day. They had a two million dollar IT
+budget for all of their
+operating expenses. And they had a large vendor and they wanted
+400 thousand dollars to do the
+logging for their environment. That's almost 25 percent of
+their years budget just to do
+their logs. And we can use our moneys more wisely and I'm not
+saying that vendors are a bad
+thing. If you work for a vendors and a lot of you probably do,
+I'm not saying oh don't go buy
+the big guys data. It's great a lot of times. If you have the
+financial resources they are
+definitely great. And the offer of not having to have the
+typical talent to manage them‑‑
+you can hire the guy who just graduated from college and say,
+here have fun with this product.
+And they'll figure it out. But we can be a little smarter since
+we're people who like to tinker
+with things, break things and do things right. Okay, I've been on
+this journey to find open source
+solutions. And to actually share the open source solutions and
+how to configure them. So I
+looked for scalable logging solutions that open sourced so
+we can tinker with it and don't
+have to pay a license to distribute. It's reliable,
+scalable and secure. And
+reliable and scalable is really important when it comes to your
+log and meets the compliance
+requirements that you have to follow. Here are our top 3
+winners, we've got LogStash,
+Elastic Search, Kibana, which I'll be talking about today, aka
+ELK. Also as runner up we have
+FluentD which leverages Elastic Search, they're a great
+solution, I don't want to call
+it a product because they don't really sell it. And there's
+Graylog2 as well. Okay, as you
+can tell Log Stash and Graylog are JAVA based, I know, boo,
+hiss, JAVA memory consumption
+but they work and then FluentD is based so groovy. So we'll be
+focusing on Log Stash, kind of
+going through what is this Log Stash, Elastic Search, Kibana
+stuff and how do we get events
+and process them and search them and most importantly impress
+that boss. Okay, that's the end
+of my talk and you should just go use it and we're done. This
+is my water break.  >>>: Okay, so the biggest pains
+for logging a lot of us face is
+we're getting a lot of log data data from a lot of different
+sources that come in all these
+different formats and all these different time stamp formats and
+sometimes they're this and
+sometimes they're that. And we have to parse them, make sure we
+have the accurate time for them.
+So Log Stash processor tries to do that. So this is a look into
+how Log Stash processes its
+data. So from a shipper perspective that's kind of your
+agents that are actually
+entering those logs and sending them to a central source. You
+have a broker that queues
+everything up so it can process everything as fast as possible
+and distribute that job across.
+You have an indexer that looks at it as the analysis of, what
+is this log, how do I parse it,
+how do I tag it and where do I ship it and send it off to
+search and storage. And then we
+have the pretty little web interface to actually monitor
+everything, sounds familiar to a
+lot of other products out there. But the cool thing with Elastic
+Search and Log Stash is that you
+can scale it. So instead of just having system, you know you may
+be logging ten gigs of data a
+day and then next week you've got to log a hundred. Obviously
+the whole talk is log all the
+things. I'll start on the ramble of sharing logs later but the
+more data we have the more we
+can do actionable intelligence for it. So to scale it off all
+you have to do is take the
+little individual parts and split them across more systems.
+So you can take a split the
+broker across multiple systems to queue everything up and have
+a little bit more redundancy.
+You can take the Log Stash indexer split it up over
+multiple systems to actually
+process those logs. And then your Elastic Search cluster will
+grow as well from the storing
+and searching. Okay, so we're going to focus on the aspects of
+collecting and shipping logs,
+storing logs, processing, monitoring them and searching
+them, and obviously there's that
+generating log. So first thing is first the biggest reason that
+a lot of us don't generate the
+logs we need to is because we are using some commercial
+product and paying based upon
+how much we generate. That doesn't work well for security
+and event monitoring because you
+start to get into picking and choosing before you get the
+intel. We should build something
+that we can collect all the logs we want and the only costs to us
+is more disc space and more
+processing power which it's not relatively cheap compared to the
+other things. And in order to
+collect the logs, logs actually have these thigns called inputs.
+And we can use the traditional
+Syslog that everybody is familiar with. The archaic
+Syslog of text and we can also
+leverage Lunberjack, which is the thinner version that can do
+the parsing of the data on the
+client. We can also do time queries as inputs, I'll touch on
+that in a second. So going
+through the different systems you typically have to face for
+your Linux, Unix and Mac logs
+obviously you can leverage Syslog agents as is and send
+that data to Log Stash or you
+can also leverage the Log Stash agent which is JAVA based. Now
+obviously you have to do that
+trade off of, do I want to install JAVA or do I just want
+to send it with SysLog? It also
+supports TLS as well, so for those of you that are like, oh
+it will lose stuff, it's not
+encrypted it does support TCP and TLS. The good old windows
+logs that everybody is making
+their money off of because there's no good solution out
+there for windows logging agent.
+You're able to do it with Log Stash agent again installing
+JAVA on systems or there are
+Syslog systems that are available, open source, free and
+community editions of them
+online. So ExLog is a great one that basically takes whatever
+you're sending it, files for
+windows event logs and sends it off to SysLog...same thing for
+the open source edition. Both of
+these agents, Nxlog and Snare have commercial version, so
+before you go they have a paid
+version they also have an open source edition. It just doesn't
+have as much "pretties." Then
+obviously the third option for those of you who are banging
+your heads about the windows
+logs and how you can deploy this across your environment is to
+just use the windows build an
+event collector. Using windows event collector with one windows
+system to kind of collect all
+those logs, use that central event collector system to parse
+the logs and then ship them off
+over Syslog. That way you can easily deploy it with a group
+policy and not to have to worry
+about installing software on all of your production systems. And
+then obviously the device logs,
+your network devices, your storage devices, your
+traditional Syslog works well
+but that's one of the cool things about Log Stash that it
+offers SNMP traps as well. So
+you're able to send SNMP traps to it and it's able to parse
+that and push it into the
+logging complex. You can send raw socket data and then I'll be
+able to parse whatever is coming
+in and then able to make exec calls which I'll touch on in a
+second. But most importantly
+sometimes we focus on the operating system logs and
+application system logs can get
+fed into Syslog complex. But one of the biggest things we miss
+are these application logs. So
+we need to log more than just the default, "hey, I requested
+this page. Moving on."
+Leveraging web app logs and integrating into the web app
+code with your development team
+to generate, "hey I saw a password change, that seems
+weird and we just got a bunch of
+sessions that didn't exist." Send something into the main
+logging complex and it creates a
+single source for you and the rest of the security teams out
+there to kind of monitor
+everything and so having all these different aspects to pull.
+And obviously you can generate
+from those applications in text files depending on the
+application that you're using,
+file an event in SysLog or use Redis to queue up the logs and
+pretty much anything. One of the
+things about Log Stash is the ability to pull from any source
+with your own plug ins. That
+would be a whole other talk for a whole other day so we won't'
+get too far deep into there but
+it's an option. So what about the cloud? So, more and more
+providers are offering cloud
+infrastructure and a lot of more people are moving to the cloud
+infrastructure are offering the
+ability to grab the audit logs without having to do a formal
+request. So a lot of people
+aren't monitoring this. And recently, I'm trying to remember
+the name that had their AWS
+systems completely, poof. Code Spaces, thank you. Code Spaces
+recently had an AWS attach and
+we can argue over how their infrastructure was actually set
+up, they should have had their
+backups in a whole other environment that wasn't AWS but
+we aren't monitoring those logs.
+We are pushing all our logs, not we all but a lot of places are
+pushing these logs and data out
+everywhere and not monitoring it. We're not monitoring who's
+logging in to our google aps
+account. Somebody could be sitting there for months or
+logging in from some other geo
+location that doesn't normally log into and nobody is checking
+AWS to see who has our API key
+that may have accidentally ended up somewhere, something seems
+weird. So some of these services
+have started to offer the ability to actually take and
+grab these logs from AWS, Google
+Apps, Box, Sales Force, but others aren't yet. So these are
+kind of a top gear top tip of
+different options for logging when you start to pull logs from
+these cloud services. AWS has
+Coudtrail. Thank you! The gentleman is keeping me honest!
+Thank you, sir ... AWS has mmmm
+trail. Which basically takes event logs every five minutes
+and pushes we can send the log
+every five minutes and pushes them into an S3 bucket. And Log
+Stash can pull those buckets and
+parse those logs and google apps has their reports API which is
+basically and API you can make
+queries against. Box has their events API and SalesForce has
+their LoginHistory now. Correct
+me if I'm wrong but Office 365 doesn't currently offer any live
+parsing but you can request
+them, but that doesn't help you with monitoring it. Drop Box,
+same thing, you can see it
+through their dashboard but you can't have any kind of API
+access to it. And Gighub I have
+yet to find any kind of logging other than enterprise. And more
+and more people for some reason
+think it's a good idea to push all of your enterprise code into
+Gighub. I love Gighub, don't get
+me wrong. But I think that it's a bad idea to push everything
+out there. So LogSash can pull
+from these from either an Exec or from a built in input. Now
+you're going to be like you're
+talking about all these inputs whatthey? This is a list of the
+current version of Inputs.
+There's a lot that are, we'll call them Alpha and we're touch
+on that later. But there's a lot
+that have been established, tested and well-rouned. So as I
+said, you have Exec. Exec will
+let you write any kind of shell script, and kind of ruby script,
+any kind of command whatsoever,
+take whatever the output is and you can send it into logging
+infrastructure. And you can
+customize exactly how you want to get that log data. If you
+don't have a traditional source
+of data you can start querying other API's and in fact you
+might see also on this list
+there's a Twitter plug-in. You can have it monitor the Twitter
+stream for mentions of
+something, hashtags, whatever and put that into yur logging
+complex. That's pretty cool. And
+like I said it has the S3 input, it's got Exec and it's got a few
+other things in there as well.
+So those are the different inputs. So as I said,
+traditional inputs you can still
+use. The Syslog to collect events and Redis and all those
+other agents. And the idea then
+is do you really trust a somewhat young product and I
+didn't mention that Log Stash is
+now a part of Elastic Search and their whole parent family so
+they have commercial support
+behind them. Do you really trust this new JAVA based application
+with all of your logs all the
+time? So yeah, if you're one of these people that live on the
+wild side like me, you can send
+it straight to Log Stash, like here have fun. But you can also
+take and build a logging complex
+where you're able to send these logs and parse these logs in
+different ways. So my
+recommendation is that if you don't always trust it you can
+always build up an Arc SysLog or
+SysLog or SysLog NG layer. Basically send the logs to the
+log system first then send it to
+LogStash and also send it to UDP and send it to traditional
+filing for storage. So you still
+have have that retention. And you still have that log being
+archived elsewhere but you still
+have all of the cool new pretties that LogStash offers.
+So once LogStash has all these
+events what do you do with them? It's kind of awesome and sucks
+at the same time. It's awesome
+because you can do anything with it ... it sucks because you can
+do anything with it and you have
+to learn how to do anything with it. So LogStash decided to make
+this thing called, this parsing
+engine called GROK. It still supports RegEx the traditional
+statements but GROK is pretty
+awesome as it simplifies not having to know RegEx. They
+prebuilt all of these different
+syntax in here and I'll go through examples in a second,
+this is probably just ten
+percent of them. But if you want a map and an IP address, a log
+status level you're able to do
+that with just saying what the syntax is. So you can just say
+"word" or "data." It makes life
+easy. So even those who are not super technical with RegEx are
+able to write a pattern this
+quickly to parse the patching logs. And this is really it. As
+soon as you get an input,
+obviously you need to have the input in there too but this is
+it for the filter. Combine a
+patching log, done this is it, happy days. What about more
+complex data? The stuff that
+doesn't really fit an existing syntax. Let's think of this as
+an example, we have a typical
+PAM notification. This is raw sys log data that I generated
+August 8th. You do the math.
+Basically your typical, hey PAM detected somebody login. Now,
+this may look a little
+complicated but I'm doing two levels of parsing here and this
+is an actual working config and
+I'll be posting more later. This is all you have to do in order
+to parse it. First we parse to
+see, is it a PAgrab all the daM message, so we look for the PAM
+Unix flag, ta, pick which
+module, then what phase it's coming from. Is it
+authentication, is it
+authorization? Then once you tag it you can see in there, there's
+those add tags, add tag for PAM,
+add tag for login so you can do filtering and bondering for it.
+Once you tag it with that you
+can easily say alright let me grab all the other data out of
+it. I want to grab the user, the
+session ID, I want to grab the remote host. And that's it for
+the RegEx and it gets parsed.
+And you're able to take and here's a quick from Elastic
+Search parsing into all the
+different fields and without having to know all of this crazy
+RegEx to figure out we have a
+missing case here. You're able to quickly say, alright grab the
+data and put it into this format
+and its pretty easy to figure out how to start parsing and
+filtering your logs. But that's
+not all the filters it has on the way in. We can tag metrics
+with it. We can track to see,
+alright lets grab everything that has a failed log in and
+assign a metrics to it and know
+how many failed log ins we have for this IP for this user over a
+1 minute, 5 minute, 15 minute, 1
+hour window. We can get you IP information with the filters as
+well. Those pretty graphs that
+your bosses love. I don't know why people love to see that we
+have a bunch of attacks coming
+from this other country. Did they get in? No, but we have a
+bunch of attacks. You're on the
+internet bro. But management for some reason loves that, you can
+give them those pretty little
+graphs. You can do GYP tagging and pull from the GYP databases.
+You can do reverse DNS look ups
+to be able to make your matches easier if you have a dynamic
+environment or just want to
+start logging that data. And then there's URL decode so you
+can take a decode if you have a
+URL inside of a URL. You can do multiline data so if it crosses
+more than one line. You can do
+key values so if it's a situation as you saw in the
+previous one of our host equals,
+action equals you can just key value it and it parses
+automatically. And then the
+coolest thing is it can do anonymize. And if you happen not
+to be here in the United
+States and have to not store data of people you can anonymize
+that data as soon as it comes in
+with random data or hash data, however you can take and
+sanitize that. So those of you
+who have to deal with European laws or other laws that say y
+can't restore this after so
+long, great option. So after you filter that data, LogStash can
+output it to pretty much
+anywhere. Traditionally people will send it to Elastic Search
+for monitoring and searching.
+And that's what we're going to cover next. But you can send it
+to different indexes just like
+you can with other large logging products. You can also do what's
+really cool, it's called Exec.
+So with Exec if you see a certain set of flags or you
+parse it out and filter it out
+you can take and go, oh this looks interesting. I want to do
+something every time that I see
+this. I don't want an e‑mail; I want it to automatically block
+something. You can just make an
+Exec call to whatever script and I'll touch on some cool things
+later. If you are like me and
+you don't want to keep changing your filters and want to
+dynamically change how things
+are, you can make a simple web call to some other monitoring
+app that you wrote and say I saw
+a bunch of odd things or saw a log in from this IP. Do
+something with that. And write
+up a web app, instead of having to script and write up all this
+stuff and keep restarting your
+filters you can just say send all this log in information to
+this other web source and tell
+me if I should generate any kind of alerts. And if you're
+somebody who HipChats all day
+you can send it to your chat logs. I don't think there is an
+IRC output which I was kind of
+disappointed in. If you're a user of PagerDuty you can send
+it there or your traditional
+email notifications to go in that bucket you never monitor.
+Appliance vendors, a successful
+log‑in, and if there's too many failed log‑ins and then you can
+scale. So as I was saying you
+can filter you can parse. You can do all this fun stuff. What
+do we care about? We're sending
+it to these places and we're not monitoring it. The biggest most
+important thing is for us to
+actually monitor these security events. So as I was saying we
+setup filters and parsing and
+stuff, we tag them saying this is a security event this is a
+compliance event, this is a
+failed login a success login. We can create all the tags you
+want. Add metrics if you want to
+see if there are too many failed logins over a certain window.
+You pick the output and then you
+can scale. So here are two simple outputs that I wrote
+together real fast that shows if
+it's a failed login and if it's been over two for this specific
+user within a minute, send me an
+email. That's how simple it is (whispering) and if you want to
+send it, like I was saying all
+the auth requests, you want to send it to some other source to
+dynamically determine, hey I
+wrote this cool little PHP app that will tell me, if you send
+the IP and the username it will
+determine if it's new. If you're comfortable with some other
+language, RUBY, or whatever send
+it there. You can start sending all these kinds of actions
+elsewhere that traditional
+logging complexes can't do. Yes, some commercial products have
+worked as well, but this one is
+free. So then the second example, obviously anytime there
+is an auth request that's tagged
+as an auth request after we do all of those filters, send it to
+whatever. That's not actually
+real so don't go trying to query that you're not going to get
+anything. So as I was saying we
+can do these Execs, we can do these remote calls. As the
+security people this is awesome.
+We can have it do whatever. We can have it update, this is for
+those that like to live
+dangerously on the edge. You can have it automatically update
+firewalls, ACLS, switches, oh I
+saw somebody new join the thing. I don't have a traditional NAC
+complex, so go ahead and tell it
+to disable the switchboard. Ok cool, Exec, dun duh dun duh dun,
+wrote this cool script, done.
+You're able to do that with this new logging complex. Notifying
+user directly, hey somebody
+logged in from a new IP address and this looks weird or it's not
+from within the U.S. or whatever
+country you're from, hey this is weird for them, let me send that
+user an email and make it their
+responsibility to go, hey security something is up, I
+didn't log in. You don't have to
+monitor that all and you can start using your logging complex
+to generate those kind of alerts
+directly to your users. Obviously notify for admin
+logins, both on the internal and
+external side. One of the greatest things (indiscernible
+30:40) will talk about it, oh
+yea I got admin on all these systems, oh yea I crawled across
+the environment. Why aren't we
+logging and detecting that? A lot of admins shouldn't be
+logging in remotely typically
+and why not generate events for people to follow up? And then
+obviously for user log ins on
+new machines, hey Jim doesn't normally log in to this machine
+and I haven't seen this before,
+I'm going to generate an event. And this is easy to do then with
+these filters with these custom
+outputs that some other logging complexes don't support. So
+again, we've got the monitoring;
+we've got the collection and the storage. What about the
+searching? That's one of the
+biggest problems on traditional Syslogs is that you have to
+write, run through this text
+file, wait, wait, wait, 10 gigs, come on give me something. So
+since it's based on Elastic
+Search, the crew over at Elastic Search, this complex has a
+pretty little front end called
+Kibana. Kibana pretty much looks like every other logging
+searching thing you can ever
+imagine. And you're able to quickly search for the events,
+correlate the events. I'm not
+going to go too far into Kibana because you can create all these
+pretty custom dashboards. You
+can go through have the pretty graphys for the management. Your
+boss loves them. Do this for
+your boss to get a better job. But no, or get a raise, sorry.
+But this works great ... but
+that's the pretty dash board, you can do all the searches, but
+really like I said we are
+focusing on the security side, getting those alerts, getting
+those notifications. But you may
+be going, for those of you who know what Elastic Search is, is
+maybe going dude, uh elastic
+search, really? This shit doesn't have any security
+control whatsoever. Yea it
+doesn't have security controls whatsoever. You would have to
+build them. So as I said it's
+not an easy solution but it's one you can scale and customize
+greatly. So Elastic Search is
+made so that basically you can cluster with everything,
+multicast to figure out all the
+peers. It doesn't have authentication and just trust
+everyone, give every one pseudo
+rights, yea it's bad from a security perspective. But it's
+great from a data perspective.
+So we have to build in these security controls on top of
+that. We have to write an nginx
+proxy in order to bind locally, really simple config. Have to
+segment this stuff off on the
+network so it doesn't take and multicast everywhere else.
+Again, simple change and you
+have to enable to logging on you nginx that you're doing the
+proxy for, for compliance
+reasons and for the tracking of that. Again, simple configs but
+people are like oh, you can't
+use that because of security reasons. You just have to add a
+few additional controls. Now,
+from a performance side you can tweak a lot more when you built
+your own system. So you can take
+in and tweak if you are starting to scale up the size of your
+indexes, sometimes by default
+LogStash and Elastic Search do daily indexes. But if you start
+logging 200 gigs a day, a 200
+gig index is kind of a bad thing, so you can start to
+change the size of your indexes
+to hourly, minutes, so on and so forth. You can increase the
+number of workers in LogStash in
+order to parse that stuff faster. You can enable
+compression in elastic search.
+And you can enable queuing for the network traffic coming in.
+And the whole point of this is
+so you can scale. In traditional systems you can't scale, you
+can't cluster, it's not
+tolerant. You can easily scale up with LogStash, elastic search
+and Kibana by cleaning up more
+instances of Elastic Search. And as I was saying putting more
+steps in front of it that can
+kind of distribute and spit it out and they recommend Redis.
+Works well if you LogStash in
+front of LogStash. I know this doesn't make sense, but it does.
+So the question is: Is it as
+good or better than the vendor? We are up here preaching, you
+should look at open source stuff
+and you should take and do something different than just
+buy a product. Is it better?
+It's your call. If you have a technical ability, a team with
+the technical ability or
+coworkers then yea it works well and doesn't come at the
+licensure costs of other things.
+But it's not as easy to manage as a paid solution. It's still
+relatively young so there may be
+bugs that you encounter. So if you're sitting there with
+critical logs that you cannot
+lose at all you may want to look as somebody who is more
+established or like I was saying
+add a few steps in there and send it off to multiple storage
+locations. It lacks
+authentication out of the box, it's something you can easily
+change but you'll hear people
+shacking their stick at that saying, you've got to be able to
+authenticate to it, nginx proxy,
+HT password, done. But on the plus side it's extremely
+customizable. The price is just
+right and some enterprises support is available. And you
+can even use it in the cloud.
+(Cheering) I had to wet my whistle there. So what's next? I
+just rambled here about how
+great this thing is, what's next? We have this thing we call
+the Open PCI Project, the domain
+hack PCI also works for some reason, I don't' know why. But
+basically the idea is there
+shouldn't be any secrets as to how to secure stuff. People have
+been selling this whole magic
+bean of oh we can give you these configs and keep reselling them.
+They're configs guys, like we
+can share that info, it doesn't provide any competitive edge and
+in fact it just makes things
+easier for all of us. So we have this thing called the Open PCI
+Project, it needs an update for
+all of this stuff but I'll get that soon. As soon as possible.
+Okay, but basically to take and
+share this information and share all the configs, all the base
+parsing a VM that's ready to go
+that you just spin up right away. And obviously the
+hardening guides, Elastic
+Search, insecure by default, some hardening guides to just,
+here paste a config, it works,
+great, awesome. To make it as close as similar to these large
+commercial projects but
+obviously you need a little more hands on support. So with that
+I'm ending a bit early, I'm
+sorry. I'll let you guys get in lines for the next talks here.
+But that's me, that's the talk
+about all that stuff, all in all log stuff. Fuck the companies
+that sue people or "legal
+pressure" for giving talks about stuff they don't want and that's
+it. Thanks all!

@@ -1,0 +1,412 @@
+>>So, er, thank you all of you
+for being today here with us.
+We're gonna talk about, erm, car hacking topic. And, let's go
+fast because I think we made 20
+slides, let's see. So, ja, who are we? I'm Javier Hazquez. I'm
+a hardware security specialist,
+I work at Code White, a German company. We pwn stuff. I'm from
+Cadiz in Spain, I guess you can
+figure it out already, I'm sort of dark stuff. And, ja, I
+reverse engineer stuff. Blah,
+blah, blah. I like cake when it's not a lie and barbeques. I
+mean, who doesn't like
+barbeques? So. >>So hi everyone, I'm Henrik Ferdinand Nolscher.
+Er, Ferdi for short. I also work
+at Code White in southern Germany and among many things I
+also like barbeques, of course
+and lasers. Lasers and like lasers fun, right? So, er, we
+had to decide between doing
+stuff with lasers and car hacking and I don't know,
+[audience noise] maybe you can
+imagine what we went for. >>So. Car hacking status, what's going
+on? So, ja, er buses remote
+stuff because focus on the CAN bus because they data blah blah.
+We play a part, like ja, you can
+recall and then replay like such of some stuff like, ja, so some
+researchers also found some
+remote exploits er like slashing wheel tyres and stuff, ja.
+[audience noise, laughing]
+>>Like real >>Ja, like hardware stuff so. And there are also
+some really awesome tools to
+help understand the various protocol, but, is there anything
+else? So. >>Yeah, chiptuning, is
+like its er own thing but there's a lot in common with car
+hacking actually. It is car
+hacking and er there is USB being cloned, cheats being done
+and data being manipulated to
+get more horse power or, yeah, that sorta stuff. >>Yeah, also,
+er, in the internal data
+manipulation, er, chipturners they often enable for some over
+writing over DVD, that is to say
+that's actually quite a hack. I mean you have to bypass checks
+and certain signatures, so,
+that's a cool topic. And, ja, we all know ORM diagnostics, right?
+They can also do fancy stuff.
+So, yeah, what's the secret? Er, there my hat fell down so, EVS
+is not only protocol, like
+really there's also tunnelling protocol which is the compass
+portion of the keyword protocol
+to fasten which was used on all cars over KLAN and both of a
+series of services, er , SIDs
+which are like actually both interesting, but people don't
+care that much about them, and
+ja, using this services you can get a lot of fancy information.
+Even many times. So, wanna
+explain that? >>So, yeah, er, let's compare the UDS on the
+TP2.0 very quick. So, TP2.0 you
+actually have to negotiate a channel with the communication
+will happen between the set
+tester and the module. So, let me see, yeah, first we have a
+response, like 200 is always the
+channel negotiation request and like you can see the different
+fields went up, and the bottom
+one you can see the response. Which is 200 plus the >>target
+>>the target address. And then
+you can communicate, so. >>Ja, and then you have like the
+transmission. The transmission
+is just like the ID, which is the CAN ID, you have the frame
+counter, the frame type, the,
+the, like data. Blah, blah, blah, blah. We will share the
+slides, so don't worry you're
+not getting it this fast. Then UDS, the only difference between
+UDS and TP is that you don't
+need to negotiate the channel you just like broadcast, you
+have your type of frames, the
+first byte length and the sub frame, but in the end, the data
+that's in payload is what
+matters. That's the SIDs the firmware, whatever, so. They are
+pretty similar. They are, both
+are transport protocols actually. And er, just to make
+er effort some what visible, er,
+that's the difference between TP, KWP and UDS, just like some
+services are like divided into
+more smaller services, only like we have communication control.
+On KWP you have, for example
+some start- on and disable on message – all that is handled by
+a single SID on UDS. You have
+four on KWP, which is standing protocol, so that's the only
+difference on a protocol level.
+>>So, er, here we will shortly list of a couple of interesting
+services, so the first one is
+security access which is, er, the way you authenticate the
+tester against the ECU, right?
+So the security access will unlock the different levels of
+functionality, it's like a
+challenge response. Then there's read memory by address, now you
+give it an off-set and it will
+return the contents, and often, but not always er requires
+security access. Er, read and
+write data by ID is like for, for example for getting the VIN,
+the Vehicle Identification
+Number, um, you give it parameters, reduce the data. Er,
+request upload, is like from the
+ECUs perspective so don't confuse the name, it's like to
+retrieve the firmware from the
+ECU and losing control of the server , like customer teams for
+example you raising the flash
+and triggering also that sort of stuff like... >>Like there are
+some fancy routines like we
+found in some vehicles. Wait, ECU's actually not vehicles. Er
+namely, er Bosch, er, that would
+allow you to retrieve the er, boot keys in DC17 and MED17 so
+you like basically you just
+trigger the routines, get the key and then you can unlock the
+boot lock mode. Oh, so ja, while
+all this easy stuff? Because CAMBadger. So, er a glitch is
+still a glitch. [laughs]. So,
+let's take a look at the hardware overview. Er, it's
+LPC1768, or LPCXPresso it has
+external RAM 128 kilobytes to speed things up 2DB9 for CAN 2
+debug headers, SD card a ECU
+Power control by software we have UART, we'll see later why,
+we have 4 GPIOs so if you want
+fancy LEDs and it runs in three different modes: stand- alone
+USB, which is a CNC device or
+serial over network. An yeah, can be powered with power and
+has a blinky LED. So, that's
+really fancy and it's really cheap to make. It's under 25
+bucks. >>Yeah, and we made it
+easy to solder, so this. It's really easy to set up. So the
+firmware considered a proof of
+concept. Okay, their actions are always handled by the CANBadger
+itself, so it doesn't really
+require a lap top or a computer whatever to perform any logic,
+it's all implemented in the
+firmware. Like UDS GPS 2.0 processing, RAW CAN logging,
+just as a start. We have a
+man-in-the-middle mode where the emulator modes and we also
+mentioned that you can have
+three different modes of er operation. That is stand-alone
+mode without anything attached,
+and, UART mode, where you get a CDC device on your computer and
+connect with your terminal and
+then there's ethernet mode which we'll, we'll will go on to that.
+Don't worry but, it's for use
+with the CANBadger server so you can have multiple CANBadgers in
+parallel, yeah so, fancy stuff,
+yeah. >> So just a quick look beyond the protocol analysis.
+Many servers are included in the
+firmware, it's er, just switch case, so adding support for the
+additional ones is really a
+piece of cake. It's extremely verbose, it pass, it passes the
+SIDs and parameters. Er,
+everything is done by the CAMBadger firmware so no need
+for PC, just the serial pass.
+You need a terminal and everything is just thrown in the
+SD of the CAMBadger, so you can
+distribute later. And it works with UDS and TP2.0. So, er, for
+the interactive session, the
+interactive session is er interactive so it doesn't
+require scripting and it will
+ask you to perform actions on the go. So, I don't know if guys
+saw before we were starting the
+presentation, I popped out for a minute and was doing some stuff,
+that was actually, er, the
+interactive session, so you start diagnostics session and
+then you can think what's your,
+what your next move is going to be. You don't like need to write
+a script or anything. You can
+just try stuff, see what happens, change something, try
+again like with no rush. And
+there are built in scanners for SID parameters, so for some
+people, or if you wanna go check
+if there's any hidden type of diagnostic session, or if you
+wanna see what off-sets are
+readable by read memory by address, or whatever you wanna
+check, there are er some built
+in scanners for that to make things easier and fast. >>Er,
+let's talk a little bit about
+the man-in-the-middle mode. It's also, as I mentioned already,
+already mentioned, er all
+implemented in all firmware. So, on the right hand you can see
+the original traffic on the top
+and on the man-in-the-middle's the traffic on the bottom where
+the payload has been changed.
+And on the left brackets you can see there's no delay added, so
+it's pretty fast. And we tested
+with a lot, like thirty or forty routes and basically it will
+match any incoming packet on
+either port against your set of routes, against C card and it
+will like do basic operations
+like dropping frames, er, doing math operations or substituting
+simple bytes, er, yeah. So, um,
+we thought we could make it even easier to use the CAMBadger so
+we wanted to have CAMbadgers
+talking over ethernet, so maybe they could exchange some data ,
+er, to each other or, just to
+have multiple ones running parallel and this is why we had
+the CANBadger server, er, it's
+written in Python and here's a small snap shot, it's actually
+not clean, it looks different
+now. So, on the left hand you can see the connected nodes, and
+this is why you will switch
+between different CANBadgers and the GUI was really inspired a
+lot by [inaudible] , so you can
+have everything in one place and you can exchange data between
+different modules. Like the
+logger, for example send a frame work from the logger to the
+replay it will create a rule for
+that. Er, yeah. >>So security access hijack. Why? So, er , we
+were talking about security
+access and now it's starting to be more known er so yeah, just
+the test authenticate against
+itself so it saves you. But you need to know, obviously the
+algorithm being used and the key
+being used. Since it's random you cannot brute force it, I
+mean, the, the er challenge is
+going to change every time and after three failed, er,
+authentication attempts the ECU
+locks down for ten minutes to thirty minutes so no brute force
+in there. What's the other
+solution? Hijacking security access. So, you just need the
+tool that is able to
+authenticate, you don't need to care about what the tool does,
+it just needs to be able to
+authenticate. So for that for example we brought a cheap er
+clone interface for tuning the
+cars and every time we want to have access to something, like
+don't know, the restricted
+diagnostics mode for example, or reading some off-sets that are
+not standard, we just hijack the
+security access. And yeah, then we have security access without
+caring about that so, how does
+it work? The come back gets into a transparent mode er breach
+mode so it waits for the
+security access to happen, if the security access succeeds, it
+will disconnect external tool
+and then it will take over the session and give you a nice menu
+with a lot of stuff to do. So,
+ja, let's try the demo. We're running a little bit bad on
+time, but why not? Let's try the
+demo. So, let's fire up our super Windows XP. Yeah, because
+why not. Er...ah, yeah, we all
+love waiting, right? Yeah, okay so in the mean time let word
+sync, we're gonna do the demo in
+a while. Let's light up the er, because we're not that good on
+time. So, er, let's travel to
+the future on the nexus slide, so yeah. >>So we, so hopefully
+we survive the demo. So what
+else can the CANBadger do? So, another fancy thing is dumping
+the TP and UDS transfers, which
+are, which I use for firmware update so let's see how this
+vehicle gets an update so that
+will be encrypted, signed, blah, blah, blah, blah. But then it
+needs to distribute the firmware
+updates over the network to the different modules so it does
+that over the CAN, most of the
+time, not every time. So, if it goes that way and it decides not
+to use encryption, which er we
+have found some manufacturers do then the CANBadger can just like
+grab the whole transfer and dump
+the data, so basically dump the firmware, that was being
+updated. It can also spoof OB2
+data through the man-in-the-middle and the
+emulator, the emulator is like
+some other fancy stuff, we will explain later, and yeah, you can
+use GPIO openings for boot
+loading for tri- code for like some people call it zero day,
+it's just on the data sheet. We
+call it like a function. And, yeah, it come [inaudible] GPSing
+and [inaudible] things. >>So,
+why do we mention GPS? Hmm, well, many of you guys might
+know that those kind of
+strongholds that give your rewards, er, allow you to track
+vehicles, for example from
+insurance companies and they turn your "safe driving" into
+"savings". [audience reacts]
+Hmm. Let's play a game. [audience reacts, laughing]. So
+the things with these
+strongholds is that they implicitly trust the data that
+is coming from the car. It's
+requesting data over like diagnosis protocols and also
+they're dependant on GPS so they
+do have some cross validation or some features that require that,
+and by spoofing that OBD data
+you can have your own driving habits, er, yeah, well, and
+maybe if you look spoof your
+location too it's going to be more money for you. Er, so here
+we have an in truck radio that's
+an unstuck radio, so basically running an android app er
+connecting to a Bluetooth dongle
+that is plugged back to the car. And you can like see that
+there's like stuff going on, er,
+RPMs going up and down but the car is not really turned on.
+[laughter from the audience].
+Hmm, and now we can see we stop the CAMbadger, the data will
+stop changing. Ja, and there you
+see the PG packet just control it with a button, you don't need
+to do anything. >>So ja, that
+was the emulator we were talking about. So how does the emulator
+work? So, just set up a filing
+so the CAMbager steer and tell it to broadcast every 10 milli
+seconds, whatever our request,
+which is our request for RDP which is the data used by this
+insurance strongholds, So, it
+just keeps on making those requests as long as you want it
+to, it could be like two hours,
+er login all day, data that will be use formulation which is
+actually real driving, I mean
+you just like go around in circles for 1 hour. Log in the
+data then you create the
+emulators. Once you create emulator you got the data then
+you use the CAMbadger to get
+emulation data so the CAMbadger will look on which IDs were used
+which PIVs were used, and like
+just ask from which one do you want to create the emulation
+data. So, they way that the
+emulation data is stored in the CamBadger, because like we said
+earlier, everything is running
+inside the CAMBadger, no computer needed for this, just
+press a button. So, we created
+the header that has the IDs, the protocol used, erm the SID, the
+PID and then the start- off set
+and end-off set. So that sort of look-up table. Underneath maps
+everything else in the RAM so
+when ever it gets sub framed, I mean on every single frame it
+gets, it will check the contents
+of that frame against the whole emulation data until it finds
+data that can be used for that
+SID, for that frame, then it will provide the emulation data.
+If it does not, it will just
+forward the request as straight forward, so the dongle, er the
+insurance dongle really doesn't
+know if there's anything in between. It's getting all this
+stuff. And, ja, it's a, it's a
+store used in time stamps, so to get stuff real, er, it will only
+check for the data, or, change
+the data when it actually changes so it keep the emulator
+[inaudible] so at, the thing is
+that it, to reduce the size of the emulation files, it will
+only log the changes, using the
+time stamp. And, er, yeah when there's nothing left, then it
+just starts over. So yeah. Now
+we'll do the demo. Er, so yeah, let's do the demo now. Hopefully
+the... >>So, we'll be having a
+workshop, unfortunately it's er, already sold out soet of, so we
+gonna release all the code and
+schematics on GitHub, there GPL, um you're also welcome to go
+hack this stuff, doesn't have
+that much dependencies and if you're like a better coder
+anyway, we, will be really easy
+to get set up for you. So. >>Oh, yeah, fancy Windows XP machine
+doesn't want to work because why
+not, so let's show something else instead. Er, we hope you
+guys will like it. So, how much
+time do we have left? Okay, we have something. So are we
+connected to the CAMBadger, yeah
+that's actually... So, that's the CAMBadger USB interface, so
+right now we have um, an
+[inaudible] 17 it's U connected it's [inaudible] so, let's have
+some fun with it. Just to
+quickly show you all how it works. So, yeah, let's just
+start up that session so you
+tell it your own ID, you tell it your ECU ID so yeah, we got TDS
+session established so then you
+say okay, I wanna read memory because I just want dumps. So
+ja, let's try to read memory. So
+you tell it the off-set, you tell it I wanna read the fifth
+bytes, whoops! We got an error,
+service not supporting the app this session, so okay, let' see.
+Yeah I don't really know what
+session they are, so let's just come for session types. There we
+go, so we have like different
+session types can be initialised. One or three hour
+start-off, forty and for F or
+not. Yeah, I'll share a little bit because I already know it's
+4F okay? So, let's try, 4F. so,
+let's switch to our custom one, let's go for 4F. So, it's
+established correctly, okay
+let's try to read again. So, ja, read the same thing, yeah sure,
+and FF. So damnit, now security
+access required, okay so yeah, again we already reverse that
+issue, we already have security
+access, so let's cheat again, er okay so yeah, we're , oh there
+was, it worked, awesome, so
+yeah, double 3, so yeah, so, ja, security access granted. Okay
+lets see if it's true. Let's try
+again. So read memory by address, let try, blah, blah,
+blah. And let's try FF, yeah so
+this time it worked. So, and we've got a lot of fancy ask
+keys and stuff so. That's sort
+of the way the CAMBadger works, like, you can like you know,
+interact, interactively try
+stuff, you don't need to script, you can like, okay let's see if
+this works. It doesn't, okay,
+let's try something else. So, so it's something slow. And and so
+let's show quickly because we
+have to get out already. Blah, blah, blah, blah, blah, blah
+blah blah blah. So, ja. >>So
+yeah, er as I mentioned earlier code and schematics, our GPL
+will be published on GitHub
+like, give us one or two weeks to clean it up just a little
+bit, but er we're going to Tweet
+about it as well so you might wanna get out Twitter handle um
+so yeah, we are very thankful
+for you having us here um, also we'd like to thank Code White
+for, which have given us a lot
+of support and trust, er time especially and of course our
+family and friends who've been
+supporting all the way down, even if we run out of coffee.
+>>Er, yeah, thanks to everyone
+for being here today with us, we and I hope everyone enjoys
+Defcon. [applause].

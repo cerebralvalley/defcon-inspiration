@@ -1,0 +1,406 @@
+>> RUNA SANDVIK: Hi, everyone. I would like
+to have a show of hands. How many of you have heard about or used Tor.
+(laughter). How many of you run a relay?
+(applause). So my talk is about the safety of the Tor
+network. My name is Runa Sandvik. We have contractors working full time and on tour
+on other projects. We have volunteers all over the world. We're also hiring, if anyone
+is looking for a job, come see me after. The goal of Tor is to express free speech
+and privacy online. We've met with activists, survivors of domestic abuse, so we do a lot
+more than just developing this tiny piece of software.
+So sort of like the background for my talk, over the past two years I've had an opportunity
+to travel a the lot. I met with activists in Beirut, journalists in Istanbul, students
+in DC. A lot of them have questions about Tor and the Tor network. How safe is the Tor
+network? Who are the real operators? What about malicious relays? How much network diversity
+is there? And what about the CIA, NSA, Prism, and so on. So I want to just comment on one
+straight off. CIA was does not run Tor. Tor is not a CIA honeypot. Tor was originally
+developed by the U.S. naval research lab. That was before 2000. Since 2002 Tor has been
+completely free and open source and developed by the Tor Project.
+So before we start kind of go deeper into these topics, I'll kind of start with a quick
+introduction into onion routing. You can run Tor as a relay or run Tor as a client. When
+you run as a relay, you set it up on a computer or a raspberry pie or whatever it is, and
+you can decide to run it as an exit relay or a nonexit relay. So you can decide whether
+or not you want Tor users to exit onto the public Internet from your computer. In the
+case you're not running an exit, you'll be calling what's called a nonexit. That nonexit
+could also be what's called a guard relay, which is the first server that users connect
+to. So running Tor as a client, you download it
+onto the computer, open it up, and your Tor client will then, first off, download the
+list, the consensus. Download the list of all the relays in the network. And out of
+those roughly 4,000 relays right now, it will pick three guard relays. For the next two
+to three months, it will only choose between those three when it chooses the first hop.
+So after choosing that guard relay, it will choose the middle relay and the exit relay.
+After that, Tor will set up a connection between your computer and the guard relay and negotiate
+a short term session key. It will then connect through the first server to the second server
+and negotiate a second short term key and it will do the same for the exit relay. When
+the whole circuit, the connection from you to the last ‑‑ from you to the destination
+website is set up, the data you sent, for example, I want to visit Twitter.com will
+be wrapped in three different layers. You sent the packet from your computer to the
+guard relay and the guard relay will peel off that third outermost layer and say the
+packet came from you and going to somebody else in Tor. So they'll send the data off,
+send this blob of data off to the second relay. Second relay will peel off that second layer,
+see that the packet came from somewhere in Tor. It's going to somewhere in Tor, but that's
+all it knows. So we send it off to the third exit relay,
+the third relay the exit relay, which will peel off that final layer, see that it will
+go to Twitter.com. In this model there is no single hop that will see what you are doing
+online. Now, the challenge here is if someone, the
+same person, owns the guard relay and the exit relay, that person can see what you're
+doing online. That person can see that you are using Tor to visit Twitter.com.
+Another issue is the exit relay. The exit relay operator can look at any traffic going
+from her relay to the public Internet. I'll get back to that later on.
+So at the moment there's roughly 4,000 relays in the Tor network pushing around 2,500 megabytes
+a second in aggregate. And you would think that 4,000 relays, we
+have 600,000 daily users. You think 4,000 relays is a good number if you look at this
+graph, out of 1,000 are exit relays and only 1,000 are guard relays. So when your Tor client
+is trying to choose which servers to send traffic through, it only has 1,000 or less
+options for the first hop and the third hop. I figured a lot of you will probably want
+to know about how Prism or other spying programs factor. And Tor was originally designed to
+protect government communications, to hide where you are and who you're talking to. So
+Tor can't hide the fact that you're talking, how much you're talking or when you're talking.
+What Tor can give you location anonymity. If you're here at DEF CON and you're using
+Tor to connect to Twitter. Twitter will see you're the one logging on because you have
+a user name and password, but they won't know that you're here.
+Like I mentioned, if the same person owns the guard relay and the exit relay, they can
+see what you are doing online. And recently it's sort of, you know, after Snowden leaked
+all of these documents we learned that there are countries working together on other spying
+programs. So now the issue ‑‑ the concern is not so much who is running the relays,
+but who owns the links? Who controls the AS's? Who controls the Internet exchange points?
+It's not necessarily about the relays. So this kind of all fits into whether or not
+we should, you know, consider different threats, if we should reconsider the threat model for
+Tor. This is a paper that is ‑‑ that it will
+be published later this year that a group at the U.S. Naval research lab worked on.
+It's called The Users Get Routed, Traffic Correlation by Tor Realistic Adversaries.
+They took for the way it works right now and looked at what happens if you're sending your
+at that time through relays that it happened to be controlled by the same entity, by the
+same AS, or in similar Internet exchange points or by countries that are now known to work
+together on different spying programs. We are sort of considering how we can approach
+this. We're sort of trying to figure out if changing the way Tor selects relays is something
+that we should actually do or if users are safer now than if we were to choose a different
+algorithm. This one is from Compass.TorProject.org. It
+shows your exit relay and your middle relay. There is a 25% chance your first server will
+be in the U.S. There's a 23% chance your middle he server will be in the U.S. and a 30% chance
+you will exit in the U.S. Below that there is a 29% chance you will enter in Germany,
+that your middle relay will be in Germany, but only a 6% chance you will exit in Germany.
+On the top of the list is U.S., Germany, Netherlands, France, Sweden. So we have 4,000 relays and
+150 different countries. But Tor will look at the relays that are offering the most bandwidth
+when choosing which relays to use for its path. It doesn't look at the countries. It
+looks at the bandwidth. That means that we may not actually have as much diversity as
+we would like to, because all the relays are in countries like the U.S. and Germany where
+bandwidth is free and where hosting providers are actually happy with us setting up relays.
+So I wanted to figure out who the relay operators are. Has the NSA ever set up. All the data,
+all consensus documents that has been generated since 2007 is all on matrix.TorProject.org.
+Who owns the IP addresses for all of these relays? I did not find any government entities
+running relays. That means one, we're not data centers, but also maybe they're not running
+relays at all. We know about all the spying programs. We know they have access to links
+to Internet exchange points. They have connections all over the world. Why would they need to
+run relay wouldn't necessarily have to run relays. A couple of interesting relays that
+did pop up was TBRAG. If you're on our mailing list, you would see this name pop up. TBRAG
+was the nickname of a few Tor relays that were running inside China. We're running as
+Tor exit relays in China. 20,000 different IP addresses associated with it.
+Now, I don't know who inside China would have access to be able to set up a Tor exit relay,
+and two, have 20,000 IP addresses in a year, my guesses is government, university maybe.
+But we don't know. We never actually caught this relay doing anything malicious. After
+a year, it sort of just fell off the grid and we haven't seen it since.
+A couple years later Trotsky popped up. It was the name of a number of a couple thousand
+relays in eastern Europe, all running on sort of dial‑up or at least offering very, very,
+very little bandwidth to Tor. So there was ‑‑ it wasn't an exit. There was no contact information
+given as to who were the real operators. At that point we decided to take it out of the
+consensus because we believed it might be a botnet. We haven't really been able to figure
+out whether it was a botnet, but we only saw Trotsky for two or three weeks and that was
+it. When I say take out of the consensus, we have a way, and I'll get back to that later,
+to when we see that there are relays misbehaving, we have a way to mark them as bad and then
+take them out of the consensus. When a client is down the list of the Tor relays, it does
+not choose bad exits for its circuit. So Orbot is the Tor for Android. So you can
+run Tor as a client on your tablet and you can browse through Tor. You can also run as
+a relay on your air service. I saw a number of nicknames with the Orbot nickname popping
+up in the Middle East. There were a lot of users with normal phones, smart phones. Apparently
+a lot of them set up relays a couple years ago as well.
+So there are a lot of different groups sort of running relays there are those who run
+relays on a raspberry pie there are those that try and run bigger groups in the case
+of Orbot or Trotsky that may or may not be malicious.
+Then there is the groups that are sort of supporting the Tor network in a completely
+different way and in a very, very good way. Torservers.net is a German nonprofit whose
+only goal is to increase network diversities. They will take donations and spend that money
+on relays for the Tor network, primarily Tor exit relays, which is when you saw the list
+of, you know, there's a 23% chance that you'll exit in the U.S. or in the Netherlands, most
+of those relays actually belong to Torservers.net. So when you're use it go Tor, you are more
+likely to end up using a relay owned by Torservers.net or one of the other groups that I'll show,
+because they're running so many relays and because they're offering so much bandwidth.
+You're more likely to use relays that are run by people that we trust rather than some
+random guy in, I don't know, the UK, for example. They also run relays offering a lot of bandwidth,
+if you create a list looking at which relays offer the most bandwidth, the Computer Club
+would come up as Number 2. (applause).
+Another group is BFRI in Sweden. I don't think they have nonprofit yet, but they managed
+to get everything together and they're able to accept donations and put the money towards
+actually running high bandwidth relays. Noistour out of San Francisco. They will also take
+donations. They will also take donations in Bitpoint. If you can't run a relay, maybe
+you can donate to someone who can actually set it up for you.
+So malicious relays: There are, I guess, three groups of malicious relays. The first one
+is malicious, but not intentional, meaning that someone set up an exit relay and they
+have, you know, open DNS or they have an antivirus that is blocking certain sites. While they
+may feel safe using that, having gone on a Tor exit relay means that users ‑‑ Tor
+users will also sort of end up with the same filter. So if they can't visit Google.com,
+then any Tor user will be unable to visit Google.com. In those cases we try to contact
+the relay operators. And when you are setting up a Tor relay you can sort of put in your
+contact information if you want, and if something is wrong, we know how to contact you. So we
+contact these relay operators and ask what's going on and see if maybe they can just reconfigure
+their computer to not sensor users. The second category is straight-up malicious,
+those that try and strip off SSL or do some other sort of man in the middling. We try
+to contact when there is contact information given, but if they're found to actually be
+just malicious and they don't have contact information, we'll just take them out of the
+list. The third category is passive, sort of more
+malicious, but not necessarily detectable. They may be logging. I mention when you are
+using Tor, traffic from you to the exit relay is visible to the exit relay operator. It
+means that the exit relay operator can see what people are doing online. They won't know
+necessarily who is doing what, but they'll see what people are doing, what websites people
+are visiting. In some cases people set up exit relays just to log all of this information.
+That is not something that we can actually at the text. That is a risk. Just a risk to
+be aware of, but I would say that it's probably safer to use Tor than not these days.
+So a question I often get is how bad can it get? You know, you're using Tor, you have
+to head up on a malicious exit relay, how bad can it get? My answer is that it depends.
+I know that's usually an answer that you would hear from a lawyer, but it really does agenda
+on what you're doing and for how long you're to go it and whether or not you're actually
+logging on. Say you're using Tor to access Twitter. You
+go to Twitter.com and your browser gives you a warning about a fake certificate. Now, if
+you choose to accept that certificate and log on, you're giving your adversary, your
+attacker, your user name and your password and you have lost. That is true whether you're
+using Tor or not. In the other case, if the person is just logging
+traffic and you're not logging in anywhere, and you're not communicating any sensitive
+information, that person will just get lots of random data, lots of websites like you're
+visiting, but not necessarily a way to tie that back to you.
+Another thing to note is Tor, when creating those circuits, when choosing those three
+relays and using them to visit all the websites that you're visiting, Tor will choose a new
+path for your traffic every ten minutes. So if you're visiting Twitter and you spend,
+I don't know, 20 minutes on Twitter and you open a new tab in your browser, Tor will create
+a new circuit for you. Whenever Twitter has to open a new TCP connection to pull in new
+content, Tor will open a new connection for you. I don't know how to best answer this
+question how bad can it get, because it really does depend on what you're doing.
+I think in a lot of cases it's probably better to use Tor than to not to use Tor. And the
+threats to Tor are pretty similar to using the open wireless network at Starbucks or
+elsewhere. So we have a couple of different tools for
+sort of finding these malicious relays. The first one is called the consensus tracker,
+which we created somewhere between the time we saw TPRAG crop up and Trotzky. It is a
+script that every hour it will look at the list of relays are new, which relays just
+joined the network. Send us an e‑mail. Anyone can look at the list of new relays joining
+the network. So the information we get is sort of the IP
+address, the port, which ports, if it allows exit to, content information if that has been
+set. Just sort of basic info. It doesn't really check for maliciousness, but if we suddenly
+have, like, 1,000 relays pop up in Syria; it's at least something we can monitor and
+keep an eye on. We created Snakes on a Tour, TOAT. It will allow you to check for SSL certificates
+or any sort of tampering with DNS, any other types of sensor ship and it was written in
+python, so it is no longer maintained. We have been working on the open observatory
+for network nervous. It will check for censorship essentially. Hopefully, in six months or so,
+you know I probe will able to do what SOAT once good so we can actively check for malicious
+relays or misbehaving relays. The Tor we have is SSL checker. It will take the list of exit
+relays and a list of URL's that you have given it, say Twitter and Gmail.com, and it will
+connect to the exit relays and download the SSL certificate and then it will do the same
+over non‑Tor and compare the two. If there is a difference, it will give you 
+a warning. To be able to check for other malicious behavior in the future, we hope, so there's,
+like, three ‑‑ I guess three topics that I sort of wanted to touch on that I hope that
+you will leave this talk with. One: I want you to use Tor. It seemed like a lot of people
+were already using Tor. In the case that you're not, please to. We already see that anonymity
+loves company. The more people that use Tor, the better off you are.
+If you're the only person at DEF CON using Tor, you sort of stand out. If you're one
+out of 12,000 people using Tor, the better off.
+Not a lot of people run relays. I'm not sure why, if it's lack of bandwidth, if you just
+don't know how, if you're worried you'll be an exit relay. But no matter what the reason
+is, you can always fund a fast relay. Funding Tor servers.net ‑‑
+>> We're back. I think you know the routine. What are we gonna do now?
+(applause). >> That mic is dead.
+>> RUNA SANDVIK: I have the mic. >> Can I just get really close, then?
+>> RUNA SANDVIK: No. >> Just talk really loud.
+(laughter). >> What are we gonna do? You all know the
+routine. Do we have any first time attendees? >> Here.
+>> You, sir, come up. >> Your fiancé is here? Did you want him
+to come up? >> RUNA SANDVIK: No.
+>> SSL certificate. (laughter).
+>> All right. To our first time speaker and our first time attendee.
+(applause). >> RUNA SANDVIK: I have a lot of time for
+questions. I sort of wish I had started with that.
+(laughter). You can run a fast relay and help increase
+network diversity or you can run an exit scanner or help us improve the ones that we already
+have. And help us find misbehaving relays. So at this point, being the first time speaker
+at DEF CON and talking a lot faster than I usually do, I have a lot of time for questions.
+So if you have questions, you can line up with the microphone up front.
+(Off microphone) The people on the network are doing illegal
+things. (applause)
+>> RUNA SANDVIK: I got half of that. Do you want to repeat it.
+>> Is it legal to run an exit (inaudible) if the people exiting the network are doing
+illegal things? >> RUNA SANDVIK: Okay. Is it safe legally
+to run an exit relay if the people using your exit relay are doing illegal things? Running
+an exit relay is in some cases check be a bit risky. So it means that any Tor user,
+600,000 users, a lot of them will be using your server to access the public Internet.
+It means anything they do online will be seen as coming from your computer, from your IP
+address. Over the past year there has been stories about people in Germany having their
+doors knocked down and their computers taken or a series of DNC take down notices and similar.
+We have spent a lot of time trying to educate law enforcement, teach them what Tor is, how
+it works, when or how they would encounter Tor when investigating people.
+That's worked out pretty well. We have sort of helped them understand that when they do
+hit an exit relay, it is Tor. It doesn't actually log any information. There is no information
+to be found there about the Tor users. But at the same time, if you feel that that is
+a risk, then running a nonexit is probably the safer option. So we have a blog post called
+tips for running an exit relay with minimum amount of harassment, which sort of lines
+out a series of steps and things to consider if you want to set up an exit relay. Sort
+of running on a dedicated server, don't have your personal photos and GPG and whatever
+else, chat logs on the same server that you're running a Tor exit relay. Do not encrypt that
+drive in the server that is running the Tor exit relay felt.
+If you have a server with a nonencrypted disk and Tor is not logging anything, there will
+be no information on that server for law enforcement to dig through. So I would say if you're considering
+setting up an exit relay; that would probably be the first page I would send you to read
+up on. Whether or not it's safe legally, I'm not a lawyer, so I can't really answer that
+question. (Off microphone)
+>> RUNA SANDVIK: Sorry? (Off microphone)
+>> RUNA SANDVIK: It's a service that allows you to enter an IP address and see if server
+X was running as a Tor exit relay at time Y. So in the case that you to run into issues
+with law enforcement, you can use that service to sort of point them to our page and sort
+of explain to them that you were actually running an exit relay. If you do run an exit
+relay and you run into problems, you can also e‑mail us and we will send a signed letter
+confirming that, yes, you were running an exit relay at that point in time.
+>> So there's hidden entrance nodes via bridges. Are there any to look into having exit nodes
+in a similar way? >> RUNA SANDVIK: Having hidden exit nodes?
+>> Yes. >> RUNA SANDVIK: So the question is about
+bridges. The image that I showed of how Tor works, mentioned the guard relay, we also
+have something called bridges, which is similar to the guards, just that they're not listed
+on the Internet. You can't find a list of every single Bridge, which means that if you're
+in China and you need to connect to Tor and Tor is being blocked, you can use a Bridge
+instead. I don't think ‑‑ I'm not sure if we have
+even considered hiding the exit nodes. I'm not sure if that would actually be a good
+defense. It sort of seems to me like it would be just a bit of an arms race. We would hide
+them someone would find them, and it would continue from there.
+>> What about running relays in the Cloud and like, for instance, if there are just
+a whole bunch of Cloud‑based like Amazon AWS‑based relays, what does that do with
+your network diversity? >> RUNA SANDVIK: Okay. Relays ‑‑ so with
+Amazon specifically, you are allowed had to run a Bridge. Running a relay is also allowed
+as terms of service, but you will be paying too much money for bandwidth. So you just
+don't want to do that. An exit relay is not allowed in the terms of service. If someone
+wanted to set up thousands of relays to join the network, I'm not sure it would help the
+diversity too much. Tor will only pick fast relays to use for its circuits. So if you
+have, like, a thousand sort of slow relays joining the network, then we would have a
+thousand slow users on the network. >> My question is pretty specific regarding
+are you aware of whether or not Google fibers' terms of service restricts you from running
+an exit relay or not? >> RUNA SANDVIK: I don't know. If anyone from
+Google is here that can answer that question, then we would like to know.
+>> No servers on Google fiber. >> RUNA SANDVIK: No servers at all?
+(Off microphone) >> RUNA SANDVIK: If anyone from Google is
+here, then I'd like to talk to you. (laughter).
+>> No computers on Google fiber. (laughter).
+(applause). >> RUNA SANDVIK: Any questions at this point?
+(Off microphone) >> RUNA SANDVIK: I didn't hear the full ‑‑
+(Off microphone) >> RUNA SANDVIK: If there are more malicious
+relays than non? >> More malicious users.
+(Off microphone) >> RUNA SANDVIK: Okay. If there are more bad
+users than good users? Okay. We don't know. So you go to our website and you download
+Tor, and the only thing that pops up in our Apache log is that someone visited Tor. We
+don't log your IP address. We know people are downloading Tor, but that is it. We have
+no information. We don't know what you're using Tor for. Back in the day someone did
+a study to see at least which protocols were used. It was mostly web traffic. But apart
+from that, we have no ‑‑ we have no way of telling what people are doing over Tor.
+(Off microphone) >> RUNA SANDVIK: We were accidently banned
+by Facebook, yes. The issue that was a month ago. Okay. So it does happen. So someone used
+Tor to sort of try and scrape content from publicly available content from Facebook and
+Facebook sort of accidently blocked a ton of Tor exit relays. So it does happen. But
+we have no way of telling how often it happens or how many users are actually misbehaving
+that way. >> Can you speak to hidden services.
+>> RUNA SANDVIK: What about hidden services? >> Could you briefly detail what they are?
+>> RUNA SANDVIK: Tor Hidden Services, dubbed by the media as Darth Web, is a way of hosting
+content anonymously over Tor. So it means that you can set up a website and it will
+have a URL of 16 characters and dot onion at the end. It will only be accessible on
+Tor and no one will know you are hosting the sites and no one will know who is visiting
+the sites because everything is over Tor. The content cannot be censored. We cannot
+find out who is running Tor Hidden Services. So it's sort of anonymous hosting in a way.
+Recently there was a paper published pointing out a number of issues with Tor Hidden Services.
+We wrote a very long blog post explaining all the things we would like to see improved
+with Tor Hidden Services. >> How do you establish trust in the consensus?
+>> RUNA SANDVIK: When you set up ‑‑ the question was how do you establish trust for
+the consensus? How do you make sure that the list clients download is a safe list?
+When you set up a relay, your relay will tell nine directory authorities that it exists.
+These nine directory authorities will then confirm that your relay has the IP address
+that you've said that it has, the nickname matches, if it's an exit it will make sure
+that you can actually exit, and then these nine directory authorities will vote on this
+information, whether or not that information is correct. If the majority of them vote that,
+yeah, it's correct, is valid, then that relay makes it into the consensus. Once they have
+done that for all the relays in the network, that list is then signed by every single directory
+authority. When the client downloads this list, they will check that the signatures
+are okay. >> I had a follow‑up question to that. Who
+controls the directory authorities and who controls the onion domain name services or
+servers? >> RUNA SANDVIK: Okay. The directory authorities
+are run by core Tor Project developers or people that we trust. So there's a good mix
+of some of them are in the U.S., some of them are outside of the U.S. Some are run by Tor
+people and some are not. But you have to be a trusted member of the community to be able
+to run one. The second question was about the .onion domains. No one really controls
+that. You generate a domain when you set up a Tor hidden service.
+(Off microphone) >> RUNA SANDVIK: Japan?
+(Off microphone) >> RUNA SANDVIK: Is there diversity in the
+directory authorities to protect from corridors from a certain country?
+(Off microphone) >> RUNA SANDVIK: If the NSA server and directed
+all Tor traffic to the NSA, then we just wouldn't do it.
+(applause). (Off microphone)
+>> RUNA SANDVIK: Is there any way for an exit relay to figure out who the Tor user is? No.
+So the only information that the exit relay has is that people are doing stuff, people
+are watching, you know, videos of cats. (laughter).
+The only thing that you can do, if you were to attack Tor users, would be to make sure
+that you are that first hop, that you are the guard relay and that you are the exit
+relay. And doing that when targeting a person seems really, really difficult. I'm sure you
+have ‑‑ at least the NSA, probably has way better options to actually target people
+than to try and spin a thousand Tor relays. (Off microphone)
+>> RUNA SANDVIK: So Tor is TCP only right now. We have a proposal for UDP, but I'm not
+sure what the status is. I don't think we've done a lost work on that for a while. We have
+done more work on getting Tor to IPv6 to play nice.
+(Off microphone) >> RUNA SANDVIK: Hardware?
+(Off microphone) >> RUNA SANDVIK: Could you repeat that?
+>> Hardware integration. >> RUNA SANDVIK: Hardware integration? Okay.
+Thanks. So we have a project called the Tor router, which the goal is just to take a stock
+router and put Tor on it and make sure that it sets up a wireless network where everything
+that you do on that wireless network is sent through Tor and that it is also running as
+a Bridge or a relay or an exit relay, for example. That project will probably be announced
+in about six months. There are other projects, like the onion pie? I know freedom box has
+sort of worked on some stuff. There's a lot of work being done. We need more people to
+sort of help us test those projects, but we don't have anything right now.
+>> What's your opinion on an exit node filtering traffic?
+>> RUNA SANDVIK: If you're running an exit node to filter traffic, then don't run an
+exit node at all. >> Like child pornography?
+>> RUNA SANDVIK: Sure, if you want to talk about child pornography specifically. Running
+an exit relay in general means who are you to decide what people can and cannot watch
+online? Right? It's you ‑‑ okay. So you obviously, I think we'll agree, child porn
+is bad. What if we gave people the ability to actually decide what Tor users can and
+cannot visit through their exit nodes. Watching videos of cats is bad, so suddenly I'm censoring
+a number of Tor users who want to look at totally legitimate things. So we just decided
+that we shouldn't decide what users can and cannot watch. It also means that we cannot
+be asked or forced by anyone to censor anything. We don't control the network. Users do.
+(applause). Anything else?
+>> On the last point, is there a problem right now with deficiency in the number of exit
+nodes? I can run an exit node by filtering certain sites, like illegal.
+(Off microphone) do you think it's worth running an exit node? Are you guys desperate for exit
+nodes? >> RUNA SANDVIK: We are desperate for exit
+nodes. But we would prefer exit nodes that are not touching user traffic regardless of
+what it is. (Off microphone)
+>> RUNA SANDVIK: There are absolutely no logs. (Off microphone)
+>> RUNA SANDVIK: Nine. The question was if we have any logs at all. And the answer is
+no, we don't have anything. When you visit our website, you download Tor, we write just
+zeroes in the log or we write all zeroes if you're visiting the HDTP. We don't know ‑‑
+you start up Tor and the only ‑‑ there's sort of two entities that will know you're
+using Tor. Your ISP and the guard relay. They will know you're using Tor. They won't know
+what you're using Tor for. And the exit relay, one will know someone is using Tor to do something,
+but they won't know who. There are no logs. Nothing to be subpoenaed. We cannot be given
+any magical letters to force us to do anything. We don't have any info about our users.
+(Off microphone) >> RUNA SANDVIK: That's a good point. The
+ISP, yeah, the ISP, whoever the backbone provider is, that's a good question. The question is
+if they actually look at that traffic. Is that like a common thing for ISP's or service
+providers on a top level? Does the backbone provider log incoming connections to websites
+that are hosted by people? (Off microphone)
+>> RUNA SANDVIK: If we want ‑‑ if we're going to put together a list of Tor projects,
+is that the question? (Off microphone)
+>> RUNA SANDVIK: Tor apps? So we have a list on our website talking about products and
+services that we had. If you're not in that list, then it is not a project that is maintained
+or developed by the Tor Project. >> Have you ever seen exit nodes attacking
+to browsers? >> RUNA SANDVIK: No. I have not seen any Tor
+exit nodes attacking browsers. >> So for users running, like, the door browser
+bundle, what safeguards are in place to prevent the exit relay from serving up, like, a malicious
+Twitter.com and sending some sort of malicious program back to their computer to kind of
+make a connection on the open Web? >> RUNA SANDVIK: So if there are any restrictions
+on ‑‑ >> Like what kind of protections are there?
+>> RUNA SANDVIK: The Tor blocks a lot of things like Flash and Java and some JavaScript and
+things like that. But like I said, if an exit relay is able to inject a very specific type
+of exploit into the users traffic, then there are no, like, if you can do that without getting
+a user to open an attachment, then yeah. (Off microphone)
+>> RUNA SANDVIK: Okay. So he's waving at me saying we're out of time. We could meet in
+the chillout room and kind of continue there. Thanks.
+(applause)

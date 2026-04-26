@@ -1,0 +1,762 @@
+>>Ladies and gentlemen can you
+put your hands together for
+Maksim Shudrak. [applause] >>Hello DefCon how are you
+doing? [audience cheers] Nice, I
+just uh I had a party near my room all the night so I slept
+like forty five minutes so I,
+I’m sorry if my brain will switch off at some point at this
+presentation but hope we’ll
+manage today. So uh we’re gonna talk about um, zero bugs found,
+hold my beer AFL and how to
+coverage-guided fuzzing and find new zero days in tough targets.
+So, glad to see all of you here
+um, first of all let me thank DefCon goons for having me here
+I’m really excited to speak uh
+at this stage today. Uh before I will actually start uh let me
+introduce myself. So my name is
+Maks I have spoken various uh security conferences around the
+planet, mostly about dynamic
+analysis of machine code, and last year I presented at DefCon
+a talk about Malware fuzzing so
+check it out if you’re interested in this topic. I
+first experience working on open
+source fuzzers such as FNL, RFL, uh contributed to opensource
+framework DynamoRIO, uh working
+on implem-implementing extremely obstruct operating system uh for
+windows malware analysis IBM
+research in Israel. So currently I’m working at Salesforce Red
+Team, it’s an offensive security
+research. Researching for zero day bugs, uh writing exploits
+and doing engagements. In my
+case uh I need to identify vulnerability and write exploit
+uh in a very very short uh
+period of time. And that’s actually why, where our store
+about efficient coverage-guided
+fuzzing begins. So we’re going to talk about fuzzing today,
+right. And what kind of problems
+we-we face uh when we use AFL. Um I will describe what
+coverage-guided fuzzing is and
+explain how AFL actually work. Then we gonna talk about down
+size of AFL and how each of them
+can ruin your entire fuzzing campaign. And in the second part
+of my talk uh I’ll present a new
+coverage-guided fuzzer uh implemented in pure python. That
+uh is supposed to address all of
+this problems and of course we’ll compare it with AFL and
+I’ll show you a couple of uh
+vulnerable I managed to find with this fuzzer. And so what is
+fuzzing? And more importantly
+what is coverage-guided fuzzing. So the general idea uh of
+fuzzing is actually a dream of
+finding a professional procrastinator, right. So you’re
+on a special tool, uh this tool
+mutated in both provides an input into your target and you
+just sit, wait for a crash,
+that’s basically all. Let’s see it on example. Uh let’s say we
+have a very trivial problem that
+crash an input eh pile on it. Uh we start string uh five As uh
+we, we cover this couple of
+lines, program exists, we do it again, and again, until we find
+something that can uh cause a
+crash in the target. Uh in this example our fuzzer need to
+mutate uh the string from 5 A to
+PWNIT, and this is very unlikely and can take hours or even days
+uh to finally find this uh no
+pointer reference so to be able to address this problem people
+invented uh coverage-guided
+fuzzing. Uh people calls, also call it uh feedback driven or
+smart fuzzing. In this case we
+continue mutating, uh our input but at the same time we estimate
+coverage uh triggered in our
+target so if you see that our input led to some new path in
+the target we save this input
+and then perform our sub secret mutation on top of this input,
+we do it again and again, we
+apply the same algorithm for the next finding, we save it, we
+m-mutate the next byte, search
+for potential new paths opened by this mutation, then save it
+again, and mutate the next byte
+uh and you will finally find, uh an input that can trigger a
+crash in our target. So this way
+we can cover the program in steps and actually it
+dramatically increase uh
+efficiency of your fuzzing campaign. So instead of spending
+uh hours or even days uh doing
+blind fuzzing uh you’d be able to find this no pointer
+reference just in couple of
+seconds. So you see the difference. And this algorithm
+with the basic of the most known
+uh today coverage-guided fuzzer called American Fuzzy Lop or
+AFL. So, AFL was created by
+Michal Zalewski five years ago and today it’s the standard de
+facto coverage-guided fuzzer uh
+for bugs hunting. Uh it’s attracting people with it’s
+efficiency and successful
+stories of critical vulnerabilities found with it,
+and it’s very powerful uh
+solution for vulnerability research. Uh especially if you
+have uh source code of your
+target. So I have prepared a short a visualization of how AFL
+actually works. H- so here on
+the screen we have four windows uh in the left upper window we
+can see AFL start to screen, it
+just regular AFL start to screen. In the right screen we
+see number of uh files already
+exist in our queue so as soon w- as we continue mutating uh we
+are increasing our files uh
+number of how our files in, in the queue. And so in the left um
+middle uh window we can see uh
+content of file of actual file that we are going to provide in
+our publication. And it’s in
+hex, and I am in- I am indicating with red the actual
+change that AFL uh performing on
+our input. Uh so you can see it perform a lot of uh random
+mutations in our file and as
+soon as we continue mutating uh this input uh the number of path
+is growing, you can see it on
+the plot on the top uh, on the bottom left uh plot. This white
+background so you can see it’s
+growing and, and in this example uh we uh we do fuzzing against
+seventy it’s just um, let’s stop
+this figure and move forward. So for the past five years AFL
+prove itself to be a very
+efficient fuzzer to find memory corruption box in many different
+uh projects on many different
+plot forms both uh in user land and in the kernel of all widely
+spread platforms uh there’s even
+kernel version of AFL called KFL uh I managed to find a couple of
+boxes this uh tool but this is
+different story. People even search for bugs in a very
+specific places like SCADA
+system switchers, wireless hardware, medical devices. Where
+any problem is software quality.
+And security can cause serious consequences of human life. So
+while mine, many of you might
+think like okay Maks uh my only corruption bugs are cool but
+they’re in the cloud, uh right,
+while this is true uh C and C plus plus remains to be on the
+top of the most used programming
+languages so our world is running on top of C or C plus,
+plus fortunately or unfortunate.
+Uh we can also look into statistics on number of research
+publications on fuzzing year by
+year and we can definitely see the trend. So it’s growing and
+last year it exceeded fifteen
+hundred publications. Eh it’s a very hot research topic today, a
+lot of people play uh with
+fuzzing and a lot of companies invest in this technology. Uh
+Google even has an RSS fuzz
+project where they integrated uh fuzzing within uh
+self-development life cycle of
+one hundred seventy sixty open source projects. Uh they use a
+lot of fuzz CPU power and they
+already identified uh thousand memory corruption issues uh, um
+by January half trillion test
+cases per week. So this high popularity of fuzzing across
+security community means uh it
+is becoming harder and harder to find new bugs in products and
+libraries already covered by
+security researchers uh projects like RSS path right? So we have
+to search for some new strategy
+and be able to perform fuzzing more efficiently than other uh
+tools and be able to perform
+fuzzing more efficiently uh we have to understand what kind of
+issues already exist in modern
+fuzzers and be able to address them. So let’s start with the
+first one and it’s uh volatile
+paths. What does volatile paths? Uh let’s say we have input, uh
+eight As that cover this three
+branches in our target it indicated by green. Uh we will
+take one B and now it covers uh
+three previous branches and two more shown in yellow. Let, so if
+we uh, one second, okay, so if
+we scan the input again in the target uh it again cover only
+the first three paths. So we, we
+send absolutely the same uh input in our target but uh now
+it doesn’t cover a path
+indicated by yellow and those paths uh considered to be
+volatile. They, they do not
+depend on input but parasitically executed in our
+program due to some randomness.
+And it happens pretty often, especially if we work with,
+we’ll just try the top-location.
+And our father actually has a dilemma, what to do with this
+input, uh from one point of view
+uh it can just try multiple times, run, write and then
+reject it uh if it sees some
+path uh appears and disappears uh after each run but what if we
+actually discover something new
+with this test case. Uh, this situation we would reject a new
+finding, uh okay we can keep
+this case and raise the warning for our users uh that’s what we
+actually have in Israel but in
+this case uh if our target is very volatile we can end up with
+a very large of corpus that uh
+actually do not cover anything new at all so we would just
+waste an hour of our fuzzer
+time. Second problem is parallelization uh let's say you
+have a really slow target and
+you don’t know how or don’t know how uh and don’t want to
+actually spend time on
+increasing performance uh of your target right? So you are
+not uh, performance engineer,
+you’re security engineer. So uh AFL uh wasn’t designed to be
+parallel from the beginning. Uh
+of course it’s functionality that allow you to create master
+and slave instances but uh let’s
+discuss how it actually work. Let’s say we have uh one master
+instance and two slaves. Along
+with three files in our corpus. Uh AFL can perform the
+deterministic mutation on master
+instance and random tweaks on slaves. So the corpus will be
+corpus into each instance and
+all the instances will perform mutations uh in each file one by
+one. If one slave finds
+something new this file will be distributed to other instances
+and they will continue mutating
+this uh, this same finding so that’s all actually what we have
+for chance of parallelization
+and effort. Uh it will w-work fine for fast targets and when
+you have small corpus but it
+will much p-perform much poorly on slower targets uh especially
+if we have uh real large corpus.
+So there’s no easy way to distribute this corpus between
+instances and ask AFL to share
+uh code coverage in a smart way between them. And I believe we
+can paralyze uh better here and
+I'll show how a little bit later. Uh another problem is a
+lack of network fuzzing mode in
+AFL at all. So we actually don’t have much f-fuzzers that can
+perform a network uh fuzzing
+coverage-guided network fuzzing uh at all especially on mark. On
+networks we can try some uh
+effort forks or honggfuzz uh on windows there is network fuzzing
+modes uh implemented by me last
+year and we can try hongg fuzzing mark. That’s actually
+all. Unusually when you want to
+fuzz network application the general advice is to somehow
+make your application to receive
+input uh over file instead of actually doing the fuzzing uh,
+by sending network traffic
+right. But it's significantly reduced number of potential
+applications where we can use
+this approach. Uh especially if we deal with black box binaries
+when we don’t have source code
+and we can’t just magnify uh our target. Speaking about other
+platforms such as windows, uh we
+are significantly limited in number of uh potential tools we
+can use. Uh basically if you
+don’t have source code uh there’s winAFL and if it have
+source code and our target can
+become compiled with clang uh we can apply lop fuzzer which is
+basically designed to perform
+fuzzing of uh library APA calls. And that’s all. Uh, all of this
+tools have their own limitations
+of course. Uh on OS X we have even less tools uh, eh, that we
+can use to fuzz user ran
+application. Uh basically we can try to compile our target with
+clunk and use lop fuzzer uh if
+you have source code, uh if not there’s actually nothing that
+can perform coverage-guided
+fuzzing for you, well at least I don’t know about it. And of
+course I’m not the first one who
+wants to address this problem, the a lot of researchers who
+tried to address this issues and
+improve AFL in some way such as AFLFast, AFLSmart, winAFL,
+libfuzzer, QSYM and many, many
+other tools. Uh there a lot of effort to leverage uh
+coverage-guided fuzzing on
+kernel. Uh such as these callers demonstrate incredible results.
+Uh along with KFL three fourths
+and others. Uh I just listed some projects here um, and
+papers published in the last
+year so we can dedicate entire day describing different fuzzing
+solutions and techniques and uh
+there’s a nice paper where you can find uh system wide research
+on all the existing f-fuzzers if
+you go, if you want to go deeper in this topic. And I apologize
+if I forget to include some
+research or tool here, it’s not because this tool is not great
+it’s just be-because we have
+limited amount of space here and of course time. Uh however if we
+summarize all of our
+re-requirements and problems that I described earlier we can
+see there’s a huge uh demand uh
+for a new fuzzer here. Uh this fuzzer should be really flexible
+in ter- in terms of scalability,
+parallelization and platform dependencies and the same time
+it should be able to address uh
+volatile path problem and be able to support uh data mutation
+with uh multiple fuzzing
+strategies, uh eh, eh, in on fuzzing campaign. Of course this
+fuzzer should also support
+functionality that already exists in modern fuzzers that
+allow a user to provide custom
+mutation output to be able to implement specific fuzzing
+strategies or even enable a
+structure where fuzzing, which is very, very promising
+technique uh today. So ladies
+and gentlemen, let me introduction Manul a new
+coverage-guided fuzzer
+implemented in pure python, let, uh tries to address of the
+issues I presented uh on the
+previous part of my talk. Uh Manul was born to be parallel,
+uh from the beginning. It can
+obtain coverage from AFL instrumented binary or from DBI
+uh frameworks like Intel Pin or
+DynamoRIO. I’m trying to support a Linux, windows and there’s a
+better version uh better version
+support of uh, for Mac. Uh I decided to call it Manul after
+the most fattest cat on the
+planet. Uh basically in English it’s called pallas cat but in
+Latin it’s called uh otocolobus
+manul. So Manul is very adaptable cat, capable to live
+when hot, uh in very severe
+weather conditions of Central Asia and I just like this cat
+this is actually second DefCon
+where I present exactly the same slide and this template was
+actually made out of this
+picture so I process this from their network and then just
+applied black collar. Okay
+moving forward. Let’s talk about architecture. Of course Manul
+employed modern based design, uh
+you have network modern instrumentation and modern s- uh
+core, UI, uh mutators
+implemented as plugins, this way y-user can ask Manul to enable
+and disable different putators
+or will provide uh his or her own and ask Manul to use them.
+Uh, if we uh want to understand
+how Manul address volatile path problem uh it’s pretty straight
+forward. Let's say we have uh
+two volatile paths indicated by yellow uh when Manul see our
+input cover something new in the
+target uh we will run this uh input uh couple of times uh it’s
+called calibration in
+coverage-guided fuzzing and then just uh if we see some uh
+randomness in our coverage, some
+random path, uh it will temporarily blacklist uh this
+path uh and ignores them uh in
+the next runs. So first time I found this out it in KFL uh
+kernel fuzzer and I just decided
+to integrate it with Manul probably it was introduced s- in
+some other fuzzer but I first
+found it in KFL. Okay and moving forward, parallel fuzzing is
+default feather in Manul. Uh you
+just need to specify uh how many fuzzing instances you want to
+spin up using the command line
+argument. So Manul will automatically start uh all of
+them and split the corpus
+equally uh to each instance. So in this case uh each instance
+will ha- will have on a smart
+part, uh small part of the corpus, so we will have one w-
+w- this was we can smart
+distribute our corpus uh across instances and we can even spin
+up remote instance on some other
+machine, uh, uh available over network. So Manul will be able
+to share corpus and coverage
+with this remote instance uh like it’s running on the same
+machine, this way you can link
+uh, eh, have your own like fuzzer squasher on top of Manul.
+And basically each instance is
+an independent byte and process that virtualize it’s own uh
+shared memory. Uh at the same
+time uh Manul main process uh will be able to synchronized uh
+coverage and share it across uh
+other instances to always double work for them. So if one
+instance uh found some new path,
+uh in the target all other instances will at some point uh
+know about that and will c-
+focus on something else so in this way we can smartly
+distribute our fuzzing campaign
+across all available corpus. Uh user can easily provider this
+third party mutator with
+plugins, uh so it’s only required to place uh your plug
+in a second folder where Manul
+main binary can locate it. And plugins can be implemented in
+python and should contain init
+and mutate functions. Um so far I have implemented two fuzzing
+strategies by default so you
+already have it in Manul. Uh the first one is AFL strategy uh
+ported from C two python and the
+second one is Radamsa uh distributed as uh native
+library. Network fuzzing is an
+experimental feature. So you can try to fuzz TCP or UDP server,
+it works and you can ask Manul
+to act as a TCP or UDP uh server to, to fuzz some network client.
+But this feature in very better
+stage so expect problems. And blackbox binary uh fuzzing is a
+very important part of Manul so
+by default uh Manual is supplied with two DBI clients for intel
+pin and DynamRio. Uh Manul will
+start a binary using one of this uh frameworks so y-you can
+choose what you want to DynamRio
+or Intel Pin then DynamRio or Pin launcher with start uh your
+target, inject instrumentation
+library, instrumentation library will pen shared memory and it
+will share c-coverage uh back to
+Manul. So pretty straight forward way and I recommend to
+use DynamoRio because Pin is
+only supported on Linux and uh it’s slow. So this is how it
+looks when you’re on it on
+Windows. Uh Manul will launch a lot of python uh processes, each
+of them run DynamoRio, DynamoRio
+launcher will run the target and uh is injected instrumentation
+library and then instrumentation
+library will provide coverage back to uh python process,
+pretty straight forward. Uh this
+is interface, we have information about volatile
+bytes, coverage, number of
+iterations, crash, uh exceptions and many other useful things. Uh
+and it, it also has its own
+logging implement as [inaudible] so just, just to have log, each
+tool should have logger. So
+Manul supports seven most used options where command line and
+dozens of fuzzers should be
+provided uh in their configuration uh and this way
+you can uh adjust Manual for
+your own purposes. And let’s see it in action. SO this is Manul
+main folder with a lot of files
+uh for different platforms, we have the main script here, uh
+network model, uh utils, uh AFL
+mutat-, uh for printing model, AFL mutator poses from C to
+python, that’s the binary for
+Linux configuration file uh we can look the uh code is just uh
+straight forward python code,
+nothing fancy here. I try to make it as clean as possible to
+be able uh people to contribute.
+So we have uh also uh AFL imported from uh C to python we
+see a lot of different uh
+strategies uh from AFL and w- we have couple of folders. In
+windows folder we have uh
+folders for DBI, and instrumentation libraries for
+sixty-four and thirty-two bits
+and same for linux. So you can just, uh, uh launch them and run
+against black box binaries. And
+if you look to the command line options it’s again like uh any
+other fuzzer, you have to
+provide a path with your files that you want to submit at your
+target output, number of
+parallel fuzzers, uh switch between dump or smart mode, uh
+you can provide path to
+configuration file there’s more options and you can restore
+previous session. So if you’re
+looking to configuration file we can find much more options so
+they should be provided in this
+file format so just option there, splice that equal values.
+Uh we can enable dictionary for
+uh AFL uh strategy so AFL will inject targets and we also can
+um assign w-weights for AFL so
+in or radamsa for example we can say uh radamsa should mutate
+twenty percent of our test cases
+and AFL eighty percent. Or we can enable our own uh fuzzing
+strategy uh just by specifying
+it’s name for example we can say, example mutator should
+mutate twenty percent of our
+test cases. We can run this deterministic seed, uh we can
+run uh print uh more
+information, we can disable this volatile paths uh suppression
+algorithm uh that I showed uh
+previously. And to be able to start uh black box binary
+fuzzing you have to specify
+which DBI framework you want to use. So it’s DyanmoRio or
+IntelPin uh if its’ DynamoRio
+you have to provide DBI route where it’s located, uh the
+launcher uh then client, uh
+supply it with Manul and you can also specify for Manul what kind
+of libraries you want to uh
+instrument uh along with uh your target binary so this way you
+can include them in your cot
+cov- coverage. This timeout uh also this options net config
+master netconfig slave can be
+used to uh spread Manual over network you just need to specify
+port and IP address uh you can
+run it uh in debug mode if you, if you need more information.
+Synchronization between uh, uh
+different uh fuzzing instances and we have command line fuzzing
+uh as an experimental feature
+just uh in this case Manul will send it over uh command line.
+And to be able to enable network
+fuzzing you just need to specify the end port, uh for example and
+protocol so for example instead
+of TCP or IDP we want to fuzz it over TCP. And we can also ignore
+signals, for example single
+port, which is quite annoying, uh if uh it, it, it will
+consider it as false positive.
+Okay we can actually start it, so we just need to say where is
+my binary uh input folder, then
+provide uh output folder in this case we will we are doing
+fuzzing against [inaudible] uh
+then number of um parallel threats, like twenty for example
+then pass to our main binary
+line an AFL and then uh command line, like options and that’s
+all. Then, then just enter, uh
+it will spin up a lot of instances uh each instance will
+perform its own mutations then
+you can see the dry run is finished uh so it’s running we
+already identify uh c-, identify
+a couple of crashes and the lot of other useful information like
+coverage statics, performance,
+executions per second uh files I queue uh timing, uh what kind of
+mode we are running and
+strategy. Okay so I guess we can stop it and move forward. Now
+let’s discuss uh vulnerabilities
+that I managed to find with this tool. So Poppler i- is an open
+source library for internet PDF
+documents mostly used on Linux. Free software products like
+Evince, LibreOffice, Inkscape,
+is by millions of users across the world integrated this
+library for PDF documents
+handling. And Poppler participate in Google uh, uh
+fuzz program which make it,
+makes it much harder to identify new vulnerabilities uh and this
+target is an AFL and lop fuzzer
+because Google already generated three months of test cases so
+you uh, we just don’t have
+enough uh ICP power. Okay, so I decided to try the same setup
+code with corpus four hundred
+and ninety-one PDF files uh used by OSS-Fuzz uh and run the
+latest version of AFL and Manul
+for twenty-four hours uh with seventy eight uh parallel jobs.
+As you can see on ours, AFL was
+approximately twenty-five prevent faster compared to Manul
+but execution speed is not uh
+the key factor here. If you compare paths uh found by Manul
+and the AFL we can clearly see
+that after nine hours of running uh Manul managed to outperform
+AFL and continue discover uh new
+paths in the targets uh fuzzers in AFL. And this was possible
+because of their improvements uh
+that I introduced in the second part of my talk so our corpus
+parallelization plus volatile
+path suppression plus combination of two mutators uh
+give us much better results
+despite of uh lower execution speed. And more importantly uh
+Manul managed to discover three
+uh zero-day vulnerabilities and five non-security related bugs
+in Poppler uh previously of
+course are known for developers. So uh next assigned the
+following CVEs for this
+vulnerabilities from medium to critical server reacher rate and
+let’s actually discuss couple of
+them. Okay so the first bug uh the first bug uh is a heap
+overflow that exist in down
+sample row box filter which is called by down scale image in
+lib cairo library and this
+version is actually used to downscale JPG images that may
+exist in PDF objects, uh I don’t
+want to go deep into technical details here uh it’s not
+important uh all we need to know
+is we can use um, uh w-we can trigger heap overrun by
+controlling basic coverage
+variable uh I marked as red and force this version to read out
+of heap junk to variables A, R,
+G and B. And at line forty we can write these values to the
+destination buffer, to the best
+of my knowledge uh I don’t’ see straight forward way to exploit
+it but most likely we can use
+this uh,uh approach this vulnerability uh to get some
+point or link out of this
+vulnerability which might be very useful if you want to
+bypass SLR. Uh okay the second
+bug is located in GPX three million, uh this version doesn’t
+have a check for negative values
+so I highlighted in red where Poppler read uh bufsize which we
+can control and call to unsign
+the chars version without actually checking size of
+bufsize. So in this fashion to
+unsign the chars an initial size can be very large uh so it makes
+possible to allocate uh really
+large heap chunk of arbitrary size. Uh we can use this block
+as a second stage eh in house of
+force for heap metadata exploitation uh where we need to
+allocate a large chunk uh to be
+able to force malloc return an arbitrary point uh, uh pointer
+to arbitrary place in our, in
+our target binary. Okay the last bug is more dangerous. Uh here
+we control variable I that can
+be negative which might cause an integer sinus error and keep and
+out of bounds read un controlled
+by an attacker. So if I can satisfy the first condition and
+avoid this really really huge
+statement uh basically what we can do we can return another st-
+an arbitrary object uh in memory
+which is uh already pretty scary. So the caller function
+will check uh if this object is
+not zero and then uh call one of it’s methods which is pretty
+straightforward way to get
+control over RIP so I indicated uh in red, w- this is our
+function get entry and then we
+just call entry to get flag, and instead of get flag we can place
+a pointer to any place uh th- t-
+to any fashion that we want. Uh the other problem here is to
+prepare this object in the right
+way and allocate it in the right place but I believe it's really
+possible uh so very straight
+forward to explore this vulnerability. Okay uh moving
+forward. Zeek, uh formerly known
+as Bro Ideas. Uh it’s evolved uh most powerful open source
+framework um used by thousands
+of companies and institutions uh across the planet. Uh there are
+lot of very powerful plugins for
+Zeek such as J three design and to fingerprint uh SSL
+communications uh which is a
+very powerful technique to detect suspicious uh and
+encrypted connections usually
+performed by malware to communicate with C two or write
+human plant communicate with C
+two depending what we’re talking about. So this project even has
+its own conference called Bro
+Con uh which takes place in Ireland on every October. So
+afters of Zeek is very aware of
+memory corruption issues and fuzzing technique in general uh
+because even as simple deny of
+service is completely unacceptable for such type of
+security products. So the
+qualities pretty high, I would say v-very high and they have
+done multiple fuzzing companies
+in the past so it was actually seriously challenge for Manul.
+Unfortunately, Zeek has very
+complex initialization routine that usually takes up to ten
+seconds to initialize and start
+uh traffic monitoring and it was very really early stage of Manul
+that it was like just couple of
+python scripts. So in this case uh if you t- if your target
+takes ten seconds to initialize
+it’s completely unacceptable for fuzzers to wait for ten seconds.
+Uh fortunately they have done a
+couple of fuzzing campaigns in the past with lop fuzzer uh so I
+managed to find an example of
+this with its long utilization routine. So all we need is to
+implement a special router for
+each protocol we want to fuzz and an example of such fuzzer
+for SSH protocol um uh shown on
+this slide along with other ten uh protocols. So I run both
+fuzzers for twenty-four hours
+with uh seventy-eight parallel instances for each protocol and
+managed to find three previously
+unknown vulnerabilities and AFL found zero bugs. Uh this is a
+list of vulnerabilities they
+found uh two of them allocated in Kerberos and the last one in
+IRC protocol implementation. So
+while fuzzer most application memory leak is not a big deal uh
+for Zeek might cause a serious
+issue if memory is not free uh in a p- packet process and
+function so memory leak in this
+case is a memory allocated on the heap but never freed. In our
+case we have memory leak in the
+function uh shown on the slide at number one, uh so, so each
+Kaberos packet will cause Zeek
+to allocate around one hundred thirty kilobytes of memory which
+will never be free later in the
+code and we need to send a lot of packets to force Zeek uh
+allocate this a lot of memory on
+the machine. And finally cause in our service I was able to
+write a simple exploit which
+usually takes about seven, eight hours to force Zeek uh allocate
+fifteen uh gigabytes of memory
+leading to crash. But sending a lot of packets is a bit boring
+right? Uh what about one packet
+that can cause a deny service and stop network traffic
+analysis remember IRC protocol a
+decade ago it was a very popular way to communicate with people
+in IRC chats using ICQ so the
+protocol is text based and pretty simple uh you have a
+numerical code uh command space
+and then user string. For example using command three five
+three uh which is numerical code
+for Nick then space the name, uh will assign a nickname in IRC
+chat for you. Uh but if I send
+this command without actual nickname, uh so the function
+party begins uh part begin uh
+will return zero uh then parts erase will be called with this
+zero which will finally
+obviously lead to no pointer to reference and segmentation
+fault. However IRC protocol is
+not enabled by default and we actually need something else. Uh
+it’s usually uh up to uh blue
+team to enable or disable uh monitor of IFC. But the last bug
+in Kerberos protocol was a bit
+more complex so I don’t want to go deep into technical details.
+So this problem I actually uh
+don’t’ uh quite understand it at, at this point, hah, anyway.
+But it seems like there’s an
+integer type mismatch and big pack generated parser code and
+Zeek uh analyzer itself uh that
+potentially can cause an unintentional paths in some
+situations to be executed
+leading to no pointer to reference uh in the Kaberos
+protocol parser and usually it
+happens like ninety percent uh of the time. So we just need to
+send our packets three times
+instead of one. And let’s see it in action. So we’re on the linux
+machine we have two files, uh
+the first file is the python script that will connect to
+Kerberos server and it receive
+an AP port and path to the file with malformed Kerberos packets.
+Uh the second file contains
+actual data so actual malware Kaberos packets and we have a
+virtual machine with uh Zeek and
+just to make it simple our Kerberos server script is also
+placed uh, on, on this virtual
+machine. So, in this script we have uh to specify AP and
+default Kaberos port which is
+eighty-eight and file that we want to use for response. So
+let’s actually start it. And uh
+I would just uh n-need to specify where the scripts uh
+file that we want to answer,
+then we can run uh Zeek itself it’s just uh w-we have to
+specify a name u interface that
+we want to listen on and this our IP address, basically it’s
+just like local IP address of
+our virtual machine. But again this Kaberos server can be
+placed anywhere in the network.
+And now we can just uh run uh this client we just need to
+specify API address, uh port and
+our uh packets. So it already assigned and we can see
+segmentation fault and uh like
+stop of network analysis. So this is a pretty straightforward
+way. So there is really
+pre-pretty straightforward way to disable traffic monitoring in
+the network and uh then
+communicate with uh malware uh with C two uh or do some great
+human engagement on top of this
+finding. And I managed to catch more bugs with Manul in other
+applications such as an open
+source uh tool 7-Zip it’s Linux version p7Zip and unarchiver for
+Mac. But unfortunately, this bug
+is still waiting uh to be punched by maintainer, for
+example for P7-zip last time he
+was online was two thousand seventeen, I hope he is fine, so
+again this bugs are waiting to
+be punched. Uh I’m not going to disclose them today but I’ll
+definitely publish a post about
+this in future when uh the maintainers will fix it. Uh two
+of them allow remote c- like
+code exec arbitrary code execution. Of course Manul is
+now in better stage right?
+There’s a lot of functionality that wasn’t tested deeply enough
+such as anything related to
+network uh any help contributions more than welcome
+here. Uh what is strongly
+required for now is AFL forkserver to be able to speed
+up Manual and perform network
+fuzzing more efficiently uh I also want to add Intel PTrace on
+Linux and Windows uh I believe
+Manul can be even stronger with uh structure-aware fussing. So
+more mutation algorithms again
+is strongly required. And uh basically on MacOS we have a lot
+of stuff to do. This point of a
+lot of future work uh Manul already demonstrated that it’s a
+very efficient coverage-guided
+uh fuzzer that can catch bugs in really tough targets already
+tested by uh top security
+researchers and I’m going to I already released uh like fifteen
+minutes ago uh it's already
+public uh its released under a punch two point zero license so
+you can already pull it from my
+GitHub account and find your own zero days with this still. So
+you can subscribe to my twitter
+account, email me on linkedin if you have and c- any questions
+you can catch me later at DefCon
+uh this after this talk or PM me on Twitter, so thank you for
+your attention.

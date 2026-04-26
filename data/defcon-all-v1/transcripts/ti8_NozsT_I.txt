@@ -1,0 +1,151 @@
+Welcome. I'm going to get up
+here and talk a little about some research I've been doing
+about LTE emissions, not so much looking at protocol or data but
+just what can we see flying around in the air and I'm going
+to do it with RTLSDRs. A couple of people who have made this
+talk happen. A few years ago Melissa Elliot did a talk and
+when I saw that talk, that inspired me to take up that
+research. This guy has done -- >> I'm going to give you a quick
+primer time of arrival, direction finding and then I'm
+going to talk about why the RTLSDR is a terrible radio. And
+then go over some of the processes I'm using to do
+direction finding with RTLs. So here we are. We have a boat in
+the water that's really hard to see. You're 1940, battle of the
+Atlantic, World War II, how do we find the U-boats? They have
+these antenna masts on the top that occasionally when they pop
+out of the water emit signals. Those signals are encoded
+messages, encrypted messages, but they are still RF emissions.
+Anyone can pick them up. You don't have to be able to decrypt
+them to be able to put up your antenna and receive that data.
+So then we get a whole lot of these guys. They put cans on
+their heads and turn a whole bunch of knobs and try to figure
+out what the position of that signal is through a few
+different kinds of techniques using very expensive, very large
+equipment. The wavelengths on these transmissions were huge,
+so to do direction finding you need national infrastructure or
+at least real estate to park lots and lots of antennas. This
+guy is on the Wikipedia page for fox hunting, which has become
+the modern approach to direction funding. It's a really fun thing
+where somebody goes and puts a radio out in a state park and
+you get your antenna and your headphones and you go and try
+and find it. I guess you need a trendy head band. So it's going
+to get a little technical. This is how direction finding
+happens. The principle here, like the main piece of math, two
+antennas are going to receive the same signal and we're going
+to compare the time difference to get a line of bearing to the
+transmitter. So basically what happens is the transmitter fires
+off a signal. This is something you have to have a bursty or
+discreet signal. Receiver B has a later time stamp. We have an
+identical signal traveling at or the same signal traveling at the
+same speed through a constant atmosphere. So a lot of
+assumptions here. To arrive at two known positions. Based on
+the distance between the receiver and the distance and
+the time of arrival or the difference and the time of
+arrival, you can create a hyperbola. We don't care about
+modeling the hyperbola. I just want to know what the assets
+are. So if you dig back into your high school trig, if you
+take the cosine of the angle of the attack or line of bearing,
+it's going to be the time of arrival divided by the distance
+between the two points. So using that we can draw two possible
+lines that this transmitter can be from. If you only have two
+receivers, you're always going to have two different places to
+guess and go look for it. So how do we solve that problem and get
+to position? This is classic try angulation. When people say I'm
+going to triangulate your signal. We have three receivers,
+we're going to take those same cosines of the angles to get six
+lines. Three of the lines are going to diverge off into space,
+hopefully three of the lines are going to converge. If you've got
+clock drift in your radios, terrible RSTRs, sometimes all
+six lines diverge and you just have to wait for everything to
+sync up. So we talked about the history of direction finding.
+I'm giving you a little bit on the math that's behind time of
+arrival. How many of you guys have heard of an RTLSDR?
+Awesome. Okay. They're cheap. That's something that I really
+like about playing with them. Especially if I need three of
+them, I'm not going to go out and get 3 RLFs. It's a lot of
+budget for an entry level exercise. But the RTLSDRs it's
+like all right they're like $16 on the Internet. How bad can
+they be? I'm using the E 4000s because I was interested in
+tracking LTE signals and I had to get up into the higher band.
+If you buy a brand new LTSDR, it's a new chip that doesn't
+tune all the way up to LTE 1900 which is what we have here in
+Las Vegas. So this product with newer radios, you've got to find
+the newer band. This is the E 4000 on the right. On the left
+is the stock terrible antenna that comes with the E 4000. But
+that stock terrible antenna and the E4000 are able to pick up
+clean ADSB signals that are coming off the airplanes, flight
+identifiers, that kind of information. If you go on Reddit
+and say I want to pick up ADSB, everyone is going to tell you
+you've got to get a better antenna and run wires up to your
+house and throw away the antenna that comes with your chip. Don't
+do any of that. Just use the stock antenna when you're
+getting started playing, it lowers that initial investment
+and it works. I mean, this was live data from actually from
+here this morning. Yeah. It's not garbage. It's terrible, but
+it's not garbage. (Laughter.) You want to get started, it will
+work. So this is my disclaimer. I am not a radio guy by trade.
+I've definitely done a lot of analysis of precollected
+signals, but digital signal processing is not my formal
+education. So I'm about to do a lot of terrible things. Let's do
+direction finding with the RTLSDR. So we said before we
+that need to have three antennas to do position direction
+findings. So I'm going to buy three of these $16 things and
+hook them up to my PC and it's going to work, right? There's my
+RTLSDR. I'm going to replace each of the transmitters, each
+of the receivers with RTLs and it's just going to work. It's
+not going to work. One of the major problems with these is the
+oscillator is extremely sensitive to temperature. If you
+have like a fan blowing near your computer and you have two
+RTLs sitting next to each other and one is getting the fan more
+directly than the other, your center of frequency is going to
+drift frequently which breaks time of arrival. There's also
+issues with the clock. Because they're coming in over USB, if
+you try to synch two of these devices on the system with the
+CPU, there's bus lag from the USB, the temperature sensitive
+oscillator is going to break down all your calculations. You
+are going to attempt to geo locate something and it's going
+to tell you it's 25,000 miles away and doesn't make any sense.
+So what do we do about clock synchronization. It turns out
+the reference has a pin that you can use for clock in. So all
+you've got to do is crack open your $16 radio and solder on the
+clock out from one of them on to the other two and now you're
+using the same system clock for all three devices. You're not
+trying to sync on the CPU and you can do a little bit of
+direction finding if you get a good signal. And there's a rig
+with three RTLs sharing a single clock. So like I said before, it
+doesn't make the RTL a great radio. It's still bad. But with
+a little bit of clock sync and math and good signals, you can
+go and direction find devices using a couple of RTLs. Three
+RTLs. Bursty digital columns. This is where it works. This is
+where we get into why I chose LTE. When I was surveying the
+space around where I live, there were a lot of LTE up links I
+thought it would be really cool to track all of the cell phones
+and some of them are cars and other devices but I'm assuming
+if it's LTE and uplink, it's probably a phone. GSM is also
+good, it's pretty wide. It's not as loud. It's closer to the
+noise floor and the RTLs really struggle with that because
+everything looks like noise on one with the stock antenna. CB
+radio is pretty good too just because it's super loud. A very
+clear signal when you're trying to play with this.
+Walkie-talkies are the same way. A lot of construction guys
+around us that I've been able to put very precise dots on where
+they're sitting in their yellow iron. One of the other things
+that's kind of exciting, this is a signal that I collected in the
+U.S., and you'll see that it's in the 900 uplink, or maybe you
+can see. There's some numbers right there. That's not a
+licensed band for GSM in the U.S. That's a European channel.
+So this was a signal I was interested in geolocating
+because obviously somebody is using a system that is either
+completely undocumented or they shouldn't be. And because the
+width of the signal is fairly wide, unlike kind of the
+walkie-talkie CB stuff that gets narrow, if the clocks drift on
+the RTLs and my center frequencies get off, my time of
+arrival is still the same. And I'm going to show you if I had
+one RTL where the true center of frequency is slightly to the
+left of where I'm trying to tune it and another slightly to the
+right, I'm still going to get the same time of arrival. So
+that's why LTE is easy to track with three RTLs. And that's my
+research so far. I'm going to be hanging out at the wireless
+village tomorrow if anybody wants to see this thing fly. My
+Kibana box does not plug into a VGA so I'm not going to show it
+live in here. Thanks for coming out. (Applause.)

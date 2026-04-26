@@ -1,0 +1,899 @@
+And so for our last talk of the
+day I think this is going to be
+a big one these guys have a lot of information to share with you
+guys with some really
+interesting stories and background. Without further ado
+I'd like to introduce Thor. [
+laughter ] I'm just kidding. This is Ladar Levison and
+Stephen Watt who are going to
+talk about Dark Mail. Give it up. [ Applause ] [Applause] >> I
+know everybody gets upset when
+it's time to get down to work they just want to keep watching
+the video. We're here the talk
+about Dark Mail. Unfortunately we're not calling it Dark Mail
+any more. Like all the really
+catchy names, domain keys, pretty good privacy,
+they all tend to change,
+lengthen when you go through that standards
+and formalization
+process. And I think the entire point to
+lengthen it just so you can turn
+it back in to a shortened acronym. There's a pay phone
+joke in there I'm just not sure
+it's funny so I'm not going to tell it. But you can make up
+your own later. I figured the
+easiest way to explain what DIME was, was to draw it all up on a
+black board and take a picture. Did everyone get that? get your pencils ready I'll do
+it one more time. Oops. How did
+that get there? Those private keys are supposed to be
+private. What is DIME? It's two protocols, two formats and
+management and configuration
+record and DNS system. We've got the Dark Mail
+transfer protocol, which is an
+unauthenticated protocol that provides inner domain message
+transfer and key look ups, we've
+got the Dark Mail access protocol. Which is
+authenticated, handles
+persistent access to messages. Synchronization of Caches and
+key information. And a
+submission protocol. It's worth noting even know DMAP and DMTP
+are pictured together on that
+slide I'm only trying to indicate that both are on a
+server they don't necessarily
+have to be on the same server. Just like mail is today. The
+formats, we have a Signet, which
+is a signing and encryption key along with collection of
+attributes and a signature very
+much like what we're familiar with when it comes to PGP public
+key. Or X509 certificate. Of
+course, it's neither of those. Don't call them either of those
+call them a Signet. Like a
+Signet ring. We've got the dark message format which is
+mine‑like as we'll get to later.
+It breaks up the mine structure in to independent chunks that
+are encrypted with different
+symmetric keys. And the goal of designing that was to basically
+create a format that would
+translate lost-lessly between mine and the format. The only
+information that is lost is
+actually the original mine boundary. And since that happens
+to be something that is easily
+fingerprinted, losing that information might actually be a
+good thing. So, we've got this
+complex ecosystem that we're trying to build here, it's all
+up here, all I need now is an
+easy button. There was supposed to be audio file that plays. An
+easy button that would turn it
+all in to working software. But in lieu that have I have
+Stephen. I tried the Apple key,
+that didn't work. Tried the Windows key, that didn't work
+either. And then I went looking
+for the Linux key and I just didn't find it. Like to point
+out even they we use the word
+"Dark" quite a bit we never follow it with the word tangent.
+I think it's important to spend
+a few minutes talking about why something like DIME is so
+important. And why it has to be
+as complex as it is. The original idea was actually far
+simpler. It was centered around
+managing the key generation and look‑up process for PGP. And
+because of everything that has
+come out in the last year we've really had to expand what we're
+trying to accomplish to include
+both minimizing the leakage of metadata and create a system
+that was resistant to
+manipulation by advanced persistent threats. And
+unfortunately each one of those
+additional goals only compounded the complexity of the ecosystem.
+By a few orders of magnitude
+each. But I think it's important because with the type of
+metadata collection that's going
+on today we have guilty by association. Imagine being
+placed on a no‑fly list because
+you happen to sit next to a criminal at a convention like
+this. Or the problem of mass
+surveillance, record everything and let the NSA sort it out. And
+then of course there's the
+problem that I came in to, which is the idea that as a service
+provider I'm beholding to my
+customers, those are the people who I serve without them the
+business does not exist. And
+here's this entity that comes along with a bunch of guns and
+piece of paper that says you
+have to betray the people that are funding your business. It's
+creating a crisis of confidence.
+But I'd use a couple of excerpts from my own case, this is a
+court transcript and as you can
+see from the judge's very own words that today the court feels
+that they are entitled to access
+everyone's information. And the only way we can stop that is
+through the introduction of end
+to end encryption. But in order for everyone to start using
+end‑to‑end encryption, we need
+to make it easier. We need to make it Auto‑magical. And making
+security and cryptography happen
+automatically while remaining secure and doing it for e‑mail
+while preserving all of the
+functionality that e‑mail provides is actually a very
+technical difficult challenge. I
+touch briefly on what the goals were but I think it's worth
+reiterating them here. PGP and
+S-mine give us author validation and message confidentiality but
+don't do a very good job at any
+of the other goals. Dark Mail was really started to achieve
+these additional bullet points.
+And it meant building a system that was both secure, automatic
+and could be accessed from
+different types of clients on different platforms with
+different types of constraints
+in the very same way that we access e‑mail today. And that to
+do it and build it in a way that
+can handle Internet scale. Last time I checked there were about
+three billion e‑mail users on
+this planet. That's the reason I got in to the business, I knew
+I'd never have a shortage of
+potential customers. But doing that while also minimizing the
+leakage of metadata is
+incredibly difficult. Might be why we borrowed the onion
+concept from TOR. Now we're not
+TOR. But we do come a lot closer to limiting the amount of
+information that a service
+provider has available to turn over. And the goal is really to
+get the leakage down to what an
+attacker could discover through extensive traffic analysis of
+the entire Internet. Not that
+anybody actually does that. But the idea is if they can see
+every DNS query you make and
+they can see every encrypted packet where it flows to they
+can discern certain things. They
+may not be able to discern who you're talking to but they may
+be able to discern that you sent
+a message to your provider and that provider handed it off to
+this other provider. And the
+thing is we need to make it bulletproof. I thought I'd use
+this other example from my own
+case to illustrate why the protection of metadata is so
+important. Here I am in court
+saying that I would like to tell people that the FBI is asking
+for my SSL private key and in
+response to that request the prosecutor stands up and says,
+"Well, we know he's been talking
+to the EFF and to other attorneys who have been
+associated with Wikileaks cases
+in the past." Now, I was a little taken back by that
+because, one, how did they know
+that. I didn't know that. I'd spoken to maybe a dozen
+attorneys trying to find
+somebody who could represent me in four days that I had to find
+one. But then as I thought about
+it more I started wondering, well how do they even know that
+in the first place? What
+happened to attorney‑client privilege? How bad has it really
+gotten? And it's become clear
+that if they can find the tiniest of openings they will go
+in and take everything.
+Theoretical is now reality. The impractical has already been
+deployed. Now, can anyone spot
+the typo in this sentence? It's actually my second favorite
+excerpt. In the court's haste
+they forgot to substitute the word "Google" for the word
+Lavabit. If you read that
+sentence again with the word "Lavabit" it actually makes
+sense. On the next page, though,
+we see why I put this slide together. They were coming in
+and not only do demanding the
+encryption keys but the source code that was used to protect
+the system. Think about that.
+Think about what we've been talking about the last couple of
+days with firmware exploits and
+hardware exploits. And then ask yourself, do you really think
+they're finding those exploits
+based on binary dumps of Bios or starting with the source code. I
+think I already know the answer
+to that question. I actually had to go to court to get B, C and D
+unredacted. Because I wanted to
+be able to tell people that just communicating with somebody now
+makes you a co‑conspirator. It's
+enough of a justification for the court to issue a warrant for
+your communications, they call
+it hopping. Like such a friendly term associated with bunny
+rabbits in a field would make it
+any better. So if I sound a little bit upset, it's because I
+am. I'm not upset that I got
+railroaded and I had to shut down my business. I'm upset
+because we need a mill Spec
+cryptographic mail system for the entire planet just to be
+able to talk to your friends and
+family without any kind of fear of government surveillance.
+[Applause]  I'm upset because
+I thought we won
+this war back in the the '90s when we earned the
+right to have secure
+cryptographic algorythms to encrypt our communications. I'm
+upset that I need to take our
+e‑mail which is traveled around the Internet unprotected for the
+last 40 years and stick it in an
+M182 just to feel safe. I'm upset because you shouldn't need
+an Abrams tank for your e‑mail
+just to keep anybody from reading it. And I'm upset
+because the design for DIME
+needs to be resistant to manipulation by a three‑letter
+agency with 40,000 people and
+$10 billion annual budget. Did I the math, their budge set a
+little bit bigger than mine.
+This is who you should worry about. These guys, too. They
+have guns. Probably mention
+these folks, too. And of course if one kid on the playground has
+a toy, everybody else wants it.
+So you start to understand we don't just need DIME, we need it
+yesterday. I keep telling
+Stephen that but it doesn't make him go any faster. So, I've
+talked about what it's going to
+do and before I get in to how it does it, I'm going to talk a
+little bit about the weak spots. The first one is the DNS system. Yes, DNS SEC helps. But in the
+real world it's only been
+deployed on less than 1% of all the domain names out there. And
+the simple fact is, if somebody
+can hijack your domain, your DNS entries, they can point your
+domain at whatever server they
+want. Now we've built in a concept called the chain of
+custody check. Which can be used
+to ensure when you're communicating with somebody over
+a period of time and they have
+rotated their keys that the new key information will sign by the
+previous. So if the domain does
+get repointed at a new server, all the people who communicated
+with people on that domain in
+the past would get chain of custody warnings. But everybody
+else, everybody who is hitting
+it for the first time wouldn't know any better. The other
+problem with DNS is that it's
+very leaky. We still don't have an accepted standard for
+encrypting our DNS queries which
+means if somebody sitting on your upstream link they can see
+every DNS query that you do. I
+think that's interesting because we also rely quite heavily upon
+DLS which has the OCSP protocol
+built in to the latest versions. Which check for the revocation
+of a certificate and they do it
+over unencrypted channel. So somebody can actually sit on the
+link for the OCSP server for a
+certificate authority and actually see where particular
+people are coming from when they
+access that domain because that very same IP is going to fire
+off a request to that OCSP
+server. If the FBI had been a little bit smarter they may have
+been able to discover the IP
+address information that alluded them by doing that very same
+attack. Without actually taking
+my private key. If your password is "Password" nothing I do will
+save you. Now we've designed
+mechanisms in to the authentication scheme that will
+make brute forcing more
+difficult. But ultimately it still comes down to you. And like
+the God father told me, humans
+are a very poor source of entropy Our devices as we're
+learning have a very horrid
+track record when it comes to security, particularly consumer
+devices. They stand very little
+chance of defending you against a sophisticated and determined
+attacker, particularly one with
+physical access. You also have problems with things like poor
+implementations. Even if you
+have good online hygiene and you're using open BSD, if the
+entropy provider for your random
+number generator gets commented out your crypto won't be
+secure. We can thank Devian
+for that example.  The algorithms themselves, the thing
+about cryptography you can never
+prove something is secure, you can never prove it's insecure. So
+just because we don't know of a
+vulnerability doesn't mean somebody else does. And then of
+course if you buy in to all of
+the hype we've only got so many years before the bad guys
+develop quantum computers can
+break the crypto anyways the way I look at it we got at least 20
+years for that to happen.  We still depend
+on programmers. And the number of programmers who
+understand how to make complex
+systems work and make them work securely is still very, very,
+very small. Seems like all the
+people who know a lot about security like to get in to
+Dev‑ops and system
+administration and very few follow my path and Stephen's
+path and end up as programmers.
+We need more. People who understand how systems work,
+understand how they're attacked.
+And can build defenses directly in to the architecture and
+design of the system. I think
+it's funny that all of a sudden keeping your attack surface
+small has become all the rage.
+Been doing that for like 12 years. We have the problem that
+everybody likes using a web
+browser on the web mail system with client written java script.
+Yeah, we can do the crypto on
+your device but if we're loading the code to the client off of an
+untrusted server kind of open
+yourself up to attack. Just ask hush mail. And then we have the
+problem that bull run had a $250
+million budget. Annually. Do you think they're just going to
+return that money to the
+taxpayers? They're going to keep coming after us, I thought I'd
+be fair to issue a little
+warning, I think what we need to be afraid of is that if
+everybody started using
+something like DIME and ZRTP to communicate it wouldn't be too
+long before we started seeing
+vulnerabilities embedded directly in the silicon. As kids
+we like to play a little game
+called "Where's Waldo". Our kids might actually get to play
+"Where's the clipper chip". Make
+something like this look a little more useful. All right.
+Time to climb back down off my
+Soapbox and get back to talking Dime. I've decided that I don't
+just want to create a
+specification hope the world listens to me. I think the best
+way to prove that DIME is
+secure, prove that DIME functions is to build it.  I'd like to introduce Magma
+and Volcano. Magma is the
+server and Volcano is the client. >> All right. We're
+going to do a quick little visual demonstration here
+hopefully everybody is going to
+be able to follow this as much as possible. What you're go fog
+see right now is called volcano
+and that's the client we've been working on a Thunderbird for it.
+As Ladar mentioned one of the
+important things about this, this is all usable in a ‑‑ with
+a friendly experience for
+everybody, it's familiar to them. So just to give you a
+little taste of this here, start
+this off here. See our little custom branding here. And we're
+going to start off by composing
+a new message so in the first example case here I'm going to
+be sending a message and the
+first recipient here is going to be Ladar. This isn't pausing
+like it was supposed to so I'm
+going to start talking a little bit faster. As you see there to
+the right the Cigna information
+for Dark Mail recipients that only shows off if you're sending
+e‑mail to a Dark Mail protected
+domain. The second case here we're going to send an e‑mail to
+a domain that's not encrypted by
+Dark Mail. This is an e‑mail I got from actually Keith
+Alexander uses this one to send
+e‑mails to one of his buddies at Google. I don't know if you can
+read that. As you see there the
+address cannot be found when you attempt to send it you get this
+warning dialogue saying that, at
+least one of the recipients is not protected by Dark Mail. Then
+finally we're going to try to do
+a mixed recipient message where we have one user that's
+protected by Dark Mail as we saw
+before, Ladar's e‑mail address then we're going to use that
+same G‑mail address and as you
+can see there once again you get the little warning icon, the
+address Cigna cannot be found if
+I attempt to fill in the body of the message and the subject and
+send it we're going to see
+another warning message popped up. So it's our hope that we can
+badger the users and
+administrators of these domains in to protecting themselves
+properly. The last little bit of
+information here we're going to go in to DEF CON presentation
+folder here and click on an
+e‑mail that has been received from a Dark Mail sender so
+again, you see there's a
+completely different graphic representation of how that
+looks. Sorry I wasn't able to do
+a live demo here today but I wasn't quite adventurous to
+trust transmitting across a
+network in this sort of environment seemed a little bit
+suicidal. I'm in to self
+deprecation don't want to humiliate myself in public by
+everything somebody hijack my
+session. I'm going to turn it back to Ladar for a second.
+[Applause] >>  What Stephen
+illustrated quite perfectly that somebody doesn't need any
+specialized knowledge in order
+to use DIME. All they need to know how to do is type in an
+e‑mail address and their client
+does everything else. We still have the one burden of education
+which is don't send out that
+classified document if you get the warning that says you're
+sending it out insecurely, but I
+seem to remember an old adage about taking horses to water and
+throwing them in. How does it
+work. Let's start by looking at the most important piece, the
+cornerstone, so to speak. And
+that's the DIME management record and the DNS system. For
+those of you who are eminently
+familiar with how e‑mail works, you'll recognize concepts that
+are already out there with
+sender I.D. mark, DCAM and sender policy framework. The
+idea that you can stick some
+information in the DNS system and it's really easy to find.
+Again, DNS system is a weak
+point. It's out of DNS‑SEC this information is less reliable.
+What that long string of
+characters is, is actually the public signing key for the
+SIGNET. When you get the SIGNET
+from the DMTP server for the organization it's actually
+encrypted with the private
+version of this key. So you need this information in order to
+access the encryption key. It
+forces the two‑step process that is at the corner stone of our
+trust. That you need a primary
+source and a second preauthenticated source for
+validation verification. Now
+what I'm showing you here is the most simplistic version of a
+DIME record. All of the other
+attributes are assumed. We're assuming that the DMTP server
+can be found by looking at the
+MX record. And we're assuming that the TLS certificate that
+we'll run in to when we access
+is actually signed by one of the recognized CAs. But if we didn't
+want to do that we could set up
+a much more complicated DX record. Highlight some of the
+properties here, the attributes.
+In this case we actually specify an alt server so that you can put
+your DMTP host on a different
+server than you're SMTP host. And perhaps you don't like using
+CA. You'd much rather prefer
+storing a hash of your TLS certificate in the DNS system so
+that you can use a self‑sign
+Cert. It's simplified. You know. I said that in the
+first slide. If there is no
+explicit DX specified the assumption is that your MX is
+your DX. So if you connect to
+the SMTP host it's also your DMTP host. I'm starting with the
+most simplified use case in
+trying to build in the necessary flexibility that the more
+complicated and larger
+environments can actually adapt during deployment. What is a
+Signet? Looks like bit like
+this. It's a relatively simple format. It has a four-byte
+header that tells you the
+version. Three of those bytes determine the length. You have
+defined attributes. Still trying
+to come up with exactly what that list of defined attributes
+is going to be, we know a few of
+them.Your signing key, your encryption key, your user
+signature, your Org Signature,
+your photo, name, maybe website address, telephone number, your
+address. But we're not going to
+be able to think of everything. So we leave open the possibility
+of creating undefined
+attributes. Where you actually provide the name of the
+attribute and the value. Now,
+because the overall length parameters is three bytes, we've
+got an effective technical limit
+here of 16 megabytes for a Signet. Please don't make your
+SIG‑NET 16 megabytes. In reality
+they should be far smaller. It's just trying to determine what to
+cap at is much more difficult
+proposition. I think the only field that we're going to allow
+to be longer than 64k and many
+of them we'll probably actually end up defining as a one byte
+length would be a photo.  But the idea is
+it must be under 16 megabytes and I mean a real 16
+megabytes not what Google thinks
+is 16 megabytes. It seems that the IEEE recommended making
+kilobyte one thousand bytes,
+it's like they got paid off by the hard drive manufacturers and
+I couldn't believe Google
+actually listened. I think all those PhDs would be smarter.
+They actually listen to the very
+same bodies that gave us WEP and dual ECDRBG. How did that work
+out? I mean if we're going to
+start changing stuff why don't we change around the
+gravitational constant for
+earth, wouldn't it be a lot easier fit was a simple number
+that ended in zero? >>[ laughter ] >>
+Kind of reminds me of what happens when you got one team
+working with the metrics system
+and another one working with the imperial system. Just ask NASA
+how many satellites that little
+screw up has cost them. But this is your most basic SIG‑NET. The
+four required properties and the
+section that I like to refer to as the security portion. The
+portion that is signed by both
+the user and the organization and contains the encryption
+information. Now, if this were a
+rotated key there would be an additional signature here that
+was created by the previous key.
+That is so once you have a SIG‑NET in your Cache if your
+client does a look up and
+discovers that the key has been rotated it can trace the chain
+of trust back to the SIG‑NET
+that it actually had in its cache. And if there's a break,
+if this parameter is missing or
+invalid you know that something may have happened. Maybe
+something innocent or innocuous
+like password reset. Or something nefarious like a man
+in the middle attack. But at
+least you get warned. Of course I added a couple of
+defined attributes, it's worth noting
+that they are outside of the user signature which means they
+are only signed by the
+organization which means that the SIG‑NET signing request can
+actually be taken by the server
+and these attributes can be appended based on a profile or
+configuration. We're still
+considering whether or not we want to give users the ability
+to submit attributes with every
+request. But it's the idea that the organization can still have
+some control over the non-
+security portions of the Signet. Thought it would be
+worth it to throw in couple of
+what I'm calling undefined attributes. Mr. Greenwald likes
+bitcoin and wants to know his
+address. And because he's somewhat political he thought
+he'd add a motto to his SIG‑NET.
+The idea is we're creating a framework for you guys to build
+upon. The most important piece
+of DIME is actually this SIG‑NET process. Because if you can
+translate a e-mail address in to
+a public key what you can do with that is almost infinite.
+Imagine a ZRTP phone call where
+you don't need to do short authentication string to know
+there's no man in the middle
+attack but you can actually have the handshake signed by the
+signing key that you then verify
+through this DIME look‑up process. Trust. It's earned not given.
+But I thought it was
+important to illustrate how it works. Now this is the most
+simplistic trust model and it
+only applies if DNSSEC is in play. There are at models I
+don't have time to get in to but
+if you recall the cardinal rule is, you need a primary source
+and then a second
+preauthenticated source for verification and validation.
+DNS‑Sec is preauthenticated. The
+TLV root keys shift with your resolver. Preauthenticated. And
+what it means is that if an
+attacker wants to give you spoofed or false information,
+fake data they actually need to
+compromise one of the keys in this chain in order to do it.
+They can't just make up an
+entire at Internet and stick you. Thought it would be worth
+talking about who controls these
+keys. Because at a certain point you realize that even with
+DNS‑SEC you have to trust your
+registrar to publish the correct DS record. And then you have to
+trust the top level domain to
+protect its root signing key, otherwise the entire system of
+trust breaks down. Like I said,
+DNS is still somewhat of a weak point. DNS‑SEC makes it that
+much better. We have mechanisms
+that I'm not going to be able to get in to today that were built
+specifically because of this
+problem. Things that particularly security sensitive
+domains can actually implement
+optionally that clients can then check for additional
+verification of information that
+is coming out of the DNS system. My motto. I figure if I need
+someone to trust it will be a
+dog. I'd like to introduce Princess,
+the project mascot.  >> Alright, The second
+part of the demo here, I
+guess my big person's mic is malfunctioning just a little
+disclaimer I was mentioning
+before this seems like the video is unpausable luckily Ladar
+slowed it down to 70% last night
+but I want to try to keep pace, I will pause a little bit longer
+in between the different
+components here. What I'm going to show you right now is the
+differentiation between Modes
+for DMTP and SMTP from a client perspective and you're about to
+see the magma server being run,
+and some simulated SMPT and Dark Mail sessions or at least the
+beginning of them.  Nope not working for him
+either. All right. This
+is the output of Magma being run there you can see the
+dependencies scroll by. We're
+telnetting the host Port 25, you can see the banner there,
+ESTP and DMTP1 issued a mode
+command showing that both of them are currently available.
+Now with traditional E‑hello
+command and we're going to issue a traditional mail‑from command.
+And you see that receive the
+success, that way we issue the mode command it says ESMTP now
+try to issue Dark Mail, the
+SIG-NEt command, and we're going to see the SIG‑NET is disabled.
+And that is because we fell in
+to ESMTP mode with the mail‑from command from RFC822 sal email.
+We're connecting again, we tried
+issuing the Dark Mail SIG‑NET command we that requires start
+TLS first. Now you don't have to
+worry it's going to scroll by the python code. Long story
+short we use this to start TLS
+so this shows the command being executed and reply we're doing
+start TLS, we got the
+certificate, we execute a mode command and now we're DMTP V-1
+now we try an E‑ hello. We issue
+a SIG‑NET command we get the successful response, now we try
+issuing that old school
+mail‑from with the RFC822 style e-mail address, we get error,
+now dark style mail from the
+specifies a fingerprint only domain and it's successful.
+We're going to tweak something
+here in the config file we're going to search for the dual
+mode parameter we're going to
+set it to false so that is going to basically cause it to revert
+from dual mode into Dark Mail
+mode only. And now we're going to kill the magma daemon and
+start it over. Go back to our
+session here. Telnetting back in. And now if we try to do that
+same innocuous E‑hello command
+it tells us that it requires start TLS first. As opposed to
+saying, okay, then allowing the
+mail from command to determine which of the servers it's going
+to fall in to.  All right. This next
+bit here is going to illustrate the cypher sweet that magma
+uses. So we're going to
+see here the dedicated SSL port for DMTP is 31301 we're going to
+launch server again, go to run
+SSL scan against it. You see whole bunch of crap scroll by in
+server log because the scans,
+now we're going to scroll up going to see all these failed
+cybernegotiation attempts. A lot
+of them. We're going to get the end of them there's going to be
+only one of them accepted. You see the EC
+depihelman exchange RSAES256 shot 384, which is the
+mandatory cypher sweet that
+we've opted for for Dark Mail for DMTP and Dmap insuring both
+perfect for secrecy and
+mandating that the connection we established was over TLS version
+1.2. Back to Ladar for a second.
+[ Applause ] >>  We're not able to achieve perfect
+forward secrecy or messaging because
+it's contrary to what people want which is persistent access
+for a long period of time to all
+of your historical messages. But by requiring TLS1.2 and
+cyphersweet to provide for PFS
+we get it at the wire level. I don't know if anybody can read
+this. But this is how we break
+up sample message. We've got the ‑‑ I just realized that this
+diagram is wrong. The tracing,
+the first box with the the top is actually only data that is
+actually unencrypted. And can
+actually be stripped off with each successive hop. In theory,
+a DMTP Spec conforming server
+wouldn't put any sensitive information in that area. But if
+you happen to be a little more
+on the paranoid side you just strip it off when it arrives.
+The next two boxes are the ones
+I want to you pay the most attention to. The origin and
+destination boxes. They're the
+envelope. They contain the information that historically
+and traditionally been part of
+the SMTP conversation. And what you'll see based on the letters
+that indicate who can access
+that information you'll see that we have somewhat of a
+pseudo‑onion. The origin can see
+who sent the message and the destination domain, but it can't
+see the destination mailbox. The
+destination server can see what the origin domain was and who
+the recipient is but can't see
+who the actual sender is. So we achieve a level of data
+protection at the organizational
+level. Like I said, you can discover that information if you
+had enough resources and were
+doing traffic analysis because you could just follow the flow
+of packets. Now we also break up
+the traditional headers in to two separate blocks. That are
+separately encrypted so that a
+resource constrained client can download the most commonly used
+headers without downloading the
+rest. We separate out the display portion of the message
+then of course each individual
+attachment so that they can also be downloaded and verified
+independently. I don't have time
+to get in to all of the details, but suffice it to say it's kind
+of a new concept. And it's what
+we need in order to have an encrypted e‑mail message that
+will function under the very
+same conditions that we use e‑mail today. In web browsers,
+on phones, on desktop clients,
+even occasionally via telenet and pine. And protect the
+metadata we use some what of a
+pseudo‑onion. There's only illustrates what I was just
+saying. Who can see what, it's
+not perfect. But it's a big step in the right direction and the
+hope is that once we get this
+system working we can start building extensions to it that
+will allow you to upgrade your
+communications with specific recipients, that may even allow
+you to you send a message
+directly peer to peer through something like a TOR circuit.
+If you happen to need that kind
+of security. It's about understanding what your threat
+model is, there's a lot I
+haven't been able to talk about today, like the client modes or
+any of the access protocol stuff
+or the different deployment scenarios. Typically it takes me
+about three days to brief
+somebody. But I hope you start to understand how the system
+works because I need your
+feedback. If I'm going to be doing something wrong I'd rather
+you guys find it and tell me
+than somebody else find it and exploit it for year's before
+anybody knows about it. Do we
+have time for this? >> This is the only slide I designed in the
+presentation. Somebody posted it
+to my Facebook wall the other day, I was pretty impulsive,
+this needs to go in my talk
+immediately. So we're pretty low on time I'm going to cut this
+short just going to give you
+sort of vague idea of what magma the client and server suite will
+look like. So first thing to
+know is that Ladar actually worked on the server for over
+ten years. He pretty much wrote
+everything from scratch in C and this was a code that was
+deployed live on Lavabit.com.
+Everything as I said written in C. It's one
+massively multi-threaded
+process for anybody out there that is irritated with large
+installers and packages and tons
+of dependencies you might be thrilled to now there basically
+three files ‑‑ there's
+executable, there's a one massive library that all
+dependency libraries get linked
+in together you have config file. Technically at the very
+base that's all you need to run
+magma all running in one process space you have all these
+different servers that might
+typically be different executables or different
+packages so you have IMAP, SMTP,
+pop 3 now DMTP and DMAP and integrated web server no matter
+which part of this
+infrastructure you choose to deploy that is all you need
+including free web mail clients.
+We have our thin client in java script and our thick client,
+which I demonstrated to you
+earlier which is a Thunderbird fork, the thick client is one
+that works directing our
+immediate attention to and our resources to it's not only our
+top priority as developers but
+also what we recommend that people use for security
+purposes. The java script client
+is really just something for laziness or convenience. As far
+as how the java script client
+works, the web server that we have integrated it actually
+interfaces directly with the
+message store so unlike Squirrel mail where you have the
+dependency on the scripting
+platform that in and of itself might have 0-Day vulnerabilities
+in it, you don't have to go
+through that intermediary step, everything is merged together in
+to one coherent whole. I'm going
+to turn it back to Ladar for the conclusion. >> For the record I
+was always worried about running
+Clam AV in the same process particularly when they
+integrated the LLVM compiler
+decided shipping executable code with the virus signatures, I had
+to disable that feature,
+developers didn't agree with me. We're almost out of time. So I
+thought I'd just give out some
+attributes ‑‑ whatever. To the people who created couple of the
+photos. Particularly I'd like to
+call out Dave Crocker, he was one of those people that
+invented the Internet. Although
+the way he tells the story he couldn't have done it without
+his brother Steve making coffee
+in the other room. He's been incredibly helpful translating
+my micro‑ideas in to a macro
+concept. And ensuring that we get the nomenclature right. I'd
+love to hang out answer
+questions but they are about to kick me off stage I see we have
+couple of people up there do I
+have time to take couple of questions? Okay. We'll try and
+go through them quickly. >> Is
+there any provision for tunneling existing SMTP mail
+through the system? >> It
+operates at a domain level, either domain support stark mail
+or it doesn't and if it doesn't
+support Dark Mail and you have dual protocol mode enabled, it's
+non‑dark domain can still
+connect to your SMTP server and send a message. When it arrives
+the volcano client just indicate
+that it arrived insecurely. >> I don't actually have any
+questions but I wanted to
+express my gratitude to you and your team it was ‑‑ [Applause]
+>> The way I look at it is I
+just did what I expect anybody else in this room to do in the
+same situation. >> It was pretty
+gut wrenching to watch what happened to the company I just
+wanted to thank you and your
+team continuing to offer products and services to the
+customers. >> I think it's funny
+you said that we're not offering any products or services right
+now. >> You're continuing to
+expand. >> We raised couple hundred thousand dollars which
+is what we're using to fund the
+development of the Dark Mail project and reference
+implementation but we need
+programmers because we basically decided to take a year off from
+seeking out personal gain and
+earning a living to build this and make this happen. And we
+need more people to help us
+because there's a lot of code we yet to write, we've only been
+working on the Dark Mail pieces
+for about four weeks. So if anybody is interested in moving
+to Dallas and earning a
+subsistence wage while working on a piece of code to change
+the world, come talk to us. >>
+Hi, I have relatively uninformed question about spam, Dark Mail,
+PGP, that kind of thing. Once
+everyone is using encryption spam is expensive to send. But
+while we're getting there all
+these key servers have e‑mails with real names, see if an
+e‑mail is active and find out
+their name that kind of thing. >> There's two parts to that
+question. The first thing you
+need to understand is that when everything is encrypted
+reputation actually becomes a
+much more viable tool for blocking abuse. Because you know
+the messages actually came from
+that domain. The second half that have equation is
+understanding that just because
+that kind of abuse prevention can't happen on the server
+doesn't mean it can't still
+happen in the client. Really just about every piece of
+functionality that we think
+can't happen in a Dark Mail world is because we're thinking
+of it as something that has to
+happen on the server when in reality it could just be moved
+out to the client. Google could
+still scan your messages for key words if you just have to do
+them in java script in your
+client after they have been decrypted. >> I think you
+misunderstood the question. >>
+I've got just general kudos and questions. I really appreciate
+when you are forced to turn over
+your key and you literally took pen to paper and handing that
+over I think was artful
+expression. >> We're calling it information. Information and
+paper should have been fine.
+Right? >> Incredibly reasonable. >> And it was to buy me time I
+figured while they were busy
+transcribing it all into the computer I could be busy
+shutting down my systems, making
+sure they didn't show up and confiscate everything. Everybody
+forgets I actually thought I was
+going to get arrested they were going to confiscate all of my
+servers. I think ‑‑ >> Go ahead.
+>> Question around sort of the connection between keys and the
+different user SIG‑NETs had
+like ‑‑ TLV value custody that you could use to sign like a
+future SIGNET but with people
+that don't communicate frequently, a client that's not
+frequent looking up the user's
+SIGNET >> You can actually connect ‑‑ I'm cutting you off
+because we're out of time. You
+can actually connect to the DMTP server and you wouldn't be able
+to pull the full SIG‑NET with
+all of the additional attributes but be able to pull history of a
+security that have portion see
+the chain of those security portions of SIG‑NET over time
+and link it between the one that
+you had in the cache the one that you discovered. The way to
+think about it is to think about
+same way about DNS. You have a domain name that you need to
+translate in to an I.P. address
+and you have resolver that goes out and does that process for
+you. Well in the Dark Mail world
+we're going to have a SIG‑NET resolver that will go out do
+that resolution for you and
+translate that address in to a SIG‑NET. And it will apply those
+chain of custody checks for you
+and tell you ‑‑ tell the client if it needs to show warning to
+the user. >> Thank you. >> I'll
+be around for the next couple of days for those who didn't get
+chance to ask me questions. Just
+flag me down and talk to me. [ Applause ] "This text is being
+provided in a rough draft
+format.  Communication Access Realtime Translation (CART) is
+provided in order to facilitate
+communication accessibility and may not be a totally verbatim
+record of the proceedings."

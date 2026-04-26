@@ -1,0 +1,791 @@
+Good afternoon, everybody. In my
+time zone it's quite late. I
+have one watch for each time zone. I'm trying to keep track
+of things. I'm very happy to be
+here. I presented a few conferences, various places all
+over the world. This is my first
+DEF CON ever. I'm really really excited to be here and really
+happy to have such a big
+turnout. So, thank you for everyone coming along. What I
+will be talking about stuff that
+really excites me and stuff I'm passionate about. What I hope is
+that you guys will see it's cool
+and you guys will get excited to. Maybe we can collaborate and
+come up with some ideas
+together. All of you guys put together are much much smarter
+than me. Perhaps I can follow
+some ideas and we can take it somewhere else together. So,
+today's talk: Practical Aerial
+Hacking and Surveillance. I'm Glen. Now, this is a story of
+one fly‑away, two broken rotor
+arms, three cut fingers which have sense healed, and 12,000
+lines of code. I couldn't find
+enough iteration's to go from 3 to 12,000 so I skipped a few
+there. But, just to tell you a
+little bit about myself, my name is Glen. My lucky number is 11.
+If you do the whole Twitter
+thing, you can bug me on Twitter. I'm originally from
+Zimbabwe, a small land locked
+country in southern Africa. Anyone heard of Zimbabwe?
+[Cheers and Applause]. >> Been
+to Zimbabwe? Aw man..one guy.. two guys. You are all invited.
+It's a lovely country. As a road
+scholar, I studied at the University of Oxford. I have my
+Computer science Masters degree
+from there. I currently work at a small penetration testing
+company called Sense Post. Our
+main office is in south Africa. I work for the London office. I
+mostly do penetration testing.
+Recently, I have been running a small innovations center, a
+small innovations lab. An
+awesome place to work. I'm really really happy there. Part
+of what we do at Sense Post is
+all our guys get 20% research time, and in that time we get to
+go play with cool stuff and get
+flown into conferences and have a whole lot of fun. As I
+mentioned, I spoken to a few
+conference before, all over the world from an Moscow to Paris to
+south Africa and other places.
+I'm occasionally on the news. Enough about me. I'd like to
+welcome those of you who were
+here last year. Very briefly in about 10 minutes of having a
+quick look, you can see about 20
+or 30 of you in this room that were here last year. Welcome
+back. I will tell you a little
+about that later. Welcome to those of you who are traveling
+quite far abroad. I see people
+here from all over the world who, although at a security
+conference are not very security
+conscious. [Laughter]. >> Enough about that. Let's get into the
+actual talk. The title of the
+talk is Practical Aerial Hacking and Surveillance. It's a whole
+bunch of funny stuff right
+there. What do I actually mean and what is this all about? So,
+sometimes back, I kind of had
+the idea I've seen a lot of stuff in the media about drones
+and flying machines. I have
+always loved RC stuff. RC cars and RC Plains as a kid and more
+recently, these slightly more
+complex ones. I notice it started getting quite a bad name
+in the media. I don't call this
+thing a drone anymore. I call it a UAV or my toy helicopter. You
+say drone, people look funny and
+get uncomfortable. Interesting feeling Growing up as a
+teen‑ager and kind of getting
+into hacker scene and wanting to be a hacker and learning stuff
+back then, I've told someone
+that you were a hacker or hacking stuff, they had a
+negative reaction and didn't
+feel quite comfortable with you. They knew in the media they had
+seen hacking is bad and hackers
+are terrible and must go to jail. I think now we've kind of
+progressed and society has kind
+of accepted us and things are much warmer. Now I get the same
+feeling when I talk about drones
+and these flying machines, I think because the way things are
+portrayed in the media. People
+are unsure and uncomfortable. People just don't understand
+them. That's probably fuelled by
+all the terrible reports we see about drones and foreign
+countries dropping bombs and
+take over the world and all sorts of things. I thought we
+were kind of on par. A month ago
+I cut up my fingers really bad so. We still have quite a nice
+relationship. I also noticed
+that in the media all kind of stories about drones being used
+for surveillance, data
+interception, not so much data interception side a lot on
+surveillance and cameras and
+old‑school surveillance. A little bit on more digital
+surveillance. I got to thinking,
+that looks fun. I love flying things and I hacking. Maybe I
+can take those two passions and
+put these two together and create my own aerial hacking
+machine. That's where my story
+started. I wanted to put something together for
+myself that was affordable and
+doesn't cost millions of dollars, comprised of off‑the
+shelf hardware and open sourced
+software that anybody can build. I also had a few other
+requirements. I wanted to build
+possibly a range of devices. I wanted something that had both
+short range and agility and also
+some long‑range. Something I could fly for 10s or hundreds or
+maybe even thousands of
+kilometers and operate in altitudes beyond what we call
+the audio horizon or visual
+horizon. Higher than you can see or hear it, or it will detect
+what's going on down below. Low
+noise and low visibility. Quite often I find when I talk about
+this stuff, people say if I see
+it buzzing around my head, I will shoot it or swat it or
+something. That's not going to
+happen when it's a 300 feet and bearing 1600 kilometers an hour.
+Sorry. I talked a lot ‑‑ yeah.
+The slide ‑‑ that's the right slide. Don't worry. I don't like
+having lots of text. It
+distracts you guys and won't pay attention. Watch me and don't
+worry about that. I also wanted
+to have a range of senses. Both kind of standard senses, like
+video and the elementary which
+is fairly standard for these flying machines.Then also Couple
+that with a degree of stuff that
+I'm good at. So, hacking and data interception and those
+kinds of things. I also wanted
+to have a degree of autonomous flights. So, not just a radio
+controller and kind of buzzing
+around the room here. I wanted to be able to fly a long way and
+for it to be able to fly itself
+there and fly back. If anything goes wrong, it should be able to
+fly itself home. Those are the
+ideas that I kind of put together. [Applause]. >> I heard
+rumor of this. [Laughter]. >> At
+the London hack space where I fly allot, we have an
+appreciation, don't drink and
+drone. >> Well, new speaker, show him some love. (Applause).
+(Cheers and applause). >> He's
+watching YouTube. [Chuckles]. >> Thank you. So, now that my mind
+is clear ‑‑ [Laughter]. >> So
+the idea was, I saw a lot of this drone activity in the
+media, I like building drones
+and flying drones, I thought hey can I make my own surveillance
+drones? I built one and I would
+like to tell you a story about how I built it. Some of the
+reports that I said I'v seen in
+the media, If you search with drone and data interception or
+something like that, you get
+lots and lots of results. If you hear eyes of a Compton, police
+spy whole city with some high
+altitude drone, CIA flew self drones in Pakistan. U.S. army
+humming bird, A 160 humming
+bird. 1.8 pixel camera. That can track people down to this kind
+of size from 20,000 feet, which
+is pretty cool. It can track 65 people at the same time. It is
+really bad ass. This one is
+fairly recent. African firm selling pepper spray bullet
+firing drones. That guy on the
+bottom on the far side is called "the skunk." It's a 6 rotar
+fairly big one. It's got Four
+paint ball terrets. It shoots pepper spray pellets, It's got a
+strobe lights and loud speakers
+and its actually terrifying. [Laughter]. >> So if you ever do
+come to south Africa, watch out
+for those guys. [Chuckles]. >> Now, one thing I'm trying to be
+vigilant of, if you know a guy
+named Haroon Ame, that's him not in the armor, excellent security
+researcher. He had this talk ‑‑
+I will talk about him. He kind of warned the security industry
+not to be "contetaionors" as he
+called them. So, just don't just entertain the crowd. Actually do
+something interesting proper
+research. I am hoping today maybe I can do both, entertain
+you guys and have some
+interesting research, or at least a few interesting stories.
+At least on the note of the
+drone stuff, I have seen a whole bunch of stories in the media,
+you take an existing hack, some
+duct tape and strap it to an off the shelf drone and portray it
+as something terrifying and new
+and interesting. I'm bit suspicious of those types of
+stories. Hopefully I'm not doing
+that. It's up to you guys to judge me. Okay, An overview of
+my aerial hacking and
+surveilling unit. We have four considerations that I went
+through in building this thing.
+One, I needed an aerial platform. So, some kind of
+Flying machine unrelated to
+snooping and data interception. Just something to carry the tech
+around. A few considerations
+when deciding what kind of solution is best for you. The
+next point and degree of ground
+control-otomation. How do you fly the thing? Do you use a
+controller like this or do you
+fly it from your iPhone or is it fully autonomous or something
+else perhaps? How does the damn
+thing fly? The interesting, the payload, the hacking pay load.
+What form factor should it be?
+Big, small, high‑powered and what software and how does it do
+it's thing? Finally, a degree of
+methodology. How do you get this thing to do its business? Can
+the stuff actually be used
+practically? The word practical. I want this stuff to be not much
+of the stunt hacking, something
+actually useful. I look at the methodology and a few use cases
+that are quite interesting. I am
+sure between us there are a bunch of you who can come up
+with an interesting use cases
+yourself. First point, the aerial platform. The actual
+flying machine. At least four
+considerations, probably a few more but four serious one. First
+decision, Do you want to use
+multi-rotor or fixed wing? Multi-rotor just means lots of
+propellors. Essentially, Three
+is minimum. Three, four, five, up to eight. You can get some
+octocopter, so eight propellers.
+Sometimes you have top and bottom. So one motor up and one
+motor down. Then you have 16.
+Those are gargantuan. The considerations you need to make
+are, are you lifting very heavy
+stuff? What is your flight time that is required? What is the
+actual size of the copter? The
+big ones like 16 rotors or something. That's great if you
+need to carry a barrel of beer
+or something which is actually a good business idea. We tried it
+in South Africa but got shut
+down. [Laughter]. >> For our purposes, this kind of size is
+sufficient for carrying the
+payload. I'v got a much smaller one that first post you saw, the
+fly‑away, I just finished
+building it for the conference. I tested it in London. My first
+flight after a month of building
+it just for you guys and it flew away and clearly didn't want to
+come. If you know guys in london
+and they find a small quad copter, please bring it back to
+me. This kind of size is pretty
+good. It can carry about 300 gram pay load. We will see you
+in a little bit. That's
+perfectly sufficient but in terms of distance, we may need a
+fixed wing and see you on the
+next flight a little bit more about that. The flight
+controller, that's the brains.
+So, the squad copter drone things, they have what's called
+a flight control. It's just the
+brains. It's that unit on top. This one ‑‑ this one is base and
+all kinds of interesting
+functions. The kind of base for flight controller is that it has
+some degree of orientation, so
+they have different ones different properties. At least a
+gyro scope, a barometer, how
+high it is, those kind of stance so it knows its orientation. It
+actually makes them easy to fly.
+It's much easier than a helicopter or any other
+traditional RC unit. Basically I
+just say go up, and the computer decides, I need to put this
+power this motor, this one. The
+wings, compensate and go this way. Because of control, its
+incredebly easy to fly. The
+awesome decision what to get. It's almost like the O S wars.
+Cameras..we have a few different
+kinds of cameras. Essentially, do you want high‑resolution,
+long range, short range, FPV,
+infrared, and GPS. GPS has two functions. The bit sticking out
+that one is GPS use navigation
+so it knows where it is. It's useful if I tell it to fly 10
+clicks that way, or if it's a
+strong wind and being blown off course, it knows I'm off course.
+I need to compensate and go a
+little more east. Also GPS units I will talk about later.
+Essentially, if I lose it, it
+flies away, or if it gets captured, It has a homing beacon
+on it. I can send a text message
+to the homing beacon and a text back with its GPS coordinates.
+So in this picture here, you
+have wing versus multi rotor. An example of a winged unit on the
+side here. So the wing units
+vary from very very small to the penguins. One my favorites.The
+Penguins really big, an
+interesting one. It comes down to largely your payload and
+range. This guy about 300 gram
+payload, about 15 minutes. That's useful for different
+scenarios. So say if I need to
+do a short distance or go on the side of a building or land on a
+roof or something. If you want a
+longer range, guys like the penguins you can get about 300
+kilometers range out of them.
+So, you can effectively scour an entire country or at least
+across a few states, or a few
+borders. Long range or short range depending on a few
+criteria. Low noise and decent
+payload. In the end, I kind of realized this is a good form
+factor. So, 4 rotor and about 40
+centameter in diameter and also a bigger fixed wing plane which
+I couldn't bring here because
+it's really big but for longer‑range missions. The
+flight controller, which I
+briefly mentioned. The brains of the unit. So, the picture you
+see on your top left, the top
+left, that's this one I've got here. That's made by a company
+called 3‑D Robotics. It's called
+The APM, and it's very, very popular these days. It's open
+source hardware. You can kind of
+modify it or make your own and also all the software is open
+source. You can go and download
+the source code. If you wanted to modify it, an important
+lesson I learned is that I'm not
+a good programmer. If I write software on my laptop, try it
+and see if it works, if it
+crashes, nevermind let's try again. You can't take those
+risks with flying machines. You
+can't just do some debugging at 300 feet and see if it falls out
+of the sky. That's not a clever
+approach. The guy up on the side is ‑‑ I lost the pointer. On the
+left is the APM from 3D Robotics
+open source. The one in the middle here is an open pilot,
+which is a very, very popular
+project. I think it's also open source. You can put open pilot
+software on other flight
+controllers too. The green one is the KK board. It's a little
+bit big I think. Very, very
+popular. My favorite is the red one. It's called an Nausay E32,
+it's an amazing project, a one
+man job. It's a guy called Time Cop. It's one man who designed
+the board, built it and sold
+each one by himself and kind of shifts them. It's hard to get
+ahold of them. I think ‑‑ yeah,
+this one is close source also at the moment. The red one at the
+bottom is I suspect one of you
+guys may have heard of, it's called the Nasa by a company
+called DJI. The phantom is the
+one you see in the news. It's the white copter with red
+stripes on it's arms. It's ‑‑
+that's a flight controller that they use closed source
+proprietary, kind of the windows
+of this group of things here. Other guys more Linux. We have
+the same wars as OX wars. People
+pick one of them and back them ignorantly saying this one is
+the best. You guys don't know
+what you are talking about. There are some issue was the
+open source ones; that they do
+seem to be fairly mature and they push features a bit more
+than a reliable code. You have
+thing called a fly‑away or fly-wayclub.com. Basically, If
+one of this boards locks up and
+typically the last pattern it has, it will go left forever,
+which is horrible. As I know
+from first experience now. Anyone ever had a fly‑away?
+That's terrible. I'm sorry,
+guys. I feel your pain. There's at least five in the audience.
+Go to fly awayclub.com and
+register it. We have monthly meetings and talk about our
+feelings about our drones that
+left us. Okay. So, choosing the right Flight control is quite
+important. Another nice aspect
+of the APM here is you interface with it. It's got a set of G P I
+opens. You can build your own
+hardware that interfaces with it which is very useful for our
+type scenario here. We will see
+why in a little bit. Cameras, another very important
+consideration. So my guy over
+here, has a go pro camera mount underneath for high definition
+recording and then a small black
+Sony camera, the one on the screen here.What you call a
+first‑person view. Essentially
+what that means is you have a live video feed from the machine
+as it flys which is amazing. You
+wear these goggles, the image ‑‑ you can see on the bottom right
+is the image you see through the
+goggles. These things are awesome. A small camera on the
+front so you can get a view from
+the face so you can get orientation or avoid walking
+into a tree. Very useful for
+long‑range flights. It goes behind line of site. Very useful
+to know where are you and where
+are you going. Also, as you can see, it has an on‑screen
+display. You got your compass
+heading, You altitude, your S P, point of pointing towards home
+if you get lost. Very, very
+useful feature. Slightly more advanced cameras, these two ones
+here, the golden eye, the red
+one. Slightly more sophisticated camera, from the unit. This goes
+on the fixed wing, the big one.
+This gives a much better resolution from a high altitude.
+This camera you will use from
+300 meters altitude. You will see things this big on the
+floor. It's expensive. The one
+next to it is an infrared camera. Depending on the images
+you want to create, you can have
+it flying at night. You have a nice detailed camera, an
+infrared camera. You combine
+them together to get a nice lock on your target. GPS, so as I
+mentioned, the thing on the flag
+at the top, that's a GPS used for flight, so the device knows
+where it is, and it's
+actually ‑‑ I just push up, and it goes up. You can have a
+hurricane blowing, I can keep
+itself in that position. It keeps a lock on the GPS. A flag
+controller to adjust the motor
+to make sure it stays on the target. You can also use the GPS
+for setting flight paths, way
+points. We will see some way points in a minute. You can set
+the series of way points. The
+other GPS device on the left, it's called the my Wi‑Fi, fly
+it, use it, find it. A
+self‑enclosed GPS device with an sim card. If I loose the thing
+or if it flies away, you just
+interact with that device. It will send GPS coordinates. When
+I lost mine, I did have this
+devise but it was in my pocket. Not very useful. [Laughter]. >>
+Hindsight is a very cruel thing.
+So other considerations. The battery, the one I'm running
+here, 500 thousand milliamp
+hours, basically a recipe of power versus weight. You have a
+bigger battery, it needs more
+power to lift it. You put in your motor specifics, battery,
+the optimal ‑‑ you have the
+optimal battery to have. Essentially not great. It's
+about 15 minutes of flight time.
+If I spent a lot of money, It would maybe give me 45 minutes.
+Low flight time compared to the
+fixed wings, a few hours of life time. The ESC's:Electronic speed
+controllers. Those control the
+motors, and then actual motors and propellers, metrics, like
+kind of how they spin, and the
+metrics goes how much torque with how much lift? Do I lift
+heavy stuff or go quickly? Here
+the diagram illustrating the form factor practicality. The
+one on the bottom left is the
+phantom, which most enthusiast have. THe media are terrified of
+and very fancy. Those are toys.
+Very low entry. This is not that practical. You can't fly easily,
+not much payload. Cameras aren't
+fancy. Closed source. Flight controller can't expand. The one
+over here, not a specific model.
+It's the idea of APM's and open pilots and custom frames and
+custom props and the ability to
+expand and add to it. Then a small fixed wing, a foam fixed
+wing one here. A longer range,
+maybe a bit more payload. And a penguin which is quite a big
+craft. A nice payload,
+long‑range, and really good surveillance. Some other
+considerations, so ground
+control, automations. How do you fly the thing? So the radio here
+with this big Antenna which
+makes TSA feel uncomfortable. Note to self, take it off next
+time. This is a fairly standard
+radio. I upgraded with this big transmitter. About 6 kilometers
+range. Depending which country
+your in, it might be illegal. You can scale it down 100
+milliwats. With the goggles,
+within or around 6 kilometers range. The device on top, that's automated
+flight software. essentially,
+from my tablet I can connect to the collar. I can see all kind
+of metrics, what's the horizon?
+What are the GPS Coordinates and my flight mode? You can say I
+want you to fly here, here,
+here, here at these altitudes and go. It will fly itself. It
+can go far out of range from
+your controller. That's useful for our purposes. The most
+interesting is devices like the
+ones on the bottom left there. It's a very new product over
+here from a company called drone
+deploy. Essentially what they've created is a thing called a
+copilot. When I mention this ATM
+device the ability to plug in kind of external hardware to
+control it and to interface with
+it. They put this device here and co-pilot plugs into the
+flight controller. It's got an
+sim card and outbound data connection to a cloud service.
+You log on to the drone deploy.
+Your drone deploy account and you can see all of your drones
+on the web page wherever in the
+world they are, because the copilot has an sim card with LTE
+data. You can control a fleet of
+these things from this lovely web interface and a nice way of
+extraction from the device.
+That's useful for us when you want to be identifying
+individuals, tracking
+individuals for long periods of time far beyond line of sight.
+Here's an example of a Q ground
+control, an open source software. They've got a few
+packages you can download, open
+source. You can build your own ground control software to
+control devices. Here set up a
+flight plan to fly around the city. I didn't. It's illegal to
+fly over private party. This is
+drone deploy website. The website a mentioned. Check these
+guys out. They are working on
+cool tech. The ability to control lots and lots and lots
+of these drone from a web
+interface, from the cloud or from your phone. Very powerful.
+We have the flying machine. We
+have the ability for it to fly either controlling it or
+completely autonomous, long
+range. We also have a drone deploy kit that it can tell the
+drone where to fly based on some
+other information. So that's where the payload comes in. So
+the payload is the actual
+hacking kit on the machine. It will do the surveilling and
+detection of people and breaking
+into whatever infrastructure. It can also feed information to the
+flight controller and say, hey,
+I detect a strong signal in that direction. Let's fly that way
+and drop water balloons on that
+target over there. As you can probably guess, you may have
+seen me speak before. I have
+developed some software called,Snoopy. That is why
+Snoopy is flying the plane
+there. Snoopy software developing for the last couple
+of years. All open source. To
+describe it in a sentence, Snoopy is a distributed
+tracking, pro-filing and data
+inception frame work. It runs on anything that runs Linux. So,
+for example, I have got a beagle
+bone here. I have an inline hundred cell phone which runs
+Linux, amazing phones. And
+essentially what it does, you have an array of these sensors.
+You scatter them over some large
+area. Attach some on the drone and some on the ground. It has a
+series of plug ins that collect
+various bits of data and send that data to a central server.
+Giving interested in
+surveillance and hacking, this thing has a Wi‑Fi adapter. If
+you all have left your wifi on,
+most of you may or may not know if you left your wifi on, your
+phone constantly sending out
+probe requests, which is looking for every network you ever
+connected to. You are sitting in
+an audience, your home is looking for home network back in
+south Africa. Including that is
+your map address so I can uniquely identify all you guys.
+From the names of your networks,
+I can figure out stuff about you. If your phone is looking
+for back of America corporate
+Wi‑Fi, you probably work for Bank of America. Probably more
+interesting is an amazing
+website called wigle.net, W I‑G‑L‑E. It's a crowd source
+database, born from DEF CON
+about 12 years ago. I would love to meet them and buy them a
+beer. You guys should contribute
+to their project. It allows you to convert a network name, like
+Verizon 12345 to GPS
+coordinates. So, that's what I do with Snoopy. You guys left
+your phone on, identify the
+audience, figure out what networks your looking for and
+figure out where you work, live
+and travel. That is why I built the map at the beginning. Snoopy
+is modular. Which means you can
+add your own code and device. For the moment, I have support
+Wi‑Fi, bluetooth, working on GSM
+and Ibeacon. What Snoopy looks for and track and surveil people
+is based on what we coined as
+the digital terrestrial footprints. Each person that
+carries a bunch of devices on
+them. So, got your smart phone, fitness brace let, google
+goggles, pace maker with Wi‑Fi.
+Who thought of that idea? Your NFC bank cards and your RFI ID
+tags and your passports. In the
+states, essentially you all carry this tech on you. If they
+mimic any kind of wireless
+signals, that's the kind of stuff I'm interested in. I want
+to detect that stuff. Some of it
+is easy and obvious. Like Wi‑Fi is unencrypted. Other stuff is
+harder. So, anything cellular.
+GSM is tricky but here some stuff, pre- authentication, can
+uniquely identify you. Things
+like bluetooth, not too hard to detect, and also NFCRFID I need
+to be in fairly close range.
+Flying unit not useful. You can Supplement the flying unit with
+ground‑based unit, detect and
+the Wi‑Fi, you would have from the flying vehicle. 200 feet you
+can't hear it or see it, but it
+can hear you and see you. As I mentioned, Snoopy is a
+distributive frame work. There
+are lots of devices. They all synchronize the data and and
+send back to one server for
+exploration. You can have your 5 Flying units in the field. A
+whole bunch deployed in train
+stations and shops. As you guys walk around emitting your
+digital address and footprint,
+we can suck that stuff up and synchronize it and watch you as
+you move around. What's
+interesting is even if your devices are individually
+non-identifiable because of
+crypto or whatever. Sometimes just based on the collection of
+those devices, you might have a
+unique collection of signatures although can't individually
+identify them. Kind of a cloud
+of devices that can use uniquely identify you. This is what
+Snoopy looks like. Running it on
+an Linux box here. With runs, Specify the I flag and get all
+the plug ins. You have
+interesting stuff. Bluetooth, Wi‑Fi. On the Wi‑Fi side, have
+you heard of fire sheep? F I
+sheep? That's kind of fun. FI land, essentially with a Wi‑Fi
+plug in, and passwords and that
+kind of thing. Grab WP handshakes for later or flying
+tracking. Some data
+synchronization between servers. Rouge access point. Your phone
+looking for starbucks. My device
+will respond and say I'm Starbucks. It will connect. You
+will get to facebook and steel
+all your data. What else? Wi‑Fi...Man in the middle stuff.
+Wiggle, the website a mentioned.
+Look at networks your looking at and turn them into GPS
+coordinates and google street
+photographs. And as I said, it's modular, you guys come along and
+contribute to the moment and
+fiddling with GSM, iBeacon, SDR and other bits and pieces, other
+ideas, so open CV, image
+detection, currently able to look at camera and detect spaces
+and encoded that with the
+identification of unique mac address. If you have enough
+overlap, a corridor and you walk
+through this corridor a few times a day, each time I extract
+your face, and with a few mac
+addresses, given observation, I will address one mac address
+correlated to one face. Cool.
+What is methodology? We have vehicle. We have autonomy with
+something like the drone deploy
+or similar devices. Q A ground control which is all open
+source. We have a payload which
+is an Snoopy hacking software, and we have ground control on
+the bottom there. So let's think
+about a few use cases. The one idea I have is that if you want
+to find an existing person of
+interest, so all kinds of scenarios, say that someone is
+arrested and you check the mac
+address of their cell phone. It will look for that data. After a
+celebrity, attend multiple
+events that we know they're attending and looking for
+overlap of one unique signature
+from all events to identify that person, however we get it, we
+can use the flying machine and
+say, go on a search pattern and take this spiral route. Keep
+doing this until you detect the
+pattern that we're interested in. Simple case just a mac
+address. Hover, drop water
+balloons,return to base, take a photograph or whatever you like.
+So in term of usefulness of
+putting the stuff on a flying machine, by bypassing physical
+barriers. If big walls, men with
+guns, dogs, or you can't get look for something. With a
+device like this we can bypass
+physical restrictions and pass past detection or over borders
+or jurisdiction we are not
+allowed to be and it can be useful perhaps. Another use
+case, say, for example, downtown
+Las Vegas is a riot breaking out because ‑‑ I don't know why
+people would riot in Vegas ‑‑ on
+booze or something. [Laughter]. >> Big riot breaks out, and I
+could launch this device from
+just outside and autonomous fly it. Camera pointing down, and
+identify all the persons down
+below. For future prosecution or interrogation. You can identify
+them and potentially figure out
+where they live, work and who they are. Of course with all
+these kinds of things they're
+horrible things that can be done. In an oppressive regime, a
+peaceful protect and the
+government use the same tech to hover over the peaceful and for
+prosecution. It goes both ways.
+Full discussion here, another useful idea is if you want to
+scour and fly a city. If you
+want to fly over the whole of Las Vegas, trivial to put in a
+grid pattern, because GPS
+device, you have correlation between the position and down
+below. Kind of like the wiggle
+database, like we're driving by flying devices. Identify people
+down below much faster than a
+ground‑based unit. A term that I like to coin, the authentication
+bombs. So we can fly over an
+area and drop the authentication bombs. What that means is just
+emitting deauthentication
+packets which will force devices to disassociate from their
+wireless networks. They
+reassociate and capture double handshake for later cracking.
+You can scour, go on a grid
+pattern and tie a city, dropping these bomb, grabbing all the WP
+handshakes, sink the data in
+real time back to servers, we crack them as we go along. So
+all of that is already In Snoopy
+so you can download it. You can load that at the conference
+today but you shouldn't.
+[Chuckles]. >> But it's there. I've got a quick video to show
+you, a demonstration. Let's see
+if it works. Because the demo Gods were cruel when I was
+setting up and you couldn't see
+my screen at first. And you can't see that. Maybe if I drag
+it over here or over here. Okay.
+So this is a video demonstration of some Snoopy data I'v
+collected. This is the interface
+you browse from data collect from the drone and from ground
+base unit, called Montego, a
+visualization tool. The scenario is that somebody's landed at
+Heathrow airport and a person of
+interest. You don't know what time they landed or what time
+but we know they landed there.
+We also, and we have a Snoopy at Heathrow at local airport,
+coffee shops and units flying
+over parks. London, Hyde park. I'm going to run a machine which
+a series of transforms which
+will look at all those 10 drones in the field running now. It's
+looks for one device that is at
+Heathrow at one of those hotels went observed in one of the
+parks and identifies just one
+device there, and that's ‑‑ not full screen ‑‑ it identifies
+this one device, Marsha's
+iPhone. The name of the phone by passively intercepting her
+communication. She's on an open
+network, passive. All this information to identify the name
+of her phone, which turns out to
+be her name. We see her phone is probing for those seven network
+Tls. We G locate those networks
+through the wiggle database, and we notice that ET home network
+looking for there, locates just
+one address. So we have a very good chance of knowing where she
+lives now, and there's a Google
+street view, photograph of her house. And what we can also do,
+let's just get rid of those, and
+what we're going to do, now I'm going to look, are there any
+other devices, people looking
+for any other network that Marsha is looking for. That will
+reveal people she is traveling
+with, friend or families or colleagues. We notice a whole
+bunch of other people looking
+for the same network, the same network she's been looking for.
+The stuff like Starbucks not
+interesting. Stuff like a BT home hub, that's probably a
+second device of her or her
+partner or somebody. On the side there, RBS, that seems like a
+work address. World bank of
+Scotland. It looks like she is traveling with work colleagues.
+Do the process and identify her
+work colleagues, geo locate them and try to intercept any of
+their data and get their
+identity and see what they're up to. Let's skip forward a bit. So
+now, from the passive data
+inception, few minutes, also having a look at what website
+she's been visiting, what
+cookies from those websites, so she's logged into various like
+Yahoos, cookies, and my
+favorite. Running SSL strip or printing in the background, SSL
+strip is a way to trick your
+browser in to not using SSL into a bunch of websites she was
+using. A lot of this stuff isn't
+new. What is new is bringing that tech together. Bring it
+together in a nice visual
+framework and one which you can use lots and lots of data very
+easily and quickly. Snoopy has
+some friends. This kind of data inception is actively done in
+retail. When you go to shopping
+mail, military, they sell packages. Snoopy is open source
+and free. I have 5 minutes left.
+I don't want you guys to think that drones are bad and evil and
+banned them. They have good
+functions. I am a hacker. There is far more good. That's a
+drone. I think somewhere in the
+Middle East, if someone is drowning, fly off drop them,
+agriculture, inspecting pipe
+lines, providing Internet. Very briefly we are starting a site
+launch. We are starting a
+commercial service around this. It's called shadow Darklyfor
+sight launch. Essentially you
+can build your own drone or buy from us. Just a sensor device
+and essentially Synchronize to
+our serve. There is a free option or paid for option, first
+time I ever tried to
+commercialize something. I hope it goes well. I will give away
+one Snoopy sensor for one
+audience member. I want you guys to tweet this hashtag. I will
+write a program to pick one at
+random this evening. Whoever picks, I will post an Snoopy
+sensor device. Set up ready to
+go so you can surveil, track, intercept and all of that.
+Here's a paper I have written,
+digital tracking, the future of surveillance. I think it should
+be on your C D's, and this
+evening I will put it on sense log two. Final point colleagues
+are giving a talk tomorrow at
+4:00 titled: Mana from heaven: Improving rogue A P attacks. And
+that's all. Thank you very much.
+(Applause)

@@ -1,0 +1,863 @@
+>>Good morning, camera nerds!
+[cheering] Yeah! [cheering] A
+few of us in here. Uhm, I'm pretty excited about this talk,
+uhm, I was also pretty excited
+to make sure that I had Bluetooth turned off on my
+camera when I showed up.
+[laughter] Uhm, so I guess, uh, if everybody wants to go ahead
+and turn on the WiFi on their
+camera now... No? No? [laughter] Okay! Okay, that's fine. How
+many, uh, so, so, camera, how
+many people, camera people do we have here? Awesome! How many
+people find that the software on
+their camera is, uh, something other than complete a**?
+[laughter] Well, that's a
+surprise! [laughter] We'll get you up on stage! Maybe, maybe
+you work for Nikon, who, who
+knew, who knows? [laughter] So, I think we've all struggled with
+this and have probably thought
+"Well, this isn't terribly well thought out". Uhm, and then, of
+course, you go and buy a Canon
+printer these days and you get a CD with all the software on it -
+like, really? What year is this?
+Anyhow, I could, I could, I could complain about that for
+days. Uhm, right now, we are
+going to learn about, uh, how, how kind of "broken" the
+software on our cameras is and
+how vulnerable that can be when we are out and shooting and
+wanting to take advantage of
+some of these fancy features that, uh, these camera
+manufacturers think we all need
+to pay extra for in the first place. Let's give Eyal a big
+round of applause! [applause]
+Have a great time, man! [applause] >>Thanks. [applause]
+Hi everybody, hi everyone. Thank
+you for coming. Uh, I'm Eyal and I'm going to talk today about my
+recent research called "Say
+Cheese" or "How I Ransomwared Your DSLR Camera". Before I
+start, let's have a brief
+interview, uhm, I'm Eyal Itkin, I'm, uh, vulnerability
+researcher at checkpoint, uh,
+research group. In my research projects I usually tend to focus
+on embedded devices or network
+protocols and you can usually read about my recent
+publications on my twitter. Now,
+that we've finished with the introduction, let's start! Being
+a vulnerability researcher
+usually means you study, a, a program, and embedded device -
+you find vulnerabilities in it.
+You responsibly disclose this to the vendor, uh, you wait for a
+conference, hopefully you get
+accepted and that's it, right? But after you finish up with the
+research, starts, uh, the most
+complicated part, uh, routine of a vulnerability researcher and
+this is finding the idea for the
+next, uh, research. And looking for new research ideas is always
+tough, uh, it don't simply fall
+off a truck and that's it. Uhm, for this, uh, part of my daily
+work, uh, I have real practices
+for finding new leads for a research projects. Uhm, the
+first of which is check up new
+technologies, uh, that just got published. Uhm, if it's new and
+fresh less eyes looked upon it
+and maybe I will find something interesting in that product. The
+second is attend conferences,
+like DefCon, and hope for a good idea to pop up - and that's, uh,
+usually helpful. And the last,
+uh, uh, the last part in which help in this specific research
+is ask friends, family what
+software and hardware they usually use on a daily basis. If
+many people use this product,
+it's probably interesting. Uhm, and if we find vulnerabilities
+in it, uh, it would be a good
+publication and interesting research. For this specific
+research, as you, as you
+probably already understood, we're going to focus on hardware
+- and what specifically? My
+dad's camera. [laughter] Because my dad has a camera and he takes
+it around to, uh, family events,
+uh, important life events, trips - and no one is allowed to
+actually touch the camera or do
+anything with it. So, I was interesting to find out if I can
+"hijack" the camera and, uh,
+exploit it. So, we are going to talk, to talk today about
+cameras. And, if you look on
+cameras from a security perspective as a black hat, we
+can see we have a good, a good
+field in cameras, we have photography which is a very
+common hobby. Being a common
+hobby also means that many potential victims, we have many
+people that use cameras, take
+them with them and to important places. If you can do something
+to cameras, you'll have many
+potential victims, uh, you could infect. In addition, people buy
+expensive cameras and I actually
+found out that the lens is the most expensive part but, yea,
+people buy expensive cameras and
+equipment and we treat them with care. Because you have special
+backpacks for your camera, you
+don't let anyone touch it, uhm, and this also means that if the
+target is expensive you probably
+have money, and if you have money you have good potential to
+take your money and, get it to
+our own. And the last part is camera store, uh, memories from
+special life events. If you go
+on a trip to Japan you travel to DefCon, you store all your
+picture, pictures on your camera
+and if someone will take your camera or hijack your images,
+you'll get emotionally involved.
+You'll get dramatic, you won't think clearly and that's a good
+fear. You have many people with
+money that think clearly when something happens to their
+camera. And we are thinking,
+like, assuming I can take over your camera, your target DSLR
+camera, mirrorless camera any,
+anything like it. What can I do with it? [tick noise] Well, uh,
+I can break it but I really
+don't know why people still do IOT breaking this year, uh, but
+it's a thing. It's a good
+espionage tool, it already takes pictures with high quality. But,
+we're going to focus today on
+the third part which is ransomware. If I can lock up
+your camera and encrypt all of
+your images, I can ask for cash back. And, as most of you have
+cameras, and you are attached to
+them, the important question to be asked is that, if I encrypt
+your camera, all your images in
+the camera and lock the camera itself. Would you pay to get
+your camera back? And we really
+think that the answer is "Yes". People will pay, this is an
+interesting attack vector, so
+let's try to install ransomware on your cameras. Let's get
+started. So, meet our target for
+this specific research, we had decided to focus on a Canon EOS
+80D, we chose this specific
+model because it supports both USB and WiFi, so we could test,
+uh, both interfaces for this
+specific camera. In addition we chose to focus on Canon because
+Canon controls more than half of
+the market share, so it was quite easy to decide. I think
+that all of the people I know of
+which have Canon cameras - so that was quite obvious. After we
+chose Canon we saw that Canon
+has an extensive modding community called "Magic
+Lantern". And, actually, there
+are a few modding communities for Canon cameras and other
+cameras as well, we have Magic
+Lantern and we have CHDK which stands for "Canon Hack
+Development Kit". Essentially,
+we can think about it as "jailbroken" camera, uh, both
+communities extend the original
+functionality, they solve bugs, they add new features, uh, it's
+really easy, uh, jailbroken
+camera with an open source community behind it. So, we
+have, uh, researchers which
+reversed engineered the hardware and the firmware of the camera.
+And, essentially they wanna
+build up an emulation environment. So, developers
+would be able to develop open
+source features for their cameras. Reading through the
+forums, we, I actually saw that
+several developers don't have enough money to buy the camera,
+so, they only have, uh, emulated
+camera on their computer because they don't have enough money to
+actually buy a physical camera
+of their own. So, being an open source community, you have all
+of the benefits - we have
+extensive wiki pages which document how the camera works,
+they actually document even
+important stuff inside the firmware and symbols - meaning
+addresses in the firmware
+itself, as we can see here, we have the documentation for that
+method, called, "task create"
+which creates a new task on the, uh, camera. We have the
+documentation for all of the, or
+most of the, parameters of the function and we can see on the
+documentation itself, that the
+arguments are not really known yet, or not all of them known.
+And that's because it's
+community based - some entry;s still missing from the
+documentation. But, uh,
+nevertheless, it's still a gold mine. When we start our own
+research. I don't need to, uh,
+understand in full all of the, uh, internal data structures of
+the camera, uh, what's the
+operating system? And find out a few important functions because
+Magic Lantern already did it for
+us - documented on their wiki pages. That's a really good
+start for any embedded research.
+Just as an important note before we continue, at the time of our
+research, and I think it even
+today, fix me if I'm wrong, there was no Magic Lantern port
+yet for this specific camera.
+Which means, if you install Magic Lantern, on your Canon
+Camera, it comes with,
+basically, bugging functionality. Uh, you have the
+capabilities to read memory from
+the camera, write memory to the camera, and even execute lower
+scripts for some reason. Uhm, we
+don't have it, we don't have ML port for our camera, we only had
+the documentation and, uh, the
+internet. It's really useful, it's better than nothing but we
+don't have any debugger for our
+own camera. The attack that we are going to focus on is called
+PTP - and when you Google up PTP
+you can see that the PTP protocol stands for "I" triple
+"E" "15" ,"88" - which is, uh,
+"precision time protocol" and I did my thesis on this protocol
+so I can talk to you for hours
+about how the master clock is going to send a precise
+timestamps to the slave clock,
+what does it have to do with camera? Well, it, it, it don't.
+It turns out that PTP also
+stands for the "Picture Transfer Protocol". [laughter] Which
+makes more sense, right?
+[laughter] Uh, that's actually going to be the second time we
+break the PTP protocol, uhm, uh,
+PTP stands for uh, "Picture Transfer Protocol", initially we
+only had USB to connect our
+camera to the computer. And, nowadays, our cameras also
+support Bluetooth and WiFi, so
+the protocol was extended and not it also supports PTP over
+IP. But, we have to remember
+that it's the same old protocol from the USB and, uh, we're
+going to it in the next slide.
+In addition, although the protocol is called "Picture
+Transfer Protocol", it's
+supports a surprisingly high amount of commands, uh, you can
+query the camera for the battery
+level, for the, uh, firmware version, and actually, there a
+lot of the different commands in
+it, you'll see in the next slide. So it's, uh, it looks
+like a promising attack vector.
+There was some prior work about this protocol and this was, uhm,
+uh, 6 years ago in Hack in the
+Box, and, uh, Daniel Mende, uh, presented his talk called
+"Paparazzi over IP". In this
+talk he, he also talked about, uh, PTP and he showed that, uhm,
+it's a fairly naive network
+protocol since it was developed from the USB protocol to IP. No
+one thought about adding some
+authentication or encryption to it, which means if you're on the
+same WiFi network with the
+camera - you can send messages straight. And that's good for
+our, uh, attack vector. We are
+going to focus on implementation vulnerabilities in this protocol
+and not the original
+functionality it offers. So, we hope to find vulnerability in
+implementation and take over the
+camera. Thanks. Time to analyse the firmware itself. This was a
+classic case in the research,
+you simply download the firmware's update file from the
+vendor's website, it's called a
+"dot F I R" file, supposedly it's, uh, firmware. Uhm, when we
+open it in our Hex editor we
+initially saw a problem - in a byte histogram you can see we
+haven't even distribution of all
+of the bytes which usually means that the firmware, the firmware
+is probably encrypted or
+compressed. So, we look back on Magic Lantern and what do they
+have to say about it? And it's
+actually AES encrypted which is bad news, uh, I consulted with a
+friend which told me, "Yea, even
+if it's encrypted you probably could find a key in Google and
+that's it."` And this didn't
+work. Uhm, Magic Lantern do have the key but we don't share it
+because they want to use it for
+their product, so, the key is not available online and we
+can't decrypt the firmware. Uh,
+at this point, at this point it looks like a dead end, uh, we
+have a camera, can we we somehow
+maybe dump the firmware from the camera itself? Uh, it's a nice
+camera, we don't want to break
+it, we actually bought a new camera, uh, it works. Uhm, how
+did Magic Lantern research their
+own cameras? And it turns out that they developed something
+called a "ROM Dumper". And the
+ROM Dumper is a firmware update file that they created and
+signed, uhm, which you load into
+your camera and it downloads the firmware to your SD card. So, I
+used ROM Dumper and as we can
+see, it actually, uh, worked quite nicely. And now we have
+the firmware on our SD card
+without breaking the camera which is quite good. Now, we
+load it into our disassembler.
+Uh, Magic Lantern even gives you instructions on how to load
+dump, uh, fixed on to IDA and we
+then verify all the basic functions we found, again, in
+the Magic Lantern documentation.
+So, so, everything aligns correctly. The firmware itself,
+uh, uhm, is an arm, uh, firmware
+and that's because the camera uses it as an ARM CPU - a 32-bit
+MDM RM CPU. Which usually means
+once you load it into IDA, you now have to manually improve
+IDAs ARM analysis because it
+doesn't disting, distinguish quite clearly between ARM code
+sections and thumb code
+sections, so, we have to manually improve it. Luckily for
+you, uh, you don't have to do it
+yourself, we developed an IDA plug-in just for this case which
+called "Thumbs Up". Thumbs Up is
+a really, uh, basic IDA plugin that uses really, really basic
+machine learning calling basic
+false-classifiers and that's it. And it improves the analysis,
+uh, you can read all about it in
+our research blog post and it's already on GitHub. Uhm, Thumbs
+Up was designed to improve the
+analysis, uh, focused on ARM assembly, uh, to distinguish
+correctly between thumb and ARM
+code sections. And it was used as part of preprocess phase for
+an additional IDA plugin called
+"Karta" which matched open source when statically inserted
+into the firmware. In our case,
+we couldn't find any, uh, such open sources because it says
+that Canon implement everything
+on their own - which is a good sense because we are going to
+find vulnerabilities if they
+reimplemented everything in your camera. Just to get a sense of,
+uh, why did we need to improve
+the analysis before we started and, uh, and just loaded to to
+IDA, we saw this, uh, navigation
+bar and all of the brown rectangles stands for code
+sections without functions. It
+means that IDA analysed it as code but couldn't distinguish
+any functions inside it. And we
+have a lot of, uh, these brown rectangles. After you execute
+Thumbs Up, it looks like this -
+you no longer have any brown rectangle and we actually found
+a few more function pointers and
+swings in the data sections as well as we can see in the wide
+swipes in the green bar. So, use
+Thumbs Up, uh, it runs quite fast, it's already on our
+GitHub, don't do manually what a
+script can do for you, uh, uh, at home. Now that we've finished
+analysing it and loading it into
+IDA, uh, the operating, uh, system itself is called "DryOS".
+DryOS is a proprietary real-time
+operating system, uh, Canon actually developed it especially
+or their own cameras, and I'll
+repeat that - Canon especially implemented their own real-time
+operating system just for their
+cameras. Which is quite insane, I haven't saw it in, uh, in
+other products. However, from
+our perspective it's just a real-time operating system, it's
+flat memory out of space -
+everything is fixed, you will find a vulnerability in a single
+task - you can hijack the entire
+camera and that's it. And the bonus of this operating system
+is that the camera reboots in
+3seconds which you probably saw it on your own where you have
+your own cameras but this also
+means that when I develop the exploit and I debug it because
+exploit doesn't usually work on
+the first attempt. Rebooting the camera only takes 3 seconds -
+not a minute, not 7 minutes, not
+20 minutes like any other embedded device - it only take 3
+seconds. And that saved us a lot
+of time during our research. Time to break up the PTP
+protocol. The first part is
+"locate the code" and the PTP protocol is a command-based
+protocol - we send requests to
+the camera and we get response back. Every command has a unique
+identifier called an "opcode"
+and thanks to an anonymous dot net programmer, here we can see
+the PTP commands from the SDK.
+Which was found in Magic Lantern's development group and
+you have the link to almost a
+full list. Here we can see a partial list, we have commands
+to open a session to the camera,
+close a session, create an object or what they have there
+in their recommendation and we
+can see that, uh, each command has a unique identifier and we
+can find them in the firmware.
+So, the next part is gonna be, to locate the code simple search
+these constants in the firmware.
+We actually did this search and we found a massive function with
+a unique code pattern, as we, as
+we can see here. We have the constraints to close a session,
+cto open a session - to get uh,
+the device's info and the upcode is always the forced argument to
+the function to our zero.
+Another one, we have a function pointer which has gone we, the
+function handler for this
+command and the third argument is always 0. Probably flags that
+no one uses. This means the
+function we actually, uh, located is a function which is
+responsible to register in the
+PTP-handler. This means we now have the, uh, full mapping
+between each opcode and the
+respective function pointer. So, now it's going to be quite easy
+to, uh, scan all of the
+functions and check for vulnerabilities in them. We
+verified our findings with trace
+strings, we left trace strings inside the firmware itself. So,
+we have the, uh, handler for
+open session. It includes strings such as open session so
+we know we're on the right
+track. Just as a basic recap for now - we have almost 150 unique
+handlers. I really wasn't
+kidding when I told you that protocols supports dozens of
+dozens of dozens of commands -
+that actually supports additional commands but some of
+them are duplicate. So, we have
+148 unique handlers. Usually the rule of thumb is if you find 10
+handlers you'll find one
+vulnerability so we're going to find vulnerabilities somewhere
+in the different handlers. The
+second stage is to understand API. Uhm, since we have a fixed
+function which reduces all of
+the different handlers - we all implement the same API. Each
+handler can receive up to 5
+different arguments which are integer types, 32 bits. And some
+of the request can also be
+included with an input data buffer. Every handler will used
+a fixed context called "PTP
+context" that uses function pointers to analyse a process
+and send back data to us.
+Without knowing about these function pointers, it, the call
+itself looks like gibberish but
+Magic Lantern happily documented this block for us, so we just
+code use it and that's it.
+Although we started with almost 150 unique command handlers,
+uhm, a quick scan shows there's
+only 38 different commands which actually receive an input buffer
+which makes sense because a
+protocol is used to query information from the camera and
+not just sending information to
+the camera. So, most of the time you only get back information
+and we don't send data. Although
+it's a massive reduction to the storage space, it's still better
+than nothing and if, uh, apply
+to the same rule of thumb we are going to probably find 3 or 4
+vulnerabilities in the firmware.
+At this point you can probably think of "Okay, simply fuzz all
+of the different commands, uh,
+you'll find a vulnerabilities, the camera will crash and that's
+it." But, you have cameras, you
+know it doesn't work that way. Even when I connected the camera
+to the USB, and tried to send
+messages in Python to read and it crashed. So, uh, the camera
+always crashes, uh, fuzzing is
+not going to work and I don't have any external mechanism to
+physically reboot the camera
+each time. In addition to the fact that sometimes when the
+camera, re, uh, gets stuck, you
+actually need to plug off the battery and reinsert it, so
+fuzzing is gonna be quite slow.
+Instead I choose to, uh, manually, uh, finding
+vulnerabilities in the firmware,
+Google code added and that's it. Hoping to find some
+vulnerabilities but one good
+vulnerability, uh, will be enough for us. And it actually
+worked quite well. Uh, we found
+3 Remote Call Execution vulnerabilities right on the
+first scan and here you can see
+the CVEs for these vulnerabilities. One important
+thing to note is that 2 of the
+vulnerabilities are in Bluetooth-related commands and
+if you had this specific camera
+model, you might know that the Canon EOS 80D doesn't even
+support Bluetooth, uh, but hey,
+uh, I'm not complaining. Uhm, maybe it's a left over from a
+different model. Maybe it's for
+future support, I dunno but we have vulnerabilities in an
+interface we don't even have in
+the camera. Of the 3 vulnerabilities we' found are
+Buffer overflow and the Globals
+- buffer overflow on the stack and buffer overflow of the heap.
+So, we have all of the
+vulnerabilities we need and we choose to focus on, uh, a
+vulnerability over the stack
+because it’s easiest to exploit. Time to build the exploit for
+our camera. [drinking water]
+Here we can see the code snippet for the vulnerable part, and the
+first line we query the packet
+for its size and store it in a fireball. Without using this
+size or going to prepare, uh,
+local stack buffer of fixed size, we fill up the response
+packet in advance and then we
+read the data from the network, according to the attacker's size
+into a fixed-sized buffer. And
+this usually means it's a classic buffer overflow. We use
+the attacker's size, uh, size
+without check that it's smaller than the size of the buffer on
+the stack. We can simply
+overflow the data and change the return address, however, we
+don't stop here. Uhm, before we
+actually returned on a function, we can see some mystery call
+back, uh, but it's used to
+process the fan, uh, incoming packet. We don't have a
+debugger, we don't know what
+does this mystery call back, uh, do, we simply hope we can, uh,
+bypass it freely and return back
+from the function so it could execute our own code. Please
+remember this mystery call back,
+we'll see it here in advance and the next slide. When building
+the exploit, we need to remember
+we don't have a debugger, we only have a camera and that's
+it. Uhm, it's a nice little
+black box, uh, we can see it but we don't have a debugger for it.
+Uhm, in such cases, I usually
+prefer to use, what I like to call "sleep based debugging".
+You simply find the function for
+a sleep somewhere in the firmware and you add a call to
+sleep - 1, 2, or 5 somewhere
+inside your exploit. If your exploit took 5 seconds and then
+it crossed, you know you've
+reached your breakpoint. If the code crashed, immediately, you
+didn't reach your breakpoint,
+this way you can debug your exploit without having a
+debugger. Uh, it does mean that
+you actually use a watch and time up your exploit every time.
+But, it's better than nothing,
+and this way you can distinguish where did we reach thus far in
+the exploit? Uhm, you can hold
+the breakpoint around to check where the exploit failed -
+usually it fails right at the
+start, but you can move it around. And, usually, uh,
+embedded devices and your
+computer... Crash. They can show you a notification when they
+crash,when you have a
+vulnerability in the windows kernel for example, you will see
+a nice little bluescreen of
+death, which looked like this. And in the embedded devices
+you'll see something similar.
+Uh, and up until now, I had fetched results from last year
+and we have a screen for the
+printer and now we have a screen folder and the camera itself.
+So, uh, it, it really does look
+the same. On an Office jet printer you have screen, on the
+screen of the printer. And on
+the camera you have "Error 70". Sometimes you get "error 80" -
+which, I don't know what does it
+mean, but "Error 70" is what you usually get. And after you get
+the error you need to, uh,
+reboot the camera, sometimes it means you have to plug off the
+battery and reinsert it. But,
+that's quite straightforward. However, we didn't have enough
+luck in our research, for some
+reason the camera usually hangs instead of crashing. And, this
+means if I sleep for 5 seconds,
+and the hang indefinitely, or hang indefinitely, it look
+exactly the same. So, we can't
+see our breakpoint. Uh, it's not really useful. [tick noise] And
+we want an, uh, alternative
+trace point that we actually can see. At this point it's too, too
+complicated to print something
+to the screen and sleeping doesn't work. The camera doesn't
+do any noise that I know of, so,
+we don't have a lot of options. Uhm, I decided to change tactics
+and, uhm, use, use a different
+approach. Instead of sleeping, call an address that always
+crashes. Uhm, but how do we find
+an address that always crashes? We don't have a debugger. Uhm,
+turns out that when you jump to
+address "0" the camera hangs; when you jump to address "1" the
+camera hangs, address "minus 1"
+the camera hangs. Uh, after a few hours and a lot of guesswork
+we found this address. If you
+call this address the func, the camera crashes. I don't know
+what's important in this
+specific address but it works. So, now we're going to use this
+address as out breakpoint. Uhm,
+if we saw nothing, we hang before breakpoint. And if we
+crashed it means we reached our
+breakpoint and that's it. And, essentially, we're going to do
+this experiment. Coyote wants to
+get to the end of the tunnel, if he crashed into the mountain. we
+got our breakpoint. If it
+stopped before the mountain we stop before our breakpoint. So
+that's the experiment we're
+going to do time and time again until we fix all of the bugs in
+our exploit and execute code
+over the camera. And it worked, uhm, this blind crash-based
+debugging actually worked, we
+have a remote code execution. Uh, time to, uh, use our
+debugger, boot it into the
+camera and study and the camera and more intensively. Usually I
+allowed my own debugger called
+"Scout" to start dynamic reverse engineering. And, up until now,
+if you remember, we use PTP over
+USB while Scout uses TCP - it's a network-based debugger. And
+the TCP fails. It looks like we
+either have USB without network or we have WiFi without USB. So,
+we can't have both USB and both
+WiFi on. So, even if we exploit a vulnerability over the USB,
+Scout gets stuck inside. So, it
+can phone home back to us and we can debug a camera. Uhm, we'll
+have to do something else. The
+camera already supports WiFi, let's migrate our exploit to
+WiFi and hope it works, uh, this
+time. Initially we used a project called "PTPy" Uh, you
+can find it on a GitHub link.
+It's a Python implementation for the PTP protocol, uh, like any
+other open source, it didn't
+work out of the box but it was better than nothing. Uh, when we
+reached the, uh, part of the PTP
+over IP for WiFi we turned out that we haven't actually
+implemented this feature. We
+have an open issue about it for 3 years or 2 years or something.
+But we don't, we don't have it
+implemented. So, we read for the specs, we implemented the, uh,
+the part needed for the WiFi and
+now we're, we're able to send messages to our own camera over
+WiFi. Which wasn't quite stable
+because the WiFi for camera isn't, is shakey to say the
+least. Uhm, but if you recall,
+we have a vulnerability in the application layer in the PTP
+protocol. It's the same protocol
+over USB and over WiFi. So, the same exploits creeped this time
+over WiFi should work, right?
+Uhm, no, uhm, earlier we exploited a vulnerability in a
+Bluetooth-related command.
+Something about notifying the camera about a Bluetooth
+connection and now it hangs
+instead of executing code. Uh, we can't debug it because we
+don't have a debugger but
+essentially, uh, it looks like the same mystery callback we saw
+earlier - it now hangs instead
+of simply working. And this is because we assume that the WiFi
+system on cheap hangs when we're
+reminded it doesn't support Bluetooth. When we used USB,
+Bluetooth was fine. But when
+we're using WiFi, it actually sees "No, we don't have
+Bluetooth, I already have WiFi,
+that's it, simply hang and that's all". So, we don't have a
+vulnerability, we don't have an
+exploit, uhm, time to think again - find something,
+something new to actually
+exploit the camera. We need more vulnerabilities, uhm, time to
+scan for, uh, additional
+vulnerabilities in the PTP handlers. Ons the first scan we
+only identify, identified
+shallow bugs. Uhm, maybe we missed something. ANd it turns
+out we did - we actually missed,
+uh, 2 vulnerabilities that are quite similar and this is a
+snippet for these
+vulnerabilities. Initially we get the inside of the packet,
+just as we did before and this
+time we check it against the fixed, known size of the packet.
+For this case it's 100. If we
+send a packet which is longer or shorter, uh, there will be an
+error log, uh, debug printer and
+then nothing. Because, we have an error log and then "no
+return". So, if I send, if I
+send and large packet of 200 bytes, it's not 100 - we'll see
+an error log and then we'll use
+200 to read bytes from my packet to the local stock buffer and
+that's it. So, they know we're
+attacking them but then don't do anything with it. So, I checked
+it up and it is indeed only a
+debug print - not an error that crashes the camera. So, we once
+again have to, uh, stop this
+buffer overflows that we actually know of but we haven't
+fixed. Okay, so, I'm not
+complaining, it works. Uh, I adjusted all of the constants in
+the exploit script and now we
+have successfully exploited remote code execution this time
+over WiFi. SO, we have 5
+vulnerable PTP handlers - all of our PoCs worked over USB but
+only 3 of them worked over WiFi.
+So, the next time someone says to you "This vulnerability is
+exploitable" - it's not! You
+need to check it cause some mystery call back will interfere
+with a PoC and only 3 or 4
+vulnerabilities actually worked over WiFi. So, always test
+everything before you say it's
+remote code execution. No that we've demonstrated, uh, the code
+execution over USB and WiFi, ad
+the question rises - have we finished? And, no. Our goal was
+ransomware and as attackers are
+profit-maximizers which is a good term for "I'm being lazy",
+uhm, we want to implement
+ransomware but we don't want to develop, uh, our own crypto for
+it. And, uh, you should really
+don't, uh, shouldn't implement your own crypto and why should
+you? You can simply steal the
+crypto from someone else. Canon already implemented crypto for
+their own firmware update.
+Something about AES, so, this time we can use our own
+debugger, search these, uh,
+functions and hopefully we could use, uh, Canon's own crypto
+functions for our, our
+ransomware. Time to look for these functions. [drinking
+water] So, best scheme for the
+design of the firmware update, uh, the firmware has 2 symmetric
+AES keys - being symmetric,
+meaning that it's probably not the best firmware update but it
+works that, in a way that you
+have 1 key to verify the firmware update but it could
+also be used to sign a new one.
+And what, uh, additional key the crypto firmware update but you
+could also use it to encrypt
+your own file. And we use an HMAC-based signature which is
+again, symmetric. When we search
+to, uh, through the crypto functions, we actually found the
+keys in the firmware itself and
+what a huge jackpot! We can actually use the keys we found
+to encrypt our own firmware
+update and simply send it to the camera. So, let's see how it
+works, uh, when we looked upon
+the crypto functions, uh we saw that Canon uses a proprietary
+key derivation that IDA can't
+even decompile. Uhm, we have multiple different crypto
+functions, uh, which doesn't
+make a lot of sense. We can even see in this main copy that
+actually lose some of the bytes
+of the hash recalculator because the buffer isn't big enough. So,
+they copy only 12 bytes out of
+20. And we simply lose 8 bytes for some reason. Uhm, don't
+implement your own crypto. Uhm,
+the encryption is OFB type mode of operation. And that's mainly
+because it looks like Output
+Feedback Block, it matches the Wikipedia page of Output
+Feedback Block, but, when tested
+against Python's crypto library, it doesn't work. Uhm, the AES
+block matches my calculation but
+the second block doesn't. Maybe it's some problem with the
+[inaudible], I don't know. But
+at this phase, it really looked, uh, wrong to simply implement it
+in Python. Uhm, too many
+proprietary calculations - IDA can't even decompile it, uh,
+it's simply felt wrong to try to
+implement it. uh, on my computer. So, instead, we chose
+a different approach. For our
+attack, we simply im, implemented the Scout
+instruction that calculates the
+crypto. Uh, this means, instead of understanding how the
+proprietary key derivation
+works, I simply told my debugger to call their function, and
+that's it. So, I found the
+others in memory of, of the key derivation function and told my
+debugger to execute this
+function and now I don't need to implement it on my own. So, now
+the camera can, uh, my , uh,
+camera after I compromised it can calculate for me the correct
+signatures, so, uh, we can think
+about something like, uh, signature error code on our own
+camera. And after which I also
+implemented an additional command to encrypt or decrypt
+the firmware update, so this was
+quite useful when we had to test Canon's patch - because we could
+de, uh, decrypt newly updated
+firmware and test the, uh, fixes. Which brings us to our
+tech, at home, using the already
+compromised camera, I can send a user firmware update to the
+camera. The camera will decrypt
+it and now we have the plain firmware on our computer. Now we
+can add any backdoor
+vulnerability feature we want to this firmware to have our own
+malicious firmware and send it
+back to the camera. The camera will encrypt it, sign it and now
+we have our own, legit,
+malicious firmware update. Which brings us to the vulnerability
+itself. It turns out the PTP
+protocol has a command for firmware update, so we can take
+the malicious firmware update,
+send it over WiFi to the target camera and without any user
+interaction, we just took over
+the camera without any vulnerability. And, it turns out
+we have no user interaction for,
+uh, firmware update for some reason. So, we did it in a test
+with, uh, Magic Lantern's ROM
+dumper and we can see that we now have checkpoint research ROM
+dumper, instead of Magic
+Lantern. So, we have our own firmware update file, we can
+simply send it to the camera -
+no need for any vulnerability. Uh, please don't use symmetric
+crypto for your firmware update.
+Time to connect the dots, uh, once we're finished with the
+firmware update, we turn back to
+the ransomware. Uh, we implemented the logic to encrypt
+all of the pictures using, uh,
+Canon's, uh, crypto functions so now we read, uh, pictures from
+the SD card encrypt them and
+store them there. Uh, time for a demo. So, here you can see my
+laptop and a camera without any
+cables. And then just to show you, the camera works. Uh, so,
+we use the camera, we took some
+pictures, and we now have 3 images on our own camera. Now I
+exploit the vulnerabilities with
+SIM using exploit script. Uhm, we need to wait a bit for some
+events and then we send out
+malicious payload to the camera. We've just infected the camera
+and you can see blinks on the SD
+card meaning that we are now encrypting the images and
+storing them to the SD card and
+after we finish, we actually show the ransom message to the
+user. [background message] So,
+we've just installed our own ransomware! [applause] And as we
+can now see, all of the images
+were encrypted and the camera can't show them and playback.
+So, responsible disclosure - uh,
+we reported all of the vulnerabilities to Canon and
+worked quite, uh, closely with
+the to, uh, patch all of the vulnerabilities, uhm, Canon
+confirmed all of them rated as
+"high" or "critical" and, uh, issued a patch. They have a
+secure advisory already on their
+website - you should really test f you have a firmware update for
+your specific camera and
+download it. You can find all of the, uh, details in our blogpost
+in this links - links also to
+cameras, uh, Canon's advisory in Englsiha and in Japanese - any
+languages you want. Just as a
+side note - after we received a patch we also tested with Magic
+Lantern's ROM dumper also works
+and it still works. So, please don't ask me for the crypto
+keys, I deleted them from my
+computer if Canon will exchange the keys with new pair Magic
+Lantern won't be able to sign,
+uh, uh, their version or the ROM dumper. And I really don't want
+Magic Lantern to work harder
+extracting new keys, so I don't no longer have my keys - so
+please don't send me any email
+about it. [laughter] Conclusions, we found many
+vulnerabilities in the PTP
+implementation and one design issue in the extension that
+Canon implemented for the
+firmware update. Uhm, they might also apply for other vendors.
+They surely will apply for
+other, uh, DSLR models, uh, of Canon, maybe mirrorless cameras
+as well. If your camera uses PTP
+to connect to something - to your computer, your mobile phone
+- the vendor will need to check
+if it has similar vulnerabilities and maybe issue
+an additional patch. The PTP
+protocol itself has no network level protection so that's not a
+good idea. Uh, anyone can simply
+send messages and attack your camera if you're not using WiFi
+turn it off. Uh, if you're not
+using Bluetooth, turn it off. You don't want anyone,
+especially. [chuckle] In DefCon
+to connect, uh, to for the WiFi to your camera and ransomware
+it. So, if you're not using
+something, turn it off. And, just last note. Canon
+implemented proprietary key
+derivation for their crypto for some unknown reason. Uh, it
+didn't get additional security
+and it didn't actually stop me, uh, implementing anything. So,
+bypassing it was easy. We used
+our debugger to invoke their function and that's it. So, I
+don't know how the [inaudible]
+works, but I bypassed it. So, there's no actual reason to
+reimplement or invent your own
+crypto. It doesn't work. Last slide, uh, I used a few tools,
+uh, which I developed and are
+already accessible on our GitHub account. We had Karta - and IDA
+plug-in to match open sources
+and binaries and this time Canon didn't use any open source. Uh,
+we had Thumbs Up to, uh, improve
+IDA's analysis which works quite well even in my, uh, ongoing
+research and my embedded
+debugger that actually used - Scout, you load it as your
+exploit shellcode into the
+camera, load your own debugger and that's it - you can compile
+your C-code, execute it on your
+camera and decrypt th, uh, image from Canon. So, all of it is
+accessible on our GitHub
+account, use them if you have any questions. Send me an email,
+uh, please use these tools,
+don't do anything manually and don't reinvent the wheel. That's
+it! Thank you for coming!
+[applause]

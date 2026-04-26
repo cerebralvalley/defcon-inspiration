@@ -1,0 +1,374 @@
+>> SEAN MALONE: Afternoon, this is HiveMind,
+we're looking at distributed file storage using JavaScript botnets. I am Sean Malone.
+Principal security consultant at FusionX. We are definitely hiring. FusionX needs a
+little bit of an introduction though. So let me tell you a little bit about what we do
+of the we do a combination of penetration testing, red teaming, sophisticated adversary
+assessments. Basically, we assess your entire organization, not just a particular network,
+system or application. If that sounds like something you'd be interested in, hit me up
+after the talk. The problem we're looking to solve here is
+that sometimes even when using encryption to store sensitive data, we run into problems.
+That problem is that with encryption, the data is still present. It's simply encrypted.
+And if it's encrypted in a way that we can recover it, then someone else can force us
+to recover it for them. Such as a court order or a $5 wrench. So encryption is not always
+going to be enough. So, if we can't simply store the files encrypted
+on our own systems, what can we do? The first thing that comes to mind store the files on
+someone else's system. That way if your system is seized, then the files aren't there. The
+problem is that that's usually illegal. So what I want to do is look at a way to do
+that with standard functionality in a way that's at least less illegal. Mostly legal.
+The way we do this is start functionality, no exploits. Just using tips and tricks and
+looking at the standard features in web browsers. So what I mean by this is that all of the
+techniques that I'm presenting here, all of the features that my technique uses are used
+in real web applications. So there's nothing to patch. Removing these features would break
+modern web applications. So that's a great advantage here because this
+is something that's going to work for the foreseeable future. It's not something that
+is only going to work until some vendor patches the particular vulnerability. First, a disclaimer.
+This is a research project. I'm not responsible for what you do with this software, it's not
+intended to be used to store critical data at this point though the concept should be
+able to get there eventually. Also, I'm not a lawyer. Nothing in here is legal advice
+and I'm not responsible for anything legal or illegal that you choose to do with this
+software. Web browsers have undergone some significant changes in the last 15 years or
+so. We started off with the most basic form of client side storage or the browser cookie.
+We had JavaScript for data processing and a jacker or asynchronous JavaScript in XML
+for that back end client to server communication. That's changed recently with the advent of
+HTML 5 features. We have all of those older technologies still present in the browser.
+But they've all been upgraded. Now we have web storage to store larger amounts of data
+in the browser. We have web workers who can spin off JavaScript threads that are separate
+from the main GUI threads so you can do more processing without gumming up your application,
+and we have web sockets that create a persistent socket from the client browser back to the
+server. So the end result here is that a web browser is basically a computer program that
+will communicate back to my server, execute any arbitrary code that I hand it and store
+any arbitrary data that I ask it to store. Sounds like a botnet node, right? You might
+ask what about sandboxing. Doesn't that make it impossible to access the system data, execute
+code on the system. Yes, it does that for the purpose of some of the browser security
+improvements but the short answer is I don't care about that. I don't need to do anything
+unite outside of the normal browser security manual. I'm simply running code in the context
+of the domain that runs the code and accessing data that I've stored on that same domain
+so it's all on the same origin. It's all within the browser security policy. Again, these
+are features, not bugs. So let's look at what it takes to actually build a botnet on top
+of web browsers. The first step in building any botnet is going to be the node infestation.
+How do we actually get our code running on the node. How do we take control of that particular
+node. The first most obvious technique is to simply use a site that you own. If you
+own a site that's getting a thousand hits every 5 minutes you have the capable of executing
+a code you want on web browsers every minute. That's a lot of power. Most sites don't do
+anything with that. But there's definitely the potential there. That's when there's a
+compromised site so any time there's a consistent cross site vulnerability where we can store
+a piece of JavaScript on a site that is executed every time somebody visits that particular
+site, we can include every visitor to that compromised site in our botnet by adding that
+piece of persistent JavaScript onto the compromised site. URL shorteners are fun one. Normally
+you have a URL shortener that simply redirects to the target. But what if we simply load
+a full screen iFrame showing the intended URL and in the background we have a second
+iFrame that is running our botnet code? You can use ad distribution networks. There was
+a great talk at Blackhat this year about various ad distribution networks where instead of
+distributing an image, you can actually give them an iFrame source and they'll put an iFrame
+on the target pages that then sends traffic back to your site. The intent is to use this
+for sort of SEO page rank type things but, if you have people going to your site, you
+can make them a member of your botnet. My personal favorite is the anonymous proxy server.
+I stood up an open anonymous proxy listening on port 80, excuse me, on port 8080. Stood
+this up a few weeks ago. Let it just sit there. Didn't advertise this. Didn't solicit traffic
+at all and right now it's getting hit by about 20,000 unique IP addresses every 10 minutes.
+(Laughter) This is completely unsolicited traffic, I
+never promised to do anything with this traffic. I never promised to return any particular
+content. I never promised that the page I return is the actual page they request. Usually
+it looks a lot like the page they request but it also has an iFrame in it. So it's another
+great way to build a botnet very easily and very quickly. Command an control is done through
+the HTML 5 iSockets this is through the official working group publication on web sockets.
+To allow bidirectional communication with server side processes, that could have been
+written with botnet communication in mind. That's exactly what you want to do for your
+command and control channel. When that doesn't work, you should always have a way to fall
+back to Ajax. Older browsers don't support Ajax and sometimes when you're going through
+proxies and such, web sockets and proxies don't play nicely so it's always good to have
+that additional fall back there so you don't lose your nodes. Data storage is done through
+HTML 5 web storage. Again a quote through web application, the quote I like is web applications
+may wish to store megabytes of user data. What they really mean is megabytes of application
+data. Megabytes of whatever the application server decides to push down to the client.
+So I'm making that megabytes of my data being stored on all of these different browser nodes.
+The back end is a Ruby on Rails application with a my SQL database with the active record
+database extraction layer. In addition, I'm running a Redis certificator key value storage
+that has nice features for what we're doing here. Redis by default has persistence. It
+runs to disk, but you can disable that, meaning when the power is pulled, the Redis values
+are gone. And you can also expire particular keys. So, say you're uploading a file and
+splitting it into blocks. If those blocks temporarily live in Redis, you can set a key
+and those blocks disappear after a particular time. It's a great way to check for a time
+to live for all the nodes in the blocks for all the different files.
+So that's what it takes to build a JavaScript botnet. We're going to be using this JavaScript
+botnet for data storage. But there's definitely more we can do with this. Other fun botnet
+uses would be network scanning, simply checking to see what ports are open. And again all
+of this is come from your nodes. This does show as coming from a source IP address at
+your command and control server. D DOS attacks are another fun one and data
+processing with web workers, anything you can break up into a relatively discrete task
+you can push down to these nodes and have the nodes do all the heavy lifting for you,
+so long as you can write it in JavaScript. JavaScript is not going to be nearly as efficient
+in writing it in something like C. But when you consider you can spin off multiple threads
+so you can have four different threads running in four different cores if your node is a
+quad core system and if you can do this on, say, a persistent cross site scripting vulnerability
+on a popular viral video or something, that's a lot of processing power there. And it's
+free. Now we have the botnet, let's look at what it takes to actually build a file system
+on top of that botnet. First, a few definitions here. A file block is what I'm using to refer
+to a piece of file that has a set maximum size. A file is going to be made up of multiple
+file blocks. A node is simply any web browser that's a member of the botnet. And the server
+is the central command and control server that also serves as sort of the phone book
+for these files. It's directory of what files have been uploaded and where all these different
+files live. So when we're storing the file, we upload the file through web application
+just like any other web application and it is going to need to live on the server for
+a very short period of time while we execute the following steps. We break this file into
+the name, the MIME type and the data. We take all of this and put it into basically, a JSON
+encoding so it's a simple string at that point and encrypt that. And that ‑‑ and this
+is just a simple additional step of AES encryption so that with we push these blocks down to
+the nodes, the nodes can't see the actual data in the file.
+The end result is the encrypted data which is the basic C4 string. We split that into
+a bunch of different file blocks that simply take the first 1,024 characters, pull those
+off into a block and then the next 1,024. All these elements are tuneable here so there's
+no particular reason that I'm using 1,024 depending on the particular file and the reliability
+of the nodes, you may want smaller or larger file sizes. Sounds like it's time for a quick
+break (Applause.)
+What's this called? Shot the n00b. It's really hard to get accepted for a talk here at DEF
+CON. So congratulations to our new speaker, very competitive. All right. I need someone
+from the audience. All right. So our first time DEF CON attendees and speakers.
+(cheers and applause). >> Paul had a rough night. Not doing well.
+All right. (Applause)
+>> Come on, only three shots to go. >> Oh, God.
+>> Three shots this hour. >> You can just stay there for the rest of
+the talk if you need to. >> Oh, shit. There's people here.
+>> SEAN MALONE: All right. So we now have file blocks from our uploaded file.
+The next step is storing those blocks in our botnet. B1 represents a particular block 1
+from our uploaded file that is living on the server. We're going to pull in a certain number
+of nodes from our botnets. We just randomly pick a certain number of nodes that have checked
+in with us in the last minute or so. So we know that they're online. We push this block
+down to the nodes there. And so now the block lives on the nodes and does not live on the
+server. The server keeps track of which nodes have that particular block and it keeps track
+of the check sum for the block but it does not keep the block data itself. So now this
+is going to be a very transient botnet. As nodes come and leave, these particular nodes
+may only be online for another few minutes. Maybe even another 30 seconds. So what we're
+doing is we do a constant heartbeat where every 5 or 10 seconds, depending on how you
+have this tuned, the nodes are going to be sending up a heartbeat where they basically
+check in and say hey, I'm a node, I'm still online, my node ID, here is the ID and check
+sum for each block that I have stored in my browser local storage. So eventually some
+of these are going to go offline or the data is going to be corrupted either intentionally
+are unintentionally. We have to keep in mind we can't trust the nodes here. Somebody running
+that node could be intentionally modifying the data
+So once the number of live confirmed good nodes drops below a certain value, we then
+replicate, we pull in the set of new nodes that do not currently have this block. We
+take the ‑‑ the server sends a query down to the existing good nodes, pulls that block
+back up to the server and distributes it to the new nodes so we're back up so that safe
+level of replication to make sure that we don't lose that block. We have to go through
+the server. We can't do this in a strict peer to peer fashion because JavaScript can't actually
+open a port from within a browser and listen for an incoming connection. From my perspective,
+it would be good if we could, but it's not such a great security move. Retrieving a block
+looks very similar. The server simply sends out a query to all of the nodes containing
+a particular block saying hey, please send me this node and the node sends it back up
+to the server. All of the nodes will send it back up. The
+server does a check sum verification on the server side to make sure that what it's getting
+back is what was actually stored. And then it stores that temporarily in the Reddis data
+store. And it puts it in there with a expiration of, say, 20 seconds. So all the blocks are
+going to be requested and they're stored locally in memory on the server for that time to live.
+This lets us rebuild the file now. So we've requested all of these blocks back from the
+nodes. We simply concatenate them. And then rebuild that into encrypted data. And the
+password is provided that the point by the user. And the decryption is then done providing
+us with the name, the MIME type and the actual file data. Rebuild that into a particular
+file and provide it as a download to the user. And the user is able to download it from the
+web application and from the user's perspective, ones all of this is set up and running, it's
+very simple. It's provide a file and a password, upload the file, come back later, provide
+that password, download the file and have the file back on your system. But this file
+meantime has been distributed across all these different nodes.
+So getting back to where we started this talk, we want to do this so that that file is not
+living on the server itself. So, when everything goes wrong, here's what happens. Pick your
+favorite three letter agency. They come in and seize this server. They've heard that
+you're storing some sort of data that they want to know about. What happens when they
+seize the server, the server goes off line and the nodes go offline. They're no longer
+going to the command and control. The block is going to fail because the nodes are going
+off line because they're all going off line. The server isn't getting that heartbeat, the
+blocks aren't be replicated to new nodes. The result is that the blocks are lost. And
+when those blocks are lost, the server no longer has a correct phone book, the phone
+book for those blocks is out of date. It doesn't know where to find those blocks if you want
+to go back and download that file. So the end result is that the files are unrecoverable.
+Now, let me be clear on what I mean by unrecoverable here. It's practically speaking, it's not
+feasible to recover the file. It is definitely possible to go out and seize all of the nodes
+or at least the critical mass of the nodes in the botnet but that's going to be at least
+in order of magnitude more difficult than simply seizing a file and getting a court
+order for ‑‑ or seizing a server and getting a court order for the owner to decrypt the
+data on that server. It's also possible to poison the botnet by injecting ‑‑ if you're
+part of this three letter agency, you inject enough of your own nodes deliberately into
+this botnet, log all the block data and then rebuild the file after you seize the server.
+You have the additional layer of encryption here but as we talked about sometimes that's
+not enough. So the only real protection that you have against this is to have a sufficiently
+large botnet that it would be difficult to seize every node. There's also a certain element
+of security through obscurity here where you have to know that this is how the files are
+being stored before the server is seized. You can't go back afterwards and inject nodes
+once the server has gone offline because those blocks can't be recovered in order to be replicated
+to your nodes Obviously, if the server itself is compromised ‑‑
+and I mean compromised instead of seized. So, if that 3 letter agency is able to access
+the server without the server going off line, they can issue the rebuild command and intercept
+the file on the server itself. So there are definitely limitations to be aware of. But
+there's always going to be that security usability tradeoff here. And I think that what we have
+here provides a drastic increase in security in that it is significantly more difficult
+to recover the file if you're looking at a server seizure situation. But it's still very
+usable from the end user perspective. There's interesting illegal unanswered questions here.
+I have my own personal opinions on these but I think there's still a lot of unknowns here.
+The first is this legal? I'm calling it mostly legal. There are definitely legal ways to
+build the botnet such as if somebody's going to a site that you own. But is the very act
+of storing a significant amount of data that's unnecessary for the functionality of the site
+‑‑ so the user's intent was not to download that data, is this legitimate or does that
+constitute unauthorized use of a computer. And the same question for bandwidth and processing
+power. Any time we're doing all that heartbeat to block traffic, we're using bandwidth and
+processing power as well. This is even more true if we're doing an actual data processing
+botnet with web workers, bandwidth is going to be even more true if we're, say, conducting
+some sort of high traffic application using those nodes. I look at this and say you know,
+this sounds like an animated flash advertisement. If you go out to a particular site and they
+push down a flash advertisement, it's additional bandwidth when that ad is pushed down. It's
+additional storage in the browser storage and additional browsing power. So we're talking
+about more a difference in quantity as opposed to quality. My opinion is that legally it's
+acceptable because somebody did deliberately go to that site and, when you go to the site,
+there's sort of an implicit assumption that you're going to download and execute in your
+browser whatever that Web site gives to you. There's not ap opt infor each and every component.
+But it is unanswered. I'm not aware of legal precedent in this area. From the other side,
+what if you're storing data without encryption or without any form of encoding and so it
+turns up in a forensic search of the one of the nodes. So somebody is running their web
+browser, happens to become a member of the botnet, you push down data, if their systems
+later analyze forensically and this illegal content shows up on their system, that's going
+to look pretty bad for them. So are you responsible for data that a site that you deliberately
+went to loaded a hidden iFrame, pushed down that data on to your computer, are you responsible
+for that data? I don't know. Demo time. So we'll start off showing the node side of
+things. This is my personal Web site. I'm loading it through this proxy here. I've got
+it running with foxy proxy. And if we look at the source for the site, most of this is
+normal source but down at the bottom we've got this hidden iFrame. This is a simple engine
+X proxy and there's a rule in there that simply says do a find and replace on the body content
+of the response and replace that slash body tag with the iFrame and then the slash body
+tag. It's really simple and efficient and it pushes out iFrames to thousands of different
+nodes. On the console side of things, we see all these different requests going back and
+forth. The Check queue and I've had this fall back to AJAX because we're going through the
+proxy. It's easier to see because the fire bugs haven't caught up with the persistent
+web connections. So these post requests for check queue are basically saying anything
+I need to do? Any blocks you need me to store? Any blocks that you need me to send back to
+the server. So the heartbeat, let me see if I can grab one of these ‑‑ let me jump
+back up. The post data here is simply the block ID, that's that file block and UID and
+the MD5 check sum for each of the file blocks, so these are blocks that are currently being
+stored in this node. So it does that heartbeat every so often to just let it know, hey, I'm
+still here, these are the blocks, these are the check sums. However, if I close down firebug,
+you see my pretty face and no traffic there. So it's all completely transparent in the
+background. Here's what the C2 server interface looks like. Again, this is a Ruby on Rails
+application. We've got a simple interface showing the files that have been uploaded.
+And there's a separate page here for the nodes. So this is a list of nodes that have been
+active within the last minute. In order to retain a little bit more control over this
+particular demonstration, I'm not having this run with thousands of different nodes. This
+is just from a few IP addresses and systems that I control here. The last updated time
+is the last time we heard from the node there. The UID is something we store in a cookie
+on the node to keep track of which node is which and we correspondingly use that in the
+Reddis data store for tracking which blocks live on which nodes. So let's take a look
+at what it takes to upload a file. We simply put in the name of a file. Put in a password.
+Choose a file that we're going to upload. And go ahead and upload it basically the same
+as any other web application file upload. The file itself is assigned a UID for the
+directory tracking purposes. We go over to detail. It's got this file name we assigned
+it but the original file name is encrypted with the file data and stored out on the nodes.
+Here's the listing of all the file data with each of the file blocks and then the nodes
+that each file block lives on. So this point we've got the replication set to 4 nodes in
+a production botnet you definitely want to have that set higher. Say maybe distributed
+across 20 different nodes and if it drops below 10, replicate until you're back up to
+20. So there's a large number of blocks here because I have my block size set relatively
+small. Again, all of this is tuneable. When we go into the fetch dialogue, we put the
+password back in. Go ahead and fetch the file. It loads all the different file blocks and
+it looks like I typo'd it. I may have typo'd it when I created it.
+There we go. All right. And this is a realtime loading bar here in that it's actually showing
+what blocks do we have and what ‑‑ which ones are we still waiting on. So as it goes
+across, that's showing we sent out the request and more and more blocks are come in. When
+it gets to the end, we finally have all the blocks, the file is ready, we concatenate,
+decrypt with the password we just provided and the file is downloaded. Yes, we want to
+keep this file. And now we're able to view our data that's getting more and more dangerous
+to be caught with. (Laughter)
+(Applause) I am going to be releasing the code for the
+botnet itself. Both the engine X side of things, which is basically an engine X configuration
+file. That's all there is to it. And then releasing the Ruby on Rails application side
+of it. Again, it's a research project, not the most stable software out there. But you'll
+at least be able to see how I do things, how I track the blocks. All of that is going to
+be available ‑‑ code will be on github but it will be linked to from my personal
+side. And the ‑‑ the slides will be up there as well. As well as a video of the presentation.
+With that, I'll open it up for questions. I think we two microphones, two different
+locations in the room here. So, if we could use those to make sure I can hear you, that
+would be great. Yes >> AUDIENCE: Hi. I wanted to ask you what
+happens if the three letter agency seizes your system while it's still operating? Still
+connected to the net? >> SEAN MALONE: So, if they seize it while
+it's still connected, if they take it offline, the replication fails.
+>> AUDIENCE: No, if they keep it online. >> SEAN MALONE: If they keep it online, if
+they're able to take control of the operating system while it stays online, then they would
+be able to rebuild it. So you want to take the normal physical security measures to make
+it as difficult as possible for them to take control without actually unplugging the system
+or at least disconnecting it from the network there.
+>> AUDIENCE: Thank you I'm wondering if the Internet server goes down does that mean the
+files go down too. >> SEAN MALONE: Correct. If the Internet connection
+goes down, if the nodes can no longer connect to the server, then the data replication fails
+and the blocks are lost. If it comes back online quickly enough, probably within five
+minutes or so, you'll probably have enough nodes left that you can recover the data but
+it's not guaranteed. So the purpose of this is definitely to store data where it is better
+to lose it entirely than to have somebody recover that data, decrypt it and be able
+to pin it on you. Over here? >> AUDIENCE: What about the file size limits
+of what the browser will let you store? >> SEAN MALONE: Ah yes, so each node is generally
+able to store roughly 5 megabytes of data without prompting the user and we definitely
+don't want the user to be prompted to allow more data. But that's 5 megabytes per node.
+So, if you have 10,000 nodes, that's 500,000 megabytes. Even if your replication cuts that by a factor
+of 10 or so, that's still a lot of data that can be stored in this botnet. Yes?
+>> AUDIENCE: Would it be possible to set a timeout on the web storage to make the node
+side block self‑destruct after a certain amount of time?
+>> SEAN MALONE: Yes, you can definitely add such a time out. There's a failsafe kill switch
+thing where if the node cannot talk to the server within a certain number of seconds,
+then it simply wipes the local storage and the browser there so that even if the nodes
+are recovered or seized, more work has to be done at least in order to access that data.
+>> AUDIENCE: What kind of transfer overhead is there in comparison to the size both on
+the server and the node end? >> SEAN MALONE: So in terms of the actual
+algorithm for the encoding ‑‑ for the encryption and the encoding, I don't know
+exactly as a percentage of file size. But it's basically ‑‑ JSON encoding, AES encryption
+and then just chopping it up into blocks. >> AUDIENCE: I mean how much data is being
+sent back and forth? >> SEAN MALONE: It's going to depend entirely
+on how much data you're storing and how much is stored on the browser. Those check queue
+commands are very small. That's a post request with no data. That's just is there anything
+for me to do? And normally it's just getting back an empty array. There's nothing left
+to do. The heartbeat command is what you saw up there
+on the screen with the block ID. And the MD5 for each block so there's a little bit more,
+but usually it's just getting back 200OK response. So it's pretty lightweight as far as the total
+amounts of bandwidth because it's going to depend on the tuning parameters for how quickly
+you're checking the queues and how often you're sending the heartbeats. So those can all be
+tuned depending on how stable the particular nodes in this botnet are. Yes?
+>> AUDIENCE: Do you have any way of protecting against, say, malicious user who connects
+and sets their local storage to be persistent in their browser versus just I assume you
+have it set for like a transitory temporary thing so it's not a permanent one with the
+domain once it's offline? >> SEAN MALONE: So we do store it in local
+storage. Meaning that it is going to be more persistent. And the reason for doing that
+is say you have a browser with multiple tabs open. If the user ‑‑ and if they're all
+going through that proxy, you want a user to be able to close tabs, move to other tabs
+and have that data stay there so you're not needing to replicate unnecessarily. It would
+be possible to use session storage which is going to expire more. Again, if ‑‑ no
+matter what you're doing, if you have a deliberately poisoned botnet and that 3‑letter agency
+is able to get a sufficiently large number of nodes, a sufficiently high percentage of
+nodes, then regardless of how you set it, if logging that traffic, they may be able
+log those blocks, it may provide additional security but not significantly so.
+>> AUDIENCE: Are there any inherent restrictions or reasons why you wouldn't have the clients
+connect to a series of failover servers in the event your Internet goes out or your power
+goes out. >> SEAN MALONE: You could. However, that would
+need to be pushed down from a C2 server and that gives that 3‑letter agency multiple
+chances. So, if they seize that first server and everything goes offline, if replication
+is still being done through a second, third, 4th, 5th server, once they do forensic analysis
+on the first server, they'll see we screwed up our chances with this one but we know we
+have to take different tactics and possibly poison the botnet since it still exists and
+is being replicated on those other servers as well. So again, it would definitely provide
+a higher availability guarantee, but it would provide a significantly reduced confidentiality
+guarantee at that point. >> AUDIENCE: Thank you.
+>> SEAN MALONE: Yes? >> AUDIENCE: When you mentioned the legal
+questions outstanding, have you consulted legal counsel about that?
+>> SEAN MALONE: I have not. >> AUDIENCE: I would ‑‑ I've got a card
+for you after. >> SEAN MALONE: Sounds good. Yeah. I definitely
+would be interested in exploring that side of things a little more.
+>> AUDIENCE: That would probably be good. Thanks.
+>> AUDIENCE: Do you have a sense empirically of how ‑‑ what percentage of the file
+is ‑‑ lives on the server at any given moment? Because of replication?
+>> SEAN MALONE: Empirically, no. Theoretically, it depends on how quickly you need to replicate.
+So the more stable your nodes are, the longer those nodes are online, the less often you're
+going to need to replicate. And it's that replication that causes the data to need to
+flow through the server again. Any time a file is uploaded, any time a file is rebuilt,
+and any time a block is replicated, that data is stored on the server with a timeout of
+20 seconds. For a relatively fast botnet, where you have at least one node for each
+block that's going to reply much more quickly than that, you could probably tune that down
+to more like 5 or 10 seconds. But it's hard to say for sure because it depends entirely
+on the makeup of that botnet. All right. I think we're done. Thank you very much.
+(Applause.) >> For any additional questions, I will be
+available in the chillout lounge after the talk.
+>> And just a reminder, if you got anything drinking or eating in here, please take your
+garbage with you and put it in the appropriate containers. Just helps us out at the end of
+the con. Thanks.

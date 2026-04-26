@@ -1,0 +1,1010 @@
+>>Umm so the purpose of the talk
+today is to talk about bug
+bounty programs, what going on. Give you a little bit of
+education and then talk about
+the various types and what's happening. There's a lot that's
+going on out there. There are
+some people who saw hands that went up that are doing this
+stuff. Use them as resources.
+There are some folks that run bug bounty programs in this
+room, so definitely spend time
+with them as well. My name is Jake Kouns, I am the CSO for a
+company called Risk Based
+Security. This Carsten Eiram he is the Chief Research Officer,
+he's done a bunch of bug bounty
+stuff so with that we're going get rolling. The reason we got
+in to this stuff is that we
+actually do a lot of vulnerability intelligence and
+we've been tracking for awhile
+what is going on with disclosures and what's happening
+and how is money influencing
+what's going on in research. That's what leads us here today.
+All right, so, information
+security. Career decisions. I would imagine most of you are
+already somehow in the security
+world doing some kind of work or you're here because you want to
+learn and work your way into a
+security role somewhere, right? And there's lots of choices,
+right? I think you've been
+hearing over and over that it's really hard to be an I.T.
+generalist these days , even
+worse an I.T. security generalist, you can do it but
+everything is getting so
+specialized that you sorta have to pick a role, right? And so we
+go out there and we look you see
+all these words like analyst and auditor and specialist and all
+this other stuff doing some
+searches on some job hunting sites. It's funny our favorite
+one was the cybersecurity hunter
+as a title, we thought that was pretty amusing. Does anyone have
+that as a title? [ laughter ]
+No. You're working on it. Is that what it was? What it comes
+down to typically and I hate to
+sort of, to generalize it this much sort of you're presented
+with two pills, right? It's the
+blue pill or the red pill. How many blue pill people are in the
+room? Couple. A lot of people
+seem to be undecided on what you're going to take, right? But
+what it comes down to it most
+people say they're red pills the way they go, right? And almost
+everyone seems to be talking
+about offense and that is what is sexy, et cetera. Blue teamers
+seem to be really uptight these
+days, right? It feels like there's too much red team
+attention going on the blue team
+guys feel very sort of taken aback , right, you know, like
+it's not fair to them. I can say
+that because I start my career as a fire wall guy so I was a
+blue team guy for a long time.
+So, why do people like red teams, right? There's a lot of
+reasons and typically these are
+some of the ones that come back, right? Constant learning
+opportunities, you get to play
+and break things, I mean how cool is that, right? That's what
+you're paid to do and you're
+generally well paid to do this. And even sometimes you get to
+mess around with social
+engineering stuff which some people in the room really enjoy.
+And it can lead to a lot of
+other fun things trying out, right? Then at the end, there's
+nothing better than popping a
+box, getting rude, something about winning, just feels great
+and people love that. When you
+say red team it can be sort of broader but people think of that
+as pentesting, right? And it
+seems like everywhere you go and you talk to vendor or security
+vendors and companies everyone
+is looking for Pentesters right now. But actually when you go
+out on a job search board, like
+Indeed, you do a search for Pentesting only sort of 17 come
+up, you know, jobs that are
+open, if you will. But it does feel like everyone is looking
+for some type of Pentester these
+days. When you're a Pentester there can be some things that
+are pretty painful, right? So,
+there's a lot of fun but there's also some things that go along
+with it that maybe aren't so
+great. And a few things are that you are usually working at some
+sort of company and you're
+dealing with some sort of political politics, those sorts
+of things which is no fun,
+right? You have to test during specific hours, many of those
+times can be sort of when you do
+want to be sleeping or drinking or doing something else later at
+night, weekends, et cetera. You
+end up having to write these really, really long reports and
+you know no one is going to read
+or even understand but you have to make it really, really long
+because it has to seem like it's
+valuable, right. It's a short report, why would the customer
+pay all that money for the short
+report, so get in there and write some stuff, right? Then
+you do have to deal with these
+things called clients, right? So, statement of works, or
+present those findings
+conference calls, et cetera. Those are things that just
+aren't as fun, right? So there's
+also an option of being an independent Pentester. That
+means you don't have to work for
+the man but there's still a break down, right? That break
+down is roughly we'll say a
+third of it, it's the fun part, breaking and doing stuff. Then
+you got another third of it's
+the administrative task and documentation then that last bit
+being a sales weasel, right,
+like you're going to have to find work, it doesn't show up at
+your door and go I'm so happy
+can you do this Pentest for us, right? It's just not going to
+happen that way. So, there's got
+to be sort of a better career choice potentially right, maybe
+a bit more of a tasty decision
+and we think that there might be, right? And you can be this
+guy, right? You like this, the
+quick pepper sprayer guy, right. You can be dog or what I say is
+better yet, you can be this guy.
+And hopefully in this sort of line up of going on the bug
+bounty hunter route you're 90%
+hopefully of your time researching vulnerabilities and
+what not and then maybe that
+little bit less time, 10% or so is working on the write-ups and
+all that other stuff. All right,
+so with that I'm going to have Carsten do a quick overview sort
+of to set the bounty stage with
+you guys. >> One of the first things we want to cover,
+research motivation, back in the
+old days before we had all these bug bounties. Back then we were
+reporting vulnerabilities to the
+vendors, because it looked good on our resumes and it got us
+creating vendor advisories. If
+you didn't have a job or wanted to get in to this sort of
+business there was a good way to
+actually get a job and potentially for one of these
+companies that you found
+vulnerabilities in. If you already had a job, it could
+obviously lead to higher
+salaries or better jobs. So why we like to go around saying that
+oh, back in the old school days
+we were so altruistic, let's be honest there was nothing
+altruistic about it, it looked
+good for us and worked out nicely. The problem was that it
+wasn't hassle free. Reporting
+vulnerabilities to vendors was often very painful, often they
+didn't respond, if you did get a
+response they were often a legal threat. So, a lot of researchers
+just said, you know what, fuck
+it, lets find some alternatives. So, what a lot of researchers
+did they published it just
+somewhere else, like we just dropped it on a mailing list, we
+would trade, give it away within
+groups for respect and goodwill, we would use it offensively for
+fun and or profit or we would
+just kind of say, ah, found this, fuck it, store it in a
+digital box somewhere, move on.
+Or, there was this other option because we did have monetary
+options back then also, there
+was the grey markets, three or four letter agencies and we also
+had the black markets. So, we
+had these options if this was something we wanted to do. So
+some of the vendors and security
+companies kind of realized that, you know what, if we start
+rewarding discoveries we can
+actually centralize researchers come to us and report
+vulnerabilities to us. In 2002
+Idefense created their vulnerability coordination
+program where researchers can
+come to them, sell the vulnerability findings to them,
+they would coordinate, they
+would provide the information to their customers, make a business
+model out of it that way. 2004
+Mozilla created their bug bounty program where they were paying
+$500 bucks for critical
+vulnerabilities. So, we wanted do a quick pop quiz. In what
+year was the first bug bounty
+program started? Because a lot of people considered this to be
+something pretty new, anyone
+else? No? 1990? 1995, exactly. Then do you also know who did
+it. Netscape, exactly. In
+October 1995, Netscape actually launched the first bug bounty
+program where they were paying
+money and what was very interesting about that program
+was the fact this they said we
+don't want to pay people to find vulnerabilities in our stable
+products, we want to incentivize
+researchers to find vulnerabilities in our beader
+products so before they go
+stable...does that remind you of any other companies that just
+did a bug bounty program
+recently? Microsoft actually did this recently and people were
+talking about that's a new way
+of doing it but actually someone was doing it 20 years ago.
+Through 2000 to 2008 disclosure
+of this huge battleground between vendors and researchers,
+researchers have problems
+getting vendors to respond and taking it seriously and getting
+them to understand the issues,
+the perception was whether it was true or not that the vendors
+didn't take vulnerabilities and
+security seriously unless we it dropped on a mailing list. And
+we like to say that researchers
+back then were hard core full disclosure the quote unquote,
+right way. The focus was on
+getting bugs fixed that's what they were focusing a lot on.
+Then in 2007 we saw the first
+kind of bug bounty competition, the PWN2OWN where you could win
+MacBook pros and ZDI was
+offering up $10,000 U.S. dollars also in bounties. That
+competition has grown to 2010
+certainly $100,000 pay on the line and this competition grows
+every single year. They set the
+bar high for being able to win this money but if you can do
+this there's a ton of money in
+it, there's a ton of PR. In March 2009 we also saw some
+researchers coming out a bit
+more saying, you know what, we have this new philosophy, no
+more free box. We want to get
+paid for our work, it's valuable, we want to get paid.
+To be honest, we don't really
+know how much affect it had. But it definitely sparked a debate
+and it also made it very, very
+clear to vendors what these many research expectations were. We
+wanted to get compensated for
+the work that we were doing. So that leads us to present day
+where bug bounty now all the
+rage, everyone is doing it, ones that aren't doing it kinda want
+to do it because it looks good
+and it's getting a lot of attention. Now we're seeing all
+these different type of bounty
+programs. We are seeing what are called company run bug bounties,
+we see third party bug bounties.
+We see these competitions as mentioned. Krausers spot
+programs - Which all things
+we'll be covering next and also see different types of rewards,
+we see cash, prizes like
+T-shirts, get a mark, get some conference attendee sentence,
+fame and glory appreciation, but
+if we want to do this as a career choice and not just be
+hobby hunters, cash is king,
+right? End of day getting a mark, getting a T-shirt is nice
+for the hobby hunters but we
+want money, right? That's what we want to focus on. So by that
+Jake will now discuss company
+run bug bounties. 11:27 >> All right. So our definitions this
+is what we believe these are.
+We're calling it company run bug bounty basically it's the
+bounties being run by the
+company that owns the website that you'd be going after or the
+software, right? Almost all
+cases reporting and coordination all that sort of stuff is
+directly with the company and
+not through some sort of intermediary. The process is
+simple you discover a
+vulnerability, you send the details to the vendor or some
+list that they have information
+on the website of what it is, hopefully the vendor can
+reproduce it and then they will
+accept your submission and get paid, right? The number of bug
+bounty programs just continues
+to grow, every time we turn around we're finding more and
+more that pop up we maintain a
+list of bug bounty programs as we map the vulnerabilities that
+we're discovering, just to give
+you a little bit of sort of understanding of what is going
+on there is around 300 or so
+programs. 260 of those have some type of reward, about 165
+provide some sort of recognition
+and about 75 of those have some sort of monetary reward. Bug
+crowd has a really nice crowd
+source list publicly. You can go to their site and check it out
+and look for some of the ones if
+you want some more details. I can't really talk about bounties
+without talking about Google,
+right? Google started providing bounties in 2010 they continue
+to be one of the more serious
+players when it comes to the bounty space. We believe they're
+a big reason that bounties took
+off with 2.7 million in prizes, August 2013 Google paid out a
+little bit more than $2 million
+for over 2,000 valid reports. Some pretty serious money. They
+also took things a bit further
+as well saying we're also not going to pay for things in our
+software but we'll pay for vulms
+in other software as well, right? They really just continue
+to push for fixing vulms
+disclosing them in a timely manner, fixing them in a timely
+manner these sorts of things.
+They have been a serious player. Talk a little bit about
+Facebook. So Facebook was --
+their bounty program was founded in 2011. They have over 1500
+bounties that have been paid to,
+date about 600 unique researchers were paid and they
+paid researchers in 79
+countries. With the top countries being India, USA and
+U.K. And their whole premise
+again is to find issues that can help make Facebook a more secure
+platform, right? Couple of
+interesting bits, their average bounty is in the low thousands.
+They have a minimum of $500 that
+they pay for a bounty they don't have a maximum set. So it all
+just depends, and the largest
+bounty that they have paid out was a little more than $33,000.
+So you can get a pretty
+substantial payment from those guys, they have more details on
+that vulnerability on their
+website you can find out more details about the program.
+Pretty interesting to see there.
+What's also interesting is they provided us some information, we
+actually sent out questionnaires
+to a bunch of vendors asking for feedback as well they provided
+us with some information also
+they blogged about it, they paid out more than $1.5 million in
+bounty rewards in 2013 you're
+talking about a fair amount of money. So that was really
+interesting but couple other
+things that popped up that were really eye opening. They
+received close to 15,000 bug
+submissions in 2013 that is a huge number, right? And they
+said it was 246% increase in one
+year, the number of vulms that were submitted to them. What was
+eye opening that only 687 were
+actually deemed valid and received some sort of financial
+compensation, right? For you
+that is really early if you're not great with math that's not a
+high number, right? It's not
+great. So you want to make sure that if you're trying to do this
+for money that you're one of the
+ones in that range so whether it's following their rules which
+we seen problems with, they have
+some things where it says don't attack live profiles and people
+do and they still expect to get
+paid you're not going to. Follow the rules, get some stuff clear
+to them you want to get in there
+so you're one of the ones getting paid not one of the ones
+that is getting nothing or a
+T-shirt. We did mention that a list continues to grow that is
+very true but there are some --
+lots of vendors out there that you would expect that would have
+bounty programs and do not.
+There's a lot of hold out. So still room for a lot of growth
+there. So again if you're trying
+to make this a career, it seems like more and more companies are
+going that path and we expect to
+see more coming. All right. Now we're going to talk about what
+we call third party bounties.
+This is sort of set the stage for this, this is bounties that
+are run by other companies that
+do not own the software and typically they are just looking
+for software things, not talking
+about website or site specific vulnerabilities. The reason they
+do this is they use this
+information they buy up information to either provide to
+their customers as an alerting
+service or bill it in to their products so that their products
+are finding vulnerabilities that
+other products may not know about that is sort of reasoning
+incentive in most cases for
+doing it. Then almost all cases reporting and coordination is
+directly handled with that
+company running the bounty and you're not talking to the direct
+software manufacturer company
+that you found the issue in. So, ZDI it's probably one that most
+people are aware of or if you're
+getting in this space, definitely look in to, they were
+founded in 2005 this is their
+10th year of doing that, so kudos to ZDI for really being
+strong in this area. And they
+focus again on software used by global enterprises, right? The
+list of what they will pay for
+is not published anywhere so it's not super clear what you
+should research in many cases
+but you can look at the upcoming advisories and get a feel for
+what they have done in the past
+and what is coming up, to sort of understand what platforms and
+types of bugs that they would
+pay for. Couple quick points for them, there's over 3,000
+independent researchers that are
+registered with them, nearly 100 companies represented, U.S.,
+U.K., India, Germany and France
+are the top five countries. They didn't share with us the amount
+of unique researchers that have
+been paid. But we -- with working with them and seeing
+some other things they have paid
+out 1,715 bounties, average bounty again they weren't
+willing to share. But ZDI has
+paid bounty ranges from three figures to six figures they have
+paid some serious money for
+vulnerabilities as well. And one of the things that they also do
+they have sort of extra rewards
+and extra money if you're a repeat customer. If you are
+loyal to them and repeating
+things over and over you can get cash bonuses, you can get Balta
+conferences, all those sorts of
+things, right? So there are extra rewards if you send a lot
+of things to them. All right.
+I-defense the VCP program, Carsten mentioned that as one of
+the first ones out there, 2002
+we're not really sure if they exist anymore to be quite frank.
+There has been nothing published
+since October 2013 timeframe and most people that we sort of
+talked to about if they're using
+them or not are starting to say, don't bother, don't waste your
+time. Information about them is
+on their site if you want to look in to it feel free. Share
+with us if you get anywhere with
+them. Another one that we want to mention, Exodus intelligence
+they were born out of the ZDI
+program and to be quite frank not too much is known about this
+program yet as well. They came
+out and announced some things about the program but we haven't
+seen a whole lot with it. They
+talk about targeting again sort of critical vulnerabilities and
+issues and widespread software.
+It's unknown the number of bounties they've done they
+weren't willing to disclose
+that. It's unknown, they weren't willing to disclose the number
+of researchers that are
+participating but if you look on their site about what they're up
+to they say their going to
+intend to be competitive and they also say there is yearly
+bonuses for the top four
+researchers of 20 grand each, again, it's unclear we don't
+have any evidence of what's been
+going -- or what they have been doing but something to look in
+to if you're in this space as
+well. Contact them for details. >> Just some quick pointers if
+you want to try to call some of
+these third party companies a lot of these pointers actually
+go for the company run bounties
+as well. First of all make sure you are clear on what software
+they are likely to accept as
+Jake said look at -- for instance with CDI -- look at
+what they publish, look at what
+they have upcoming to figure out. When you report
+vulnerabilities to them also
+make sure that when you report them as cases, create a case for
+each separate distinct
+vulnerability. Not attack basis but for root causes. One of the
+reasons you want to do this is
+because if you sent a case where you just kind of bundle
+everything in that's a risk that
+they might not completely understand that you're reporting
+X amount of separate
+vulnerabilities so the offers that they will give to you would
+be for one vulnerability and
+then you'll have to start discussing with them that hey,
+there are this many
+vulnerabilities shouldn't it be a higher amount? So, if you
+create one per case it will make
+it easier for them and it will make it easier for you and it
+will increase your chance of
+actually getting paid probably. When it comes to providing up
+and providing information to
+them make sure you include as many confirmed details as
+possible. Don't do any guesswork
+cause that will just confuse them especially if you are very
+long. Trim down to make it easy.
+The reason you want to provide all this information to them is
+again, to help yourself. Because
+the more detailed information you provide to them the clear,
+cleaner your PUCs and exploits
+are the easier it is for them once they start validating your
+findings to quickly do it then
+you get paid quicker and also less confusion about it. Make
+sure to clearly list the
+software that you tested. And since they are confirming your
+findings make sure you actually
+provide references -- links to where you obtained the trial
+software if you did, or where
+they can at least find it. That will also save you time and make
+sure the whole process goes
+much, much smoother. Next thing we want to talk about are the
+crowd sourced bounties. And when
+we talk about crowd source bounties we're talking about all
+these portals we seen jump up,
+all these platforms that have all these researchers tied to
+them then companies instead of
+creating their own bounty program they can come and use
+this portal to quickly set up to
+their liking, to get things done. What happens is all these
+bounties will be open to
+researchers, some of them will be open, some of them will be
+private, but a lot of them will
+be open to you. And then the way it works is that you send your
+submission through this portal
+then it's being passed on to the companies to make sure to get
+stuff fixed, all the payment all
+that stuff will happen through the portal also. What we are
+seeing is this blur between the
+traditional bug bounties and Pen testing, so Jake was talking
+earlier about being an
+independent Pen tester and how you have to do all this work,
+well some of these new platforms
+actually make it a bit easier, at least cutting out the sales
+process because you can sign up
+for these programs or get invited to participate in them.
+Bug Crowd is one of the first
+ones we want to discuss it was founded in 2012. The targets are
+web, mobile, client side
+embedded applications, the reason you also introduced Flex
+which is a crowd source
+penetration test. Currently we wrote this they have 23 public,
+currently active programs. They
+then had a number of private programs also that you have to
+be invited for. They have had
+170 programs that they completed so far and since October 2013
+they have had around 57
+companies participating. From research perspective they have
+over 10,000 researchers that
+have signed up for this service, so they definitely have the
+largest researcher base with
+varying quality from different countries. But if you look at
+the number of unique researchers
+that have been paid money it's only 231 researchers. There
+might be a lot of researchers we
+don't know how many necessarily are very active. The sign-up
+process is very easy, basically
+just go to the sign-up page, find user name, e-mail address,
+password, boom you're in you can
+start signing up to the different programs and start
+finding vulnerabilities and then
+report them. It's an easy process. If we looked at the
+number of bugs they have been
+handling a bit more than a thousand bugs since November
+2012. The average bounty amount
+is around 250 U.S. dollars Pay out is primarily through PayPal
+but have been made exceptions
+with Western Union and some other options. The average time
+to process of submission is
+between two to six weeks but generally seems to go pretty
+fast. The largest single payout
+has been $13,500 so there's still some significant amounts
+also. And locations with
+interest -- we talk again about the locations and again most of
+the researchers here seem to be
+from India, Europe and the eastern part of U.S. They also
+have this leader board where you
+can actually see who is doing the best at the moment. Well you
+can kind of see -- they provide
+-- there's at least different options you can get kudos
+points, you can get rewards,
+it's up to the different companies that participate in
+this program what they want to
+provide. You can see -- some people like all these kudos
+points but again that's also a
+lot of people that aren't happy about it. Again as we've said if
+you are going to do this
+professionally, we don't really care about the kudos we care
+about the cash. There are some
+people that are complaining that too many of the programs that
+are currently active do not have
+actually monetary rewards. People are going after Bug Crowd
+for it but really end of day
+they shouldn't be faulted for it because they just provide the
+options and it's up to the
+companies that use them to what they want to choose. So it's
+really the companies. And again,
+if you are a charity then as a researcher, yeah, I might invest
+some of my time to find some
+vulnerabilities and do it for kudos. But if you are a security
+company that has just received a
+ton of VC money, for me as a researcher it's fucking
+offensive when all you want to
+give me is a thank you for finding vulnerabilities on your
+site. [Applause] The next one we
+want to talk about is HackerOne. It was founded 2013. Their
+targets are a bit different
+because they are different response teams handling things.
+It can really be focused on
+whatever these response teams want to get handled, currently
+63 different teams that run
+public programs on HackerOne then there's a lot of private
+programs. That you have to be
+invited for. They say they have thousands of researchers that
+are registered and around 800
+have submitted valid findings that either lead to a bounty or
+some sort of recognition we
+don't have the exact number of people that have actually been
+paid. 800 have either received
+recognition or money. Sign up here is also very easy, name,
+username, password, boom you're
+in, and you can actually start working immediately in finding
+stuff. They have paid more than
+1300 bug bounties. The average bounty amount is almost $700.
+Largest pay off has been $15,000
+they have had multiple of those. One of them was the incident bug
+bounty that they're running was
+paid for Heart Bleed. We all know and heard about. Other ones
+were Yahoo! have been paying out
+15,000 bug bounties also, so that's also some serious cash
+there. Usually bug bounties one
+that is pretty interesting because they cover different
+technologies, if you find
+vulnerabilities in products like PhP, pearl, Jango, you can
+actually report vulnerabilities.
+They also have an Internet bounty where if you find
+vulnerabilities in other
+components that are considered critical to the internet like
+for instance Heart Bleed you can
+actually get paid as well. The minimum bounty here in this case
+is $5,000 U.S. Also have a
+different version called the sandbox escape where if you find
+a vulnerability in chrome, other
+browsers like Internet Explorer, or Adobe reader find sandbox
+escape you can get paid through
+this program. So you can report the vulnerabilities to Adobe and
+pass it on to these guys also
+and again minimum payout is $5,000. Another one we want to
+discuss is CrowdCurity also
+found in 2013. Their focus is on web applications and usually
+things that are Bitcoin related.
+Currently they have 45 active bounties they have run around 90
+programs all time and companies
+in the 50s to 100 range have used the platform they have 1300
+researchers signed up and around
+3-400 of them are actually considered active. The most
+predominant research again is
+from India, Europe and U.S. around 100 unique researchers
+have been paid so far. Signing
+up here is again also very easy like the other programs, quick
+details and you're in and you
+can start immediately. They pay around 800 bucks. Average bug
+bounty is $150 they do bit
+differently they provide package options to the customers and
+then they can decide what they
+want so we are not seeing the same big ranges that we do for
+some of the other programs. The
+largest single payment has been $1500 here. CrowdCurity is also
+doing the hall of fame stuff but
+what we can talk about there is their approach is that they also
+show report qualities actually
+going for researchers and you can see the report qualities how
+good it is not just the kudos
+points. Last one we want to discuss is Sinagh founded in
+2013. It's actually not a
+managed bug bounty provider as such more focusing on
+application vulnerabilities
+across web, mobile, infrastructure, really this sort
+of penetration test approach
+where as a researcher you sign up, it's not as easy we'll cove
+that. And then you get paid per
+vulnerability you find, so instead of being paid for just
+doing an engagement you get paid
+for showing results. They didn't share a lot of details with us
+so we don't know how many
+clients they have we don't know how many researchers they have,
+we know that around 40% of them
+are U.S. based though the rest are international. That is it.
+The application process is
+challenging, it's invite only. So when you sign up you have to
+provide them with a lot of
+information, you have to kind of make them understand why you
+deserve to be in this program,
+how many years of experience have you had, et cetera, once
+you fill out the process form
+they will actually schedule a call with you. Like a 30-minute
+call where you can talk to them,
+explain your background so they can figure out whether you are
+fit for this platform. They do a
+lot of research compared to the other programs. Again number of
+pay outs, unknown bounty amount,
+average is unknown. They have shared with us the payout range
+is between $100 U.S. dollars to
+$5,000. There's no upper limit but that's the range of what you
+should expect to get paid per
+issue you find. So some pointers when you report to these crowd
+source programs it's actually a
+bit different. Because the risk of duplicates for these programs
+is much higher than for some of
+the other programs. So speed is a much, much bigger factor. If
+you sit down and take the third
+party program approach for instance, where you sit down,
+you write up a very nice report,
+you want it all to be clear, you send it in to them, like I wrote
+this amazing report then you
+know what, someone just beat you to it because there are so many
+other people looking at it and
+they only pay the first person that find it so all you get out
+of it is kudos for your hard
+work. So instead, what you should do in this case is when
+you find a vulnerability, don't
+just like collect them and then report eventually. Get them out
+immediately, quick sheet quick
+description just send it out obviously you want some level of
+detail but just something quick
+so you can make sure that you increase your chances of being
+the first one that actually gets
+the money. What we really do like about many of these
+programs though and encourage
+you do, a lot of them provide a heads up on upcoming bounties so
+they will say we have this new
+one that will launch. So you can actually sit and be ready for
+it. As soon as that program goes
+live you can be away hacking immediately that allows you to
+quicker find some of the low
+hanging fruit also, get it reported quickly and increase
+your chance of getting paid.
+Because if you get in late on those as we have been talking
+about, hundreds of researchers
+on most of them, then a lot of people have already been looking
+at it and there's a good chance
+they find it. When I was using some of these programs also if
+you get in late just to find it
+you might find a vulnerability, you go oh yeah that's good. You
+write it up, report, you send it
+off quick, the thing is someone already found it just hasn't
+been fixed yet. Waste of time, 2
+kudos points, yey. So, Jake will now cover progress, some better
+approaches, a different category
+something you might want to do and look at instead. >> All
+right. So, bug brokers, what are
+we talking about. Basically a researcher who finds a
+vulnerability, works with a
+broker and that broker will then find the best market and the
+best price for that information.
+This could be a number of avenues including grey and black
+markets. Its generally still
+thought of as the way to get the most amount of money possible
+for your research. And almost
+all cases, the reporting and the coordination is directly handled
+with the broker, who handles
+everything about that transaction and details of the
+vulnerability are typically
+never published. A lot of the other areas, the terms and
+agreement may vary by program
+but at some point you make get a little credit and go through the
+disclosure process, in this case
+usually it's not discussed at all as you can imagine. So one
+of the places we looked at that
+does brokering is a company called Beyond Security, has a
+team they call secure team, they
+have the secure team secured disclosure it's not a purchasing
+program but if you have a
+vulnerability of interest that is critical or something that
+they care about they will look
+at it. They weren't willing to share a lot of information with
+us as you can imagine so we
+don't know the number of researchers, we don't know how
+many unique ones have been paid
+but we were able to find from them that they had researchers
+in all continents, except for
+Africa and most are U.S. and Europe. Here is where it gets
+interesting. They shared with us
+that over 100 bounties were paid last year, if you look at the
+average amount they're saying
+that the bounties were between five and 100,000. And they
+shared with us and claimed that
+the largest single pay out that they had was over $1 million.
+You're talking about some
+serious money. When we shared this with several people we got
+a lot of people say bull shit we
+don't believe it, so there is that, but from working with
+them, they're claiming that this
+is legit that they have had over a million dollar pay out. A
+little bit of a different
+approach because again, it still does take time to report issues
+and disclosure process, Secunia
+had created a program that coordinate quite some time ago
+was in the end of 2011, they
+weren't actually willing to really pay you anything, but
+they would get you to a
+conference and that sort of thing. But it was really just an
+offer to help get things fixed
+and be that broker for you. But what's interesting is this
+service is closed for business.
+Rest in peace August 2013. And really what came out of it was
+just again shows that there's a
+lot of work when it goes in to disclosure process that they
+ended it basically saying that
+the amount of time and effort just wasn't worth it to the
+organization this is now no
+longer an option. You just can't talk about brokering without
+this guy, everyone know who this
+guy is? The Grook? Right? He's got a lot to say on this topic
+if you're interested, if you
+want to hear his thoughts he's talked a lot about it, contact
+him I'm sure he'd be willing to
+share more and talk to you about information. >> We could go on
+to discuss bug bounties, is it
+worth your time and some of the considerations you should make.
+You wanted to do reality check
+before starting out. When I eventually left Secuina and
+actually a couple years before I
+left I was toying with the idea of going full time as bug bounty
+hunter actually wanted to do it
+both myself and my family to Thailand and do it down there.
+I'll cover a bit later why that
+was part of the consideration. But before doing all this you
+want to do as I said reality
+check, ask yourself a couple of questions. The first one, how
+much money would I need per
+month to stay afloat. If you have a house a mortgage, a car,
+wife and kid to take care of in
+Denmark your expenses could be a lot higher than if you're single
+in Thailand. Depending on how
+you spend your free time down there. [Laughter] The reason I
+mentioned Denmark versus
+Thailand is because location actually matters. These are some
+quick stats from -- most of them
+are from sourced from a website called pay scale that shows
+average salaries a year for Pen
+Testers and it covers everything from like the new junior guy
+that just started to the very
+senior guys. Obviously if you are in former category you'll be
+earning less than these amounts.
+If you're in the latter category you might earn twice as much.
+The point is that salary is also
+followed by expenses. If I'm sitting in Thailand and the
+average salary down there is say
+$15,000, $10-$15,000 U.S. a year. I don't have to find a lot
+of vulnerabilities to make that
+happen quite quick yeah. If I'm sitting in Denmark and the
+average salary is 100k -- takes
+a lot more effort. So, this is part of the thought process also
+if it doesn't make sense
+financially for me to start doing this. If you are in a
+lower income country they'll
+have low expenses, stay away from Iran and some of those
+countries they have embargoed a
+lot of these programs that actually won't pay you, so you
+move down there for no reason.
+So then we kind of have the idea now we know how much money do I
+need to stay afloat, have a
+comfortable life. Obviously we want to do this to have a
+comfortable life unless then
+it's no fun. The next question you want to ask yourself, ok
+what is the combination of
+products, vulnerability type numbers that I look at to make
+it happen. This is where we talk
+skill set also. If you are a hard core reverser and you can
+make bad ass exploits, well then
+you will usually be in category where you can find
+vulnerabilities that can be sold
+for more and then you might find it easier to have these numbers
+that you have for yourself. If
+you have a skill set that is restricted to finding process
+scripting on websites, well then
+you need to find more vulnerabilities. What we like
+about bug bounties is the fact
+that there are options for everyone. Just depends then of
+how many vulnerabilities you
+have to find to hit these targets. We see some researchers
+that find a few vulnerabilities
+and some high profile people get paid a ton of money, the
+competition we talked about,
+other researchers that focus on other programs, guy that is
+worth mentioning is Argod, he's
+been using CDI for like four years or so, and in that time
+he's found 200 vulnerabilities.
+Then you do the math there that he's been making a good living
+off of that and sticking to, I
+call it lower hanging fruit but he's been keeping clear of all
+the big -- not finding
+vulnerabilities in Internet Explorer, he's keeping it to HP
+products and some other IBM
+products that not many people are looking at and doing it very
+successfully. Part of this
+process is also again figuring out the numbers or to figuring
+out, how much will I get paid,
+so kind of make a plan there. If you decide, okay, I'm going to
+hit these numbers and hit Yahoo!
+hard find a lot of vulnerabilities, you report a
+lot of scripting vulnerabilities
+to them and then they say thank you here is a $12.50 voucher for
+your trouble. This happens, I
+see some of you laughing so you know. This actually happened for
+a security company that wanted
+to test it, so this is also why Yahoo! actually changed the
+policies. So now if you report
+some vulnerabilities to them you can get up to 15K right? So, now
+it's interesting. That's another
+one of the offensive ones. Now we know how much money do I
+need, and we also know like how
+do we want to make this happen. Then your last conclusion, how
+much time will I need to invest
+in this. One of the great things about being a professional bug
+bounty hunter is of course the
+freedom that's involved. So, again if you are living
+somewhere where you only have to
+find very little small number of vulnerabilities to make it
+happen, great. Maybe you spent a
+few hours a day, a day a week you can make these numbers,
+right? But if you have to find a
+ton of vulnerabilities to make this happen you are living in
+high income country with a lot
+of expenses if you have to work 60 plus hours a week, all of a
+sudden it's not very fun, is it.
+Then you might want to ask yourself, well is it worth it?
+Of course if you have to spend
+that much time to make it happen you're also increasing the risk
+of it not working out for you.
+Again, those are three good questions. And all the questions
+I was asking myself when I was
+considering this. All these questions then as I said led you
+to conclude bug bounty hunting,
+is that the career path for me or should I keep it as a hobby
+on the side? Again most
+important part is, if you don't form some sort of plan from the
+beginning and figure out how you
+want to get these numbers, what you're going to focus on, there
+is very small chance it will
+work out for you in the long run. Again, if you have to
+generate a thousand dollars a
+month and you're living in India, Thailand, great. That's
+pretty easy. If you have to
+generate 10,000 a month it gets harder. So, Jake will then
+finish off by discussing bug
+bounties and what we think is to come. >> All right. A little
+pressed on time because a lot of
+content we want to cover so we're going to go over a few of
+these things. The good news for
+anyone that is a bug bounty hunter or wants to be, software
+is still complete shit right now
+and so there's lots of things to find, right? If you look at
+these numbers from the OSPD
+project where we track vulnerabilities we're seeing
+10,000 vulms a year it doesn't
+seem to be slowing down, this also does not include any of the
+site specific vulnerabilities
+and websites, right. You're talking about a lot of options
+out there. We think that the
+rules and requirements will start being enhanced a bit more
+specifically when people are
+going after cloud services, right? You start trying to do
+allegedly good bounty hunting on
+a software as a service and you wipe it out, the company is not
+going to be real happy about
+that, right. Be real careful of that we think there will be more
+and more clarity that comes in
+that space. Legal threats, right. They still happen for
+those in the room that have been
+around for awhile know this you think back to 2005 the Cisco
+versus Mike Lynn most people
+say, we remember that, but things have gotten so much
+better. In many ways they have,
+right. But legal threats are still happening and they are
+still successful so you still
+want to keep in mind with what you're up to and be smart.
+Specifically there's a big
+difference between a bug bounty and this thing called extortion,
+you want to be very careful. For
+example, this guy, probable onion on Twitter he had a great
+thing he contacts these guys
+saying you have 12 hours to fix the vulnerability in your system
+otherwise I will take control.
+You've been warned, right? And then all of a sudden the company
+comes back and says we'd be
+happy to do a bug bounty on this. What the heck are you
+talking about there? Not really
+what the bug bounty program is set up for, right? Of course,
+you would say this guy would
+probably come back, he's interested in the money, okay,
+let's talk. Be careful about
+that because if you think about it we find out that a team was
+arrested, right, this guy was a
+team from Canada was arrested for doing things like this and
+swatting people like Crebs and
+all kinds of other things so -- the bounty stuff and vendors are
+now willing to work with you and
+pay money but let's not get in to -- be very careful about this
+whole extortion area, right.
+From a researcher's standpoint, it's great now that companies
+are willing to pay money, right,
+so we want to let researchers know this should be something
+that we should be appreciating
+the fact that they're willing to pay and not sort of this sense
+of entitlement. So many people
+will just go out there and pick a random website and start
+messing around with it and then
+demand payment. When that company never asked you to do
+that. It's uncommissioned work,
+right? So definitely there's a lot of companies out there,
+there's a lot of ways we
+describe that are willing that have said they will pay, stick
+with those. You don't need to go
+out there. We do have Google again, now they launched this
+new thing called project zero if
+you've heard about it basically creating a dream team of
+researchers to weed out bugs in
+popular software. We believe at this point it might not have
+issues on websites, but on other
+software bits we think it's going to make it a lot harder
+and raise the bar for it. And
+we're already seeing people trying to calculate the ROI and
+what is going on in that space
+of what's worth it. Wrapping it up here, more and more companies
+are going to jump on board with
+bug bounties programs, we ultimately think that kudos and
+karma stuff is nice but it's
+going to lose out to where the biggest amount of money is. We
+believe that while companies are
+going to continue to have bug bounty programs as part of their
+security programs that they're
+going to realize that eradicating vulms early on
+during the SDL process still is
+a cheaper, better way so we're going to see some shifting. With
+that, this presentation would
+not have been possible with a lot of people we want to thank
+Brian Martin, Katie from
+HackerOne, Nate from Facebook, HP, ZDI, CrowdCury, Secure Team,
+Kasey from Bug Crowd, all the
+bug bounty hunters out there and future bug bounty hunters, thank
+you. [Applause]

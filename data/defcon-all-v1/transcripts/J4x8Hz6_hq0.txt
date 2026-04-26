@@ -1,0 +1,375 @@
+>> Hello everybody, welcome to Defcon. I'd
+like to introduce Michael Perklin with ACL Stenography. Take it away.
+>> MICHAEL PERKLIN: Thank you. How is it going, guys? I happen to be here at DEF CON again.
+I think this would be an interesting talk for those of you interested in hiding things
+or finding hidden things depending if you're a Blackcat. I am a corporate investigator.
+I specialize in cyber crime. I am a digital forensic examiner. I take the geek side and
+legal support and smash them together. That's what I do. In this talk, I'll be talking about
+what steganography is. I have examples much how it was used before it existed. And finally,
+I'll talk about ACL steganography. So Let's get started. What is steganography? It's a
+Greek word. The origins of the word are Greek and it means concealed writing. There are
+two roots of the word. Steganos which means covered and protected and graphy, which means
+writing. I apologize if I am butchering the Greek. Sorry, grandma. Before the word even
+existed, basically it just means hiding something in plain sight. So let's go through classical
+examples. First example I want to show is a tattoo. Basically the ‑‑ somebody would
+take one of their slaves ‑‑ again, this is back in the day is about people had slaves ‑‑
+they would shave the scalp and tattoo a message and wait for the hair to regrow. They send
+the slave over to the recipient of the message with the package. As they were delivering
+the good, about they would find private time, they would shave the head and read the message
+and the message was delivered. So it looks liked slave is going there to deliver a package,
+but there is a whole message under the hair. After you tattoo a message on someone's scalp,
+you need the hair to regrow. There is  morse code. Some people would stitch some
+longer stitches and shorter stitches. That would conceal a message on the person. The
+messenger would go and hand a note. They would read the sweater and learn the second message,
+the true intention of the visit. Here's an example of a tapestry that was stitched by
+a prisoner of war in 1941. You can see there are two boarders with dots and dashes. That
+was morse code. So this prisoner of war was hoping by delivering this tapestry, they would
+deliver a message that would say I'm okay or whatever. You can grab the talk online
+and you can decode it yourself. The next classical example is invisible ink.
+This is a very simple technique, but effective. You would use lemon use or something acidic.
+You would write on top of the piece of paper and then you would deliver the paper to your
+recipient. The paper would have other writing on it. So it would look like it says one thing,
+but what happens is the acid in the lemon juice or the acidic liquid that you use breaks
+down parts of the paper. So when you put that piece of paper over heat, it would ‑‑
+it would start to burn, but the parts that were broken down a little bit more by the
+acid that you added, they would burn first, the result would be it would turn darker and
+you can read the message that was written with the liquid. This is a lot of fun to do
+if you've got young kids. I have it done it with my nephews and they really enjoyed it.
+Let's take a look at a second digital steganographics. This is one of the most common type. You can
+encode one file as color information inside a photo. This uses the fact that only super
+helps can tell the difference between lemon and chart truths. I mean super helps the audience
+and fair sex. The very last bit of this color code would always be part ever the secret
+message you are encoding. The example I have on screen here is DFFF00. That's chart truths.
+The very last zero is part of the message you are encoding. The other example is DFF01.
+That's not chart truths, but it is something similar. So the difference between the two
+colors is imperceptible to most of us. If you look at the very last digit for all the
+adjacent pixels, you can rebuild another file. There eight adjacent pixels has one byte of
+encoded information. Audio steganography is to the photographs, but it uses sound. Helps
+can't tell the difference between 400 Hertz and 401 Hertz especially if it isn't sustained
+for a long time. After each frame, one bit is encoded in that frame. If you get a bunch
+of audio frames, you have your bytes and now you have your message. If you're interested
+in this kind of stuff, I urge you to take a look at John Ortiz's work, a presenter at
+Blackcat. They go a lot further into both photographs and audio steganography more than
+just using one bit. Some really neat math tricks you can do to encode information. Look
+up John Ortiz if you're interested. Another digital example is X86 ops. If you take a
+portable executive file or EXE, you can encode information using operations that don't really
+have an impact on the program such as NOP or the NOP code. If you have 5 NOPs, you can
+have one. The result is nothing by having an add one and a sub one, that can mean something.
+Maybe at 5, sub 5 means something else. Any complimentary things would work. Multiplication
+and division as long as you have a scheme to write this, it works. PE files or EXE files
+have a lot of other areas where you can encode information. This is looking at some of the
+raw bytes in hex form of PE file and there's a lot of space there where you can gem data
+that isn't expected by the user, but it wouldn't exact the running of the program, but it would
+hide data. If you send this EXE to someone, they can decode it on their side. The last
+example we talk about is chafing and windowing. This is probably the most interesting one
+for me at least. Rob Ryanus is the R in RSA. He, along with the WP stuff, if isn't ‑‑
+it is sort of a hybrid of both, but it isn't either. It has properties of both. What happens
+is a sender doesn't only send his message. He has gibberish as well. So anybody listening
+sees the message and the gibberish at once. But the sender is very careful that whenever
+he sends a piece of the message that is truly part of the message, if you were to run a
+calculation like a parity check and the contents of the message, it would come out to a certain
+value. If you run the same calculation on one of the chaff packets or non‑message
+packets, it would not yield the same result. So the receiver, whenever they receive a packet,
+they would run the same calculation on it. Anything that matches the expected value must
+be part of the original message. If they run the calculation and they get a different result,
+it must be part of the chaff and they can discard it. There are four pieces of this
+message and the contents are the bits 1, 0, 0 interest 1. If you look at Mac codes, all
+of them are even. This is the encoding scheme for this spasm. On the right side, this is
+what Bob receives from Alice and some of the packets have an even Mac code. So those are
+ledge it pieces of message. The rest have an odd Mac code. So Bob knows to discard
+these only and use the ones that have an even Mac code and that must be the mess affect
+you can reassemble those together and get the message. So we talked about a couple of
+different types of steganography. They have three things in common. You need a medium
+of arbitrary information. The medium could be your scalp. It could be a tapestry. You
+need a key or legend, a way to encode data. If you encode this this way, it means this.
+And finally, you need a way to differentiate between the this encoded information and the
+rest of the medium information that is expected to be there. So these three things make up
+steganography. With that, let's talk about ACL steganography.
+It's a way to access files within an access controls where on a file on an NTFS file
+system. That was a mouthful. The medium is any file that's on an NTFS file system. The
+key is security identifiers within the access file entries and the differentiator between
+the message and regular stuff is access control entries with an unlikely combination of permissions.
+Before we get into more of how the scheme works, I want to back track a bit and talk
+about how NTFS works and we can understand how the scheme works.O on screen here are
+two images. The one on the left is the security tab of the properties window for a file. This
+shows that there's a user, Michael, who has read and execute permissions on the file that
+has been right clicked. On the right side, we see the computer management window. This
+is where windows adds users and there's a user Michael there. When I'm pulling up the
+properties for this file on the left here, windows ‑‑ windows doesn't store the
+permission entries by name. They don't say Michael has read, write and execute permissions.
+They say security identifier 1, 2, 3, 4, 5 has the permissions. As I am pulling up to
+this property window, they will see security identifier matches with user Michael. So it
+displays Michael nicely for me. I know Michael has read and executes permissions. There's
+a lot of permissions that you can set for a user, a lot more than just the five or six
+you see on the left screen. There are 22 unique permissions in all; however, they are stored
+in only 14 bits of information. This is because a lot of these bits are reused depending on
+what you're sending a permission on. For example, for directories or folders, if you have the
+ability to traverse that directory to open up it, that's one permission needed to track.
+But you don't traverse a file ors where the contents of a file the same way you do with
+a directory. So some of these bits are reused depending if you're looking at a folder or
+if you're looking at a file. There are a bunch unused values that I assume are left there
+for future expansion of NTFS. You can see on screen, there's a lot more granular permission
+than read, write and execute. This slide shows the difference between the simple and advanced.
+On the left is the file that I was showing earlier and on the right, you see quite a
+lot of permissions. I'm not sure how well you can see all the entries on the right,
+but there's a slash there that shows one bit would be used for either traverse folder or
+for execute file. It's the same bit, but defending if it's a folder or a file, it has a different
+meaning. I mentioned security identifiers. They have secured identifiers. If a user is
+removed, the operating system can't look up the same one with the file. You have read
+and executed permissions, but I have deleted the Michael user from the operating system
+and you can see here the top entry on the list says S1 yada, yada, yada. It didn't display
+Michael. That shows that NTFS shows by identifier and not by user.
+Let's talk more about the identifiers. They have a maximum size of 68 bytes. The first
+few bytes are pretty much static. The first byte will always be one. That's the revision
+number. Microsoft doesn't have the second revision of the identifiers. The second one
+is number of sub authorities with SID. The maximum number here is 15. That's the most
+you can ‑‑ the most amount ‑‑ sorry. The highest amount of sub‑authorities you
+can fit. Next six bytes are used for an over authority. There's too much about that to
+go into great depth in this talk, but for our purposes, we can say the value will always
+be four. And the last six bytes stored contents of all the sub‑authorities. All right. We've
+gone through a lot of acronyms. Let's go through acronym review or AR as I like it call it.
+There's an axes control list or ACL. That is a list of access control entries. There's
+access control and ACE, which says allow these permissions for SID or deny them to this
+SID. Finally there's the security identifier. That's a unique identifier for that user or
+group of a windows system. All right. Enough slides. Let's do a quick demo.
+In is a part of the presentation that was most worried about everything breaking. Everything
+looks okay. Nothing crashed, yet. Okay. So this is a windows VM. Let's put in full screen
+so we see a little bit better. All right. So, I have prepared a file that I'm going
+to encode using this ACL steganography scheme. I have created a true grid volume. Inside
+have a big coin wallet. It is a simple file that holes all my keys for this example. I
+will encode this bic 1 wallet and hide it in my file system in a way that cannot be
+easily found by my forensic investigator. You want to make sure it is not in use before
+we encode T. I have also prepared ‑‑ okay. So here's the true grit volume that
+I will be encoding. I need to put this file into ACL entries on a set of files. So I've
+prepared 16 text files that I will be using to hold this true grid volume. Let's take
+a look at the permissions of some of the files there here. I will choose number 1. Right
+click properties. I will go to the security tab and you can see there's default permissions
+here authenticated users, the system, nothing fancy here. Now that we know the permissions
+on this file, let's encode some data into it. I will launch the ACL encode utility
+that I have created. We'll choose the file that I want to encode. In this case, it is
+the true grid volume. I have to choose a file list. It says which files should I use to
+encode this data. So I will create a file list real quick. I will go to the test folder.
+Let's take all 16 of these files that will be on our list. And I will save the filelist.text.
+So you can see what that did it, created one entry for each of the files that I selected
+in that dialogue. I will encode into all of the 16 files. And it's as easy as clicking
+in code. You can imagine, it has to split up the file into a lost different pieces and
+convert the pieces into ACL entries and put each of these entries into all 16 files I
+have chosen. For this example, it takes about 27 seconds. I've timed it. In addition to
+splitting ups file, it needs to do a couple of other things like add the security identifiers
+to a special part of the volume called the secure file. I will go into more depth later
+in the presentation. There you G. the file has been encoded. If we take a look at the
+test files, they look like they're regular files, but if we take a closer look at the
+security permissions, we'll notice that there's a lot more entries here than there were before.
+Each of these entries don't have an associated user account within windows. So windows can't
+look up a friendly name like Michael to display. So all these values here are the ‑‑ is
+the bic 1 wallet. Now that we've written it, let's take it out. It's the exact opposite.
+In this case, I'm going to change the target. Let's say out. It will make a true grid volume
+underscore and decode. Decoding is a lot faster than encoding. It started to create the file and
+chunking out. Shortly, we should see that the file has been decoded and it has. This
+is here. You can see the file sizes are the same.
+220 kilo bytes. We'll see if it works. Using my super secret password and there it is.
+Open it up. It is successfully encoded and decoded it. It worked.
+[APPLAUSE] CO. I'm having a hard time getting out of
+this VM. Yeah. Drink. [Laughter]
+Shortcut is not working. >> [INAUDIBLE]
+>> MICHAEL PERKLIN: There it is. Okay. Yeah. Drink harder in the audience? Yeah. I think
+that deserves it. All right. So we just went through the demonstration. Let's take a look
+at how this worked under the hood. What was the program doing behind the scenes. The file
+was a true grid volume. When I hit the encode volume, you can see there on the screen behind
+me, there are yellow chunks and blue chunks. I am only using a file list for two files.
+I chunked it up into 16 files. So there would be 16 different colors instead of the one
+you see. Each chunk becomes an SID. There are two files. File one and file two. The
+first chunk will be written in SID and will be encoded there. The second chunk will go
+to file number two. Fourth chunk will go to file number two again and back and forth until
+it is encoded. All the ACEs are created with ah low permission. It allows that SID to
+do certain things. Each of these are added to ACLs for all the files listed in the file
+system. When it's doing, this the Saturday important because we need ton where chunk
+1 goes and chunk 2. When we decode it, we reassemble all the chunks in the right order.
+Also like the chafing and windowing that we went over earlier, we need to know which ACEs
+are legitimate and which ACEs belong to my encoding scheme. So there's a way that I do
+this. There 24 bits set in every single permission for an ACL encode entry. The synchronized
+bit and permissions bit. The synchronized bit cannot be set to the windows UI. You go
+to a security tab of a file within windows and look through that long list of all the
+advanced permissions, you will not find synchronize. There it is a hidden piece of windows that's
+used for thread synchronization. It is used under the hood for the operating system and
+you can set a programmatically, which is what I've done. And those two bits are red in the
+diagram you see here. The green bits are what I use for encoding their position within the
+overall file. So the last nine bits are used as a counter with request values of zero through
+912. The first bit is ‑‑ sorry. The first chunk will issue encoded with a value of zero
+and then the next with one and so. To can hold all these. The file system that we're
+using, the list of all the 16 files that I chose becomes a sim metric key between the
+coder and decoder. Without that file list, you don't know what order your entries belong
+in and you don't know how to reassemble them. So the list identifies which files on the
+volume have ACL encoded entries and the list identifiers the order in which those entries
+are encoded. You can imagine there are limitations. Access control list can be no larger than
+16 kilobytes. This is the windows operating system. Now each access control entry in the
+list has a maximum side of 76 bytes. That's 68 bytes to encode the SID, plus an 8 byte
+for a header which says allow or deny and details of that access control entry. This
+produces a theoretical of 862 access per file. We cram 862 entries per file, I've imposed
+a limit of 512 per file and this is mostly because you need room for legitimate entries.
+If you remove the ability for everyone to read a file or for the administrator to write
+to a file, you can't use it at off. There has to be room for real permissions.
+That's what I've imposed limits of 512. Using the numbers means the largest possible file
+you can encode is by this calculation here. The number of files on the list times 512
+times 60 byte or 30 kilobytes per file. The larger file you need have more and more files
+to accommodate. This each file in the list allows you to encode 30 kilobytes more data.
+There's another limitation. The secure file limitation. Out in dollar 69 secure file is
+a hidden file that is on all NTFS volumes. This file is like a mini database that stores
+all the security information for every file. Doesn't matter if it's in C windows or C users.
+Any file, anywhere on the volume has all of the permissions crammed in this one file called
+a secure file. Every time a new security identifier is encountered, windows adds that SID to
+the secure file. It does this so in the future if you are trying to read or write permissions
+of that file, windows will be optimized and will know that it's there. It is sort of caches
+it. NTFS doesn't remove old or new. All the files ‑‑ all the files that user used
+to be able to read or write have been deleted. You can remove every single file that Michael
+ever had permissions on. But the SID will always still be there. It is designed to grow
+in size and never shrink. This imposes a severe limitation. Every single chunk of ACL encoded
+file will always persist in the secure file forever. So the more you try to encode data,
+the more data will be eaten up by your file system and you wait a moment be able to recover
+this even if you try to clean it up. Now, if you do manual hacking, you might be able
+to remove them manually, but that's beyond the scope of this talk. Let's take a look
+at how this works or how this looks to a forensic examiner.
+I mentioned I am a forensic examiner and I have access to forensic tools. What better
+way to test this than to use my tools. I formatted as NTFS. And then I used two common tools.
+Guidance is end case forensic. I use slightly older versions of the tools because they're
+more widely known and more supported. Even the newest versions have the same results.
+So in order to do the test, I have prepared a couple of test files. Again, I created a
+folder with a bunch of text files as my list of files that I'll be using and I created
+a file list.text. Then I created an input file. I wanted an input file that had contents
+that were no where else. So I can see where it came up on the volume. So I created a 4
+kilobyte with just DEF CON XXI repeated over and over again. This would allow me to search
+for it later to find it. Let's see how access data held up on this. This is FTK4. We're
+liking a look at all 16 files. You can see on the bottom half of the image. File number
+1 is selected. And FTK is showing us the owner of the file. It is showing us the size
+and the dated and the day it was modified, et cetera, et cetera. I started hunting and
+pecking looking to see why I seat security permission on the files that are listed in
+FTK. FTK lists a lot of different fields within NTFS that you're able to view. None
+of these are the access control list. So I found that FTK4 has no way to show what permissions
+were set on a file. I contacted their tech support and I discussed the issue with them.
+They assured me there's no way. I discussed it on their user form asking if anybody knew
+of a way to see which users had permissions on the files and were analyzed and the consensus
+was use another tool. So FTK4 cannot do it; however, FTK4 can still analyze the dollar
+sign security on secure file. If you search through that secure file, you can see some
+of the contents. This is 60 bytes. This is one of the SIDs for one of the files that
+was encoded. So you can still see the data buried in the secure file, but it's not in
+an easily presentable list. In this casing, I am searching for values that I knew was
+in the input file because I put them there. If true grip was used to encrypt the data,
+this would be more gibberish and I would have no idea this is part of an ACL encode entry.
+In end case, there are a couple different view modes you can see when you are looking
+at a file. Right now, we're looking at home view of the entries list and you can see all
+16 of the files listed. There file number 1 is selected on the right. So that's the
+fight we're looking at. Now the second arrow is the permissions tab. When you click on
+the permissions tab, you can seat permissions of the file. Here you can see there are access
+control listing for that file. The very first one S1 yada, yada, yada. Then click back on
+the permissions tab so I can give you the permissions for file number 2. You click home,
+click file 3 and click permissions. It is a very manual process and no investigator
+has the time to manually inspect all the permissions for all the files on an NTFS volume. Again,
+if we take a look at dollar sign secure file, you can see the contents of some of the SIDs
+of DEF CON SSI is shown on the bottom left of the photo. In addition to the one SID that's
+highlighted, there are two other SIDs that occur. So the forensic detection of ACL encoding
+is a very manual bro sess using the most common tools in a forensic investigators toolkit.
+Sure there are other tools that may be able to view access control lists more readily,
+but they aren't the standard go to tools for forensic investigators. Now, you can detect
+some of these uses an automated way in case forensic has a scripting language called end
+script. You can write end scripts to automatically go through every single file, look at access
+control entries and compare each of the entries with SIDs that appear in the windows operating
+system. If there are differences, so there are entries on a file that didn't match anything
+on the operating system, well, maybe this should be looked at. So you can automate a
+script to show everything to you in a nice way, but that's over and above this talk.
+Looks like I'm out of time. So I can't even tell you about that. So if there are questions
+and answers, you can see me in the speaker Q&A room. I would like to thank, Josh, Reese,
+and Kyle and special thanks to Eugene. Thank you.
+[APPLAUSE] It seems that I wasn't actually out of time.
+So, if there are questions, I have 10 minutes. If someone wants to ask a question, you can.
+Come here. See this goon if you have a question. But in 10 minutes, I will be in the speaker
+Q&A room for better questions. Yes, sir. Ask we have the mic turned on, please for
+the audience? >> So would there anybody way to implement
+this into Mac OSs ACLs? >> MICHAEL PERKLIN: Yes. There would be to
+Mac OS. The scheme that I created was for NTFS entries using SIDs. The way that Mac OS‑‑
+they use the [INAUDIBLE] file system. You would have to encode it in a different way,
+but it can be adopted for that. It is a matter of writing a tool to get it done.
+>> Thanks. >> MICHAEL PERKLIN: Thank you.
+>> Nice job, by the way. Nice job. >> MICHAEL PERKLIN: Thank you.
+>> Sorry. I got here a little late and I missed the entry point in the presentation.
+>> MICHAEL PERKLIN: I am having a very hard time hearing the mic.
+>> How about right now? >> MICHAEL PERKLIN: I just hear echos. I'm
+sorry. Here. Come on the stage. >> You can repeat it.
+>> [INAUDIBLE] >> MICHAEL PERKLIN: So the question was for
+streaming media, if you were to take a file and stream it say from as Cloud, can you use
+this encoded information and distribute it through a stream? I would say no to that because
+this stream doesn't store anything in the file itself. It stores it in the metadata
+about the file that the hard drive is holding. So all the access control lists, this is within
+windows. It's for the file. Once you start distributing the contents of a file, you are
+not touching the metadata. So that's not going to be distributed.
+>> Hi, there. I guess my main question here is: How could I avoid detection with this
+method when we're modulating communication in a well known file system. Why can't I write
+something that competing intropeed and automatically detects someone is doing this? It is a place
+to drop in sub‑channel or covert channel communication. So how would you compare this
+to them using true crypt with the random offset deep in the file system where I have randomized
+the free blocks? This to me seems like it is immediately detectable by using statistical
+and entry 53 calculations. It is a curious question I have.
+>> MICHAEL PERKLIN: As far as detection goes, as long as you're able to seat entries, you
+know there is something there. You won't know what is there, but you'll be able to tell
+there is something. Now, as far as Republican coding the entries in a way that would be
+a covert sub‑channel, you can always adjust the scheme in a way that each of the SIDs
+you create are veiled SIDs that are in the operating system, but I would imagine by doing
+that, you would have to store it much less than 60 bytes per chunk which would mean you
+need far more values to store a much smaller file.
+>> Someone in your position that wants to detect someone doing this, a traditional file
+system has blank data and now someone is Jacking in a modulation that uses the L bits. To
+me, it seems it would be immediately detectable because you are not burying it in the drive
+somehow. >> MICHAEL PERKLIN: True. It would be detectable,
+if you are looking for it. In most cases, you are not looking for the access control
+lists. If you see somebody exfiltrate data from their company, did they use a USB key?
+Did they e‑mail themselves? Did they do all these things? I will not start looking
+at every access control list on their laptop to see if they have encoded that information.
+But of course, you can have a script that would automated checking. But it is a cat
+and house game. You come up with a better way ever getting around controls. Now you
+have controls to detect that. It's a cat and mouse game.
+>> All right. Thanks. >> MICHAEL PERKLIN: Thank you.
+>> Anyone else? Questions? >> MICHAEL PERKLIN: Do we have time for more?
+>> Two more. >> MICHAEL PERKLIN: These are the last two
+questions. >> With NTFS data streams and if the scheme
+can work through ADS. >> MICHAEL PERKLIN: Alternate data streams?
+>> Yes. >> MICHAEL PERKLIN: I am very familiar with
+it. Both NFK and [INAUDIBLE] support alternate data in the alternate data streams. If you
+have a file name say file list and you double click the file, you are with looking at first
+stream of that data. It is possible using some command line tools you can have two separate
+files that are both assigned the same file name. You can take a look at second one.
+>> Do you know if those files hidden through ADS fall the same permissions? Do the files
+fall in the same permissions? >> [INAUDIBLE]
+>> MICHAEL PERKLIN: The question was: Do these alternate data streams fall in the same permissions?
+They do. They are assigned by file name whether 1, 2 or alternate different data streams.
+They all have the same permissions. Last question. >> Can you hear me? Okay. So the dollar steer
+file ends up having all this extra junk. Do you directly manipulate the file?
+>> MICHAEL PERKLIN: If you can embed stuff as a method of stago. That isn't exactly what
+ACL does. It throws it in the dollar sign secure file. By adding an entry to a file
+on a hard drive, that SID gets put into the dollar sign secure file by windows. You don't
+need to put it in dollar sign secure. Will go in there because of windows.
+>> I mean, even if the files are deleted, it disappears. But the dollar secure file
+is still there with data that can be decoded in a decodable way. That is the chunk that
+accumulates there. That is entry 53 that you can manipulate to store data too. You created
+files and then delete them. >> MICHAEL PERKLIN: That's a good point. It
+sounds like a different application of this type of scheme. I would be curious if you
+write something like that. It would just be a different way. Repeat it? Sorry. He was
+saying within the dollar sign secure file, if you know that the data is in a certain
+way, you can manipulate the data into on into a slightly different way to have a different
+message. Did I get your question? >> Yes. You brought up it as a way the system
+leaks data. Why not exploit that and you can 68 files and it is in dollar secure. Now it
+is this junk that accumulates and it looks like random stuff that is over the lifetime
+of the file system. >> MICHAEL PERKLIN: It definitely works.
+>> Then you don't need the files. You just delete them.
+>> MICHAEL PERKLIN: That's right. You get rid of them. Yeah. If we have time.
+>> So I think the technique by which you distributed among those files are similar to open puff.
+In a way, you are using a different technique in terms of how you're hiding that data, let's
+say. I think to dub tail on a couple of the other questions around alternate data streams,
+you can use [INAUDIBLE] ADS to circumvent any detection of that and I think in addition
+to that, you can maybe use the volume shadow copies to hide data in the volume shadows
+too as another way to circumvent. >> MICHAEL PERKLIN: I wonder if they make
+shadow control lists at that time. >> Certainly worth investigating.
+>> MICHAEL PERKLIN: For sure. I think what is clear here and this goes back to the summary.
+Slide all steganographic here. How do you then PIN on my left side means one thing as
+opposed to the PIN on my right side? As long as they agree, they will have one meeting
+and then they will have another meeting. I think that's all the time we have for questions
+now. I will be in the speaker Q&A room, if there are any other questions. Thanks for
+coming. [APPLAUSE]

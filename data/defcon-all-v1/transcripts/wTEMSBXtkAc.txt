@@ -1,0 +1,1972 @@
+>>Thanks for skipping out of
+Kaminsky's talk and coming to
+see, see us, we really appreciate that. 	Um, just want
+to introduce ourselves quick. My
+name's Scott Erven, I do run a company called SecMedic and have
+been involved in IT security for
+just over 15 years, with a focus probably the last 3 years on
+medical devices and security so
+that's who I am. You want to hit me up on Twitter, you can try
+that or maybe get a hold of me
+after the talk and I'll give you contact info. 	>> Hi everyone.
+My name's Shawn Merdinger and
+I've been in security for about a little over a decade now.
+Worked at some big companies
+doing healthcare, I'm sorry, doing product security and then
+moved into some consulting and
+now I do healthcare and someone told me they were gonna save my
+spot at the summit party, so
+it's still, the line is still going, I think. (Laughter) So
+hopefully they'll hold it for
+me. God, I thought that would get a laugh! So I also run the
+MedSedic LinkedIn group which is
+on LinkedIn, it's got about 600 folks. Anyone is welcome to join
+and then I have a little Twitter
+account here too which is focused on technical issues with
+medical devices and healthcare
+security in general. 	>> All right so first off we want to
+start with, you know, why we did
+we get involved in research in medical devices. Are we just
+assholes that want to call out
+people or do we really have a vested interest in this, in
+seeing that our products are
+more secure? So one of the big things for us, you know, we
+realize that healthcare industry
+is behind and this isn't just another Android bug when we get
+into these things. It really has
+patient safety consequences with these types of devices. They are
+made to save lives, and
+ultimately they do a very good job at that. But we think that
+security can get better, can
+improve. And so that's why we are looking into the research on
+that. And we also, we know there
+is a lot of healthcare organizations that this is kind
+of new to. As an industry
+healthcare security is quite a bit behind. We'll talk about
+that later. But we want to equip
+defenders especially in the healthcare space and make sure,
+you know, that they can protect
+those devices and ultimately if you look across, you know, any
+healthcare organization out
+there, I think if you are working for one, you're gonna
+find something inside of their
+missions and values, right? 	And this is what really got to me of
+how can I, you know, affect
+missions and values for healthcare organizations? And
+they're going to have something
+with, you know, patient safety, is going to be something, one of
+their critical missions, one of
+their critical values or core beliefs that they have. 	And so
+that really came to me is: How
+can I have a direct impact on that instead of sitting in the
+background, you know, as a
+security guy and kind of indirectly being able to help
+folks out on the floor deliver
+patient care? This is where we cross into, you know, IS
+security folks really having a
+direct contribution to that mission on patient safety for
+organizations. 	So it's kind of
+what we're doing, you know, why we do it. 	>> One thing I'd add,
+too, is I think we have a shared
+commonality too when it comes to healthcare and medical devices
+so no matter who you are, no
+matter how spooky you are, you know, what kind of surveillance
+you're doing or afraid of, we're
+all human, we all get sick, we all get people in need of
+healthcare and I think there is
+a truly shared commonality of, you know, when we check into a
+hospital, when we go to a
+clinic, no matter who you are, you want to make sure that that
+device has some integrity and
+that you can trust it. So real quick, I wanna get into some of
+the disclosure, too. We just
+want everyone to be aware that the stuff in our talk has been
+disclosed and we'll talk about
+some of the more detailed disclosure processes as we go
+along. This is kind of a
+high-level time line so as you can see, we are working really
+hard to push our research
+quickly and we are pushing really hard to get it out
+quickly to the community and
+especially the healthcare organizations that, and medical
+device manufacturers that can
+really make, you know, make a change here. 	So April 30th is
+when we went into this SMV
+finding disclosure that we're gonna talk about here. And that
+was the first time we disclosed
+this information at DHS. We had a detailed briefing with them
+about a week later. And then we
+went into after the SMV stuff we decided to look at direct,
+public-facing internet-exposed
+medical devices and infrastructure and some of those
+were then disclosed in May. So
+again it's really recent stuff we have been working hard to get
+the disclosure process, so we
+could talk to you about it. We have also been providing a lot
+of ongoing assistance to both
+federal organizations as well as, you know, healthcare
+organizations and manufacturers
+as we work through these things with them. 	So... 	>> So if you
+are looking for zero days, you
+are in the wrong room. So that's not how we do this. We try to be
+really responsible in all our
+disclosure and all of our communication with this. We
+don't want to put people at
+risk, there is already enough risk in these devices that
+you'll see as we get further in
+the talk. And that leads into many of these vulnerabilities
+are old, in many respects this
+is a new area, for medical device manufacturers, and this
+type of exposure because of the
+integration that's happenings across healthcare with EHRs,
+going all the way to the
+bedside, there's gonna be new pacs surfaces that emerge. 	So
+Scott did some really great work
+on threat modeling with uh, and he'll demonstrate how it's a
+very simple vulnerability was
+leveraged to impact potentially from an adversarial standpoint
+an entire organization,
+including their medical devices. So that should be a real wakeup
+call. I was a little scared
+about talking about that at first, more because it's such a
+low-level vulnerability but then
+he-- 	>> Woo-hoo! 	(Laughter) (Applause) 	>> Let's rock it!
+	>> He--, I didn't even say
+cyberyet. (Laughter) Then, so the other thing is the medical
+device exposure from the public
+Internet. So as I mentioned more of these are coming online,
+there's greater integration and
+there are medical devices on the public Internet. We are trying
+to be responsible in disclosure
+but at the same time creating more pressure to an awareness of
+this, too. 	. 	>> All right.
+Taking a timeout here. 	>> Excuse me. (Pause) (Laughter)
+Raise your hand if you are a
+brand new speaker at DEF CON. 	>> Let's go! 	>> All right.
+Welcome for the new speaker!
+[Cheers and applause] 	>> All right. All right. Solid. 	>>
+God, that's just awful!
+	(Laughter) 	>> So these external findings pose a
+significant risk -- (Laughter)
+-- 	>> I'll work this a little more. 	>> You guys are done! 	>>
+All right. Yeah, so what's the
+bad news here, right, in all the findings? The external findings
+we're gonna expose, you know, we
+think it is a significant risk, the patient safety. The medical
+devices, the supporting systems
+and technology that interface with these medical devices. The
+other bad news is most of these
+we found within 30 minutes to an hour, so you know I'm not up
+here to tell you I'm some elite
+hacker or anything like that, there's much smarter people in
+this audience and we'll get into
+how you can help, you know, get into this area later but it was
+very simple things we did and
+threat modeling that we did here but they are definitely
+significant threats to patient
+safety. 	They also provide support, the healthcare industry
+is very far behind other
+industries, typical of what we see in, you know, financial or
+retail sector which they are
+getting breached every week as well so there's not much
+difference but it's not just
+your bank account. It is, you know, patient safety issues here
+that are affected. I think in
+our work, you know, one of the things that is coming to light,
+and you know the folks over at
+the agency, DHS and ICS will probably start to tell you now,
+we always thought industrial
+control systems and that whole industry was quite a ways behind
+what we are seeing. But I think
+it's safe to say now and with the research that we're showing,
+that the healthcare industry is
+probably five years behind what that is. So it's definitely a
+good ten years, we've got a lot
+of catchup to do and we probably need to do it fairly quickly
+with some of the mobile health
+and digital health stuff that's coming on the horizon which
+we'll touch on later, but.
+That's definitely some of the bad news. So let Shawn cover the
+good stuff. He can be the good
+guy. 	>> Yeah, for once. You know, one thing I'd add, too,
+with the, it's almost like a
+lost decade going on here, so, with medical devices. 	And also
+healthcare security folks are
+amongst the lowest paid in the industry so that vertical
+itself, which is I think will
+actually change in the coming years, because there's going to
+be more breaches and there's
+going to be more specialized expertise which is needed with
+these devices. 	So, yeah, there
+is good news. The external risk can be mitigated using your
+existing infrastructure in many
+cases so you want to follow those hardening guidelines that
+are put out by like MIST and
+other organizations and CSI, right, too? Didn't we talk about
+that? CIS, rather. 	>> Yeah, CSI
+is a TV show. (Laughter) 	>> Thank you, I'm really not a
+drinker so this is already
+getting to me! Damn goons! 	>> So, yeah, CIS, you know, they've
+reached out. I think we'll talk
+about it a little bit later. 	>> Ok, yeah, we'll do that. 	>>
+Bear with me. (Speaking
+off-mic). 	>> So just a show of hands here: Who has heard of
+SHODAN? Oh, that's good. That's
+encouraging. So, you know, SHODAN was one of the main tools
+that we used in this and that's
+a tool you can leverage in your own organization and John
+Matherly, props out to him, this
+is his project and so, you know, with using those types of tools,
+you can discover what types of
+exposure you have on your external network and then you
+can start doing that mitigation.
+	>> All right, so I just want to touch kinda quickly before we
+get into, you know, some of the
+new stuff here, on, you know, previous research, more so, you
+know, previous device exposure,
+you know, across platforms, the type of things that we see, the
+types of issues in these types
+of devices, so first is kind of lab and refrigeration systems.
+So that environment -- and a lot
+of these, they are not unique to a vendor so there is no value in
+saying, oh it was this vendor or
+it was that vendor, it's really across platforms. It's a
+systemic issue, it's not, you
+know, one versus the other here. So we'll talk about them
+generically and kind of give you
+some architectural background into how these things function,
+where the flaws are in these
+devices where an attacker could potentially, you know, cause
+patient safety issues. 	So
+refrigeration storage, these are anything from, you know, storing
+just blood inside the laboratory
+all the way up to like full cryogenic like freezer levels.
+The types of issues we see on
+these are they have unencrypted web services and they have
+hard-coded credentials. So the
+lab techs inside the healthcare organization, they'll actually
+carry, most times, sometimes
+they'll throw it in their desk, but usually they'll carry pagers
+that are set up to alert them if
+there is like a upper or a lower limit on these devices that gets
+tripped. So if it loses power
+and the temperature drops they get alerted so that they can go
+respond and they can throw it
+into another, you know, refrigeration system. Well
+through these web interfaces,
+which either have no authentication into them or they
+very weak credentials into them,
+you can go into those types of systems and you can alter
+things. So first you can turn
+off alerting or change the alerting to those pager systems.
+Secondly you can change upper
+and lower limits on the temperature controls. You can
+even shut these units off. So
+those are the type of risks there, you know, spoilage,
+things like that, that you get
+into with those devices. 	Pacs imaging. You know, that's not
+really a patient safety issue
+too much but this is where you're seeing when you get into
+like the PHI stuff, not
+necessarily patient safety, but this is where I feel a lot of
+the exploitation of actual
+patient documentation is coming out of healthcare organizations.
+	All but one vendor that I
+researched on the paces imaging side, how they operate is
+through an application, through
+that pacs application they call back-in storage for those
+imaging systems. Through the
+application they actually prompt and they use authentication and
+they call it and they log if
+you've accessed that PHI. The back-end storage unfortunately
+happens to be in all but one
+case that I've looked at completely unauthenticated
+access into the Nas device or
+the storage network where all of those, you know, patient records
+and images, and, you know, PHI
+type information. So that's a big one. I think we'll loop this
+Pacs thing back in later when we
+start talking about some more exposure and how I believe, you
+know, a lot of our data is being
+leaked out very easily outside of healthcare organizations to
+sell people's medical
+identities. 	>> MRI and CT systems, you get into like nuke
+med systems as well, these are
+interesting. They pretty much function similar across the
+board when you get into CT, MRI
+systems. If you look at all the documentation you'll find that
+there isn't a whole lot of
+difference on them. Nuke med machines, they actually have
+work stations that directly talk
+to it but when you get into the radiology space, the MRI, the
+CT, that's when the RAD tech is
+actually sitting in the room behind the, you know, behind the
+enclosure and how those operate
+is obviously the physician orders what imaging they want,
+and they program that order into
+the application and that actually gets sent down to like
+the CT system. And so it kinda
+sits there in like a holding pattern. It almost functions
+like a queue inside those
+devices. 	But unfortunately they use unencrypted web traffic as
+well so you can man in the
+middle that traffic, you can, you know, alter those types of
+things. They do have a failsafe
+which is actually really good in most cases. Like the nuke meds
+are direct and they don't
+function like that but that's not real radiation exposure. But
+MRI and CTs, they kinda have
+like a Staples Easy button over at the side where the Rad tech
+actually has to, you know,
+manually kind of hit and then it goes out to the work station and
+takes that queue and then
+processes that image. But because it's unencrypted and you
+can man in the middle of it, you
+can alter what's actually going on in there when they actually
+execute that. Defibrillators,
+this one's an interesting one, when you get into ICD
+technology, if any of you know
+who Kevin Fu is, he did a lot of great work, he actually
+documented it out. And most of
+these, they run, they run on telemetry so they run at like a
+400k range. The problem with
+these is the pacemaker controller systems, if you
+access those, they don't require
+authentication. And once you associate it to the implantable
+defib, you can issue the command
+and it will reprogram, it will set upper and lower sensing
+limits for the device on, you
+know, when to start shocking, you know, when to stop, when to
+sense, you know, when there's a
+cardiac event. And so those things you can also Man in the
+Middle. I think Kevin Fu, if you
+are really interested in the details of that, he did a great
+job, you know, look it up. Take
+a look at his research all the way back to 2008. There is
+obviously a clinical need for
+that, too, and I will bring that up and that's one of the
+challenges that you get into
+this space is you know you would hate for a patient to show up
+and, oh, I forgot the passcode
+in order to, you know, deliver a shot. I have to reprogram this
+device. So that's the flip side
+of it. It's definitely, you know, a challenging area.
+	Externals? I'm not gonna talk
+too much about those, we have a very detailed case example of a
+specific manufacturer on
+external cardiac defib that we're gonna release today. 	>>
+It's awesome! 	(Laughter) 	>>
+And infusion pumps. These are ones that they have web
+interfaces on them, oftentimes,
+you know, no authentication or weak credentials, they also have
+accessible services. Medical
+device integration, this is an interesting one. So
+historically, you know, some of
+the very critical, life-saving medical devices that were out
+there. So ventilators,
+anesthesia carts, things like that, they historically and for
+a reason, weren't ever
+networked, right? So they just did serial interfaces and things
+like that; they weren't put on a
+network. Well, Affordable Care Act and things like that, and
+having to pump all this data to
+a centralized location in order to do BigData analytics on
+healthcare populations we have
+decided that we needed to integrate life support equipment
+so we have gone with medical
+device integration vendors, a lot of healthcare organizations
+are doing this now and it's
+bringing in these critical devices onto the network,
+reading those vital signs and
+then ultimately transferring off. Again completely
+unencrypted. No encryption. You
+can Man in the Middle that. You can actually replay it. They do
+use unique identifiers but you
+can correlate it all the way through from the unique
+identifier back to the patient.
+Whoops. 	>> So these are pretty much the top risks that we've
+identified so far. Just across
+these systems and again there's nothing terribly sexy about
+this, right? We've seen this for
+years. A hard-coded privileged accounts. It never goes away.
+It's gonna be here forever.
+Unencrypted web apps and then all kinds of API calls and then
+back-end services like Scott
+mentioned earlier with the Pacs systems going to the storage
+interfaces. 	And then, you know,
+many of these systems are built off of COTS equipment, so
+they're just using medical
+device manufacturers, they're using your standard, maybe an
+embedded Windows or VX works or
+a Windows 2003 or 2008 server-- 	>> XP or 2000. We'll kind of
+touch on that as we go through
+examples too. (Speaking off-mic). 	>> Yeah, or embedded.
+All over, yeah. Right. So
+they're not OS experts and typically they are not removing
+the excessive services that are
+on these operating systems and then there's the patching. So
+we'll talk about the patching
+issues more but there's a real misconception out there about
+there about hey you can't patch
+medical devices and that is just is not true. 	The FDA, there's
+no F.B.I. here, right, they
+weren't invited so-- (Laughter) -- The FDA has issued guidance
+for the past ten years
+indicating that yes, you can patch medical devices. But we'll
+get into that later about, you
+know, how you do that or should you do that or what are the
+risks associated with that. 	>>
+Yeah so that's kind of the, you know, first round of research,
+kind of dabbled into for the
+last few years. And we were going to kinda stop there. But
+there was a lot of outreach to
+that and a lot of refutal of, you know, points that yes, you
+know, you found these issues in
+medical devices but they are in internal networks, they're
+fire-walled off from everything
+else. Well, you know I called BS on that. It's definitely not how
+it is. And so I think we wanted
+to show that, you know, the public was really unaware, I
+think, and even a lot of IS
+staff, inside of healthcare organizations, were really
+unaware of this risk, and they
+truly believed that all their devices were fire-walled off,
+that you couldn't access them
+directly from the Internet. 	This is a blurb from a private
+industry notice, note that I'm
+not throwing off a private industry notice, this was off
+Google and the media got a hold
+of it so don't think I'm throwing out one of the F.B.I.'s
+hints to you guys but this is a,
+you know, a good quote that kind of shows the biggest
+vulnerability was the perception
+of IT professionals healthcare beliefs that their current
+perimeter defense and compliance
+strategy are working when clearly the data states
+otherwise. So that is kind of, I
+mean, that's on an F.B.I. pin, so they probably should start
+listening, it's just not some,
+you know, guy named Scott up there telling you. 	>> And
+respect to the F.B.I. for doing
+that. I mean, for stepping up, because if you really, you know,
+cut to the chase, this is almost
+kind of out of their purview until it gets into a criminal
+matter, you know, I'm not a
+lawyer but, you know, this is getting into the FDA and you
+know, HHS and so who has
+oversight of these issues? 	So it's great to see that the
+F.B.I. is talking about this and
+raising awareness. 	>> Yeah and physicians as well. I think
+there needs to be more awareness
+on that end across healthcare organizations, a lot of systems
+get brought in from the
+physicians for clinical care. Security is an afterthought of
+that decision that's been made
+and so we'll talk again a little further on, you know, some
+involvement I have had now with,
+you know, physicians in collaboration which is great and
+we need to, you know, bring that
+awareness up, all the physicians I talk to, they care, they just
+don't know. 	>> I think really
+that's where we're gonna see the rubber meet the road as far as
+physicians, you know. They are
+the ones handling and taking care of patients directly. They
+are tremendously respected not
+only in the community but within the organizations and they have
+a lot of power. There were MD
+students who were giving talks at this conference, we are
+developing relationships with
+them, we are seeing in academic medical centers an entire new
+generation of tech-savvy
+physicians getting trained so we need to bring these people into
+the fold and explain the risks
+to them and then get them on our side. 	>> You take this one,
+Shawn. You're following this
+awesome quote. 	22:21>> So everyone knows who Avi Rubin is,
+right? I mean he's a
+well-respected researcher, Independent Security Evaluators
+, I think he's the president
+there, he's definitely one of the founders. And I just thought
+this was a wonderful quote. And,
+you know, I have never seen an industry with more gaping holes,
+if our financial industry, with
+regard to security the way healthcare does, I would stuff
+my cash in a mattress under my
+bed. 	>> Yeah, so that says a whole lot, I think. 	>> And that
+was in 2012, right, yeah, 12/25.
+	>> Yeah, that was a couple years ago. All right. So let's
+get into, like, first round of
+some of the exposure when we started to look at
+Internet-facing devices, direct
+from Internet public IP. 	So we started to research that, right,
+and we were doing some, you
+know, custom really elite searches, like, for key words
+like anesthesia that no one
+would ever think of -- (Laughter) -- and we happened to
+right away within 30 minutes, we
+came across something that I clearly knew wasn't an
+anesthesia work station itself.
+But we realized very quickly that it had SMV open and I know
+who cares about SMV? I didn't
+come to hear DEF CON talk about SMV just being open but I think
+the threat modeling that we're
+gonna show you is really where that risk is and the information
+that we could extract related to
+medical devices and supporting systems inside of the healthcare
+organization. 	>> So this was
+Scott's finding and we have been exchanging phone calls while
+we're doing these searches and
+I'm sure those are archived somewhere and perhaps someday
+we'll listen to them but yeah it
+was amazing, it was amazing to see this. Because he was like,
+dude, send me this search --
+he's like, did that finish downloading yet of off SHODAN?
+I'm like, no, no, that still
+hasn't finished downloading, so this is the results page of
+what, you know, the system is
+showing us. Like, no, no, so I had to jump on a VPS server that
+has like a 10 gig or 10 meg
+pipeline and you know, pull it down and got a quick page count
+and it was like, you know, 1482
+pages. 	>> Just that one of the thousands of organizations that
+you talk about here. 	>> Yeah,
+but this was one box off of one organization with one port open.
+So it just shows, goes to show
+that wow, just one exposure. 	>> So here is a little bit more
+information on the initial
+healthcare organization discovery. This was the first
+one we found. I found it
+probably like 10:30 at night and was calling DHS at like midnight
+saying, hey, you know, we got an
+issue here, took the day off the next day and worked all day to
+find out, you know, was it just
+an issue with one organization or was it really, you know, a
+systemic issue across
+healthcare, you know, and the hundreds and thousands of
+healthcare organizations were
+wide open externally? Well, turned out to be even though
+we're using one example, the
+first example that we found, you know, it's not just one
+organization's issue. It is
+across the world in many instances and we will show you
+the statistics that we have on
+that. 	But to give you an idea of size it was a very large U.S.
+healthcare system. They had over
+12,000 employees, 3,000 physicians and you'll see when
+we get into the actual medical
+devices and the systems that communicate with these medical
+devices, they did have a large
+cardiovascular neuroscience institutions attached to those.
+It exposed intelligence. When we
+dump that 1500-page document after we finally got it
+downloaded and extracted all the
+raw data, it was over 68,000 systems provided a direct attack
+vector from externally anywhere
+in the world, public IP, into those systems. Full control if
+an attacker wanted it. 	It also
+exposed one of the things that we found that, again, isn't, you
+know, unique to this
+organization. It's across the thing, is we've seen indicators
+of, you know, third party
+organizations that were connected and contracted for
+certain services so, you know,
+specialty services, things like that, that are contracted out by
+other organizations. We have
+seen those systems and, you know, names used that were
+affiliated with those systems
+inside of there. 	So it wasn't just these organizations had an
+issue; they were also exposing
+third party connections and security issues there as well.
+	>> And ene thing, too, this
+also exposed a lot of your internal business operations so
+HR systems, payroll, what we
+traditionally think of, of an attack vector and what attackers
+were going for. Interestingly,
+we were looking for healthcare and medical exposure here so
+there was PHRs and all that but
+it was, yeah, it was disconcerting to see all that
+business process systems
+exposure as well. 	>> Yeah, so I think that's a good point.
+'Cause it definitely wasn't, you
+know, our focus was on, you know, medical devices,
+healthcare infrastructure,
+things on patient safety but this was, you know, these 68,000
+systems weren't just medical
+devices. It was their entire infrastructure and so we can
+give you an example on all those
+medical devices and supporting systems that we found but we
+also, if we were into talking
+about that could've shown you just as many examples with
+financial systems, payroll
+systems, you know, employee-type confidential information as
+well. 	>> So again, you know,
+did we find only one? No, you know, we found hundreds. When
+you link them together, when you
+change the search term, so you can see right here this is a
+screenshot inside of SHODAN, but
+what we're doing is, so you can see the hits, so we are just
+doing searches and then we're
+using key words that would be associated with medical
+facilities. So health stocks,
+any type of like healthcare system that has that in their
+organization name. Clinic,
+hospital and medical and you can see the number of hits that have
+this exposure. Well when you
+change that into, you know, specialty things, like if you
+change that search term to like
+cardiology, or radiology, or urology, or pediatrics or
+something like that, you're
+gonna get all the organizations that have that inside their org
+name, and then when you tie
+those into the third parties that were affected inside of
+those disclosures you end up
+with, you know, thousands of healthcare systems that are
+really affected. 	>> So what's
+key to think about is, you know, there is a lot of specialty
+small clinics so when we have
+gone out and maybe got an MRI, you've got sent to a special,
+small specialty clinic, and
+these are all, you know, tied in with the healthcare systems,
+too, and you know, the kinds of
+searches we did here, with just the org name, if you are looking
+for, you know, specific clinics
+you can do those types of searches too, and really get
+granular, even by geographic
+areas. So SHODAN is a very very powerful tool, it's not the only
+tool to use this but it was, it
+was, it fit our needs and what we wanted to show at the time.
+	>> And so here's some heat
+maps. And if you haven't checked out SHODAN lately we had access
+to the beta thanks to John, and
+we actually have been able to work with him to do custom
+searches for certain ports that
+aren't publicly available just to dig into a little bit more
+specific medical device exposure
+across the Internet but these are some new heat maps that he
+came out with so definitely go
+in and, you know, check this out. It's kind of a neat
+feature. 	It will not only show
+you the heat map overlay but it will also show you top affected
+domain names, organizations
+across the world. So this is just some heat maps for key
+words of what we did and kind of
+the concentrations for high host down to low host count. You will
+see kind of a theme here that it
+is U.S.centric, I don't know how to spell health insurance in
+Chinese if they put that in
+their org name or things like that so I don't know if that has
+to do with some of the disparate
+information or not but the U.S. definitely is a big red dot on
+all this stuff, so. 	This is one
+for the clinic, as you can see. U.S. is still definitely top on
+the list for organizations that
+have this issue. Same with hospital. And here is the heat
+map for medical. It starts
+getting a little more interesting, China and stuff
+starts getting big and red. 	One
+thing we did do is we don't cover it in the talk but I'll
+just talk about it, you know,
+quickly is some of this customized stuff that we're
+doing with SHODAN, and that was
+just released as well, is X 11, so if you want to go and search
+like Port 6,000 X 11, we did
+that with John and he just released it publicly. So there's
+a lot of unauthenticated X 11
+devices. We weren't able to correlate it back to medical
+devices so we are not talking
+about it but he has released it. There's like 60,000 systems out
+there, 30,000 of which are
+completely unauthenticated across the Internet. 	So who
+cares about SMV again? You know,
+why did we skip Dan Kaminsky's talk to come watch a bunch of
+posers talk about SMV, right?
+But that's not it. It's really the threat model here. And why
+does this matter? You know, who
+cares? Well, this system and others like it also happen to be
+Windows XP. And it's vulnerable
+to MS08-067 and for those of you that weren't in the security
+industry back then, that is you
+know the exploit or the vulnerability that can configure
+utilized. So this is old. This
+is from 2008. Still have external-facing systems running
+SMV. Also you can pop that box
+direct. So this is kind of a host profile, the OS, just a
+screen cap, obviously the
+information is hidden on this organization. 	>> And I pushed
+back against Scott on this, too,
+when he first brought it to me. I was like this really isn't
+that interesting. Once we
+started looking more into the full exposure of this
+organization and he painted the
+picture for me then it became much clearer, and so that's what
+is -- 	>> Yup, I think that's
+what is coming here. So why does it matter and what, I'm gonna
+show you here in the next slide
+why does it matter. Well the SMV as we know, it by design is
+gonna leak host names. Well who
+really cares about host names necessarily? But what we also
+realized with these healthcare
+organizations is that not only was SMV open but read access,
+anonymous read access to their
+Active Directory infrastructure was also pulling through
+directly to the internet and
+exposing all this detailed information that allowed us to
+identify, you know, specific
+medical devices, not just medical devices themselves, but
+the supporting technology
+systems and applications. 	And I want to, I want to clarify on
+that. Everyone talks to medical
+devices and a lot of people may think that it's just, you know,
+implantables or just the actual
+device itself. You know, the CT scan or the MRI system. The
+actual infusion pump. But
+understand it's a large ecosystem here. No longer is it
+just stand-alone systems. So
+those work stations that they are using, they interact and
+they have the application that
+issues instructions to the medical device, to the patient.
+So that's why, you know, all
+these work stations and things like that are so important.
+'Cause they do have direct
+access to communicate with the medical devices through the
+application. 	So leaked out host
+names. And it oftentimes leaked out very specific information
+that attacker could use. So
+we'll show you some examples in here of, you know, the floor,
+the office, physician names are
+in here. And also AD policy was applied so like the ORs, by
+design most healthcare
+organizations set timeouts on ORs. 	>> Who are they? 	>> Yeah.
+And, you know, the reason they
+do that is 'cause they're all scrubbed up, right. I mean
+that's the, you know, the reason
+they don't want to be messing around with big clunky gloves
+having to unlock it. You'll see
+some examples here that shows us that the specific systems also
+have timeout exemptions in
+place. 	So let's get into, you know, what other systems we
+found, show some examples here.
+Why does this matter. Let's paint a picture of why, you
+know, it's not just SMV but it's
+really a threat model here. 	So over on the left you can see
+those are the systems with the
+lockout exemptions, so that is something where we know that the
+screensaver time out isn't gonna
+kick in so that matters, right, so especially in like a physical
+attack scenario that we get into
+later, that matters because you want to know what system has a
+timeout exemption. 	Over on the
+right, here's this customer happened to use Epic, please
+note again this isn't a
+manufacturer issue. This is just the organization and all these
+organizations had a
+misconfiguration. So this isn't anything that Epic or a
+manufacturer can fix themselves
+but this is just an example. You can see all their servers here,
+these are used for everything
+from the SQL server back end all the way into web servers, I
+believe down there towards the
+bottom, MyChart, MyChart is if anyone here goes as a patient to
+a healthcare organization and
+they use Epic, MyChart is your portal into all of your medical
+record data. 	So that's this
+organization's server. We now know we can hit it directly from
+the net. 	All right. Let's talk
+about a little bit more stuff. So pacs imaging. We talked about
+those previously. We have seen
+through our research that they don't require on the back end
+authentication or the one
+manufacturer I have ran across that does, the little kids over
+in Roots could probably crack in
+about three minutes, so it's not very difficult. 	So here is
+radiology systems. Here is the
+CT system. Pacs, you know, CT3 right there. So that's some of
+the radiology stuff. Down at the
+bottom, telemetry. There's a couple use cases for telemetry
+systems. We can't tell exactly
+just off this what exactly that device is for. We can only
+profile on this case. So
+telemetry can be used for different things. It can be used
+for infant induction systems or
+wandering adult patients, those types of things. They use a
+little armband to alert, you
+know, if the mother, if the child are too far apart or if
+one gets taken off the unit.
+Telemetry is also obviously used and we'll show you some examples
+of this, for pacemakers,
+pacemaker controller type systems. Speaking of pacemakers,
+here are some pacemakers and we
+also had specific examples that were very labeled as pacemaker
+controller. So we know that
+those were the pacemaker controller systems inside of an
+organization. We know that those
+pacemaker controller systems don't require any type of
+authentication to communicate
+once they have associated to a implantable. You can also see
+here, we have scrubbed it but
+there's an example in here, of you can see doctor or whatever
+that is and you can see those
+types of examples. Specifically where they are at. 	Second one
+there, there is pediatrics.
+Nuclear medicine. Down at the bottom, this is when you get
+into anesthesia, right.
+Anesthesia OR, we know that this is an anesthesia work station.
+The OR environment is very
+controlled so thinking that you would have anesthesia OR labeled
+separate from the anesthesia
+work station that is directly attached to the anesthesia cart,
+there is just no way, this is
+definitely an anesthesia work station that is on the
+anaesthesia cart inside of the
+OR. You could hit it directly from the internet. 	So we found
+a few of these devices, right,
+you're giving us some examples, you're showing us some
+screenshots, types of devices
+that you found. 	Well, we didn't. We took that big log for
+this specific organization of
+the thousands that we found, we dumped out the raw data and we
+started to extract that data and
+we identified thousands of, you know, the medical devices and
+those supporting systems and
+those applications. 	So we used our favorite data extraction
+tool called Excel 'cause we're
+really sophisticated. 	>> He did. I haven't gotten my Excel
+certification yet! 	(Laughter)
+	>> Yeah. So this is a overview. So we took all that raw data, we
+dumped it to Excel and then
+basically what we did is we just did a search and a find for key
+words on these types of devices.
+So we did a search for anesthesia. There was 21 systems
+that were affiliated with
+anesthesia outside, inside this organization. Cardiology, 488.
+Like I said before, they had a
+very large cardiology institution and a nuclear
+medicine, nuke med, neurology
+institution as well. Infusion systems, found 133 systems.
+MRIs, 97. The Pacs systems, 323.
+So I think right here again it goes to the point that I don't
+know, maybe healthcare security
+is lax enough and poor enough right now that the attackers,
+you know, are not using this
+simple attack method to get in and get information on the
+devices, maybe they are just
+plastering everybody and they are able to go completely
+undetected. But if not they
+could do a little bit of research and they could find
+out, hey, just this one
+healthcare organization has 323 you know, devices associated to
+Pacs and imaging in some way or
+another. Nuke med systems, 67, and ultimately on the cardiology
+side 31 systems associated to
+pacemakers. 	So potential attacks in this scenario. Threat
+modeling for this SMV exposure
+that leaks all of this information, right. We've got a
+few of those. The lamest one but
+still a viable option is, you know, physical attack. We now
+know a lot of information, we
+know what types of systems they are as a attacker. We know what
+types of medical device they are
+associated to. We know the healthcare organization and the
+location, we know the floor and
+the office number in lots of cases like I showed you and we
+know if that system has a
+lockout exemption. So we can now very strategically, right,
+Shawn, we can walk in and kind
+of pinpoint, we want to go to this floor, this office number,
+we know it's a cardiology doc
+that's seeing this patient, we want to go walk in, we know it's
+got a timeout exemption, we can
+probably sit down and never have to put in a password and get
+access to that system. 	>> And
+when it comes to healthcare organizations, you know, it's
+not like walking into a finance
+institution, financial institution where they're like a
+beady-eyed banker looking at you
+like you're gonna take his money. Healthcare organizations,
+you walk in there and there's
+people at the desk, hi, how can I help you, right? So they are
+very susceptible to a number of
+physical types of attacks. Plus you throw a lab coat on, put a
+stethoscope around your neck,
+you print up a badge, which you know, you can just easily do
+just from trolling the halls and
+looking to see what they look like, you know, it really opens
+up a scary avenue of attack
+because nobody really thinks about this. 	>> So what's the
+next one that we can kind of
+look at for an attack in this scenario on these organizations?
+Obviously a phishing attack,
+we're all very familiar with that, right? Agn, we know what
+systems they are we want to
+target. We know the healthcare organization, we know employee
+names, and so we can just start
+extracting email addresses for those employees. You know,
+that's very simple to do. And we
+know the host name and that's the key thing. We know the host
+name and we know what type of
+device it is. So we can write customized payload now that we
+can deliver through a phishing
+attack that once it's executed and once we have control on that
+internal system or even from
+that external-facing system that had MS08-067, we can directly
+pivot to only hit the devices
+that we want to hit. So an attacker can be very strategic
+with this type of information,
+right. They don't have to, you know, get a foothold and then
+scan the entire network and
+figure this out and be really noisy. They don't have to do
+that. They can simply send a
+phishing attack and then target directly toward those medical
+devices. Pivot attack, this is
+obviously external for those systems that had
+vulnerabilities. MS08-067 is
+just one of them. A lot of them are running vulnerable versions.
+IIS 6 that are sitting out there
+plus a lot of extra excessive services that are vulnerable as
+well. 	We also know in this
+pivot attack that's touching the back end network because it's
+leaking all the data for
+everyone of their things. It's also giving us read access in
+the active directory. So we know
+there is a hole and that there's a hop and that it's not
+firewalled off. So again we can
+create a custom payload directly and pivot internally. 	Targeted
+attack, this one is, you know,
+where you start to make the case for a targeted attack against a
+targeted patient, those types of
+scenarios, right. We can use the information we got over SMV so
+we know the systems that are
+associated. 	We also now know every single name of every one
+of their medical record servers,
+so all we have to do is strategically target those
+specific systems once we have a
+foothold in the network. So then an attacker can take that,
+attack the medical record, get a
+weak password, get a vulnerability and some legacy
+application and we can start
+correlating where the patients are gonna be when, and correlate
+that with the SMV data of where
+these devices are located and what type of devices they are,
+and then, you know, launch an
+attack. 	So, what's the good news out of this? I just want to
+touch on this example of
+healthcare organization. This was very positive. This is new
+space DHS and ICS-CERT did
+coordinate disclosure and with this healthcare organization
+among others that we used in our
+example, they did schedule a follow-up call. And so I did
+talk with healthcare
+organization and DHS. They actually, it was a very positive
+exchange. So typically we are
+dealing as security researchers, we are oftentimes dealing with
+manufacturers, right, and we're
+starting to get over those bounds as well, but initially,
+and the first time with
+everything, you know, there's a lot of legal land mines and pit
+falls that you gotta get
+through. So this was a big win for us, this is something that,
+you know, I'm proud of. This is
+the first time, you know, DHS says they've actually worked
+with a security researcher and
+an actual healthcare organization to expose these
+risks and work through it. They
+did -- (Inaudible) -- they showed good faith. I'm not gonna
+speak to what it contains but
+they did actually share their full incident response with me
+and I went through that with
+that organization so it was a very positive win overall in
+that interaction so I want to
+call that out. 	So next Shawn's going to talk on public Internet
+facing systems and is there any
+device that directly is on the net? 	>>I should have stayed
+over there. I liked it much
+better. 	So that was the first part. Kind of our talk here of
+the SMV exposure and just bear
+in mind we focused on one organization but we could have
+done this with a number of
+organizations. But just for the brevity and the exposure we just
+did that one. So medical devices
+on public Internet. I mean you really wouldn't think this is
+the case, you know. So a public
+IP address and then you have this medical device here, but it
+is and some of these are by
+design and on purpose. And what really makes this tricky is that
+some are using cellular modems
+so, and the reason is they may be remote clinics or they want
+to separate that in some ways
+from the other infrastructure, but what that does for, you
+know, ethical researchers who
+want to track down these devices and then ssociate that with the
+healthcare organization, it
+makes this very difficult for us to do that. So that's really
+where we need to reach out, you
+know, to the carriers and the FDA and HHS and even law
+enforcement because they have
+the capability to correlate those cellular modem addresses
+and IPs to these medical
+devices. 	So this is just four examples that we focused on of
+what we found out there. And I
+mean hese are publicly accessible on public IP,
+defibrillators and those,
+Scott's gonna really give you an excellent case study about that
+later on. 	They're deployed in
+ambulances and then these fetal infant monitoring systems which,
+if you follow any of my SHODAN
+talks over the past few years I've been yammering about, I'll
+get into more of those. 	EEG
+systems, so those are hooked up to folks at home and then
+they're tied into a cellular
+modem. And then of course Pacs and imaging systems, now the
+really the interesting thing
+about Pacs systems is when they take these MRI images of you,
+they are gigantic files so
+there's a storage back end, we talked about that, but then
+transferring them is an issue
+too. And then what's going on is there's consolidation in the
+industry of analysts who are
+specialized in doing this type of analysis. So there may be
+someone working across the
+country from home and doing all day long, you know, she's just
+looking at these images and then
+doing the analysis, writing up the report and sending that back
+to the healthcare organization.
+	So it makes it much easier, right, to just stick this out on
+public IP. They can access it
+directly over a web interface. You don't have to allocate a VPN
+session to them. They are not
+choking up your bandwidth and that kind of thing. 	More
+traditional hardware
+infrastructure that we found exposed was just your old
+unauthenticated and
+misconfigured Cisco devices and edge routers and these have been
+known for years. They are really
+easy to find. And then also like device manufacturer
+infrastructure and then, you
+know, these third party contract organizations. What I mean by
+that and Scott's gonna talk a
+little bit about this, too, if you want. But what I mean about
+that is, hospitals are
+tremendously complex organizations. So, you know,
+just because there's a device on
+a hospital or a healthcare network doesn't necessarily mean
+they even own it. They may not
+even know about it. And when you get into like academic medical
+research centers you may have a
+professor who is also a physician, so and then they have
+somebody they are doing a
+research project on and then they got this device and then
+they allocate it to a public IP.
+So, you know, the IT folks may not know about it. The security
+folks typically will not know
+about it at all. And so these things just show up on the
+network. 	You have something to
+say on this? 	>> Yeah, I think in the healthcare systems too,
+understand, the one that we
+found, the one that we disclosed to DHS, this wasn't a small
+family clinic, this was a very
+large healthcare organization. It was not the same organization
+as the other example but it was
+very large, they had over 13,000 employees just to give you some
+idea of size of the
+organization. So it wasn't a small thing. Completely on/off
+edge router just sitting out on
+the net, all their infrastructure was exposed. A
+lot of the manufacturer's side,
+what we've seen and is accessible, a lot of those that
+we found aren't necessarily you
+know the fault of the manufacturer; it's really
+implementation issues at the
+location but some of those come back to poor documentation or
+guidelines from the
+manufacturer. 	We see some documentation out there that is
+straight up for support reasons.
+In their documentation it tells you open every single port on
+the firewall for remote
+connectivity from these vendors which obviously is a little
+reckless. Not sure how they are
+QA'g those documents, it's obviously not needed and some
+folks are doing it. 	>> So we
+got a few case studies that we're gonna walk through. And
+this was the first reported
+medical device, meaning reported to ICS-CERT. And I found this in
+late 2012 and it was a Roche
+glucose meter. So this is a portable glucose meter to take
+blood sugar measurements and it
+has this base station on there. And the base station just had
+Telnet running but there was
+authentication required for it but Telnet, I mean it's clear
+textbook protocol. The vendor
+response was awesome, hat tip to the Roche guys, they were all
+over this, good communication,
+and then really good DHS and ICS response on this, too. 	This
+really gets more troubling. And
+I alluded to the Pacs systems before and the reason why these
+are exposed online and there are
+hundreds, and even if you start doing different versions, really
+thousands of them, and this is
+just the Kodak ones. 	And so, you know, Scott talked about the
+ecosystem before, right. So it's
+easy just to think, oh the stand-alone medical device, and
+what are the risks associated
+with it? But there's a whole client infrastructure that comes
+along with this and how do your
+clients communicate with it? 	And if you see here it's
+required to use Internet
+Explorer 6.0. On this system. 	>> Yeah, that's not that
+uncommon either by the way! 	>>
+So it's not that uncommon but then you think about these
+systems and okay are they
+dedicating that box, you know, and that client browser just for
+that system? Or is whomever is
+using this gonna jump online and start looking at different sites
+and get hit with a drive-by
+browser attack or something bad through their Yahoo! e-mail. So
+again, it's just perspective but
+again, and these are on public IP. 	This fetal monitor, I've
+been yakking about these for a
+couple years now. And so I first reported these in about December
+of 2012 and then there's also
+been some media coverage. 	So these have been mentioned
+specifically in mainstream media
+and I haven't really had people reach out to me yet about these
+which I was surprised because I
+mean if there's one thing we can think about is fetal monitors,
+my perspective is that you
+should have the opportunity to be born before you get hacked,
+right! 	(Laughter) That's not
+too much to ask for. Okay. And these are the most severe, these
+are the most vulnerable people
+in our population. I mean you got a mom in bed expecting a
+baby. Can't we do better than
+what we're doing here with this? 	So when Scott and I decided to
+collude and do this talk I
+really amped up. And I disclosured again to DHS, and
+then went to the manufacturer
+whom I'm not gonna mention the manufacturer, and I'm not gonna
+mention the device specifics on
+this but I also went to the FDA, the Office of Civil Rights and
+the Joint Commission because I'd
+gotten to the point that, you know, if you put these out
+there, you put people at risk,
+you deserve a fine. And that's the business side. Right. That's
+when people start paying
+attention. (Applause) Got to hit'em in the pocket. So here is
+a SHODAN map of the fetal
+monitors on public IP and it really doesn't disclose-- 	>>
+That's a really crappy picture!
+	>> It's a horrible picture but, you know, if you look in the
+United States, right, you'll see
+one big dot. And one big dot in the United States is there in
+the center, you'll see a couple
+down in Florida and down in Puerto Rico but the ones in the
+U.S. you see a big dot there,
+and that's because of the cellular modem issue, right. And
+so it doesn't give you a geo--
+SHODAN will not give you a ge0graphic location on that
+cellular modem. So we got a
+fetal monitor hooked up to a cellular modem, don't know the
+organization it's affiliated
+with, very very difficult to track that down. Anyone, and
+that gets into a phone call I
+had with the FDA. You know, the first question to the security
+guy was like, oh, well, how do I
+find these? I'm like, dude, call the F.B.I. 	>> Yeah it ends up
+being just so you guys are kind
+of doing your research, and are aware of that, it ends up in a
+field like 10 miles northeast of
+Potwin, Kansas, and so that field is actually a geographical
+center of the United States. And
+so anything that is not able to track a geolocation back to,
+that is why you'll see a huge
+influx outside of Potwin, Kansas in a field. It's not a bunch of
+people out there with fetal
+monitors and devices sitting. (Laughter) It's not a hacker
+camp in the middle of the field.
+	>> Kansas is so boring, you almost want to drive around it!
+So here is some system details
+on this. Now, so there's two different models out there
+running. First is Windows 2003
+server running it's running IIS6.0 right, 16 systems. So
+doing my research on available
+public documentation, you know, and that's another thing,
+documentation control for this
+on the vendor side, they get third party integrators, these
+guys pop up an FTP server and
+then the vendor documentation gets leaked out so then a guy
+like me can come along and then
+find it. Usually it's very tightly controlled so I knew
+right away after documentation
+that these 16 systems that are out there are behind on their
+vendor updates. And props to the
+vendor because on this particular system they are doing
+a good job, they're actually
+vetting the patches, they're upgrading systems and going up
+CDs but then you get in the
+situation where these are constantly in use and you have
+to have an IT department,
+upgrading them or you have to contract that out. You get
+smaller healthcare clinics,
+money is an issue. Think about how it is on like a Native
+American reservation, right, you
+know, these things are expensive to run. 	The second one was the
+2008 server and that's IIS7.0,
+by the way not all these systems are currently exposed online so
+there's a historical context
+here but over the past couple years I've just seen more and
+more of them pop up online. So
+some have been retired, some have been taken down. So the
+remote access is done through
+remote desktop web access, which is done through a browser or
+there's a terminal services
+client. And when I did raise the question and did get in touch
+with FDA and vendor I couched
+this 'cause I knew I could get their attention, couched it as a
+HIPAA-compliant issue, not just
+a public IP exposure but the way the communication happened with
+the RDP clients. And there is
+technically ways, I'm not a HIPAA expert, but ways to make
+it HIPAA compliant, and using
+the FIPS, correct FIPS, approved crypto levels, certificate
+sharing and such but that really
+wasn't documented. From what I saw and from other
+documentation, what could have
+been and, yes, so there were some questions about that. 	And
+then again I'll give props to
+the vendor, because they said that these should be deployed on
+a secured connection, so
+meaning, you know, with a VPN and I believe that they will be
+updating their documentation.
+	>> Yeah so that's one of the reasons we are not naming the
+vendor. We don't feel that this
+one is necessarily a manufacturer issue. If it was a
+manufacturer issue and they were
+actually recommending that we expose them, we probably would
+drop their name as I will drop a
+vendor name later in this discussion. 	>> Yeah stay tuned.
+It's gonna get a little hairy.
+That's all him. 	>> The FDA Module reports, so if you're not
+familiar with the FDA, there is
+a user event database that they have, and so what I did is
+correlated, I didn't do
+correlation. I went into FDA Mod and I was looking for anything
+that could be tied to this
+particular monitoring system, what kind of problems they've
+had from the field that people
+have reported. So some of those I saw that these alarm
+capabilities have been muted or
+disabled. And that led me to wonder, okay is this possible
+that, you know, these particular
+exposed devices, is there correlation with the FDA Mod
+database in those reports that
+perhaps there's an attack going on here that we don't know
+about. It's hard to tell from
+Mod and Mod reports are really, they're sanitized search
+interfaces are horrible. 	So,
+where we are today, is this is close to DHS. There's many on
+public IP, many are running IIS
+6.0. And by the way I'm able to tell all this from SHODAN so I
+am not going to these individual
+systems, I'm not connecting to them, I'm not looking at the
+versions, I'm not scanning them.
+I can derive all this information from SHODAN
+including last scan date so
+there's a historical record in SHODAN. The vendor did reach out
+to me. We had a conference call.
+They are interested in what they characterize as a customer
+misuse case. And that is
+completely accurate and really it's the beginning of security
+researcher communication. You
+know, one of their security people was like, yeah, I've
+known about you for a few years,
+you have the med sector group, you know, we get a little
+apprehensive talking to you. And
+the reason is 'cause they don't have have you locked in right,
+I'm not a under an NDA, I'm not
+an employee, I'm just a guy out here who is, you know,
+interested in this, and wants to
+improve public safety. 	So, you know, it's a wildcard, right.
+How do you handle somebody like
+that? And I can appreciate that, so. I believe that they might
+have sent a folk or two here and
+I hope we can rap up here later, you know, continue to build has
+relationship because this is
+where it's gonna count. 	>> Lessons learned: really, you
+know, we need a better reporting
+method. We need to have some teeth in something and a way to
+track these formal government
+levels, we need some coordination happening across
+these different agencies. I'd
+love to see like a task force that evolved out of this where
+okay we found a device, we're
+able to get the public IP correlated to a healthcare
+provider, send the people in,
+ask them to disable it. If there's a PHI leak or something
+along those lines consider a
+fine. Again, I'd hate to see a small poor hospital out in the
+middle of nowhere get hammered
+with a HIPAA fine but again it makes the news and hopefully
+that drives change. 	>> So let's
+talk about some adversary misconceptions and some e-mails
+that I've gotten on our
+research, public comments, people that I've had to deal
+with. One of the things that I
+get is: Well, who the heck would do this? They only care about
+financial gain, right. They
+don't care about anything else. All they care about is going
+into those Pacs systems,
+actually draining patient data, and selling it. And yeah that's
+true, Russians, they're gonna
+sell it right, that's what they do. But the other thing, the
+other misconception, and
+honestly there was this guy that posted on a recent article and
+he actually said ignorant
+people, he said that, hey, these people lives in caves and you're
+giving them all the information
+to get into the devices. And they're not smart enough to
+figure this out on their own
+'cause they live in caves. I had e-mail communications with this
+guy like 30 times and he just
+wouldn't give it up. He was so convinced that they aren't
+technically adept enough to
+carry this out. And as we showed you, this is not a technical
+attack here. This is basic
+Security 101 concepts that one thing gets missed and there is
+kind of this cascading effect
+for patient safety right, and it opens up this huge threat model
+that we have to be aware of. 	>>
+So who do we need to worry about? I think, you know,
+terrorists and extremists,
+technically adept, when you get into, you know, ISIS, when you
+get into nation states, that's
+kind of who we need to worry about and that's what I thought
+about. And then Shawn, and he
+can talk to this, he brought up this interesting article that
+I'd never thought of, oh man, a
+patient, maybe themselves could be an adversary in a way. So
+I'll let you talk about this
+article. 	>> I'll quickly run through this. So here is the
+situation, you know. You've got
+a patient in a hospital with a gunshot wound, guy's lying in
+bed, he's got his laptop there,
+and he's got-. 	>> This is awesome by the way. 	>>And he's
+getting a morphine drip right
+through an infusion pump. So obviously he's like I'm in pain,
+I want more juice. How do I do
+this? The guy went online. (Laughter) 	>> We didn't make
+this up. There is the link. 	>>
+Guy went online, found the manual for this infusion pump
+and then was able to break into
+it and then reprogram it and he ended up going into an overdose
+and then it happened to a couple
+guys in this healthcare organization in Australia. I'm
+sorry, Austria, and, yeah, so
+you know it's just something when you think about, it's like,
+oh, we always think about, you
+know, who is at risk and who is the adversary here. Well, you
+know, the guy who's being
+treated for this could very well be the adversary from a
+healthcare standpoint. 	>> So
+one of the things that really, you know, gets scary and this is
+easy to kinda dismiss as a, just
+theoretical or you're watching too much TV or reading too many
+books, but think about these
+Boston marathon bombings and the Tsarnaev brothers, right, and
+think about if they had set off
+ten bombs and then, you know, timed another ten to go off,
+right, when all the emergency
+personnel came in. This is what happens in countries like
+Israel, when we see the first
+bomb goes off, all the emergency personnel rush in there, then
+the second one goes off. And
+what I think we're going to need to start worrying about in the
+future is gonna be the
+electronic attacks against the critical infrastructure like
+hospitals and power but more so
+hospitals because they're such soft targets. Think about the
+impact of a, you know, a bomb
+goes off, all the EMT guys get hit with the second bomb, then
+they're bringing everybody to
+the hospital, and then everything shuts down in the
+hospital. Even Boston Children's
+recently got hit on their public website because of the Peletier
+case which Anonymous picked up
+on so we are seeing this already starting to manifest itself. And
+it's all about capability,
+right. The capability is there to do this. 	>> I think one
+thing to add, too, I think this
+is where, you know, historically DHS and ICS-CERT are the ones
+issuing advisories, it wasn't
+until April that the F.B.I. all of a sudden got involved and
+they issued two privacy industry
+notices last April. They kind of came out of left field, like why
+the hell is the F.B.I. all of a
+sudden issuing private industry notices about risks in medical
+device exposure? This is one of
+their fears, right, is the combined attack and that's the
+type of thing that they are
+looking at, that's why they are looking into the space a little
+bit more closely and why
+they've, you know, we started to work with them and build that
+relationship up is really these
+types of scenarios. 	>> Right, so the military term for this is
+force multiply. 	>> So Ed on the
+bottom here, Cybercity, they are already doing this, right. You
+know, the government obviously
+is looking at it and they think it's a risk, we should probably
+take a look at it, I mean Ed has
+been doing this for a few years now but Cybercity has basically,
+they have all that critical
+infrastructure. They have detailed all that critical
+infrastructure, so they have the
+healthcare, they have financial, they have the ICS stuff, they
+have transportation, it's just a
+big, you know, training lab for if a combined attack took place,
+how would we be able to react
+for it? So it is taking place already. 	>> So really, one of
+the questions that comes into
+this is, this is a whole new area of medical devices. How do
+you even know that a, if a
+medical device was hacked? You know, one of the first things
+that you'll read about when you
+start looking in this space in the articles is to say there's
+no documented evidence of a
+medical device attack happening. But how would you know? I mean
+we don't have the forensics
+capability really mature yet at all in this except for there
+some is open source stuff,
+right, that's built on cots equipment. But it's mostly
+closed-source code. 	Vendors
+aren't sharing this code. And then with these devices you need
+specialized diagnostic
+equipment, you're running proprietary protocols and code
+so it's very very difficult and
+you need specialized people and a vendor to help you with any
+type of cyberforensics exercise.
+	Then you get into the device experts so, you know, looking on
+LinkedIn I only found two people
+who really claimed any expertise. 	>> Definitely an
+official source, way better than
+Wikipedia! 	(Laughter) 	>> Yeah but only two people that I
+found. And the first was you
+know, a woman from the FDA, total track record. 	>> Not an
+expert. 	>> Then the second was
+a retired F.B.I. agent, who was one of the founding members of
+their cybersquads, so those are
+like two people, but. So those of you who are thinking about
+forensics in the future and
+maybe if you are in healthcare, this is something that is to
+consider as far as a career
+path. 	>> And one thing here on this last bullet point that is
+important to understand, too,
+when we talk about, you know, a low assurance that an attack,
+either intentional or
+unintentional, hasn't taken place against these devices with
+adverse events. The FDA
+adjudication process of a medical device related
+malfunction that gets reported.
+Healthcare organization has the responsibility in requirement to
+report a medical device related
+malfunction, and so they report that to the FDA. Well if you go
+to the FDA's website it will
+directly tell you and their quotes are several hundred
+thousand of medical
+device-related malfunctions. So they adjudicate this. If
+something happens and there is
+an adverse event for a patient they do a clinical adjudication
+to say, oh, the patient died
+from pneumonia on a ventilator or there's, you know, they died
+of old age or that type of
+thing. If not they don't really do, you know, security. They
+don't look at forensics because
+there's not a whole lot of information there to look at.
+And so they throw it in this
+generic button, or bucket of several hundred thousand medical
+device-related adverse, you
+know, deaths and serious injuries every year. We don't
+know what they are. And then the
+Mod reports suck and they're very specific and script out. So
+we don't really have the
+information and we don't have the forensic details so, you
+know, how could we really prove
+this at this point? 	>> So let's get us into HIPAA. I'm gonna
+flip through this really quick.
+Oh, you're switching with me. 	>> You know, yeah, HIPAA. I'm
+not gonna argue that it's
+ineffective, but why are we in this space? Doesn't it protect
+us? I get this too. I get all
+these e-mails all day long, why isn't HIPAA doing something,
+right? HIPAA focuses on patient
+privacy, it's not focused on necessarily patient safety.
+Human life is much more
+irreplaceable than PHI. So I would encourage you guys to
+start looking at that if you
+work for healthcare organizations, definitely start
+looking into that. It doesn't
+focus on medical devices and it definitely doesn't focus on
+adversarial resiliency testing
+at all. 	Don't the federal agencies protect you? That's
+another one. Shouldn't the FDA
+be doing this, right? Well, it's ultimately your responsibility
+as a manufacturer, as a
+healthcare organization, they have told healthcare
+organizations, they've told
+manufacturers since last year when Billy Rios, Terry McCorkle
+came out with the infamous 300
+List and these are some of the alerts if you want to look them
+up later, that came out
+specifically telling healthcare organizations and medical device
+manufacturers that they at this
+point aren't gonna get involved, and that it's their
+responsibility to take care of
+it. 	So how did healthcare kinda get to the state that it's at,
+you know, ten years behind? It's
+back to HIPAA in my opinion. If you work in the industry,
+information security programs in
+healthcare were primarily funded and developed to comply with
+HIPAA. So we all know security
+is not compliance or information assurance but that's how these
+programs have been built, they
+have been built for check box security, and we buy this
+appliance and we check this box,
+and oh, hey, we are secure 'cause HIPAA says we are secure.
+	Where are the issues in the
+manufacturers? Well we've never had, you know, this is kind of
+the similar space, even in the
+auto industry, right. Historically especially when you
+look at, you know, life cycles
+of these devices, that for implantables, if they're not on
+expedited approval from the FDA
+from prototype to, you know, market release, it could be 12
+to 13 years. So we never have
+had to design for adversarial threats and never really thought
+about it. We took these medical
+devices that existed and we just decided oh it would be great if
+we could get data on this and
+managed them remotely so we don't have to waste time, and be
+more efficient but now we kinda
+have the unintended consequences that we are seeing here in our
+research across healthcare
+organizations. 	And the other thing, you know, they haven't
+fully embraced, this is getting
+better, most of the large healthcare manufacturers are
+starting to reach out, we're
+starting to build those relationships, there is a lot of
+one-offs, you'll get to one of
+these examples, of a company that just will not talk to us
+coming up here that we're gonna
+show a use case on. But so if you reach out to us and actually
+talk to us we probably won't be
+as mean to ya! But no, you know, we are really there, we have a
+combined effort and they are
+starting to embrace it. We are doing a really good job, we're
+making a lot of progress there
+so I'm definitely hopeful, you know, that that will continue.
+You know, it's not, when you
+talk to the manufacturer and you know they don't care. You know,
+to their benefit, I mean they
+are very large, a lot of this does take time, it is a culture
+change and so they are getting
+there. They are building out these teams. They are hiring the
+right people and giving them
+internally the authority but this is just some of the larger
+manufacturers, not these
+one-offs, not to mention when we get into digital health and
+mobile health things. 	So does
+anyone work for healthcare organizations that wants to
+admit it? Okay. All right. So
+how many of you have been told by a manufacturer that you can't
+patch your system, like your
+medical devices, right? Exactly. It's a crutch. And here is the
+link. I mean like Shawn said,
+they've been telling you, the FDA, there is, you know,
+cybersecurity clause for
+patching. There is a very small percentage that would actually
+have to go back through 510 k,
+the only case is if it's clinical care issue, patient
+safety issue on some types of
+implantables. Who else has been told they can't change
+hard-coded credentials that they
+may have located for the manufacturer, right? All right.
+So that gets into my next bullet
+point. I want to, you know, spend a little time kind of
+clarifying this. This is a big
+point. Both sides need to understand this. So if you are
+in healthcare, you know, please
+listen to this. On the healthcare side, whose
+biomedical teams are integrated
+with IS? Oh my God, there is not a single hand that I can see.
+But I'm a little blinded. 	>> We
+have two over there. 	>> Awesome! That is great. So how
+this works and where this
+disconnect is, is you as someone in security, you find a bug or a
+flaw in a device that you want
+to report. You go to your Biomed technician, your Biomed tech
+takes your report, interprets it
+in his little Biomed language and who does he contact from the
+manufacturer? He contacts the
+support technician at the manufacturer. Well the support
+technician is not their security
+people, doesn't have any idea, so they get your report that
+says we have a hard coded
+credential, how it works on the manufacturer's side is that
+field support tech goes to their
+supervisor and says, hey, we have a report from a customer
+that we need to change this. And
+the supervisor is like, hey, how the hell are we gonna get into
+the customer's systems if we
+change the password, right? So it stops right there. And he's
+not thinking security, right.
+He's not their security person. But he tells that field support
+tech to tell the Biomed person
+that they can't change it. And so it comes back to the health
+organization in a way as the
+official response from that healthcare organization is
+they're not gonna fix it and we
+don't push it anymore. So there's a big disconnect there
+on both sides, there's a
+disconnect between Biomed and IS on the healthcare side and
+there's a disconnect between how
+do we inbound handle, you know, vulnerabilities at the
+manufacturer to make sure that
+the security folks at those organizations that have
+implemented those programs can
+effectively be aware of them first off, and then drive the
+process behind that to make sure
+they're resolved. 	And also I would highly encourage you to,
+you know, know those information
+security people so if you don't know especially at your big
+vendors, the ones you spend lots
+of money and have lots of equipment with, reach out and
+find out who those folks are and
+build up those relationships. 'Cause it's very important. 	>>
+So when it comes to patching,
+you know, the question is: Yes, you can patch. But should you?
+So there's a good eight, 10
+years of FDA guidance saying that you can patch these systems
+but this is something that you
+really need to work on your vendors with and do coordination
+because you have got a very
+complex ecosystem going on here and then what if something that
+you do in-house breaks the
+device? So, you know, the vendor coordination has to happen with
+this issue and there's gonna be
+some smaller vendors who are not going to be ready to work with
+you on this as well as a larger
+vendor would be. So the other thing is many healthcare
+organizations are reluctant to
+patch just because of the complexity and the changes that
+can happen in these systems. And
+if we go back into the FDA Mod reports, there's many many
+examples of patches that have
+gone wrong or healthcare organizations that are
+comfortable patching say the
+computer PC that connects to the medical device that's running,
+both are running Windows,
+they'll patch one, the one you used to run the device but they
+don't want to patch the device
+itself that actually connects to the patient. Which is completely
+understandable. 	The anti-virus
+question is another one. And you know, we can get off on a side
+tangent here with anti-virus but
+the main points that I want to bring were that there are a lot
+of reports of FDA MAUDE, in FDA
+MAUDE of negative impact of anti-virus, and that's like
+everything from, oh your 90-day
+license expired and, you know, this is an OR situation and then
+this pop up is coming up saying
+license has expired. 	Everything to bad McAfee, that's not to
+pick on McAfee at all, but if
+you recall back in 21, April 2010 this bad DAT went out and
+it identified a core Windows
+file as malicious and then all these machines, all these XP
+machines just started going into
+a continuous reboot. So if you were working in healthcare
+organization at that time you
+were running around manually hitting every single box and
+fixing them. And just a small
+example is a third of the hospitals in Rhode Island were
+impacted by this, so many, many
+people were, especially if you were, if you have been doing
+this a while. 	There's also
+direct events of AV deleting, fetal monitoring logs. 	>> When
+they actually log. 	>> And it's
+a, you know, this is a complex issue. And then, you know,
+you'll have some clients or
+customers that push back on vendors saying we have to run
+antivirus on this so the vendors
+are in a bad position and they may recommend one or they may
+not recommend one and then the
+other thing they'll do often, you'll see this in the
+documentation is say disable
+this particular feature of the antivirus so they'll say disable
+on-demand scanning, which, okay,
+now we have this antivirus on there. We have checked our happy
+check box but then we have
+basically hobbled a key protection mechanism and
+function of this antivirus
+itself. So, you know, again, it comes back to a risk basis here.
+What are we really trying to
+accomplish here? Are we just trying to check a check box or
+are we trying to reduce risk
+because there could be cases where, you know, many cases of
+why would you even want
+antivirus on there? But unless you are getting it directly from
+the vendor you probably don't
+want to run it. 	>> So solutions and recommendations, I'll just
+touch these quick, right. I
+mean, external attacks service and hardening, that's important,
+we have obviously shown you that
+it's not being done appropriately, right. Mitigate.
+First you need to recognize and
+you actually need to use a tool like SHODAN in your organization
+and start recognizing those and
+work to mitigate them. You know, you don't need to use SHODAN,
+you can the API for automation.
+You can, you know, use continual monitoring, mass scan, ZMAP,
+those types of tools you can
+also use, you don't need to use just SHODAN. You know, make the
+external perimeter --
+(Inaudible) -- proof, we don't see this in a lot healthcare
+organizations, we don't see
+these skill sets being employed, because again going back to
+HIPAA we see compliance and
+information assurance driving that budget but we need to get
+these skill sets in there, you
+need to look at it. We are clearly showing you that we are
+way behind in the healthcare
+sector. 	Stop the bleeding, right. Check and make sure SMV
+isn't open, as simple as it
+sounds. I mean look at the exposure, look at the
+information attacker and get on
+your systems through this, it's significant. It's your medical
+devices that have to do with
+patient safety issues. And resilience testing, right. Red
+teaming. Start working on
+building out those programs and really, you know, harden those
+devices, don't leave them wide
+open if you are a large healthcare organization or any
+organization without any type of
+password so please take a look at those. 	What do we need from
+healthcare? Kind of talked on
+that. You know, it's internal programs focused on medical
+device security. We really need
+to start looking at that. You need to start requiring security
+testing during your vendor
+selection. We'll talk about that a little bit later and how you
+can implement that into your
+procurement, your vendor selection process and really how
+do you tie that in and how do
+you get that inside the healthcare organization? Well
+you've gotta tie it to your
+mission and you've gotta tie it to patient safety. That's what
+the board level, that's what the
+executives are gonna care about. And it definitely, when it is
+talking about securing medical
+devices, is tied to that mission. 	>> So has anyone in
+here has ever heard of a MDS2
+form? A couple folks. 	>> All in healthcare who have heard of it!
+	>> That's good. So an MDS2 form
+is a form that came, I think came out of HEMS, it's been
+around for several years,
+basically it goes through some really good, almost a checklist
+function. There is a place for
+that. About authentication and you know, how accounts are used
+and big vendors, major vendors
+will have that form on hand for their systems. That's something
+which you should be asking your
+vendors for and then there's recently been some updates and
+addendums to that and I think
+that's a great form to start to build on. 	And then of course
+you know, we need to have more
+responsible disclosure and then, you know, HHS and OCR, bringing
+in law enforcement because this
+will be moving into a criminal realm, I think. People watch
+"Homeland," there's a lot of
+sexiness of these attacks, that's appealing to some of
+these demented personalities out
+there, so I think it's a possibility. 	And now really one
+of the more interesting things
+that I've seen coming over the past year has been some
+healthcare organizations are
+bringing in indemnification clauses into their contracts. So
+what that means is you know,
+security and biomedical need to get with legal in the
+organization and then push back
+on the vendors and say well, if something you know, really bad
+does happen here and then who is
+going to own the liability on this. 	 	>> Disclosure
+reporting. This is pretty easy.
+DHS, ICS-CERT, kind of the agencies. Manufacturers if
+possible, I say if possible
+because this example that I'm about to give you, they won't
+return any of my calls. I won't
+responsibly disclose it. But they won't talk to me. Or get
+back to me. Apparently they
+haven't gotten back to DHS either. 'Cause I have not heard
+anything. Healthcare
+organizations you know, you probably should go to your
+manufacturer first, if you feel
+they are not responding, know that it will take time but if
+you feel they are not working on
+it, not addressing it, you know, we need to start looking at
+sending those over to ICS-CERT
+as well as the FDA. 	Accessibility to medical
+devices, I think, Shawn, you can
+kinda talk to the stereotypical why people don't get into
+research involving medical
+devices. 	>> Sure, so, you know, they're really hard to get a
+hold of, right. So one of the
+things is you know, these are Rx only, they're prescription only
+and they're also very expensive.
+You'r not gonna go out there and buy you know, a radiology
+machine. You may not even be
+able to, you can't get the permit for it you know. There's
+a lot of hurdles to jump on
+this. And then you see if you look at the security researchers
+over the past years who have
+been working on this, they have been hacking their own devices
+right, so which also brings in a
+whole other level of personal ownership and credibility to
+this because they are not just
+security researchers, they're patients. But you know, though,
+you can buy these off of eBay,
+you can go right online right now and even though it's against
+eBay's technical terms of
+services to sell medical devices, they sell'em on there
+just like you can buy you know,
+a fake Cisco router of off eBay, and I've been able to do that
+for years. Medwow is another
+site. But here is the problem with that, you know. These have
+already been end-of-lifed, they
+are recalled, it's not current-running software so it's
+not really attacking you know,
+the actual current software. 	And then the other thing is you
+know, there's gonna be a lot of,
+this is a whole ecosystem as we continue to talk about, so
+there's gonna be you know,
+components you're gonna need to have to get that device even up
+and running and get an IP
+network and IP address and networked to even you know,
+start to develop an attack
+service. You want to talk about the consulting stuff? 	>> Yeah,
+so consulting, I mean obviously,
+if you are not doing independent research, and buying it, you're
+in a lot of cases historically
+you are gonna end up in NDA. What we're starting to see, we
+have had a few clients that will
+give access to non-identifiable data clauses so that we can talk
+about it openly in
+non-descriptive fashions so we're starting to see that. I
+think there is more push to that
+and more coordination in disclosure. So now Shawn kinda
+talked about you know, hey this
+is why people don't get involved in security research. We can't
+get our hands on the devices. I
+am going to give you a use case here that will hopefully paint
+the picture that you know what,
+you may not need your hands on these devices but a different
+way to think. We need more
+people looking at these issues. I can't do it by myself. So
+please take a look at this. One
+of the things is obviously service technician manuals. They
+contain a lot of information
+that we'll show you here, full architectural diagrams, another
+thing is you can always do
+patent searches, manufacturers love to put all the details on
+their patent applications so
+that nobody steals their idea or uses it. So start doing that and
+I'm gonna show you an example
+here of how that works. And it's gonna be on the defiable right,
+so there's the vendor name. It's
+Zoll. 	Some specific ones on the next series, I'll get into those
+later on. These are defibs,
+they're on the public IP space, they sit in an ambulance, they
+have like a 12-vote lead and
+then they transmit all that back to the ED before arrival. So
+here they are sitting on public
+IP space, they're running Verizon 'cause they're running
+those other networks, well there
+is also a web interface, so let's go to the web interface,
+right. Oh God, I need a
+certificate. Great. Root certificate right on the landing
+page. Let's download it. Awesome
+security, right? Well it's also the first defib and just out of
+disclosure I've never actually
+had my hands on this device, so I'm doing this to paint the
+picture of the documentation.
+	>> So wireless, it uses UR for communication in these systems.
+The communication processor
+talks back to the main system board, so that's the
+architectural diagram right
+there, so it's on the same server, with receive and
+transmit. In order to import
+config here is your config file out of the documention you need
+to import in order to change the
+configuration settings. All right. What are the critical
+values that I need to change,
+what would an attacker need to change to cause a patient harm,
+right? Well, these are critical
+values as you can see to our logging turned off by default.
+Default patient mode, okay here
+are some values inside of those configuration files. If I change
+that adult to, one is set for
+pediatric to adult, it's gonna change the default like joules
+that are delivered from that
+defib. Need to do factory resell, restore, right, it says
+here oh I need an authorized
+supervised passcode. Well, here is how you get to it through the
+supervisor menu. As you can see
+once you get to the supervisor menu, there's all the config
+settings. Many of those relate
+back to the critical settings that I just showed you. So we
+still have the issue of how do
+we get into the supervisor mode. Oh, there is your password,
+1234. (Laughter and applause) So
+that's all you, also you can clear logs. So you can
+completely wipe any traces of
+this happening. Before I get to this next slide here, I need to
+say that I reached out to this
+manufacturer numerous times. They won't return my calls. I
+feel I have a responsibility to
+disclose this. They have not gotten back to us and so here
+are every one of Zoll's defib's
+supervisor creds for every one of their products lines. 	>>
+AUDIENCE MEMBER: We will have
+your CDs by the end of the day. 	>> Awesome! Here we go. There
+they are. Throw the CDs, there
+you go, 801234. So, vendors changing, yeah, they're getting
+better other than that one
+apparently won't reach out, so. All the baby care has reached
+out to us, we are working with
+them and I want to give a huge shoutout here to Philips really
+quick. I actually went in and
+worked with them completely pro bono, they invited me in to look
+at vulnerability disclosure and
+they have given me an official statement that they are going to
+work on this and so this is
+their positioning, they're going to come out with vulnerability
+disclosure policy. This is gonna
+be front and center for responsible disclosure on their
+website so that as a researcher
+you can actually go record these easily and even inside the
+healthcare organization so you
+don't have the disconnect with Biomed. So I want to give them a
+big hand for that. (Applause) So
+look for that because other organizations are gonna be doing
+that. 	And lastly, you know, how
+can you help us? If you are into Android iOS research, we want to
+look at application security and
+mobile device security, we are also looking with further
+collaboration on physicians and
+patients so if you're interested in that, you can get a hold of
+us. Finally, last, you know,
+greets to all these guys, you know, one for inspiring us, two
+for helping us out and
+collaborating with us, and you know, the federal agencies have
+been great. Support has been
+great there as well as you know, these two manufacturers, there's
+other manufacturers that are
+reaching out, not specifically on this talk but it's getting a
+lot better. So thank you guys
+for coming and have a good day! 	>> Thank you! (Cheers and
+applause)

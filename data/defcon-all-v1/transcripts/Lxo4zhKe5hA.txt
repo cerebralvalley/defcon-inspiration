@@ -1,0 +1,496 @@
+Okay. So without further adieu,
+let's jump in. There are many slides and very few minutes. So
+here is an agenda. We'll get through it hopefully. I have a
+turbo version so if I go too fast, raise your hand and I'll
+try to slow down a bit. I have to go quick. Let's jump in and
+talk about android. I'm Josh. I go by JDUCK on the internet. I
+welcome you to say hello any time. I work for similar peer
+yum doing mobile defense. I have a handbook which we'll have a
+little event somewhere later. If you see us drinking, join us.
+Previous affiliations. I was hoping that doing this research
+would overall improve mobile security. There is years and
+years of people talking about these problems with android and
+I'm like, I have to do something about that. I decided to do what
+I do best which is discover and eliminate voids and exploit them
+to show people that they're real. They're not some BS. I'm
+trying to save my phone battery. There we go. So I want people to
+think harder on some of the security issues so they can make
+the improvements in their organization that they need to.
+To increase visibility of the code in android. There is 60
+gigs of stuff. Last year I gave a talk about the droid army. I
+collect android devices and have them all connected now through a
+USB to a computer and can -- at any time across CPUs, whatever.
+So I want to thank the sponsors. I started this work when I
+worked for dock ewe lab. They allowed me to take this research
+on with me and see it through to the end. I wouldn't call this
+the end. But I want to thank Amir, is he here? Come on, you
+missed both talks. Man, I'll get him later. I want to thank Colin
+and Maxim. They're both fired, too. So what is stage fright.
+Androids open media library. Primarily in C plus plus. There
+are some points written in Java. Androids are all [indiscernible]
+on the device. It's meant to stand as a go between, between
+the download applications and other sort of high level stuff
+in android. And the hardware because a lot of android devices
+had hardware video decoders. It extracts -- which is kind of
+important. Brief history. Android in the 1.0 and 1.5 days
+had an engine called the open core which was donated to them.
+Later during the 2.0 development they added stage fright. But
+they weren't using it. They were starting to develop it. In 2.2
+they made it optional to use, like in a setting. But all the
+devices that I had with 2.2 which isn't many did that be
+default so I assumed they would all do that. [indiscernible] we
+need to instable stage frightbecause it's fast. So at
+2.3GINGER bread set this as the default engine. This code was
+pulled into FireFox. But they decide today pull it into
+FireFox and ship it on all versions of FireFox except Linux
+around version 17. Why did look at stage fright? What was the
+big deal? Honestly I can't remember exactly why I started
+looking at it. It might be the name. When you look through, oh,
+Stagefright, that sounds interesting. So definitely big
+plus if you want to audit code to look for native code. It's
+much buggier than Java code. A lot of times the people that
+write native code are often not very good. They don't really
+understand what they're necessarily doing. That's cool.
+Especially with respect to security. So [indiscernible]
+people on -- and other places posting and saying my phone
+keeps rebooting randomly and you read down and somebody is like,
+you have a corrupt file on your SD card or something. So I was
+like, yep, that sounds really bad. It has to be bad code. I
+have to check that out. And there was related work published
+in April, where I thought that is really cool stuff, maybe I
+should do a talk on that stuff. So we'll talk more about some of
+the issues reported. It's cool that these guys -- the crap out
+of Stagefright on android emulators, I think. They said
+they have 11.5 terabytes they created that crashed Stagefright
+which is pretty intense. That is more data than I think anyone
+can go through. There are bugs and we'll talk about them later.
+There is this (audio blipped) on mobile devices. Pretty much what
+I did in part of it. So it's definitely related and they talk
+about some of the stuff they found in Stagefright. So related
+work, really old stuff is Charlie miller's talk when they
+talked about hacking before android was even released. He
+found an open media file that he reported but it was so long ago.
+[indiscernible] is big, it's 10,000 lines of code. But it's
+probably more than that. (muffled) there is a spot in the
+code where you can look at this one function and if it's going
+bad do this, do that. You can see which way it goes. Most of
+the code they supported in Stagefright is backed by common
+open source libraries like LIM flak or BPX or open source
+libraries which are projects of their own. However, there is a
+bunch of code that lives directly in Stagefright. That
+was my focus. I decided to pick MP4. I thought it was really
+straightforward format. But I thought it would be a good one
+to mess around with. The rest of this talk will primarily focus
+on MP4 stuff and the examples and findings. We'll talk about
+how it looks on a system. Where this code runs. High level. This
+is the new diagram they show on the website. It's cool and now
+they're calling on me specifically. There are many
+more things that run in the background. But they use a lot
+of inter-process communication to talk between processes.
+Basically media server is running as a background native
+service. It starts from a [indiscernible] and an android.
+I heard, someone told me which wasn't necessarily the case in
+older versions. But in android now if something is running from
+a nit crashes, it automatically restart PSFTP let's look at the
+privileges. What do you get if you pop this thing. It's
+interesting to find out. This is another reason why I looked at
+this service. I wrote a tool called PRED map to see what they
+were running and this one had potentially permissions
+violations. You can see the bottom line. The CODATEX area.
+Media server you would think it's been sandboxed and moved
+and segregated to limit risk of the code, they're actually
+making it very privileges I guess to do what it needs to do
+for the most part. For example, audio Bloop is used to lock down
+access to the speakers and microphone, if you have volume
+loop you can do anything with the input and output of audio.
+These are similar. I net. There is things within the Stagefright
+and other parts of media server that require connecting back to
+the internet. The biggest example being the
+[indiscernible] which you'll have to go out and get a license
+for that. And then also you can see the -- for DRM. I did this
+survey. I wanted to figure out, yeah, this is that slide. I have
+this slide and I have no idea what this number means on the
+left. Essential number of devices. These numbers don't
+make sense to me. 17 doesn't seem like a number that would
+jive with what I wrote here. So I will look into that later and
+fix it when I publish the slides. I did some
+[indiscernible]. Maybe it was a break down of devices. Yes. This
+is how many devices I looked at out of the 51 that were from
+Motorola or Samsung. This gives you an overview of what - looks
+like. The privilege, I want to look at each group and how many
+devices in each group. 51 on the left. These groups are on all
+devices. We talked about what we can do with that. It's pretty
+bad. Other groups. This bandwidth counting thing. I
+think that is uninteresting. Usually that is used to talk
+directly into [indiscernible]. Which Tresome is [indiscernible]
+to attack soldiers on android. It's more privileged than the
+Colonel. So the next one which is system. System is the No. 2
+user on android. It owns the slash data partition. Everything
+is write able in slash data. And if it's not write able since he
+owns slash data you move it out of the way and put whatever you
+want in the place. System is a very high privilege. It's well
+thought of in the research community and android, but if
+you have a system, then getting -- [indiscernible] an
+engineering effort and not a serious effort. The next one is
+graphics. Graphics is used to lock down the buffer devices for
+android. And there have been numerous ones discovered and
+exploited in the -- staff. Right now it's solid but I could be
+proven wrong, of course. We keep going down the list. Input. If
+somebody gets a device, one of these 8 devices and get in
+through media server on that, and they can inject key strokes
+into your use of the device. At the bottom shell. Shell is the
+user that is assigned to AV shell. I have no idea why they
+would give that to media server at all. Blows my mind really.
+And the last one is radio. Radio is basically right below system.
+If you have radio, you can make calls, send IMS, [indiscernible]
+all communications with the cellular network. Take down the
+cellular network connection that you have. So it basically runs
+all the stuff that is between the cell network and the rest of
+android. So recap. [indiscernible] runs inside the
+media server. Fairly privileged. Automatically restarts whatever
+it crashes. It's a fairly large (muffled) provided on the groups
+that you're given. From remote to the kernel is probably not
+too difficult because of the extra [indiscernible] given to
+you once you're in with those privileges. So let's talk about
+the [indiscernible]. Basically in order to figure out what is
+going on with the code, I opened up a ruby. Put a breakpoint just
+on the open thing, okay, I'm going to play a file, so it has
+to open it. Then I looked back and dug around in the code. This
+is what a back trace looks like. I'm playing with the MP4 file
+and all the different functions that are in the process
+including paths to where they are in the code base. When we
+look closer we can see the - data extension. I think it's
+like, it's not showing here. But basically we can see at the top
+-- create from UI and after that it's a media extractor. We look
+at that and we end up with this function that moves through all
+the tracts that you count. When you look at that it says read
+meta data. You have to extract the meta data because that is
+where it stores that information. So you look at that
+and go through this chunk. Let's look at that a little bit. So
+the first chunk function is [indiscernible] inside
+Stagefright -- code. It's a recursive function. When it sees
+an atom, a tag length data piece of the file. That's what that
+is. Come in here. (audio blipped) let the guy in his
+green shirt and lovely wife. Those two. Yes, and the lovely
+wife, of course. You missed your shout out again. But now you're
+here. All right. Let me look at android, all versions. Git is
+wonderful. You see other versions are about 80 atoms and
+newer versions have 130. It's roughly double the amount of
+code. We look closer and you can see an example where the
+movement and track chunks are especially handling where they
+say [indiscernible]. The recurser is really not relevant
+rather than it's annoying to be bugged for codes sometimes.
+[indiscernible] that you're trying to tickle and find -- in.
+I'm thinking of all the ways to get (audio blipped) the ultimate
+goal looking for attack vectors is to figure out how to get my
+data in there. I'm in trouble now. First we try all possible
+ways. Unfortunately it depends on -- go ahead. You want to try?
+>> Sure. >> Go ahead. >> Method dolling, phone all calls into
+this function and ask can an attacker's data reach here. How
+am I doing? >> Good. Maybe I should try that more. >> You
+need to work on your graphics. >> If you had any idea how hard
+it was to do graphics in this presentation framework. >> Just
+put a picture of a water fountain in the background. >>
+Maybe everybody have to go to the bathroom. >> You go through
+this process until you find them all. You can't really know
+necessarily without looking all threw the code, all the ways
+it's possible. There are some problems with doing the second
+methodology when it's more thorough and that is all these
+complicated issues. There is a place inside media server in
+this code path, actually goes into and out of Java code like
+three times and runs back trace. You have to open a lot of files
+and have them all in the background. >> Excuse me. Do we
+have ... >> Let me come on the other side. >> Are we live yet?
+>> Awesome. How many are first timers at DEFCON? Awesome. But
+you all know the drill by now. What do first time speakers do?
+Awesome. So how is he doing by the way? Jeez. Slow down speedy.
+All right. Anyway, it's very -- (inaudible) like to honor him
+with a little tradition called shot the new. Cheers. To DEFCON.
+>> To DEFCON. >> As you were. >> Thank you my friends. I owe you
+a shot. >> You can do it right now. >> Can we do it after?
+Let's do it after. The other thing is instead of writing
+code, we mentioned C plus plus and java. Lots of times when
+you're trying to understand the code you have to do all this
+crappy stuff where you have to remember the functions and
+variables and all this crap and stuff. You have to be careful
+about [indiscernible] and lifetimes and things like that.
+Further on android because of the modularity and the IPC you
+end up having to sometimes cross boundaries that are like between
+processes. That can be hard to follow. But you can get through
+it if you keep trying. Sometimes you might have to take a break
+or a nap or something. That works for me. That's the best
+way. Go to the code if you want to know what the code does, it's
+in the code. The fifth vector I thought about was the video tag.
+I thought this is brand new. I fire up the device with the
+[indiscernible] attached to it. The meta beta function. The
+first chunk, it will break but then every other chunk even when
+it's recuring into more chunks will keep getting hit. That is
+annoying to keep saying continue all the time. Hit the
+breakpoint. Then I tried to - Thomas cannon back in the day
+talked about [indiscernible] to download files. And would load
+Java script through a weird content provider or something.
+This is actually the Screenshot other than the part on the left
+where the path is wrong and the URL. So as soon as you touch
+this link, you see this page in the middle which can be
+anything. It doesn't have to be what it is right now in this big
+white screen. It can be cat pictures or whatever. You see
+this downloading toast come up which disappears in one second.
+There is no indication that you did anything other than this
+downward arrow with a line at the top. If you swipe down and
+touch that, you can see what is on the right. The trick, the
+crappy scary thing is here that the variable code, the
+Stagefright code is treated as soon as the file is downloaded
+and does not require you to open the media or touch it or open it
+or anything like that. That is interesting. Look. I also -- can
+we get some kind of prompting for this. I don't want to
+autodownload something and expect a link to cause a
+download. Maybe that is not a good idea. So when I got deeper
+in, I took a step back and said how is this working. What I
+found is with this whole subsystem called the media
+scanner. The only thing really documented in the
+[indiscernible] for people to use is the media scanner
+connection. Really all that does is you create an object and say
+scan this file and that's it. The other thing is in the intent
+documentation. The intent class and Java stuff for android,
+there was a long, long, long, long, long list of intents that
+are supported in the system. They havethese two media mounted
+and media scanner scan file. They were documented as well.
+They are basically one line in a huge table. And then if you look
+closer, there is this class that is used a lot internally in the
+code, media scanner connection client. That one is used a lot.
+So I didn't want to go too much deeper. When I made the slides I
+went crazy deep and realized there is no way I could talk
+about that. So I put it at the back of the slides. We're
+talking about one -- the methodology and looking at the
+different ways to -- on the code. The media scanner and
+(audio blipped). Basically found, you can do through MMS.
+I'm showing you a thumbnail of the video. Even if it didn't
+show you a thumbnail I wanted to know how many seconds long the
+thing was, that was the trigger. (muffled) email. If you get an
+email with an attachment on the android it waits to say you have
+an attachment but it doesn't download automatically. You have
+to press the button. [indiscernible] To back up,
+there is a way inside of these APIs to tell it, it's not media
+scanner stuff, but a lot of these attack vectors used the
+download manager and that's what I talk about in the bonus lines,
+the download manager. It tells it not to scan the file. I saw
+in the code where it says don't scan the file when you download
+it, download it afterwards [indiscernible] scanning file.
+Physically adjacent, that is stuff like we're in the same
+room together. You're a little bit closer. You can also attack
+vectors if you have an SD card on your device, someone can
+insert an SD card on the device and compromise it. (audio
+blipped) the TPT mode. A whole bunch of research into this
+subsystem where it's not going to fit here. And so if you
+connect with device to your computer with this mode and
+transfer a media file, it will also scan it. (muffled) if you
+think about it anywhere that media is thumbnailed over, any
+way probed for meta data will trigger the Stagefright code. If
+you use these to talk to people you don't trust or worst, do you
+think anybody that you don't trust could somehow communicate
+with you without asking with any of these? So the scariest part
+is [indiscernible] by far. My research initially was doing
+stuff over the SD card. I discovered the media mountain
+intent. When you stick the SD card in, the manager says hey,
+there is a SD card mounted and starts the scan. I was like,
+wait, that can't be good. So one day I was messing around and
+sent myself a video. I sent it to myself with the debugger
+attached of course. And my screen was off, phone was locked
+on the table. And it hit the breakpoint. I'm like what? Are
+you kidding me? So before creating a notification it's
+like trying to get a Screenshot of this video and then it's --
+at least on newer versions it will put it straight in the
+notification email. I don't know if I have pictures of this. Oh
+yeah. I need more pictures. I have some but I didn't put them
+in here. In theory, in theory if you explored this and did
+engineering work you could potentially stop the whole
+process of the MMS going through. You can delete it from
+wherever it's stored. You can stop the IM notification. And
+then you can -- nobody would know anything. Even if they were
+using the device at the time. That is a theoretically possible
+things that freaks me the fuck out. I don't know about you
+guys. I did not do that work. So how does it work? The MMS stuff
+works in hangouts. Proto-testing later, the new version of that.
+The app messenger which is kind of like the throw back of the
+old messaging app they removed in newer versions. Also does a
+lot of processing automatically. The other version does not do
+it. Although if somebody sends you an MMS message even if you
+don't know who it is, it's like hey did you see this video of
+you? You might be like me, and you download it. If you use
+hangouts or messenger, turn it off because it's nasty. It's
+vulnerable potentially. [indiscernible] this device
+here, I disabled the app. The MMS comes in in messaging in
+this phone. If you're looking at it, if you turn the screen
+sideways it redraws the activity and there is vulnerability
+again. You lock the screen and unlock it, vulnerability again.
+Any time it's on the screen, that is another trigger.
+[indiscernible] attack vector. I get this question a lot on
+Twitter. Is silent tech effective. I don't know. I don't
+use those things. A lot of times when a lot of people jump onto a
+technology it becomes a big risk in its. If you have any ideas or
+thoughts or testing, I would love to hear about that sort of
+stuff. Let's get into the bugs and I think I have ten minutes
+or something. Is that not right? Who has the timer? We can do
+this. So basic methodology was to just [indiscernible] process
+-- and while it's running go get some code and if it crashes go
+where it crashes because that has to be bad code. You do that
+until your brain melts and you want a nap or whatever. First
+round, the details, again focused on MP4. We didn't bother
+to create a large purpose. We just used a one media file or
+two. Again, see my curser, is it over there? There it is. Maybe
+we can play the video. That is a total waste of time but it would
+be funny. Not normal to use a computer screen that is 20 feet
+from you. So, yes, Amir, thank you for that. That was bad ass.
+So you can imagine it was a lot of fun hearing that sound over
+and over again. And when you don't hear it you're like,
+wonder what happened. That was for about a week where we found
+6200 crashes. I went through all of these crashes and bucketed
+them and looked deeper into them. Unfortunately the crashes
+that we found were noninteresting bugs. It's
+checking if something that is 0 and if not the guys at
+Stagefright decided they were going to kill themselves making
+you lose audio and everything else. [indiscernible] when I was
+looking at the code, I'm like, okay, that's lame. But let's
+look around, maybe just a dysfunction. Within two or three
+lines it was just very important vulnerabilities. I found about
+five and they became these two CBEs (ph.) the first one is a
+merger of several issues. We decided to through American
+fuzzy logic. There are not very many people that said they heard
+it. Three that used it and ten that heard of it. Fuzzy (audio
+blipped) was developed by the security industry for a long
+time. He came up with this idea of look at the way code flows
+and if it flows from here to here, we'll treat that as a
+transition and keep track of three things. And he is like if
+there is a new one of these three things like from here to
+here instead of here to there, that is new. We want more. The
+goal in creating this wasn't necessarily to find crashes
+which is going to happen when you do automated testing. It's
+to find new code paths with the purpose of loading
+[indiscernible] in a more problematic and intentional way.
+The traditional other way is to go down with all the files you
+can find and run them through this long process where you see
+which code does it hit. Not very much fun. (audio blipped) so I'm
+like echoing, yeah, yeah, yeah into the fire and ran it and it
+went well. We developed a harness, calling the Stagefright
+code. [indiscernible] server I just got, a 32 core machine.
+Double high fives. I guess every day or so, maybe two days I
+would stop the fuzzer and trash them and bucket them and look at
+each unique thing and try my best. Sometimes I got it on the
+first try but sometimes I did a more deep analysis to fix the
+vulnerabilities before I started the fuzzy running again. What is
+the point of finding the same vulnerability 800,000 times? Not
+really fun. This is supercool. I don't think I finished it.
+Length of testing. We tested for 2 or 3 weeks off and on. The
+speed was 32 executions per second per core. And we found a
+lot of bugs. That includes [indiscernible] references.
+That's a lame crash. That's nice. Get rid of the noise. That
+resulted in some more bugs. You can see the first -- I guess
+that is a little inaccurate, the first four I found in the first
+round and the remaining -- is that five or six? Six. The other
+six came up during the second round in addition to all the
+references. They didn't get assigned CDs. So let's look at
+that issue we said we will look at again. Around a year ago,
+that put a fix into the [indiscernible] from the guys
+that did the fuzzing Intel. And they said [indiscernible] these
+two bugs. Looking closer, 5.0 is released, that is really
+interesting. So here is the new code, you can see they're --
+math to a 64 bit unsigned image. That looks like it would be
+good, right? But is it? I thought this would be good. I
+thought this was good. We fixed that one. That is awesome. Let's
+keep going. When I was [indiscernible] found this crash
+over and over. I thought they fixed it. When you multiply a
+bunch of 32 bit images together -- 64 bit images, it does all
+the math first in a 32 bit way and then it just goes in and
+assigns the result to the 64 bit imager. There is no promotion
+happening at all just because of the assignment. I don't think I
+have the fix in here. The fix was basically just casting one
+of them to a 64 bit imager. It could have been the 2 or the
+[indiscernible] any of them. -- come look at this. It did look
+like it was fixed. Exploitability and I'm totally
+going to run out of time. Let's go faster -- result in memory
+corruption. These have been proven lots of times. Especially
+in -- code given they often have virtual function pointer tables
+and other things going on in memory. Some -- do come into
+play. And diversity although it's a barrier to research, it
+doesn't necessarily prevent a worm (ph.) which can build
+support for as many things as it knows about into itself. Media
+cap. In the frame of exploitation. We have a nit,
+that means two things. On the positive side this weakness that
+has been in android since the beginning is rare. Whereas as
+apps are created they have the same - at their birth. It does
+-- every time it crashes the address will be completely
+randomized again. But on the downside because it restarts
+whenever it crashes you can trigger whatever over and over
+and over again. Although that does depend on the attack
+factor. You can imagine some guy that is going to download your
+email attachments and look at them over and over again. He is
+going to get fed up. Is that word possible or "prossible".
+That is new. Another thing, [indiscernible] in media server.
+I send threads that look for binder events. They are coming
+from outside. Means there is a little bit of lack of
+determinism in the layout. So apart from -- even if not
+randomized the -- might get in the way because of a boundary.
+Android 5.0 I had in mitigation that most people were not aware
+of. The guys that make android were probably not aware of this.
+The code here in the top block, it's doing any number of
+elements of an array. [indiscernible] they finally
+added a way to catch this sort of problem where -- what happens
+intrinsically inside the compiler. I don't have the link
+now, but the work these guys did is a ticket that is almost ten
+years old. The compiler team at android [indiscernible] maybe
+because it matched but they decided to do that. Let's have a
+break down of the big important mitigation that android applied
+to Stagefright. This doesn't come into effect unless you're
+in. It may limit you from what you can talk to (muffled) talk
+to the audio driver. Stack of these completely, there is not
+stack corruption going on. Dynamic allocation. ASR, as we
+said only applies, we have another ten minutes? I thought
+that was GTFO? Let's just keep going. You just drive me off
+when you're ready? >> What we're attempting to do is hold this -
+a little bit longer. >> I'm almost done. >> Well take some
+questions. >> I want to do a demo first, though. >> All
+right. >> NX is not a big deal. You can pass over it. Newer
+versions, it's still possible to by pass. It requires circle
+guessing or might require you to do neat tricks because it's only
+a 30 bit layout. Exploitability, definitely on old versions,
+badly on old versions. Newer versions I think it's do able
+and I want to spend more time with it but I don't have time
+because I'm speaking to you guys out of state. I think I have
+somewhere on this computer a window that has stuff in it. Not
+the cat window. Let's try this one. Can you guys read that in
+the back, the text? Or do I need to make it bigger. I got a
+thumbs up for negative 3. Make it bigger, boom, boom, boom, is
+that good enough? All right. Where is my mouse, it's on the
+wrong screen. I don't know if this is going to work. Black
+cat, I did not do a live demo but let's try it. We have the
+device right here. I'm deleting the messages I sent myself in
+the speaker room. I'm going to leave the screen on here and I
+think we'll run this exploit just like this. One point of
+importance is this attack right now is not going over the
+network. It's a violation of the end-user license agreement in
+terms of conditions that you can use the network. This is going
+over a tool chain basically that allows me to pretend like
+messages are coming in from the carrier network and host my own
+MMC server. Let's run it. This is a 2 Meg video file. It sends
+it down this channel. I don't know, you probably can't see
+this and I'm looking like an idiot over here. I didn't get
+any messages yet, either. That is why we don't do live demos.
+Because people show up to your talk and bring something like
+web based stations. I still haven't gotten a message yet but
+I see it transferring. It's tricky to show you both screens
+at the same time. Open what? I think I have something -- get
+user media. If you can't see down there. I still haven't got
+a message. I think we're going to go back to the video because
+this is retarded. I'm disappointed because this works
+like every time. Except for right now because of whatever
+reason it's prevented from working. Looks like a network
+issue. Let's play a video. It will be more fun and it has cool
+music by Archie Varteck (ph.). This is just to show you there
+is no indication. Thank you. So also on the screens, the device
+goes very slow. [indiscernible]. That's the thing about devices,
+they're easy to exploit and they also are full of old bugs. I
+don't know how to do this. You booing me off stage now? I do
+have a couple more slides but I'll do this. >> Do not go out
+the side door. Go out the back.Go out the back, not the
+side. >> Don't go out the side, please. >> I hope you guys get
+an update soon.

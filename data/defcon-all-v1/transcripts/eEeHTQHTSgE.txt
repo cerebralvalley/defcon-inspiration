@@ -1,0 +1,513 @@
+>> ALEX STAMOS: Everybody, thanks for coming
+to what is not the Penn and Teller theater. My name is Alex Stamos. I'm here to talk about
+the ethics of the white hat industry. Yeah, so, if you're here for something more exciting
+than ‑‑ now is the time to go. So a couple ‑‑ this is supposed to be subtitled a
+couple different things. We kicked around a couple ideas, this could be uncle Alex's
+story time. Could be me dousing my career in gasoline and setting it on fire. Could
+be a lot of outcomes. One disclaimer I'm here personally, you don't see any corporate logos
+up here. If you're a reporter or are going to tweet who I am or quote me or something,
+just say Alex Stamos or Alex Stamos, dashingly handsome citizen, I'm trying to get the corporate
+people not know I'm here. This is going to be an interactive discussion, interactive
+means not screaming as me at if I'm General Alexander. We have specific interactive points
+and I'm looking to hear from you guys so I'm hoping to kick off a discussion we can participate
+in over the next couple years, I'm going to do a quick recap of where we live in interesting
+times. We're going to talk about moral frameworks we can use to think about us as an industry
+and how we each act individually within the industry. And then I think the most interactive
+part, fun part is I'm going to pose interesting situations and we're all going to vote on
+how we would each individually act. So this is an open discussion space, we all come here
+with very different backgrounds and very different feelings about what's going on in the world
+right now. I just hope everybody is responsive, open, and respectful to each other because
+that's what DEF CON should be. We're going to talk about what we can do. You don't have
+to applaud let. I'm like Dan Kominski. I'll stop. And you can see your applause point.
+I'm not here to put moral framework on people or tell you what to do. It's for you to understand
+where I come from so you understand my biases. My first DEF CON many years ago preAlexis
+park, my dad had to rent the hotel room because I wasn't allowed to. Like many people I was
+self‑taught. As a teenager, everybody understands the subtext of what I mean by self‑taught.
+I worked after defensive roles for big company. I started a white hat consulting company that
+worked out well. One of the best parts of my career is I've been able to work with fantastic
+people and give fantastic people an opportunity to get into the industry. That's one of the
+things I'm most proud of. As part of that job, I've worked for big corporations an I've
+seen what it's like to be on the other sides of a nation state who wants to do something
+bad to you. I've been asked to do stuff for the U.S. government and I've helped in the
+past. I have been to places like Liberty Crossing and fanax one, those who ironed your shirts
+and tucked them into your pants will understand where those locations are. And my work has
+put at least five people in jail. So I'm just trying to be honest with you guys about where
+I'm coming from to a certain portion of the DEF CON crowd I'm an info sec sell out. I'm
+a corporate white hat sellout. This talk about is about the ethics of if you decide to be
+a sellout how you can do so. If you're an anarchist or anti‑info sec you're welcome
+to be here but realize you're not going to argue me out of this background.
+So I've been doing this for a while now. In the last couple years I've had to really ask
+myself why. Like it used to be easy to understand why you wanted to get into security. It was
+something fun. It was something you could get paid to do fun things. Things you would
+usually do for free. And that's how a lot of us slipped into it and I think it's a lot
+harder now, these days you need you need to sit down and say what's my personal goal and
+this has come out of me doing this for myself. We live in interesting times. Good old days
+there's only one good ethical decision to make. Do you want to be on the white hat or
+black hat side? Everybody likes to break things. Everybody likes to look at complicated systems,
+figure out how it works and tear it apart. If you're on the black hat side, you use that
+knowledge for personal gain, you use it to embarrass people or to get your shoutouts
+to your friends. Or you use it for some kind of political goal. If you're a white hat,
+you use that knowledge to try to make that system better and more secure. And you might
+disagree with those definitions but that's what I'm going to use today. It used to not
+be that hard. You could pick one or another or both as a number of people did. But the
+definition is simple. There's a lot of ways to be a white hat back then and today. You
+can work for corporate or independent researcher as a small group of folks, maybe they're selling
+bugs or getting consulting contracts to pay the bills, maybe living with their parents,
+there's a number of ways you can fund yourself and stay independent. You can be a consultant
+in a more structured environment which is the environment of the company I started or
+you can be an academic, there are a lot of ways but these are the big categories.
+But back in the late night '90s, early 2000s, the world was simpler. It seems like we were
+children fighting about this thing was responsible versus full disclosure. The goal of the responsible
+and full disclosure side was same. I've got a bug, I want to protect the world as quickly
+as possible from this bug, what is the best way to affect that outcome. It's still an
+open discussion but it's one that seems quaint in 213. Because it ‑‑ 201 he 3 because
+it presupposed everybody has the same outline of why they go and find bugs. It assumes everybody
+wants to go get stuff fixed as fast as possible. Also back in the day choosing a company wasn't
+that difficult. Some people didn't want to work for a bank but now we're in a world where
+a lot of security companies are dipping toes on both sides of the fence, they sponsor booths
+at black hat, DEF CON, they send employees here and at the same time they're selling
+tools that can be used to oppress people. Not just in developing countries but turns
+out in our country and other western countries. Back in that day we had little interaction
+with governments. So, if you were obviously an incident response, you would interact with
+Secret Service or FBI but you could go your entire career in corporate secure from 1995
+to 2003 and never have to talk to somebody from the NSA or FBI about just what you're
+doing to protect your own systems. That's obviously not true any more. And there's a
+lot of gray hat activity. A lot of people chose to be both white hat and black hat.
+But a lot was harmless. A lot of people I know holding onto vestiges of the past making
+them feel young and cool and writing malware here or doing something cool but a lot of
+that activity didn't seem intentionally malicious so it didn't compete too much with white hat
+ethics. So what changed? A lot of people ask when is the future coming? When am I getting
+my fucking robot car? And you know, it turns out that future did happen in a lot of different
+ways, we live in the cyber punk future that William Gibson, Sterling and all those guys
+were thinking about in the '80. That's amazing, sci fi authors of '50s and '60s haven't happened
+yet, but the guys in the '80s were there already. We're in a world with corporate to corporate
+and state to corporate info warfare on a daily basis. That's a normal part of our lives is
+there's companies who pay hackers somewhat paid for by nation state to break into my
+company and steal secrets, which is like straight up out of William Gibson novels with the base
+antagonists do. We live in a world where our country, especially likes to kill women with
+semi autonomous robots. I'm not‑kill people. I'm just saying James Cameron, way to go,
+bud, you really called that one much quicker than I expected to be true. We don't make
+them look like this because it turns outbuilding a bipedal titanium robot is the dumbest thing
+you can do to build a killer robot. Or make them look like lawnmowers with wings. They're
+made more cheaper and more deadly. We live in a world where the government is trying
+to tell us on a massive data surveillance as being put together as precrime. Preventing
+criminal activities as predicting people's actions by looking at Internet traffic.
+And I wish any of these things was an overstatement you about I don't think anybody here thinks
+I'm overstating the case. What are fun things that happened. We have Stuxnet and flame.
+I'm sure most people have heard of those. Those are pieces of malware used against the
+Islamic Republic of Iran. I'm not going to be doing any ‑‑ pointing any fingers at
+any governments that were related but I think we all have a feel who might have been involved
+in these. And I feel this is kind of the final conclusion
+of the no more free bugs movement is that we now have a an open marketplace that didn't
+exist four or five years ago I find a bug, weaponize it and whoever is the highest builder
+is buying it. We live in a world where cyber war is real. Almost any corporation is now
+facing a level of threat that you only played at if you were a defense contractor in 2003,
+so back then Northup Grumman and people building planes and bombs had to worry about security.
+Last year I did a project at a company that makes tractors. Right? They've got a dozen
+IT guys, they've got one security person whose job it is to make sure things are patched
+and you're like well who cares about that? Well, they employ tens of thousands of people
+and they export billions of dollars of heavy industry and they have lots of competitors
+in places like China. And so, if you just happened to be an exporter in this world,
+then you're going to end up at a level of adversary that was completely unimaginable
+a couple years ago. And what's really scary from that is it's almost impossible for a
+company that size to spend any amount of money to protect themselves. Like the people doing
+the best and holding their own against the Chinese right now is Google. Google has like
+150 security people. They've got windows kernel experts. OS10 kernel experts. They have an
+intelligence team. They're not winning, they're holding their own. So tractor company is fucked,
+that's basically what that means. (Laughter)
+And this is the world we live in now. Isn't capitalism what the world is all about? And
+competition. I want to get through this and then I'll tell you when the interactive part
+is. I just want to have enough time. We live in a world when companies are attacked for
+munitions. Those looking at flame, the flame virus had Microsoft ‑‑ turns out they
+don't sell those much. You can't call them and say can I sign your patches. You have
+to steal that from them and it turns out invent an entirely new way doing an MD attack using
+math that's never been used before in open literature and you apply a couple millisecond
+window and trick the Microsoft terminal service license certificate authority into signing
+a CSR that has an identical MB5 sub as one you just generated. This is the equivalent
+of killing your political opponents with $10 million of polonium when 10 cents of cyanide would have
+done it. This tells you something about the authors of flame. This is basically the U.S.
+government being like oh, yeah, yeah, I did it. Boom. Drop mic. What are you going to
+do about it? Right? (Laughter)
+It's like Putin killing that guy with radioactive material. You could just shoot the guy and
+you would have saved $9,985,000. That's by the entire pack of 9‑millimeter that ‑‑ to
+shoot the guy. Instead they thought we're going to scare him and spread radioactive
+material over London. This is the cyber wary equivalent. Whoever wrote Flame was willing
+to attack a Microsoft server, actual attack against Microsoft. What does that make you
+feel like in you work at Microsoft and you have all this relationship with the governments
+of the world where you're trying to do prebug disclosure and you're trying to work with
+them to make them feel good about your products and by the way, when you're doing it on the
+defense side, somebody on the other side feels like it's open season on your certificate
+authority, right? We live in a world where these cyber munitions are basically somebody
+else, another blogger. And I forget exactly who made a good analogy, when you shoot a
+gun at somebody, they current pull the bullet out and throw it back at you. But, if you
+throw a rock at somebody's head and you don't kill them, they're going to throw the rock
+back. Using the word cyber without irony is like finding your first gray hair in an info
+sec communities. But that seems to be the terminology people are using these days. These
+cyber weapons are like thee rocks. For the short period of time the only people who knew
+about several critical bugs in the windows and SiemenPCP controller is United States
+and Israel and people if Iran who paid attention in the nuclear power plant which thank God
+this guy's Finnish because if Miko and the other folks who have been finding these cyber
+weapons in the wild had any other kind of ‑‑ didn't come from a society where they're
+totally neutral and all about social justice, we very well could have seen these weapons
+turned against all the companies we work for and all our personal data and uses.
+So it brings up a question of how do you interact against cyber war, if you're discovering bugs,
+who's buying them. Offensive or defensive teams. I've never heard of anybody selling
+exploits in the way they knew. There was a customer that had many components that could
+buy it. What are they doing with them? Using it for foreign use or domestically? An what
+goals are being accomplished and some of you think about when you sell bugs to a government
+is it the nation's goal or government in charge's goals at that moment that are being discussed?
+And if want to know what the difference is between nation's goal and government goals,
+I see people with white pony tails, you can ask them about a man named Richard Nixon and
+they'll explain to you what happened. So we also have a world not on the defense
+side and Justice Department and the justice side where we have a real problem in our world
+of the difference between prosecution and persecution getting really smeared. For example,
+there's a lot of people who are stealing their secrets from their bosses, which is as old
+as time itself salespeople have left jobs and taken their customer lists with them,
+right? And this is why we have NDAs, this is why we have noncompetes. This is why we
+have civil lawsuits between companies who people believe have stolen their trade secrets
+but instead we're prosecuting these people as criminals using the economic Espionage
+Act of 1996 because it happens to be in our computer. 20 years ago if you walked out with
+a sheath of paper, you would have gotten sued and a nasty letter and maybe you would have
+had to give it back or you could have lost money. These days if you have the same data
+on a USB drive that turns you into an economic spy and you're like these guys, Sergei Lind
+could have who beat his rap at Goldman Sachs. Argwal, who left the financial industry taking
+some secrets with them. I don't think they should walk out with the secret codes that
+allows those hedge funds to make money but I don't think it's a national security issue.
+This is a private business issue between these folks that now is becoming nationalized and
+the soul crushing power of the United States Department of Justice is being turned against
+these people. And then of course we know about the Computer Fraud and Abuse Act people like
+David Nosal who took customer data out. I don't consider him an ethical researcher.
+But I don't think he deserves to be in jail longer than, say, a rapist. Lori drew, again,
+not a nice person. I don't want to hang out with her, but I also don't think violating
+the myspace terms of service is a federal offense and Aaron Schwartz, the elephant in
+the room. So where I come to this is from my personal relationship here. Like I said,
+my work output has been used several times in the prosecution of people who have done
+bad things. And these were like legitimately bad things like not like stole a book or something
+like that. So you know, as part of my penance, I've been doing a bunch of pro bono work over
+the last couch will years, my company provided pro bono work to George Hott but had the effect
+of Sony doing everything possible to cost him money I was in a meeting with George's
+lawyer who was a real estate lawyer and he said I'm going to try my hand at Internet
+law. Okay, that's great. Maybe if my life is at stake, that's not what I want to try.
+But it's like him, his friend who doesn't know anything about the case but came just
+to have somebody else on that side of the table and me, the geek sitting across from
+us is four big law partners who almost certainly were collecting billing $2,400 an hour to
+sit there across from us. And this is because a guy was able to hack the PS3 and put it
+on his blog, Sony is willing to bury us in paper. And obviously that happens. There's
+not a lot we can do about that and we've worked on Aaron Schwartz's case as an expert witness
+for his defense. Part of my job for the defense was to read the expert report that the prosecution's
+expert created and I'm not going to say who this is or what company he worked for. I don't
+think he did anything wrong. This is a guy who worked at a reasonably well known consulting
+company who was approached with we'd like you to do forensics on those machine and tell
+us what happened and he wrote a reasonable workman, like, report saying hey there's python
+scripts ands I found this in the logs and it looks like he changes his Mac address and
+IP address. We had a couple things to hit him with on the stand. He didn't lie. He didn't
+make things up but his report was taken by the U.S. S. attorney's office and twisted
+and turned and pulled out of context to turn into Aaron Swartz was a super hacker. And,
+if I was him, I'd be pissed that my work product had been unitized in a way to persecute and
+hound a man to death. What is our role here? Is our role as technical experts to tell the
+truth and it's other people's job to make sure justice is done or do we have a more
+active requirement to participate in justice being served in the technical world? And obviously
+we have the NSA scandals where all the crazy people basically everything they've been saying
+for years is true. I apologize, every crazy person that I dismissed with like a at a DEF
+CON party, you know, with ‑‑ oh, that's nice, oh, that's really interesting. I got
+to go. I got to talk. All those people were right, which is not great. A lot of people
+suspected this was going on. This is from the Washington Post. You don't have to read
+it too closely, I'm not leaking anything here. We suspected it's different than knowing.
+The reason that's important is this thing called the Overton window. Who here has heard
+of that? A couple Poli Sci majors. There's this guy, Joseph Overton who is a political
+science major who came up with the idea that ideas ‑‑ the most important thing about
+the public accepting an idea is whether it's considered within the window of acceptable
+discourse. Right? So he talks a lot about the need for movements for change to have
+radicals. So for example, in the civil rights struggle, Malcolm X is a radical whose ideas
+were not accepted by a couple time by a couple percentage points of the population but he
+had the effect of being a crazy person outs side of the window and therefore, expanding
+the Overton window of what was acceptable political discourse for civil rights in which
+Martin Luther King and others were able to step in and be considered again within the
+political center. I think what's interesting about this NSA stuff is from a conspiracy
+perspective, it changes what our Overton window is. So this was a year ago my Overton window,
+I knew the U.S. government was making malware and using it against adversaries. I have no
+moral problem with that. I have no moral problem with Stuxnet. If you're the President of the
+United States and they come to you and say sir, you can either choose to drop a bunch
+of bombs and our damage assessment says that we'll probably kill you know 10 people and
+half of them are going to be children or I can use a virus and sneak it in on an iPod,
+obviously the moral choice is the virus on the iPod. Where it gets difficult is what
+do you after that to make sure other people are protected from those bugs and also how
+far to you go? It's one thing to do a nuclear facility with the Iranian government but now
+it's the agricultural department with the Iranian government and now it's agricultural
+Department of France and now it's citizens. There's a continuum we have to be careful
+of. Clearly well knew there was widespread sniffing of overseas traffic. The fact that
+every fiberoptic cable in the mid many east happens to break every six months, the either
+the Greek and Filipino captains of the ships moving through there have been drinking too
+much Usso and whatever the Filipino drink of choice is or maybe it's fiberoptic cables
+and you do a tap over there and repair it and we're able good and able to get all the
+traffic moving in and out of sawed Saudi Arabia or Iran. I thought there was malware against
+citizens, every once in a while mobile devices are used. There's a slight possibility of
+crazy crypto breakthroughs and all of us living through this, that Overton window expands
+because we know for a fact that stuff in the center is happening and we know for a fact
+things like widespread U.S. sniffing happens so it expands our entire window of something
+we think is a possible something that we'll discuss in open. I'm now willing to discuss
+the possibility that the NSA has ‑‑ knows how to break Tiffy Hellman because they have
+a polynomial time solution for the discreet time over the integer field. Now I gave a
+talk about it at black hat and before I would have thought that's crazy. If it turns out
+we go another 10 years and Bono still does not age, we're going to have to redo the slide.
+Isn't it an exciting time to be in our industry? Those exciting times we have to make much
+more intelligent and thoughtful decisions of how we act. How do we make sense of decisions
+we make. We're born with only basic moral and ethical frameworks. I'm not going to get
+into ethical and moralities. I was an engineering major. You're willing to take up the discussion
+without me participating, I'm using them incorrectly together. We're born with the most basic,
+inning of what right and wrong is and that can be overridden by things we learn later
+as every atrocity in the 20th century attests to. You can make humans do everything if in
+the big picture they thought they were doing something right. I was only following orders
+being the phrase you hear over and over again. We make decisions by frameworks given to us
+by family, friends, society. If you want to make important decisions it's important to
+think about where do these come from? Why do I feel this way and do I choose to continue
+to use this framework or am I going to leave it behind and try something else. Frameworks
+patriotism and nationalism. Two words that don't exactly mean the same thing but can
+find 40,000 word treaties debating which means which. I'm not going to apologize. I'm American,
+I'm proud to be an American. I'm the grandson of immigrants who worked very hard to get
+to this country from really shitty conditions from kind of ridiculous I'm raising sheep
+on the side of a mountain and there's no running water kind of conditions, right? My great
+grandfather came here and he was with a long name and he's now you're General Stamos. He's
+like I love America! And when you come from an immigrant family, the rest of you who understand
+that understand that kind of pride lives down because he busted his ass and starved on a
+ship for six months so he could come here and do something great. So that's why I had
+a grandfather who dropped out of school in 5th grade, came here. U.S. Army took him.
+You don't speak English, great, we'll work on that. Learns English in the Army and then
+the GI bill pays for them to do electrical engineering classes and he dies as the manager
+of a huge engineering team at Pac Bell. And that's like something that's pretty special
+for our country. So I want to be proud of my country. But what does that mean? Right?
+Which of these is the United States? Is it the dirt we live on? Obviously the dirt that
+comprises the United States is changed all the time since 1776 and the ideas have not.
+And you he no, I don't think the United States is going to be massively different if Puerto
+Rico finally gets statehood in the next couple years. Is it the government that currently
+is in power? No, these people work for us. Right? I have no loyalty to them. Their loyalty
+is to me as a citizen. I don't think we have any loyalty to the people who are in power.
+I think it's really stupid to put the president's face up on the wall at the post office. He
+should have our faces on his wall. That's how that works!
+(Laughter) Is it the citizenry? I am proud of fellow
+Americans. If you live in Japan, you're proud to be Japanese, that means you're proud of
+a continuous people that have existed for thousands of years in America when you're
+proud of Americans, you're proud of ‑‑ how many people here become an American citizen
+in the last year? Right. You guys have just as American as I am. And I'm proud of you
+guys, too. So saying you're proud of the citizenry is a difficult one. I'm proud of the idea,
+right? The idea of limited government. The idea of us not trusting government. The idea
+if you read the Federalist papers, you realized the founders were actually crazy anti‑government
+people. What they realize is that good people when put into systems that give them power,
+and warped incentives they started to act against the interests of people. That's why
+we created the government with three parts fighting each other because they understand
+that human beings, even the best human beings are fallible. And I don't think the guys doing
+all this crap in the U.S. government right now are bad people. So I got dinner with general
+Alexandre a couple nights ago the night before his big talk at black hat. I didn't know I
+was going to go but I got invited which is a lot of fun. One of the memories I'll take
+to my deathbed is Jennifer granite grilling him over three hours over a nice blackened
+cod. It was great. And watching Jennifer take it to him was something that was really enjoyable.
+Right? (Laughter)
+So General Alexander, he said this in public but in private a big part of his thing is
+I really want to defend the constitution but where he's coming from is he's been to Sarajevo
+during the Euroslavian war. Don't overestimate how much cohesion there is. Any society can
+fall apart if there's strife. If that kind of attack happens again, our country went
+crazy after 9/11. But, if that kind of thing happens again, kiss our civil rights good‑bye.
+He feels he's a good guy and has the same goals, he has a framing that allows him to
+do almost everything up to performing military coup. If your framing is the next terrorist
+attack is going to destroy the constitution of the United States, you will do almost anything
+to get there that's why it's really important my oath is to the constitution of the United
+States. I think this is not an illegitimate frame to make your moral decisions in the
+scope of patriotism or nationalism but snubbed in the scope of the idea you like, not in
+the scope of the people or the government which are made up of fallible people that
+make mistakes. Another way you've got to think about this
+is the nation state is not the only group you 0 responsible to. We have a hierarchy
+of people who rely upon us for stuff. The core of that for me personally is family.
+I've got three kids. I chose with my wife to bring them into this world. They didn't
+choose that. I have a responsibility for them until they die. That responsibilities drops
+off a little bit and they turn 18, I get to kick them out. But I still have a long term
+responsibility for the creatures I brought into the world. Who here is a parent. Everybody
+understands that. You hear that when you're 23, fuck, you, you're an old person. But you
+live through it and you understand that's the core of your responsibility and has to
+underlie a lot of decisions. So in the short‑term there's decisions you can't make. Ed Snowden
+would not have done what he did if he had kids. He would have orphaned them. I cannot
+do what he did ever because I have a responsibility to my family that overrides any other basically
+‑‑ any other things that would happen. Unfortunately, this responsibility to your
+family is how a lot of totalitarian societies have turned them into soulless monsters. But
+that's a responsibility you have to live with. You have a responsibility to friends, colleagues,
+the colleagues you happen to work with versus the employees you hire turns out to be an
+interesting world conundrum. When you hire somebody you're making explicit promises to
+them, I'm going to pay you twice a month, I'm not going to ask to do crazy things. I
+offered you a job that was in your moral framework and I'm not going to massively renegotiate
+later. That's something you have to think about. When you're a small business owner,
+you're at the point you're telling people this is your job and you're going through
+a rough time and holy shit we might not make payroll and you realize there might be 20,
+50 people who might not make rent checks it change your opinion what you need to do for
+those folks. You might feel an obligation to your employer. That was the kind of thing
+that was different for our grandfather's time. I'm not going to say grandmothers because
+most of them didn't have corporate jobs. You go and work, you spend 50 years, you get the
+gold watch has changed a little bit. Other societies. Not so much the United States we
+have the idea of tribes people have responsibility to. Tribes that existed much longer than the
+nation states the British people happened to draw around them. Our society or civilization.
+There's a sci fi author who likes to say I'm proud to be part of a civilization that he's
+proud to be part of western civilization which is an interesting argument. Our nation and
+our species. This is not a hierarchy that always exists. Clearly if your friend kills
+somebody and you think this is a dangerous person, your responsibility to your society
+overrode your responsibility to your friend. Although I don't know a lot of people who
+turn in their kids no matter what happened? How many kids would turn their kid in if they
+did anything bad? Almost nobody. You did? Okay. Are you Robert Moore ‑‑ Moore senior
+just passed away. So I thought he wouldn't be here but that would be a good example.
+We haven't talked about this as an industry but there might be the idea that there would
+be universal obligations, medicine has this. There's Hippocrates and they don't take that
+any more. They have an oath of lasagna. It's funny but literally a guy name you Louis Lasagna
+wrote a new oath. Medicine are the scientific priests. Scientific priests used observation
+and knowledge to make people better and that put them in super power so doctors decided
+that gave them some kind of responsibility. We're the technological priesthood of the
+third millenium. Everybody here has fixed their family's computers, every time you do
+that it reminds you of the incredible complexity of the world that underlies our day‑to‑day
+activities that the vast majority of people do not understand. We do. Maybe that gives
+us moral obligation that's doctors have always had. All people discover their technology
+to be trust worthy. This would be equivalent of doctors saying in Geneva Conventions if
+you are go to an enemy hospital you're supposed to be treated just as was as well as somebody
+on the friendly side. Doctors will risk their lives to save the lives of people their coworkers
+just shot. We don't have that kind of thing in technology. But maybe we need to have that.
+The idea that the Internet is used as a tool of oppression rather than liberation. This
+is dangerous, there are people who think I want to be liberated from the oppression of
+pornography so we should save all the children from the porn, you can define the word liberation
+in a way that can be oppressive itself, or the idea of first do no harm, at least you're
+not going to make things worse. If you start to go down the ethics, you end up in endless
+Peter Singer in a famous paper neither our distance from preventable evil nor number
+of people in respects to that evil in the same situation as we lessens that ability
+to propagate evil. He's saying the two experiences you have for
+not doing something right is it's someone else's job or it's physically far away are
+bullshit excuses. He was making this argument for world hunger. He was saying who likes
+it there are children dying hunger. Everybody wants every child to have food. Therefore,
+if you don't take every dollar you own above what is required to feed your own children
+and send it those people, you're morally repugnant. You have fallen short of what you can possibly
+do. That's a crazy argument that if everybody did this, society would fall apart as we all
+send money to each other and there's no idea of a consumer but it's the kind of thing when
+you think about other kinds of ethics that people have gotten into is this idea that
+we can aim for. We're not going to hit it but something we can think about. Another
+reason is personal legacy. Some say I'm reducing human suffering, creating general economic
+benefits. A lot of people laughed when the Goldman Sachs guy said we're doing God's work
+which I thought was funny too but I think he honestly believes it. One of the great
+things of the last 30 years has been billions of people rising out of poverty in Asia and
+that's not because of us shipping them bags of rice with the American flag on it. It's
+because they were able to organize mostly into corporations to sell goods and services
+that the rest of the world wanted to buy. The guy who started Tata motors took millions
+of 
+people who worked out in the fields and were on starvation wages and gave them reasonably
+good jobs. That's an argument some people have. Making your own family wealthy. Building
+something that lasts. If you study engineering, he especially civil engineers love the idea
+of building something that even when they're gone the work lives on. That's building a
+bridge and putting your name on it. So something to think about though if you have the ability
+to sit down and think about these things when you pick a job, that means you're rich and
+lucky. Because the vast majority of the world has to do what they can do to feed everybody
+they're trying to feed in their family and friends. The rest of us are super lucky so
+we shouldn't forget about the fact that when we talk about ethics it's only because we
+have the ability to do so. Here we're going to get to the interactive fun part of it.
+By fun, probably not fun. So the way I'm going to do this is I'm going to pop up ethical
+conundrums and there's going to be multiple choice. I'm going to read the conundrum and
+then multiple choice answers, please don't hoot and holler or whatever. You can laugh
+if it's funny. Let's be respectful of each other. I'm going to poll the audience on the
+one you would obviously do. This is supposed to be a safe space, et cetera let's not judge
+each other. Would be really easy for us to groupthink this and go to the hardest anarchist
+side. If everybody in here acting that way, the info sec community wouldn't be in the
+problem it is right now. So let's be honest about how we do these decisions.
+Who here played Ultima 4. Old people. 1985, first video game that basically had a morality
+system and the way you generated your character is it would ask you questions and you'd make
+a decision and your character would come out of it. First time you did it you answered
+them and got in the computer gaming world and got a cheat sheet. And for a while it
+was a moral conundrum thing you'd go through. So that's what we're doing here. First question.
+Warmup question. You find a critical remote exploit in a very widespread product. What
+do you do? Do you publicly announce the flaw immediately. Public disclosure. You wait and
+build a black hat talk around it. Perform responsible disclosure and give deadlines
+to ‑‑ what you consider reasonable deadline to the manufacturer to fix it. D, you use
+it to basically blackmail that vendor to sell consulting. You're laughing but it happens
+all the time. E, you weaponize it and sell it directly to your government or somebody
+you know is going to give it to your government. F, you weaponize it and sell it to somebody
+and God knows where that's going to go after that and that makes you more money than E.
+Use it for fun or profit. Who would do A. Only two full disclosure people. B, build
+a black hat talk. Okay, excellent. C, perform responsible disclosure at deadlines. Wow,
+awesome. D? Okay, excellent. I know you who you are. E, you'd weaponize and sell it to
+your government. F, weaponize it and just sell it and G, use it yourself. Decent number
+of people. That's fine. It seems like disclosure crowd. That's my answer, C guy.
+Your job is to perform incident response, you successfully uncover a legitimate breach,
+like an actual break in. Not a stupid violation and figure out who the attacker is or you
+work for the company full time or contractor, doesn't matter. You write a report give it
+to the bosses and the bosses give it to the U.S. Attorney and you find out later they're
+pushing for extreme penalties. Whatever it is, to you this seems extreme. Do you A say
+I'm adjusting go to do my job, I'm going to assist the prosecution. It's ‑‑ there
+is an adversarial process here that's supposed to save this person. B, you do nothing, try
+to stay out of it as much as possible. You've done your part. C, you gently work on the
+inside to try to get it reduced but you don't do anything past that. D, you outright say
+I'm not going to participate. You cannot put me on the stand. Do not call me again. E,
+you call the defense and volunteer to testify. This may or may not be legal within your jurisdiction.
+You can ask Kurt. You publicly take a stand, violate your NDA and protection order that
+protects witness. Whenever you do expert witness stuff, a federal judge gives you an order,
+fuck you federal judge, I'm going to take a federal scan to save this guy. A is a hard
+1 in this crowd good bravery. B, C gently work from inside and don't go past that. Largest
+so far. D outright refuse to participate. E, volunteer to the defense. And then F, go
+nuclear on Twitter. Okay. So I think it was C or D in a lot of ‑‑ in both situations.
+That's actually where I am personally. Somewhere between C and D. In just am I little bit of
+legal experience pissing off a federal judge is a world of hurt you don't want to enter,
+again, I'm not going to put my kids through that. Volunteering for the defense is probably
+illegal so I'd probably do what you guys said, which is good.
+You're approached by a member of your government's federal security apparatus in a fend friendly
+matter. You haven't done anything wrong, this is not an investigation of you, this is just
+a chat. Do you A say yeah, let's go grab a beer, do you B, I'm busy and do the girl thing
+and slip them the wrong number? C, say feel free to send me the questions and I'll answer
+them by e‑mail or we can set up a time in my office with my attorneys present. D
+(Laughter) Or E. Okay. So A, who would do A? Take the
+meeting? Decent number of people. Probably about a quarter of the room. B, politely try
+to get out of it. More than a few women. I understand that. C. D? And E. Let's hear ‑‑ you're
+weaving, sir, let's hear it. So here's one I have to admit. I did A, people from the
+NSA said hey can we give you a beer, we'd love to hear about your standards. I bought
+them beers and we sat by the pool at Caesar's for two hours and talked and nothing bad happened.
+But this year no, I'd be a C, I don't think we should isolate ourselves. I don't think
+we need to be we'll never talked to Feds, I'll never talk to anybody from the government.
+Because that kind of isolation takes away our power to educate them. Again, they work
+for us. But especially as Martha Stewart learned, sitting with somebody who works for the federal
+government means that the tiniest little mistake could be considered a federal felony. And
+so I don't think we're at a point where any of us can interact with the United States
+government in any way without attorneys present. It's just not safe. Okay. We'll do this a
+little more quickly. You work for respected cloud company. Course of duties you find a
+back door, boss tells you drop it without giving you any more information. Do you drop
+it, escalate within the company, quietly look for a new jock, publicly quit or pull out
+the Guy Faux mask. Okay. Yeah, I mean, I'm probably between C and D depending on what
+I think the enforceable the NDA is or whether there's criminal penalties. I'm hoping people
+at Google feel the same way. You work for a well-respected company. Your boss hands
+you an order to turn over cryptographic keys from the government. That is considered legal
+and you have no recourse. Do you comply and just forget drinking yourself into oblivion.
+B, refuse to comply and stay silent saying I'm not going to do it you have to find somebody
+else but do nothing else. C, quietly look for a new job. D, publicly quit in protest,
+talk publicly and risk prosecution. Or E, I would be happy to do that sir, but due to
+the combination of us using hardware security module, ration of duties between me and somebody
+with a different legal jurisdiction and our implementation of certificate transparency,
+me doing this will have ramifications that I don't think you'll like. Please decide whether
+or not you'd like me to proceed now that I'm informed you that it will almost certainly
+demonstrate to the world that you've asked me for this. So obviously I'm telling you
+E is the right way to do it. (Applause.)
+But E requires forethought. So that's why I brought this up. If there's a backup key
+on a USB disk you can't do this. I'm building a service for people around the world. So
+I am backing myself into a corner that I cannot get out of and I will leave it up to any law
+enforcement that wants to come to me to force me to do anything to decide which poison they
+want. Either violate certificate of transparency but not having it in there or putting a certificate
+of transparency and the whole world knows. (Applause.)
+Don't plan for that. You work for a security hardware company. You work on A product that
+has legitimate uses like an IDS and you find out companies are using it to spy on their
+citizens, do you do nothing, B, start internal campaign to change the company selling it
+to these folks, C, work to make future versions less dual use.
+A, that's a reasonable thing. Gun manufacture you think the same way. I build a gun. A gun
+is not a moral object. People use it in a good or bad way. B, change corporate culture.
+That won't happen. Good luck. C work from a technical perspective. D, quietly quit and
+E go nuclear. This is a tough one. People that work for green jacket face every day
+apparently. So we don't have time for other good ones, what I'd like you guys to do, you
+don't have to do anything, I have no moral authority here but this is what I think would
+be a good thing to do. Try to live an examined life in the info sec community. Think about
+what you want to do now. Don't get caught being asked to do something unethical and
+not against your means of having not thought of it. It's easy to say yes when you're in
+the room and under a lot of pressure. Teach people. People with pony tails have lots of
+great experience. Teach people about how to make decisions ethically. Be open and honest
+with themselves. Something you can do right now is there is a letter for supporting reform
+of the Computer Fraud and Abuse act. This letter has been signed by Jeff Moss. Who else?
+I'm blanking, Ari, Schwartz. Avi Ruben. Security researchers and academia and publicly in the
+public world, private world have signed this. You don't have to sign it on behalf of employer.
+This is just you. If you'd like to get on this open letter before it goes public in
+any hoi polloi can sign it. There's folks up here from the EFF with paper copies you
+can sign. We're out of time so, if you want to chat at all, I'll be in the hallway, thank
+you very much for listening. Thank you (Applause.)

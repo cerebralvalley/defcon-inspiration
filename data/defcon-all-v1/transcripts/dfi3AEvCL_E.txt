@@ -1,0 +1,754 @@
+This is Through the Looking
+Glass and what Eve found
+there by kaeso and emdel. So please join me in
+giving them a huge
+welcome >> [Applause] >> Okay. Welcome everybody.
+Before starting first of all,
+yes, you are not in the wrong track. This talk about is
+looking glass mostly. Not
+directly but how to access them by exploiting something else
+and in this case it is why the
+title. We are looking about looking glasses. I'll tell you
+what looking glasses are if you
+don't know them and what we found in our research in order
+to exploit them. Actually I'm
+not Emdel I am Luca Bruno and this is my colleague Mariano
+Graziano. And we're going to
+talk you through this presentation. I'll talk about
+the first part. And it will give
+more details about (inaudible). Before starting we are both
+coming from Europe. So we are
+researcher in Eurecom in France. We are researching several
+topics in general which is in
+security. I'm mostly into imbedded systems, networking
+devices in general and physical
+infrastructure. While Mariano is a PhD student his topics are
+mostly malware and forensic
+stuff. Here is currently in the U.S. here at Cisco doing
+internship. I give you a small
+presentation about us so let's get into the case. First, I know
+this is going to be a bit of a
+bizarre talk because this is not something that you see every
+day. I mean, looking glasses are
+not so commonly used. And the reason of this research is also
+a bit bizarre. So let me guide
+you through why we did this. Imagine for a couple of minutes
+that actually you are an
+attacker. Some kind of very lame attacker. You are starting your
+first test in the offensive part
+of security and you are looking for your next target. You are a
+bit lame in the sense that you
+want to go big so you are looking for something that is,
+let's say, quite a big impact.
+But your skills are not so high. So let's say you are looking for
+something that is some kind of
+critical infrastructure or global infrastructure where the
+impact of what you can do will
+affect a lot of people in different geographic areas but
+you don't have a lot of skills.
+And you also don't have a clear goal right now. Actually because
+we're not getting into a lot of
+expectation but we have just the general idea you want to cause a
+bit of damage. So let's think
+about this. Let's say that we are we want to target the
+internet because it is the most
+used infrastructure around the world. Everybody is relying on
+that for economic, personal and
+whatever activities. If you want to target something of the
+internet that is catching a lot
+of region encounters around the world maybe you want to target
+actually how the traffic is
+exchanged between different and several autonomous systems
+around the world. So we'll talk
+a bit about internal system. Routing. I told you already that
+we imagine our skills are not so
+high. So let's say that you are some kind of webs (inaudible) or
+something like that. We know the
+basic of scripting, general injection. We know a bit of
+Google (inaudible) and some more
+kind of injection in general and common injection. And we still
+don't know what we want to do
+once we get to our target. But in general we know that some
+kind of interesting targets will
+be the backbone of an operator. So in general we want to go with
+our limited skill in the
+(inaudible) to something that is like a backbone or another
+autonomous system. So what you
+are going to do is not attacking directly the route or the
+routers. We are not coming up
+with a zero day for Cisco or Juniper. Instead when we went
+through the mental process we
+found one really good candidate which is a looking glass.
+Looking glass actually something
+that I will explain to you later but fits well in this model.
+Where it just requires a bit of
+web knowledge in order to get big. So I hope that everybody
+here know more or less what is a
+looking glass and how to use it. If you don't know I will give
+you a really brief presentation
+of it. So let's go to an introduction about looking
+glasses. First, let's talk about
+the internet. Everybody is using the internet. But actually the
+internet is not a single net or
+not a single entity. The internet's composed we can
+describe it as a network of
+networks. It is in fact composed by a lot of entities commercial,
+noncommercial, private,
+university, government. The internet in general we have a
+lot of operators. We call them
+alternate systems. AS. And each of these autonomous systems have
+its own network. There are
+different kind of networks. Access networks, depending on
+what your target and what your
+economical business is. And all these networks are in somehow
+interconnected by one protocol.
+This is the BGP. It is what is governing how the traffic is
+flowing across the internet.
+There's something like the diagram that you see here where
+a lot of ranges, a lot of IPs
+are interconnecting and there is connecting system A to B passing
+through system B one, B two or
+whatever. Let's keep in mind we are BGP that is governing all of
+the internet and let's see how
+in practice this routing works. We normally talk about a BGP
+routing table that is something
+that we tell you okay in order to reach that IP address you
+have to go through so many
+alternate systems. That's fine. But in the case actually the
+reason a single BGP routing
+table. What we have really is that every autonomous system has
+its own policy. Has its own
+decision making process. Also, there are different algorithms
+and different way to calculate
+which is the best route in order to reach your target. So what we
+actually are seeing is something
+more complex where every single autonomous system has a local
+view, a local routing table that
+is used, that traffic is following in order to reach the
+destination. But as you may
+imagine, different autonomous system may have a different
+looking view what is the routing
+table. So there could have been some interesting situations. I
+am not an expert in BGP so I am
+not going too much into details, but what can usually happen is
+some kind of anomaly where for
+example the same graphics could be announced by different system
+by error or order to attack. I
+have one example here. This is courtesy of (inaudible)
+analysis. For example this is
+the incident where (inaudible) was announcing the graphics. As
+you may see, the same graphics
+was being announced by different systems. The current one of
+people on your right, the blue
+one. And another one that was by mistake announcing the same
+graphics. In this case some of
+the autonomous systems the one marked in yellow, red and orange
+were seeing the announce and
+following the announcement. So whenever you were trying to
+connect to PayPal you were
+reaching India. And in the other side there were some system that
+because of proximity following
+the correct amounts of people. So you have some kind of
+semantic or non-uniform routing.
+Imagine that you are the center or engineer of one of these
+autonomous systems in the
+middle. One customer is calling you and telling you, hey, look I
+have some problems reaching
+Paypal. You are a engineer at PayPal and somebody is telling
+you I cannot reach PayPal. What
+can you do about this situation? If you are PayPal and you know
+that your announce is correct,
+what you can do is trouble shooting. Everybody does trouble
+shooting and de bugging of
+connectivity issues. You need tools to do that. Because you
+are now in a situation where
+your (inaudible) is fine but something else on the other side
+of the world is doing something
+bad. And another, a third party, autonomous system is having
+problem and you want to de bug
+the situation. You need tools in order to do that. In particular
+you need something in order to
+get view on the remote status. We can come up with several
+tools and several solutions.
+One, is something like setting up a community, a distributed
+network of probes. So let's say
+that we are four autonomous system. Each one we are
+receiving different analysis and
+different BGP information. We all collect this information in
+a central location and there is
+some kind of service that's is exposing all this data and
+keeping chronological track. For
+example, we're coming from Europe and the RIPE labs this
+kind of services in the right
+where you can look at the history of analysis from
+multiple points usually at
+public exchange. Another solution that you can come up is
+some kind of private agreement.
+For example, summaries like the some, ring where you participate
+in these ring and once you are
+part of this ring you will provide one system usually a
+server inside your autonomous
+system and giving us access to this system to other network
+engineer in other anonymous
+system. In exchange you get the same access somewhere else so
+that every time you have a
+problem you can log in to a remote system, multiple remote
+systems actually, around
+distributed for example, trace roots and compare them to see
+what is going on and where the
+traffic is being lost or whatever. The third idea
+actually something more general.
+So let's give the whole public not only network engineers and
+not through central point of
+failure. Let's give the large public access to the net through
+our routers. As you may imagine
+this is something that sounds a bit scary in the sense that you
+need some kind of web servers
+that is directly exposing some limited feature of your routers
+in order to do the debugging and
+get information on BGP. So actually we're going to focus on
+this, this third tool, it's
+called a looking glass and focus on this software and see how
+does it work, what are the
+vulnerabilities that we found? We also found some incidents.
+Let's go through it because it's
+scary stuff. So what's in a looking glass first of all? A
+looking glass became famous
+let's say in the 90s and in the first years of the 2000's They
+are web script in the sense
+they're usually composed of one file, couple of files, a bunch
+of files. Nothing very complex.
+Not a big architecture. This is something that you just
+download, unpack and put in your
+web server root and forget about it. They're usually written in
+Perl a lot are written in
+(inaudible) because it was the 90s and some are written in PHP
+because everybody loves PHP. How
+do they actually work? They establish a direct connection
+from the host that is hosting a
+looking glass to the router. SSH, or whatever methods you
+have to administer your routers.
+And obviously you need some kind of credential in order to log
+into a router. So how does it
+work? You have a config file with credential and whatever on
+the same host. And the web will
+use this information to connect. As you may imagine this is
+something that is becoming scary
+and scary as we go on. Because if something goes wrong from all
+this stuff, okay you have a
+hole. How does it work in practice? Let's say that we are
+an operator the autonomous
+system on your left and you want to provide this kind of looking
+glass access to the rest of the
+world. What you are going to do, like already have our routers,
+the three routes on the left
+which are handling our internet and the connectivity and
+everything else. We then add
+another system. Traditionally a Linux system that is the bottom
+one on the left. This system
+actually has two legs. Legs for links. One links is going on the
+right to the internet. The
+public internet. This is where you expose your web access. This
+is actually where the other
+operator, the other engineers that for example the two on the
+right are going to connect and
+use your web interface, your web service. On the other side in
+the same host is another leg
+which is going to the left connecting this service to the
+private part of an operator.
+Called the private network. The internal system where you
+usually have all the console and
+administration services that you don't want to expose to the
+whole world because they are a
+bit critical and you don't need to do administration of them
+through the internet. So
+actually this is something let's say that the looking glass is a
+bit critical because it sits at
+the border between the public part of your network which is
+fine something that everybody
+can reach and the private part where actually you have critical
+services. How does it look like?
+I hope you love the 90s because it is, like, clear, simple 90s
+interface. Just have the minimal
+that you need in order to select which kind of program to run.
+For example you have
+connectivity issues, you want to run ping and trace through prong
+system to your own IPs. Or you
+want to see how the analyses are going so you can see some kind
+of advance or reduce in summary
+of the analysis. Then you usually have one form where you
+can input some other additional
+parameters like which host, which IP address do you want to
+ping or trace it to. And what I
+was showing before in the slides is that one looking glass can be
+connected to multiple routers.
+Actually all the routers in a single autonomous system. So you
+can select which router you want
+to run. Imagine that you are geographically distributed so
+you are multiple regions and
+multiple exchange points. You have routers at all the exchange
+points. So you want to run
+comments on specific routers and specific geographical locations.
+What we did in this research is
+okay let's focus on what we can actually review and check. There
+are a lot of custom looking
+glasses. So imagine that your internal system a looking glass
+is quite simple. Just the web
+service that is connecting to SSH and (Inaudible) so you can
+write your own. This is a bit
+difficult for us to review because we don't have the code
+and we cannot set it up in your
+own lab. So in order to try to assess we have to attack an
+autonomous system and it's not
+legal. What we did instead is take at least there are several
+of public looking glass around
+the world, crawl through them in order to see if anybody or if a
+large majority of them are using
+open source software that we can download. And actually the
+answer is yes. There are
+several. In particular there are these four that are mentioned
+here that are quite common.
+Probably because they were the first to be written. And they
+were highly needed and a lot of
+operators were just downloading them and deploying them. As I
+told you already, a lot are
+written in Perl and (inaudible) is one we love written in PHP.
+What we did in the rest research
+and Mariano will show you later is reviewing the code of these
+looking glasses and also looking
+for all we found vulnerabilities then looking how widespread
+deployment was and which kind of
+incidents we found. Before proceeding farther just to frame
+a bit how we're going proceed
+Mariano will show you several incidents. We started from the
+base like assuming this is bug
+proof. The administration can makeovers. Let's say you are to
+deploy a web (inaudible)plus CGI
+but forget to enable the CGI or forget to protect your
+configurations and SSH keys.
+This case we may see some exposed credentials. There are
+routers credentials. Then go one
+step farther. Let's say that we try to find bugs in web
+application. We look for the
+normal, usual code breaks. Let's imagine that we can find some
+kind of (inaudible) shifting. It
+could happen. In this case we can use it for normal stuff like
+attacking other web services on
+the same site. Some of the looking glasses may come with
+additional model. For example
+they may come with additional malware for example, binaries or
+forked/modified modules. If you
+find bug in these modules you can attack that through the
+host. Not the software itself
+but the host. It's the one that is actually storing the
+credentials. We already have a
+step stone into the private side of an operator network and we
+can also steal the credential.
+Then stuff gets really scary because okay let's focus on the
+looking glass. Looking glass is
+connecting to a router by allowing just a limited set of
+comments. Let's see if it is
+really a limited set of comments or if we can inject whatever
+comment we want directly to the
+CLI of a router. If we can imagine to do that we are
+escalating from a basic web
+attack to where we are attacking critical infrastructure. And as
+a side case of this, let's say
+that, okay, we can do that. We can log in and control multiple
+routers. We can attack multiple
+autonomous systems. We can actually change different
+vulnerabilities. So the one that
+we found is the one already known. To actually attack the
+network. Once we are in the
+router, we can try to escalate and change the modification of
+the router in order to break the
+local a hook of the local traffic so the routing changing
+the local topography or announce
+bogus preferences to have more impact. Some of you now may
+think this is for sure not
+possible because you have best practices. We all know that BGP
+are (inaudible) at the border
+and whatever. In theory yes that's correct. But what we're
+going to show you through this
+presentation is best practice exists they are well written but
+often are disregarded. We also
+have another paper that is describing more details on that
+and we actually believe that
+this kind of attack is feasible with what we have found. But for
+clear legal motivation we cannot
+perform that. Sorry for bugging you with this big introduction.
+Let's get into the meat of it.
+Mariano will go through a incident. That's a scary part.
+>> Hello everybody. I'm Mariano.
+(Applause) >> Okay. Today I will talk about our finding. That
+Luca told you are more on the
+defensive side. Okay. More on the (inaudible) side. And in
+particular what during our
+research we have found several incidents affecting the most
+common deployed of looking
+glasses. So okay if remind the definition of a looking glass.
+Looking glass is something
+related to the web. So it's normal the first kind of
+problems come from the web. When
+we talk about web issues, we have two kinds of problems. The
+first one is related to web
+misconfiguration and the second is the more related about the
+common web vulnerabilities. Now
+I will give you two quick examples. One about the web
+reconfiguration and one about
+common web vulnerabilities. For example one very looking glass
+it's possible to retrieve the
+router credentials. Give the IP address, user name and password.
+Then it is possible actually
+because the configuration file is stored at the known address.
+With the wrong permission. For
+example for common web attack we found a couple of (inaudible). I
+know this sounds like a joke. I
+mean, what can you do with a (inaudible) looking glass.
+Actually sometimes with the
+device people buy them and then set up under the same
+(inaudible) other application.
+Let's talk more in the case about web misconfiguration.
+During our research we were able
+to find a couple of configuration files with Google
+Doc. They are really simple. You
+can see two very basic examples. Once that you know the
+configuration file (inaudible).
+Now let's have a look at the real Google Doc here. As you can
+see here in the output, you have
+you have developed credentials. This means the IP address
+belonging to the IP address
+belonging of course across the web then you have the user name
+and password. Now, of course,
+you have the output is already in the Google query because of
+the looking glass is very
+confused and has been indexed by Google. Let's look at the
+configuration directive of these
+Google results. As you can see on the left side, on the right
+side, sorry, you have the
+configuration directory basically is we can lift it
+because it is very config
+ratable. The configuration files then another interesting file is
+the log file for the looking
+glass. On the left side we have the real configuration file of
+the system. In this case we have
+a case for the cougar looking glass, is one of the most
+deployed. We have one entry for
+every router exposed in the web interface. Every router entry
+needs a router name. And then,
+of course, the credentials. The connection meter that can tell
+it the stage, NHS, SSH, RHS.
+Then the user name and the password login. Another problem
+related to web misconfiguration
+is the full configuration file. For example if we don't load one
+of the most common deployed
+looking glass and we have a look at the root directory, we have
+several files. Here it's really
+easy to spot the configuration file. The LG.com. Once that we
+know the name, basically we can
+just comb the web. It's really easy to have a list of all the
+available looking glasses. And
+basically you can create easily your own (inaudible) to check
+for the big address of the big
+looking glass address then the name of the configuration file.
+If you are lucky, you will find
+several entries of data (inaudible) because they are
+readable and you can download
+them. Of course, there are best practices. So if you ever look
+the reading file of all the read
+me files of these looking glass results, (inaudible) to warn the
+net operator about the security
+location of the configuration files. For example, it's written
+clearly make sure you
+(inaudible) on the configuration file since it contains your
+password. Hope you get it. We
+prove some guys didn't get it and they were found about 35
+exposed in which you easily are
+able to retrieve configuration files and it means the
+credentials. Then let's have
+another look at the findings on our research. We have a few well
+known websites. One is the firm.
+One is the governor. They are some looking glasses. Everybody
+here in the audience knows the
+(inaudible). It is also quite famous in Italy. The network
+institutions and universities.
+We were able to retrieve the (inaudible) of the looking
+glass. Basically common for
+everyone. While for the gov, this is not the real looking
+glass. An old one and it's not
+currently deployed. But still we can access this custom PHP code.
+If you look at the code, you can
+find several security issues and give you idea about the problems
+that a looking glass can have.
+Let's continue. I just always related to the web configuration
+is related to the expose virus
+of the SSH keys. If you ever look at the configuration file
+or one of the common looking
+glass software, the connection meter is for example SSH you can
+have a configuration file of the
+configuration file. If you create your own code on that you
+know of course by private keys,
+and you start calling the web for the looking glass for the
+website, you can find several.
+For example one of the keys is here in this slide. On the top
+part of the slide you can
+actually have the private keys of these SSH router on the back
+one. Then if we for example try
+to read the dot SSH directory again we have a configuration
+problem we can list the
+directory and it's readable. We have several files, of course
+private keys. Then the client
+SSH configuration file and also the public key because, you
+know, I mean, we never know.
+Then let's have a look now let's focus more of our attention on
+the web. I remind you now the
+definition of the looking glass is the web application that is
+directly connected to the
+backbone router. And they may (inaudible) on the web. When
+doing our research, we have
+found there is a total lack of prevention of possible abuses.
+In particular for example there
+are no capture at all on these softwares. This means an
+attacker can easily automate
+several tasks. Such as example, mapping, automate the command
+injection even for example
+attack from several devices a victim from a different system.
+And I know this sounds really
+lame, but for example, create your own let's say fake dos
+botnik using all these devices
+because you don't have any capture and you can send
+comments and for example
+(inaudible). Let's have a look at the first kind of
+vulnerability we have found.
+Simple cross site scripting. Here the problem is in the HTML
+tag cycle and the address meet
+parameter. It is directly taken from the web phone. I know some
+people can complain about the
+cross site scripting. But, again, some network operations
+services can run under the same
+origin domain and for example you can steal cookies and
+execute around Java script code
+for whatever purpose you have. Here is an example. You can see
+here we have the looking glass
+interface. In the command we can see the address parameter. That
+we have of course for example we
+are trying to trace. (Cheering) >> Okay. Continue. Sorry. So
+here we have the parameter. As
+you can see problem with the cycle. Then you can inject your
+Java script code then execute it
+and do whatever you want basically. Now this is the big
+part of our talk. We have here a
+router common injection. The looking glass definition we can
+easy understand that
+(inaudible). >> Now stop. >> Oh now I have to stop. >> Does
+anybody know what's going on?
+(Cheering) (Applause) >> You do? >> What? >> Raise your hand if
+you are a first time speaker. >>
+Raise your hand. >> Welcome the new speakers! Cheers! (Applause)
+Good luck. >> Thank you. We can
+continue? After the shot. Okay. It is able to execute code from
+directly from the web interface
+on the backbone of the console. This is the case on one common
+deployed looking glass software
+in PHP. Here the problem is again the algorithm parameters.
+The algorithm is the parameter
+taken from the (inaudible). Here they also have this looking
+glass as kind of a confusion
+between the HTML case meaning and (inaudible). But here we
+have a look at the code. Open it
+readable. You have these algorithm parameters taken from
+the web phone that goes directly
+at PHP function. They can remove basically removes all the
+spaces. From the variable. Then
+this parameter (inaudible) the function. This is a simple
+wrapper around HTML, HPH
+function. Try to translate all the possible traffic in HTML
+entities. Then basically the
+argument it is directly centered with the backbone router. So it
+is a simple, straighter HTML
+escape and your common comments from the web go directly on the
+backbone router. Here you have
+the cool proof of concept. As you can see here you just have
+to keep in mind that for example
+to calculate comments for example you use a new line. But
+it's important to notice that
+the destination depends on the route of software so you can use
+whatever you want. Depends on
+the router. Here the comment is for example data on our lab
+environment. Okay now another
+kind of bug we found on our research is the remote memory
+bug. This kind is the problem
+that sometimes the looking glass has some other third party
+software embedded in their
+config rating, installation package. For one of them
+deployed looking glass, as the
+utility called fastping. It's been written by a student. Not
+me and Luca but two other
+students of course. And here the fastping is a third party
+binary, the equal reply is not
+properly sanitized. And we have memory corruption bug. Again
+let's try to have a look at the
+code. Okay. First introduction I'm sorry but the code is
+written Italian. And the
+comments in Italian. I hope you are familiar with Italian. The
+idea here is that you have these
+functions that is called (inaudible) but means fill
+tables. This function has index
+2 parameters, an index and a delay. Okay. Then we have a
+general of global array that is
+called delay that has the length. Then this function
+basically applies directly to
+these global array using any index that comes from a field of
+the ICMP equal reply. Of course
+it not provide any index (Inaudible) of fix it length of
+the memory corruption. The
+expectation here is the following. We have a third party
+binary. That sometimes okay is
+in the defaulter installation package. But, of course, then
+the network administrator can
+decide not deploy it. And the (inaudible) is no longer
+maintain and these are reasons
+why the current order of the looking glass software won't fix
+the issue. Let's talk about the
+real exploitational part. We keep in mind we are dealing with
+delays. So the exploitation is
+time dependent. The problem here is that okay we can basically
+have a work round about this
+problem. Because from the request we have a field and we
+can (inaudible). But then the
+other is that every time that we run a (inaudible) we are sending
+100 basically ISMP equal request
+packets. So the attacker can send up to 100 ICMP equal
+replies. So, basically, we can
+write one long parameter where 100 the longest parameter in
+memory on the target. The point
+is it's not trivial to subvert the flow of this application. I
+still have a bet with Luca. We
+are at Defcon so I will give you the challenge guys. We are not
+providing any code. Now I talk
+more about the web misconfiguration and that this
+kind of issue related to web
+Mobility. But we also have other kind of problems. For example
+basic configuration network
+design. These are because for example network operators
+basically make the router
+interfaces public. We can easily from the looking glass get IP
+address of these exposed
+routers. We can for example with nmap to have a look at what
+services are running on these
+routers. And we can see that we have the exposed the SSH and the
+Telnet daemon. Now Luca will talk
+more about some fixes and possible mitigation of all these
+problems. (Applause)  >> So that was
+actually the cool fancy part. We find out how to inject
+commands basically,
+vulnerabilities and incidentally in general we found a lot of
+disregarded best practices.
+There are a lot of counter measures for these kind of
+issues. So I see we can split it
+in three basically. The first one is looking at the code. The
+open source stuff in generally
+web code. We have to dilute a lot about the code. Then we have
+to improve our deployment
+methods. And if you are a network designer, a network
+architect or network engineer,
+please apply some best practices. First, let's start,
+everybody, understanding and
+acknowledging that if you are a web service that is exposing
+some kind of connection to a
+router, to some critical service to the web, it is, like, a
+dangerous case. Some kind of
+security target and we must know it and have a proper look at it.
+In particular, looking glasses
+are just one example. There are a lot of services like that
+which have been written in the
+90s usually. And has been forgotten since then. Okay it's
+2014, 2015, let's have a look
+from the security point of view to the code and review it. From
+the deployment side, we can do
+some steps in order to improve the situation. For example,
+there are a lot of cases where
+you don't need to connect this kind of services between your
+physical infrastructure. We
+found a lot of looking glasses that are connected directly to
+backbone routers and operational
+routers. You can set up looking glasses in other ways. For
+example, provide just one system
+that is mirroring all of the PGP roots that you know and is
+providing just ping and trace or
+some kind of sound box or playing environment that even if
+a hacker can get into it is not
+a big problem. Then, once you have deployed this kind of
+service actually check that
+everything is fine, that one public attacker cannot reach it
+over the web. Or your SSH key.
+Even if you did all of your configurations perfectly fine,
+check for other stuff that is on
+the same host. For example we found some cases for the looking
+glass was perfectly configured.
+But if you were accessing the same host through the IP or
+normal default dock root you
+were able to get to the same files. The last point, if you
+are a network engineer set up
+proper ACL on your routers. A looking glass doesn't need to
+have a root connection to your
+router. We found root possible in a configuration file, a
+looking glass user just needs to
+run a couple of comments. So set up a proper ACL just to do that.
+Then a router consults have not
+been tough as possible public access point. So there are some
+bugs. We know there are a lot of
+bugs. Sometimes very weak. It's easy to crack them. Use strong
+password. Don't reuse passwords
+for them. I don't want to see anymore SSH internet services
+exposed through the web. I will
+show you some screen shots from our own connection. We were able
+to connect to a router SSH
+console. Nobody in the world needs to do this kind of
+backbone router administration
+from home. Eternal system have their own private network and
+VLANS. So let's use them and put
+administration interfaces there.  The talk is basically over. In
+order to conclude everything,
+what I want you to take away from this talk is that, okay,
+there are a lot of best
+practices around. We all know this. But best practices are
+often disregarded. We found a
+lot of cases where everything was basically exposed and this
+kind of critical software were
+not reviewed, sometimes were forgotten and there were clear
+bugs. We didn't show any
+advanced degree bugs. So beware. They are sitting everywhere in
+critical places. Let's review.
+Let's check them. And something that we want is also this talk
+was probably a bit lame. We
+didn't show any real advance. But an attacker doesn't need
+something really advanced.
+Attackers go through the weak link. Looking glasses a really
+weak link. Very simple, mostly
+forgotten and in critical places. Once an attacker gets
+them it's easy to escalate. We
+showed you can get from the web to a PGP attack. Something
+that find really interesting as
+part of this research is that I really understood the internet
+core, there are so many pieces
+and so many critical security flaws around that I am still
+amazed the internet is real
+running up to date. That was all. We are available for
+questions later outside of this
+room. Just want to thank a couple of other guys from Europe
+that helped us and discuss add
+bit it and some very cool students bug finding and overall
+in the whole research. So thanks
+to you guys from the NOPS team. And that's it. (Applause) Thank
+you. >> Okay. There are a couple
+of back up slides if you want to see them. We found actually the
+partition is not that difficult
+because known bugs exist in a router. For example Cisco there
+are weak issues all around. Type
+five has basically just MD five. And type four where there is
+actually critical bugs. There
+were actually critical bugs. Then once you have access to our
+router you can escalate quickly.
+From Cisco and Juniper existing known bugs to get from a normal
+user to a root user.

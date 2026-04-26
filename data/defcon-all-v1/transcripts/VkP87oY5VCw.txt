@@ -1,0 +1,700 @@
+Please join me in welcoming
+Chapo and XLOGICX. (Applause)
+	>> Hi, DEF CON. Can you hear me? Well I can hold it closer.
+	>> How it everybody doing? Good
+time? 	>> Woo-hoo! 	>> Serious business here, what's up? You'll
+have it in a minute. Yeah. In a
+minute. 	All right. So no bio stuff, just gonna get right into
+it. Gonna get really off-topic
+for like the first 20 minutes until we gradually get on-topic
+because I like talking about
+formal systems so we'll talk about philosophical regressions.
+Although we'll be talking about
+automated security tools and how we need automation but if you
+rely on it too much you can run
+into problems. But anyway, so on formal systems, so a game I
+played a lot as a kid, it wasn't
+that it was challenging, whereas other people they start with the
+challenge. But not us. We could
+do it in a minute or less. What I was fascinated about as a kid
+was half the different
+communications or combinations of this are impossible. So in
+this case if you guys have ever,
+this is interactive, if you guys have ever tried to solve this in
+order so you have to get that 1
+all the way up there, totally -- won't waste my time but at least
+get the 1 up there. Okay. 2 is
+close enough. Anyway, this is unsolvable. If I wanted to get 1
+through 15. But I could get 15
+backwards which you can't if you just buy one of those. Nothing
+else on that, just find that
+really interesting. 	You're welcome. 	>> (Speaking off-mic).
+	>> This is the same concept.
+Show of hands. Who thinks they know why you couldn't solve this
+just based on this picture?
+Yeah! Yeah, every middle square is a unique square and people
+familiar with Rubik's cubes they
+know the most important square is the middle one. It doesn't
+change. I also find this
+interesting. This is a game that maybe you would never end up
+playing naturally, chess, it
+starts like this, very interesting chess -- called
+chess 960. You stall the pawns
+but the pack peoples you randomize and black and white
+near the randomization. 	All
+these examples I need to update, all these are in the same theme
+of formal systems are not
+breaking the rules, we are either changing environment or
+starting positions and first
+three examples we change starting positions. Here are
+examples of changing
+environment. 3-D, Qbert, the point is like the first two are
+like, yeah, okay, you're being
+trolled with this impossible situation but it doesn't have to
+be that way. You might actually
+end up playing an interesting and fun game of chess. This is
+another example of changing the
+environment. So some of you may have seen this video. There's
+this 23-minute video, I'll only
+do my favorite top hits, 50 seconds but it's impossible --
+not impossible but very
+challenging Mario level this guy plays but it's a funny video
+just because of how rant he is.
+Look it up, type in impossible Mario level guy rants, whatever,
+you'll find it. Here is my
+favorite parts of it. I'll make it a little bit bigger. Level
+starts out that way. (Laughter)
+	>> That's my favorite right there! 	(Laughter) 	>> I would
+have audio but I sliced so much
+together it would have been choppy. Check it out on YouTube.
+It's hilarious, more than that.
+You are gonna have to watch it. 	Changing gears here on wrecking
+the earth with resonant
+frequencies, I have a -- Tesla, I won't get in detail with that,
+just skip along sort of on that
+theme, though. Has anybody ever read this book? Awesome. Okay.
+It's by far my favorite book,
+not even on a margin. My second favorite book would still be
+110/10 and it's not about
+computers or hacking but what I learned about hacking is from
+this book, formal systems, more
+than that, though, if you haven't heard of this book check
+it out, read a preview but read
+this book, it's awesome. But about 100 pages deep the author
+in between chapters talks about
+this scenario. This scenario of -- these illustrations are
+from a friend of mine, not from
+the book. This is the tortoise and the crab and the crab is the
+instigator here, giving the
+tortoise the record, record player is supposed to be high
+Fidelity, not only very high
+Fidelity but should be able to reproduce any sound. I'm looking
+at this as our signature-based
+system. The crab is trying to foil this. He has a record that
+has a resonant frequency either
+geared for the horn or wood on the record player but resonant
+frequency that will cripple that
+record player. So that's the black record there, and that
+happens. 	So to try to defeat
+that he builds a more signature basis that might detect those
+frequencies so you have this red
+needle that is analyzing the record to try to avoid this. You
+run into problems with that,
+too, say the record player detects signature and decides
+not to play it. Now the record
+player that is high Fidelity is not reproducing every sound. So
+you fail that way. Or say this
+is just an evasion technique and the record still plays and still
+destroys the record player. Like
+that. 	So another solution, this is like this cat-and-mouse, not
+supposed to be specific but
+another solution is let's have several different horns so when
+you give it a bad record you can
+switch to a different horn that can play that record but you can
+have a record player with
+several different tracks and destroy the horns and again,
+that's kind of the theme. 	Every
+system, I wouldn't say it's vulnerable to exploitation but I
+don't think there's any perfect
+system just because it does something. So it doesn't have to
+be exploitation. It could be
+malservice or doing something it's not meant to do which may
+not be damaging but still not a
+perfect system. It's doing something it wasn't designed to
+do. Now we'll get into more
+lower-tech, more familiar abuses and I'll hand it over to Ruben
+here. 	>> We're all very
+familiar with this picture here. You know, SQL injections, into
+database, it drops or SQL
+injections, typical. But in these cases here, it is more or
+less, not a signature base but
+still abusing a system in an odd kind of way. So this guy here,
+Robert, he ordered, he wanted
+the special license plate, he was really into sailing and
+boating and this kind of stuff.
+He wrote down first license plate I want I want it to say
+sailing. If I can't get that I
+want it to say boating and if I can't get that, then I wouldn't
+it to eventually just say --
+	>> No plate. 	>> No plate that's right. He wrote down no
+plate. What happens is obviously
+the first two were taken and he got a plate that said no plate.
+Well, with that eventually he
+ended up getting $2500 notices in the mail of violation and
+tickets because every type the
+cop would write no plate on the form, you know, exactly, you can
+see where this is going. He got
+all these violations. Same thing with this. So the first slide
+there, they switched it over to
+non-add missing and this guy the same issue. He had a plate that
+said missing and he got
+violations as well. This guy here, he thought he'd be cute to
+have his little motorcycle to
+say no tag, and really brilliant, and when license
+plates had no tag on them, the
+cops would write down no tag and he would -- his actually showed
+up with the 200 violations so
+when he got his license plate in the mail those violations were
+there already! 	(Laughter) Same
+thing with this guy. It's void. The unknown. And then this guy
+here, I guess his favorite
+number was 7 and they called him racer X, and he ended up being
+19,000 worth of fines and his
+quote out of this article was, you know, he messed up the
+system so bad they were gonna
+send him to jail or something for doing this. 	This is kind of
+a unique way of showing, you
+know, when I guess we're kind of analyzing or not paying
+attention to specifics and
+certain systems you can really mess things up. 	So go ahead.
+	>> Who is familiar with these?
+We all know what they do, right. 	>> We're from Arizona so we are
+really familiar. 	>> Who still
+has them in their state? I know they were trying to... 	>> So we
+are very familiar with these.
+Speeding tickets. Now, a while back I think in Maryland, these
+students thought it would be
+real neat, they graduated from elementary school and they hated
+their teachers, right, hated the
+teachers so they would actually photocopy their old teachers'
+license plate and run through
+the speeding ticket cameras and those tickets would actually go
+to their teachers, there was no
+validation of who was actually driving the car, and it says
+pimping because it's what they
+coined the term. Pimping or -- I don't know. (Laughter) There was
+no validation, you know, from
+this whole attack, if you will. So PirateEye is. Has anybody
+heard of it. 	>> Little obscure.
+	>> PirateEye, well, first of all, they claim to be the leader
+in anti-piracy. Show the next
+slide here. 	>> Leader in some other stuff apparently.
+(Laughter) They really can use a
+Web admin or something. WordPress, pretty obvious how
+the attack -- (Laughter) Went
+down. But anyway pirate eye they do as I said anti-piracy in
+movie theaters, this story came
+about because some guy was wearing Google Glasses in a
+theater one night, when he was
+watching that movie he ended up getting escorted by three-letter
+agency or something, but what
+this service does is pretty much they put a little camera, if you
+will, mount it at the top of the
+theater and once the movie starts it actually starts
+recording. And their service is
+it kind of works like a security operations center, that device I
+constantly scanning three seats
+at a time for, you know, any recordable devices, camera
+phones, anything like that. And
+it got -- his Google Glasses got triggered by this. Once it does
+detect something possibly might
+be recording, they send off a text message or e-mail to their
+point of contact at that certain
+movie theater and say hey this guy was recording in your
+theater and essentially they try
+to get the guy arrested or whatever. 	So the attack against
+that, just abusing their systems
+a little bit and how you could just -- yeah, basically abusing
+and attacking them. XLOGICX came
+up here with spider eye. I guess it looks like a spider, spider's
+eye. 	>> So can you! 	>> Go
+ahead. 	>> So this is, this is my profile, I only have a couple
+things, this is an iPhone case,
+don't know if it will fit an iPhone, not the point. But I
+made it so it fits the like 100
+or 50 lenses that I purchased. But it's open scan format so you
+can change that. That one global
+variable. So it's an iPhone case you put a little lens in so
+plausible, looks like it may be
+something you are recording in. You go into a theater, put the
+iPhone case in the cup holder,
+there's the chair, that's the theater (Laughter) 	>> I told
+XLOGICX it might be nice to put
+mannequins to look like real people! 	>> I'll take this a
+little bit here. Bar codes, I've
+done bar codes, stupid shenanigans with bar codes for
+quite a while but I don't like
+VIP cards and what they stand for. They are used for a lot
+more than what they were
+originally intended for, in bad ways. I think the main reason
+they first started, you have a
+thing called correlated goods, hot dogs and buns. If you are a
+grocery store retailer you can
+have a sale on hot dogs, but then jack up the price of buns
+so people are still paying
+either equal or more than they expected to. But that's obvious.
+People would catch on. Hot dogs
+and buns you might notice the buns cost more and you'd catch
+on to that. So you need to use
+statistics to find like less obvious correlated goods?
+Correlation and statistics
+that's just the right tool for the job. 	So one of the best
+ways is give everybody a
+discount card, savers card but it's really just data mining for
+those statistics. One thing that
+came out and I think I learned it from my use less MBA,
+marketing or something like
+that, it was wine and diapers was a significant correlated
+good! For some reason!
+	(Laughter) It's funny but that's the point, it's not
+obvious, that was the initial
+reason and whatever, sort of evil but kind of Diet Coke of
+evil a little bit so that's
+their solution to that but kind of privacy things, so you can
+figure out shopping preferences,
+clothing size which could say a little bit about health, then
+smoking, alcohol, whatever
+pills, they will know if you own a pet. I was going to say birth
+control purchasing but there was
+a case of like just correlated thing that would indicate you
+are pregnant. Big story about
+that. 	And then health insurance claims. I forget the name of the
+program, it's called smart
+mouth, I don't know if they are still doing it. But HSA would
+buy this data right up and you
+might get a claim denied because of your saver card. So, yeah,
+things like ice cream means
+you're obese to a health insurance agency. Cardiovascular
+disease, meat, milk, cancer,
+additives, sweetener, which may or may not be the case but to
+them it is. 	In law enforcement
+I think they have been known to use it, too, but this case
+specifically I find interesting.
+It actually didn't get used in court, but they try to use it.
+Vons which I think is a
+subsidiary of Safeway, they had a yogurt spill in the aisle,
+someone slipped, fell, was
+hospitalized for about ten days and then tried to Sue to recoup
+some losses which I don't care
+about the politics of that. He's probably in the right for doing
+that but that's not the point.
+Vons was trying to data-mine his card to see how much alcohol he
+was purchasing to build a case
+against him. They didn't end up using that in court and my
+theory on that is that that
+would be showing their hand. If they started doing that, that
+would precedent a precedent that
+would do that and people would be more skeptical about cards.
+	>> Not just with the special
+shopper cards, but nowadays also they're also tracking by debit,
+credit card and all this good
+stuff. They'll present out several receipts that you have
+bought in the past for
+something, and just like wait a minute how did they know I
+purchased this? Well, they are
+obviously tracking. That's another good point. 	>> We have
+one giveaway item. We don't have
+enough for everybody but but about 100, so after the talk
+come up and take them if they're
+here, but this is my VIP card. It ends in the digits 2600 and
+the -- it does work at Safeway,
+this also works at our local chain in Phoenix, Fridays,
+Kroger, it might work at other
+places too but the point is we all have the same bar code and
+that's funny. When they are
+data-mining we are one very large customer. 	>> So you
+better fight for those gas
+points because whoever gets to it first is getting it!
+	(Laughter) 	>> On my same
+thingiverse of profile I was talking about earlier, you can
+just Google thingiverse and my
+handle XLOGICX or whatever, but I have a list, I have a bar code
+generator so if you want a 3-D
+print laser cut and I have a list of valid bar codes I'm
+currently using so if you know
+of a bar code I don't have, I don't need your whole VIP card
+just the first six digits and
+then I have a cool script to end it in 2600. I did a laser cut
+bar code and totally works, you
+have to put it on black background because they cut the
+spaces so it comes through as
+the lines from the black. 	This doesn't work anymore but it's on
+my cell phone, single lines fell
+off. Gimmicky, doesn't work but it did work for the first few
+weeks, that's from a vinyl
+cutter or plotter or whatever. You don't have to be as fancy, I
+thought gimmicks were fun, but
+there are smartphone apps, I listed four of them here, most
+popular ones. Make sure you
+select UPC A for the bar code, I know some phones don't scan but
+I think most do, just because of
+the type of screen or just print them on a piece of paper. Point
+is use our bar code that I have
+listed on that thing, even if you don't get one of these you
+can still use the bar code. Last
+point what if the score blacklists it? I don't care, it
+would be funny, it would show we
+pissed them off enough to make the difference. I have the pearl
+script so get someone else's six
+digits and there's the central repository of my bar codes we
+could all use. 	>> Now we'll get
+more technical. I'll go through the first like three subsets of
+things. Forensics, AD and IDS.
+IDS is my favorite so I'll spend the most time on that which
+means I'll kind of blaze through
+forensic and AV and then do the most live demo proof of concept
+with IDS 	First with forensics
+stuff, anybody familiar with scalpel? Show of hands. Scalpel.
+It carves through a file system
+for files based off of they say magic numbers but mostly headers
+and footers part of it in Linux
+it's more than headers and footers, there are regular
+expresses, but in this case
+headers and footers and also, like, optionally how far into
+the file you want to go. 	So
+we'll troll that tropical that. This is a loose example of what
+a file system is like. Green,
+green is a hex dump of that simple HTML page and then like
+you'll have metadata but that's
+not part of the file. It's somewhere else. 	So this is the
+same HTML file. This is a busy
+slide. I'll dig around but in the middle here is what a
+scalpel signature may look like
+for an HTM file. So the first part is just the extension
+title. Next is whether it's case
+sensitive, this number is how many bytes to carve into, if you
+don't have a footer. So we'll
+stop at that point because some signatures don't have a footer.
+Then the header and footer. 	If
+we go down here, this is how it what carve. It's HTML starts
+carving the content and once it
+hits the HTML closing bar it knows to stop and carves it is
+whole thing out and spits out a
+serialized HTM file. That's how that works. 	Thinking about how
+that works, what do you think
+that might do if that was the content of the file? Actually
+horrible. Really really bad.
+We'll get into that. Recursively like goes to the first HTML, I'm
+pointing at my screen (Laughter)
+Goes to the first HTML and then carves down to these and each
+HTML will be content, then start
+that up again and go to that one. This keeps going and then
+it will, next HTML start and
+it's bad. So I could do a live demo but for time I won't. But I
+did record a demo I did. The two
+I wrote in Pearl is like magic BOM. I'm ruining tool magic BOM,
+multiplier of 50, generated
+payload, and then I'll show us what we have as a result. Show
+you how large the payload size
+is. For some reason... okay. (Pause) So in this case it's 17
+K, we'll run scalpel against it.
+Output directory out. So you see it says like 50 of each file
+because that's what I told
+payload to do in our 17 K payload -- (Coughing) -- and
+running DU on the output file
+that gives us actual output it spit out. This is 17 megabytes.
+Keep in mind none of the files
+carved out were actual files. They are all false positives.
+I'm also demonstrating audit
+text files, it shows all file sizes of each file. 	What it
+does not give is a total which
+kind of successes, so in that case I kind of just wrote a
+little hack Perl script what you
+are seeing right there to parse out and add up all the
+individual different file sizes.
+	I know it's lame to show code in a presentation but it's like
+almost a 10-liner so whatever.
+	Come on, howdy. It's gonna be -- it can do itself. So the
+Perl script against audit.txt,
+it's close 16.7 mess as opposed to 17 flat but I'm only
+demonstrating because I'm going
+to do a really massive payload so I can do a scalpel and just
+say just give me the audit.
+Don't carve, just tell me what it would look like if you carve
+and then I could run the Perl
+script. I'm creating payload of 30,000 of each file and it's
+reading from a scalpel.com file,
+that is how that's going. This is actually looking like it's
+going slow. In real life it goes
+slower, we'll see it fin finish in 90 seconds. Payload is 10
+megs. 	>> May I have your
+attention, please? Keep your arms and legs in the car at all
+times. 	If you are a new
+speaker, raise your hand. 	>> Doesn't matter. 	>> Well,
+yes it does! 	>> No, it really
+doesn't. 	No, that ain't happening! Who wants it? I'm too
+fucking edged for this shit,
+man, I'm not doing that. 	>> You said you wanted it, here, you
+come and get it. (Laughter)
+	>> Chill. 	>> I'll get it for you. (Laughter) 	>> Speakers do
+a fucking shot! Vodka I got.
+(Laughter) 	>> Here. (Laughter) (Applause) 	>> Thank you,
+gentlemen. Continue. (Laughter)
+	>> All right. Continuing on. So we're carving. 30,000 in each
+file. Running the Perl script on
+the audit.txt and I'll zoom into this astronomical number it will
+eventually show. (Laughter) So
+we have a 10 megabyte payload, 3.7 terabytes! And it actually
+takes like hours to actually --
+it would take (Terabytes) If you have to drive for it. So this is
+kind of that 17 k payload the
+first thing we did, that's a lot of files, it might daunt your
+brain if you're trying to
+analyze it. 10.3 megabyte payload, it carves out 3.7
+terabytes. If we did 100
+megabyte payload, scalpel would just break. Unless you have like
+a super computer, whatever, bill
+or whatever, that's funny to me, all that. So AVtrolling, I won't
+go into this tool called hedge
+sneeze. It just reads the signature file and then spits
+out a file for each signature so
+if you were to run ClamAV or other vendors on it it will look
+like a bunch of viruses and the
+funny irony is they are not viruses, they're false
+positives. The highlighting is a
+little off. It's supposed to be highlighting this burst of byte
+here. But it's what I call a
+tumor. And we'll get into how this works. It only really plays
+off one individual vendor. But
+so say our virus signature was this binary here, actually in
+ASCII just the letter X, this
+red stuff here says expect us. So this particular vendor the
+way it quarantines is it takes
+the metadata, makes a file out of it, takes the virus, makes a
+file out of it, X stores both
+files with the key of 6 A, and then puts them Beth into one
+7-Zip archive container. So you
+have, you are left with a 7 zip file and both those metadata and
+files are in there with the key
+of 6 A. 	The idea is to neutralize it so it doesn't
+rescan again because if you have
+a virus in its own quarantine file it will detect it. And we
+are using that. 	So before I get
+into that, I am -- I can some of you might know about the ever so
+powerful double XOR. We are
+using that, too. So here is the process. we have our metadata in
+file type not tumor, say the
+virus signature is this string that I highlighted in purple and
+then a two-byte file but the
+next string of bytes is not that signature, and just to like cut
+to the chase you'll see it but
+this here, if you XOR it with 6 A would be the virus signature.
+So we quarantine it and that is
+kind of what it would look like now, so it's still a virus to
+the AV vendor so you XOR it
+again because it's a virus and it keeps on building up with
+metadata. 	So let's see that.
+This is longer because I kind of hate magic, I don't want to show
+you an -- like any tool that is
+doing it all for you. HipSneeze will do this but I won't do it.
+I'll manually rip a signature
+out, XOR it manually, combine it manually and show you what the
+vendor does to it. I'm copying
+AV's main file to a local directory here. My tumor
+directory. I'm using VDD or DD
+to chop off the first 512 bytes because this is a tar file but
+not the first five, I'm chopping
+that un, untarring it and then I'll have to edit permissions
+and I don't know why my video is
+stopping 20 seconds into it. Here we go. 	So now we have our
+main file. Fix permissions, show
+you what the actual file looks like in the raw. I scroll down
+here to show more meaningful
+names because the first ones are all hexy. We see we have plain
+text signatures and we can get
+our hands dirty and play with them. I'm graphing for a
+signature that is very
+tumorible. It's an alba worm. That's what I did in this demo.
+So the format is virus signature
+name, equal sign and then that hex you see there is the
+signature itself, just ASCII hex
+so we'll use the tool XXD to make an actual binary file. Now
+we have what would be scanned as
+a virus if we were to scan for it. 	Now I'll cat it out, see
+it's plain text, this is a Perl
+one-liner to convert it, XOR encode it. Trivial but I'm using
+the key of J, J in ASCII hex is
+6 A, that's why I'm using J. And I'm showing aside by side
+ex-sort one and then original
+and I will cap them both together and that will be a real
+payload. That will work.
+Tumor.txt. There it is altogether. Like I really like
+seeing all the intermediate
+steps, there is no magic here. Copying it to a shared folder
+because in this demo this was a
+mint VM so we'll go over to Windows VM 	You see how grainy
+this is but I'm copying the text
+file over and this is the quarantine folder so a file pops
+in, I did didn't mention what
+vendor but if you know what .taup means you know what vendor
+this is. 	So note that it's
+three K and I'm going to try to access the file, so that would
+be considered an on-access scan.
+So open it with Notepad ++ and malware. Found it in quarantine.
+Then you'll also notice that it
+is 6 k now. (Laughter) 	>> Tumor. 	>> Tumor, it grows
+slowly. We'll access it again.
+Oh, crap! Here is 2. (Laughter) Now it's 8 K. I would say the
+tumor thankfully is benign, it
+doesn't repeat forever. I didn't weaponize it because I don't
+care. I like formal systems, I
+stop there. Now, our favorite part. 	>> I'll get into a little
+of IDS fun. 	>> Well, this is
+like the demo stuff so -- 	>> This is snorby. 	>> Our IDS
+system here. This guy here.
+	>> I should probably zoom into this. 	>> Basically we see the
+typical SOC or situation where
+you always have analysts that are sitting on a channel just
+watching the CIM or IDS or
+whatever it mate be, in this case IDS and a lot of times,
+especially nowadays seems like
+training is always a hard thing to you know come by with
+training people up in order to
+analyze these kind of events and signatures and what everything
+means. But clearly here you can
+see it looks like a possible SQL injection intact. When I see
+these things, I have even had
+people do this in real life, they would take this and be like
+okay I see they are trying to
+attack our server here, let me try to go ahead and validate and
+see if it actually is possibly
+SQL injection. 	>> Before we get to that, this is a rule. This is
+what it looks like, what it's
+detecting, pretty simple. Looking for a little bit of not
+case sensitive but really it's
+looking for the word "Select" and "version" so
+someone could Google it and say
+I want to select the version of some software and it will look
+like a SQL injection. This is in
+that scenario and you could have someone that might think okay
+well my site maybe doesn't use
+SQL back end so put it in the I bar and see what happens.
+	>> Smart analyst would probably
+just take that first piece, SQL part, but in some other cases I
+have seen this as well.
+Demonstrating here. 	>> I just want to show some of the
+stupidness of that. 	>> I'm
+going to verify and post this to our server. 	>> You have select,
+obscure stuff, we don't know
+what that is and so it's tested. (Laughter) 	>> It's not SQL
+injection. So it is again just
+playing with signature, the thought is it's not like elite
+hacking, with a cross eyed
+scripting your attack vector might be an email or something
+like that. This is obscure as
+hell, the attack vector is a security analyst that is
+watching in IDS, that's the
+attack vector. So next is a script called eight ball.
+(Laughter) 	>> Yeah, this slide
+sometimes you have to kick the tires of your IDS with a rocket
+launcher. So it's not the first
+tool like this. There was some tools, sort of researched but
+couldn't get the actual code.
+Might be Vapor but Nick and Snot, those are big ones, it
+does more -- you don't have to
+hunt for it either. It's kind of like this is a very not --
+bigger than this but test my
+IDS.com, if you go there, it's not HTML it has this text and it
+plays off this signature, meant
+to test your IDS. To validate it's working and that is what
+this tool is doing, eight ball,
+I even added there rot ling so you can make it slow enough to
+where you are not dropping
+packets and increase it to see where it drops packets to test
+performance of it. We'll get
+into this. This is a slightly more complex rule. Note the
+whole rule just... here, so it's
+looking for awstats.pl, configure, update, plug-in mode,
+equal any amount of anything
+including nothing, and then any amount of alphanumeric text
+surrounded by pikes or system.
+	The question is: So could we just do that, a get for that
+using that cat or whatever? The
+answer is yes, we can. So it triggered that rule and that was
+the packet. This is not how the
+attack would actually work, we're looking at the signature
+going it will be that, it will
+trigger. So what about automating it? That is what
+eight ball does. Literally reads
+a rules file and generates a packet for all of the rules. So
+you run it, your IS will light
+up with unique rules, maybe not all of them because (?) is hard
+to deal with backwards but it
+does do the PCRE stuff. 	>> Takes me back to my SOX days
+was channel flow, I'm sure some
+of you are familiar with it. 	>> This I'll do live, not do a
+video, I have it just in case.
+It's fun, doesn't take too long. There it goes! This is the
+script running. In green. You
+have the content matches. In red you have the PCRE matches so
+it's looking at a regX stream,
+creating 1 that would match that regX, this is porn, while that's
+going I have a couple more
+slides because this takes like two to three minutes. So I want
+make use of my time efficiently.
+	Things I have not had added to the script yet but plan to, the
+first thing, UDP, spoofing, so
+light up TI stuff or make it so it's not attributable as much.
+One of my favorite things like
+crazy to go over this in 30 seconds or less, it's a crazy
+big talk but regX denial of
+service. This is a bad regular expression! This is Perl script
+and there's only two lines here
+that matter. I'm taking an input and I'm seeing if that input
+matches that regular expression,
+so if I run it, first time, I say, As and the Bs, that took
+one .5 seconds, adjust a few
+more As that takes about ten minutes. See if it matches. That
+is bad on IDS, bad on Web apps
+if it's doing any validation but it also is taking advantage of
+someone running a really really
+bad regular expression. Long circuiting if you do coding you
+have an expression if A, B, C,
+D, and E then fire the laser, compiler would be if A is false
+the rest is false, don't
+evaluate the rest. So the long circuit attack is make all true
+but E so it doesn't match but
+takes as long as it possibly can to find that out. 	If you look
+at a more complicated rule here
+all stuff in yellow has to match and then a regular expression
+down here. So we do all this
+stuff that has to match and the regular expression is just
+saying we need the range Colon
+space bytes equal, then character set so 0 through
+9-space comma, we need 100 of
+those, 4 1 comma, 99 of those and then X. It's going to really
+hurt performance but also not
+gonna trigger an alert. That's funny. (Laughter) Some other
+stuff, wrapping this up, we are
+kind of done, actually let's see if that's done. We finished so
+now I'll go to snorby up here
+and go to the dashboard. (Pause) That was actually when I was
+testing it this morning, ran the
+script twice, I'll do force cache update which will take
+about one minute and just to
+wrap it up, this is something I'm interested in. Haven't done
+anything with it but it would be
+same thing, attention deficit disorder is pretty awesome, not
+ours but I guess it kind of
+poisons memory and volatility it will deal with it nasty and all
+your awesome tools. So probably
+don't have enough time for questions. 	I'll leave this up
+here for a moment. I will check
+to see if, maybe I'll click on the -- there are 200,000 events.
+If I click on it, I am seeing
+207,000 events up here. So just triggered 7,000 events and
+they're all unique. I could go
+to any one of these and analyze it. Like it just shot that at it
+because the rule is looking for
+just that. That's what it does. So... 	>> That's all. Thank you.
+(Applause)

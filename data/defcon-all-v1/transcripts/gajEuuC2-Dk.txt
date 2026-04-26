@@ -1,0 +1,692 @@
+>> All right. Good afternoon,
+everybody. And this is the only way to be sure obtaining and
+detecting domain persistence. So a bit about me. I'm Grant Brewer
+and I've been hacking and coding and working on security since
+the '90s, which I know is old by DEF CON terms. I've been working
+in Infosec for the last 10 years and I'm very much a security
+generalist. I've been a dev, a tester, a program manager, a
+security engineer, an architect, a consultant, an educator, a
+little bit of everything. And I've worked across dev tools,
+web applications, desktop apps, high security services for
+governments, application security consulting, etc. Um, so
+I'm currently security engineer for a big company. They are not
+sponsoring this talk, though, so I'm just giving this as an
+individual. I also run Perimeter Grid, which is my security blog
+and consulting service. I've spoken before at Blackcat, at
+DEF CON 22, and at DOT Con and I have been coming to DEF CON for
+I guess seven years now. So with that and the usual disclaimer of
+this is my own talk, it does not represent -- necessarily
+represent the opinions of my employer, we get started. So you
+have a domain controller and if you have a domain controller,
+um, you probably have some kind of monitoring on it. Ah, but the
+sad fact is the state of monitoring in real enterprises
+is generally woeful, most companies I've seen, it's really
+bad. There's local event logs with default configuration and
+if there is a seam, it's designed for compliance, not for
+security and forensics. It collects the PCI-mandated events
+and nobody ever tunes it and nobody ever reviews it. That's
+sort of monitoring is not going to be able to find somebody in
+your domain. So for the demos here, we're going to assume that
+you've got basic monitoring. You've got detailed granular
+auditing enabled and group policy. You got event logs that
+are being pushed or pulled to a seam off the services. Ideally
+inaccessible to them. You've got centralized hides or
+anti-malware logs. And you've got process start command line
+logging and power shell auditing enabled in group policy. That
+last one does require at least relatively modern versions of
+Windows and not XP and some such. So I've set up a
+demonstration domain to be able to walk through the, the,
+attacks and defenses. And I set it up as Windows as a virtual
+network. It's has three servers and a workstation, a domain
+controller, a web server, a Splunk Enterprise server, and a
+workstation used by the hapless attachment clicker bobber who is
+going to be running our Trojans. Splunk Enterprise is configured
+to run as a domain user. So it has domain credentials. It pulls
+nondomain controller logs by WMI. And ah the domain
+controllers, however, push their logs via Splunk universal
+forwarder, because others with the monitoring account would
+have to be a domain admin and I don't want to make this too easy
+for myself. Finally, there's semantic endpoint monitoring on
+systems forwarding Splunk by event log. Meanwhile, on the
+other side, so you want a domain controller. Well, there are lots
+of ways to get access to a domain and there, um, pretty
+much limitless. You could exploit unpatched servers, get
+an admin's password with a key logger. Get an admin to click on
+your malware, steal an AD-back up, exploit security software,
+or you know, somebody who is running their seam as domain
+admin, ah, use your elite zero days that I'm sure that you have
+a large pile of. But this isn't what this talk is about. On the
+bright side, it is DEF CON, there are a lot of other talks
+about gaining access. This is about what do you do once you've
+gained access to make sure that you keep it? So we're just going
+to stipulate that you've momentarily compromised the
+domain, you have TCP/IP network access. Maybe you have a pone
+plug or a compromised advice inside, or a beef session to a
+workstation, whatever. And you've obtained domain admin.
+You got an interpreter session with domain admin. Doesn't
+matter where you got it. The administrators at some point are
+going to notice you compromised their domain and try to
+remediate and kick you out. And then try to figure out what you
+did. So it's going to be kind of a red team blue team type of
+demo. Our goals to make it easy to get user access and then
+elevate that access to domain admin again using the only the
+TCP network access that we have. Meanwhile, their goal is to
+figure out what we did and how to kick us out without having to
+wipe everything and start over. So okay. We got this domain
+admin token, what can we do with it to make sure we can always
+get domain admin again. Well, I guess we could create a domain
+admin account. You might also try banging a gong. This is
+about the least subtle thing you could do, but -- let's -- okay.
+I videoed my demos because I know the demo gods are never
+kind at DEF CON. Um -- all right. So I'm going to start up
+Metasploit, set up a handler for my Trojan that I've got my
+domain admin session on. Using the Meterpreter reverse HTTPS
+which is my favorite one because out going HTTPS sessions to 443
+are the least suspicious thing there is. And I will connect to
+my Meterpreter shell. From there, if I've got a domain
+admin token, simple enough, I can drop to my shell and create
+an account for Frederick Nord, Nord, in honor of DEF CON 23.
+And add this domain user. Once I've added him. I can do this
+anywhere I don't have to be on the domain controller, I will
+just at him to domain admins. So what's this look like to our
+Splunk session? We have a lot of events. Ah, we have a 4720,
+which is a user account was created. We see here that the
+admin account created a new account called Nord. 4722, they
+have enabled a user account. This immediate follows creation.
+4724, they have reset an accounts password, also
+immediate follows user creation. And most suspicious of all, we
+got a 4728 event which is a member was added to a security
+enabled global group in this case domain admins. You pretty
+much count on if an enterprise is monitoring anything, this is
+probably one of the events they monitor for. It is almost always
+administrative action. It is very seldom done by an automated
+process. Ah, and adding user to domain admins is about the most
+suspicious thing you can do. So it also creates security enabled
+global group, which is 4737 as well. So we're going to look at
+what for the much more subtle things we can do to make sure we
+can get access again without having to actually at ourselves
+to the domain admin's group. First of all, we are going to
+make sure that we can at least get user access again. And for
+this, we need some kind of autorunning Malware on, on the
+system we've targeted. In this case I'm using this PG
+workstation system that somebody logs into. Now, everybody knows
+about the registry key, current users, Windows current version
+run, that automatically starts things as soon as people long
+in. But what a lot of people don't realize is that is pretty
+far from being the only one. I'm going to pull this up locally
+instead of using the video. Um -- all right. So here we have a
+wonderful little system tunnels to calls autoruns. And the
+autoruns to shows you various things on the computer which are
+set to automatically run at boot up and log-in. So at log on, um,
+we've got, let's see -- ah, it's still running and collecting
+stuff. So log on is going to contain our usual Windows
+current version run. Um, but that's far from the only thing
+it will contain. Um, sorry, I can't see my own screen here.
+Um, so we've got components running from a wide variety of
+locations. Um, any of these apps that you can replace can run
+automatically add log-in. In addition, explorer has shell
+handlers. In it, explorer has browser helper objects that load
+as soon as anybody starts up the browser. We also have scheduled
+tasks. Now in this case these are interesting, any time you
+get a scheduled task listed in red here. I didn't run this at
+admin, which is the reason I don't have nearly as many
+autoruns as I would normally have. I'm going to rerun it. Any
+time we get one of the entries in red, it indicates the autorun
+is running unsigned code. In this case, many times it is VB
+script code. Okay. I'm going to change this so I can see my own
+screen. Um -- that didn't work at all, I still can't see my own
+screen. All right. So -- right here. Um -- so I've got context
+menu handlers. I've got my scheduled tasks. Any of these
+things that are VBS files are particularly good because
+they're unsigned code, I don't have to create a new file on the
+machine, I can just at a line to the VBS that runs whatever my
+Trojan is. They're also servers, drivers, one of the more
+interesting ones, image hijacks. I don't have any running of this
+system right now. We'll get to both image hijacks and LSA
+providers a little bit later, some of the more interesting
+things you can use. The, there we go. Unhide Microsoft entries.
+The, so like here's an example of when IR runs it will actually
+run, it has, a rather, when, when, HTML times run, it will
+hijack that and send it to IE. Part of how IE runs. But I can
+add an image hijack show that when someone runs any EXE of my
+choice, it will also run my own executable. So this is also very
+useful as a forensics tool. Because you can go over here to
+everything and see all of these red entries. They're also yellow
+entries which replaces where my system is set to run a file
+which doesn't exist. So I can add a file to any of those and
+whatever it is, it's going to automatically run. No one's
+going to notice that I've added something that not supposed to
+be there because I didn't tell it to autorun. It was already
+trying to autorun that item. So there are a great number of
+places that you can add these autorunning programs. All right.
+Let me get my slides back up on the screen. All right. So
+another place I can put my backdoors, though, if I don't
+want to drop a file on the machine at all where it could be
+detected by forensic examiners I can drop it directly into the
+registry. So in this case, I'm going to be using, um,
+Veil-Framework, which is a great little about a skater of
+backdoors. To create a PowerShell-based version of my
+remote access Trojan. So I'm starting ow, PowerShell, shell
+inject, download virtually, which is a very small bit of
+PowerShell, which simply pulls down a larger piece, which then
+builds an Meterpreter shell directly in memory and runs it
+without ever actually touching disk. So I'm going to generate
+my shellcode in Veil. Once again, using Meterpreter reverse
+HTTPS, as I usually do. And this is going to create a few pieces
+of PowerShell. It's going to create a very short initial
+downloader and then a longer file which is the actual
+payload, which is placed in a file that I have to place on my
+own web server. So takes a little time for it to genre.
+Call it PSREG. So you can see it generated a payload file, PSREG
+dot text as well as a handler file, and secondary payload
+written out to output, source, this long random string of
+letters. And this needs to be served up on the server that I
+specify. So I'll X out of Veil. And copy my randomly named file.
+If I wanted to, I could, you know, put this on an actually
+publicly accessible server, give it a perfectly innocuous name
+that wouldn't look unusual in web logs. It could be called
+whatever I want. I have this PSREG.text that has this very
+powerful command which will download that payload and
+execute it in memory. Now, it is by default in Veil, it has been
+hex encoded, base 64 encoded, rather. For this I actually had
+to decode it, because it turns out in the image hijacks
+registry, there is a relatively short command line length
+allowed and if you put this entire long encoded thing in
+there it has a hard time actually running it. All right.
+So okay. That's, let's see. Okay. All right. So I'm going to
+connect my user session here. And I'm going to create a
+registry key in this user session. And in this case I'm
+modifying the image file execution options for CALC dot
+EXE. Really I would modify them for something that's in those
+autoruns or something that I would expect my administrator to
+frequently run. Preferably I find something in autoruns that
+I don't actually care about, nobody cares about, people
+always have printer drivers and video drivers that have to have
+some memory resident component. Nobody's sure what they're
+supposed to do anyway. There are a dozen of them, you can easy
+hijack any of those. So I'm adding an image pile execution
+option called debugger, which has my PowerShell in a hidden
+Window bypass execution and it's going to do an inline execute of
+what it downloads from this, ah, URL that I've provided there. So
+when that runs in PowerShell it will download that with, ah,
+basically the PowerShell equivalent that you get into
+memory and execute that PowerShell. And that secondary
+payload is my Meterpreter virtual inject. So now my end
+user goes and runs the compromised app, in this case,
+they're going to run CALC dot EXE and it immediately
+disappears. So this is why you want to use something in the
+startup that no one is going to care about anyway. If you really
+wanted to get fancy with it, you could develop, you could develop
+your own script which would actually run the necessary
+target. Um, the problem is, you can't just invoke the EXE
+directly in the -- normal fashion because if you do, the
+image file execution options will just hijack that one again
+and run your, your PowerShell. So you'll just create an
+infinite loop. So you have to actually script it to take
+itself back out of the registry. And -- and -- as soon as they
+ran, CALC dot EXE from my perspective running the handler,
+I immediately get a-- I'll, well, I got a video of it, but
+it connects to the Meterpreter shell. It does the exact thing
+as any of the other Trojans do. But it does it entirely in
+PowerShell with no need to drop anything on the disk to be later
+found. So at that point I got user access again, but I don't
+have domain access. And I want to have my domain admin session.
+So what can I do on the domain controller to make sure that I'm
+always able to elevate to domain admin? And we've got at least
+four options here that are more subtle then adding yourself to
+the domain admin's group. So the first one I'm going to go over
+is the skeleton key patch. Now, this was actually presented at
+DEF CON a couple of years ago. And it is now a built in feature
+of Mimikatz. Unusual it is not a built in feature of the kiwi
+manual of Meterpreter yet. So we have to use the actual Mimikatz
+EXE in order to run it. The other option would be use to
+something other than Metasploit, I know, like PowerShell Empire
+for instance, does have the skeleton key patch in there so
+you wouldn't have to drop Mimikatz on the disk. In this
+case, I killed the antivirus process so that I can proceed to
+drop Mimikatz on the disk. Once again, that's -- not very
+subtle. It will leave an event. Um, put if you were using a
+different remote access package rather than Meterpreter, you
+could manage to do this without necessarily hitting disk with
+it. So I create my shell, I run Mimikatz. And I grab debug
+privileges. And then I run the NIST skeleton module. And this
+does a quick little patch. If you recall earlier in autoruns
+there was a session for, ah, LSA security providers. Well, what
+we've just done is we've added an LSA security provider and
+we've added the Mimikatz security provider. And what this
+actually does is now next time I connect to my workstation I'm an
+unprivileged user. I'm connecting to a session as
+Bobert again. I don't have any user privileges. So if I get my
+UID, I'm just Bobert. Ask if I go to my shell and I try to
+connect to the domain controller C drive I'm going to get an
+access denied because Bobert does not have access to the
+administrative shares on the domain controller. Drop all my
+connections and now I'm going to net use it only this time I'm
+going to specify I am the domain admin user who is PG DEF CON
+whack admin and my passwords is Mimikatz. The domain admin's
+password is very much not Mimikatz. However the fact that
+I have added that LSA security provider means that Mimikatz is
+a valid password for everyone in the domain. I can log-in as
+anybody, anywhere using that password. Um, and so I am still
+Bobert, if I do a who am I, but I'm able to do anything that the
+domain administrator can do. So assuming you don't disable the
+AV and drop Mimikatz on the disk. The only unusual event
+you're going to get from this is a privileged server was called,
+event 4673, sensitive privilege use. And we see here there was
+an LSA register log on process. And, um, the unfortunate thing
+about these events is they're not super rare. You're going to
+see this any time a DC reboots anyway. So um, you could monitor
+for them at unusual times such as when you don't have a DC
+rebooting. If you have one domain controller that's
+probably not terribly hard. If you have 150 of them that may be
+terribly hard. So or things that we can do -- um, one of these
+is, um, probably the, the -- most interesting of the, ah,
+common AD exploits which is creating golden tickets. This is
+another one that was first presented at DEF CON, I believe,
+three years ago. It is, ah, luckily for attackers and
+unfortunately for defenders very difficult to centrally
+remediate. In other words, this isn't a vulnerability somebody
+can patch. And so golden tickets have ( Indiscernible ) tickets
+that the attacker can create themselves rather than relying
+on the domain controller to create them. So in this case I
+got my compromised domain controller and I'm going to once
+again connect to it with my Meterpreter shell. All right.
+Let that start out. Got my session. Now, I'm a domain
+admin. But it turns out that, and first thing I'm going to do,
+I'm going get my SID. Because my SID is my domain SID followed by
+the user SID. So I actually need the domain SID for this, I'm
+going to grab the list of processes and migrate myself
+into CRISS. With golden tickets to get the hash I need I need to
+be able process that has actually started as NT authority
+systems. So I can't just get system privileges. I need to
+migrate into a process that started that way. I'm going to
+load Mimikatz extension again and download passes. Well, as
+long as all of the user hashes here, I have this one that
+belongs to, I grabbed the hash of that, it belongs to an
+account called KRBGT. Isn't a real user, this is the Kerberos
+ticket granting ticket hash. This is what is used by the
+domain controller to sign ticket signing tickets in Kerberos. No,
+Mimikatz has an extension. Golden ticket create, and I'm
+going to run that, and I'm going to specify the domain, PG DEF
+CON, and I'm going to specify that I want a ticket that
+belongs to tickets 501 and 502. So it's a domain admin, and I'm
+going to specify that KRBGT hash that I just copied above. I also
+have to specify the domain SID, which is why I grabbed that a
+little bit earlier. And I'll specify a path for storing this.
+I'll call it PG DEF CON dot golden dot TKT so I can remember
+it and I'm going to specify the user admin. Now, the user I
+specify doesn't actually have to be a member of any of the groups
+I specify. I can create a ticket that says some other user's
+domain admin, doesn't matter. The ticket is going to specify
+what groups it has and the other servers are going to believe me.
+Now that I got that created, what do I do with it? Well,
+later on I'm now connecting back to my workstation as Bobert
+again, so I'm an unprivileged user. So I'm Bobert. I have my
+normal user SID. I load up the kiwi extension again, which was
+Mimikatz 2. And use Kerberos ticket list and see, okay. I
+don't have any Kerberos tickets right now. And so naturally if I
+dropout to a shell and attempt to net use on the domain
+controller I get password is invalid. But -- I can then in
+Meterpreter go ahead and call up, ah, that golden ticket file
+that I saved earlier. So I'm going to do Kerberos ticket use
+PG DEF CON dot golden dot TKT. Using Kerberos ticket stored,
+ticket applied successfully, I'm still Bobert if I do a get UID.
+But now if I shell out and do any kind of network access, that
+Kerberos ticket is presented. So I can net use the domain
+controllers, admin, partition and list things. It doesn't
+matter that I am not actually a domain admin or a member of any
+of those groups because that ticket I created specified it's
+in the domain admin group, um, I can do anything someone in the
+domain admin group can do. The other great thing about Kerberos
+tickets is, ah, first of all, they are less than 20 minutes
+old. It doesn't even check with the domain controller to, to see
+if it should use the group. That's one thing, if the ticket
+is more than 20 minutes old, um, the user you're impersonating
+will actually use their actual current privileges, but if you
+create a new ticket that's very young, um, then it's, it's fine,
+it doesn't matter if the privileges you specified are
+totally unlike what that user actually has, it will still just
+use whatever is in the ticket. So what does this look like at a
+defender? Well, creating a golden ticket doesn't look like
+anything, because all I did was dump hashes straight out of
+memory. Um, I could create the golden ticket on my own
+computer. I don't have to do that on the domain controller.
+Once I've got the hash in the domain SID I can do that locally
+without creating any events anywhere. And I can do it for
+any user I want for any groups that I want. Now, when I go to
+use it, um, it varies what you see. Here we have a couple of
+log-in events. Ah, they're both in accounting successfully
+logged on. One of these was a legit admin log on and the other
+was me using a golden ticket. Um, you'll note they look
+basically identical. In this case the only difference we have
+is that in one of them the account domain is in lowercase
+and in the other one the account domain is in capital letters.
+And that's not necessarily an artifact of using a golden
+ticket, that's an artifact of when I used to create golden
+ticket command I typed the domain name in lowercase. And so
+it took exactly what I put in. All you're going to see is
+potentially anomalous log-in events they will be anomalous in
+different ways, maybe you see an FQDN where you expect a net bio
+us name, maybe you see a net bios name where you expect a
+FQDN. Casing issues, that sort of thing, but there is not a
+consistent indicator that someone is using golden ticket,
+it is actually relatively hard to detect. It is mostly a matter
+if people have access they should not have and, you know,
+are, are gaining access to things without actually being a
+member of groups it's something to suspect. Um, that's probably
+the worst thing about the golden tickets. The other things that's
+terrible about them so you find out an attacker does have a
+golden ticket, what do you do about it? You have to rotate the
+hash of that KRBGT account and you have to do it twice because
+it actually keep as history. So the password that's one password
+old still works. Um, if you were running Windows server 2012
+domains this is actually not terrible. You rotate that
+account twice and now you can go on about your business and hope
+your attacker does not still have current access and can just
+generate a new golden ticket. If you are running a Windows 2008
+release or older domain it is a much bigger pain. Because as
+soon as you rotate those KRBGT passwords nothing in the domain
+will be able to authenticate until it reboots. And that also
+means you can't authenticate to it, to tell it to reboot. So it
+is -- aye, pretty messy challenge of scripting and
+remediation, which is why until pretty recently, now, people are
+starting to run on 2008R2 or 2012 domains, um, sometimes the
+response to an attacker having a golden ticket was to just kind
+of put up with them. And. [ Laughter ] Not to actually, ah,
+remediate it entirely, or hope they don't have one. So it's a
+reason to be on a domain with a later functional, that's the
+other thing, you don't not only be running 2008R2 or later you
+need to be running a domain functional level of 2008R2. Just
+upgrading the domain controller, doesn't necessarily upgrade the
+domain functional level to a current version. That's -- an
+explicit decision by the domain admin. So that's, that's another
+thing we've got. But we actually have a couple more. So another
+thing we can do is tampering with SID history. So now we're
+getting into some Windows AD features that most SID admins
+probably have never used and are not necessarily very aware of.
+Um, so SID history is a feature of AD, um, that's designed for
+domain migration. It is design, I'm adding a new domain to my
+forest, and that domain would say another company acquisition
+and I need users in my new domain to still be able to do
+stuff on the machines joined to the old domain, but I don't want
+them logging into the domain to make migration easier. What it
+does is allow you to add secondary SID to the user. The
+user has their own SIDs and other SIDs they have. So this is
+another one where I actually need real Mimikatz and since I'm
+using Metasploit that means killing the AD and uploading a
+copy of Mimikatz again. So I'm going to get my user ID. So
+here's my admin session. And move over into a process started
+as system. All right. Drop onto a folder I have Mimikatz in. And
+I'm just going to run -- it's very simple, the command is just
+add SID. So I'm going to do NIST add SID and I'm going to add to
+Bobert the SID enterprise admins. Um, I could choose a
+group SID. I could choose a user SID. It doesn't, I could choose
+a computer account SID if I really wanted to. Whatever I
+want to, that SID is now added and Bobert is equivalent to
+whatever the privileges that SID has. So what this actually looks
+like to Bobert? It actually looks kind of weird because
+there is no overt sign that they have secondary SIDs. In this
+case I'm firing up active directory using computers. Pull
+up Bobert. And I look in, ah, the groups that he's in -- look
+in the groups that he's in and he's not in enterprise admins.
+If I pullup enterprise admins and look at members he's not a
+member of enterprise admins. There's no particular sign that
+he's a member of that group. But -- note that the add and remove
+buttons are not grayed out. Just because I'm not a member of
+enterprise admins doesn't mean I don't still have full privileges
+to edit it. Now, once again I wouldn't want to go adding user
+has the group until you do some sort of exploit because that is
+clearly going to go creating events. This is just a
+demonstration of the fact that he's got the full privileges of
+enterprise admins despite not being a member of that group and
+can do anything that EA can do. So what does this look like?
+Well, actually, this is one of the relative easier way to
+detect if someone is actively looking for it. An event 4765
+SID history was added to an account which we're never going
+to see except for explicit administration action. And it
+says exactly what security ID I added to that account. The
+problem is once again a lot of people are not configuring their
+seam and actually watching actively for events. And we're
+not seeing the super common events like, you know, security
+group membership change. You'd have to be looking for a SID
+history change. All right. So -- or things we got is tampering
+with active directory DACLs. Um, now we're getting into some even
+weirder stuff. Active directory objects actually all have access
+control lists on them, just like files do. And, um, those
+objects, I'm going -- unplug my network here. They, those
+objects are not easily visible to the user. They're not really
+exposed in the UI anywhere. And most Windows system admins use
+the UI and that's kind of what Windows is for is providing user
+interfaces to everything. So um, because these are not exposed in
+the, ah, UI anywhere, this I actually have to use a piece of
+VB script to do this. So in this case, um, you could obviously
+use C, C script or any other script you want to use. Um, but
+you need something that will run in Windows, Windows scripting
+host. So in this case, um, I've got a script that is going to
+join Bobert to the, ah, built in group terminal server license
+servers. Um, it could be any built in group, I just want a
+built in group that's there on every machine and that nobody
+really does anything with. Um, so I'm going to be joining that
+account to there. And then I'm going to be modifying the ACLs
+on that, ah, on both that object and another object called admin
+SD holder which is found in active directory. I'm not
+expecting anybody to read the script, I just wanted to have it
+in the, ah, slides so if you download the slides you can
+actually see the exact script being used. Um, so admin SD
+holder is kind of an interesting object. Windows, ah, file
+protection tries to protect active directory objects from
+having their ACLs tampered with. So if you were to just change
+the ACL on domain admin and say Bobert can access it, ah, within
+an hour Windows would discover that ACL had been tampered and
+will immediately stop over it with standard administrative
+object ACL template. Admin SD holder. So instead I'm just
+going to modify admin SD holder and have Windows stomp that onto
+all of the AD objects for me. So when I modify that ACL it has
+some, ah, rather unusual results. It's actually a lot
+like it, it looks a lot like the SID history does. Um, once I've
+got that, um, if I look at my groups, um, domain admins, once
+again, does have Bobert in it, and Bobert doesn't have any
+access to go adding and removing to it. So now I'm going to
+connect to my administrative session. And I'm going to upload
+my VBS file. And once I've got a shell I'm going to go ahead and
+run that VBS file. It takes a few seconds. Makes a bunch of
+LDAP calls. All right. Now, I just delete my script. And
+active directory has a backdoor in it. So coming back here, I'm
+still Bobert. And if I go to domain admins I still don't
+really have access there. However, nobody really monitors
+local built-ins like terminal server license servers. And even
+though I'm not a member of that and I'm not an admin it turns
+out I do have the ability to edit that. And if I do edit it,
+now I can go back to domain admins and I have add and remove
+access. So I've just granted myself the ability to have
+domain administrative privileges without needing to modify
+anything except a local built in that is not normally something
+that's monitored. And now I've got full access to whatever I
+wanted to. So what's this look like in our event log? Ah, well,
+we do have a security enabled local group was changed. If
+you're monitoring security enabled local groups. It's an
+event 4735. It's changed to terminal server license servers.
+It's not the most common event, but neither does it really jump
+out to you as a potential, as -- serious security event. And
+normally that would be, oh, somebody added a terminal server
+license server. Um, but we do have a security enabled global
+group was changed. It didn't note, it doesn't say that we
+added or removed members. It doesn't say specifically what we
+did, just that there was a change. And then we get these
+very weird events. Ah, this is a 5136 directory service changes.
+Um, once again not necessarily something a lot of people audit.
+A directory service object was modified. And we get one event
+like this, um, and it says the type is value deleted on our
+domain admins and then another event like this, that's value
+added. Ah, I went ahead and highlighted the only difference
+in that massive block of fluids because once again, it's not
+necessarily super obvious what has changed. If somebody's not
+even aware that active directory objects have DACLs, it's not
+going to be obvious what this means. This can easily be the
+sort of event that looks like, well -- it's a little
+suspicious, something happened, um, the other things it's not at
+all obvious what they should do about it. Um, you know, you see
+these events, how do you change the DACL back? It's not exposed
+in the UI. You'd have to script it. Ah, we also have this other
+one which is the admin SD holder. Ah, and actually --
+yeah. The admin SD older object. And once again, it's the same
+ACL change. Um, admin SD holder means if someone does change the
+ACL back on domain admins, Windows will just stop it with
+the compromised ACL again within an hour. Um, so Windows will
+hopefully put your backdoor back. So those are some of the
+ways an attacker can use to create themselves backdoors and
+active directory that are not necessarily obvious to the
+defenders. So what can we do for detection or remediation? Well,
+the good news is, everything that I listed here does leave
+traces in the event log or in the AD change log. None of this
+is 100% invisible. The closest thing to that is actually golden
+tickets, which leave very little trace whatsoever. And their
+counterparts, silver tickets, which I didn't go into, which
+basically are the same thing they only allow you access to a
+specific service, but if that specific service is something
+with administrative privileges you can potentially elevate
+right back up using that service. These are very
+difficult to detect at all. But the rest are easy to detect
+assuming you have the correct policy set. The problem we run
+into is, well, I didn't specifically go through it, an
+attacker can disable event retrieval and forwarding and
+purge the event log. If an attacker really doesn't want to
+leave events showing exactly what they did, they can kill the
+Splunk universal forwarder. They can clear the event log. Um, and
+there's not really anything you can do about that. The, ah, on
+the other hand, it does leave a very obvious event. You know,
+the event log was cleared is an obvious security relevant event.
+It's another one of the things like changing the membership of
+the domain admin group. This sends up a big red flag that
+somebody's doing something bad. The problem is, it doesn't
+really send up much of a flag of what exactly they were doing
+which can make it very difficult to remediate it. Um, and also,
+yeah. It kind of sucks when somebody turns off logging on
+the domain controller, because then you're blind to what's
+going on for a short period of time. Um, of course, you also
+need to change compromised passwords when you know somebody
+has, has compromised something. Um, but if somebody's
+compromised the domain, they probably have a copy of NTDS dot
+diff, so you not only need to passwords they compromised to be
+changed, but really everything password in the domain. Even
+service accounts, which are usually not something people
+want to change their passwords of. And even the Kerberos ticket
+granting ticket. You'd also need to do a full audit of every AD
+change since the compromise for things like group membership and
+SID history changes if logging was disabled because they could
+have, you know, they, they could have put a chain of SID
+histories through any number of, of items. Now, there are AD
+forensics tools that will let you DIF AD against a back up and
+find out everything that's been changed since that time. Once
+again, it's possible for the defender to root that out. It's
+just potentially a great deal of work. A lot more work than the
+attacker had to put into it. Also, you need your audit stuff
+configured correctly. For all of this demo to catch all those
+events I caught, um, in audit policy I had it set to audit
+account log on events, account management, DS events, log on
+events, object access, policy change, privilege use, and
+system events. Object access and log on events are extremely
+large volume. Especially log on events includes all network
+processes executions. So um, every time my, ah, monitoring
+server wants to connect and pull logs, which it does every minute
+or every 10 minutes I got another log on event on every
+server in my domain. So they can create a lot of volume. I also
+went into advanced audit configuration and added computer
+account management, security group management, and user
+account management. In detailed tracking you can also audit RPC
+events and process creation. Audit process creation is
+actually very powerful for finding out what people did
+especially if you also turn on the, ah, the setting to do
+command line logging. Um, because then you get every
+command they typed into a shell. Ah, you also get every command
+they typed into PowerShell. So some of these in-memory
+PowerShell exploits which otherwise leave no trace on the
+disk can be creating a lot of events if you've got that, that
+logging turned on. Um, the problem there, once again, is --
+auditing process creation creates a very large number of
+events, um, especially on a domain controller. Processes
+start and stop all the time. And it's totally innocuous. So it's
+one of those auditing process creation will give you a wealth
+of forensic information, but it's very hard to alert on it
+other than, you know, auditing process creation for Mimikatz
+dot EXE and things along that line, which hopefully in a real
+pen test or real intrusion an attacker would know to rename
+the files at the very least. More likely they're not just
+going to rename the files. They're going to run them
+through something like Veil-Framework or backdoor
+factory and completely scrape them so not only do they have a
+new name, they're not going to show up in the antimalware.
+Something else you can do, if you want to be intensive on the
+logging you can do process start command line logging and
+PowerShell logging. And the system internals monitoring
+service, SISTMON can be installed on systems. It is a
+fun little tool, not only does it do, um, log process creation
+with command line, it logs the parent process. So you can see
+what process spawned all of these. Ah, and it includes a
+process GOOID so you can easily correlate between processes with
+the same name. Includes a session GOOID. Includes all of
+the DLLs that are loaded. And it gives you, ah, hashes for all of
+the DLLs and for the executables. So if someone has
+Trojaned something with backdoor factory, you notice that the,
+ah, the, the -- um, hash is different. Ah, you can even,
+will have it log all of the network connections and do a
+full, like IP tables-type log. Um, the log volume on an active
+server running, ah, SISTMON with everything on is pretty
+extensive. In fact, even without doing file system and registry
+monitoring, the log volume to really detect all of this is
+pretty insane. To capture all the logs in this presentation my
+domain controller alone was producing 500 megs a day of
+logs, without SISTMON, per day, per domain controller why the
+network was idol and had no active users doing anything can.
+So that's the kind of, of log volume we're talking about
+there. The gigabytes per server easily. So every system that has
+an attacker, that, that ever had an attacker on it with
+administrative access or a wiped event log so that we can't
+necessary track down what they do, needs to be entirely
+rebuilt. Um, you're alternative is doing file system forensics
+which could detect these changes. Honestly, that's
+probably even more work than rebuilding the domain
+controllers is. It, you know, under certain circumstances it
+can certainly be worthwhile to do, but it's not viable as a
+standard event, a standard security incident response. So
+if you've had your logs disabled and you don't have a full AD
+change history or the time to develop through all the events,
+um, you pretty much are down to nuke to entire site from morbid,
+it is the only way to be sure. You're down the rebuilding the
+domain. Changing the hashes of everything including the ticket
+granting ticket, um, and still, unless you're going to rebuild
+everything at the site, even the workstations, you probably still
+have someone who can get regular user access or has access to
+silver tickets. Um, there's not much you can do to clean those
+out. Um, so -- the other question is -- well, um, is this
+a problem with Windows domains and -- some kind of, but it's
+really kind of a problem with complexity. You could probably
+find just as many interesting ways to backdoor Linux and other
+operating systems. They'd obviously be entirely different
+ways. Um, but modern operating systems have an awful lot of
+stuff in them and when, when you look through things that start
+hundreds of scripts at boot and do a lot of processes at log-in,
+there's simply too many places for an attacker to hide. Um,
+this said, most of these, you could detect with my decent
+event log monitoring. The biggest problem is most
+enterprises don't have decent event log monitoring. They're
+doing very little because the only way to get it involves
+manual work by security analysts. People actually sit
+down and creating alerts and studying their environment and
+seeing what is actually normal behavior so they can detect
+anomalous behavior. Companies really like to buy security
+products that you just stick in a rack and walk away from. They
+don't like having to hire a bunch of analysts to do a bunch
+of work. And until they do, you end up with domain compromise
+being almost impossible to remediate. So I do have updated
+slides on my website. Ah, the slides that are on the DEF CON
+CD are pretty rudimentary, because of course they don't
+have any of the demo videos, the DEF CON CD -- ah, slides are
+PDFs. So none of the videos are there. So I did post my actually
+slides up on my site. Ah, there is not an actual post on the
+site, you'd have to go directly to the DEF CON 23 dot PBTX.
+Obviously I will update the site in the next few days, but have
+not done so. While I videoed the demos I do have this virtual
+network still up and running and so if anybody has any questions
+or needs anything demonstrated let me know and -- that's it. [
+Applause ]

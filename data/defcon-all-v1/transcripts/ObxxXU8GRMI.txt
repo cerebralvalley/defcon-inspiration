@@ -1,0 +1,716 @@
+>>Let’s welcome these gentlemen
+to the stage. Come up. [speaker
+clapping] [audience applause] Have a wonderful time. >>Thank
+you. [applause continues] So
+thank you all for attending. Um, this is The Token Menace. My
+name is Alvaro Munos. He is
+Oleksandr Mirosh. We are both Security Researchers with Micro
+Focus Fortify Team. And today we
+are going to uh, present some of the vulnerabilities that we
+found in the net framework. Um,
+they are related with authentication tokens so we will
+introduce them and see how they
+work in the context of delegated authentication. And then we will
+present these two
+vulnerabilities. The first one is an injection vulnerability
+leading to arbitrary constructor
+invocation and we will see what we can do with, with that. It’s
+a parameterless constructor. And
+the second one is what we call dupe key confusion. Uh, which is
+a way of bypassing XML signature
+and not just in that, in SAML assertion and SAML tokens but
+uh, we will apply it in, for
+SAML tokens. So we will review them in the context of the, of
+this Windows frameworks uh,
+Microsoft uh, frameworks Windows Communication Foundation and
+Windows Identity Foundation. So
+um, delegated authentication is nothing else that when you have
+a user accessing our resource,
+uh, that is protected but the service provided that is hosting
+this resource is not handling
+uh, the authentication itself it will basically redirect you to a
+third party entity or the
+identity provider, which will uh take care of the delegation. So
+the user will go there, present
+the um, credentials and then um, the service pro, the identity
+program will issue an
+authentication token. It can be in the form of a SAML token, it
+can be in the form of um, I
+don’t know, a JWT token um, maybe um, simple web token. But
+most of them have some
+attributes in common right? Things like the, the issuer who
+is with the token, is not the
+same thing if I give you a coin issued by myself but if you go
+to a bank, uh the audience if
+this is a token that is valid for service A and I should not
+be acceptive by servi, uh
+service B, expiration date, things like the claims right? So
+all the knowledge that the
+identity provider has about the user um, that will dump into the
+authentication token and it will
+be used by the service provider in order to take uh, both
+authentication and authorization
+um, decisions. But the most important thing is the
+signature. If we don’t sign the
+token uh, anyone can change anything, can basically tamper
+with the token and thus become
+anyone for the service provider. So uh, we found that, for us,
+the most interesting um, step in
+this process was when the service provider is accepting
+the authentication token. And
+the reason for that is that uh, we thought about this too, uh
+potential attack vectors right?
+The first one is that there is a bunch of attributes in this
+token that um, are meant to be
+parsed and processed before the signature is um, verified. Like
+for example, what is the uh
+signature algorithm uh that is going to be parsed before the
+signature is verified? So maybe
+we can uh have some injection vulnerabilities there. And the
+second uh, the second vector is
+if we can go a step farther maybe we can go and, and get um,
+the signature, the whole
+signature uh verification process bypassed. If we can do
+that we can uh basically just
+become anyone for the service provider. So we will start with
+the token parsing one. [tap tap
+tap] >>This case can be good demonstration for token parsing
+vulnerabilities. Uh JSON web
+token or just JWT token uh is internet standard for creation
+uh JSON based access tokens. We
+can see example of such token on the screen. Uh it contain three
+main parts uh payload, header
+and signature. “Alg” field from header defines what algorithm
+should be used for signature
+certifications so it will be used before signature
+certification itself. Uh in dot
+net the couple of libraries that uh can parse the JWT tokens uh
+we find out the system identity
+model tokens JWT library. Process “alg” field to the
+crypto config create from name
+method. And this method doesn’t restrict type names so we can
+call arbitrary and no-argument
+public constructor. By the way, JWT is not only one way to to to
+do this method uh it can be
+reached during SAML token parsing as well. For example
+algorithm attribute in signature
+method uh element from some token will go without any
+restriction to that method as
+well. But you can ask, what we can do with this because we
+cannot control any data but
+actually we can control some data. First of all it’s type
+name itself, and we will show a
+bit later how we can use it. All, also please look on the
+screen, it is example of a
+no-argument constructor from dot net framework. In dot net a
+current http context it starts
+in static property and accessed through our request parameters
+is done through it. If a
+no-argument constructor used this approach it will be very
+interesting for a, for an
+attacker. But all these ideas about abusing no-argument
+methods may look not very
+realistic so we took two servers from Microsoft, SharePoint and
+Exchange server, and tried to
+exploit this uh problem there, and here is our results.
+SharePoint returns different
+response if a object was created or not. Using this we can get
+informational installed products
+and even their versions. Also we could rise and have an exception
+that leads to a denial of
+service. Exchange server gave us even more interesting results.
+Uh as I already mentioned we can
+control type name. And it it can be not just simple type name but
+assembly qualified name with a
+name of assembly from which we would like to uh load this uh
+type. Uh dot net allows a DLL
+parse to control assembly loading by implementing own
+custom assembly resolvers that
+may be vulnerable to different attacks. Uh also often this uh
+custom assembly resolvers are
+installed by static constructors. And usually it’s
+not big problem to invoke them
+by instantiation of some specific type. But actually this
+problem allows us to do this uh
+so it’s not problem. Uh here we can see an example of such a
+gadget from a uh Exchange
+server. On first circuit snippet we can see that how it, insta,
+it is installed by static
+constructor. On the second sni, snippet is a assembly resolver
+itself. Assembly name doesn’t
+have any validation and to use as part of path for data
+loading. We can use dot dot trig
+and can change uh current info load to any one we want. Uh,
+let’s put all this together. As
+authenticated user, we can invoke a no, no-argument public
+constructor from any data file
+on the Exchange server from a arbitrary local folder. Of
+course attackers still need to
+find way how upload this malicious data file to the
+server and for un-authenticated
+users we think it can be a very tough task, but if a attacker
+has any account in target
+Exchange server it may be significantly easier. So for our
+demo we have assumption that
+attacker is already put the, this data file to the Windows
+stamp folder. This folder used
+for temporary files. For example during uh, unzipping our hives
+or other, or other such cases.
+Uh so let’s look how, how it will be in real Exchange server.
+So first of all it’s our uh
+malicious library. Here is our gadget with two lines, uh very
+helpful. We will take “cmd”
+credit parameter I’m gonna use it, it it’s valid for static new
+process. Uh as we’re told a
+error, we already have this data file in Windows temp folder. Now
+we can start crafting our
+payout. Uh, we will use a SAML token. Here is our vulnerable
+attribute. Type name. And
+assembly name is dot dot trig that points to our library in
+Windows temp folder. Uh we will
+start calculator. And here is the same calculator. Uh let’s
+check in process explorer that
+there are no calculator yet. And we can send this request without
+any authentication. And we can
+see calculator. [audience applause] We would like to
+stress here a couple things.
+First of all it does pre-authenticated attacks. Also,
+despite that this attack rarely
+depends on available gadgets on the target system, this problem
+is not in product on application
+like Exchange server or SharePoint. This problem in dot
+net framework how it works with
+some attributes from authica, authentication tokens like SAML
+and JWT. Uh let’s switch to our
+holy grail and let’s look how we can bypass the whole
+identification. Security
+assertion, uh assertion markup language, or just SAML is
+critical component for many uh
+delegated authentication and single sign-on authica,
+authentication scenarios. It has
+XML base format and uses XML signature for identity
+protection. By the way, this
+problem uh is not, is not only in SAML but in any other places
+in dot net where as an XML
+signature is used like, uh sign-in SOAP or WS-Security.
+Here we can see simplified SAML
+token along with identification information it has signature
+element that should uh protect
+it from tampering. And this element contain three main
+parts: signature value um with
+signature itself, Signedinfo with information how this value
+should be verif, verified and
+the most interesting element for our attack, it’s key info. It
+represents key that should be
+used for this signature verification. Uh let’s review
+how dot net will verify
+signature, signature for such tokens. First of all we need to
+obtain the key. Using key info
+we will extract, we may extract key from itself or using key
+reference and fetch key from
+some specific storage. On the second step, we will use this
+key for signature verification.
+But please note that um positive results of this step only means
+that uh this token was signed in
+by this specific key and was not change it. In addition to this
+we need to be sure that it was
+done by proper sign in party. So we are taking key in, key info
+element again and try to
+identify who was signing this token. And of course the last
+step we will check it is just
+the sign in party or not. On the first glance it may look like
+quite good implementation but
+let’s pay attention on these two steps. We are processing key
+info element twice. And we need
+different type of results on these steps, security key and
+security token. So two different
+methods will be called, a result security key and result security
+token. Uh on this diagram we can
+see general idea of our attack. We need to craft key info in
+such a way that mentioned
+methods will produce different results. One will be used for
+signature verification, another
+for authentication of signing party. In this case we will be
+able to use own key for
+signature calculation but server will still identify us as
+sign-in, as trusted sign-in
+party. Uh, in general, uh this attack depends on implementation
+of result security key and the
+result security token. But all cases what we checked we were
+able to achieve these results.
+Uh some cases had additional requirements to the server or
+environment, a target server or
+environment. Uh other were vulnerable by default. Uh here a
+couple examples of differences
+between these two methods that can be abused. Uh first method
+may support some type of key
+identifier that is not supported by the second. Or both methods
+can uh can process element in a
+different order. Or even they can use different subset of
+elements from key info. Uh, now
+let’s review how this problem looks in real applications and
+frameworks. >> So [clears
+throat] we will uh review now uh the main Microsoft frameworks
+that actually accept SAML tokens
+or treat SAML tokens in some way. So the, the first one is a
+WCF, Windows Communication
+Foundation that is used to build web services. Uh for example,
+Exchange server uh or Exchange
+web, uh web services are built using WCF. And then the other
+one that is uh probably the, the
+two principle frameworks is Windows Identity Foundation,
+which is used by any
+application. Um I mean if you’re a developer and you’re writing
+an application that want to
+integrate with an identity provider, instead of um
+reinventing the wheel and uh
+write the whole, the whole code to process authentication tokens
+and then extract claims and
+process the claims and so on, you will use uh Windows Identity
+Foundation to do that for you,
+right? So the third case is when you use uh WC, WIF with a custom
+uh configuration that is also
+normal in some uh development environment and we will uh use
+the SharePoint as an example. So
+we will start with uh Windows Communication Foundation. Now
+as, as I said it’s a Microsoft
+framework to build um, basically web services, right? So what
+matters to us, why it’s
+important to us is that uh WCF web services accept SAML tokens
+for authentication of the
+client. So if you are a, a client you can present a SAML
+token instead of your user and
+password credentials for example. So XML signature is
+also used for other things,
+other purposes, such as proof tokens but uh, this is out of
+the scope of this talk. So uh,
+this is the uh main code in the SAML assertion type that uh
+handles the um well that
+processes the, the SAML token right? As you can see we have
+two methods. One is resolve
+security key and the other one is resolve security token. Both
+of them are taken the key
+identifier parameter which is basically the whole text within
+the key info section in, in the
+XML signature. The first one is returning identification key
+which will be used for signature
+verification. And the other one is returning a signing token
+that is basically representing
+the um signing party or, or the identity provider. So, the first
+one uh will first iterate
+through all the elements in the key info section. And for each
+of these element, I will call a
+Try Resolve Security Key that will basically try a number of
+uh token resolvers. Like Try
+Resolve Security Key from the token resolver then the, the
+part in clause and then if
+everything fails it will try Try Create Key From Intrinsic Key
+Clause. So it’s first directing
+through all the key elements in the key info section and then
+for each uh key element is
+iterating through all the resolvers. That’s what we call
+our Breadth First. So when
+resolving the security or, or the signing token um the
+approach is slightly different.
+So it will iterate first through all the resolvers, and then for
+each resolver it will, it will,
+it will try all the different key elements, or the key’s
+identifiers. So the difference
+is very small. Basically the order in which all the possible
+combinations between keys and,
+and resolu, and resolvers are visited is different. But seeing
+as we depend on one of them to
+be successful and return from these methods, uh the order is
+critical. So what we uh are
+going to do to attack, or to bypass um SAML token uh, um
+signature identification is that
+we are going to take an existing token, or we can even create one
+token from scratch, and then we
+are going to sign it. But in order to sign it we are going to
+use our own private RSA key. So
+we are going to generate an RSA key pair, and we are going to
+use the private one to sign the
+token. Then uh we are going to send both the public key for
+this RSA key pair, and also the
+uh identity provider certificate or key identifier. So that’s
+what you can see in the key info
+section. Now, remember the uh resolve security key will
+iterate first through all the
+keys in the key info section so it will take the attacker RSA
+key first and then it will try
+all the different resolvers. So for the two first resolvers it
+will fail. But the third one
+will succeed and will return the public RSA key. Since we signed
+the token with our private RSA
+key, the signature verification will bypass and it will be
+successful. Now uh for the
+resolution of the security token, it will start iterating
+through all the resolvers. So it
+will take the first resolver and this resolver will try all the
+different keys. So for the first
+one it will fail because it does not know how to resolve uh the
+attacker RSA key. But the second
+one is the expected identity provider certificate so that
+will succeed and then it will
+return the expected 509 certificate or whatever the
+identity provider is sending. So
+with that we will bypass the authentication of the signing
+party and then the uh whole
+modification process will be successful. So this is how it
+looks in, in the XML section of
+the uh XML signature. The first element in yellow is uh the key
+that we injected and the key
+that we used to sign or re-sign the token. In this case we are
+using an RSA key value with um,
+with the public one. Uh but we can also use, for example,
+symmetric key or even uh other
+asymmetric keys that has elliptic curve and so on. And
+then in green we have what,
+whatever the identity provider is using. Normally it’s a 509
+certificate. This is a public
+certificate that we can graph from, from them figurative uh
+metadata and point, for example,
+from any existing token. So, let’s see that in action. What
+we are going to do is we are
+going to um access Exchange Web Services as any arbitrary user.
+So we are going to impersonate
+any user. So um, please bear in mind that the attacker doesn't
+need to intercept anything. He
+can craft the token from scratch because all the information he
+needs is public. Then he will
+send that token for authentication of, in the, um
+Exchange Web Services and then
+it can uh query the website recess for retrieving emails, uh
+sending emails or doing
+basically whatever, anything you can do from, from Outlook. But
+for this uh, for this um demo we
+are going to use a valid, a real client will, we are developing
+our own client with a real uh
+token, and then the attacker will be intercepting his own
+token so you can see the process
+of uh how the token looks like and and what happens if we
+modify it. Ok so, this is not
+what I’m looking for. [tapping] Ok. So this is Burp. We will be
+using Burp to intercept the
+client request. And as a client we are using basically our own
+client that is sending or
+requesting the mail tips for the user one. So the attacker is,
+has this user one account and uh
+is trying to access it’s mail tips. Now if we send this
+request um we will intercept
+that with Burp, then we will send it to repeater to modify it
+more, more easily. And if we
+switch to the XML version you will see that, well we have
+first the, the SAML token that
+identifies the user and then the, the body of the soap
+request. So we are going to
+replace any, every instances of user one with administrator. In
+order to try to impersonate the
+administrator. Now if we send this um, this request because
+the content has changed and the
+signature is no longer matching um the server should reject this
+request, it’s no longer valid
+because it’s not signed and we’re not supposed to have the
+private key for the identity
+provider. So we get an error and this is expected, right? You,
+you should not be able to tamper
+any existing token. Now we can use our uh dupe key injector uh
+Burp plug-in. Uh that is going
+to re-sign the token using an RSA key. So as you can see here
+uh the original token has this
+um identity provider certificate. Now if we click on
+re-sign with RSA key, it will
+basically generate an RSA key pair, use the private one to
+re-sign the token and use the
+public one in the key info section. So in the key info
+section now we have the expected
+identity provider certificate prepended by the key that we
+used to re-sign the token. Now
+if we send that, we will get a two hundred successful response.
+In this case we are uh
+requesting the mail tips for the administrator but this is just
+an example. We can ask uh for
+any uh mailing items uh, send uh, send emails or whatever.
+[audience applause] >>Now let’s
+rev, now let’s review another uh dot net framework. Windows
+Identity Foundation or just uh
+WIF. Is software framework for building identity-aware
+applications and it’s very easy
+to add a delegated identification for your, for
+your uh application and support
+identification token from a different uh sig, uh signature
+token services. So like uh a
+active direct, directory configuration services uh azure
+active directory or Windows
+azure uh access control services. Or others. WIF uses
+SAML security token handler for
+uh SAML token parsing. And it uh uses a bit different uh way uh
+to work with key info section
+that we just saw in, in, in, in uh the previous section. Uh
+during token parsing when he
+tries to get security key for uh signature veri, verification it
+takes only the first element
+from key info. But for security token it will process all
+elements um from this key info
+section. Also by default it uses iss, issuer token resolve. That
+seems to be secure because uh
+code in both methods are very similar. But if they, this
+method cannot resolve some key
+identifier then it will be parsed to the next resolver.
+X509 certificate store token
+resolver. And this one has differences in, in, in these two
+methods. Resolve security key is
+uh can work with encrypted symmetric keys. But resolve,
+resolve security token doesn’t
+support it. Uh definitely this can be exploited but there are a
+couple problems with this
+scenario. A server needs to decrypt our symmetric key. To do
+this it should have a
+certificate with private key in some specific uh certificate
+storage. By default
+configuration it’s a local machine trusted people. Also an
+uh attacker would need to use
+public key of this certificate for encryption. Um but note it
+just public key. In many cases
+it’s not problem. And if these two requirements are met we are
+still able to uh perform our
+attack. We can use our symmetric key for a signature calculation.
+After that we will encrypt it by
+public key from server certificate and we’ll put
+encrypted uh key in on the first
+place. After that we opened expected certificate. So on the
+server, resolve security key
+will return our symmetric key and we will parse signature
+verification. But resolve
+security token will skip this uh this element because it cannot
+work with it. And we’ll take the
+second one that represents expected sign in party so we
+will be authent, authenticated
+uh sign in party. Here we can see example of key info for such
+attack. Uh our encrypted key in
+uh cipher data, uh internal key info in yellow section
+represents uh a server
+certificate which probably key was used for encryption and the
+similar uh in previous uhh, our,
+our example. In green section we have a certificate uh of trusted
+sign in party. Uh we were
+reviewing default configuration of WIF but it uh allows a lot of
+customization so let’s look on
+one example of customized on WIF. >>So, one of the most
+interesting targets for us was
+SharePoint. And it’s actually using um WIF. Um Windows
+Identity Foundation. But it’s
+customizing this process, right? Um so you can customize it in
+multiple ways like for example,
+changing the default uh certificate restore as Oleks
+mentioned before. Or a different
+way of customizing WIF is using a custom resolver. Um so maybe
+you have some special needs and
+you have to uh process authentication tokens in a
+different way. So that’s exactly
+what SharePoint does and it uses this SP issuer, issuer token
+resolver and it’s uh regular
+token resolver but the key resolution uh supports intrinsic
+keys such as symmetric or
+asymmetric keys and token re, and token resolution does not
+support them. So we are back in
+this scenario of uh WCF where we don’t need, we don’t have any
+limitations about gaining access
+to public certi, public keys and certificates from the server
+side. And we can just basically
+use our own symmetric key to re-sign the, the token and then
+include both the symmetric key
+and the expected identity provider certificate. Because of
+this difference in the
+resolution uh it’s method will return a different element and
+the first one will be used for
+signature verification, the other one will be used for
+authentication of the signing
+party. So in this case we are using a symmetric key. We can
+also use the RSA one that we saw
+before. But in this case we are using binary secret, that is uh
+basically the way of specifying
+a symmetric key not token. As you can see here there is no
+encryption so there is no need
+to send the public queue for, that was used to, for uh for
+encryption and it’s just sent in
+the row. Uh in green section we have expected identity provider
+um certificate. So, we were
+like, wait, eh we can bypass sa, SharePoint authentication both
+On-Premises and on Office 365
+which is pretty cool. But then when we tried to actually uh
+break into SharePoint we
+realized that we were not able because the SharePoint
+authentication flow is a little
+bit special. So, note the user will get an authentication token
+from the identity provider and
+will present this authentication token to SharePoint. SharePoint
+will validate this token by
+using the SharePoint issuer resolver that we just saw, which
+is vulnerable. So, so far so
+good. We can bypass the signature uh verification of
+this process but then SharePoint
+doesn’t know what to do with a SAML token so it will exchange
+the SAML token uh in the
+SharePoint’s uh se, security token services that which is an
+internal web service of
+SharePoint. And then it will try to get a session token in, in
+exchange. So this uh SharePoint
+uh security token service it’s using a different, it’s a web
+service uh using WCF by using
+WIF for processing authentication token. So it’s
+using the default um WIF token
+resolver which uh depends on the attacker being able to get
+access to the, uh this
+certificate. So this whole, whole process was getting a
+little bit complicated because
+also the attacker needs to craft the key info section in such way
+that it bypasses the signature
+verification for both um token uh validations so it was kind of
+complex. So we found uh a
+different way of attacking SharePoint by abusing the step
+number six which is where uh the
+session token gets into the cache. So um, we are going to,
+what we are going to do is
+basically we’re going to authenticate as um as the
+attacker as a, maybe a low
+privilege account. So this is a privilege escalation, maybe a
+remote code session
+vulnerability. So we get authenticated as the attacker
+account uh following the default
+um authentication flow. There is no attack here, no, no dupe key
+confusion, nothing. But the
+attacker session token will get cached. Right? Now uh what we
+are going to do is we are going
+to craft a special token and it’s special because it contains
+some special um claims and
+attributes in the SAML token. So first of all the issuer will be
+SharePoint instead of the
+identity provider. Second we will be using the victim or the
+user that we get, want to
+impersonate uh attributes uh for example the UPN, the user
+principle name claims but we
+will still use the attacker identifier for the uh cache key.
+Right? For the, the cache um
+reference. So SharePoint will receive our token, will validate
+using the SharePoint token
+resolver which is vulnerable. We can bypass that. But since the
+token is issued by SharePoint,
+it will not try to exchange with the local uh security token
+services it will just generate
+the session token from the data in our token. So it’s going to
+create a session token for the
+victim, right? But it’s uh going to try to uh cache the token and
+it’s going to use the key for
+the cache that we send. So that’s, the, the attacker cache
+key. So with that we will be
+able to poison the cache and replace the attacker session
+token with the victim session
+token. So no, now the attacker only has to login, to, not login
+but refresh the browser, and
+then we are going to cut to uh retrieve the victim token from
+the cache, from the attacker
+cache. So let’s see that in action maybe, it’s more clear.
+So we’re going to login into
+SharePoint. Uh in this case we are using ADFS to, for, as the
+identity provider but could be
+issuer active directory or any identity provider. And we’re
+logged in as the attacker. So
+maybe I’ll load previous account, um maybe we’ll want to
+impersonate another user or
+maybe we’ll want to become administrator to get remote code
+execution. So we are the
+attacker, so far so good, no attack yet. So now we are going
+to use uh we’re, we are going to
+visit this API URL that will get us a list of existing users in
+SharePoint. So um the purpose
+here is to collect information to craft this malicious token,
+right? So we will search for the
+attacker internal ID in this XML. And this is um the attacker
+internal ID. We will need that
+to craft the, the malicious token. But this is public
+information, you can just query
+the, the right API. Now we will search for the victim internal
+ID. Very similar. And now we
+will use um SAML script basically to craft our malicious
+token. So for the malicious
+token we are going to use all the claims the represents the,
+the victim. So the victim
+internal ID, the victim uh email address, but for the application
+token cache key that is a
+special claim we will be using the, the attacker one. So now if
+we generate the token, first of
+all we will have uh our key info section with the dupe key
+confusion so first of all the
+RSA key that we used to sign the token and then whatever the key,
+the SharePoint identity
+provider, or ADFS in this case, was using. And then if we scroll
+up we will see the, the claims
+in the SAML token. So for example we have uh the user ID
+that is pointing to the victim
+so it’s the internal victim ID. But this special application
+token cache key will be the
+attacker one. And this is the one that will be used to
+reference the cache entry that
+is going to be um poisoned or replaced. So we send that uh,
+all we have to do now is go back
+to the browser, refresh the session and basically get
+authenticated as the victim. So
+remember if we impersonate that [inaudible] this is basically
+remote code execution in
+SharePoint, ON-Premises and, and cloud versions. [audience
+applause] Thank you. So with
+that, I have to wrap up. Uh so first of all we are not saying
+that SAML or WS-Federation are
+insecure protocol. The, the devil is in the implementation
+in the details. In this case dot
+net was vulnerable because it’s actually processing the same
+user control data with two
+different methods um that has some small inconsistency. So if
+you are a code reviewer, you may
+always want to um review these kind of scenarios where you have
+two methods, two different
+parsers processing the same user control, uh controlled data.
+Also we focus our research in
+dot net. Um we don’t expect this very same flow to exist in other
+languages or, or libraries
+because it’s very specific to dot net because of the way that
+they uh extract the key in one
+pros, in one step and then the token in a different step. But
+there may be similar
+vulnerabilities in other languages and libraries. Um also
+um XML signature is not only
+used for SAML assertion, and remember this is a vulnerability
+in XML signature, it is not a
+vulnerability in SAML. So we found different cases uh where
+dot net framework was using XML
+signature that we reported to Microsoft and are parsed now,
+but there may be other cases
+where XML signature is used, maybe in appli, in customer, in
+um people obligations that are
+still vulnerable. And last but not least, Patch as soon as
+possible because the cloud
+version have been parsed but uh ON-Premises, uh like SharePoint
+exchange or any WIF application
+are still vulnerable. And if um, so uh go onto the um Microsoft
+security bulletin because there
+are some specific instructions on how to upgrade. For example
+on how to Patch SharePoint.
+Right? So it’s not straightforward and if you are
+patched in SharePoint, you have
+to update SharePoint version but also update some library
+version. It’s not not recent. So
+with that, our, we are releasing a Burp Plugin. Um the one that I
+showed you in the first demo. Uh
+it’s basically a plugin that allows you to intercept SAML
+tokens, uh SAML requests and
+then re-sign them either using an RSA key or using uh the
+public key from a certificate,
+if you can get access to that, for the WIF um scenario. So with
+that, if you have any questions
+or, we can take them now or maybe later. [inaudible from
+Oleks] Ah. We’ll probably start
+with paper with all the details, it’s hosted in the blackout
+server so just go and, and take
+it from there. So. [audience applause] No questions? Thank
+you.

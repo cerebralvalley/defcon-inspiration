@@ -1,0 +1,422 @@
+>>Well good afternoon, how’s
+everybody doing? [applause] Good? Alright. So for those of
+you guys that uh came in a little late uh perhaps you’re
+still expecting a talk about airplanes something that
+probably would’ve been pretty controversial right? Uh well the
+airplane talk is not gonna happen um the speaker go- could
+not be with us um and uh so so luckily though we have something
+that is going to be completely non controversial given where we
+all are and that’s a talk about cheating at poker um so we want
+to give these guys a big hand because [applause] not only is
+this going to be an awesome talk but they stepped in at obviously
+the very last minute and they’re gonna put on a great show for
+you guys, so let’s give Elie and Celine a big hand! [applause]
+good luck! >>Bonsieur my name is Elie and this is Celine and
+today we’re going to tell you about our secret Defcon talk uh
+for this reason we tried to keep it quiet before coming in uh you
+can imagine why uh so this is our work with with our friend uh
+Jean Michel uh during our spare time and so try to imagine if
+James Bond was cheating a device at Poker and I’m not saying he
+is but try to imagine for a second he will go to the lab to
+Q and say hey do you have like one of those insane crazy
+gadgets and that can cheat and see all the card? But well
+that’s just a movie right and we only have like lame cheating
+device. Well a few years back I was casually trolling on to the
+black market forums into the chinese one and a post caught my
+attention, I don’t speak very well chinese which was about
+like a win device and a guy lost all his money and he was warning
+people and [inaudible] I didn’t quite understand it and then
+when I tried to show it to one of my friends who speak better
+chinese, the post was gone and I was like okay I must have
+hallucinated it was like 2am probably not going to happen,
+and then it’s sitting in the back of my mind and a few months
+after I come across this post which basically says I’m not
+going to read it outloud blah blah blah yes those devices, it
+is real. I don’t know what it at that point is but it is real and
+people got ripped out in Texas and a lot of people lost their
+money but one hundred k and then a lot of people got ripped out
+and then it kill all crucial gaming for poker in Texas. And
+at that point I’m like well if someone have it in this United
+State then I probably can find it on the internet and sure
+enough I was about to se- to find a seller as soon as I knew
+what to look for I was able to find a seller and the seller
+started use this for bargain which was only four hu- four
+thousand euros, about five thousand dollars uh with forty
+percent discount right, he he try to make you a good price uh
+this win device and that’s all you get is picture um and so
+this is a romanian seller of course I knew this thing was
+from China because I read earlier the blog post, the post
+on the forum so we trace it back to China and we were able to
+find the guy who built the real thing who will hopefully sell it
+to for us for a cheaper price and so we identify the guy, got
+into a contact, our a friend of ours got into contact with him,
+and try to get him to give us the device and the guy’s like
+sure I give you a good deal I give you the device and a bunch
+of gizmo don’t worry it’s only one thousand five hundred
+dollars please wire me to western union. [laughter] yeah
+and we’re like okay that seems absolutely normal I’m going to
+go to western union and just wire one hundred and five
+thousand dollars to China, what can go wrong? [laughter] Well we
+did it and then we waited. [laughter] a lot. And when we
+were about to lose hope a package arrived and I- yeah we
+oh- we have a talk for Defcon! We didn’t know it was working
+yet but we feel pretty confident at this point and so here’s a
+demo of what it looked like I wish I could give you a better
+demo but it’s super small but so here is what it look like. So
+I’m going to shuffle the card and this a fair shuffle no
+sleight of hand I promise uh and so I’m going to deal two card
+I’m going to put a card and here it is >>Spade, ace, diamond,
+jack [click] >>So, wait what? [laughter] yeah, what the hell
+is going on? Right? Something is reading the card out loud so is
+anyone of you out figure out what it is? No, okay let’s try
+again as you can see the phone is gone so we’re going to try
+again [cards shuffling] So I shuffle and >>Heart two diamond
+five [cards shuffling] >>There it works! That’s like it really
+works and that’s really what you see and that’s what a poker
+player on the table would see >>Diamond, spade >>It doesn’t
+miss, it doesn’t misread it’s actually extremely accurate. So
+that’s the story of this talk, we’re going to tell you what the
+hell is going on and we’re going to tell you walk through about
+it so it’s a device of course and so the device is this, it’s
+a phone or it look like a phone it’s here uh for those who can
+see it, uh it’s basically like look like a legitimate phone uh
+we believe it’s actually inspired by the Samsung core um
+if you compare the two back to back it’s almost the same thing.
+On the left side you can see the Galaxy core on the right side
+you can see the uh modified device. Um so they have a bunch
+of built in security feature which make it hard to analyze uh
+the first one is they send you the activation code separately
+and there is no way to activate the device without it so they’re
+extremely careful which actually speak a lot about how
+professional they are price comes from a super as well. Uh
+they have remove ADB and any debug mode so it run on android
+but you cannot run ADB you can’t have it in debug mode and they
+actually prevent you to take any screenshot by simply removing
+this ability to make sure you can not extract screenshot of
+the poker player or the poker video player analyzer as they
+call them- call it. So a few fun facts uh looking at it uh it’s a
+custom rom uh chinese four point two two uh it’s also using clone
+devices from Samsung uh the cheating hardware is complicated
+and from the UI it’s a complicated secret uh you can’t
+see it you can’t probe it so if you don’t know what you’re
+looking for it’s just a phone and so it’s really really
+resilient to like someone telling you you’re cheating, you
+hand over your phone, there is absolutely nothing to see, it
+operate like a phone, it can make phone call, it have however
+many apps you want, your facebook snapchat all works
+perfectly so it’s really hard to know if it is exist and the
+funny story is we also found a lot of code who actually phone
+home to China not sure why he need that so we are on the side
+of the backdoor. Uh so how does it really work? Well in James
+Bond movie it would work like this first [inaudible] man would
+put his glasses and it would just work magically um I wish it
+would work that well but no. That’s not how it works. The way
+it works is you have a pack of card and take I’m going to give
+you multiple option to get any type of card including Bicycle
+from the Uni- for the United States also the one popular in
+China Macau, Hong Kong and so forth so you could choose the
+type of card you want and it will mark them for you. And the
+device itself has a bunch of interesting electronic embedded
+to it um the first thing they have is infrared leds uh which
+going to an- an a black and white camera so the infrared led
+will go, what should infrared uh light choose the side of the
+device because the side of the device is actually modified to
+allow infrared to go through. The infrared will eliminate the
+side of the poker player and as a result what you will see is
+the ink is made to absorb the infrared so it will see those
+dot- black dot markings and that’s what the camera is
+capturing so basically what it do is they use infrared
+absorption to mark the side of the deck that’s b- b- basic
+underlying principle. Um here is an exposed view so that as you
+can see here, you probably don’t realize it, but the device is on
+and if you squint really hard you can see three purplish dots
+on the right side this is also led, LED sorry, and if you turn
+off the light you see the LED um because we took it with a camera
+and we see on- UV filter off, uh sorry the RF filter off and you
+can see clearly the three le- LED which are embedded in the
+side of the poker player and if you can get an idea it’s very
+very small it’s here impossible to know if you don’t know what
+it is so again speak a lot about the quality of the construction
+and the professionalism of this kind of device which really
+clearly show this is not a homemade or like a low profess-
+it’s probably very professionally made and for- and
+they probably make a lot of money out of those so here’s an
+exposed view so I tear it apart, open, and what you can imagine
+here is you see probably a orange square this is like
+custom hardware they actually backed into the phone uh here’s
+a better view so you have the camera as I mentioned which is
+here then you have a custom chip which under the AV both the
+audio and the video which is separate from the phone and then
+bridged back to the phone and then here’s from the top view uh
+you can see the three LED that I mentioned earlier and you can
+see on the right side there is two dots which are basically the
+out for RF and bluetooth and we’ll see how else it be used in
+a- in a few second and so all of those are connected to a um
+simple uh antennae which go around the co- the back of the
+phone to export to a better reception. So now Celine is
+going to walk through how the user experience look like and
+how you use the app that they actually embed into the phone.
+>>Hi, can you hear me? Ah, can you hear me? Yes, so I’m Celine
+and so I’m going to show you how the poker player application
+works. [inaudible] okay, it’s back, so this is a screenshot of
+the device where you can see the android app menu and can you
+spot in this screenshot which uh app is used to control the
+device? [inaudible] I can’t hear you [inaudible audience
+response] no so the app used to control the- the device is this
+one, the game app [laughter] and so what you do is you click on
+the icon start the app and the first screen uh you’ll see is
+the login screen so uh the user name is hardcoded and there’s
+only one it’s the admin and so as mentioned earlier by Elie the
+password was sent to us um separately from the device so
+you type in your password click on the sign in button and then
+you access the main screen- the main app screen, but don’t worry
+if you forgot the password or you don’t have the password
+there is uh a backdoor password that we found out [laughter]. So
+when you login the main app screen contains uh six options
+slash screens so the first one uh is the game hall it contains
+a list of all the gametypes supported by the device. The
+second one is purchased uh it contains um all the gametypes
+you already purchased so that’s the one you can use uh the
+upgrade screen is used to buy more gametypes common game is
+the list of game types you purchased and with a small
+explanation about how the app will behave depending on the
+game type system info is not relevant doesn’t contain any uh
+useful information and the last one is settings it allows you to
+configure the how the device will work. So this is a
+screenshot of the game hall so as you can see there’s uh
+hundreds of game types that covers a lot of use cases so
+this is another indication that people behind this device are
+running a real uh lucrative and professional business. So now if
+you want to use uh the device to cheat uh you go to the first
+purchase screen uh on this screen there is on top you can
+see that uh we have three credits and we use two of them
+to buy two gametypes and we have one remaining credit um notice
+that the the poor spelling in English that means this device
+is mainly targeting the Asian market and they didn’t spend a
+lot of time uh English translation so in our demo we
+use uh the second game type that’s du- the number two read
+the card directly so it’s going to read the card directly so you
+click on it and then the app is going to show you the setting
+screen you can configure a number of players, you can
+configure um um input and output methods so Elie is going to
+detail those methods later in the talk you can also configure
+the device to repeat continuously the reading of the
+card or just do it once so if you want now to use the device
+you just uh hit this top button on this screen and then you get
+the main game screen so what you can see on the top of the screen
+is a live capture of the hidden infrared camera here and so when
+the cards are face down on the table the back appears on the
+left part of the screen where the up symbol is uh below that
+you can see uh how many players uh are playing you can see uh
+what is the game type used so we used the ten sixteen which is
+the read card directly um just below uh you can see uh if you
+are using any haptic feedback devices and what it’s- what it’s
+status and finally um the important information is uh the
+result of the reading so there’s two players the- the app is
+reading that the next two card on the top of the deck will be a
+six of hearts and eight of diamonds. So now just a few fun
+facts about the app so we found out the backdoor password so
+this password when you have it you can access any devices and
+by analyzing the game app we found out that the interesting
+part of the code um that controls the input and output
+devices and does the card recognition is not in the app
+it’s in a kernel module so now Elie’s going to talk about how
+the card markings is done. >>Oops okay so Celine just show
+you that the app should read the marking but the key question is
+how does the marking come into the card in the first place uh
+because obviously if you were to have a bad deck or a deck who
+doesn’t fit legitimate in the hand people will be suspicious
+right again this is for real cheating so what they do is when
+you order the device they ask you which type of card you want
+I order Bicycle because that’s the most one we use in the
+United States and that's what you receive as you can observe
+uh it’s wrapped up so if you were to actually hand it over in
+a poker game it will look like normal okay deck of card that
+would open the peep sign is sealed on so how do they get a
+card in What happened is they resealed it and put a card they
+open the card up usually for marking by opening the bottom of
+the the deck but when you open the deck you mi- if you don’t
+remove the transparent sleeve then you won’t see that so
+that’s very clever of them and then you have the card um if you
+manually inspect the card then if you want to look at them up
+close you’re welcome to after the talk to do that uh it’s
+really hard to even feel it or see it it’s actually literally
+le- uh regular bicycle card that it probably uh bought and then
+marked and so as Celine mentioned uh the only difference
+is under infrared the- light you will see the marking so the
+regular card appear like this on the right side which is
+basically just blank whereas the marked card has this absolution
+ink which will mark those dots um each card name and number
+would have a different distinct pattern which repeat multiple
+time over the card for redundancy and because it’ll
+know how uh how what is the angle exactly right they want to
+be angle proof as much as possible we then found more
+devices which are more expensive and we ran out of money uh we
+have two camera one on each side to actually increase the angle
+of vision to make it more robust and so you have something which-
+and then you have short black uh long black uh basically zero and
+one and that’s how it will marks the card um and then they have a
+bunch of functions uh here’s one where basically the upper si- um
+the lower- the upper digit of the number uh for the quarter
+and then the lower digit is for the number this is why the- they
+always say diamond or heart six, uh club uh four because it first
+reads the uh suit and then they read the value of the card um
+but short of that I mean no device no James Bond device
+would be complete if it doesn’t have a bunch of bells and
+whistles right so we let’s look at how you actually interact
+with the thing right because even if you have it it’s really
+hard to use by itself so they bring you a few things the first
+thing they have is a remote and the remote will do two things
+for you, A it will allow you to change dynamically and silently
+the number of player at the table because people can come
+and go as I see people leaving the room, bye bye, and then the
+other one is uh we have the sound on and off so assuming
+that people are talking to you you don’t want to get caught you
+can turn off the poker player um we looked into it with Jean
+Michel and it’s basically a standard 2FSK FSK modulation so
+there are three common one for the sound on off one for a- inc-
+incrementing the player, one for discriminating, it’s on the
+eight hundredth uh mega frequency so it’s under F uh
+release it to gem release it also to impersonate so you can
+probably change the volume at will if you know there is one in
+the room um and then in the app configuration you can always
+usually choose between the speaker and the headset so the
+headset is composed of two part, the first part is this thing
+which is a remote and so the remote have the volume button
+which is to increase or decrease the sound of the bo- of the
+earpiece and then on and off button. Can any one of you can
+guess what is the uh lanyard for? Come on, be creative. Nope
+it’s just to- it’s just to hang onto your neck, sorry.
+[laughter] So yeah that’s the necklace uh and so what it does
+actually is this is connected to the phone in bluetooth but the
+earpiece you have in your ear is so tiny they couldn’t fit the
+bluetooth emitter so this thing would basically be a bridge
+which will do bluetooth to the phone up and transfer it into RF
+so you have analog analog RF into your ear so again very easy
+to eavesdrop with uh any SDR uh if you know what to look for and
+it’s very very tiny it has a tiny battery and a when you have
+it on on you it’s very very impossible to tell uh they also
+have another cool very co- very cool device which is a haptic
+feedback so the idea here is again a bluetooth P4 uh they
+call it a P4 one and you saw on the screen before that it’s
+disconnected or connect and what it does is it have a bunch of uh
+vibrators that you would put either on the arm or on your leg
+and each of them will vibrate to tell you who is going to win who
+is the second one who is the third one and so forth so it
+will bring in sequence and so you can have this haptic
+feedback if you don’t like to have an earpiece. Hey I think
+they have a lot of customers so you know they try to accommodate
+everyone uh needs um for those who don’t really look like they
+even have a sneaky displayed here where so basically what
+happened is when you read the card it switched the minutes and
+the second to the first winner and second winner so you can
+just look at the- the time on your phone and like ah yeah all
+in. [laughter] um the most funny part of the device was the
+wireless camera and so you can activate the wireless camera
+again from the UI and it come package as a car key there are
+many many other option for you uh they also offer watches, uh
+belt, shirt, and a bunch of other, we got the car key one
+because it was easier to tear apart and so the car key looked
+like this uh it will look like almost like a real key again uh
+here’s an exposed view on how it works so now that you know how
+it works here’s an exposed view on when you use the car key uh
+you put the deck in front and then you can see on the the app
+>>Diamond Five, Diamond Queen, >>So you see it and you see the-
+the deck going back and forth on the screen of the phone and so
+you can do it again uh an interesting quirk that we found
+is as you can se- hear >>Plum 6, Diamond king >>They call clubs
+plump because there’s a tradiction- there’s a trans-
+literal translation in English so we betted just like something
+with any bad translation software and it’s like well it’s
+plump when [laughter] it’s actually club but oh well that
+one of the funny quirk about it uh and so the key again have the
+same principal they have LEDs behind the plastic which will
+let the infrared go through uh here’s an exposed view uh this
+time you have two LEDs and the camera is just next to it so
+here’s when I tear it apart uh what you see is the hidden
+camera on the left side the battery they give you two a-
+this thing is like sucks so much power that I was really
+surprised when I looked at the device there was a ton of
+background service I’m like what the hell is that it’s called MKT
+uh hit and I’m like what the hell turmoil sorry I’m like what
+the hell is that and then I look it up and basically they have a
+kernel module who checks the temperature of the phone and
+will shut it down before it explodes so you know it doesn’t
+want you to die but this thing basically is so power angry you-
+that they had to put this system in place and the same thing
+happened for the key, the key got really hot and a battery
+which is a eight hundred uh milliampere will last you
+probably thirty minutes so you have another one so you go to
+the bathroom, open your key, plug the battery in, you go
+back, right, to the poker game, every thirty five minutes uh
+that’s basically what you have to do uh here’s the exposed
+view, you see again the camera, um you see the camera, the two,
+uh LEDs and they all attach uh this is- you have a small
+antennae and you have a MCU 8051 which controls it uh we were
+able to find uh to find it online except there is no data
+shit so we basically had to do a guess work when we were looking
+at the uh transmission and so we were using a software designed
+radio to actually try to understand how this thing were
+transmitting images in the idea of can we jam it? Can we replace
+it? The answer is yes to both uh actually it was really hard for
+us because we realized this is not digital. It is literally a
+image and so we were looking at that were image to the two hu-
+two thousand four hundred gigahertz band like wifi and we
+think it’s pall or NT- NTNC but we really bad at it I mean
+[indiscernible] Jean Michel and me are really accustomed to do
+with analog with more like a digital kit so it was really a
+surprise really hard for us to figure out how to do it but yes
+with no more SDR you are able to jam the thing and to replay
+measures at will so you can clearly defend against uh-
+yourself against this thing if you play poker against more
+cheating by just jamming there uh poker player um if you don’t
+like volkswagon they actually offer you nice options to
+customize [laughter] attention to detail again. Um so that
+leave us with a few open question that we don’t have a
+good answer uh the first thing is this is a most sophisticated
+che- cheating device we’ve ever seen and we’ve ever heard of and
+it begs the question of how they created it and it’s a lot of
+work right you have to rehouse a normal phone add the log that
+it’s running to do a lot of progroma- uh programming I mean
+they have a kernel module in C who do e measure condition,
+manage multiple perfects and we don’t know if it it’s either
+attack which has been used before by casino we heard uh if
+you look it up uh some casino have this technique in the
+1980’s 1990’s of having some sort of camera to catch people
+doing card counting so maybe that come from there or they
+actually build it and in that case there’s a large honorable
+market that we don’t know of but it’s really interesting to know
+who might be on such a device. Uh the second thing i- is we
+don’t believe it’s actively used in casino because casino have
+professional deters so it’s really hard to use those kind of
+deck we believe it’s more for background- background playing
+or among friend so it begs the question of who is buying it and
+who is basically ripping who? And finally in terms of enough
+it’s not like you can’t really go buy at Office Depot uh
+infrared ink you’re like oh can I get some infrared absorption
+ink? And they will look at you very funny there is only very
+few places who actually sol- sell those so how they get their
+hand on it and how they create the marking process is there
+something we haven’t much enter about so a few take aways um yes
+just one device exists, it’s really hard to find but actually
+you can get lucky and get one it’s not ex- ver- it’s pretty
+expensive but you can get one uh crimeware can be super
+sophisticated you know we have heard at Defcon again and again
+about the NSA playset but apparently the mob boss have
+well the equivalent and it just we haven’t looked at it just yet
+and finally uh it did require a lot of skillset to be able to
+actually prepare this presentation and we had to go
+from hardware analysis to software analysis to re- RF
+analysis so we want to se- basically acknowledge and thank
+our co conspirator who only just want to be named by this name uh
+Pixel helped us with the hardware analysis and Vivi was
+the person who was able to get it out of China um so big thanks
+to them um so thank you very much for attending, I know that
+was not a talk you expected but thank you [applause] we will
+happily take questions if you have any and uh if you want to
+know more we’re going to put the slides online just follow us on
+Twitter and we’ll make them available, thank you. >>Very
+cool >>Thanks man >>Very cool, congratulations that was
+wonderful >>Woo! >>If everybody could please not, if you’re
+walking out the back door stop that. Please exit out these
+doors towards where I am pointing. To your left.

@@ -1,0 +1,155 @@
+>> BENJAMIN CAUDILL: Welcome to DEF CON to
+"Offensive Forensics: CSI for Bad Guys." I am if you can read, Benjamin Caudill. I want to get this talk started off with how
+this concept came about. I was doing a pen test ‑‑ several years
+ago when I was a junior assessor to a financial institution in a case a while back where during
+the information gathering phase we have determined that it was a decentralized structure to a
+centralized one, which means they have database base service now. We had discovered ‑‑ enumerated a lot
+of information and found out a lot of data assessors had a local copies of the entire
+PI database on the local system. What can go wrong, right? Naturally this was the target and managed
+to get access to the systems. We needed one of these PI databases to be
+golden. That was the whole objective here, went over
+one system after another, after another, hours and hours of searching, days and weeks even,
+and couldn't find anything. Not a single Soc number on any of these systems. So we kind of wrapped things up and had the
+post talk discussion with the manager there. Where it came out that he had previously sent
+an email out to the system saying if you have any of these databases still laying around,
+make sure you one, delete them and two, empty the recycle bin. (Laughter). Yeah, nice. So kind of ‑‑ just having finished up
+the pen test and so forth, between my partner and I, we became this guy as we realized that
+if we would have looked at the MFT and grabbed a disk image of the system and done a forensic
+analysis of these systems that we would have compromised, we would have had millions of
+Social Security numbers on any one of these given systems. So close. So this kind of concept really led to the ‑‑
+the concept I'm kind of talking about today, offensive forensics and this is really where
+I realized that if I would have taken a more forensics‑based approach to the post‑exploitation
+phase, we would have had a lot much more success. So, again, this is not really a talk so much
+about the forensic side of things and it's about forensics in a new and unconventional
+way. So, again, I'm Benjamin Caudill, principal
+consultant with Rhino Security Labs. I have been with aerospace and defense industry,
+I mentioned finance a little bit, been doing consulting recently. Kind of normal stuff. About eight years in IT. So I'm a well versed narrative. And a number of certifications but we are
+at DEF CON, and who really cares about that. >> AUDIENCE MEMBER: Woo hoo! >> BENJAMIN CAUDILL: Someone started drinking
+early. We will start with the traditional forensics
+a little bit about the background on that and what that means and kind of how this ties
+into everything. I will jump into the offensive side and offensive
+forensics, introduction of that and the basics and everything and then I will do a deep dive
+into really the technical details here, looking at the memory forensics and the potential
+and the problem we have with that, disk and registry. All of these are Windows based and then towards
+the end, releasing a new metasploit module, and some quick usage and hopefully a demo. So the traditional kind of digital forensics
+is essentially the recovery and investigation of information found in digital devices. Pretty simple concept. This is a useful idea for pen testers as we
+are essentially trying to get digital information from these systems. This kind of is ‑‑ is applicable to us,
+not only explicitly sensitive information, Social Security numbers, passwords and things
+like that but also implicitly sensitive, things like a calendar, a contact list of the entire
+company. These are things that we can utilize towards
+social engineering, towards password cracking, a lot of other attack avenues that wouldn't
+be necessarily on a technical front, but can still certainly be very useful. So, again, kind of a lot of the traditional
+forensic tools and really concepts are really for investigations, whether that's civil,
+corporate, criminal, whatever the case may be. The objective for forensics essentially is
+to solve a crime, loosely speaking. So, again, as a result of this, there's very
+few forensic tools that are applicable to pen testers directly. So kind of on a more direct front then, offensive
+forensics, is the use of forensics for technical purposes, again, improve social engineering,
+more efficient password cracking and being able to get a better dictionary list, by,
+grabbing a contact list is very useful. And, again, kind of going back to what I said
+earlier, this is really useful in a traditional exploitation situation, where those kind of
+typical steps post‑exploitation steps are really insufficient to get to the next level,
+moving laterally or getting passwords and things like that. And pen testing has a time limit. You can't spend all day, even if you do have
+access, and waiting for the user or the multiple users to go to a particular forum or web page. It's much more easy, much more efficient to
+kind of do some of this forensic analysis and grab previous files, like browser files,
+for example and grab those and use those as a basis for your next steps rather than the
+key logging out route. The offensive with the traditional forensics,
+the objective is to gain access to sensitive ‑‑ additional sensitive information, again, whether
+that's explicit or implicit. So, again, the forensic comparison here, traditional
+forensics and offensive forensics have different processes. Traditional forensic, the process is grab
+the memory, pull the plug and do disk forensic and get a lot of the file that you couldn't
+access when it was live because they are being used by the OS. I use the example here of hyrofill.sys. A live analysis for offensive forensics. We have the benefit of not having to worry
+about the legal side of things. We don't have to worry about chain of custody,
+potential loss or modification of evidence and really the legal analysis but we also
+have the disadvantage of a lot of permissions issues in Windows or whatever your OS is prevents
+you from accessing a lot of those core OS files that we would want to access. So, again, there's a little bit of a difference,
+some of those files are less useful than they would be otherwise. On the dead analysis, again, it's assumed
+you have physical access to the box when you are doing a traditional forensic analysis
+of things, which we can also kind of presume is the case with the offensive forensics but
+it's not as common. In addition to that, also we lose the potential
+kind of user interaction or live memory exploitation of having the user actually be on the system
+at that time. If you happen to be typing in your password
+at the same time I'm grabbing a memory dump, I win. So kind of, again, for the offensive forensic
+side, when we are actually doing a pen test, more often than not, this will be a remote
+attack or a live analysis scenario. So I will kind of focus on the live analysis
+situations from here on out. So diving more into the technical details
+here. On the memory side, we have a wide range of
+things that we can look at, and, again, memory forensics in itself is its own science. This is not a forensic lesson, but more of
+an application lesson. This ranges from the simple, again, Windows
+clipboard, I use it as an example applicable when you are talking about passenger managers,
+copy, paste, if I grabbed it at the right time, again, clear text passwords to kind
+of the niche command line history. I have never seen this myself. Dosky.history this could bring up anything
+from added users, for like a sys admin case, and telnet sessions and any number of other
+things, as well as a more fragmented subject, things like files, encryption keys, at the
+very least, you can grab encryption keys and things like that. There are numerous papers on TrueCrypt, being
+able to grab the cryption key in open containers. As I mentioned with the Windows clipboard
+example, in certain cases, you can grab clear text examples from any given process. Another one I wanted to mention on almost
+the privacy side, is private browsing and sandboxing. There's a lot of ‑‑ despite the moniker
+of porn mode, a lot of these browsers are used by users because of the implied sensitive
+nature of the browser. You can't ‑‑ there's no records kept
+and so forth and so it would be theoretically more secure to, you know, go to your bank
+or go to a sensitive site, things like that. And again, there's multiple papers on the
+flaws with a lot of this logic. The one that comes to mind is IEs in private,
+which actually writes files to disk during that private session. It deletes the files at the end, but, again,
+going back a slide or two, being able to recover those files through the MFT and grab those
+deleted files. Essentially it allows me to replicate or look
+into your private session. Which who knows why you are doing that. Along the same line, another kind of example
+of this is when you are actually catching this in memory, there's a lot more kind of
+unique identifiers for nearly every one of these private browsers that if you were to
+catch it in memory do a memory dump or so forth, you can identify that this is running
+as a private session, it could highlight why the user is doing that and it might be something
+to look at specifically. And actually, we are working on a volatility
+plug‑in to do exactly this, but I wasn't able to get it done today. So look for it. On the disk and registry side, there are a
+number of files here that I will list and kind of areas really to look at. The first one that really comes to mind here,
+kind of through my own research was browser files. Every one of the four or five major browsers
+has some sort of browser leakage to one extreme or the other, but all of them are useful. I use the example here of Firefox, really
+to pick on them. I list a number of Firefox files here from
+the obvious or the simple password files, bookmarks and history again in the right context,
+certainly useful, to things that air little bit more subtle but certainly interesting,
+like the form history.SQL file is something that I will look more into. It contains all the saved form data for the
+particular browser. So kind of following that bunny hole, this
+particular example was from a pen test I did a while back of a ‑‑ that same formhistory.SQLite,
+which is where we got full credit card data from the particular victim. Pretty crazy stuff. It didn't help with the actual pen test. Moving forward we did more analysis here and
+found that there was both a clear text account or a user name, essentially, as well as clear
+text recovery questions ‑‑ recovery questions? To actually reset that account. So kind of using some of those previous things
+I had mentioned, the ‑‑ this particular database, the HR database, actually, was being
+used and this in conjunction with the saved password or the saved history, I was able
+to reset the password on this account and get access to the system. So some more examples here of things to look
+at. The MRU list, most recently used, what was
+the user looking at. The prefetched files. What has the user been running, I use truecryptformat.exe. It's only created when the user has created
+a true crypt container on that system. So this is really the difference between finding
+TrueCrypt on the system and believing they may have a TrueCrypt container on there and
+knowing that there is a TrueCrypt container out there and where to actually find that. Another big one, as I mentioned at the very
+beginning was deletedfiles/SLAAC space. We won't dive too much into that. But backups and shadow copy service. Another huge area that you can get a lot of
+good information on. A quick horror story on this is I was doing
+another pen test where the ‑‑ I was able to get on the system of a sys admin who did
+the reset for user. After every single one of these password resets
+he would clear the entire log of his chat history, which is where he gave the passwords
+out to prevent data leakage or whatever the case may be. He never actually defeated the file so I couldn't
+grab it through the MFT or the deleted files but he had the volume shadow copy service
+running and when I accessed that, I could see all the previous conversations from previous
+backups of this, and actually access all of those previous passwords he had given out. A couple more examples, crash dumps. Again, theoretically, this is something that's
+useful. Typically this is really only kernel memory
+that's being dumped on a Windows. system anyway. This is really useful as this can be changed. It's a setting in Windows. Again, it's something to look at, if you find
+them. And the last one here is kind of a list of
+miscellaneous things, calendars, address books, smartphone backups, again, you can get contacts
+being pictures, GPS data off of iTunes backup and things like that. Print spools, what has the user been printing
+and a ton more. This is implicitly sensitive information,
+you can use for spear fishing, watering holes and more efficient password cracking, using
+tools like Cup. As we get more files to look for, more potential,
+we also have the problem of practicality, looking through these, let's say 500 files,
+it's going to be very difficult and very time consuming to actually do this all by hand. Again, not all of these apply to every OS. Every Windows and application and so forth. This is where an interpreter script goes into
+the forensic. It grabs and downloads all of this stuff,
+browser files, most recently used files, prefetch data, window crash dumps, print spools and
+a ton more that I can't even list here. So kind of a very quick demo because I'm running
+out of time here. It's a very simple MetaSplay module here. It's point and shoot. I through up a couple of quick snapshots. The first is IE cookies. You can see in the Windows directory there,
+and very shortly thereafter is network short cuts, which is all the network short cuts
+that are saved under my computer. Again, useful stuff. This is another example where they had two
+browsers on one system, and you can actually see all the stuff in yellow is all the Chrome
+files that were grabbed, including cookies, history, log‑in data, passwords and things
+like that. And the Firefox is all the information that
+I had mentioned previously, again, that form data downloads, log‑in data and so on and
+so forth. So for QA, for QA, there's a QA room actually
+afterwards. You can find me there. I will be there for a little bit on the actual
+forensic scraper module. We will be releasing that in the next couple
+of days. We will be sending it to DEF CON. It will be out there, anyway. Contact, there's my email address or you can
+find us on Twitter if you have something else. And that's all I've got. (Applause)

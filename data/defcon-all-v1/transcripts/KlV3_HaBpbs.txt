@@ -1,0 +1,462 @@
+>> ROB BATHURST: So thank you all for coming
+and continuing to come and to sit there and be lazy, I don't know what's going on.
+So welcome to breaking your expensive crap or the actual name we submitted as "Doing
+bad things to good security appliances." This is going to be kind of a primer quasi
+not really primer on hardware hacking as we see it in dealing with security appliances
+of all types. Am I echoing really bad or is it just me?
+>> AUDIENCE: It's just you. >> ROB BATHURST: Figured.
+So dispense with the pleasantries. Here. Phork, if you'd like to take about five seconds and
+introduce yourself. >> MARK CAREY: I've been breaking stuff since
+I was 6 years old. >> AUDIENCE: Speak up.
+>> MARK CAREY: I've been breaking things since I was about six years olf, to include things
+like my dad's radio, the TV, all sort of other stuff, taking things apart.
+>> ROB BATHURST: Women's hearts? >> MARK CAREY: Generally, no. Taking software
+apart as well. I've been a reverse engineer since I was probably about 10 or 11 years
+old, taking apart 6502 code on a Vic 20, having a great time, loving all of this stuff, loving
+technology all my life, and I continue to learn. So we've gotten now to a point where
+it's much more fun. I've worked all sorts of people, all sort
+of places, everything from driving pizzas to different government stuff.
+>> ROB BATHURST: Okay. We're good. >> MARK CAREY: That's it.
+>> BOB BATHURST: All right. You can hear his life story later, I promise.
+I'm Evilrob. I'll be your quasi emcee. I love that word, quasi.
+So I've been breaking things for quite a long time, mostly to everyone's chagrin. I'm not
+going to tell you my life story, but beer good, fire bad, that's about all you have
+to know about me. Before we get started talking about the equipment
+and what we're doing, we just want to point out some of the people whose research and
+efforts in this area have really helped us out and saved us lots and lots of time.
+I totally want to pimp the JTAGulator that Joe Grand is selling. It is frigging awesome.
+Go buy you. >> MARK CAREY: And it's extendable with new
+firmware. So get one. It's not just going to do JTAG. It's going to do all kinds of
+other stuff. >> ROB BATHURST: And we'll talk about the
+JTAGulator if you don't though what it is. So what we will do be doing, we're going to
+talking you through the basics-ish of hardware tactical analysis based on the examples that
+we have done here in the past couple months. We're going to assess the tools and mentality
+you should have to be successful. Not required, but definitely good to have.
+We will discuss some of the common attack techniques when you're dealing with hardware.
+A lot of this talk is focused purely around the hardware and the theoretical attacks based
+on hardware and not so much on the BSP or firmware or anything else that is associated
+with that actual hardware. >> MARK CAREY: And a comment on this, also,
+there is a larger set of material on the CD that covers this. But we have 45 minutes as
+opposed to the roughly 3 or 4 hours we would need to cover all the material in the slide
+deck. So if you look at your DEF CON CDs, they have a large quantity of material about
+each of the items, bullet points, what interfaces look like, what provisioning interfaces look
+like in a detailed summary about how to get started doing hardware hacking.
+>> ROB BATHURST: It's about a hundred and something slides about hardware attacking
+and how you do it and what you don't go and how people screw up and burn themselves with
+chemicals. So the last thing we will do is show you pretty
+pictures and attempt to point at those pictures. I don't know if we'll succeed.
+The tools of the trade. This is stuff we use, stuff we have laying around the lab. It's
+really handy to have any time you're messing with hardware in any way. Most of this stuff
+can be acquired for less than a thousand dollars. Most of it can be acquired for under five
+hundred dollars. It's just the more features you have, the more expensive it gets.
+A few of the big items, we will cover these in detail as we need them, when we're talking
+about the hardware analysis. Your brain is important. It helps you control your body,
+and it allows you to consume alcohol, food, look at things, possibly.
+A voltameter, service mount soldering station, a rework station. If you don't know what those
+are are, Google it. Basically it's a soldering station and a tube that blows out 500 degree
+air. It melts things. >> MARK CAREY: And that's Celsius. It's really
+hot. >> ROB BATHURST: It's really, really hot.
+(Laughter) Soldering stuff, flux, magnifying glasses,
+microscopes. By the way, if you're using a magnifying glass to look, a physical one to
+look at a chip, put some Rainex on it, otherwise it will fog up like every three seconds and
+you're just going to be pissed. >> MARK CAREY: Pro tip.
+>> ROB BATHURST: Pro tip. Don't be pissed. Bus pirate. Amazing little device. It is like
+the the end all be all for raw bus analysis up to a certain hertz range.
+Debugging interfaces. It's great to have spare ones around. We will talk about some of the
+mistakes here in a second that hardware manufacturers tend to make. And I don't know if you know
+this, but just desoldering the header doesn't protect your board from having a header put
+back on. So pro tip. Yes. IDA pro. We'll cover -- quasi cover this.
+Quasi. >> MARK CAREY: More on the slides on the desk.
+>> ROB BATHURST: Yeah, more on the slides on the disk. We'll talk about what you may
+be able to throw into IDA pro than you would have gotten out of the chips that we're attacking.
+And then other stuff you might need, chemicals, respirator, balls, also dongs.
+You know who you are. So. Security appliances. You know, what do
+we consider to be security appliances? I know a lot of people, when I ask them, what do
+they think about security appliances, they think of firewalls, they think of IDS, they
+think of all these actual things that have been categorized as appliances and sold to
+you by vendors who want to charge you lots and lots of money.
+What we consider to be sefcurity appliances is basically anything that can be used to
+secure something. So some of the examples we'll be looking at
+is securing people from themselves, like a safe, or a -- we will be looking at something
+like securing your data, so the encryption system that we will be demoing -- well, talking
+about here at the end. So it can be practically anything that has some kind of security setting
+and is hardware related. The steps that we generally take. Again, go
+consult a big massive deck of slides if you really want a breakdown of all these steps
+or find me in the bar and I'll be happy to talk to you for a price.
+>> MARK CAREY: And there is an outline of a full methodology to do repeatable assessments
+on that slide deck as well. And, again, we just don't have time to cover it because that
+takes about 45 minutes by itself. >> ROB BATHURST: Yeah, pretty much.
+You generally what you want to do is define the goals. What are you actually going after?
+Why are you attacking this device? You don't ever walk into something especially when you're
+doing any kind of reverse engineering and go I'm just going to do this because, because
+it takes forever. Because you will sit there going oh, I'll look at this now and look at
+this now. And at nine months of work, you will have nothing but a pile of "Oh, look
+at this now. " So what we're talking about when we want to
+define the device is we want to look at it based on our goals. If our goals are to rip
+something out of the man flesh, I don't have to sit there and mess with every other piece
+of that hardware to get that man flash. I want to go directly to the bus. I want to
+do this stuff related directly to that chip. So when we're attacking something, we always
+have to keep the goal in mind as we define the parameters and advise what hardware and
+what equipment we'll need to actually get that out.
+Gather all of the open source information you possibly can. I know some of you may be
+decent social engineers, and if you ever talk to a sales guy, they just love to send you
+crap. The more you like I want to buy your piece of shit, they're like here, have some
+documentation. Would you like chip specs? I've got high res x-ray photos, too.
+(laughter) Yeah, seriously. Like I've got stuff from
+one guy, it was like confidential company source information. I'm like sweet. Thanks.
+>> MARK CAREY: No NDA, thanks. >> ROB BATHURST: Saves me from buying an electron
+microscope. It's in the budget, right? >> MARK CAREY: We're working on that.
+>> ROB BATHURST: Exactly. Examine the device for entry. Yeah. So a lot of these companies
+that create security appliances, especially the ones that work with key management have
+key sensors. They tend to have a magnetic sensor or a light sensor or it happens to
+be to detect case opening, so that when you actually open the case, it theoretically dumps
+the keys. >> MARK CAREY: Say bye-bye to your SRAM.
+>> ROB BATHURST: Yes, say bye-bye to your SRAM, yes.
+However, like the mistakes we will be talking about here in a bit, usually the implementation
+of those security mechanisms are terrible. It turns into a checklist. The security guy
+is like: I need case protection and key protection and all of this stuff, and then the engineer
+is like: Done. And we all know how well that goes.
+So look at the best way and look at the way that is going to be less intrusive in the
+particular device, and then analyze the circuitry networks and device components once you actually
+open the case. Determine the most plausible attack vector for the actual hardware, and
+then attack. Like your life depended on it. Or go slowly, however you prefer.
+>> Toro, toro, toro. >> ROB: That would be tiger, tiger, tiger.
+>> Well, whatever. It should be attack, attack, attack.
+>> ROB: SO common mistakes by the actual reverse engineers themselves. And I don't know how
+many times I have fallen victim to my own stupidity and my friends as well, due to not
+taking copious amounts of notes, and not taking pictures. Because when you're sitting in a
+desoldered pile of chips with a desoldered board in front of you going "I think it goes
+here" is not really the best time. >> MARK CAREY: And orientation is always important.
+Because if you hook them up upside down, they tend to let the magic smoke out.
+>> ROB BATHURST: Powering up a board with a badly soldered chip is a mess.
+Burning yourself with chemicals or a fire, bad. Bad.
+>> AUDIENCE: Beer good. >> ROB BATHURST: Beer good. Fire bad. See
+I've taught you all something already. Not properly preparing for ESD. Optical and
+magnetic isolation. If you need to work in an argon pressure environment, if you're dealing
+with nitrogenized chips, Very, very important to have your test environment set up so that
+you're not actually going to ruin the thing that someone paid you or that you acquired
+to test yourself. Always, always, always take the time to make
+sure your environment is set up correctly and save yourself hours and hours of headache.
+And my absolute favorite, get a backup device, or a device of like make or something that
+is comparable to the chips that you're using, because once you let the magic smoke out of
+the thing you should be testing, you've pretty much failed. So you can't put it back in.
+It just doesn't work. And the list can continue ad nauseam based
+on the stupidity of the reverse engineers themselves. You know who you are.
+So common mistakes by the people who sell you the really expensive appliances. Putting
+your case sensor wires right next to the vents. So a paper clip and a pair of vampire clips
+and I've just taken out your massively complex wire.
+>> MARK CAREY: And that handy dandy heavy gauge steel case, too.
+>> AUDIENCE: Speak up. >> ROB BATHURST: And the heavy steel case,
+too. >> ROB BATHURST: Yes, very impressive steel
+cases and then you put vents in it. Hiding your hips under epoxy. Epoxy is not
+a security mechanism, for God sake. It really isn't. Like you get this $30,000 piece of
+equipment with your security processor that holds your keys in it, and you're like I'm
+just going to put epoxy on it. It's cool. Nobody can get to it. It's a bitch to get
+off. It's fine. Not using a built-in encryption protection
+mechanism on embedded processors, big fail. Not setting the read write protect bits on
+the processor flash. There are fuses for a reason and they are a pain in the ass to get
+around. So if you set them, it will only take me slightly only more time and aggravation.
+But it's more time and aggregation. And if I get aggravated enough, I go find beer and
+I stop working on your device. Not limiting access to the debugging and provisioning
+ports. You know, we were talking about the protection mechanisms for a desoldered JTAG
+port is not an actual protection mechanism. So if you're actually going to do that, think
+it out. Lock it down. Use secure JTAG, use some kind of keying mechanism, use authentication
+where possible, depending on your chip set, to actually protect said device.
+And then my favorite, or Mark's favorite as well, running your ITUC or SPI buses up to
+the user LCD, then back into your really hard case with all of your security mechanisms,
+where it directly attaches to the boot flash bus. Because then you just take the panel
+off, and you're on the bus. >> MARK CAREY: And then you can rewrite your
+boot flash and maybe get some PXE action or a bunch of other stuff.
+>> ROB BATHURST: If you'd like to save me time, do that, yes.
+And then you know there are so many more attack vectors and mistakes we can go into based
+on the way the devices are actually engineered, but for the sake of brevity and possible beer
+later, I won't go into this. So possible attack methods, there is voltage
+glitching, timing manipulation, you can Google these or go find that slide deck. Fuse resetting,
+if you can basically polish a chip in a clean room using a UV method, not for is n00bs,
+just to warn you. Any time you talk about chip shaving and nitronized chip sets and
+everything else, not a first time experience. Not very good. The JTAG provisioning, interface
+debug, those are easily screwed up, because most times they are made for debugging. So
+if you can get on to those and mess with it and twiddle some bits and do other very dirty
+sounding things to equipment, you have a good chance of actually causing it to spill its
+beans. And then debug path manipulation using the
+I squared C switching flash pin UTAGs to TAGs, which he'll get into when we actually talk
+about the boards. So the examples for the actual talk. The thermostat
+in your secure hotel room. And you're like why does that thermostat matter? Most times
+these are tied into the central HVAC system. They are monitored, controlled by industrial
+control systems, which in most times due to human laziness sits on the same network as
+someone's admin network or something else, because you know it's never true. It's never
+true. Hotel room safes. I love safes. I love electronic
+safes. They're the best. Encrypted storage device, which we will talk about here. And
+then Java cards which we will touch on, because they relate directly to the encrypted storage
+device. So the thermostat. We attained a demonstration
+unit from some random hotel. (Laughter)
+It is an interesting device, from this random hotel that has some really good PRISM loving
+features. It has an occupancy sensor on it, and infrared programming capability, a bus
+interconnect, and the centralized monitoring configuration station we were talking about,
+and then the usual HVAC controls and relays and pushy buttons and display and what have
+you. So I'm going to turn it into, you know, Vanna
+White over here and he will talk about the attack methods.
+>> MARK CAREY: All right, I'll try to speak up so everybody can hear me. Is that good?
+>> AUDIENCE: Yes. >> MARK CAREY: Good. So we will cover this
+thermostat -- there we go -- Very, very quickly. So, I'm going to look, if you look at the
+slides here, you can see that we have got a communications module that uses something
+that is something like X-Ten protocol. If you've got automatic light switches at the
+house, using the RF interface to the little box that sits in the wall and the power system
+and it modulates signals on your power lines. >> ROB: Don't eat it.
+>> MARK CAREY: Yeah, I'm trying not to. So we also have -- let's go from top down
+then. So we have the HVAC controls. And we also have network communications there, if
+you see that. There is a five-pin interface, and I'm going to try to shoot this with a
+laser but I'm not sure if I can hit it from here.
+>> ROB BATHURST: Failed. >> MARK CAREY: That's a big fail. Actually,
+I think the --There we go. Up in here is what we're looking at right now. And we see there
+is also an infrared module, which is used for, I would assume, programming this device
+as well. Didn't have time to do a full reverse engineer
+on it. You see the CPU here, which is a nice 8 bit microcontroller. I believe it's -- I
+think it's actually the same as the safe, which is an ADC 51 type instruction set. Different
+manufacturer, though, so it's Philips. And an interesting note about this microcontroller
+is that it has a serial interface and system programming interface, which is always on,
+can't be turned off from the look of things. It's not hooked up to anything. So these chips
+are preprogrammed before they are on the board, but you can definitely do surface mount soldering
+and dump that firmware right out. >> ROB: Right out.
+>> MARK: Right out. We also have an SPI -- I'm sorry, that's mislabeled.
+That's an I squared C configuration flash. And there is an LCD controller. And ten down
+at the bottom you see a bus connector. And that bus connector actually goes into a bus
+driver, that goes into the microcontroller. And then probably with the right software
+out into the communications module. This is the infrared emitter, which in this
+particular thermostat was broken and causing the room to heat up pretty nastily, and was
+repaired accordingly. I'm trying not to spit into the mic.
+So the thermostat was repaired accordingly. It was suddenly much more effective and the
+room cooled right off. >> ROB BATHURST: Recently borrowed.
+>> MARK CAREY: Right. So this is the front of the thermostat board.
+And you'll see the little chip, the tiny little 8-pin dip there.
+>> AUDIENCE: Speak up. >> MARK CAREY: Sorry.
+The 8-pin dip there. Right there ish.
+It's the bus driver that we hook up to on those three-pin interfaces on the bottom.
+Originally I thought my goodness, they actually put the serial interface to a port on the
+outside of the case for me so I can get straight to the in-system programmer and dump all the
+flash. That would have been kind of them, but they didn't.
+So this is the board as it's been decloaked, as it were. Detached and actually pulled out
+of the case so you can get a good clean view of it. So there is a cry -- you can see the
+crystal, the CPU, the I squared C flash, the LCD controller, discrete components, a few
+other provisioning headers and the connectors for the infrared --
+>> AUDIENCE: Speak up! >> MARK CAREY: Oh, sorry.
+The connectors for the provisioning infrared and all of that stuff.
+There is a close up of the bus driver. And so, practically, what we can do with this
+-- Excuse me. Can I have my water, please.
+>> ROB: Drink! >> MARK CAREY: All right. So what we can do
+with this practically. Once you have the firmware, you have the keys to communicating with that
+X-ten like protocol. It's 8 bit micro. It's not hard to take apart. There's a number of
+registers in there, of course, and other instructions that do stuff. If you reverse engineer the
+subroutines and reverse engineer the communications protocol, you can get a very, very clear idea
+of how fast to send information to that module and exactly what to send to that module.
+Now, as an aside, the manual for the control software for this particular thermostat is
+freely available from the manufacturer, on the Internet. It covers a lot of stuff, including
+a lovely diagram of exactly how it's all hooked up. So these thermostats, for example, might
+go to a floor controller. At which point they are networked into the rest of all the floor
+controllers and then back into the backend office, where the main control system can
+determine whether it goes into VIP mode or or not, for example, or whether it gets to
+be 95 degrees in someone's room or not, for example.
+And some other things, too. But we can't talk about those.
+>> ROB BATHURST: That would be regrettable. >> MARK CAREY: Very regrettable. And I'm going
+to turn it back over to Rob to talk about some Roman hotel safe.
+(Laughter) >> ROB BATHURST: So we may have found this
+box somewhere. (Laughter)
+And I'm a big fan of Roman history. Obviously that's why that's on there.
+Some highlights of this particular device. It's a decent metal box that's been bolted
+down. It has a 4 to 8 digital variable pin. It's manually operator for power conservation,
+usually by the hotel staff if they want something in it. But I'm not saying anyone's bad or
+anything, but, you know, don't trust the safe. So about the hotel safe, looking sexy, from
+a random Roman hotel. Do you want to talk about the board here? I'll stand up.
+>> MARK CAREY: Okay. So this is a sexy looking safe. Got a control board, got a server alarm,
+got the actual bolt attached to it, and some lovely batteries.
+>> ROB: Copper top, all the way. >> MARK: Copper tops, they last a little longer.
+Total of 6 volts of power being supplied to the board. The main board is broken up into
+several discrete areas and several connectors. So we have -- if you look at the top of this
+board, you see the battery connector, which is also -- going back to the other slide here,
+-- also a connector for one of the other switches. We see the front panel connector, which goes
+to the little pushy buttons and the latch register -- sorry, the -- the LCD display
+circuitry. And we also see a motor driver, which is just the typical server motor, four
+phase servo driver. Some switches that detect whether the safe Bolt is open or closed and
+whether the door is opened or closed. And the second panel connector. And we also have
+a 64 K EEPROM and a 2 kilobyte flash ROM and of course the other red box that's not labeled
+-- I'm sorry, the two red boxes that are not labeled are a Dallas realtime clock module
+with battery included, and a CPU module, which I believe as I said is a 65 -- sorry, an ADC
+51, but of the Siemens variety as opposed to Phillips.
+So I'll zip through the rest. There are some interesting things on the safe. If you've
+looked under the handle of this safe, there is an RJ 5 interface and a small barrel connector.
+The reason the barrel connector is there is because batteries die and people still need
+to get their stuff. So you can power this from an external source if you need to.
+Additionally, the RJ 45 is connected directly to pin 4 on the controller, which is an attention
+pin that says wake up. I need to send you something. And directly the serial send and
+receive pins on microcontroller. If you send it a sequence of bytes, it opens right up.
+>> ROB BATHURST: This is not a good thing. Because you can just repeat it over and over
+and over and over and over and over and over to other people's safes.
+>> MARK CAREY: Yes, you can. Now. There are a --
+>> ROB BATHURST: In a Roman hotel. >> MARK CAREY: So I'll zip back and look at
+this quickly. If you see down here in the -- let me see if I can hit that. Right in
+here, what that actually says is there is a code printed on it. And I'm not going to
+zoom in for you, because you have to do your own research. But that code is a uniform code
+per hotel, from what our research indicates. So if you have this code and a couple other
+elements, which I again can't tell you about, because we haven't disclosed it to the manufacturer,
+then yes, you can open the safe right up. So --
+>> ROB BATHURST: Ca-chink. >> MARK CAREY: If you look at the Siemens
+microcontroller, the numbering is actually C 501 on it. But if you pull up that particular
+data sheet, it says 8051. So this is a variety. 8051 a very old processor for anybody who
+doesn't know this. And it's a very prevalent processor in embedded devices, fairly power
+efficient, 8-bit micro. So if you need something that lasts forever, and can trigger a few
+servos or detect a few sensor motions, that's a great processor for it.
+So the secure SAN encryption board -- in fact, do you want to pop the case so we can get
+them out. So we have a couple of -- these secure SAN
+encryption boards. And these devices were obtained from eBay. We had a reason to look
+into them. And we found that eBay is a great source for almost anything. You can usually
+get surplus chips, for example, that were actually from the manufacturer in China. They
+made an extra run of whatever, some of them even have the same EEPROM version identifier
+numbers as the product you're attacking. So we have taken epoxy off and when we are looking
+for that particular chip model on eBay, to go and sock it onto a carrier board to test
+it for different things, we find a picture of the sticker that was under the epoxy, on
+the flash device, on eBay. >> ROB: By the way, the greatest thing about
+eBay is when companies refresh all their equipment, some random guy in like Texas gets a $30,000
+encryption device and then sells you these cards for 30 bucks. Because he has no clue.
+>> MARK CAREY: That is correct. And they will also sell broken devices on eBay. These broken
+devices might go for a hundred bucks for the weight of the component gold or whatever like
+that. Well, that's all well and good. But when it's
+a soldered joint on the power supply that is broken off, and you resolder it, now you've
+got a $30,000 appliance that works just fine. And it allows you to research some really
+high-end components and really high-end stuff, without spending much. Makes a personal research
+budget very happy. >> ROB BATHURST: It's Linux chips on the cheap.
+>> MARK CAREY: Yes. And if you know where I can get a scanning electron microscope,
+come and see me afterwards. So some of the features, the device itself
+is actually very well put together. It's a heavy gauge steel and its purpose is to manage
+the keys for like the brocade encrypting fiber channel switches. So the way it works is it
+manages the keys and sends it to the switch and says I have this particular piece of media
+that I need to access. It says okay. Well, here's the key that I want you to apply to
+that. So all your data's encrypted at rest. It's a great idea. It's a really great idea.
+>> ROB BATHURST: Actually, the device does key management well, but they made a few critical
+mistakes with where they store keys and how they store keys and how keys are passed back
+and forth. And again, because we haven't disclosed it to the manufacturer, we can't tell you.
+I'm sorry. Check back in like a month, hopefully. >> MARK CAREY: It's probably more like a couple
+years on this one. >> ROB BATHURST: Check back in a couple year
+month things. >> MARK CAREY: Anyway. So it also has a lovely
+Windows Java frontend. I'm going to go on a bit of a rant here on this one on the Java
+card stuff -- >> ROB BATHURST: You don't have time to rant.
+>> MARK CAREY: Okay. It uses Java cards to store the master keying material. I don't
+have time to rant, apparently. Okay. Well let me just say this then in calm tones.
+Don't include your Java card sources in the jar archives for your admin interface. This
+is a very bad idea. >> ROB: Fire bad.
+>> MARK: Part of the security through obscurity model with Java cards is they are EAL 4 certified
+in most cases. That means you're not getting the code out. But if you compile it in the
+standard Java, you can use a tool called JAD, which probably most of you are familiar with,
+to decompile this code to clean source. So --
+>> ROB BATHURST: Big props to him for that. Saved a lot of time.
+>> MARK CAREY: Thank you very much. So this is our hardware formerly known as
+expensive. Its new symbol is the dollar sign, I gather. So you can see on the bottom, the
+device with the epoxy on it. And we actually have these devices up here.
+>> ROB BATHURST: After the talk you can come look at them if you'd like. If they leave
+the table, I'll beat you. >> MARK CAREY: That sounds like an evil promise
+from Evilrob. And these devices, as you can see, we will
+zoom in on the epoxyed version here a little bit. And hen we will look at this guy. And
+we have High Res photos that I'll bring up possibly here in a moment.
+But the chip that you're seeing that has the cover peeled off, right here, lovely polished
+silicon. It's a flip chip, if you guys remember that manufacturing technique. There is a heat
+sync and the actual chip cover. That is a Xilinx Pro 2 plus FPGA. And that particular
+chip loads its information from flash memory. So I'm going to show you a chip -- a picture
+of the board before we've removed a couple of the critical chips.
+And I'm trying to hit it again. Here it goes. So that is the actual flash chip that the
+Xilinx chip gets its information from. So it loads that every time it boots up. Xilinx
+supports an absolutely fantastic excryption protocol. And it stores the key internal to
+the FPGA. The only way to get it out is through -- technically, a power consumption monitoring
+on the voltage pins on the FPGA, so you can hopefully get the key and you can get like
+a roughly 10,000 durations to make statistical significance. So you can get a likely candidate.
+>> ROB BATHURST: In case you're taking notes. >> MARK CAREY: Right.
+The other chip is an Atmel AT90S6464C, and anybody who's done TiVO hacking knows this
+chip as a 3232C. >> ROB BATHURST: We don't advocate hacking
+your TiVO. >> MARK CAREY: Of course not.
+These two chips -- so there was a fatal flaw in this. They did not use the xilinx encryption
+protocol. So we were able to dump out the entire xilinx configuration bit stream. Now
+I didn't really feel like reverse engineering Xilinx's bit stream entirely, so a very, very
+nice person, KC Moreford, who did his Master's thesis on this, was kind enough to run it
+through his tool set. Now he wouldn't give us his tools, unfortunately
+-- >> ROB BATHURST: His tool set is BA. Seriously.
+>> MARK CAREY: It's very, very impressive. It does complete decomposition of the Xilinx
+bit stream. So it's very nice. It takes it right down to a text stream and tells you
+what each byte does. So anyway, we will cover also one more thing
+on this one, or a few more things actually. But the booby traps. So hardware manufacturers
+who use epoxy like to do silly things like booby traps. What you see here, right beside
+that tiny xilinx chip there is a booby trap switch. Now, if that booby trap switch is
+not depressed, no current goes to the SRAM and the keys dump. So if you're taking the
+epoxy off and you've been very careful, and you're chemically fomenating your nitric acid,
+or doing whatever you're doing to take it off, and that switch pops up, it's game over.
+>> ROB BATHURST: The solution to not having the chip pop up is to not cut the epoxy around
+the chip. So that really expensive mechanism can be stopped by being lazy.
+(Laughter) >> MARK CAREY: Just the way we like it.
+So in addition, one other thing I want to highlight on this slide, you see the row of
+six empty holes there. That is most likely the initial provisioning interface for the
+Atmel chip. However, because they are clever designers, they use leveling some capacitors
+and some other tricks to make sure you can't get good voltameter test runs. And everything
+kind of goes to a middle voltage detection and you don't get the beep when you have your
+voltameter set to been when you touch the traces. So good on them. That was a good try.
+And so that is a closer picture of the xilinx proFJPA. Anders, if you're in the audience,
+stick your hand -- Anders, thank you so much for the use of your wonderful camera and your
+skill at this. These recent pictures that you're seeing up here are all courtesy of
+Anders, and he did a great job. Thank you. (Applause)
+Again we will look at the provisioning interface. That's just a quickie. And that one -- I've
+got only a bit of the epoxy cut away. And we have a movie of epoxy removal if anybody
+wants to see it later, but not right now. >> ROB BATHURST: It took 10 hours and an exacto
+knife. >> MARK CAREY: I think it was actually between
+12 and 14 hours with a hot air rework station set to about 500 degrees centigrade and several
+exacto knives with thermally resistant handles. >> ROB BATHURST: Fire bad, beer good.
+>> MARK CAREY: Fire bad. Burnt off fingerprints worse.
+Beer very good. The other thing we will highlight here is the Mictor provisioning interface.
+So there's three of these total on the bottom of the board. So if you guys can see this,
+Mictor is the interface provided by Agilent for their super high end, super expensive,
+super awesome equipment. It's impedance neutral. It does all sorts of other stuff. You can
+run test points to it. You can run JTAG through it and everything else. It's spiffy. It's
+also extremely expensive and there are three of these guys on the bottom of the board when
+you take the epoxy off. If you look at this region here. I'm trying to correct for relative
+spacing. Oh, there they are, up here. And then one up in this area. So there are three
+of these interfaces. Three very expensive Agilent interfaces, all of which could be
+a candidate JTAG interface. And that candidate JTAG would talk to all of the memory devices
+on this, as well as -- with the the exception of the nanflash -- and the FPGA. I'll back
+up a few slides here to show you one other chip.
+There's another interesting comment on this. So there is an I squared C flashable Mux involved
+in this. And what I mean by that is you can take a set of pins, a Mux is a device that
+lets you set pins to other pins, basically. So you can map inputs to outputs, if you think
+of it that way. And there is a device just north of the Atmel
+chip that is an I squared C multiplexer, flash multiplexer. And what that device does in
+essence is it prevents you from talking to that chip unless you've initialized it properly.
+So it's a very interesting way to protect your keying material. So something to think
+about. And I'm going to turn it back over to Rob
+and hopefully we have enough time for some questions, too.
+>> ROB BATHURST: Thank you, sir. So what have we learned from analyzing all
+the random crap we get ahold of? Fire bad, beer good. And that's it. Thanks for coming.
+No. So the architecture of the whole system is rarely considered in complex environments.
+This is pretty much across the board, computer architecture, software architecture. It doesn't
+really matter. However with hardware you have to be especially careful. Because like we
+were talking with the security appliance and how they at the pro K decryptor, how it actually
+functions and how it stores those keys can entirely negate your very expensive box.
+You know, always attack the implementation, not the encryption. You'll spend all freaking
+day, you know, year, or year, month, day thing, if you're not --
+>> MARK CAREY: Or until the sun actually burns out.
+>> ROB BATHURST: Exactly. It will take a long ass time.
+So attack the implementation, usually it's made by human beings, which makes it relatively
+flawed. Look for humans being lazy. That is also one of my favorite comments, because
+like we said, epoxy is not a security mechanism. So, you know, it will normally be, even in
+large engineering efforts, people cut corners. There are deadlines, there are things that
+people overlook. >> MARK CAREY: There is one point I want to
+interject for safety reasons. Don't try it at home. You have to do certain steps to be
+safe around burning epoxy. Heating it up is one thing. Some of the off gases from these
+things, I mean, you have a whole variety of things. The process of what's call homeopolymerization,
+which is what epoxy uses -- >> ROB BATHURST: Tangent. Tangent.
+>> MARK CAREY: All right. Tangent. But anyway, the point is it off gases bad stuff and can
+kill you if you're not careful. >> ROB BATHURST: Don't do this at home. We're
+kind of professionals. >> MARK CAREY: Or wear a respirator.
+>> ROB BATHURST: Chips don't lie. A chip will have markings on it. It will have manufacturers.
+It will be pinned in a certain way. It will be soldered in a certain way. It only goes
+in one direction. And if it doesn't, it burns out. So, you know, look for the placement
+of the chip, look what it's paired to, look what bus it sits on, and it will be easy to
+determine the actual device you're working with from there. There are chip databases
+out there that have all kind of markings and how they're hooked up, and if it's SPI or
+I squared C, just huge amounts of information. And then I need more beer. So with that, we
+may have, what, five minutes for any questions, yes, no? Fantastic.
+So thank you for coming to see this. And if you have any questions, we will be here.
+(Applause) Thank you.

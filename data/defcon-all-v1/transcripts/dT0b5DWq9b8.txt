@@ -1,0 +1,443 @@
+All right. How is everybody
+doing? Good? So all the opening acts are finished. It's time for
+the headliner. Before we get started with the last talk,
+which is going to be awesome, I need to remind you guys that
+when we finish this, we're going to need to dump the room so that
+we can prep for closing ceremonies. They have to move
+air walls and do all that kind of stuff. So we know you'll have
+questions and stuff like that. Try to catch him in the hall and
+exit out the back just as quickly as normally as you can.
+That will help us get set up and get squared away for closing
+ceremonies. Make sense? Now, since the last time I get to
+talk to you guys until next year, I want to thank you guys.
+I take vacation for this. How many take vacation for this?
+We've had a lot of others, I think, but this is the best in
+the world. There we go. Let's get this started. So let's give
+Zeke a hand. He's the last talk of the day. ( Applause ) >>
+Thank you, everyone, for sticking around for my little
+talk. As the man said, I'm headless Zeke. This is my talk.
+I swear I'm going to try and not sing salt and pepper. That's a
+lie. I'm going to sing. Let's talk about you. Okay.
+Introductories. I'm a security researcher at the awesome HB
+tipping point. I'm on the TP labs team, but before that I was
+at rapid 7. Rapid 7. Before that Breaking Point. Somebody. So,
+yeah, I've spoken at a few conferences before. This is
+actually my second time speaking at DEF CON, so unfortunately no
+shot for me. Even though I think the last time didn't even count
+because it was like the little time slot, and it was many years
+ago. So I think I should get another shot at that. But, yeah,
+so I've been around a little bit. Recon insomniac and I did
+both that was awesome, but anyways, I'm more excited to be
+here. So in my spare time I do the same thing that I do
+professionally, which is just tearing devices out of my house
+and seeing if I can break them, which tends to tick off my wife
+and kids or whatever. I read some comic books. The jewel of
+my collection is a first printing of Alan Moore's Batman
+the killing Joe which is awesome, which I bought for 75
+cents. That's near here for their. Anyways, a little fun
+fact about me to give you an idea of the kind of person I am,
+I guess. I once got a job at a police department when I had
+four active warrants out for my arrest. That's kind of hiding in
+plain sight, I guess. Nonviolent crimes. Didn't I. Let's get into
+it. The Internet of things is a thing whether we want it to be
+or not. Putting a network interface on a random device is
+very in fashion right now in the season. Even if it has no reason
+to have an Internet connection, even if it's not a good idea at
+all. Basically all of our devices are smart devices now,
+but they're not actually that smart. They need a very simple
+way to communicate with each other. They all need to speak
+the same language and be able to without us getting involved, and
+that's what makes them smart. That is basically handled with
+SOAP services, which I'll talk at length about. Anyways, very
+broadly they're very super talkative services. You can jump
+on an unknown network, send out a few packets, and you'll find
+these devices and they'll tell you who they are, what they can
+do, what you can do to them. Really awesome and you, too,
+will be able to do that by the end of this talk. Yeah, also a
+really important part of these is the whole working together
+without getting us involved means things like authentication
+doesn't come into play, because you don't want to bother your
+users with entering passwords and things like that. That gets
+in the way of the seamless experience. So I do have to talk
+about a couple of definitions real quick. These terms are
+sometimes muddied up interchangeably at times. I'm
+probably going to do the same thing in my talk just because
+there's so much overlap in this protocol. Basically it breaks
+down like UPNP is what I considered the 3G side of
+things. SSPD is kind of hand in hand with UPNP and then SCPP is
+more on the definition side when we move over to TCP, it becomes
+clear in a moment. That's like the control where you send
+actions to the device. All right. Let's talk about all the
+good things. I'm warning you now this next part is going to be a
+little bit dry, but I'm a nice guy so I put a TLDR slide at the
+end. Until then if you want to put your heads down and relax,
+I'll be sure to wake you back up when we get to that point. Okay.
+So, UPNP operates on UDP board 1900, responds to multi-cast
+packets, which comes in very handy as you will see. UPNP.org
+defines the stack thusly, so they could -- it's kind of like
+an umbrella term encompassing everything else. So it's
+actually six layers to the stack. There's a layer zero, but
+I didn't wanting to through having to explain how to get an
+IP address, because I think that's kind of superfluous. If
+you don't understand it, you're probably not to this point yet.
+Anyways, so discovery, description, control. Eventing
+and presentation I'm not going to talk about. It's kind of a (
+inaudible ) this presentation. That's going to be -- inventing
+is like listening for events sent back from the device.
+Presentation is presenting the SOAP actions in like a UI to the
+user, which I guess means the web management portal, because
+that's the only thing I've seen that even comes close to doing
+something like that. So anyways, all right. UPNP discovery. This
+is everything you need to perform UPNP discovery. There
+are actually two types of discovery. The left side of the
+screen is passive discovery and the right side of the screen is
+active discovery. So with passive discovery you can just
+sit there and listen for packets coming in on UDP port 1900. If
+you see these notify things, you can just pull out the location
+URL or the URL and the location header and make a note of it. Or
+if you want to take a more active approach, you could do
+what's called an M-search request, and you get an HDPD
+reply. You notice all of these are basically the HDPD over
+UPNP. That's intentional. It's very, very similar. Then, again,
+in the response that you got to the end search, pull out the URL
+from the location header. Basically this guy is your new
+best friend. Any network that you connect to you should send
+out an M-search probe on, and you will be amazed at the
+devices that tell you, here I am. Talk to me, talk to me! So,
+yeah, any network you're on, your home network, your business
+network, a hotel in Las Vegas. I don't know. So if you pull out
+the URL from the location header and you do a get request, what
+you will get is the description layer. So this is going to be a
+huge part of XNL that defines everything about what the device
+is. So you see the version info which is UPNP 1.0. It's whatever
+version they're using, and I've only seen 1.0. There's a bunch
+of device definitions, which when we go to the next slide you
+see what it looks like. It tells you exactly what the twice is.
+It's really great. Anyways, the important things to pull out is
+you see the services list is going to list all of the SOAP
+services that are listening to the device. That's going to
+contain the service type, CPD URL which we need later on and
+control URL that we need later on and event URL, which we don't
+care about. All right. I don't think there's any way anything
+could possibly read that. I'll just do my best to be
+descriptive. So at the top there's the version like I was
+saying, and then you see the -- it's -- I wish you all could
+read that. Anyway, can anybody read it? >> I can. >> There you
+go. You can see this was a mystery device. We have no idea.
+We just sent an M-search and followed the URL we got back,
+and all of a sudden we know it's in -- a Netgear 3100 router
+because it told us so, which is great. These three fields are
+the service type that we need when we compose our control.
+Then the SEPD URL and the control URL. So if we follow
+that SCPD URL what we get back is another wall of XML. This
+contains the version info. This one is where it starts to get
+really interesting because this is where the device tells you
+what it can do and what you can do to it. So you're going to see
+a list of actions, and these will contain the arguments that
+the action takes, whether it's an input or an output. So me
+sending to you or you sending to me. Then variable definitions
+where it gives you the name of the variable and then ties it to
+the data type at the end. So literally tells you everything
+you need to know. Makes it really, really easy, and again,
+this is what that looks like. These slides are on the CD.
+You'll see this says set default connection service, and then
+takes an argument of new default connection service. Down at the
+bottom the new default connection service is a string
+type. So if you want to set a new -- set a default connection
+service, you give it a string argument in the new default
+connection service action argument. Okay. So finally we
+get to talk about SOAP. This is where we're sitting because
+after that information gathering, we take all that, put
+it together and actually get to send commands to the device and
+have it do what we say. So with SOAP the front end is very
+well-defined, always going to be basically the same idea. The
+back end you never know what you're going to see. It could be
+an RPC service or a CGI script or a Shell script. You really
+have no idea what's running on the back end. The way, again, is
+XML. Sound familiar? You perform a post request and you send it
+to the controlled URL we've got in one of the previous steps.
+The body of the post request going to be what's called the
+SOAP envelope, which is basically just an XML formatted
+API call. That's going to have the action argument and the type
+and all that. Easy piecy. Can people read this one? Kind of,
+sort of? No? Okay. So the things that are highlighted in red are
+from the description first off, the things that are in blue are
+from the SEPD. The action definition. So we're putting
+them altogether. The things in black are fairly standard, and
+going to be the same over and over again. So, yeah, this is
+how to SOAP. Okay. Everybody can start paying attention again
+now. This is the TLDR UPNP flowchart. You start out with
+the request and get back the 200 okay with the description URL.
+You get a description URL and get a 200 okay and control URL.
+You syndicate it to the URL, and you get back another XML that
+has the action name and the arguments. Put all that together
+in a post request to the control URL, and hopefully you get back
+an HDTP 200 and executes whatever you sent to it. More
+often than not you get a 500 error because you did something
+wrong. Okay? Even better screenshot. This one. So this
+one I actually had no intention of you guys being able to read.
+I just wanted it to put this on there to show you. It's a screen
+capture with SOAP specs on UPNP.org. This gives you an idea
+of the breadth and depth of things that are already
+officially defined in the UPNP.org specks. It runs the
+gamut from, you know, the obvious things like you can
+automate control of the audio/video systems. That's when
+you've got by remote to control your TV. Home automation. We see
+more and more of that with motion sensors and air
+conditioner controls working together to turn off your AC
+when nobody is home. It starts to get a little bit questionable
+when you start talking about things like physical security
+systems. I could kind of see a purpose for that maybe. Like
+being able to unlock the door from your cell phone might be
+kind of cool, but it might be kind of dangerous also. And then
+we start talking about how they're defining SOAP controls
+for like DS because why wouldn't you want to be able to control
+your nuclear power plant from your iPhone? That seems like a
+perfectly good idea. This is just what's officially defined.
+A whole can of worms when talking about vendors that
+decide to roll their own. You never know what's out there. The
+handy thing about SOAP is it tells you what it does. So
+dates. This is all awesome, and we live in the jetsons
+basically. We talk together and work together and everything is
+great. You have your toaster, turn off the lights, set the TV
+to the news channel, and send to you a text message that
+breakfast is ready. That's not even a joke. We can totally do
+that, and it's awesome, right? Everything is sunshine and
+rainbows. The end. And the bad things. So now we have the
+security. These things really have the system from the get-go.
+First off they're embedded devices, so we're talking about
+limited memory and space so you're not going to see like an
+exploit mitigation like memory corruption mitigations. Lots of
+time the board development and the software development are
+completely separate companies. The board is just cranked out by
+some hardware company and then different software vendors put
+their software on top of it and it's not always designed to go
+on top of it. You start seeing a lot of the same code, especially
+when you consider SDKs released by the board manufacturer. The
+software manufacturer is like, that's great. That's what I
+need. Just use that every time. All in an effort to keep costs
+down. Whether you talk about deployment, the attack surface
+is growing bigger and bigger as the Internet of things is
+growing bigger and bigger. We have millions of these devices
+on the Internet from every vendor you can imagine like, I
+don't know, I think even Nike is doing things on the Internet of
+things now. Yeah, I mean, it becomes really impossible to
+keep on top of firmware patches, especially if you're not able to
+actively push out updates to your customers. You have to rely
+on them to search you out and pull down the firmware update.
+It's never going to happen. So this slide has some statistics
+on it that I put on here. I just felt like it needed some
+statistics, so I put some on there. Yeah. XML parsing is
+really using a lot of resources, and there's a lot of bugs that
+come with it. You need to parse it properly. Yeah. In 2013 2.5
+of all CVs were XML-related and of those almost 36% had CVVS
+severity of 7 or above. I know, right? Okay. With all that in
+mind, it's no surprise at all that there's a huge attack
+surface here spanning every step of the UPNP stack. Yeah, we
+start seeing all of the standard old school bones coming back
+again in a brand-new protocol like HDTP header parsing,
+command injection, XML parsing, and then you start to see new
+things like SSDP header parsing and XXE, XML external entity
+expansion. So what I would like to do now before I get into the
+really cool, fun stuff, I want to give you guys an idea of the
+attack complexity that we're talking about here. That's a
+pretty ( inaudible ) as you will see. I'll talk about some
+examples that have already been disclosed. So first off, can't
+talk about UPNP without mentioning the work of H.D.
+Moore from a couple of years back. I'm sure you all heard
+about it. He released a list of vulnerabilities. The 2012 5958
+was one of those. Basically in many UPNP, I think, they were
+taking the ST header from those notify packets or from the
+insert packets and calling stir and coffee, which is good. The
+argument they used for the length to copy was based on the
+input that you were sending to it. It was based on the number
+of characters between colons and the thing. What you end up with
+is this, which is the vulnerability we saw since the
+'90s. The kind of thing we learned countless times and now
+they have the attack surface. One thing to know about this is
+this is a multi-cast packet. You can jump on a network and send
+this out without a working exploit as the payload. It will
+just bring down devices all across the network. Anything
+that's vulnerable to it. Another example of UPNP vulnerability
+was discovered by Zach Cudlett, who will I will mention again.
+This is the D-link DIR-15. D-Link has a terrible couple of
+years. I don't know if you keep up on this, but they've gotten
+really, really good at response. Like, they are one of the
+quickest vendors to respond to vulnerability disclosures now
+because they've had a lot of practice. Yeah, so here's a
+command injection vulnerability. Again, the ST header, this time
+they feed whatever you give it to a Shell script called
+M-Search with no validation or signaturization. I'm sorry. I
+always say sanitation. I have to enunciate. Yeah. What you end up
+with is this multi-facet packet. You can send it out on the
+network and have no idea they're in the network and you're
+popping boxes right and left. Yeah, so the ST had the colon
+whatever command you want to execute. This one was from this
+year, and the RT series devices. Again, disclosed by ( inaudible
+). There's the link to it. This was even more school because
+we're looking at an M-copy with a buffer overflow and then
+copying the action that we're sending in a SOAP request into a
+buffer, which looks like this. So you see the SOAP action with
+the service type, and then the pound sign and then more than
+2,048 bytes of data for the buffer. You know, typical 90
+zones over and over and over again. Broadcom also had a few
+bones disclosed recently. This one was in the set connection
+type of the new connection type. Sorry. The new connection type
+argument of the second connection type action. Again,
+format streaming vulnerabilities are back apparently. Same old
+same old. I'm sorry. I'm starting to get bored with this
+myself. So this is kind of the example of this vulnerability is
+a little bit arbitrary, but because this was in Python's
+SOAP libs, it was a pretty big deal. At least I thought so.
+This is a good example of an ( inaudible ). So he wrote an echo
+service so that it would just echo whatever you said, but you
+see the external entity defined at the top with a path to path
+SDWD. So the service is like I'll expand that to you and send
+back the contents of that file just fine. A shout-out to my
+homey in Austin, bran deny -- Brandon Perry. This is a simple
+command injection and the host name argument on F5 iControl
+devices. Shell demand dot whatever dot com is my host
+name. This is a great series of live posts. I definitely
+recommend anybody go out there and read them. He basically
+takes some -- I don't know if it was intentionally broken, but it
+was definitely broken code that was shipped with a device. And
+basically it goes through and fixes the code to be able to
+upload firmware images, whatever ones he wants. It's a wild ride
+now. It's a series of blog posts. Anyways, that was SOAP
+also. Now, demos are here. It's all right. That caption says the
+things you own will end up owning you. Okay. So can people
+read that? I can zoom that. Good? Okay. So when I first
+started this project, the right command injection puzzle, which
+I did after having to fix up the ruby SOAP parsing libs, which
+are woefully inadequate. I don't think they're supported anymore.
+The project seems like it hasn't had an update in years. This is
+SOAP 4-R, by the way. So I basically kind of forked it and
+then made a bunch of changes, but I can't remember what all I
+did. So I haven't been able to release these libraries, but I
+wrote this to the point where I could run it against something.
+The first thing I ran it around found a vulnerability. It's that
+easy. So the device that I ran it against happened to be this
+Trendnet TEW WiFi router, which I just happened to have laying
+in a pile at my house. I found the vulnerability in that. Then,
+after researching it with enormous amounts of help from my
+buddy Josh Smith of the ZDI Team, we found out that it
+actually was not just in this device with the binary of the
+SDK released by RealTek and were vulnerable and were thousands of
+devices across multiple manufacturers largely still
+unpatched. I think D-Link released a patch. Trendnet is
+not vulnerable to it because they don't use many anymore,
+which is where the vulnerability is. They use many UPNP which
+used to have the vulnerability, but it had been patched.
+Anyways, the details of the vulnerability, again, it's
+pretty -- okay. Hold on. Before I start the demo, I have to say
+one more thing. This was my ugly -- this exploit. M1K3, Mike
+released a much nicer version of this and put it in the
+framework. But I tried his -- in my hotel room, and even though I
+tried it before and it worked beautifully before, it did not
+work in the hotel room and that's what it accounted for me.
+This one did. I'm using the ugly version. Hang on. Dude, I'm
+sorry. We're looking at the wrong thing. Sorry. This is what
+we should be looking at. Sorry about that, everyone. This is a
+vulnerability in the ad port mapping action. This can be used
+as an Internet gateway device where somebody comes over and
+puts their computer on your network and neat port forwarding
+for gaming and whatever, their computer can forward ports
+through the firewall on the router, which is awesome, great
+idea. One of the actions is this add port mapping, and then you
+will see right here in the new internal client it will just
+execute whatever command I want. So without further delay, let's
+go ahead and try this. So this is going to send a bunch of add
+port mapping commanding over and over again because I have to
+build up my payload little by little and then mark it
+executable, and then I can run it. It takes a little while, and
+it's blind exploitation, so I can't tell if it even works
+until it works. Let's see if it's ready. Fingers across the
+room. It's connecting. Hey, there we go. ( Applause ) There
+we go. Thank you. I can't run like IB or PMI, but I can show
+every single process is running the route including the bottom.
+Root command injection on thousands and thousands and
+thousands of routers largely still unpatched. Some of them
+allegedly are even affected over the LAM port, although it's
+confirmed true in this device and not substantiated in others.
+So there's that. Next demo. I wanted a really visual way to
+demonstrate the danger involved in giving this amount of unathey
+not indicated control over the devices to any random person on
+the network. So when I was looking through the official
+specs, I came across this set AV transport URI action. Basically
+what this does is it takes a round of a media share just like
+a media file or it could be a gift or song or whatever you
+want. It sets that as the transport URI on the device. And
+then there's a play action where you then play it. So that's
+pretty great. So an idea. Scripts. This was the one that I
+was showing you earlier that would basically scan the
+network, find all of the TVs and Blu-Ray players, anything that
+implements this set AV transmit URI and rolled them. So yeah,
+this works on like Samsung, Sony, Panasonic, you name it.
+I'm going to show you a little video now. I'm going to show you
+this working. I didn't bring an RTV with me. I don't know.
+Hopefully the sound is working on this. It's really not going
+to be funny if the sound isn't turned up on my laptop. Anyways,
+give it a media share URL. It scans the network. It starts
+listing out all of the UPNP hosts that it finds. Then you
+see pretty close to the bottom it will say I found one ready to
+roll. All of a sudden the TV picture changes when you're
+watching. ( Applause ) So, you know, I don't condone this kind
+of behavior, but one could imagine going into like a large
+electronics consumer store, that kind of thing. You could even
+from a more malicious standpoint, if you found a bug
+in a video Kodak or something like that, this would be a great
+avenue to force the device to render it without any user
+interaction. So yeah, it's dangerous, and it's stupid to
+give this kind of control to just anybody. That's kind of the
+conclusion I drew in the immortal words of Tyler Durden,
+with enough SOAP one could blow up just about anything. Yeah.
+You have to really think about what your device is going to be
+used for and where it's going to be deployed before you just
+throw a network interface on it and throw a random service on it
+and let everybody talk to it. It makes perfect sense in some
+situations but not in all. You really have to keep the same
+situation as with other things. So what you can take home from
+this on your own network, I have the -- I give this advice
+regardless of what service you're talking about, but know
+your network. You should be, as I said earlier, you should sent
+out M-search requests on every network you connect to, because
+you'll be amazed what you'll find. You know, if you don't
+want to be loud about it, you can just sit on the network and
+listen to board 1900, and whenever a device powers up, I
+mean if you've ever watched the traffic from Windows laptops, by
+default they have UPNP enabled and constantly bombard the
+network with notify messages. Just ridiculous amounts of
+traffic. Yeah, more important than that if you don't need UPNP
+for anything, disable it. If you can't disable it on the device,
+you might be able to do something with the router but
+just finding some way to prevent UPNP if you don't need it. Then,
+yeah, as always, keep on top of updates if possible. On the
+other hand, the darker side of the half, if you want to find
+vuns of your open, I guarantee you can find some vuns in SOAP
+services. Burp is always great before HDTP style requests like
+SOAP is. WS buzzer is by the owas project. I've never used
+it, but it's targeted specifically to HTPN SOAP, so
+that's pretty handy. Miranda is fantastic. It's written by Greg
+Hefner. I think it's Greg. It might be Chris, the bitmon guy.
+Really, really great, but it's in Python, and I'm not a Python
+guy. Sorry. So UFUS just came out recently. It's actually
+supposedly a Ruby port of Miranda, or at least that's what
+the guy is billing it as. Unfortunately, I tried it, and I
+couldn't even get the thing to send traffic. It might be me. It
+might be him. He says on GitHub that it's still in beta, so I
+might look into that further and submit some requests. But also
+if I ever decide to release my stuff, which I might, I might
+not. I don't know. It depends on how the mood strikes me, then
+we'll see. Yeah, I've got some that work pretty well. Yeah,
+that's basically it. I'm head Zeke on every communication
+medium. Feel free to hook me up. If you find cool vuns, I'd love
+to look at this them. Feel free to hit me up, and that's it. (
+Applause ) >> Are there any questions? Make them quick
+because we have to clear the room. ( Inaudible question ) >>
+No, I don't. I have beat me head over it, so as an example -- so
+over -- see if it's a spec, like an officially defined spec and
+read it really carefully, because I was beating my head
+over that set AB transport URI for forever. I read the spec
+line by line and found out that it took a ditilight META tag. It
+needed that empty tag, and then it worked fine. >> Anyone else?
+All right. Thank you. ( Applause )

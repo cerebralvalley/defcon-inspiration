@@ -1,0 +1,699 @@
+I'm Jeanna matthews and this is
+Ronny bull, I'm a computer science professor from clarkson
+university, in way way up state NY, almost Canada, nose bleed NY
+as you like to call it, and Ronny is both of a professor
+type at Utacca college and also finishing up his PHD at
+Clarkson. And we are going to talk about n layer to network
+security in virtualizing environment, so first a little
+road map of what we are going to do today. firsts were going to
+do a little context a background to set the stage. were gonna
+talk about some very basic virtualization, multi tenant
+environment and cloud services. and were going to talk about
+some networking basic, Both physical and visual and we are
+going to talk about the platforms that we use to do our
+testing the hypervisor platforms of virtual networking device
+that we test it and things like that. And then woo we're going
+to do get into the good stuff and attacks and results that we
+obtain. In particular we are going to look at max webbing
+attacks and DHCP attacks in virtualized environments and
+mitigations in these attacks and some next ups and conclusions.
+So this might be starting a little bit basic for some folks
+but just to make sure that we are all in the same page,
+vitalization 101 right, we have we used to have a bunch
+of physical servers, and now weve converted these all into
+one virtual machines and They're now living together on one
+physical box, theyre co-located together on one
+physical virtualization server, And that's one step in the plat
+thickens the next step in the plot thickens is that they are
+likely sharing a virtual networking device the physical
+networking device out of this one virtualization server. And
+the third step in the plot thickens is the virtual machines
+that are located together on the same physical box may not belong
+to the same trust domain so this the classic example if you look
+carefully. and see some virtual machines that belong to
+competitors, some belong to coke and some belong to Pepsi and
+what the question is what they can do to one another since they
+happen to land co-located together in the same physical
+machine. If one of these VMs is malicious what kind of attacks
+could they do to the other VMs in the system, and just to
+emphasize the important of what we're talking about the multi
+tenant cloud services like this model are all over the place.
+you know amazon HP2, Microsoft Azure, Google cloud services
+lots of less high profile places do the same thing and there is a
+lot of mission critical applications being run in this
+way. most of these environments are running some sort of zen,
+mothers open source to enter zen Server some of them using VM
+ware or hyper V and they're pretty much all sharing network
+connectivity between the tenants. I would like to
+emphasize that we did not do the touching of our attacks in EC2
+or AZURE or in any of these places, but wed love to, so if
+any of you is from Amazon, Microsoft or Google or any
+hosting environment, wed love to do some testing in your
+environment, no actual VMs would be hurt, uuuhm we would love to
+come and do that so come and talk to us afterwards alright?
+okay. So the key question before us is since all of these client
+virtual machines are essentially connected to a virtual version
+of a physical networking device and theyre sharing it, do the
+layers you attack. Network attacks that we all have known
+and loved for so long still work? when they're apply to
+their virtualize version and cut to the chase, yes most of them
+do. uhhhm but get after that in a minute, I did want to
+emphasize that this is not the only class of attack that
+co-located VMs can do to one another, this is by no means the
+only source of nastiness. Our research group of Clarkson has
+done other this where we hammer the disk from one VM or did it
+tanked the performance of other VM on the system or hammered the
+network with a lot of traffic not the network attacks that we
+have today. Just allocate a huge lot of memory. Spin crazy on the
+CPU all sorts of different things. And other different
+groups have demonstrated things amazing things cash effects and
+so this is by no means the only class of nastiness that virtual
+machine can do to one another when they happen to land in the
+cloud. Is an old lesson. that you are vulnerable to those who
+are close to you. That's why we are all a little extra nervous.
+Being here at DEFCON. Right? We normally are spread out. We're
+all together. Okay so the bottom line is that our experimental
+results virtualized network devices do have the potential to
+be exploited in the same manner as are physical devices. and
+that's going to be the hard of the demo that we are going to do
+today and show you the specifics those attacks in fact in some
+environment those attacks are still in the virtualized
+environment onto the physical network they're connected to.
+They're some good stories about that. Matt flatting in Citrix
+server and basically allow east dropping on the physical network
+traffic. Basically flowed out flooded the cam tables On all
+the physical switches around also. Okay. So in that what if
+slide I had a malicious VM what can that malicious do. In
+particular today we will talk about we are not gonna
+demonstrate all these but here is the classes of things you can
+do. Capture all the network traffic from the victims VM.
+Thats bad, right? Redirect the victims VM traffic some
+place they didnt intend that's bad. From a whole variety
+man in the middle attacks. Do denial of service. Gain
+unauthorized access to restricted subnetworks and
+generally tank their performer. So those are all example of
+nastiness. One more bit of just one setting review before we get
+into the details of the attacks a quick review of network
+basics. So what are physical bridges, the devices at a
+connect two or more segments at layer two. They do separate
+collision domains so theyre maintaining MAC address porting
+tables. And they're forwarding their request based on the
+destination Mac address. Here see the layer or two ethernet
+frame basically the decision is being made based on that
+destination address and here it is classic bridge picture Its
+very simple. If a frame is sent in one domain and is destine on
+this domain it stays put and doest cost the bridge, if it is
+destine for another domain it will be forwarding according to
+information in that table. So virtual bridged are very similar
+you can kinda think about them as the simplest form of virtual
+networking in particular we were using the bridging support that
+is built into the Linux kernel and the bridge will tell the
+user space package and we actually found in some cases it
+did better than some of the enterprise switch solutions. So
+that was an interesting surprise. Then we also have
+switches so physical switches operate also layer 2 or higher.
+You can think about them as multipart bridges. They also
+separate coalition domains. And they allegation have dynamic
+table a cam table. A content addressable memory table. It is
+very similar to bridge forwarding table and it also
+using the destination Mac address to figure out where to
+forward each frame, port to port frame onto and classic switching
+picture showing that the switch would keep track of which Mac
+address lives off of every port. So it can successfully send only
+the frames destined for that port for the MAC address out
+that port when all is well. And virtual switches are like their
+physical counter parts. The are most advance form of virtual
+networking and bridging. They can emulate layer 2 and their
+physical devices. And they can provide additional services such
+as quality of service view and traffic separation and
+performance traffic monitoring as some examples. Ok so with
+that content text set. Im ready to hand over to Ronny.
+Hes gonna tell you all about the cool attacks. >> Ok so we
+are gonna discuss some of the attacks that we experimented
+with in these virtualized environment. Specifically the
+mac clouding attack and the DHCP attack. There are a few
+scenarios for each attack we are going to go over. So this is the
+test environment that we used. A big rack of servers dedicated
+for this work. And here some of the hardware specks for
+particular experimentation. We have 3 servers running open
+source zen. On JEN 2 linux the other one is running linux
+bridging and the other one was running open V switch 1.1.11.0
+and we have open 2-0 a citrix server -2 hyper V and then we
+have hyper V free so we had the free version of that actual full
+MS 2008 server hyper V. And VMware sphere. so you can
+different specs here fairly similar. But in reality With the
+testing we are doing the hardware specs has no meaning to
+this because were actually attacking the virtual switch. So
+let's talk about the mac flooding attack. I see with we
+have people up there. Okay. So mac flooding is basically we are
+just taking a bunch of frames random frame flooding the switch
+with it to talk to that cam table. Fill that cam table the
+switch goes to into the hub mode. Which basically would
+forward all the frames to the network to every devices
+connected. Breaking all those coalitions remains. Keep going.
+So here's an imagine of the Mac flooding attack occurring. You
+can see a bunch random mac addresses going on here. Just
+flooding that network out. >> That's my computer. >> Is it? >>
+You all know how this works? Are they doing a good job? [
+APPLAUSE ] Cheers. Cheers guys. Good Job. Yeah. [ APPLAUSE ] >>
+Go back to that TCP flood screen. So for our scenario this
+is the basic network diagram we have. We have a target virtual
+machine running Kali Linux. And then the attacker is running
+Kali Linux setup. The virtual switch all connected to the
+physical interface its connected up to the physical network
+switching the infrastucture then you know gateway router going
+out to the internet. so let show some demos. It depends on the
+virtual environment. So if we go back here to this slide. Here
+the Mac playing summary so I guess I will show the downloads
+later after this. Open source zen with linux bridging. We also
+have the open V switch We the zen server which was running
+open V switch. An older version 1.4.6. Microsoft the hyper V
+virtual switch and the free version also with the hyper V
+switch and VMware V spears so I kind spilled the beans there,
+Lets us look at these demos. hopefully they'll work Its a
+reduced resolution and I had test them all here. It may not
+see the text too well but they're on the CD. If you have
+the DEFCON CD you can view them. So here basically we see the
+Linux bridge mode. We have a virtual machine running zen 2
+linux running zen, kernel bridging. You can see in this
+fist window here We are showing the network interface. Showing
+the configuration in bridge mode showing the the actual interface
+providing for the virtual machine does not have an IP
+address its just bridge. And then we have two virtual
+machines. The one in the middle is the target and all the way
+over is the attacker system. So on the attacking system we are
+going to fire wire shark and we can see our traffic general
+broadcast traffic across that what we will do we apply HTTP
+filter and start running the mac flooding attack just using mac
+off. Which is been around since 1999. So can you the mac running
+attack running over there on the side. we can see the wire shark.
+We can see a malformed packets flooding the network. So just an
+in indication that something is going on here. So apply the HTT
+paperwork filter, view if we can see the target systems web
+traffic. So we can see if we could get some plain text
+information out of that. So we really should not be able to do
+that but this is an environment, but this is a bridge
+environment. so is loading up the filter here, filtering all
+the pass packets and over on the target system we are going to
+start surfing the web. Nothing interesting is happening in the
+wireshark windows. so basically what is going on here is Linux
+is preventing the mac flooding attack in actually from being
+successful in this case. So let's take a look what actually
+happens when we do this in open V switch. 2.0.0. So again in the
+first window that's the hyper vicar the host that is zen 2
+Linux. And again Im just showing off the basic working
+configuration for this system. It has a management interface
+set up with a dedicated IP and it has a second interface set up
+use for the virtual switch for the open version V switch and we
+can see here the configuration V switch. A couple of VMs that are
+attached to it and running. And again in middle we have the
+target and over the on the side the attacking system highlighted
+the IP addresses there. We are gonna open up the web browser
+and the target system. Start running wire shark and the
+attacking system so very systematic in our approach here.
+Same VA all the same. Same process. Weve seen the art
+traffic We apply the HTTP filter and we are gonna starting
+running the mac flooding attack. So flooding the network. And we
+will start surfing the wire over the target system and pretty
+much immediately we start seeing the HTTP packets coming from
+wireshark at this point we are acquiring all the network
+traffic point from that target system. The stuff that should be
+prevented from the coalition domain protection. [APPLAUSE ]
+>> In the video we go a little deeper and go through the
+packets after we have gathered enough. So lets gather a few
+more here and then. Its a little hard enough to see up
+there but if you watch the video later you can see where we
+actually started inspecting some these packets and we were able
+to pull some clear text all the header information. I go into
+show you were you can actually look at the text of on of the
+webpages and view them in wireshark it is passing text
+over, showing that demo here. That third video for the sake of
+time I'm going to skip that third one. But Its just
+showing the open V switch in Citrix zen server and It does
+work. So is just using an older version of open V source so feel
+free to look at in you tube or check it out on the CD as well.
+So actually we already showed this slide. But basically
+summery is that it worked in any open V switch environment. and
+the performance has impact every single environment. we can't
+talk about VM ware because in the VMware user license
+agreement specifically state where he not allow to publish or
+talk about public venue performing benchmarking results
+without prior consent from VMware so. N/A. But when you
+look at what happen to basic networking over that networking
+after the attack is occurring you can see something like this.
+So this was performed at the this test was gathered out of
+the bridge interface. The first 60 ICP request there was no mac
+flooding on any so we have a baseline there. so you can see
+its really low What I was doing is pinning a server one
+hop away from the virtualized switch so we are just going out
+in the land to a server out there and just pinging it to see
+what we are getting. 60 is a really low latency there for the
+first 60 ICMP packets and as soon as we start doing that mac
+flooding attack its gradually increasing up and then and all
+the sudden that flood is really happening we got a lot of
+variation and latency there peaking almost at 130 140
+milliseconds and as soon as we caught of that mac flooding
+attack you can see it drop right down to nothing back to baseline
+again so you can really see the performance does get impacted
+here on the network when running this attack. Ok so we do our do
+diligence here and we reported this vulnerability we notify
+cert.org we assigned a EU number there. Haven't received anything
+from each of that org so hopeful we hear something to them. We
+report to open V switch and they immediately responded for the
+patch so any version of open V switch from 2 dot 0 dot 0 and
+higher been hatch to mediate this attack. So feel free to
+test it out. If you want to go to that link the slide is
+available and in CD as well you can actually read the whole
+details of that patch and that everything that entails. And
+also see the source code as well. So traditionally these
+attacks in physical network are mitigated by using for security.
+The limit the actual mac addresses that can accumulate on
+a port so they actually dont hit that threshold with
+overflowed we can start flooding that network. we can also allow
+authorize mac addresses. We just specifically say You're the only
+system that can connect to this port and that will help midigate
+this attack too. [inaudible] Or we can just disable all unused
+ports but this stuff doesn't really work on virtual switches.
+Port security is available in the nexus one thousand V of
+Cisco but it is paid version and you on in a vmware environment
+or a hyper V environment. so is very costly to get into at a
+level of protection so this other virtual switches hopefully
+they with brought up to speed. Especially open source versions
+to actually offer this kind of security cause we are getting
+into the virtualized world here this is very important. So
+lets discuss DHCP attacks. So the basic of the DHCP protocol
+we can use it to allocate network information IP address
+information to a bunch of machine in the network. Makes
+thing a lot simpler for administrations. Things like
+subnet mask default gateway all these essentials you need to
+actually be on a network can be allocation to DHCP. The basic
+client server protocol the client broadcast out for an
+address. the server response with the lease information and
+offer. And the client broadcast by saying yeah sure I'll take
+that. And then the server acknowledges and we have this
+lease establishes. The we have an IP address and all the
+information that we need in that server. DHCP allows if for
+action so we can take a look at RFC 2132. You're going to find
+there 255 different option available to pass to your DHCP.
+time server domain names art cash, all sorts over good stuff.
+So really to perform DHCP attack, we are going to put a
+rouge DHCP server control on the network this is going to compete
+legitimate DHCP server to actually provide address
+information network information to clients on that network. Well
+this is only has a 50, 50 chance of being successful and if you
+put multiple row of DHCP in a network and you're going to able
+to increase that probable. And this is very simple we are using
+DNS mask you set this up for about 5 minutes or less
+[inaudible] so we have a few conditions few scenarios we ran
+this will duplicate addressing basically you try to identify
+the IP range the legitimate DHDP server passing out. You try to
+mimic that in your own server. And trying to do some duplicate
+addressing attacks. We are going to call denial of service. So
+basically a denial service conflict. You just a graphic
+illustrated. we have a legitimate DHCP server and a
+malicious one. And the first two clients get their addresses from
+the legitimate server well you can see the third client got it
+from malicious server and with in conflict with the first one.
+We have a problem on our network. We have a rouge DNS
+server. If we are running a DHCP server we can provide DNS
+information and Primary DNS server information for that
+system on that network so if we are control of the DHCP server
+we are running like DNS mac that also doubles as a DNS
+server so now we can use that actually provide false or poison
+our DNS server information clients in our network and
+really the effect of that we are directed that traffic to where
+we want it to go. So can start stealing information harvesting
+information for direct it to servers that we are control of.
+So basic this is a rouge, DNS server attack. that we have on
+the top a legitimate server, client S for Gmail that gets
+back the IP address on gmail.com legitimate address. But if we
+have a malicious server out there we direct it to where we
+want it to go. Incorrect default gateway is another attack we try
+just providing incorrect information . And base just
+causing a denial of service attack for those system of
+network trying to get out side of the network outside of
+different subnet or different resources outside of the LAN. A
+malicious honey net was another attack we used. So instead of
+getting just a bad default gateway address we actually had
+a router system on another VM pointed the clients to that
+router system then routed the traffic through that and mirror
+the production network and the malicious honey net and gather
+information by doing that. This is just an imagine showing that
+we client A going through a regular default gateway and this
+is happily getting to where it needs to be, client B associated
+with a rouge DSCP server got a bad default gateway and traffic
+was directed for that honey net for collection and finally we
+did remote execution of code. So when we started this research on
+DHCP attacks its right around the corner when shell shock was
+big so we were trying to do what we can do with that. So by
+making use of the DHCP options we find shell shock to run the
+remote code on these systems. And what happens is we have a
+lease time DHCP server time so every time that the lease
+refreshes itself that code is ran so we can use as a mock up
+CRON job on the systems. The effect really this can be
+catastrophic this can be harmless. You can set this to
+MODP and we can use this to shadow file to some email
+address or some other server. And we can recursive redelete
+the system as is booting up right after it gather his IP
+address information. So the basic protocol is the same. We
+are doing that client server exchange for IP address
+information. But in the end here were passing the option 114 and
+were throwing out the shell attack socket packet on this
+case. So we are passing the RF to RF4 slash with that shell
+shark attack to delete the system. So the test environment
+for this was the same as it is mac flooding attack. Reproducing
+this stuff on the same environment that we have built
+there. But we did need to expand the virtual machine beyond the
+system But we fire up 4 sent to FVM one configured that DHCP and
+DNS server and then we have simple router system. To do that
+honey nut attack and we set up a basic web server to use to do
+our poisonous DNS attack and we'll show you another DEMO here
+another way we used that. And our final system which is our
+client system left vulnerable to shell shock. And so we actually
+do a proof of concept with that. So the actual scenarios we did
+for the remote execution of code. See that we did pas a
+[inaudible] so we are just doing a proof of concept fairly harm
+less attack here. we just echo out a shell shock vulnerability
+if you could read this it work tool file and slash temp call
+shell shack. We also tested to see what kind of access we had
+to use the ID command. So we pass the ID command instead of
+this bin echo we just did bin id and that pass into action
+actually when a client receives its IP address information
+from the DHCP server it showed that it was running as route. So
+the poison DNA server we just basically give it the poison DNA
+server the information and then pass it to spoof gmail mail dot
+google dot com and www dot gmail dot com to steal users
+credentials. default default gateway invalid default gateway
+attack we pass 1.1.1.1 so basic denial of service in the rest of
+the systems and in the malicious gateway we gave it that 1.1.20
+address which was our system our router system to pass it up to
+another honey nut. so how do monitor this how do we really
+see this having a 50/50 probability between our
+legitimate and our rouge servers we just use TCP dump. So here is
+a simple bash scrip that was Written just to gather
+information for the DHCP handshake. And produce output
+like this where we just saw the broadcast traffic coming between
+us the clients and the server we can look into this you can see
+that it was about 50/50 percent chance that you would hit that
+rouge DHCP servers. So what I was just doing I was running
+DHCP servers I run it once. I watch TCP dump output. I kill
+it, run it again, kill it run it again and keep collecting and
+pretty much bounce back and fourth. So [inaudible] is a
+legitamate server and 1.3 is the rouge server. can you see here
+were going back and forth. So in order to do the ID test to
+verify as we were running at route as we are running shell
+shock command. We just did user ban ID and it produces an output
+on the client when we run the DH client just show we were running
+as the UID of root the GID of root. We were in the route user
+root group. And summarize these attacks it worked on everything.
+Every attack every scenario we did worked across the board
+there is no protection against this attack default out of the
+box for any of the hyper vicar environment. So we have a few
+demo here for this. How are we doing on time? We are going to
+skip poison DNS server just for time. For it is very basic we
+are just running DHCP server pushing it out but we kinda want
+to show you the shell shock ones and hopefully they come out
+good. So here we have a shell shock system, which is that
+client system that is vulnerable to shell shock, and on the other
+end we have road DHCP server. So if we look at the resolve we can
+see the system originally grab his IP address from the
+legitimate DHCP server and just contain that yum dot log which
+is a standard insulation nothing else in there. We are going to
+restart the DHDP server to DH client service here to pull a
+new address and try to grab one from that rouge DHCP server. And
+just wait a few for the process to occur. My wall is waiting.
+Lets take a look at that mask dot com file. We can see the
+DHCP range. Which was specified by a one liner here. we can see
+we did 200 to 254 and we did a least time of one minute to
+cycle to the leasing. Just to see what we can do we can go it
+quickly. So we can verify that it is actually refreshing. We
+set the default gateway to [inaudible] when we look at
+further in the config file. We can see the shell shock attack
+here that we pass that echo command testing shell shock. We
+would try to write into temp. So over here the client pull the
+DNS information from the road DHP server so we got an address
+from that rouge DHCP server so the shell shock command should
+of ran on that client system. Now we check the context an
+interesting thing. So every time the system either pull from the
+legitimate DHCP server or the rouge one they should pull the
+same IP address it just requested each each time. So
+there we could see the shell shock apply was written to that
+client to DHCP and If we cat out the file we can see it actually
+contains the information we want to place in that file. We can
+see it was written as the root user as well. [ APPLAUSE ] Thank
+you. And over here you can see on this side VM mask dot com.
+I'm just comparing showing that we actually push through was
+actually went through. Now if we just wait about a minute or so.
+So you will see in the video I'm just going to keep trying to do
+the command just to see what is going on here but we are going
+to see actually got written again. Over writes the file.
+Just takes a couple of seconds. What happens when you run, it
+doesn't happen on the exact minute. When you run the DH
+client command It goes through the whole process of doing the
+lease and everything and sometimes that goes beyond on
+the minute and it actually it hits it so sitting here being
+impatient running the command and it does end up going across
+the next minute to push the shell shock. We go back up and
+look at the least time as one minute here. And we just do the
+LS over on this side again we can see this MD wrote. The first
+time stamp samples 14: 36 and the next time stamp is 14:37 I
+was able to write it down every minute if I wanted too. That was
+our basic proof of concept attack. So we just see if it
+works. Then we ask what can we really do with this? Thats
+great we can write the temp put a file on there. But how can we
+use this to elaborate and gain forward access to that client
+system? So what we did we figure well maybe we should play with
+some HSS keys and see what we can do. So the same scenario
+same set up. W have our client system and rouge HDP server over
+here and we are going to try HSS over the system first. And we
+see the prompting us for the password. So there is no key
+information use right now in that system. So next what we are
+going to do is look at that host file in the system. Well it is
+using a DHS mask it is the host file trying to provide DNS
+information on the system. And we can see we have a web server
+running at [inaudible]1.10 is providing the web of name as
+well as the gmail stuff that we were spoofing before. And if I
+SHH over to that system We look at var www html directory we ca
+see contents right there. There is a index.html and there a bad
+key that I put it in there. Figure this is my web where I
+control all through the world and this is my server and try to
+use to holds that key that I about to push over the client
+system and we can it out we can see the public key. Key that was
+generated the key gen SHH key gen command. We leave the web
+server and go back over here. And look at the dns.comp file.
+Let see. So at the end of here we are using a little more
+intricate command you can see in curl to pull that down that bad
+key file from the web server and redirecting that to root.shh
+that authorize keys on the client system. when we run DHCP
+this the actually command that is gonna be using. so its going
+out there. its gonna download that key file and place it
+directly in the root user authorize keys file. So we will
+go over on the client we'll check out that authorize key
+file and see if it there. There is not authorized key file
+currently on that client system. So it was never place in there
+and we'll try to obtain an address from that system. But
+first we are looking at the root directory on the rouge DHCP
+server we can see there is a private and public key on the
+.HSS folder and if we cat out the file the public key we will
+see is the same public key on the we are server that is being
+pushed down through the client through DHCP. So going back on
+the client we will just rerun the client server to try to pull
+a new address. From the road server and after the few we a
+little time here should get our information. And hopefully the
+authorized keys file is placed in the .shh folder. And there it
+is. Written by root. [ APPLAUSE ] >> Great we got the file but
+does it work? If we go back over. Is catted out we can see
+that we have double entries in. What happens I believe when I
+ran DH client I ran it at the tail end it wrote it once. And
+as I was redirecting or doing append instead of an overwrite
+it just added another entry of that key. So good house key when
+you get into that system clear up that authorize key file and
+you should be good to go. So we are using that curl command and
+redirecting that's how we got at a double entry and we should
+just test the shh into it. So when look at ur history we look
+backward. I just gonna grab that same command we used the first
+time. Instead of typing it all again. Going to 168.1.1.226
+which is the shell shock system and it went right in. So it did
+prompt for the password this time. So authorize key file was
+pushed over there and was effective in getting us root
+access. So ID we can see that we are root user in that system.
+exit out. Try its own again and of course the last log should
+say we came from the rouge DHCP server so it was affected. Okay
+so how can us mitigate these attacks. Enforces static
+addresses. So our DHCP servers will ran out a question. If you
+a really large environment you are really depending on DHCP for
+address allocation this could cause some issues. We can also
+use DHCP snooping on switches usually affected in the physical
+word but is no really there yet. Virtualized switch environment.
+Is an option in some physical switches like cisco and HP but
+we can also restrict access to specific mac address to those
+systems. This is highly restrictive. Or DHCP server
+authorization windows environment. The windows 2000
+server and up. If you have an active directory environment and
+you are writing a whole windows DHCP servers you can do DHCP
+authorization but really who wants to run the whole windows
+environment. So we can also explore techniques in software
+to define networking so ideas maybe to defining filters to
+identify these DHCPs request and transfers say hay this is the
+real legitimate DHCP server if I see any other addresses
+broadcasting to this network we just ignore that we will
+[inaudible] those clients to the correct place. So most virtual
+switches these days especially those open v switch allow you to
+integrate with open flow so this is a good way to move forward
+and use software networking to prevent some of this from
+occurring. We did find especially in environment that
+when I started running a shell shock test I was able to write
+the temp find [inaudible] it was rouge writable it worked great
+but when I started the HCSS key attack it didnt work. So I
+wonder why. I have root access why isnt working. down to su
+linux so a lot of system administrators disable SU linux,
+right out of the box. It is enabled in red hat
+distributions. What this was doing It was preventing it from
+occurring. It is seeing this network service trying to write
+to a non rouge writable folder or file. So it says no you
+cant do it. So it never works until I disable SU linux And I
+could write my files anywhere I want to. So take us into
+consideration. SU linux will help prevent from writing
+unauthorized keys attacks cause you cant write anywhere
+except for temp but it doesnt work in any of the other DHCP
+attacks we were trying out. Or any of the mac attacks flooding
+attacks for that matter. So looking ahead we tend to move
+forward in looking at V landing, V land hopping attacks to be
+specifically to see if we could start hopping V landing in the
+virtualized environments. So we are trying to separate domains
+logical isolate these systems through V landing on the network
+and most switches offer this capability. But using things
+like double tagging or switch spoofing can we actually break
+these V line separations on these networks? So we have to
+see maybe we come back this year and present our research results
+on this. >> All right so was that scary. little bit. Okay so
+to wrap this up. All the layer to vulnerability we discus were
+targeted toward the virtual networking devices. Not the
+higher visors in particular. So that's the good thing to keep in
+mind. Not every virtual switch product is available in hyper
+visor. As you saw the result shows that the networking
+devices can be just as vulnerable as their physical
+counter parts to these classic attack, mac flooding and road
+DHCP and these things. Were gonna work on these as Ronnie
+said. Is good to know that zen server and other solutions using
+open v switch are vulnerable to ease dropping out the box right
+now. Although there is that patch, so you should get that.
+and all the environment that we tested were vulnerable to all
+the DHCP attack manipulations that we did. so that's the
+really good one to know as well. So a single malicious virtual
+machine running in a multitenant environment has a potential to
+sniffing all the traffic that is going over that virtual switch.
+And you saw some of the devastating effects that it can
+have. Its obviously a significant treat to
+confidentially, integrity and availability of data passing
+over these networks in virtual multi-tenant virtual
+environment. and the cloud service environment that are
+being used for tons of production stuff right now. And
+this all these results definitely indicate that a full
+assessment of layer to network security multi-tenant
+environments is warranted and important and we hope that the
+take away action people will have is to really question their
+hosting providers about what they're running. Are there any
+mitigations steps that they are taking, ask for that, push for
+that. Encourage auditing of the workload. We are happy to help
+with that. Auditing the risk of the workload that you run in the
+cloud. Thinking about these issues. You have no idea who you
+just landed with in these multi-tenant environments.
+Consider additional extra security measures some for the
+users and some for the service providers. So use increase of
+encryption log obviously be good.And additional service
+monitoring and additional steps to detect this steps and notice
+the traffic happening and alerting. Great. We will be
+happy to take some questions. >> [Inaudible Question]. >>
+Thats the next thing we are working on. >> We did noticed
+that when the mac flooding was running it did brake the V
+lines. So it broke the V line separation right off the bat.
+When we turn into rouge mode. >> So in wire shark you are able to
+see all the V line tags on all the framings on whatever system
+that you were sniffing? >> We did not look for that
+specifically at that time but we did we can see traffic on other
+V lands especially when we ran other traffic and V lands
+especially when we ran the citrix server and it flooded the
+switches so we could see all the traffic V lad from all those
+upstream as well. it really got pretty bad. We flooded close to
+100 switches and put them all in hub mode. >> If you have
+questions come down here to front and if you are leaving
+please leave through the back door not the side doors please.
+it will help the congestion out of the hallways thank you. >> On
+the VM ware test that you guys indicated they were not
+vulnerable to the mac flooding. Did you test any of the
+workloads with allow for transmit sets or just their
+default. >> Just the default EXXI virtual switch and we did
+the same test in every platform. What you saw on the demo the mac
+flooding attack. Nothing beyond that point. >> People have a
+bunch of specific configurations. They think it
+would interesting to test on some products. So thats
+another thing were happy to hear. >> On the Linux side,
+which virtualized nix did you used. On the virtualized side
+which nix did you use, like E 1000 versus rodeo and also did
+you try test like KBM vs Zen >> We did not use KBM vs Zen
+because we are really looking at V switch. so the switching
+mechanism was the important part here and if are you using KBM or
+ZEN you are using open v switch anyway. hyper vicar doesn't
+really matter. Its the virtual switch implementation.
+We were using open source zen. we are just using straight xl
+command. so no over the top higher layer interaction from
+management. It was just straight command line exhale. >> Did you
+try different nix drivers like ro-IO vs P-1000? >> No we
+didnt. thank you though. >> So my question is your testing
+seems to be on a flat layer tune network only. Have you guys
+testing this on across a routed switch network were you be
+implementing something like IP helper address to forward
+clients to specific address rather than relying on picking
+up HPH request across a flat network? >> No we were just
+looking on the specific land itself and moving forward to V
+land attacks next. >> And I mean the reason why I ask that in
+multitentent environment you would typically never be picking
+up or a local DHCP server you be routed back to your corporate
+network to your own DHCP address or DHP server so unless have you
+had a DHDP server that was spoofing, DHCP server address
+that should not be happening across multi turn network,
+right? >> If you send us an e-mail with specific things you
+want us to test we would love that. And like I said we would
+like to test more environments. >> On my network we use DHCP
+guard on the physical ports do such technology existed in the
+virtual switches? >> Have not seen anything on the virtual
+switches yet. Maybe when you get to the higher the paid cisco
+versions maybe they have some implementations of that but I
+havent seen it. Yeah the nexus. Not the free version
+though. I would think it would be in the paid version. >> Do
+you have any theory's or information about EC2 or about
+structures and service. Any information that you have gotten
+from other documentations stuff like that. [Inaudible] >> You
+should come visit us from the labs. >> The only we know about
+EC2 is that they use Zen and they use open V switch. But they
+may have higher level controls on top of that that they have
+implemented. Other than that, it is safely guarded. We are really
+trying to get in there but is very difficult. >> I have been
+with some information with WS there and they make you sign
+nondisclosure. >> So it sounds like you did this in all one
+flat layer networks. So in a multi-tenant environment they
+may deploy that says a bunch of layer network is surprise if you
+they put the same tenants in the same layer. As possible. I just
+wonder if you thought about that and if other thing a lot of
+these attacks are possible in a physical network but I totally
+agree with you. That these attacks could be prevented in a
+virtual network they have a lot more ability to look that kind
+of thing. >> The stakes are higher because in the physical
+world you can control [inaudible] and the virtual you
+cannot as much. >> There should be more control I agree? >>
+[inaudible question] >> I'm still not understanding, are
+you? >> I was wondering if you were using the standard VMware
+switches or the distribute switches >> Standard, we are
+setting up the environment to do the setup for the nexus
+distributing switching but we havent got to that point yet.
+We are acquiring licensing and funding to do that. But we are
+getting there. We have to set up multiple VMware environments and
+do the distributing there but we are getting there. >> Any other
+questions? >> Thanks everybody [ APPLAUSE ] This text is being provided in a
+rough draft format. 
+Communication Access Realtime Translation
+(CART) is provided in order
+to facilitat e communication accessibility and may not
+be a totally verbatim reco
+rd of the proceedings."

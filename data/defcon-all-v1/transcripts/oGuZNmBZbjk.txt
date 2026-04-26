@@ -1,0 +1,466 @@
+>>So we'll start off today with
+introductory, youll kind of get there's a theme to today's
+talk. 	First lets introduce our clergy. Theres me, I'm
+Joe Fitzpatrick, -- blah-blah-blah -- yeah, sorry --
+I have electrical engineering education, with a focus on
+computer science and information security. 	Ten years spending
+time doing hardware debug and hardware stuff. Right now I
+spend time teaching classes on low level physical attacks on
+systems. 	I teach a new class coming up on applied physical
+attacks on systems which should be fun, too. 	I also did not
+sleep last night trying to get this demo working. 	I was
+drinking most of the time and at the end tried to get the demo
+working. 	There's also Matt. >>Right, Im Matt. I started
+out as hardware engineer, so I spent a lot of my time working
+on JPEG stuff so I've been dealing with this for a very
+long time. 	>>Cant hear you. >>Oh. There we go. Just
+wasnt close enough. 	I'm Matt, spent a lot of time
+designing and building and testing with JTAG. 	I'm sure
+there's more than one person in the audience using some of my
+JTAG. 	I'm really disappointed with the transcription of
+Joes mumbling, they said blah-blah-blah, they didn't get
+it. 	>>Really like, Matt did all of the work for this talk, so we
+should give him applause when he does this stuff, don't applaud
+for me at all. 	 	NSA Playset, basically you go to website,
+nsaplayset.org, and you have a bunch of these little projects
+we're making. 	There was an ANT catalog leaked and
+reimplementing them in open-source hardware and
+software. The idea is if NSA can do it, why can't we, right?
+	There's a few of the toys, not this one, but some of the other
+toys for sale at the hacker warehouse in the vendor,
+tomorrow, Sunday. Tomorrows Sunday, right? If I don't count
+the days I didn't sleep this week I think it's still
+Wednesday for me. 	So, let's start off, this is a page,
+GODSURGE, you're probably not going to get fired for looking
+at this page, it's leaked classified document though.
+	Basically GODSURGE, I hope you can see it because I cant
+really see it. GODSURGE runs on the FLUXBABBIT, hardware
+implant. 	It provides software application persistence on Dell
+power edged server by exploiting JTAG debugging interface of the
+servers processors. It sounds like lots of fun doesnt it?
+	JTAG never sounds like fun, especially when youre doing
+it, but this makes it sound like fun. 	We'd like to tell you more
+about GODSURGE and our take on GODSURGE. 	And so we'll start
+out with, the liturgy of D word, talk about JTAG. 	>> So JTAG was
+originally developed. Big committee in the 80's when they
+were working on this. 	Idea was joint test action group. 	Got
+together. 	They needed a standard for hardware to do
+testing of integrated circuits. 	If you want to build a chip and
+build something with a bunch of chips on it, you need to be able
+to test it to make sure it works before you sell it to somebody,
+people don't like to buy stuff that doesn't work. 	Goal was to
+come up with standard so all these chips can use the same
+test interface, test all of them at once and actually not have to
+hook up different devices to different chips on computer to
+make sure it works. 	Developing software is hard,might as well
+change the hardware, that would be easier. 	You're laughing, I'm
+not kidding. 	>>Where are my speaker notes? I don't know.
+	Nope, it's this button. 	Turn on -- and it disappears. 	There
+we go. 	All right. 	>>So we have a passage from the we need
+to read verbatim. 	Have I to passage to read, this is I
+triple E 1149 spec. 	Section 1.2.4. 	The Use of the Spec to
+Achieve Other Test Goals. 	In addition to application and
+testing printing circuit assembly and other products
+containing multiple components, the test logic defined by this
+standard can be used to provide access to a wide range of design
+for test features built into components themselves. 	Such
+features might include internal scan pats, self test functions
+or other support functions. 	Designed with test features
+such as these can be accessed and controlled using data path
+between serial test pins, instructions that cause internal
+reconfiguration of component system logic such that the test
+operation is enabled may be shifted into the component
+through the tab. 	So -- 	>> That's pretty insightful, thank
+you. 	>> This is the most interesting part of the spec
+too. 	[Laughter] 	>> Good thing we have 50 minutes. 	>> So, what
+is this? So, hopefully, people are familiar with OSI model.
+	Defines physical interface, an application interface, how do
+you communicate using this protocol. 	We tried to map how
+JTAG works to provide a frame of reference for people who do
+software and want to use this for something interesting and
+who arent really concerned with all fancy electrical
+interface. 	If you're doing debug you don't care so much
+about hardware side of this, you just want to know how to use it
+to do debug. 	At physical level we have 5 wires. 	Data in, data
+out, mode select, clock and reset. 	And they have to put
+test in front of these because it's test interface. 	So, what
+does that look like? You really, if you have JTAG header on your
+device, you have these 5 pins and probably a ground, you'll
+have components on your PCP, connected. 	And you're going to
+chain them together, take data out from each one, connect to
+data in from the next one and create longer and longer serial
+scan chain, when you put data in and data out, flows through all
+devices and comes out the other end and gives access to wide
+range of internal registers they build inside these things with
+low over head. 	Control logic for this is really small. 	And
+this gets used for a lot of things, odds are this will
+always work, it doesn't come out and something not working on it,
+probably your tap will work and you get whatever register you
+put in there test it, debug it and figure out and make sure it
+works before you sell it. 	>> So this is what I refer to the
+golden rule of JTAG. 	And that is TDO, on to others, as others
+TDI on to you. 	Think about that. 	If you want to go back a
+slide. 	We have this circle of every inter connected device and
+only way this circle works if you pay it forward. 	Pass on the
+TDI you receive to the next device with your TDO and pass it
+on and pass it on. 	There's a lot of deep inner messages we
+can extract from this JTAG stuff, really I swear. 	>> Im
+not responsible for the puns in this. 	Okay, we've got 5 wires.
+	What do we put on them? So the, there's a state machine define,
+it uses mode select, signal to control what is happening with
+the TDI and TDO signals any time. 	There's a state machine.
+	There's a bunch of states in there, most to deal with all
+sorts limitations on either the device you're using or devices
+that driving JTAG, a lot of redundancy here, this is old,
+complicated and what they put in original speck. 	So newer
+simplified version, if you want to think about what's going on
+here, you're either writing instruction or reading writing
+data. 	Either waiting idle for new command or writing an
+instruction, for whatevers writing your tap interface or
+your new instruction and that determines what data you're
+going to read and write. 	This is really what the state machine
+is trying to get you to. 	How do you access these registers.
+	Okay, so, we can use the state machine, we can get to this
+instruction in the data register, how does that look in
+the system. 	And, it's really a pretty simple picture. 	You
+write the instruction register and that selects one of data
+registers in system for you to read and write. 	Most of these
+data registers there's a couple requires, bypass is required
+one, most things implement ID code register that lets you
+identify the device. 	Almost all the rest of these, if you have 8
+bit instruction you can have up to 255 other registers in here
+for test purposes. 	They can be anything. 	Whatever the
+manufacturer of device put in there to test it. Can have
+access to external pins, its called boundary scan. They can
+access to internal scan, they have special commands and send
+to a micro controller, so you can control how its
+executing. This is all really really device specific, its
+whatever they implemented. 	Point-of-view of person using
+it, you're picking which register you want to access
+either putting data in or reading out. 	You get status
+information or control information you can put in the
+device. 	So, once we built up that lower level, those physical
+layers we need to move on and get up higher in the sack and
+move more into the host layers of this if it were OSI network
+type situation. 	This is where we find target specific stuff.
+	This one table, exert from speck for CPU, what you can see,
+tells you you have a couple different instruction registers.
+	And they have a number associated with them and have a
+purpose. 	Read description. We look down, 001, ID code, number
+it spits out. 	We know we're talking to CPU, network adamant
+ter, this model, arm core,stuff like that. 	Further down below,
+it says address -- very hard, I have narrow range to point --
+address, and data, and control, and basically, 3 registers we
+stuff in there, and that gives access to internal BUS of
+system. 	Its going to let us interface with the hardware
+we're hooked up to. 	This is nice, these aren't the rules
+though. 	This is all fitting into the JTAG umbrella this is
+just nips. Its part of the JTAG that applies to most of the
+nips platforms. 	And t's not going to be like that for
+everybody else. 	Architectures define their different customs
+in order to debug their chips. 	So its different for X 86,
+different forearm, and different for different versions of other
+chips. So like RB7 core that gets manufactured it might be
+different from one manufacturer to another manufacturer.
+Sometimes were lucky and
+we get some similarity. 	But when
+we get to this point, were no longer talking about JTAG speck
+stuff, we're talking about manufacturer's implementation of
+their debugging in face over JTAG. 	And you know we have to
+have a verse to relate that to this, Romans 212:2 Do not
+confirm to the pattern of this world. 	And you know, some
+people take this to heart. 	Really, this is the NIB version
+of the Bible but Maybe we should call it NIH version. 	Remember
+that verse. 	Maybe write it in your cube or something that way
+you can remember it when you need to reuse something. 	No, do
+not conform. 	Let's move up up the stack. 	Back to OSI model.
+	JTAGs, wait okay, who has, who has written stuff like Stevens,
+networking book app, like something like that? Like
+actually written a networking application , right? Whos
+written stuff that uses presentation layer? Anybody?
+	See what I was going to say raise your hand if youve
+written something in the presentation layer, then I was
+going to say, and put your hand down if it was academic
+assignment. And oh see nobody? But maybe, maybe academia is
+catching up. Nobody uses this crap. 	So, yeah. 	Let's, move
+on. 	Weve got a second reading. 	From the second e-mail
+from Joe to people with JTAG yes questions. 	And, Joe, tell me,
+what is JTAG for, I understand all these wires and hook things
+up and have registers, what do I do with it, what's the power of
+understanding this great information. 	When we go up the
+stack we get to what best relates to application scanner.
+We have boundary scan, run control and memory access.
+	These are all fun things, sometimes. 	So, some of these
+things are mandatory. Which means if you have JTAG you must
+have this. 	Some are optional. Which means some manufacturers
+choose to implement that, some don't don't. 	Some undocumented,
+which means manufacturer implements them and doesn't tell
+you. 	Lets talk about boundary scan. 	We have same
+picture as before, remember golden rule, what is it? ok
+good, good, good. 	I think a few remembered it. 	Try to keep it
+in your mind of we have data in and goes through this, we have a
+bunch of ones and zeros. This is JTAG, one wire, one bit at a
+time. 	And, we send those bits through, on that third chip, we
+have traces on motherboard that hook up to LED's or some device.
+We're going to animate this slide. 	Ready? Oh, yeah. 	Watch
+it go. 	There we go. 	Thank you Matt for animating that. Because
+like I said, Matt did all the real work for this. I just make
+the puns. 	So, what we're doing is modifying what the output
+pins of this device are. 	The scan chain goes through external
+pins in the device and we can stimulate them or send them.
+	Send data out or in. 	This is useful if testing a board. 	If
+you have started a BGA board that had like 10 billion pins on
+the board, you want to make sure they're all connected. You can
+get a sauntering iron and a X-ray machine and look through.
+	If you use boundary scan you can just enter all those pins
+and look for outputs on the other end you and you know not
+only pins are wired together, chips are driving properly and
+youll also know that your trace is going through and
+working properly. This is really powerful for the test. 	Test is
+one thing, hacking things even more fun. 	So we have scenario
+like this, where you have a SOC connected flash, if you use
+boundary scan. Boundary scan is a required feature of JTAG. Any
+JTAG device is supposed to have JTAG, especially with Boundary
+scan. So if you can take the time to sit there with multi
+meter and just spit one's out of these boundary scans, you should
+map out which part of data register and result of that
+figure out which finishes connected to your flash chip.
+	Instead of soldering 20 wires, you write software that shifts
+all bits in, and connect your flash for you, you have to set
+the right bits at the right time, wait a cycle. 	Set of
+different bits, wait a cycle. 	It's JTAG, old school, one bit
+at a time. So with one bit every time, with editing one bit at a
+time on every single package, with every single half cycle, of
+every single access. 	It takes a long time but cool, you
+can do quite a bit of stuff with this. 	Next neat feature of
+JTAG, is run control. 	So basically when you've got, when
+your program is running it's run, run, run, but sometime you
+want to halt. 	Stop control. 	What's great about this. 	This
+is the point in time we can do the neat stuff, modify
+registers, write to memory, go back to running,run, run, run,
+run, and halt, okay, check contents in memory, what did we
+put in there let's modify code and let's make something not
+behave properly, change where it runs and that would be cool --
+like, yeah you run again and run stuff. 	Run, run control, run
+and stop, anything to add Matt?. 	>> So the run control is really
+processor specific, everyone implements this differently,
+never seen any CPU, micro-controller. Any type of
+general processing element that does not implement rudimentary
+form of run control. 	If you don't have kernel mode debugger
+and don't have JTAG you're debugging blind. 	This is how
+you debug your firmware on pretty much everything. 	Until
+you have OS running and you can do something in software. 	>>
+Okay, so lets move on. Its time for the gospel. 	Selected
+reading from the international journal, exploits sit lonely
+forgot on the shelf. 	Your friendly neighbors at POC or
+GTFO proudly present pastor export control church
+newsletter. 	I've been reading exert from rant or a sacramental
+wine about [indiscernible] heretic says we are, we turn our
+bail vl and envious eye toward hallow hauls of science. 	There
+are a number of people under curious spell. 	They must talk
+of things not known to multitudes, that's what we call
+0 day or not listened to by their peers. 	What we call a 0
+day they call a discovery or a publication. 	It's weird how
+advancement among them is meant to be predicted that they can
+discover and publish. 	And free to pursue discovery for private
+ends after few distinguished 0 days are published unnoted.
+	What happy ideallick picture, for that who might or might not
+have been helped by those that are suavants those after the
+weird people in robes tended to be sure prided
+[static-inaudible] who had fancy to leave alone and to
+occasionally listen to their babbling. Neighbors this lesson
+took centuries and do we not have any Goddamn robes? So, of
+course, you know we need to move on to a little homily, which,
+this is a pretty old writing. 	It's thousands of hours old.
+	(Laughter) and we, to current day, what are we talking about?
+Oh, JTAG. 	Who knows about Wasstinar?. 	Okay. 	Really I
+should spend more time talking about it but I won't. 	You
+should read about it. 	Wasstinar Regulates a lot of other things.
+	We relate this to the fact in some cases this will regulate
+the tools to test and debug and do security testing. 	If we go
+further, like what are we doing, what is JTAG for in the
+beginning? What is JTAG? A test interface, because in the
+beginning all of functionality is created with intended
+purpose. 	Sometimes not intended. 	But created with
+purpose and sometimes unintended consequences. 	Its really out
+of morality and choice that we have to decide whether we want
+to use JTAG for debug or exploitation, think about that.
+	>> BGA. 	>> So, you know how can we do this. 	Talk about ways
+we use boundary scan, we talk about to give boundary scans to
+talk to flash chips and modify contents, you can have lock
+this, lock that, and have signatures and all that crap but
+if you use run control to halt processor and modify binary in
+memory, signature that's already been checked. 	You won. 	So
+let's start off with a little demonstration -- in this theme.
+	>> I can't tell if you can see this, but I can. 	How do I
+invert the colors? Preferences. 	There we go. 	Style. 	Oh,
+actually -- no. 	There we go. 	>> Yeah yeah yeah yeah yeah
+yeah. 	(Applause) that concluded demo (Laughter). 	>> So, --
+sorry to interrupt -- (Laughter). 	>> So, okay. 	Does
+everybody know what's going on here? I, the last track I asked
+that question, one guy goes no, so we actually brought him up on
+stage. 	Anyway. 	So, even though there's a little bit of slow
+down there, are these guys doing a good job? Awesome. 	(Applause)
+	To our first time speakers -- cheers. 	(Applause) 	I haven't
+been drinking for like 12 hours. 	>> Now everything will work,
+and if it doesn't, we know who's fault it is. 	>> Okay, on the
+right-hand side, this is our little target platform. 	We have
+JTAG plugged into it. 	It's not terribly interesting. 	We're
+going to. 	>> What kind of shell? 	>> I told you I'm not
+responsible for the puns. 	Over here we're going to open up JTAG
+debug program and there we go. 	So then we should be able to
+connect to it, and we can see, hey look we're connected to
+something. 	So we have an SOC tap and X 86 core tap. 	And our
+target over here, still running, and we can do a halt. 	And it
+stops running. 	So then we can do things like -- display the
+registers. 	It will show the contents of all registers. 	We
+can we can dump memory. 	So here is the beginning of Linux
+memory. 	We can dump some more memory. 	This is the instruction
+that controls return code for file system access control.
+	We'll come back to that. 	Dun dun dun, so we can skip, so, all
+right. 	We looked at things, we can resume, target
+[static-inaudible] this is where you start to get into the fun
+part of target specific stuff and how they implement things
+differently. 	Some of the actions don't immediately take
+effect. 	Sometimes you have to drive the JTAG bins more. 	If
+you do the command you have to keep using JTAG more before it
+takes effect. 	We have another target here if we get the demo
+working here, there are some other corks that we can do with
+that. 	So we can even -- we can open up. 	So you can also, GDB
+interface to this, you can open up and debug kernel in GDB, so
+we'll connect to JTAG, all right. 	It connected. 	We're
+going to halt our target. 	We're going to load our single file.
+	And then we can step through instructions. 	Right. 	So every
+time I do a step I the target executes one instruction and GDB
+is showing where that is. 	If you have an application, if
+you're trying to get realtime OS running on this thing and need
+to figure out where it dies, this is how you connect it, this
+is how you can watch it, go through the instructions and see
+what's going on at each point in execution and do your debug,
+whatever you need. 	You need the cable back? 	>> Yeah. 	>> Here
+is the cable back. 	>> Okay. 	So, we can do debug, read and
+write memory, I'm sure you can think of fun things to do we
+have one example. 	But how do you actually use that? If you
+want, when Joe is talking about the ANT catalog, stuck in server
+and updated. 	So if you want to replay your JTAG commands,
+there's hopefully several formats for doing this. 	You
+know, this is the whole point industry stand format and there
+are plenty of tool that's will play back serial vector files or
+the version, that's binary compressed version. 	We were
+able to generate from our open source and debug we captured the
+commands we were issuing over JTAG in the log file went
+through and transformed in the serial vector format. 	 And you
+can play them back on anything that plays JTAG. Pretty much
+anything that can play this format, which is standard format
+for capturing JTAG commands, this is used from everything
+from $10 million test equipment to $15 JTAG adapters like we
+have with open-source software. 	Whatever device you have, you
+can play back this capture t race and issue JTAG commands to
+whatever it's plugged into and whatever the commands are do
+them. 	If we want to write memory we capture, memory
+address, and it will go, just plug it in and it will
+continually write that memory address that we had setup. 	Joe
+is going to tell us about the implant that does this. 	>> So I
+am going to present to you the SOLDERPEEK. Luckily we have
+enough to share and were going to break boards together.
+[Laughter] 	 	So, SOLDERPEEK is a basically tiny board, actually
+like, compatible, easy to get working when doing stuff -- it's
+got a little 18 meg processor on it, it's got, little, UR
+interface serial port, which is how normally, sorry, this is
+based upon existing project called JTAG whisper, which turns
+UR access to JTAG. 	So what I've done, took a board and added E
+prompt to it. 	So we set it up and store this, and have this
+thing be stand alone and plug into system, walk away and every
+time it boots, wait a while and it will start playing back
+its XSVF file. 	The XSVF file will hold the contents and store
+in its memory. 	Like I said, Matt did all of the work, I was
+suppose to get this working, but it's not working now, it's kind
+of dead, in 3 days the code will be up loaded. 	It will all work.
+	So, flash it, run the code that will transfer XSVF file, stores
+it and then next time it powers up, waits 20 seconds and dumps
+its pay load essentially. 	That brings up right to the next part
+of our presentation, where we need volunteers to come up and
+distribute boards. 	NSA Playset, they need hats, too, tinfoil
+hats. 	[Laughter] 	And, [Laughter] -- so you got the
+PCP's -- we'll continue with demos. 	Do you want to video or
+do it live? 	>> We can do it live. 	All right, we didn't even
+screw up the colors, hey, keep it down shhh -- I'm going to
+reboot this. 	So what we'll do, since the board that I have
+right here is having some growing pains, we'll demonstrate
+it with just a standard JTAG adapter hooked up to -- are you
+going to use Galileo. 	>> We have Galileo, if we have time
+we'll do with arm also. 	>> We'll play back the same JTAG
+chain command that we would on the SOLDERPEEK implant just
+doing through JTAG adapter instead of a standalone device.
+	Stand alone device is gets TDO out properly, the data we get
+out makes absolutely no sense, so we need to figure that out.
+	I need to figure that out. 	>> So I'm logging in here, I have a
+super secret password and you can see that -- all right -- so,
+you can see I'm just a regular user, I don't have access to
+things this that are owned by [static-inaudible], so I'll go
+over here, and we're going to launch the debugger again, and
+go in here, I'm going to find my command line, and, this is our
+sequence of commands. 	So what we're doing here that the bite
+ss of showed in memory with ACL return code for file system
+permission check? Were going to change those. 	Oh, no. 	It
+didn't work. 	Oh, BOO, we'll reboot and try again. 	Give it
+one more try. 	>> Okay. 	>> I know what the problem is, I
+didn't take a drink this time. 	[Laughter] 	Sometimes this
+stuff works without drinking, you don't actually need to drink
+-- wait? Since when? Why else do it? Right? 	>> Also the bars
+look at you funny when you bring laptops, wires and hook things
+up. 	But it's Portland so everyone is weird. 	Tell them
+it's a board game. 	Okay you must be HIPSTERS. [Laughter]
+	Matt had this done and showed me 2 weeks ago. I was like Matt,
+you still have 2 weeks. 	>> We'll have to play the video.
+	It's not working. 	Luckily I took a video when he did that.
+	This worked every time I did it for the last week week. 	>>
+Okay, so, you can, we've got the same setup that we've got here
+with JTAG adapter plugged into laptop, plugged into Galileo.
+	Cannot see video. 	I'm typing in, 12345 in case you're
+curious. 	>> Change my luggage password (Laughter). 	>> So you
+can see I don't have access to the shadow password file so I'm
+going over and doing the same command here that I just tried
+and it worked. Eventually. 	Now you can see that I was able to
+get access -- 	(Applause). 	(Applause). 	>> How many bytes
+did I write? 	>> 4 bytes of memory, return code that was
+access denied and we changed it so it never returns accession
+denied any more. 	>> And the SPF when we got it down was just a
+couple K? 	>> It was less than a K. 	It was a couple hundred
+instructions. 	4 bytes, writing 4 bytes of memory took, like 2
+or 300 actual commands in the SPF file. 	First iteration when
+I did a DIF and generated a patch, SPF came out to 500 K. 	I
+put a little work in optimizing, it can take a while to do that.
+	So it can take awhile and as you can see it's not 100%
+reliable. 	We can put a little more work into getting it more
+reliability. 	But, we got a demo, so. 	Yeah (Laughter) oh,
+so the, point here is that, everything you saw is working as
+intended. 	JTAG is there because you don't buy a working laptop
+if you can't do all of this over JTAG, you need this to build
+something that works in the first place, but this is not
+software. 	You can't turn off debug flags and have it be
+compiled out of the binary, this is going into hardware you can't
+take it out. 	We need to make sure hardware works before we
+sell to you but stays in hardware, this is embedded flat
+form. 	JTAG is not able to intentionally on purpose they
+expect people to need or want to use it, as NSA did, you can plug
+this on pretty much anything. 	Almost everything. 	>> As long
+as you have patience. 	>> And potentially money to spend for
+reverse engineering it. If you're building something, it's
+not just about, selling it to OEM and let OEM build it,
+because eventually user has to use this and I don't want
+somebody to picks up my phone or laptop to be able do this. You
+need to be able, ideally user has some say in this. 	Some of
+new things give either BIOS or route user control over whether
+JTAG gets turned on which functionality is enabled. 	Which
+is good thing. 	That means somebody can't pick up laptop,
+walk away, plug something simple, that's $15 -- so you
+can't plug a $15 JTAG adapter and get full access. 	We're
+patching memory, doesn't matter if youve got this encryption,
+doesnt matter what you're running, we plug this in and we
+get full access OIS has. 	Hopefully we get to the point
+it required user involvement to actually turn some of this on.
+	The old assumption just don't let me walk out and plug JTAG,
+your system stays behind a locked door, but not everything
+is behind a locked door any more. 	That is it. 	(Applause)
+thank you. 	Thank you.

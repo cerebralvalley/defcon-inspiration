@@ -1,0 +1,373 @@
+We're in 802.11 massive
+monitoring. with andreas____ and andreas ______, without further
+ado, gentlemen claps >> Hi there, hi DEFCON. We're glad to
+be here. We're first-time speakers. Thanks. We are from
+Argentina. We work at core security. We're here to present
+our talk which is 802.11 massive monitoring. And what is it
+about? Well, it's about how to monitor several Wi-Fi channels
+at the same time in an easy way. Here are the outlines,
+introduction. I'm going to say that. Then the main part of our
+talk will be explained by my partner and consists in
+approaches. The USB dilemma and distributed system. And then I'm
+going to come back to explain our work which is our last
+solution. Let's start. Who is this talk for? If you go around
+looking for access point or wireless routers [indiscernible]
+for example, this talk is for you. If you no matter where you
+are doing or where you are, and you are trying to monitor
+wireless traffic, this talk is for you. If you have just a
+couple of routers at your home, if you like to spend your day
+watching TCC (inaudible) or playing with [indiscernible]
+this talk is for you. Okay. Last year we were doing some research
+about different protocols. We faced a problem with Wi-Fi
+direct. At that point we realized that when two devices
+in Wi-Fi direct tried to establish a connection, they
+start sending frames on different channels. And of
+course we never know on which ones. It sounds trivial, but it
+wasn't. So at that point we realized about two things. The
+first one, we didn't have a good way to do it. And the second
+one, there were more similar scenarios in which we might want
+to do that. So we defined the goals of our project and our
+talk and here is the goals. monitor channel (indiscernible)
+traffic such as Wi-Fi direct. Monitor access point with auto
+selection channels. They are access points that change the
+channel in which they are working and according, if there
+are so much traffic or other parameters. Monitor multiple
+access points at the same time. Monitor stations which can be
+connected to one access point using a channel and later
+connected to another one using another channel. Monitor
+multiple locations at the same time and the last one of our
+goals which is not about monitoring but it's quite
+related to it which is inject frames on different channels at
+the same time. Here we can see a couple of tables with a list of
+Wi-Fi channels. Wi-Fi has several standards. They are
+named using letters, A, B, C, N, et cetera. Standards can be
+grouped by the base frequency in which they work. For example, we
+have some standards that work on 2.4 gigahertz. Other ones on
+3.6. And other ones on 5 gigahertz. Each of these
+standards has a set of well-defined frequencies called
+channels. We have maybe 50 channels. When we try, when
+everyone tried to monitor traffic, we can do two things.
+We can do channel hopping which consists of monitored traffic on
+one channel and then hop to another one and hop to another
+one. Or we can set a specific channel and monitor all the
+traffic in that channel. We have problem with the two approaches
+because we're losing a lot of Wi-Fi traffic. So in this
+presentation and with our solution, we are trying to solve
+that problem. >> Hi everyone, my name is Andres. well im gonna
+start talking about approaches (inaudible) the first one is
+this one, as you can see there are 6 (inaudible) network card,
+with a food container, it was really good one. Last year I
+brought it here for the wireless CTF (ph.). It was nice to go
+through AM to the airport with this. It was really fun. So the
+problem with approach was only SIM card. The second approach
+which is one I have here, I couldn't put it on the table
+because the cables are too short but after the talk you can come
+and see it. Then you can see it afterwards. But this approach
+start giving us the idea if this could scale or if the system was
+not going to be able to scale. How we use this two approaches
+we made. One is using Wireshark, easy to use. you open Wireshark
+and You select all the interfaces you want to monitor
+and you are able to use them, really easy, and there was one
+approach of using a python in some libraries which is copy and
+pocket. We can monitor and do processing of the frames and do
+some stuff. In this case we're going to see a quick demo. It
+says here if you don't want your traffic to be displayed during
+the demo, please stop your Wi-Fi. Let's hope it works. So
+the script is now interfacing and is sending the wireless
+cards to different channels and now we are monitoring for
+specific packages, like DNS, HTTP. So it's only a demo to
+show that it's quite easy to grab a lot of frames and process
+it with a lot of cards. It's also really fun to see the data
+going around in the air. But we're going to stop it so no one
+feels bad about it. What's the problem with these approaches
+that we make? We started seeing some things that they were not
+working as we expected. And where he started thinking that
+the USB was the problem. so the first things is scalability,
+Planting one USB device on a computer is something that
+everyone knows it works and it works fine. were gonna start
+playing and put alot of devices in your USB, sometimes it
+doesn't work like it should. It's 11 cards its shouldnt be a
+problem, we are not playing with 100 devices, its only 11 cards,
+but the problem is, the monitor mode that we're going to explain
+now. The thing is we plug 11 cards, we use LSUSB common, to
+see that every card is plugged in and working and I'm going to
+show you another demo now. This demo is really short. We're
+going to see -- we're going to load USB module in the
+[indiscernible] kernel to analyze the USB traffic. Running
+war shark again. Were gonna be able to see what is going on and
+what's the problem here. We go to interface list. We see as
+they mentioned that we were seeing before. We have all the
+interfaces and the USB devices here. We can monitor the buses.
+We start monitoring the buses and we see a lot of USB traffic.
+We are not now using war shark or CTP dump or any other
+software. Trying to use the network interfaces. Once the
+network interface is on monitor mode it doesn't careb its gonna
+grab the frames in there and its gonna send it to a USB to the
+kernel, There the driver is going to forward it to the user
+line. The problem here is that the card is not figuring the
+traffic. It's sending all the time the traffic to the USB bus.
+That's the first issue that we find. that is BUS saturation,
+Sometimes USB or usually USB devices, they are not using the
+bus all the time like you can use, I don't know, a hard drive
+or something and use it sometimes. But it's not
+constantly sending information to the bus. When you put monitor
+mode as well at interface monitor mode, all the time the
+information, and we start seeing USB saturation. That is a
+problem for us. As I was telling before, the filters only apply
+on the kernel. it does not apply on the wireless interface. So
+when that happens,a couple of buses with the people trying to
+get into the buss and go to the kernel and we end up with this.
+Something really bad. We're not able to send all the people in
+the buses. As I was showing before, we can see here, I was
+not able to show you with a laser. but wireless interface
+No. 16. It says 0 packets. That is a problem of bus saturation.
+We're not receiving any frame from that interface but the
+interface is working. And we know USB, wireless interfaces
+that are listening in monitor mode, they receive frames all
+the time. It's almost impossible if you have devices going around
+to get zero frames. We always get something, approve request,
+or some frame going around, were gonna catch it, so this is a
+saturation problem. We're going to talk another issue, later
+we're going to catch up with this issue that i was mentioning
+about saturation and we're going to talk about how maybe to fix
+it. Now we're going to talk about now removal of devices,
+that is another issue that we have here is, (inaudible) lets
+Say we use all these cards in my laptop to do a pen test or
+something. and i plug this in my computer and say okay I'm going
+to use my bus, my USB bus only for the interfaces. But this is
+not so true. because nowadays, computers already come with
+devices that they are using the USB bus without us knowing about
+them. In this case we have a webcam and a bluetooth device
+that I don't know if it's clear to see, a little bit small, the
+letter, but these two devices are using bus No. 1. Bus No. 1
+has already some traffic that we cannot control. Again, we have a
+bus with some people that is already there we are not able to
+take them down, they are and they are going to be sending
+things in the bus. So that is -- the second issue. These one
+maybe we can fix it. Removing a kernel module driver to see if
+the device stopped talking to us through the USB bus. But I don't
+know. its something you have to test with every device. Another
+thing that is funny about it is that in this computer we have
+four USB buses. So we said, okay, we have four USB buses. If
+we use like, we balance the usage like put some device on
+the first bus, some on the second bus we may mitigate the
+USB saturation issue. But it's not so true. When we plug
+devices into every port we see something like this. we plug a
+card in the USB port No. 1, and we are using bus No. 1. The same
+oone that was already using my webcam and my bluetooth device.
+I plug in the USB port No. 2, we're using now bus No. 3. I
+plug it in the last port that I have in the machine, and im
+already, again, im using bus No. 3. So I have three ports and I
+can use only two buses. The other two buses are not
+available. So mitigation of bus saturation is not going to be
+able with this. The last issue im gonna talk about is power
+negotiation of power issue with USB devices. When you plug a lot
+of device and they're trying to power nail share with the
+kernel, a linux kernel, sometimes you end up with less
+devices than the ones we plug in, and this is because there is
+issue on the Linux kernel which I'm not sure why. because
+Sometime now from now that is going on. But this issue happens
+not all the time. Sometimes it happens, sometime its not. When
+you plug it the device doesn't appear there -- oh, okay. I will
+continue. And when it does not appear, if we plug it and unplug
+the device, it's going to still do not appear. It's blacklisted
+because kernel says it doesn't negotiate. We have to reboot the
+machine to be able see again, that device. So it's a really
+bad, this issue, I didn't find a work around for this. Reboot the
+system and try it again if you can monitor. Okay. >> You
+stopped talking. >> I can continue. >> These are -- what
+country are these from? >> Argentinian chocolate. They
+don't do anything small. This was a gift to us. Are these guys
+doing a good job? That's awesome. All right guys. You
+know how hard it is to get on this stage, so congratulations.
+To DEFCON. Now let me pick up where they left off. Okay. I'm
+going to have to learn this first. Could I get some help? >>
+This is computer things, I don't know. >> Excellent description.
+>> Thanks. So again, so i was, I think I said this, I don't know.
+It was -- we were talking about USB issues. We got USB
+saturation, we got no removal of the devices that were used in
+the bus. We have power issues. And we have I forget. Okay. It
+was removal of devices. Saturation, power issues, and
+available ports USB buses. We have three ports and four buses
+and with three ports we're using only two buses. They are
+designing really good, these computer. The solution for some
+of the problems can be applying a filter on the wireless
+interface instead of using the filter on the kernel side. If we
+do this we filter only the traffic that we're interested
+in. If you do traffic monitoring you should know we're not
+interested always in the traffic. Sometimes we're
+interested in some traffic. Putting a filter on the wireless
+interface it will be a thing that could work around some of
+the issues. But doing this is really hard. modifying firmware
+is in open source, ok we can apply some changes and maybe it
+will be easier, but apply it in closet source and applying
+modifications in the driver, we have to modify a few more in the
+driver, its really hard and you have to do it for every
+different card and its really a work that is not so good,
+sometime a go, we gave a talk about modifying broadcom
+wireless drivers, about to put it on monitor mode, it was only
+two chipsets and we have to do alot of work, and every time we
+have to update in IOS again, we have to remodify and reverse
+again the codes, it was really hard work, So it doesnt escalate
+so good. We said, okay, we can modify this idea and try to
+[indiscernible] of the scheme that we were using. We can say
+we have a worker or something that is monitoring and injecting
+frames. We have a -- shell that is in charge of analyzing or
+injecting traffic and we have a bus. In this case the bus is
+going to be ethernet. And we know we can talk to the worker
+and say with this filter and only give me this traffic
+instead of all traffic. We can avoid the bus saturation and we
+can also avoid the other issues that we were mentioning before.
+How we can do this? We can do this with this way. We can have
+a couple of machines with USB wireless devices or interfaces.
+And we can have a manager that is in the middle and we can talk
+to these machines and say, okay, you put in channel 6, you put in
+channel 4. Now i start monitoring give me only traffic
+that it works with the filter. Now you go and check, ill do
+anything. But what is the problem with this is you don't
+want to have like 11 computers. If you want to get these
+computers to another site you have 11 computers in your bag.
+It's expensive and it doesnt escalate so good for my pocket.
+I don't want to use all that money for this. Nowadays
+computers are not always computers like we used to know.
+Now we have embedded devices everywhere. We can find cheap
+embedded device that have wireless. There you go. We have
+a lot of wireless devices that they are really cheap and we can
+put it really easily and have a lot in my bag and I can around
+monitoring and injecting traffic. Using instead of
+computers we're going to use open -- devices that run Linux
+and work with wireless. Okay? >> Finally we arrive to our last
+approach. We called it wirework, which means wireless workers. We
+defined it as distributed 802.11 monitoring and injecting system
+which was designed to be simple and scaleable. In which workers
+note, it can be managed by a framework. From one side we have
+routers converted into workers. We are using a custom open WRT.
+We removed several the four packages and added a new one
+called Walter. We developed that package in C language. From the
+other side we have python lip that we also designed,
+developed, sorry. And we communicate workers and the
+manager using a protocol that we design and implemented. And it
+runs over ethernet. In theory each kind of router that can
+support open WRT can be converted into a worker. But we
+chose three different routers to work. This is the first one.
+It's a TMTR3020 (ph.). It has not so much flash nor RAM
+memory. It has not such a good CPU. But it's cheap and small.
+We also chose this other router. It's an RTP link. The main
+feature of this router is they have two wireless interfaces.
+One of them works on 2.4 gigahertz and the other one on 5
+gigahertz. We design and implemented wirework to support
+routers with more than one interface. And this is the last
+router that we used. It's pretty similar to the first one. But it
+can work with batteries. So this is important because we can
+implement wirework a system and do it mobile. From the other
+side we have the manager. It's a python lip. The main feature of
+the lip is looking for workers on the network, get information
+about the available interfaces in the workers, start monitoring
+a worker interface using a BPF filter. And inject frames from
+an interface, from a worker interface. Sorry. This is a
+scheme of how is our manager. There are three processes. The
+main one is the manager service. But we have other two processes
+which handle data frames and management frames. Why we
+decided to use ethernet instead of IP? Our protocol runs over
+ethernet. There are several reasons. We always try to keep
+it simple. IP may need some initial settings. And we also --
+our original idea was have our own network with the workers. We
+didn't want to plug workers in a system network. So using
+ethernet we were able to connect a new worker and it start
+immediately working. We also can control better the traffic on
+the network because we are not using IP and there are several
+services, several IP services that are not there sending
+frames. So we have better control over the network. Then
+ethernet has an NQ of 1,500 bytes. And it has a very short
+header. So much shortened than IP. So we have more bytes
+available for our stuff. Doing that we can keep fragmentation
+low. Here we have a couple of devices, a router and a switch.
+We are using these kind of devices in our POC here. They
+are of 10, 100, megabit per second. With these kind of
+devices we are not able to monitor all the traffic with
+high performance. But the good thing here is that we can get
+better devices. Like this ones. Here we have a router, a Wi-Fi
+card and a switch. They are devices that work on one
+gigabits per second or ten gigabytes per second. If we get
+better devices, we are going to get better performance. We're
+not going to have scaleable problems. OK wirework is not a
+tool. It's a framework. You can do a lot of things with this
+framework. For example, you can build a distributed wireless IDS
+or IPS. You can do traffic analysis. We are getting a lot
+of traffic. We are getting traffic from different channels
+so our analysis will be more complete and reliable we can do
+device tracking. We can put different workers, for example
+in a building and in that way we will be able to know every time
+where a device is. And finally we can use it to perform
+protocol analysis like we did with Wi-Fi direct. Here is our
+PLC. We have 11 routers. A couple of switches. And a USB
+hub just for power. The main idea behind this POC was have
+one router per channel in Wi-Fi standard B or G. And to have
+just one power plug and just one ethernet plug. Well, demo time.
+Please disable Wi-Fi. Not all the Wi-Fi, please. >> We're
+going to try this demo. Hope it works fine. So the framework
+comes with some examples. So if someone wants to use a framework
+to develop their own tools, it's easy to use these examples as
+guides. But we're going to put a lot of information and
+documentation on the GitHub. Okay. Let's test the war shark
+example. The war shark example is going to find every wireless
+worker that we found in the network. It's going to search
+for the best optimal channel segment. And once we have every
+channel assigned we're going to need some BPS filtering and we
+are gonna receive all the information and send it to wire
+shark. So we can use a tool that we know. We're going to say that
+we need the network interface where we are connected to the
+workers. we put a filter that say IP, when we put IP its
+gonna.. The workers are only going to send me the traffic
+they know in this IP. So the thing they're going to do is
+search for encrypted traffic and then if it's IP, it's going to
+send it to the Manager, so the Manager onlyprocess this traffic
+and not all the traffic that is in there. lets say that I'm out
+of minutes, but [indiscernible] the application. So now as we
+can see here in the console, on the terminal. We will.. the
+manager is starting, hes gonna looks for workers. Hoping he
+found every worker we have. There we go. We find 12 workers.
+One worker has two interfaces. This black one, that has
+interfaces, one has 5 gigahertz and the other is 11 and now
+we're getting traffic. All this traffic is captured by the
+workers and sent through a network encapsulated in the
+ethernet and the manager is processing the frames. this way,
+The workers are doing the hard work like filtering the traffic
+and the manager is only processing the traffic he wants
+in every channel we find. If someone notices I'm going to
+change channel or now someone plugs a new access point there,
+were gonna receive the traffic, because we are monitoring 11
+channels and 1 channel at 5 gigahertz. Here we have radio
+tap information and we receive frames in channel 11. Here we
+can see the channel. This is in 5 gigahertz. We can see here, we
+have radio-tapped information, and we can see that we received
+frames at Channel 11, here we can see the channel, this one is
+at 5 gigahertz, and we can see channel 11, it looks like there
+are two wireless devices here or two wireless access points. One
+is 5 gigahertz and another in channel 11 of 2.4. We can
+process any frame that is in there. So we have other
+examples, like for example, let me see, we can copy -- his
+example is going to find. It's going to say the workers to
+monitor only approved requests on every channel and every time
+they see a per request it's going to inject a response. We
+have a (inaudible) attack on every channel. There you go. >>
+Well, future work. We think of having IP support. The original
+idea wasn't that. But we know that it's important in some
+scenarios. We are thinking of building new open WRT
+frameworks. We already released these frameworks with some
+example, some wireworks. We are thinking of building more
+frameworks and create more examples. And finally we are
+thinking of adding introduction with some well-known tools.
+That's all. Here is where you can find the white wall project,
+our emails and our twitter, if you want to contact us. That's
+all. Thank you so much. Is there any questions? Audience speaking
+yeah Audience speaking yeah They work from one to one. It works
+like, you have only one instance. For doing that we
+usually modified like air crack code to make it like work from
+one manager to multiple workers. We see a little bit the code.
+But we wanted something that is also in python so it can be easy
+in multi-platform. The manager works on windows, Mac,linux ever
+where. The manager is right in python. We thought about it. But
+we end up making a [indiscernible]. Thanks for your
+question and because you did the first question, you won a --
+worker on a device.

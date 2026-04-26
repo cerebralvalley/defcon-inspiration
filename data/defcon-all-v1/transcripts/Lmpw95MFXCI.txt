@@ -1,0 +1,780 @@
+>>Next we've got josh and teddy.
+I've been looking forward to
+this talk for a long time. Looks like they have some really cool
+stuff to show you. So let's give
+these guys a big party track welcome. (Applause.) All right
+so. >>	All right so my name is
+Josh Datko. This is Teddy Reed. Today we're going to make a
+Hardware inplant. Basically I'm
+going to give a quick introduction on what NSA playset
+is about. what were trying to
+do, were gonna go over some I2C attack surfaces, you don't know
+what that is yet but well talk
+about that, We're going to build up a hardware implant. 'Re going
+to start with the attack surface
+and get the control module, and get a little GSM going. We're
+going to show how we can improve
+this technique. Some suggestions for future work and improvement
+that is we think improve on the
+NSA technique. We're going to wrap up and do a live demo. So
+what is the NSA play set? So if
+you've went to Mike Thompson's talk. He introduced it, but last
+year there was a leaked in
+catalogue there was a lot of hardware toys and the idea is
+that we look through them and
+understand what these capabilities are so we know how
+to defend against them, so there
+4 talks with this moniker There's one on Friday that we're
+in track one now. And right
+after this one, so there's GSM sniffing. And at 1400 you see
+PCIe stuff. So yeah, these, this
+is kinda of inspired by the NSA catalog so they have this
+hardware hacking catalog, They
+kind of flip through it and like oh this is interesting. And what
+do I want to buy and attack this
+target? And one of this attacks is this device called wagon
+bending.  and Wagon bed didn't
+actually have its own slide in the catalouge leads us to
+believe we don't have all the
+data. We were refer by two other techs, ironchef and cross beam.
+What we know about Wagon bed is
+is was I2C controller board  that somehow attached to a PC in
+this case, they spelled out a
+very specific version of the HP proliant server. which of you
+have that? I would be really
+interested if you looked at it and saw anything. No one has to
+come forth. So the very specific
+model of the HP server. And it was some module or capability,
+so we could add a GSM module to
+implement cross beam and so they could exfiltrate data over GSM.
+so you know, you kind of look
+through and this is kind of nice. But you really wonder how
+that works. At least I did. So
+let's identify some of the requirements for this implant.
+All we know is that it must
+attach over I2C. Which we'll go over that in a second. And it
+must have some modular component
+and it has to reach back over GSM. So those are the
+requirements from the leaked
+documents. But the NSA play set, we have other requirements. We
+want these tools to be easy to
+use. So this technique implementing this technique
+should be easy and approachable.
+Needs to be open source hardware. So I'm a big believer
+in open source hardware or
+should at least design schematics the bomb, everything,
+so other people can learn from
+the technique and reimplement what you're doing. Also wanted
+the device to be flexible. So I
+didn't want some one off hardware implant. I wanted some
+generic implant that would be
+useful on multiple platforms. And lastly, should be fun. There
+are some single chip solutions
+that do this, but they're proprietary, and under NDAs.
+That's not funny. We want to
+make it funny. This slide here, we're going to come back to a
+couple times. This is the break
+down of the implement as you go through, we're going to update
+this so we know where we're at.
+So right now, all WE know is I²C. The middle platform is  the
+hardware there's some
+controller, we don't know what that is it yet. We know it talks
+to a GSM module, we don't know
+how it talks to it, But then the GSM capability gets you some
+reach back. So what is I²C? It's
+a serial bus it typically found on embedded systems because it's
+four wires. You just need data
+and clock and power and ground. It's a multimaster which
+basically means what its sounds
+you can have multiple masters in the bus. There is some you know
+collisions detecting. There's
+some details to the protocol. There's multiple slave devices.
+These are addressable so you can
+write to the device. if you guys like to do anything like
+temperature sensors or any of
+that kine of stuff anything that don't have an address that you
+can talk to standard speed. So
+not a very fast protocol. standard speed is about a
+hundred KHz. It could
+go theoretical 3.2 mega bits per second. But overall, it's not
+really fast. It's meant for E
+prom and these kind of low embedded devices. So if you are
+a visual person, this is a
+visual example. So the top picture will show this bus. You
+see you have multiple masters.
+You have the E prom slave device on this bus a sensor slave, So
+if you're ever doing any kind of
+reverse engineering I²C, typically looking for those two
+data lines. Also look for pull
+up resisters, so you see those pull up resisters coming up from
+the voltage reel.   some of the
+system will let your processors actually have pull up processors
+internally. So they may not be
+there. But umm, that's usually a good sign. And at the bottom you
+see a  logic analyzer dump and
+basically the master that controls the clock and sets the
+frequency and depending on the
+rise and fall of the data line that decodes to a different
+value and that's how they
+communicate. So okay, now we know some things about I²C.
+Let's start thinking about how
+we can use I²C to attack the PC. I²C, even though it's embedded
+protocol, it shows up commonly
+on computers. One thing it'll show up is on ram. There's an E
+prom typically that has some
+settings and data about the ram. So that could be potential
+attack surface. You could
+certainly attach a SOIC8 clip. Either on the E prom or solder
+wires to it. That's not fun. You
+got open a cage and you gotta do some soldering. This is not fun.
+You could do it. But it didn't
+meet the fun requirement. PCI and PCIE, this is one'sest
+entering because PCIe has a SIM
+box, which is an I²C, if we make a PCIe card, put that in, we can
+use I²C. Imagine if you made
+some sort of card, you cut that into a device, you can get onto
+I²C, and so whats nice about I²C
+from a tech point of view, there's no hot detect. It
+doesn't launch any drivers, you
+just kind of add to the bus unless you're actively probing
+for the device, you would not
+know something's on I²C. that can be interesting, but again,
+you got to open a case.
+Screwdriver and that stuff. were gonna camp it up. So battery
+controllers, so if you have a
+laptop that has batteries, there's no I²C battery
+controller. That could be a nice
+way to get in. But then you're only talking laptops that didn't
+really meet the whole general
+purpose thing. So if there's only there was an adapter that
+kind of fit every PC or server
+that had some sort of I²C protocol? What about video? It's
+on a video adapter. Why is that
+right? If you ever wondered why you plugged in your video
+adapter, you could automatically
+detect the resolution. So that resolution is stored on an E
+prom on a monitor. So there's
+I²C come out of every video adaptor, the way that video
+adaptor works, is basically with
+two different protocols. So the data inside the E prom fits this
+thing called E did. Which
+extended display identification of data that has the information
+about the resolution. And it
+uses DDC, which is a data display channel. But it's
+basically the transport is an
+I²C and now ill turn it over to teddy to talk about EDID.
+>>	How's it going everyone? So
+think of EDC as the next layer in the protocol stat above I²C.
+And there are drivers in
+whatever operating system or whatever video card you're using
+or whatever system OEM,
+independent service vendor board that implement it is video
+adapter, that's running in
+software lands supporting this protocol, parsing it as it comes
+out of the display adapter or
+whatever you're attaching to VGA, HDMI, so on and so forth.
+You can clear this. If you're in
+LINUX have this application as part of your standard user and
+set of binaries. It will query
+I²C bus and ask you this information for every display
+adapter that your system reports
+is in use. And by use I mean attached right? It's there. Like
+josh said, there's no hot spot
+for any protocol that has to say im alive. So if you're. Laptops
+are now try this see what you
+did you probably don't have anything if you dont have any
+external dispplays. Sometimes
+your monitor will show up in here too. So we need to code
+this --to-- so this user line
+application, you can use to decode. So now start using our
+imaginations. We have a hardware
+implant, but we could try to get software control with the
+implant because we're sending
+data. You can fuzz these binaries. There's an awesome
+talk by Andy Davis through NCC
+for attacking HDMI which does exactly this. Because this stuff
+gets extensive. There is an
+extension protocol and defying extension blocks, one of which
+is 50 H localized streaming
+extension. Which is exactly what you're thinking right now. A one
+length encoded string, the size,
+and then the binary. So if you're starting to fuzz that,
+there's a couple bites. Say it's
+a longer string. Say it's a smaller string. You get the
+idea. But more importantly,
+there's this FFH which is an extension defined by the OEM.
+You can't find the specs in
+those. They're not published. So you'd have to query NVIDIA ATI
+and see what they're doing. Or
+display generator XYZ. And here's Andy's fuzzer. We've gone
+and implemented that for the
+BeagleBone to fit request this stack of software and hardware.
+that were gonna release open
+source, and we have support for fuzzing the awesome stuff that
+Andy started, but also trying to
+discover the formats for those extension blocks. Yeah. More
+fuzzing. So let's fuzz the stuff
+we need to then fuzz more. Yeah. You got it. And then to expand
+on this whole mentality and
+recall the arms to start fuzzing these things, a lot of other
+things that supports this
+protocol, the software protocol. Let's start expanding that and
+go to the set top boxes and
+whatever the hell it is that supports video and enumerating
+the extension blocks and
+throwing them up and hardening them too. So throw it back to
+josh now. >>	Okay. So, you know
+your attack surfaces, so were gonna use a VGA, so how do we do
+that? Like I said before, we
+need these four pins. On a VGA adapter, there pins 5,9, 12 and
+15 corresponding to the ground.
+Basically power. I²C data in clock. Some older VGA adaptors
+may not have pin 9 for power so
+you have to watch out for that. Now on the first time I tried
+this I was a dumb dumb. and cut
+the wrong end of the cable so i have to fly wire into the VGA
+adapter and I stripped the cable
+the wrong way. If you're looking to power your arduino, of do
+something cool with yor arduino,
+then attached to the VGA adapt get power I²C out run a two wire
+library and you can communicate
+with an arduino and do all the cool stuff. And you could
+typically do with arduino
+without having able having to go over a serial debug. That's a
+cool biographic way of using
+your VGA adapter. So now we have some more information. Right?
+Now we know the target to video
+adapter going to be using DDC. Which is also expert, but now we
+know it's a more specific
+version. But we need to fill in the next block which is the
+controller, need some sort of
+platform to kind of help us out here. So my plaform of choice is
+the BeagleBone on black. if you
+havent played with the BeagleBone black, i highly
+suggested. it an awesome board,
+1ghz arm cortex processer, 512 RAM Really nice feature is these
+two independent parameter
+realtime unit. So they have a 5 milisec guarantee execution. And
+about two months ago, they
+released a C compiler for it. there wasn't a lot of attention
+on these, but If you are into
+this, the C compiler's out and you can do some pretty cool
+stuff with these  ‑ ‑ they're
+both used like a DMA interface. It also have crypto accelerators
+which is kinda interesting
+feature for AES If you look at my blog, i have some things
+where i tried to get it going
+for open SSL, but I think that's kind of an interesting. maybe if
+you have a like a network
+attached BeagleBone and yoy want to upload the SSL processing
+into crypto accelerator. It also
+has two I²C buses. if youre doing all I²C, you have 2
+independent buses, It's actually
+it three but you cant use the other one so we need one more
+thing. The other thing we need,
+because we're going to improve on the implant with some
+hardware encryption. so we need
+some hardware encryption platform and then we're also
+going to need that mega 320P
+which well talk about later. There is a device that can do
+this. its called the CryptoCape.
+It has a whole bunch of security ICs. It has a elliptical curve
+authenticator. so this will
+generate ECDSA keys in the chip where the private key can never
+be released. Does the same thing
+for our shell. 256 mac key. Has an encrypted E prom, AS-128 and
+CCM mode. Which is nice, you can
+encrypt for two by packets to another device. More of that
+keys stays in the hardware.
+Battery backed up real time clock so those are all so useful
+in any kind of security protocol
+where that battery os dedicated on the cape. the BeableBone Has
+an RTC, but in order to get up
+the power, you have to power from the test points. The power
+rails connected to the main
+board so this one is a dedicated RTC. As a trusted platform
+module which we'll be talking
+about later  but basically we need to learn about the trusted
+platform module now or the TPM
+is that it does RSA keys or encryption and those RSA keys
+keys device. Lastly, it has that
+mega328p with the arduino 3.3 pro mini bootloader That's also
+useful. The main thing about the
+Cryptocape is you can upload sketches from the Beaglebone to
+the other program the jumpers,
+but only if you have the jumpers on, If you take the jumpers off,
+you need an ISP pro header to
+flash the ATmega. So if you imagine, if you ssome software
+in the ATmega that you don't
+want to be manipulated by software vulnerability,if you
+take this jumpers off you have
+this hardware interlock to make sure that your sketch on the
+arduino isn't changed and as you
+see, all sorts of break out and expansion rooms and do some fun
+stuff. So now we know what our
+controller platform is going to be. and were gonna use the
+BeagleBone black and the
+Cryptocape that gonna talk over I²C to some sort of video
+adapter, which we haven't shown
+yet. And that's going to go over DDC. So now we need the GSM
+module. The GSM module I picked
+was seed studio GPRS shield V2. We can get this from seed
+studio. It uses the SIM 900chip
+set. its in an arduino factor, So it's a arduino shield so if
+you just kinda want a GSM
+shields just to play with an arduino, This is a cool thing to
+get, Quad band support, it has
+TCP support, so you could do like HTTP and get inputs, SIM
+card holder on the bottom where
+you can get different service providers. I've tested it with
+T‑ Mobile and ATT. so if youre
+really paranoid you can go with prepaid, a SIM card with cash.
+T‑ Mobile I thought had a pretty
+good deal with the $35 unlimited talk and text. So for life.
+those are pretty cool or as long
+as GSM is surrounding us. So now we know some more information.
+Now we know we're going to have
+the GSM. Is GPRS shield as our GSm reachback. The way you
+communicate with GPRS shield is
+to use serial UART. We're going to have a serial connection from
+the beagle bones UR four. there
+are several UARTs in the beagle bone. It's going to talk to the
+GPRS shield and is going to give
+a reachback over the GSM. This is kind of where I got in to the
+rabbit hole, trying to make
+this. How many hardware people do we have? Okay so, cool. So
+basically the BeagleBone
+comntrol has 460mA. I've got the CryptoCape. ive goit the GSM
+shield, All this is being
+powered from the VGA. There's no external power, its powered from
+the monitor. The VGA specs
+basically say okay, you can have up to an amp, but wasn't very
+clear why they'd implement it or
+if that was the standard. I'm looking through the GSM shield,
+ready for talking have max two‑
+amp power. So I was starting to freak out. It's not going to
+work. So I ended up making this
+LiPoWer cape. Which I ended up not needing which we'll talk
+about later. So the nice thing
+about the LiPoWer cape you start with the dual cell LiPo, if you
+have a switching regulator, you
+can bring that voltage down, because otherwise if you have a
+single cell LiPo on the
+BeagleBone you can come in the test point that's under the
+board and that's only single
+cell liPo. but you're only gonna get a limit of 500mA which ids
+what youll get, On a USB. You
+get the umph one amp max you need to come in with the five‑
+amp  ‑ ‑   ‑ ‑ regulator with an
+inducter object on the noise line| worked pretty well. So
+it's a nice (indiscernible) it's
+stackable and  ‑ ‑   ‑ ‑ and that'll tower this whole device.
+The one thing we're missing
+still is what power (inaudible). So this is the chuck wagon. So
+the chuck wagon is the code name
+for this device. And as you can see, here, right, it's a little
+DDC to I²C adapter. It's bred
+word friendly. So fits on a 0.1 encheddar.   ‑ ‑   ‑ ‑ so I can
+have the 3.3 or five‑ volt. If
+you do want a 3.35  ‑ ‑   ‑ ‑ five volts will come from the
+video. Not all video adapters
+will supply five‑ volt. So if you don't see the five‑ volt
+power, you got to provide five
+volts. But very small adapter. And you attach it to the crypto
+case. And tie up the
+(indiscernible) sea lion's. The at megas  ‑ ‑ beagle bone,
+everything's connected in one
+bus. And you're set to go. So we're releasing the schematic,
+the (indiscernible)s the bombs,
+these will all be on our web site. I'm going to go over this.
+That's pretty simple
+electrically. Logic level conversion, power indicator. I
+put a (indiscernible) on the
+bottom. I was worried about people reverse powering the
+video adapter and blowing up the
+card. But yeah, so probably not needed. This is the lay out. So
+this is. (Audio stopped.) Not
+necessarily (inaudible) after I submitted the abstract, this
+board popped on hack a days. Oh
+gosh. This is kind of a nice board. This guy put a video
+adapt E he put the exmega. The
+I²C HAKS has been done before, not necessarily novel, but we're
+not aware of anyone trying to
+use it as an excellent tracing capability (inaudible). So now
+we have a more complete picture.
+We have the chuck wagon that's going to provide the
+(indiscernible) to the target.
+With the crypto key. (Indiscernible) arts up to the
+GPR shield (indiscernible) to
+the access. So again, ran into a problem here where the GSN
+shield is five volts because
+it's made for ARD wean know and automatic level conversion. It's
+like a (indiscernible) sensor.
+Then umm, we put everything together with the power kit
+which ended up not being needed
+right? It kind of looks like this Frankenstein device. So I'm
+trying to get all the different
+forms together. (Indiscernible) lie Poe. There's three stacked
+case, one is the PowerPoint.
+Beagle bone. The logic level converter. The GPI shield. Like
+I said, I didn't end up needing
+this. I so I finally measured the current using the micro
+current gold, which is an
+awesome way to measure the current, (inaudible) resolution
+very cool. Right? And only
+peaked out. I saw a peak with everything turned on. If I
+turned on the GPS just peaked
+over 500  milligrams and I wasn't doing any voice. And it
+really didn't end up needing a
+power cable. So miccing  ‑ ‑   ‑ ‑ U.S. TRed by a hardware
+implant designer. I highly
+recommend it. You  ‑ ‑   ‑ ‑ take out the battery. You have a
+much smaller (indiscernible)
+file. And then I just jump around there to separate the
+powers. I didn't want to have
+power coming through the VGA adapter. I could slip that off
+and power through a different
+source. And slip TA on (indiscernible) port. So when
+you stick this in a server or
+desktop or something to look at that. So all the fly wires
+(indiscernible) adapters.
+Obviously this is all one board, it could look a lot cleaner. But
+yeah, that's what it looks like
+when it's attached to the target. SPOF the software flows
+get tricky mainly because of
+this I ² (indiscernible) C. It's kind of difficult to talk mast
+tore master. So your target
+device is a I ² T master. Your  ‑ ‑ the tracking device is a I²C
+master. You need a
+(indiscernible) slave to communicate. This is where the
+mega comes in. Slave. What the
+way that you target the target and the attack communicate is
+they use it as a mailbox. So
+they write to the slave device. Which I arbitrarily pick address
+42. They write, there comes a
+payload. The other guy picks it up. So there's no notification
+(indiscernible). But from the
+beagle (indiscernible)  ‑ ‑   ‑ ‑ add a GPI (indiscernible). So
+when the GPIO comes on the mega 
+‑ ‑   ‑ ‑ tells the (indiscernible) bone hay pick up
+your message and then you could
+kind of eliminate some pulling (inaudible). So how do TO use
+this thing right? We talked
+about some potential (indiscernible). That's one way
+to get some mall ware on to the
+target. So the NSA basically said for the rag gamed device
+they needed a bio
+(indiscernible) one. So similarly, you need to have some
+sort of mall ware on the target
+that is communicating on the I ² P. That's going to communicate
+like some, imagine some kernel
+module that can communicate I²C and can talk out (inaudible).
+Once that's there, that mall
+ware can be silent or just waiting for the device to be
+attached. It's not making any
+other net work ex‑ cans. Basically no one's looking at
+I²C on the process to see what
+it's doing. So once you connect it, it'll (indiscernible) for
+the device. And you attach your
+implants, and then you (indiscernible) control. You
+know, whatever you like. So if
+you have the software  ‑ ‑   ‑ ‑ using (indiscernible) data out
+to GSM. So the attacking
+computer has the mall ware. And just starts sending data to the
+mega (indiscernible). It goes
+out to GSM. And that could go out to voice text or make some
+sort of HD post. So you don't
+need the SGSHGS SM shield. It's the modular capability. So you
+imagine some guy coming up with
+the server, plug in the device, (indiscernible) the day, plug it
+out and use the data. Because
+it's by‑ directional device, if that implant has code for the
+mall ware to run, you can give
+the mall ware a new code. So you don't have to go through a
+protocol net work delivery mall
+ware. And if you can control the implant over GSM, then you can
+control the target over GSM. So
+why is this significant? Well, a lot of people think that you
+know they close, they have their
+net work connection monitor, they have something on their USB
+ports. They have no other ends
+inside the computerment most people think of video as being
+an out. But I²C is by‑
+directional. So even if you shut everything down, you always have
+this. (Audio stopped.) By‑
+directional port that can come into your computer. And it's
+basically require. In order to
+do monitor (indiscernible) direction, you have to
+(indiscernible) so on any
+device, there's going to be an end THABS typically not
+monitored or typically not
+otherwise looked at that most people don't think of. Like we
+talked about before, this can
+work over multiple monitor adapters.   ‑ ‑   ‑ ‑ general
+DOR general DOR  ‑ ‑   ‑ ‑ HDMI
+is probably a little bit better. There is this top plug event.
+But yeah, you can put anything
+on this and get power on any kind of video adapter and
+(indiscernible) bust. So there's
+a couple things that could be done to improve this. So
+obviously looks a little
+Frankensteinish. So you get everything on one board. You
+make the implant key, put it on
+there. Get the SIM card. TPN. And that would reduce the size
+of the device. HD
+(indiscernible) fingerprint  ‑ ‑   ‑ ‑ much smaller adapter. That
+would be nice to shrink back
+down. You could do this from ADR. You don't necessarily need
+to use the (indiscernible) bone.
+Have the benefit of using a lot less power. And you get LINUX
+and (indiscernible) net and
+stuff. But there's nothing saying you couldn't just do it.
+You could just do the crypto
+page if you just apply. (Indiscernible) and put your own
+power supply and that's  ‑ ‑ if
+you think of the crypto page it's just a argument with a
+promini  ‑ ‑   ‑ ‑ but an
+interesting one would be to combine mic oz man's
+(indiscernible) within a a an
+ROF (indiscernible) reflector  ‑ ‑   ‑ ‑ so, someone wants,
+looking for a project to do for
+the hack KA data IO prize, that'd be pretty cool. And  ‑ ‑
+so now. >>	So now you have a
+pretty cheep NSA N plant all the capabilities from the one that
+was described in the play book?
+How do we make that bet SNER we said TPN a couple times since
+we're looking working on some
+NSA level shit, we need to take this to the next level. So josh
+and I got together and said if
+you're going to deliver mall ware through some GSM back door
+over ITC into the
+(indiscernible), if someone's on that machine looking at what's
+running, we sure as hell don't
+want them reverse engineering our mall ware. Or getting it off
+the machine. If we had the
+opportunity to drop in and implant, we also had the
+opportunity to put a T plant in
+there, and  ‑ ‑   ‑ ‑ TPN. And exfiltrate the public
+(indiscernible). It's also cool
+because the crypto locker and (indiscernible) are popular. We
+want to continue that popularity
+contest for using crypto as an example. We don't endorse using
+crypto (indiscernible). We love
+trust and computing. There's a lot of good things that come
+from it. This is cool if you
+want to protect legitimate shit. Not just your mall ware. All
+right, suspend that disbelief.
+The TPN comes on crypto case. It's already hooked up in this
+Frankenstein awesome looking
+thing. So you get that free. Windows 82 going forwards, in
+2004 API commandses  ‑ ‑   ‑ ‑
+which means it autogenerates ST the stuff that needs top on the
+TPN that we're not aware of and
+complicated for you. Which includes the password that it
+manages and  ‑ ‑   ‑ ‑ enrate a
+new one encrypt or decrypt with that, don't worry, window's got
+your back.   ‑ ‑   ‑ ‑ so it's
+supereasy and  ‑ ‑   ‑ ‑ to add a TPN to a hardware inplant for
+free. We're not creative enough
+to come up with ourselves. In 2011, there was an awesome paper
+that described a really complete
+shock where hiding stuff with the TPN, hiding malicious stuff
+in the TPN. It's very hard and
+includes things like using Intel TXT. Which is only subset of
+Intel chips as well as remote
+access station method. It's a weird science that's never been
+done legitimately before.
+There's a couple open source implementations which is a
+reference model for having
+remote (indiscernible). But we're missing another key
+component of that and I'm not
+going to keep talking about that. This shit is really hard.
+We're going to relax that a
+little bit and say since we did the hardware implant, we know
+what TPNs are on there we know
+what key, we generated that a priori so we can attest the fact
+that our mall ware is running on
+an actual TPN. Because we owned that to begin with. Cool? Okay,
+here's the kind of stack, the
+client server TNT model that rerelax the 2011 (indiscernible)
+to. That's essentially create a
+(indiscernible) TPN. Export that key. And every time you want to
+deliver something to that
+hardware implant  ‑ ‑   ‑ ‑ with that President Clinton key and
+then ship it off over GSN to the
+implant that's going to run decrypted and execute the
+payload. So this is kind of the
+stuff we wrapped most of the hard, like kind of TPN
+interaction into. And here's the
+set of API keys that are required to pull that little red
+box off. So putting all of that
+together, you now have an encrypted CNC mechanism that
+will boot strap load, decrypt,
+and then run your extremely extremely targeted mall ware to
+this specific target. And what
+do we get out of that? So if we're going to spend the time to
+go and hardware implant a
+machine, we want to make sure that no one has to opportunity
+to go on that due forensics and
+pull stuff off. And if we're sending that data over GSN, if
+someone were to interrupt that
+GSN connection, use your imagination how you would do
+that. That's actually another
+talk. Part of this play set. And if they were to grab the
+communication that you're
+sending to your highly targeted implant, we don't want them to
+see that whatsoever right? And
+we also don't want that going to the wrong implant. So we get a
+lot of integrity out of puting
+TPN onto our hardware (indiscernible) fall. Boom.
+We're going to give that to you
+too. We're going to release that kind of model on get hub. We're
+going to take a few things out
+of it though. We don't want to release general encrypted mall
+ware (indiscernible). It does
+have a stub. And then running the process in memory or
+injecting into another process.
+But there's a couple things you have to fix. So if you're
+willing to take that challenge
+and you want to know how this stuff works or if you're just
+really interested in computing
+TPNs, go check this out and pull it down. Have fun. All right
+first implement was the TPM.
+Second improvement, what the hell there's this bad bio shit
+out there. There's some cool
+stuff going on. They're trading over audio not GSM. Let's do
+too. Because assuming our attack
+model with the TPN is also the GSM connection, someone can
+interrupt us by just taking out 
+‑ ‑ by taking down GSM or putting up their own base
+station. So let's  ‑ ‑ and I'm
+not saying this is the solution. It's definitely not the
+solution. There are a lot of
+caveats that make it wrong. Just to be creative. Audio could be a
+way you get stuff in and out of
+your hardware as well. Reference to this, yeah, I did some UFI
+stuff to the core. There were
+some claims that there's no audio support in vie YOES. I
+looked at every sing OEM
+manufactures since 2012. There's audio drivers siting in the fire
+already. Used to exfiltrate is
+very, very easy. It's already there. You just have to follow
+it. So if you were to go to
+spark fund or pick your favorite hardware open source site, and
+you buy an audio module to throw
+onto your hardware implant, what you're going to do is get a nice
+range of frequency. So this is
+pretty much a frequency of an apple headset.   ‑ ‑   ‑ ‑ which
+is us as adults that listen to
+this loud music, kill our ears to support. So buying one of
+these really cheep, three bucks,
+throw it on your implant and you'll get this nice wide range
+of frequencies. And then
+distance is pretty good too. So I'm kind of trying to eyeball
+what the max distance for the
+$three audio module would be running at a frequency that's
+probably the same as an HVAC
+system. You could probably get two‑ thirds to the corner of the
+room there. So that's pretty
+good. Pretty reliable. All right. So now we're going to
+switch into a demo. I think we
+have five minutes left. That's a good amount of time. While we're
+doing that demo, we have a
+couple prizes to give away. We have two crypto cage from spark
+fund. And we have three wagon
+bed hardware (inaudible). I know there's not much time left in
+the con. We threw up two
+challenges. Easy mode and hard mode. If you have access, if you
+can go to this web site, the
+challenges are kind of simple. If you solve it, we'll be in the
+chill out lounge afterwards. The
+first couple people that come to us with the answer will give
+these away. If you don't want it
+and slap us a really good high five, we might give you one too.
+All right, let's do a demo.
+>>	So we have (inaudible). >>	Okay. I can also  ‑ ‑ ehn,
+we'll see. Yeah so this demo,
+what I'm going to do, teddy's going to show the pictures,
+basically, the idea  ‑ ‑ the
+whole demo is going to show (indiscernible) text a command
+to the implant that is going to
+run on the target. So I'm going to text something over GASM, and
+the target's going to execute
+it. And so, I'm going to go through this step by step.
+This'll be scripted for
+presentation purposes. But you can certainly script this. So
+we're going to start, I've got
+two computers here. Plus the whole implant plugged into the
+laptop. That device is called Z
+(indiscernible). CDC (indiscernible) shell.
+(Indiscernible) guy fan. Agro‑
+jag is the laptop, you'll see me switching between the two. I'm
+going to show the I ² T device
+on the buss to show they're the same. I'm then going to use this
+truck wagging utility  ‑ ‑   ‑ ‑
+show that that's working. And  ‑ ‑   ‑ ‑ let the implant show the
+(indiscernible) text. See it
+come back OT target and the target's going to execute
+(indiscernible). Hopefully it
+works. >>	The reason we're using this wacky (inaudible) here is
+because josh is using his VGA
+for the implant right? So wet can't be presenting (inaudible).
+>>	(Inaudible) so we see both
+(inaudible) both attack. That's what that shows you. >>	All
+right, I'm on the
+(indiscernible). (Audio stopped.) Yup has the word deck
+on it. Write it back. If I go
+back to my host computer, read  ‑ ‑ it says DEF CON. So they
+just did that loop. Went to the
+app mega, posted something, the other guy got. And now we're
+going to do the (indiscernible).
+So this have I need some audience participation. I'm
+going to text  ‑ ‑ the echo.
+Sweet. So I need a number to text this. So that way you know
+I'm doing this live and all that
+stuff. So pick a random number. >>	(Speaking simultaneously).
+>>	All right. (Inaudible) two.
+That works. So I'm texting my implant echo 42. A hear jack
+Daniels makes hardware implants.
+>>	It improves your (inaudible) success. >>	Yes.
+>>	(Indiscernible). Okay we'll
+wait after. I texted it over, a little paranoid, I texted it
+|twice. Just to see  ‑ ‑
+(inaudible). If I read back from the chuck wagon device, that's
+42. If you imagine, this is all
+scripted: Umm, right so I'm just doing this for presentation.
+>>	Should have done the shop
+before. >>	I know. I'm on the (inaudible). Basically if you
+just  ‑ ‑ execute what's in here
+yeah so both (indiscernible)s have it. And for whatever
+reason, I'm not saying my
+history (inaudible). You could image pass that, execute it,
+take that command, type it to
+bash, and then it's going to implement. >>	(Inaudible).
+(Applause.) >>	There we go? >>	I
+do not know what's going on in here, but it looks awesome. So
+fuck it, let's do it live.
+>>	New SPAEKers. Cyber. >>	I'm sorry, the track one the entire
+conference has been a bit lame
+on their love. So I want to really hear it for these guys.
+Come on! >>	 (Applause.)
+>>	That's what I'm talking about. >>	And we have any time
+for questions? We have ten
+minutes for questions. So wile you're thinking about questions
+we'll go back to this. I'm going
+to put something, seemless shameless self‑ promotions for a
+book I'm writing. So if with a
+preorder discouldn't. If you preorder from tax, (inaudible).
+Any questions? Yup go head.
+Yeah, so I've tried to do with a why splitter. That was the
+original idea. To have a Y
+splitter. I'm not sure if it's just a Y splitter I used, it
+dropped too much voltage. So I
+wasn't getting enough power. I'm not sure if that's just the
+cheep (inaudible) just trying to
+do (inaudible). That would be pretty cool. I did try. It was a
+fail. Any other questions?
+Thanks. Not seeing any. Okay cool, the code is up on  ‑ ‑ get
+up for that hole demo, thanks so
+much for copping up. Chill out lounge. Hay. >>	(Inaudible)
+thank you.

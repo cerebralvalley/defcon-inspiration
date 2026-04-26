@@ -1,0 +1,461 @@
+>>So, good morning and welcome.
+I know this is kind of early
+Sunday morning. Appreciate you guys all being here. Today we're
+going to be talking about
+hacking and implanting a DropCam. So we both work at the
+R and D team at Synack. My name
+is Patrick Little. I worked at various acronym places. I'm the
+director of research at Synack.
+>> I'm Colby Moore. I work at Synack as a research engineer.
+>> Security ninja I think. >>
+First a brief overview of DropCam then how we got a root
+shell on the device. We'll talk
+about some vulnerabilities we found and then finally we want
+to present a persistent implant
+that we designed for DropCam. First let's talk a little bit  ‑
+‑ get a little bit of overview
+talk about some background information, talk about what
+DropCam is. Before jumping in I
+think it's a good idea to concisely define any possible
+ambiguous terms especially since
+it can be confusing. When we talk about implants we're
+talking about persistent code
+that is malicious. Intercepting function calls by installing a
+hook or a detour. A Trojan is
+malicious piece of software that pretends to be something it
+isn't. Injection is about
+getting code into a process and finally a back door is some code
+that provides, you know,
+undetected remote control. So what is a DropCam? Well, as you
+can see from their definition
+it's a cloud based video wifi solution. The core of it is the
+camera. So besides incredible
+simple setup, it features cloud recording night vision, two way
+talks and intelligent alerts.
+Now one of the main fields of DropCam is its trivial set up.
+All the camera needs is the name
+and password of your wireless network. There's two ways to do
+this. This configuration can be
+done by plugging the camera into a commuter with a USB or a smart
+phone that has bluetooth. The
+camera will be connected to their wifi network. From then on
+its fully autonomous. It will
+stream audio and video to the cloud and beacon to the DropCam
+server for updates. So a lot of
+IT based video solutions out there so what's special about
+DropCam. Well now DropCam is
+owned by Google and Google has indicated it will become the
+core of their push to connect at
+home. Soon there will be DropCams everywhere. When we
+started this research we didn't
+know Google was going to buy DropCam. It's really popular.
+You see it all over. Secondly it
+shows up in interesting places like homes and offices. Again,
+the bay area, all the startups
+use DropCams for their security solutions and finally it's kind
+of a juicy target that has some
+really cool capabilities that we thought were pretty powerful and
+were begging to be abused. Now
+we'll talk about rooting a DropCam. So, based on the
+network, it's. The first thing
+to do is get the camera opened. Conveniently DropCam left us
+this mysterious letter right
+here. Probing around revealed what looks like the 3.3‑ volt UR
+on there. So, hooked it up to
+the serial USB connector you guys are all familiar with and
+here's a little photo showing
+our ground connection. So after a quick reboot, DropCam through
+the  ‑ ‑ really no luck. So, I
+suppose I should probably mention the DropCam is running
+on a Linux system on chip from a
+company called amber based in the bay area. We figured we
+would take more of a Linux view
+approach. So, we started to go up to the boot loader. If you
+hold enter on power on or you
+short the transmit and receive line when you power on the
+device it should drop you to the
+bootlegger. Now, looking at the boot loader we got a couple
+operations. The set didn't look
+too promising. Looks like there's an operation to change
+the boot parameters. Went ahead
+and changed the input parameter. And that worked . (Laughter). >>
+Now we got to get rid of that
+password. So, we checked out shadow and it wouldn't open so
+looks like it was  ‑ ‑ it gave
+us the necessary information needed. We mounted it up and now
+we have access to the file, went
+ahead and just knocked out the patch and saved, went ahead and
+rebooted and reset the boot
+parameters in the boot loader and rebooted the boom. Full
+feature root shell. We kind of
+have a little bit of a different opinion. So we're going to talk
+a little bit about the  ‑ ‑
+first let's talk about the environment. Since we have a
+root shell we cannot poke around
+in explore. The DropCam is running armed 32 bit Linux and
+the heart of the DropCam is this
+connect executable. We'll talk about that a lot later. Also
+left all sorts of goodies on the
+device for us, drop bear, GB server. So, overall, DropCam is
+decently secured. There were no
+exposed network services. All communications were SSL drop
+load. And the DropCam employs
+device specific provisioning from the factory and that's
+likely why we couldn't drop the
+boot password. It employs automatic updates and the push
+cam hold devices request so it's
+pretty row bust in that sense. But let's take a look at the
+first bug. The camera but it's
+vulnerable. So, what can we do with that? DropCam says our
+cameras communicate with anyone
+only DropCam services. That's not true. It will download the
+camera's private and public to
+use among other applications. So, realistically now that we
+have these what can we do.
+Normally the DropCam talks to the cloud by SS and will user
+devices gets the video from the
+cloud. You should know it authenticates the same feed we
+stole. Provide false video to
+the cloud DVR. Should the user really trust what they're
+seeing? We notified DropCam of
+this bug and they patched it. If anybody happens to have a
+certificate, we don't, there's
+nothing the consumer can really do at this point. So then for
+most of its functionality
+DropCam, the version is outdated. Basically it's an old
+bug there allows command
+injection via malicious. Use area assembly to inject commands
+using the host name parameter.
+This is only triggered if the host name is used by another
+utility. But we checked out the
+vulnerable source code and compared it to the disassembly
+from DropCam and it definitely
+matches. So, we weren't able to trigger this bug right now about
+DropCam isn't using the host
+name in a way that would trigger this. So, all those bugs are
+pretty cool. We had to open up a
+camera. Wouldn't it be nice if we could implant the device
+without opening it up. Luckily
+there's an app for that. It's called direct USB. We found a
+copy somewhere on the dark part
+of the internet. If you hold down the button on the back of
+the cam remark the button
+DropCam swears does nothing, if you hold it down, there's a firm
+update code and we believe this
+was how the device was commissioned at the factory. We
+were able to read and write
+untimed data together. (Inaudible) we call that  ‑ ‑ a
+user may use their computer  ‑ ‑
+to this to do this the camera is plugged into the computer and
+then it mounts part of the
+camera. Its utility which requests root privileges to run
+gets the SSID and password at
+the wifi network and then pop gates that back to the camera.
+The end result is a connected
+and configured camera. Unfortunately this application
+which runs the boot is writable
+so an approval concept a nonprivileged hacker can wait
+until any DropCam is plugged in.
+It can inject a malicious pay load into the mounted DropCam
+setup utility. Now when the
+application is run an elevated utility hacker code. The Windows
+installer set up privilege has a
+considerable vulnerability as well. CEO of DropCam said their
+cameras only talk to DropCam
+server which is discounting things like heart bleed is true.
+SSL pining is a extra layer of
+security that ensures a client will only communicate with a
+well defined set up service.
+Since the DropCam iOS application does not use SSL
+pining man in the middle attack
+can occur. If an attacker has compromised root certificate or
+coerces the user to install a
+certificate sending them E‑ mail connection can be man in the
+middle. So here we have a
+capture showing a man in the middle attack action actually
+against my own phone. It reveals
+a user name and password for a DropCam account. Now since
+DropCam does not use dual
+DropCam or as session alerts an attacker can surreptitiously spy
+on the user at any time. This is
+really good for the bad guys, no the good for the rest of us. >>
+Now that we have a good way to
+implant the camera let's have some fun. Introducing our full
+featured implant. keeping the
+row bust capability of the DropCam as malicious software
+should you want to be able to
+intercept a room, here you want to hot‑ mic a room, propagate,
+we wander to be able to Geo
+locate the DropCam so we send a bunch out in the wild. We want
+to be able connect a basic serve
+an device. We need a method for other devices on DropCam's
+network. We also need a method 
+‑ ‑ sorry. Okay. Any way. So, our implant comes with a
+function. It's easy when you're
+sleeping, he knows if you're awake, he knows if you've been
+bad or good like the NSA. So in
+a real world scenario how do we install our software. Currently
+we don't have remote code
+execution but there's a lost options. We can intercept the
+package in transit, we could
+maybe give the DropCam to somebody or we could break and
+enter and modify. Realistically
+that stuff never happens, right? No further comment. We approach
+DropCam about this and they were
+convinced an adversary wouldn't be able to reach a DropCam. Then
+alone would be an inappropriate
+anti‑ tampering mechanism. What do you guys think? Now what
+about sending one as a gift.
+Incubator space was broken into. Security cameras implement?
+Probably not. Breaking entering
+scenario plausible? Only one third of user sign up for
+DropCam's depository. Even then
+if you showed up with a wifi camera the camera doesn't patch
+into the video local. So what
+makes DropCam a good target? The DropCam CEO said all software
+products are susceptible to
+jailbreak. That's true. We tend to agree with that. The DropCam
+really is low hanging fruit.
+Here are the other options. Someone can go after a computer,
+they can go after  ‑ ‑ you got
+to crack it opened and you can't see it, can't hear it there's a
+lot of things. It can go after a
+gaming console, go after a mobile phone, run time code and
+it's off person. So the DropCam
+you don't need to open it up. No password, no signed code, the
+operating system is open source,
+its always on, there's tons of capabilities and who is going to
+suspect a security camera is
+spying? So. >> So in order to create an advanced. REPORTER
+Plant we need to fully
+understand how the DropCam works. In other words we had to
+answer questions such as how
+does it hear see or think, what is its core logic, the main
+module and finally can this be
+manipulated or rewired. The DropCam has many hardware and
+software components. However
+these all kind of come together in the connect wire, which we'll
+be talking about lot. The brain
+of the camera, it contains most of DropCam specific operations
+such as talking through the
+audio and video devices, streaming content from the cloud
+and also handling or executing
+command that are received from DropCam service. The connect
+binary is hacked, UBX which is
+not normal Al problem. When we tried to unpack it, it failed.
+Since we wanted a full unpack
+that would make everything easy from the bugging to the analysis
+we decided to look into this a
+little more. Now the unpacker stub matched the UBS source code
+indicating it wasn't custom
+version. Single step through unpacking self instructions and
+follow it along in UBX source
+code which wasn't fun. The code was checking a value within the
+binary and then branching into a
+code path or a hacking shared library that unfortunately
+errored out. Now connect is a
+normal executable, it's not a shared writable code. We decided
+to write a small Python script.
+Once we did this we then reinspected UBX and that works.
+Connect was fully unpacked which
+was really nice. Using the inverse of this technique, so
+setting that member in the
+header we were able to create unpackable binaries as well. >>
+So now that we've talked about
+capabilities we'll talk about the core of our impact. We
+wanted to create something
+simple and have the ability to leverage third party libraries.
+So, high functioning. Cross
+compiled and stripped down Python. And then Python then
+extracted the ram and implants.
+We have an implanted camera but how is it going to talk to us?
+All coms are done over HGTPS.
+Our command and control and streaming data are set on
+separate channels and CNC
+channels are set on the same as DropCams. Given the nature of
+our COM's it really wouldn't be
+that easy to tell the difference between a drop  ‑ ‑ our  ‑ ‑
+regular DropCam traffic and our
+implant or even create appropriate IDS rules.
+Connection's legit. What about
+if we wanted to ship a ton of these cameras out into the wild?
+How will we know where they'll
+end up? Wifi server and ships it back to the CNC server. They
+send it back to Google and
+returns the device location. Thanks Google. >> We also wanted
+our implanter to autonomously.
+Since we (Inaudible) we actually controlled the setup application
+as well so we simply replaced it
+with a malicious. Now whenever the user runs the implant or the
+setup application they're
+actually running the implant first. We often use a holograph
+attack so it's hard to tell
+which binary is the malicious one. We also made sure to
+disable the bluetooth setup so
+the user was forced to plug the camera into the computer in
+order to couldn't figure us
+which insured they would infect their computer. Apple  ‑ ‑ some
+of these are bypassable while
+others can be avoided altogether which allows our implant to
+execute freely. So if you want
+more information we gave a talk about this stuff at shock a con.
+This talk describes bypasses for
+Apple's anti‑ virus component, gatekeeper, the sand box and
+even sign coding on fios
+unsigned kernel module  ‑ ‑ so sorry apple. A major component
+of our implant is the ability to
+grab and manipulate audio and video. Data is read from these
+devices streamed to the DropCam
+cloud servers where it can be seen by the user. First I want
+to talk about how our implant is
+able to hot‑ mic the camera. Since the connect binary
+exclusively opens the audio card
+it has to inject a module into the connect process. Here are
+the various relevant components.
+The connect binary is continuing reading the audio stream.
+Injected module can install a
+hook and gain access to the audio stream and then install it
+to our command and control. Our
+DropCam uses a standard (Inaudible). So to get the audio
+it invokes suspend MCM read end
+function which retrieves audio framed audio. This is where the
+implanter installs its audio.
+Again the goal is to clone the audio and stream to the server
+while letting it use parallel up
+to DropCam. So here's the code that is inserted as an auto
+hook. This code gets appointed
+to the original send PCM read function invokes it and
+exfiltrates any data or audio
+that's captured so pretty straightforward. Now, on to the
+video. By disassembling the
+connect binder we were able to control how the video accesses
+and streams. You can see it
+opening the video which is slash IED. This device is backed by a
+chip that does all the video
+processing in hardware for obviously. Second disassembly
+showed the  ‑ ‑ luckily there
+were some comments or error message in the disassembly so we
+could maybe kind of get the name
+of the Ioctal which gave us some insight into what it was doing.
+We wanted to clone the video and
+stream it to the implant servers. Undo you meaned eye
+octal resulted in a ton of
+reverse engineering. We got it all figured out and we want to
+describe that here. So. So first
+you open the slash tab slash IAD device. You then match the bit
+stream buffer memory and a
+digital signal process. Now after you check that the video
+is actually up loaded the video
+stream can be read with IAD read bit stream  ‑ ‑ bit stream
+EXIoctal. It actually allows you
+to stream the video to a server or DVR of your choice. Save your
+money so you don't have to pay
+DropCam $30 a month to store your video and it prevents
+Google from seeing what's going
+on. That's kind of a cool feature. I don't want Google to
+see what I'm up to. Now we could
+clone the video feed send it to our implant server parallel to
+DropCam but we thought we wanted
+to take this a step farther and actually manipulate the live
+video screen on the device. To
+do cool things in the movies for example making an attacker
+invisible. Here are the various
+relevant components. The video card is going to generate frames
+which will in this example show
+the attacker breaking in or doing some bad things. We really
+don't want that. However the
+injected module will intercept each frame and inject other
+frames. These injected frames
+will then be streamed to the cloud instead and actually back
+which will hide the attacker.
+Take a little bit of a closer look. Here's the video device
+and the connect binary which is
+reading frames. The injected module installs another hook
+this time it's an eye octal and
+watches for the IOC read bit 16's IOCTAL. It populates a
+structure with various values.
+Through reverse engineering we were able to determine what the
+values were. Some of the
+relevant ones include the frame number, the address to the
+frame's raw encoded data, the
+frame type and finally the frame size. Now the easiest way to
+manipulate the video screen is
+just to wait for and then moving forward you can either just
+replay the frame or actually
+inject other full screen frames as well. Other frames are not
+ideal because H26 encoding
+pretty much encodes Deltas. These JPEG full frames happen
+every second, so it's pretty
+easy to wait for them and then use them moving forward. So,
+video demo time I'm wanted to
+show you how we can transparently lock the video
+stream. If you look at the top
+left is the DropCam feed so this is what the user's going to see
+and this is what we're
+manipulating. The top right is a shot from an external camera,
+bottom left is a CIS log input.
+All right. Sorry, this is a little... all right, so if you
+look at an attacker's window
+they're going to then run the unable command to activate the
+video log. You then see  ‑ ‑
+(Laughter).  >>> And attacker that somehow
+looks like. The video now is
+lost frame, injecting the frame. You can see the camera is still.
+Then we run the disable command
+which tells the camera to rethink and then it's going to
+flip back. Now I'm sure the mom
+is going to accept this child as one of their own. (Laughter).  >>> All right. How do we control
+it? So, naturally on the main
+screen all the cameras call back with their name locations so
+targeting is super easy. From
+there it's easy to select a target to be sent down to the
+drop kit. The camera calls home
+to the server at a standard interval. Job results. If a
+series of completed  ‑ ‑ here we
+have a series of completed and unsent jobs cued up as an
+execute  ‑ ‑ there are several
+completed surveys. It is also completed in the wall. For the
+next part we need a bit of a
+disclaimer. What we're about to do is theoretically possible on
+any process not just DropCam.
+Easy enough and there's lots of free space inside of DropCam
+it's conceivable. Someone turn
+this device into a server weapon. Most embedded systems
+contain a GPI. Since we don't
+have the device schematic generally founded on wanted to
+use a  ‑ ‑ in this case decided
+interface with the DropCam status. Stats LAD hides. We need
+add way to do this intelligently
+because the light comes on randomly and we didn't want to
+be setting off whatever we're
+doing intermittently. So, here's some code do show what we D we
+figured out how to separate in
+the a loop up there. Then we installed the mic to listen to
+the square wave of what we're
+generating. It's looking for that frequency. When the
+microphone gets the frequency
+something happens. If the camera starts blinking get out of the
+way. Here's one possible
+scenario. Please note that the following is in compliance with
+all local laws and you should
+not try this at home. >> ¶¶ >> Tragic. (Laughter). >> That's a
+wrap. You probably heard the
+beginning of things is blowing up. Again I'm Patrick and this
+my co‑ worker Colby. Feel free
+to contact us. Probably won't plug in any devices you send us.
+Yeah, are there any questions
+now? We have a few extra minutes. Yes, in the front. >>
+(Inaudible). >> So the question
+was while we're hooking the video and audio up did we see
+any degradation in the
+performance of the device. Since we were hooking pretty well
+level, we pretty much them
+copying them off and putting that in a shared buffer where
+code would take it off and do
+there. In our testing we didn't see any specific degradation or
+anything. Sometimes the video
+stream goes in and out anyway, so, it's independent of us. Any
+other questions? Awesome. Thanks
+again. Remember, don't trust cameras from strangers.
+(Laughter). >> Can we have some
+love for these guys. >> Thank you, DEF CON. >> All right.

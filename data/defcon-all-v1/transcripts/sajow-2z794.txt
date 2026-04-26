@@ -1,0 +1,325 @@
+>> ERIC ROBI: Talk is about forensic fails. I'm this guy. Over here. I founded an eDiscovery company a few years
+ago. I'm a forensic examiner. I've done thousands and thousands of exams. I'm an expert witness in state and federal
+court and I like cats and my name is Eric Robi. >> AUDIENCE: Hi, Eric! >> ERIC ROBI: Hi. About this other guy. >> MICHAEL PERKLIN: Hi, I'm Michael Perklin. You may remember from past DEF CONs from ACL
+Steganography. I'm a forensic examiner, cyber crime investigator,
+security professional. I've also done thousands of exams. And I like to break things. A lot. (Chuckles.) >> ERIC ROBI: Don't break my cat. All right. So our agenda today. We've got seven amazing stories full of fail. We are going to learn something about forensic
+techniques. That's what we do. The fails are brought to you by both the suspect
+and the examiner. We'll get into that in a little bit. The names have been changed to protect the
+idiots on both sides. We actually changed some of the facts to protect
+the idiots. It seemed like a good thing to do, basically. Because fail was not just one-dimensional,
+we found many dimensions of fail in our research. We decided we need to create a fail matrix. (Laughter.) >> ERIC ROBI: To explain how the fail ... I'm
+going to explain how the fail matrix works. The first level of fail is the user retard
+level. Oh, my God, I spelled that wrong! (Laughter.) >> MICHAEL PERKLIN: Drink! Drink! For the record, he was responsible for the
+keynote presentation. So this is definitely his fail. >> ERIC ROBI: This is my fail. I get ten points. So the punishment level depends on what happens. So this particular guy lost the case. Dollars, distress caused, let's give this
+15 points. And bonus points are whatever the fuck I feel
+like doing. His girlfriend left him in this case. So he gets 35 points. Let's get into the first one. This is the "it wasn't me" defense. You may have heard this one before. All right. So we do a lot of commercial litigation. And a really typical kind of case is a trade
+secrets case. This is a typical example of that. This guy Bob, he was working in sales at ac
+me. He resigned his position and decided to go
+work for a competitor. This happens all the time. And some allegations were made by his employer
+that he took some trade secrets. He took the customer list with him to his
+new company. It happens. So Bob says I got nothing to hide. Come at me, bros. He didn't exactly say that, but I'm paraphrasing. We started imaging the drive and planning
+the examination. One thing we frequently do is we look for
+deleted file and unallocated space. That's the part of the drive that can typically
+contain a deleted file. When you hit shift delete and it doesn't go
+away, it ends up in unallocated space. We look for stuff there. Something we do, we look for recently used
+files by common programs by Word, Excel, Acrobat and so forth and USB device insertion. We look to see how trade secrets got from
+acme to the new company. The drive finished imaging and I'll share
+something really cool today, DEF CON exclusive, worldwide premiere, we found a new wiping
+pattern. (Laughter.) (Cheers and applause.) >> ERIC ROBI: This is actually real. I'm not making this up. This is real. So Bob apparently had used some kind of data
+destruction program that can over write every bit of space, unallocated space. He used a pattern that, however, was not really
+commonly used by Windows or any other utilities I've seen. Might have been something custom. So you know, I thought: Hmm, this might suggest
+something bad was happening here. Let's maybe take another closer look at this. (Chuckles.) >> ERIC ROBI: We are going to zoom in on this
+and look at this on a molecular level now. (Applause.) (Laughter.) >> ERIC ROBI: I think we need to zoom in a
+little bit more. (Laughter.) >> ERIC ROBI: So what have we learned in I
+admit the first part, there was no Sarah Palin in this case. Data destruction can almost always be detected
+even if you don't use a repeating pattern, it's detectable. We see it all the time. Artifacts can be left behind that are part
+of the pattern. We might not know what you destroyed, but
+we'll know you destroyed something. Oops. This is the mic. There you go. And all of a sudden it doesn't work very well. Mean phrases make people dislike you. >> MICHAEL PERKLIN: What about the fail matrix? >> ERIC ROBI: We have to do the fail matrix. Da da da. 12. Pretty retarded, I think. The guy lost the case. He got sued. Under $100,000. So not a huge amount of economic distress. I didn't give him any bonus points here. It just wasn't that good. He gets 27. >> MICHAEL PERKLIN: I think I'll do --
+>> ERIC ROBI: It's already a fail. (Laughter.) >> MICHAEL PERKLIN: I think we can blame that
+guy who gave me the beer. All right. So this case is a lot of fun. I didn't expect it to be fun when it started
+out. It ended up being a lot of fun. I call it the Nickel Back guy. You'll see why in a second. Another case of stolen confidential documents. This guy, let's call him John. He left one company to go work for a direct
+competitor. And his old company hired us to go in and
+take a look at his -- >> ERIC ROBI: Can we get audio for this? By the way, we need audio for this segment. Turn it on? >> MICHAEL PERKLIN: So the company where he
+left, they asked us to take a look at his work computer to look for signs of data exfiltration. We, he worked on a lot of confidential projects
+and they wanted to make sure that he wasn't taking these confidential projects to the
+competitor and letting them know what they were doing. So, right. I totally said all that. Why is this not working? There it is. We opened up the hard drive to start the analysis
+and we started finding all the same stuff that you typically find on a work computer. Work stuff, sure, some evidence of Facebooking. He's got an MP3 collection. He listened to music while he was at work. Typical stuff. We found the confidential documents that we
+were asked to make sure that he didn't take. So that was to be expected because he did
+the work on this computer. And almost immediately something jumped out
+at me. And we will get into why it jumped out at
+me in a second, but his music collection became very interesting to me. Not because I love Nickel Back, but because
+-- well, again, we'll get into that. >> ERIC ROBI: That would be fail. >> MICHAEL PERKLIN: Yeah. I'm Canadian, too, so I ... yeah, Nickel Back
+is from Canada. >> AUDIENCE: (Speaker away from microphone.) >> MICHAEL PERKLIN: Yeah, take a closer look
+at this photo, something may jump out at you as well. These are MP3s, just songs, but the size of
+the files is a little bit off. >> ERIC ROBI: What's wrong here? >> MICHAEL PERKLIN: Extended play Nickel Back. This guy loved the Nickel Back. These are actually AVI files. >> AUDIENCE: (Speaker away from microphone.) >> MICHAEL PERKLIN: These are AVI file that
+is he just renamed. John assumed nobody would listen to his Nickel
+Back MP3s. That's a good assumption because nobody would
+listen to his Nickel Back MP3s. He was hiding something. But what was he hiding? (Music playing.) >> MICHAEL PERKLIN: Pregger porn. This guy was looking at pregger porn. These were full-length feature films of pregnant
+ladies banging. And they were like, there was a ton of them
+all over this guy's hard drive. >> AUDIENCE: (Speaker away from microphone.) >> MICHAEL PERKLIN: We did have top analyze
+them to see what they were. (Laughter.) >> MICHAEL PERKLIN: But I will say that the
+specific techniques that we used to analyze, they're trade secrets. I can't tell you how much depth we went into
+when we were analyzing them. Yeah, seems that John did a lot more than
+work on his confidential project on that computer. We had to tell the company that over the last
+three years while he was working there on this confidential project, he was also doing
+other stuff. They were pretty happy that he left anyway. (Laughter.) >> MICHAEL PERKLIN: All right. What have we learned? Examiners, when we take a look at files on
+a computer, we don't typically look at it in the nested folder structure. Like we don't have to go into every single
+subfolder, go back, go to other subfolders, back it out. We have a big long list. It makes it easier to analyze stuff. One of the very first things we always run
+is Codifile Signature Analysis. This is a special script that looks at the
+contents of every final and compares what is inside the file with the extension. If there's any discrepancies, those files
+are bumped up to the top of the list to be looked at because the system knows if these
+don't match, something may not be right here and a human should take a look at this. I just said those things and so at the end
+of the day John's attempt at hiding his pregger porn bumped it up to the top of the list for
+me to look at. If you're going to hide something, don't just
+change the file name. That makes me want to look at it even more. So the fail matrix. (Laughter.) >> MICHAEL PERKLIN: The retard level, I would
+say 12. Again renaming a file is not data hiding. If up want to hide data, come to my Steg ACL
+course. The new company where he landed, he lost his
+job there. Distress caused was zero. Didn't really hurt anybody. What you choose to do on your own time is
+up to you. Although he chose to do it. >> ERIC ROBI: You know what the bonus points
+are going to be for, don't you? >> MICHAEL PERKLIN: There are some bonus points. About a nickel's worth. (Laughter.) (Loud buzzer.) >> MICHAEL PERKLIN: Grand total of 30 fail
+points. >> ERIC ROBI: That is the fail sound. Thank you. By the way, do you like the font that we're
+using? Comic Sans. Nobody uses Comic Sans. It's the most under appreciated font in presentations. >> MICHAEL PERKLIN: I don't know why we don't
+see Comic Sans in more presentation settings. >> ERIC ROBI: We're bringing it back. Let's look at the "just bill me later" case. Our client, the ABC firm, out-sourced a key
+part of their business. Have been doing it many years. And the part of their business that they are
+out-sourcing is on a time and materials basis. So there's a lot of invoices with ours and
+rates. And that's basically it. It was several million dollars a year on average
+that was being billed. Our client started a review project because
+they thought they were being over billed. They thought there might be a little inflation
+and they wanted to figure out why things were looking inflated. They looked at some of the individual bills
+and thought things were taking a little bit too long. So we came in and we decided to help. So they had thousands and thousands and thousands
+of PDF format invoices. That's not going to do us a lot of good. Even if we applied optical character recognition
+to it, we have unstructured data. I can search a few PDFs, but tens of thousands
+of them, it's you have to to do anything with that. We didn't have a lot of clues with this one. Through the magic of court order we were able
+to go to the customer's database, their network and get an image of everything in the network
+including a billing database. Which turned out to be very handy. We made a forensic copy of this database. It was not a -- it was in a proprietary format. In order for us to do forensic analysis in
+a database we need to get it into something like SQL where we can do standard queries. We migrated over and did standard queries. Looking at it, there's no way to compare the
+PDFs to the database. We decided to reverse engineer the tables
+in the database. Sometimes it's easy, but sometimes there are
+thousands and thousands of tables and when you don't have tech support of developers,
+you have to figure it out. It's a slow, laborious process. We did figure it out. We noticed that the audit logs were turned
+on in this which happened to be particularly useful. So we ran a lot of queries and versus the
+time billed versus the audit logs. We found a pattern of inflation going on. Basically when you are billing on time and
+materials, all you're doing is you've got either hours or you've got a rate. And those are the two things and they inflated. (Loud noise.) >> ERIC ROBI: So these are the two things
+that you can change there. You can change time. Or you can change the rate. But we found the audit logs were turned off
+by default and the IT folks, bless the IT folks, they turned the audit logs on which
+was helpful because we do a lot of database forensic cases and this is the only one where
+the audit logs were turned on. We were able to compare basically the amount
+that was billed at the end of the day versus how many hours were put out up to that point. We were able to see a chronology. Maybe at the end of the day the bill was for
+$1,000. But we saw it was only $800 actually billed. So the billing person, the database person
+who basically was working with it, this person would change the hours and the rate sometimes
+and bump it up. Interest went from 800 to $1,000 on a typical
+invoice. They did this thousands and thousands and
+thousands of times. So let's look at the fail matrix. So I didn't give the user retard level too
+many points here because it was a bill administrator. Most people don't know what is going on inside
+a database, most average people. However, they had to refund the money. So they get 18-point for that. >> MICHAEL PERKLIN: Over the last four or
+five years worth of money. It was a lot of money. >> ERIC ROBI: It was about $12 million actually. They get 15 points. >> AUDIENCE: (Speaker away from microphone.) >> ERIC ROBI: I wish! And bonus points, hmm, systematic culture
+of over billing. (Noise.) >> MICHAEL PERKLIN: They get 45. >> ERIC ROBI: Okay. This next one, I call it "smokinggun.txt." If you work in the forensic arena, you probably
+heard the term the smokinggun.txt. It's the gag name of what you are always looking
+for in the case. It could be that record in the database. It could be that Internet history record that
+shows that the guy really did something bad. It comes from the cheesy western movies where
+the gun was smoking after he shot someone, and it proves he fired the shot. We say did you find the smoking gun? Yeah, we found the smokinggun.txt. Sometimes I wish it was as easy as finding
+smokinggun.txt. Another intellectual property case. You have a guy league one company to go to
+work for another company. The first company says can you make sure he
+didn't do stupid shit and we are called in to make sure he didn't do stupid shit. We imaged the drive. Kicked off the analysis script, like the script
+I told you guys about before. Opened up his desktop folder. I like to open up the desktop folder of every
+suspect I'm examining. You can tell a lot about what a guy, or a
+lot about the person when you're looking at the desktop. Did they cram a lot of files in there in an
+unorganized fashion or everything is neatly packed away into my documents folder. Things like that. Are they arranged nicely or all spattered? It tells you a little bit about the person. So you can get a little bit into the mind
+of who they are. Immediately I solved the case. >> MICHAEL PERKLIN: How did you do that? >> ERIC ROBI: Well, the smokinggun.txt. It was almost as easy as this. >> MICHAEL PERKLIN: A barbecue? >> ERIC ROBI: I opened up the desktop folder
+and I saw this. I'm hoping you can see that in the back. You have a folder on the desktop, the bottom
+left there. The folder is called Competitive Intelligence. (Laughter.) >> ERIC ROBI: Inside that folder we've got
+a Power Point presentation titled "Project Blue Book." we've got some PDFs. We've got a whole bunch of stuff about this
+project Blue Book that this guy was working on from his old company. He was getting ready to deliver this presentation
+to the executive leadership team of the new company, telling them everything about this
+confidential project from his old company. (Groaning.) >> ERIC ROBI: He didn't even make it difficult
+for me. Not only was all that stuff there, he made
+a Power Point presentation describing it and to deliver all the knowledge for this to the
+LT. Yeah. So I just said that. >> Did you over bill for that? >> MICHAEL PERKLIN: We are not the last client. >> ERIC ROBI: All right. >> AUDIENCE: (Speaker away from microphone.) >> ERIC ROBI: Pardon me? >> AUDIENCE: (Speaker away from microphone.) >> MICHAEL PERKLIN: I don't even remember. Probably, well, it took 20 minutes. We probably just billed one hour. >> ERIC ROBI: Michael, what have we learned
+in this case? >> MICHAEL PERKLIN: Well, we learned that
+sometimes people don't even try. Fail matrix. User retard level has to be an 18. >> AUDIENCE: (Speaker away from microphone.) >> MICHAEL PERKLIN: We are saving the higher
+scores for some of the later stories. >> ERIC ROBI: Numbers are going up, you may
+have noticed. >> MICHAEL PERKLIN: So far each one has been
+going up. He got an 18 for user retard level. If you're going to be doing this, don't leave
+tracks all over your computer. Sure if you're going to say they are going
+to be launching this new thing in August next year, it's one thing to say it to a person. If you put together a whole presentation to
+about the whole thing. That's a fail. Punishment is ten. He had to settle. Obviously in breach of his NDA from the old
+company and it cost him 1.5 million in damages. So the distress caused is a six-pointer. Bonus points of 12 for zero effort. This all adds up to the fail matrix score
+of 46. Next story. >> ERIC ROBI: I hope you appreciate these
+amazing sound effects and video editing that I did. >> MICHAEL PERKLIN: Hold on. We need to put the presentation on hold. I have a problem. Which one is which? >> ERIC ROBI: That one is mine on the let
+hand. >> MICHAEL PERKLIN: Really, because I want
+the one with more. >> ERIC ROBI: The one with yours is more. >> AUDIENCE: (Speaker away from microphone.) >> ERIC ROBI: We will be taking questions
+later. All right. The next one I call hiding in the Cloud. So once again a top sales guy leaves a company
+and the sales just take a nose dive actually and they think he took the customer list but
+they can't prove it. They know that there's new customers. They know that there's old customers over
+at the new company but they can't prove he took the customer list. We image the computer and look for the usual
+clues. For example, link files are a Windows artifact
+that show what files have been recently opened. They are a simple text final and easily parsed
+and have a lot of information about the location of the file, the date and the time, all that
+kind of good stuff. We look at a registry key which I love the
+name of this. It makes no sense to me at all, but somebody
+in Microsoft maybe had a couple of these one day when we were working. Bag MRU for some reason -- most recently used,
+but why bag? >> AUDIENCE: (Speaker away from microphone.) >> ERIC ROBI: You guys are full of great answers. >> MICHAEL PERKLIN: You want to explain why
+it is named that? It's still a fucked up name. >> ERIC ROBI: It can show what files are inside
+a folder. That's what we typically look at in a file
+exfiltration case. This is from Vista forward you have jump lists. >> MICHAEL PERKLIN: That is a fail. It should say Vista. >> ERIC ROBI: I have to take a drink. I don't love Vista in there to do it Wright. If you have five Word documents open and you
+click on it, you have the five, those are jump lists basically. IE history. Internet Explorer. Internet Explorer is so much morning exploring
+the Internet. It records things that you do without your
+knowledge, like opening files. But we are getting no love. I'm not finding anything. Show me the love, baby. He's having a beer. So we search the IE history and we found a
+.JVM file pointing to files anywhere. Who is familiar with that site? It's very much like Dropbox. The same kind of concept but more for business
+users. It has a lot of really great auditing, logging,
+stuff like that. If you're uploading and downloading files,
+you can monitor and track them. That turned out to be a nice thing. Typically that's only in the user control
+file best of your recollection we found an HTM file and we solved the case. >> Bingo! >> ERIC ROBI: Timing fail, I'm sorry. >> Drink! >> Drink! >> ERIC ROBI: Bingo, we solved the case. All right. So what we got was the account ID, the upload
+times, the file names, everything. We got some sweet loving. We got stolen files. Let's look at JavaScript here. I changed the names of the file. We have recipe for Coke, minor trade secrets. The user is the user account name. So we were able to subpoena that from files
+anywhere and figure out who actually registered the account. There is the folder that it was in. And this is really handy here, the date that
+it was uploaded. And we got a whole bunch of these. In fact this is the first page of an 80-page
+Excel report I prepared. These are all the file names that this guy
+uploaded. So yeah. The second part of the story is -- go back. Another fail. >> Fail! >> Drink! >> ERIC ROBI: Which one do I drink from? >> MICHAEL PERKLIN: Good answer. >> ERIC ROBI: The second part of the case,
+the opposing attorney, the guy representing the thief handed us ab an Outlook CD, Outlook
+PST on it. This is part of the discovery process. Discovery is a legal term in litigation where
+both sides are able to exchange evidence. In fact, they have, they are compelled to
+exchange evidence through the rules of the court. He gives us a CD. It has Outlook and Outlook PST on it. First thing we do, there's not a lot of files
+in there and the first thing we do, we want to recover the deleted e-mails in a PST. We're forensic analysts and that's what we
+like doing, looking at people's e-mails. I'll show you the old school way of recovering
+deleted e-mails. You use a hex editor, crack open the PST and
+exchange bytes seven through 13, change them to zeros. Save the file. Then you use the Outlook repair tool built
+in with Microsoft. And you basically repair the tool -- sorry,
+repair the PST and what happens? You get a lot of e-mails back. These are not the actual e-mails, but you
+get tons and tons of e-mails back. In this case, we got tens of thousands of
+deleted e-mails. What was in these e-mails? Everything that completely turned the case
+around. Not only did we have this guy with all the
+uploads on the spreadsheets. We also had all the e-mails about who was
+involved. What lists he took. Who are the, you know, all the people that
+were involved. We were winning. We went to Charlie Sheen mode all of a sudden. And the funny thing is, we were able to take
+all this information and at a deposition. If you don't know what a deposition is, we
+get to ask questions of the opposing party. We are asking them, what happened? Did you guys steal anything? Did you take anything? No, no, no. We part pulling out these e-mails one by one
+by one. The guy turns white as a sheet. And he spills the beans. And basically, you know, we do pretty well. Who deleted the mails, do you think in this
+case? Hmm? >> MICHAEL PERKLIN: Call it out if you think
+you know. >> AUDIENCE: (Speaker away from microphone.) >> MICHAEL PERKLIN: Wow, people got it almost
+immediately. >> ERIC ROBI: They hired Saul Goodman, unfortunately. And yeah, he deleted the mails. Not a good thing. Not a good thing. What have we learned? >> AUDIENCE: (Speaker away from microphone.) >> MICHAEL PERKLIN: The question is, did he
+claim privilege on the e-mails? >> ERIC ROBI: He claimed privilege on some
+of them, but not all of the 10,000 that he deleted. IE history is difficult to wipe. It seems to leave stuff behind. We learned a new file type, the Java file
+type, JavaScript files can give us love, too. We like them. And uploading files still leaves traces. So attorneys shouldn't mess with evidence. It's against the ethical rules in every state
+and probably every Canadian province and can get you disbarred. >> AUDIENCE: Did they in this case? >> Let's look at the fail matrix. >> ERIC ROBI: User retard level is damn high
+on this one. Fails on the attorney's part and also on the
+ex-sales guy. Huge lawsuit. Three and a half million dollars in fees and
+damages. (Whistling.) >> ERIC ROBI: Which our client all got back
+basically and 15 bonus points. The attorney might lose his license on this
+one. He hasn't yet. We don't track that kind of stuff. (Buzzer.) >> ERIC ROBI: Fifty-one, we're moving up. You ready? >> MICHAEL PERKLIN: Oh, right. >> Fail! >> Drink! >> MICHAEL PERKLIN: All right. Let's do this shit. >> ERIC ROBI: That's winning. >> MICHAEL PERKLIN: This next case is probably
+one of the most fun cases I've worked on. From the start I could tell that something
+-- it was going to be a fun one. The RBT bounce. You'll see why. I was called in to investigate a network breach. The company shared information with us that
+was evidence that at least one computer had been breached. They didn't know why. They didn't know what. Asked us to investigate and to tell them why
+and what. It was a large company. They had a lot of computers, all of them were
+Windows based. Thousands upon thousands of computers in offices
+all across the world and in one of their offices they noticed this computer had been breached. So let's figure out what happened. So we move in. And actually I think I'm going to pause here
+for two seconds. Eric, is this your first time presenting at
+DEF CON? >> ERIC ROBI: Yes, it is. (Laughter.) >> MICHAEL PERKLIN: Okay. (Applause.) >> MICHAEL PERKLIN: We don't even have to
+say anything anymore. You guys know exactly what is going on. >> ERIC ROBI: Uh-oh. >> MICHAEL PERKLIN: I want to know, is Sarah
+in the room? >> Show yourself! >> Which Sarah? Narrow it down? (Overlapping speakers.) >> MICHAEL PERKLIN: Is your name Sarah? >> Bend over. (Laughter.) >> We are just going to leave now. >> You are the ugliest Sarah ever. >> Fail! Another soldier bites the dust. Winning! (Laughter.) >> Stop that. >> The path to recovery is --
+>> Paul, there's some issue about the sound person? >> No. Sarah is supposed to be the sound person. >> Sarah is right here. You are talking about me, right? >> I appreciate that, Sarah, but we're looking
+for a different person. >> Since she is not here, Sarah, would you
+come up? >> Come up. You're the next contestant on: Will you fail? >> Thank you. >> The other Sarah is going to be pissed. You want to go around that way? >> You already got one. Someone counted wrong! >> Pass one to Sarah. >> All right. >> A double. (Laughter.) >> Find Sarah --
+>> I'm sure all of you want to be Sarah right now. >> To our new speakers and new attendees! (Applause.) >> Whew! >> Uh-oh. How many more talks? >> Thank you. >> Two more this hour. >> MICHAEL PERKLIN: All right. We have 15 minutes left. >> Is Sarah in the next --
+>> MICHAEL PERKLIN: Thank you very much, goons, for doing that. It's Eric's first time at DEF CON. So I was talking with the RDP bounce case
+that I was investigating. As I mentioned, thousands of computers, various
+offices all around the world. So we analyze the one computer that they knew
+was breached. And it showed that RDP or remote desktop property
+call. This is the tool in Windows that allows you
+to remotely control another computer. Some logs showed us that RDP was used to connect
+using the local administrator password to another machine. It also showed that -- actually I said it
+backwards. RDP was used to connect in and also showed
+that RDP was used to connect out. In this diagram I was looking at the middle
+computer. I didn't know at the time there were other
+computers. I was looking at the middle one. It seemed like there were a bunched used in
+here. It was probably the tip of the iceberg. >> ERIC ROBI: Where do you find these logs,
+Michael? >> MICHAEL PERKLIN: Specifically I was looking
+at the Windows event viewer. Go into the control panel and the administrator
+tools. It logs by default a lot of stuff in there
+including when RDP is used to connect in and when you're connecting out. So I analyzed that machine that came before
+it. And same thing. There were logs that showed that somebody
+was connecting into that. It was basically an entire bounce. Now, these computers were located in different
+offices all around the world. This guy was bouncing all around the world
+to do something. So obviously this is a pattern. I still didn't know what he was doing. I just knew that he was clearly going through
+a lot of trouble to obfuscate his trail, bouncing all around. Probably so that when he does hit his final
+target there's no direct evidence to where he was coming from. >> AUDIENCE: Were they sessions within sessions? >> MICHAEL PERKLIN: Yes, within the remote
+desktop, he did this over and over. Remote desktop is not the fastest protocol
+at all. I don't want to speculate how long it took
+him to do this. >> ERIC ROBI: Can you imagine how long the
+screen redraw was by the time you get to machine ten? >> MICHAEL PERKLIN: Jesus Christ, you have
+to click a minute between clicks or something. What was the target? So I think you can all figure out what I do
+next. Rather than following the trail back, I followed
+the trail forward. What was he getting? Step after step, computer after computer. Site after site after site all around the
+world. I finally reached a high profile machine. I wish I could tell you which specific machine
+it was. I can't because it would give away too much
+about this company. >> Prism? >> ERIC ROBI: Did it have Nickel Back on it? >> MICHAEL PERKLIN: Chalkiest video ever. I knew what he was going after when I reached
+that machine. He wanted confidential documents that were
+only on this one machine in the entire company. He obviously knew that and he wanted to get
+into the machine to get these documents. I focused the analysis on this target machine,
+on this special confidential machine and I wanted to see what did they do? Specifically which files did they take? And it took me only about two minutes. As I was analyzing this machine. I identified the attacker immediately. He went through all around the world. Finally when I was taking a look at his target,
+within two minutes I found out who he was. >> AUDIENCE: (Speaker away from microphone.) >> MICHAEL PERKLIN: He used his own credentials
+on the machine? No, he didn't use his own credentials on the
+machine. >> E-mails to himself? >> MICHAEL PERKLIN: No. >> He stole his own file? >> MICHAEL PERKLIN: No, and he did not check
+Facebook and no share drives. Why don't I tell you what he did? >> ERIC ROBI: Michael, what did he do? >> MICHAEL PERKLIN: Printers. One thing a lot of people don't know about
+remote desktop, by default it maps the printer connected to your machine to the machine that
+you are connecting out to. It does this so that when you hit print inside
+your remote desktop window your printer next to you is available so you can print a document
+besides you. This guy didn't print any documents but just
+by connecting the machine automatically mapped his local printer to the target machine, which
+identified his machine name. He forgot to turn this off. There is a check box in remote desktop protocol
+when you open up the RDP window, unmap printers to unmap printers. And it's a check box and he did not map it. >> ERIC ROBI: What have re logged Michael? >> MICHAEL PERKLIN: What have we learned? Documents logged by inside -- can give insight
+into user actions. The system did this automatically. By looking at the system is doing can tell
+what you the user is doing. For the fail matrix, user retard level would
+be about a 20 because he went through a lot of trouble to cover his tracks and he did
+not cover his tracks. Punishment level would be 15. He loss his job. He also lost his references. He can't use that company as a reference anymore. So distress caused would be 8. Bonus points would be 20. Do some research. If you are going to use RDP to pull off a
+scam, know how RDP works. Adding it all up, we have a fail score of
+63. Last story, Eric. >> ERIC ROBI: All right. So the last story is a little bit different
+than the others. (Laughter.) >> ERIC ROBI: This is the epic porno fail. The difference in this one, all together the
+cases we have talked about have been commercial litigation, civil litigation, something on
+this side. This one happens to be a criminal case. From time to time we do criminal defense work. And we work either with Public Defenders or
+private attorneys. This is about this kind of situation. So our client, Edgar, has been charged with
+possession of contra band, aka child porn in his computer. He claims innocence and I roll my eyes because
+everybody always claims innocence. 98 percent of these people did it. We examine the computer. We looked at the examiners report. We looked at the allegations. Let's take a look at them. So they claim Edgar downloaded porn. All right? They claim that Edgar's user account had passwords. This is all documented in the record. They claim that Edgar utilized news groups
+to download porn, like for real? >> Who uses news groups to download porn? I think they have the --
+(Overlapping speakers.) >> ERIC ROBI: Yeah, news groups, right? >> AUDIENCE: Pregger porn. >> ERIC ROBI: That guy I would believe. They allege that he downloaded illegal porn. There is one thing to note. Keep this in mind. He left his house on April 2012. His wife kicked him out because of this stuff
+happening. April 2012. Keep that in mind. So let's look when we examine the computer. Let's see what we came up with. First we looked at IE history. As I mentioned before, IE history is able
+to show you when a file has been opened. This is an actual example, I changed the file
+name a little bit here. What was the date I just mentioned? >> AUDIENCE: April 2012. >> ERIC ROBI: April 2012. I see some dates here. Are these before or after April 2012? Put up your hand if it's after? Ahh! Yes. So all right. One fail here. Let's look at his peer to peer software download
+folder. In the top there I've got the path where these
+naughty files were downloaded and it's a pretty typical path. These P to P programs change the name to something
+long. It's like T-something something something
+naughty file. I'm looking at the dates here again. Michael, do you have a calendar? >> MICHAEL PERKLIN: Give me a second here. >> ERIC ROBI: When is December? >> MICHAEL PERKLIN: It is after April. Definitely after April. >> ERIC ROBI: Okay, just wanted to check. We need to verify our forensic findings before
+we publish them. We're verifying. Oops. I think --
+>> MICHAEL PERKLIN: Fail! >> ERIC ROBI: Fail. Give me that beer. All right. They also claim that he used Outlook express. Really, to download porn. Outlook express. This is 2012, remember, folks. >> MICHAEL PERKLIN: Makes you wonder, did
+they even analyze this guy's machine? We saw records of P to P, not Outlook express. >> ERIC ROBI: Outlook express, all right. In reality, yes, Outlook express was on the
+machine set up with an account called porno lover. Okay? It was set up after Edgar moved out of the
+house. And only headers were downloaded. No content. >> MICHAEL PERKLIN: What do you mean by headers? >> ERIC ROBI: A header, if you're using Outlook
+express, it is just the first part of the file. The e-mail is going to have the date, the
+send to, the receiver, the subject line, make the first couple words. There was no content. There was no photos in there, just headers
+with, you know, admittedly porno names. Also, let's look at accusation three. They said his user account had a password. The inference is only Edgar was able to access
+it because there was a password. Let's look at the password, shall we? Maybe we can zoom in a little bit on this. (Laughter.) >> ERIC ROBI: This is actually a cool utility
+the it's free. It's LCP. I'll go back to it here. It's a free utility, great for looking and
+seeing if there are passwords. You can also use it to perform an attack,
+although it's not very good. All right. So more facts undiscovered by the examiner. The P to P client was used to download porn. The examiner didn't find that. Into a new user account called porno lover. Guess when? After he moved out of the house. So we submitted our report to the prosecutor. Looks like a five, ten-page report, something
+like that. The government dropped the charges, years
+after they charged this guy, they dropped the charges. This does not ever happen really. This is the first time. I've done thousands of cases -- well, hundreds
+of cases, thousands of exams. I don't know how many, it's never happened
+before. This is after the guy spent a huge amount
+of money on legal costs. So to do all this, I just want to give a thank
+you to Rob Lee and SANs -- you know Rob Lee? We used super timeline for this analysis. That's a super piece of --
+(Lost audio.) >> MICHAEL PERKLIN: Definitely one of the
+best pieces of software used. >> ERIC ROBI: So the government interviews
+Edgar's friend. The friend confesses. The friend did it. The friend was trying to get jiggy with Edgar's
+wife. (Groans.) >> ERIC ROBI: And he put the porn on the computer. The court clears Edgar's name. They give him an finding of innocence. Rarely happens. I have been to court a couple times where
+there have been acquittals and we didn't go to court on this one, fortunately, but we
+would have. So what did we learn? Base your conclusions upon actual evidence. Find multiple artifacts backing up your allegations. I don't know where the password thing came
+from. Tie it to a person, not just a machine if
+possible. Try to use at user activity that would tie
+expect events to a person. Remember, the maximum you can get is 20 in
+any category. However, I have decided to break the rules
+a little bit for this one. Examiner ineptness, he gets five bonus points
+built in right there. Oh, yeah, the guy sued the city for millions
+of dollars. And you know, there might be a job security
+issue for somebody in this case. >> MICHAEL PERKLIN: I don't think that examiner
+is really going to have a job much longer. >> ERIC ROBI: One hundred bonus points because
+the court finds the suspect innocent. Factually innocent. (Buzzer.) (Music playing.) >> ERIC ROBI: Thank you very much! >> MICHAEL PERKLIN: Thank you, everybody! If you want to do Q&A, we're going over to
+the Chill-Out Lounge. (The session concluded at 2:45 p.m.)

@@ -1,0 +1,430 @@
+All right. Good evening. Thank
+you for joining me. I realize there are fun parties here at
+Defcon at the start of evening. I'm going to be talking about
+memory corruption vulnerabilities sort of history.
+Strategy you can take from code execution exploits. And
+basically extending the line of research has been done over the
+last 20 years and where to go forward to make defense
+straightforward and robust. Who am I? Day job I walk at the San
+Francisco area. By night -- and usually disclaimer. These are
+the opinion of the talk or my own they are not represented of
+my employer. Show of hands. How many of you have written
+programs c++? How many of you have written stash maxing
+exploits. It's about two-thirds or so. Return to programming?
+About a third. Advanced return to information disclosure.
+Someone has his hand on and -- well, done. So some
+modifications. One of the things that sort of bothers me today is
+vulnerability corruption. And vulnerabilities used for remote
+exploits. Vvn doesn't seem to be changing that. Approximate
+second thing there are a lot of better increasing tools. I think
+there was a talk now about constraint searches over program
+to find vulnerabilities. But also industrial bug hunting
+running American fuzzy lob against your program. And
+centralized exploit process goes from vulnerabilities to analyst
+look at crash log and weaponize and work around anti
+exploitation in software program. And there's not
+economic insensitive to let vendors know that you found
+vulnerabilities because you can sell exploits for of money. And
+to my third part modification. Bug bounty is not effective.
+There are people who will pay for weaponize exploits than
+vendors. State agencies have limited budgets for these. And I
+don't think we want to be in the reactive business finding
+exploit and blacklisting it. I don't think it's worked out for
+antivirus and for exploit markets as well. We should be
+targeting supply rather than demands for exploits. So what's
+the path that we should take for that. There have been plenty of
+research for that in how to try to prevent memory corruption --
+cpu overhead proven to be market acceptable. But maybe look at
+other strategies for an attacker to achieve execution maybe in
+the context of vulnerabilities. Why do we keep hitting these
+types of vulnerabilities these class of attacks against our
+program systems? Is there a fundamental blind spots that
+encourage these types of issues? Defenses -- so we understand
+where we came from and where to go forward. I'm going to take us
+a bit of 20 year journey on major points of attack from
+injection exploitation, class stack smashing defenses against
+those such as none executable stacks. Code renew exploits.
+Ccdm or return programming. The weaker mitigation we have
+against that. Like standard -- randomization on systems today
+and then we will look over research last five years on
+defense and attack. And i'll be showing out key enumeration, I
+think we will make it a little bit more interesting from
+defense standard point. So I think the main name of the game
+fundamentally is we have a lack of memory safety. And when I say
+memory safety I mean that we have program languages that
+provide abstraction as software developer that -- problem we try
+to solve as oppose to the underline system of
+implementation of certain things. So we have notion of
+variable that are separate from each other. Conceptually
+separate from a programmer and thus we don't really think about
+interaction between the two. We have assumption that the system
+will not interact with the other. But the idealized case as
+we know if we basically step through this code and look at
+simplified version of stack looks like as we step through
+the program we have return addresses to call functions. We
+keep track of where we are executing, subroutines, we
+allocate on the stacks we feed data in, call data in and we
+follow this process where we run these functions stack as
+manipulated in this way. And eventually we hit return,
+everything is happy assuming no one writes more than 23 bits in
+this program. Let's talk about code injection attacks in
+general. For those who knows smash stacking this is old hat.
+Execution unbound read in to. If we write zero to 22 character
+plus terminator to three, we are fine. Nothing bad happens.
+Design expectation of the program. If we write a little
+bit more than that say 24 through 28 bytes we are kind of
+okay. Part of the a we have not broken the program. But if we as
+an attacker choose to write more than that, we can eventually
+overwrite the return address and at this point we have seized
+control of the instruction pointer. Something we can do
+classical smashing attack '96. We can actually load an
+arbitrary called payload onto the stack and manipulate the
+return address that we've placed here in this location, to point
+to that shelf code. And we seize control program and running code
+attack code has supplied. Game over. Bad news. Before that, I
+will briefly divulge into work with this type of defense
+standard point. If it would be nice to execute code on stack.
+But let's look at what our capability are so far. Virtual
+address, every program has its own what it believes to be
+exclusive view of the address space of the computer. These are
+virtualized by the operating system so when you dereference
+an address in the process it goes through an address
+translation address controlled by the operating system. If we
+look at the binary for this and decompose it. It's decomposing
+this way. And a 12-bit fragment. Intel the base pointer of this
+is control -- and we use the first component as an offset
+into this table to look up the page directory. And this page
+directory entry container this address of a page table. We now
+use the second decompose of virtual address to look at
+offset for this table. And this page table entry points to the
+base of the actual page, physical page in memory that we
+care about and then we use this offset whatever the program is
+interested. Transfer into the architecture assuming it's set
+up appropriately. So the first 20 bits here are virtual frame
+number for convenience. And this is useful for other things. And
+page table entries as I said basically since things are page
+align the bottom 12 bits architecture will be zero. So
+you don't need to store that. These lower bits are used for
+alternative capabilities like setting permission bits or
+tracking or if swapping an enable determine whether page is
+in memory or out through memory press on the system. And the
+thing is you don't actually do this virtual to physical
+translation process every time you want to do a memory access
+because there's three memory access for every one your
+virtual address space represents which can be a lot of overhead
+so this translation cache translation buffer -- processing
+unit and it takes the virtual number. It does the translation
+process where the page is located in memory. And then
+determines the effective permission. Is it a writable
+which are the two permission bit in the previous slides and store
+those three things together, virtual, physical and algorithm
+permissions. And so there's a really awesome team, students
+anonymous team called pack looked at this and say hey, on
+the intel architecture there's translation buffer for both
+instructions and data. And it turns out these are only filled
+based on the type of access you have as a program. So if you are
+doing data access, the data will be filled but instruction might
+not have mapping. So they realize if they are clever about
+it and able to default in a control way as the operating
+system, they would be able to emulate of executable pages not
+previously available to architecture. They would set the
+supervisor bit on the page table entry. So the operating system,
+process memory management unit will try to access the page will
+fail. I'm running on user mode and not allowed to do that.
+Interrupt the handler will take a look and see what's going on.
+For example we have some instruction pointer and try to
+access this yellow, orange page. This is basically a data access
+and we have a pseudo code strategy if it's a supervisor
+page and endpointer on the faulty page, otherwise what they
+end up doing was they actually flip the blue bit to zero. To
+user page. They allow one instruction to proceed in the
+user program. Which would create this entry say this orange
+virtual address correspond to some user address. And then they
+would immediately trap again and reset that blue bit back to one
+the page table versus tlb -- the process only cares about tlb on
+substance sequence access, we have access on orange and I'm
+not doing the expensive look up  for the page table hierarchy. If
+later on orange pointer trying to access an orange page,
+there's no itlb entry. The processor again, not allowed to
+do that. And go to -- now it's an instruction page and [
+inaudible ] so it will terminate the process. Memory access
+violation and we don't want to allow that. Basically the whole
+point is we want to make sure instruction tlb entry created
+for that virtual address that permits access. So this is
+implemented as a linux module and then shortly thereafter 2003
+and 04, processor manufacturer extended the memory model to
+support x bits. So amd calls x bits intel x bits it's
+implemented the exact same way. This is in hardware now. It's
+been in hardware since the last ten years. Your system supports
+it probably. So we basically move from the situation where we
+had user pages. We had the ability read and execute pages
+or read, write, execute pages basically wide open. By adding
+supervisor based emulating of none executable -- we actually
+gain this additional dimension of control page permission and
+more expressive power. Almost data and we don't want to treat
+as code. But obviously the story doesn't end there. We doesn't
+end that with packs or x bits. So attacker evolved to using
+code strategy. Returned to c. This is a model another view of
+stack smash. You can't do this anymore. When the processor
+actually instructor pointer goes into stack it's no longer permit
+to do that by the memory access unit. We can't do this as
+attacker. We can still corrupt attack overflow, and put
+arbitrary value into protocol system paths. So instead of
+putting an address to a piece of code that we've injected instead
+we can do put the address to say mc system call. Which takes a
+single command-line, single parameter serves as command-line
+parameter. In this case we are asking the system to run a bash.
+This view is difficult to via it's basically a damaged memory
+space. But look from a perspective of what system to
+use, it's used reasonable function called it has some say
+return address that we don't care about while we are
+executing system and we have a parameter before the return
+address which is a pointer to a string which has been bashed and
+variable that needs to be allocated from the presser. It
+doesn't matter from attacker standpoint. You can't function
+more than one function but it gives you idea this is how to do
+this attacks. The technique was generalized ten years later with
+a notion of return programming and the idea is instead of
+having a full lip c function you are calling, you are looking for
+machine fragments that's succeeded with return function.
+And you can compose them however you want to achieve whatever
+stack manipulation. If you look at the bottom here, we can
+rebalance the stack with extra arguments. And actually invoke
+more than one gadget which resembles looking stack. So in
+2003 sort of in the realm of find a deal of return c even
+though it's not generalized at the time. The pack team looked
+at different approaches for preventing these return use code
+attacks. We had developed position independent code
+library and executables so we don't need to load them in fixed
+address, we can load them arbitrarily. If where he shift
+the stack and allocation a little bit shift the location of
+our key a little bit and we load the program codes in arbitrary
+offset and order then we can limit the ability of attacker to
+know ahead of time where the interesting addresses are for
+them. So this was sort of, caveat to this version we don't
+think it's fully capable -- so let's look at couple of ways to
+work around this. So one of the things is if you have ability to
+disclose memory of particular library that you are interested
+in then you can actually recover the offset of everything that
+you might be interesting as an attacker. So for example if
+system live at offset 23 within the linery and print f live at
+library beginning of lip c and you discovered print f is [
+inaudible ] this then you as an attacker know the lay out of c
+knows the system function volt. You can use this again accept
+your gadget chain, deliver same type of exploit strategy.
+Therefore couple of research paper came out which looked at
+couple of more sophisticated means of permitting the address
+state. So one of them is saying a little bit randomness is good
+and let's add more. Let's do at the function level or basic
+block level. More recent paper just does address -- effectively
+complete. You are doing alpha equivalent. This is absolutely
+equivalent code map them to internal address Nebraska
+anyway. There's another paper. Observe the -- techniques are
+not significant value. Okay. The whole point is you want to
+reduce the value of a single pointer from the attacker
+perspective. Because if they get one pointer then they know
+everything in your library but the whole point for this is you
+may learn one address but it doesn't mean it will teach you
+multiple addresses in your library or program space. So
+what they did is let's say they find address they observe
+interesting fact. The first thing is if they chop off the or
+zero off the bottom bit they know they have 4-kilobyte of
+code address space. What they then did at runtime they would
+disassemble this page and look for assembly page absolutely
+call offset. In this case [ on screen ] they would find some
+handful of absolute addresses. So they can repeat this process.
+They would find another 4-kilobyte line page and they
+can repeat this page over and over again until they've
+exhaust. They would find 2-300 through this process.
+1-3-megabyte of machine code and they do a gadget research in
+realtime and compile payload objective to gadgets they
+discovered in realtime. So it was game over. I've implemented
+a version of this. Has the ability to basically wipe out
+any randomization you are interested in doing. So the
+value of one pointer is still a lot, one pointer -- and fine
+grain doesn't seem to help this problem at all. But it's kind of
+interesting still because when you introduce fine grain
+randomization you actually change the attacker posture a
+little bit. They can't do their work ahead of time, gadget work
+ahead of time find exploits and chain the gadgets. Because there
+are not going to be predictable location or value. So that's
+important. Because that will give us as a defender an
+interesting advantage. If we can maintain that information
+asymmetry the attacker doesn't know enough information they
+can't readjust gadget chain or achieve arbitrary code
+execution. So I will do digression of c++. Apparently
+class. Animals has virtual function called feeding a sound.
+And let's also imagine that we have two subclass, a dog and cat
+slightly different implementation like making a
+sound. Fundamentally every single one of these virtual
+functions are single pointers that are sufficient to execute
+just in time return rate programming exploitation phase.
+So we want to be able to avoid that. And here's an interesting
+idea I came up with. I don't know how practical but worth
+considering. Rather than having a fix virtual function table for
+animal, for instance animals that we actually expand the size
+of the table by parameter and sort of raise the uncertainty
+for an attacker. We may have real function at particular
+offset. Table just index look up for it. Ten times bigger or more
+it doesn't matter. But awesome of these things can be unmap
+memory. You cannot read, write them any result for that will
+result in-system crash. So probablistic approach
+programming. I didn't take this approach very far because I
+think there are other issues with it but it's something to
+think about. Another alternative is to actually make the pointer
+more opaque not as useful to the attacker. So for example if the
+attacker know this page maybe we can stop them at this stage
+disassemble it. They need to access that page as data,
+different operation than access the page code for instruction
+fetches and this is quite a few what pack did but sort of
+sideways. So can we do a splitting like pack did to do
+something like this? Maybe. There's rootkit before. Which
+used this very, very symmetric to hide the contents of the
+rootkits code pages from operating system memory
+scanning. Unfortunately you can't actually do splitting.
+Intel process produced last seven years they made
+fundamental changes. There's a second level which is not
+agnostic to data. So you can't do the same trick that pack's
+did. What one hands take intel another give it back, and we
+have an option of extending the page table and these are
+designed to hypervisor so accelerate to physical address
+in translation. Almost the same process for operating system for
+physical translation it's just another layer for it. It turns
+out for some bazaar reason, they added explicit control of
+reading writing and executing code on table. And there's a
+talk by Jacob said that you can use atp basically same with
+shadow walker. It's really cool. And let me circle back the
+necessary versus the sufficient thing. We know that if we have
+no slr the attacker will know to achieve exploitation. No need to
+runtime discovery. Adversary needs to know the runtime of
+offset. And they actually need to do a lot of work. And if we
+can kill that runtime making beiges not readable but
+executable or otherwise offense indicate the point, we can
+actually prevent attacker from gaining the information they
+need to achieve a dynamic the exploits. The ultimately two
+reasons fine grain randomization hasn't been widely deployed. If
+you read the academic paper, it's interesting. The thing that
+they are not saying is every time you do fine grain
+randomization you share code pages. You lose the advantages
+of shared library which is is big deal. Lip c let's say 2
+megabytes of code across 200 processes if you are able to
+save that there's [ inaudible ] savings and that's just one more
+library saving. When you give up at wholesale, running the
+typical system grows. This is the main reason beyond just the
+difficulty of what security advantages give us why we have
+not deplore that. Another, they took that we were able to share
+the library executable object level because we have the notion
+of independent code. And we do that through layers of
+interaction, procedure leakage table and global offset table.
+We can probably do the exact same thing. So they said okay.
+Page 86 kilobytes. So break that into that chunk. Position them
+relative in each other. The trick they use is reusing the
+remanence of segmentation still available 64 intel architecture
+to segment register. So you can have this piece of assembly code
+that I have on the left which has a call to some offset ss
+segment. And this fs segment can be located and specified random
+location and address space and within that you have the real
+addresses that you are jumping to. So the right, called rattle
+is process specific but quite small. Might be a couple pages.
+But the 4 kilobytes the library code in total random virtual
+space but shared across physical address spaces. And so finally
+circling around the work I've been doing the last year. Since
+extended page tables provide us method to extend the memory
+capabilities of the intel architecture model I grabbed an
+off the shelf hypervisor xen 4.4. Which is commonly used.
+They introduced para virtualized hardware plus memory access. So
+prior to this is pv mode emulated the physical frame the
+operating system sought, machine frame translation. Ept the whole
+point for this task. Since ept expose directly we can modify
+version of xen, hypervisor, extend tables for me when we
+receive and protect call and system calling lin induction
+when those are requested. And in its current handler and reinject
+as handler in linux operating system. So this basically from
+that point onward it looks like a violation to platform and be
+like this program has done some weird process and funky,
+whatever it happens to be operating system doesn't care
+it's actually software and terminate the program like it's
+any other page related violation. There's couple of
+caveats used for this which I go in a lot more details in my
+white paper over here. The other component is very simple fine
+grain that I added to lvm is a fairly long standing process
+modular for c++, subjective c whatever language you might be
+interested in. In intermediate form and is then compiled to
+machine architecture you might be interested in. So all these
+of these zone, the front ten any of the automatization you can
+plug in whatever you want. I added a simple code to 64 bits,
+32 and 64 realistically intel architecture. Beginning of every
+function and every basic call received if you leak through v
+table or examine the stack in detail you are still not going
+to know the exact subdivisions and I chose 2 bits of entry you
+can actually get away of entropy here but why not two. So I'm
+going to try to demo that and not blow up my system. First
+showing off pages and the second. Let's see if I can do
+that. Let's see the fine grain. That's less likely to blow up.
+So I have a very simple c program here which is compute
+factorial. It's on a single giant ant. But very, very
+straightforward, very simple. I run the process on it and I have
+it spit out the disassembled version of this machine. And if
+we look at it this is just a factorial and other things I
+stripped output. There's added. This function is very simple. It
+doesn't have return edges. This is only place with inversion is
+possible. It lets you minimize the overhead introduced around
+hot loop these particular addresses are not going to leak
+where attacker might be able to examine them. Main looks
+complicated because it has bunch of call key function call
+instruction. So beginning it has two knobs. It has the one after
+factorial. Two noob after this one and it's got three noobs
+after this one. If you have execute only page it is
+sufficient level of complexity to be randomization to be
+effective. You don't need to go super crazy. You can do simple
+route men tri strategy for this. I can run it in slightly
+different outputs. And now it has two at the beginning of
+this. The other one is slight risk of crashing the system. So
+again straightforward. You have a program to print out. I have
+stupid food function. It does something so it does get
+optimize out. And in the main function I'm calling fo, and I'm
+retrieving the address of that function and dumps out and I
+mark the page again 12 bits all knocked out and I do page size
+of exact, only permission. I try executing foo again to make sure
+it's still work and hex again and it should fail and not reach
+the print statement. Nice. So again we can see we have a
+couple of statements, machine code coming out return
+instruction at the very end. We mark it executable. We can still
+run it. But we attempt to read it and we get fault.
+Segmentation volt. So that's the demo. It didn't blow up. [
+applause ] the demo gods are pleased. Couple of closing
+thoughts before we finish up. I have couple of take aways. The
+main one we should be able to take full advantage of the
+memory permission model. We shouldn't arbitrary restrict
+ourselves to intel provided as the default architecture. We
+should begin where we have constant data just readable.
+Which we have already. We should maintain our region read and
+write data and not as executable code. And shift from having our
+library program code being read executable to just executable
+and there are some issues doing this especially around switches
+and couple other construct. Pressure to do none readable
+pages. We should not be using read write execute model. I
+don't know what the other three might be useful for but what we
+have [ inaudible ] -- and the other thing is I think we might
+want to change a little bit how we do software packaging and
+distributions because if we can say transmit our operating
+system distribution as bit code as final machine code, it gives
+us an opportunity to say boot time service which imposes a
+high quality randomization. We can generate that -- at boot
+time. And we can further take advantage of a trick like oxy
+moron to break them apart and impose still valuable
+randomization without imposing memory cost. We ultimately have
+three different objective for these representation. We want
+repeatable designs across [ inaudible ] operating system
+distribution so we can look at binary, they haven't been
+subverted and we want to be this to be repeatable. We want high
+quality, unpredictable and do it so it's producible. You want
+some sense from the user you want a process that you can
+repeat. You want randomization service isn't backdoor. And if
+we can add more entropy and randomness at low cost, we
+should do it. And that's all I got. Are we putting code -- I'll
+be putting out code in 2 weeks. But my white paper should be
+online now. You can e-mail me
+00:42:44.962,00:00:00.000
+here. That's all I got
+[applause].

@@ -1,0 +1,757 @@
+>> Hi There. I'm Paul Vixie.
+Thank you all for coming. I'm
+not use to seeing so many of you at 10:00 am but I guess it is
+the first day so you haven't had
+any parties yet. So, this is about DNS Problems and Solutions
+and before you ask I will say,
+this is not an exhausted list of all the DNS problems I have
+caused nor every DNS solution.
+Nor of the list of problems I have created by the list of
+solutions I have created. So, if
+you want to talk about why I used IP fragmentation and
+RFC2671, the hallway is out
+there and don't burn Q&AQ time stuff like that. Uhm, good. this
+is a subset of DNS problems and
+solutions which A, fits in a one hour slot B, is kind of selected
+as of interest for this
+audience. And in general I am going to talk about what DNS is
+to me which might be a little
+different than what it is to the average user or sys admin or
+protocol engineer for that
+matter. I'm going to talk about how DNS has affected the world
+and what the world is doing
+about it. And then I want to show you some cool shit.
+Breidbart gave an off the cuff
+answer to a question and his answer has been widely quoted.
+He asked, what is the internet?
+The point of discussion was yes, we all have a lot of IP
+networks, they aren't all
+connected to the big network. How do you differentiate? And he
+came up with the definition.
+Which simply says, the big one is the internet everything else
+is just a little internet that's
+disconnected and is just a toy. And what is most interesting is
+what he said, the internet is
+all about packets. So we may use it for all kinds of commerce
+things or other communication
+purposes but at it's root, it is bunch of wires, containing
+information segments that are
+packets and they are addresses. and the addresses are in an
+autonomous system. So we overlay
+a lot of other things on top of this packet structure. For
+example we have routers and
+swithches and as I mentioned we have IP address blocks,
+autonomous system numbers. These
+are just overlays, they are ways we glue certain collections of
+addresses together in a way that
+makes business sense, technical sense or philosophical sense to
+us. To me, the most interesting
+overlay is not the web, overlaid not he internet but rather DNS.
+So, if the internet was a
+territory, DNS really would be it's map. Unless you are using a
+lot of peer to peer botnit
+(msp.) or pure file system, file sharing system, I realize that's
+common in this room. Pretty much
+whatever you do will be a TCP session and any TCP session will
+begin with 1 or more DNS
+transaction. Luckily theres TCP sessions go pretty fast and they
+are cached and you don't usually
+notice them. But if you are in the DNS industry you are use to
+dealing with the fire hose end
+of that equation and can cause an awful lot of traffic and an
+awful lot of electricity and
+person hours to make it all work. Well, in any case DNS is
+still there, even in mobile.
+Right, and a lot of people are not writing domain names. If
+someone wants to go somewhere
+they are clicking on something or picking up their phones
+saying, okay Google, take me to
+a certain place. Every place you want to go, your mobile system
+is actually through DNS, you
+can't get there without. You may not see it but there are still
+present even with the new
+fangled StarTrek that we are starting to use our new smart
+phones. And the great thing
+about that with the DNS perspective is there is a
+rigorous internal structure. You
+can lie endlessly about who you are and where you are when you
+are posting a comment on
+someone's blog, send an email, steal credentials. But, if you
+want to get work done, on the
+internet, you're going to have your services on and available
+in DNS. You can bend those rules
+and you can do your best to hide, but you cannot entirely
+hide. And that is why I, as a
+traditional DNS from the late 80's to now, really trended
+towards security. It's such an
+obvious overlay. If you want to know where the people are, where
+their assets are and how they
+attacked you and how and so forth. Studying the DNS is the
+highest leverage way I know to
+find out that stuff. Sorry, having trouble seeing my own
+slides. So criminals have to use
+DNS just like we do. They can buy cheap domain names. And they
+can indeed use them for a short
+period of time then throw them away. But whatever they hosted
+them, wherever they were,
+wherever they still are has to be visible. Otherwise their
+criminal assets are not going to
+be reachable by their victims which turns out to be necessary.
+Once you are reachable, once you
+have a specific location, then everything else that has a
+related location starts to look
+related to whatever you were doing. And that has turned out
+to have huge value to those of
+us who sort of spend our lives protecting things. And quoting
+Frances Bacon here who said
+nature to be commanded must be obeyed. That is true of DNS as
+well. You can hide your who is,
+either with who is privacy or using garbage addresses but you
+cannot hide your DNS services.
+The answers you gave and the server that's gave those answers
+are a matter of more or less
+public record. So, about that internal structure. Every domain
+name is in a zone. I promise
+this is the only slide in this presentation that will make your
+eyes glaze over. For example com
+is a zone and VIX.com is my name is at the bottom of that zone.
+But is also at the top. In other
+words, that's a delegation point. That's a point where
+they've been told to register
+the system that VIX.com is not part of the name. Basically it
+is a delegation record set that
+says from VIX.com down that is Paul's server, that's a zone
+cut. Every zone cut has some
+name servers. These name servers are designated by name. In other
+words, name servers themselves
+has fully qualified domain names identifying them. And every one
+of those name servers has one or
+more addresses. Some are IP four, A record, some are IP V
+six, quad rules. Again, these
+are the rules. This is as Frances Bacon would say
+"nature." If you want to command
+it through criminal enterprises, this is the part you have to
+obey. You are not going to be
+able to do anything online for good or evil without following
+this. And fun stuff happens
+after that. So in traditional DNS forensics, let's say you
+have been spammed or worse and
+you've got in your hand a domain name, you might want to know
+what does that domain name point
+at? Where was the server that sent it to me or where was the
+server that my victim ended up
+clicking on something that looked like their bank but
+wasn't and so forth? What's the
+answer? What you do, traditionally speaking is ask
+the DNS question yourself that
+you think your victim might have asked. What is the A record,
+quad A record or MX record. What
+is the record set of a certain type that corresponds to the
+name that was used in the
+attack. This has some disadvantages. First is, it may
+already have been taken down by
+the time you are doing your analysis. Second is, if it isn't
+down, it's up. And the bad guy
+who is presumably running the name server for that property
+will see your query and will
+know and be able to trace at least the outward edges of your
+investigation. When did it
+begin? What questions did you ask? And who are you? By the
+way, this tendency we all have
+to issue our DNS queries through the core system in order to
+avoid, you know, having it be
+known that yes we were the investigator either law
+enforcement or private that was
+looking this up. Because pretty much the criminals are not
+sending queries through
+(inaudible). So you might be able to stop them from knowing
+which is looking them up, but
+the fact it came from a Torax Gateway really tells the bad
+guys they're being chased. Any
+bad guy who doesn't want you to know what his home address is
+going to use a stolen credit
+card and use the home address that corresponds to the owner of
+that credit card. Or they'll
+just type ASDF into the who is fields and it will take a couple
+years for the ICANN wheels to
+grind that out. Or they can pay extra and get who is privacy.
+And who is privacy is a whole
+other topic. But the point is, who is not going to help you
+very much. I realize there are
+companies in the business of selling both who is data and
+history and I don't want to say
+they are lying about the utility of their services. I'm just
+saying for my purposes, I have
+never depended on who is. And I might look at it as a hint but I
+won't count on it and neither
+should you. So DNS has certain properties that have had certain
+impacts. The world has reacted
+in certain ways. We'll talk about that. When atomic power
+was first announced to the
+universe it was described as being too cheap to meter. The
+idea was we were going to have
+electricity in every home in America. That was so cheap there
+wouldn't even be a power meter.
+Nobody would worry about it. Obviously, this didn't happen.
+And a lot of other things.
+Turned out not to happen either. Like it's the distribution that
+cost the money not the
+generation. So difficult to know what they thought they were
+saying. But this expression "too
+cheap to meter" really is, I think, a great way to describe
+the DNS industry today. You can
+now buy a domain name with a stolen credit card from a
+registrar in some fly over
+country in old Europe and it will be active for the entire
+world to be able to reach in
+less than three minutes. I think that's an amazing set of
+technical obstacles that had to
+be overcome. I'm very impressed that we got it done. Any one
+person, any good sys admin team
+even can do something like that. To get the whole world to
+cooperate on something like
+that, that is a tough problem. It took about a decade. My
+challenge is to try to imagine a
+good purpose for that capability. Why does your
+average person who is opening a
+flower shop down on Third Avenue need to be able to create their
+domain in less than three
+minutes? Why is a stolen credit card good enough collateral to
+be able to enable this global
+resource to exist? The level of fluidity that we have in the
+system really only has one
+purpose and that is to annoy people. Either criminal purposes
+or non‑criminal purposes. But
+we're talking about a system fundamentally the DNS is
+fundamentally a system that has
+bilateral value. It is something we all contribute to, we all
+sort of drink the Koolaid. We
+speak the same protocol for the same set of name servers. We
+describe more or less to the
+same name space because we think it is a public good. We think
+the good that comes to us will
+outweigh whatever cost comes from us in order to support that
+system. This is a unilateral
+purpose. This is somebody who want as domain name so they can
+spam you with it or they can
+issue a phishing attack or pollute a search engine or
+whatever. So, you know, please
+jump out of your chair and rush to a microphone right now if you
+can think of a non‑annoying
+purpose for the fluidity that allows a domain name to be
+created at a cost that is too
+low to meter. So the revelation was that 90 percent of pretty
+much any given thing is crap.
+That just goes to .2, our pessimism. We are top ten
+percenters. We look at the top
+ten percent and say that's barely acceptable and the rest
+is crap. It doesn't matter what
+it was we were looking at, that's how we are going to feel
+about it. That that was
+twentieth century thinking but it seems to be continuing now. I
+can tell you that 90 percent is
+low when it comes to domain names. We have a feed I will
+describe at the end of this a
+newly observed domain feed and I pretty much see the domain name
+system. I now know what it looks
+like. What the creation rate of new domains are and what they
+look like. And it is a lot
+higher than 90 percent crud. So if you want to sort of put some
+back pressure, -- remember this
+is about DNS actions and reactions. If you want some back
+pressure against that too cheap
+to meter creation system so that the people who create most of
+this crud can't use it to annoy
+you, then you have a whole bunch of work that you have to do. And
+this work has ‑‑ this is a
+burden that's been shifted to us as recipients or as, you know,
+people who would rather that all
+of our communications be consensual and we're in kind of
+a low level cold war against
+people who think that non‑consensual communication is
+better for them. So because we
+can't prevent these names from being created we end up having a
+whole bunch of cross burden
+shifted to us that has to do with dealing with them. Coping
+strategies for dealing with all
+of this crud. And probably the most prevalent kind right now is
+takedown. And there are a lot of
+different kinds of takedown. I'm referring specifically to DNS
+takedown rather than D peering
+or taking somebody's IP address away or putting them in jail or
+any other takedown efforts that
+are also quite effective. You can now buy takedown as a
+service. You can either buy this
+from brand enforcement companies or you can just have somebody on
+call, some security company and
+I'm not going to name any names. There are some good ones but I
+would be afraid of leaving any
+out if I gave you an even partial list. A lot of security
+companies now are in the
+business of taking phone calls from you as a brand owner and
+going after that domain name.
+They've got a lot of private relationships among the
+registrars and the registries of
+the world. They can give a trusted phone call in place in a
+few minutes that will probably
+cause a domain name that is infringing on one of your
+trademarks or maybe it's being
+used in a phishing attack against you, they can probably
+get that wiped out in a few
+minutes. And that's incredibly impressive. I think by now we've
+all learned the lesson that do
+is who is on it, finding out the domain contact and sending them
+mail saying please stop annoying
+me is probably not going to work. So this is a great profit
+center, in fact, for some domain
+registries and registrars. In other words, they have created
+some systems now, almost like an
+RT ticketing system or similar automation that they will give
+you an account that allows you
+to put your high value complaints in against a domain
+name which would cause it to be
+very quickly reviewed and probably put spaces, put on hold
+some way while they complete the
+investigation and then just nuke it if it turns out to be what I
+said, crud. The reason that
+they're so happy to do this is because that means criminals
+will come back and buy another
+one. So this is the impact of being too cheap to meter is that
+you want your volume to go up.
+So take down is a way to artificially send your volume
+up. So it's huge. It's
+wonderful. But this turns, in my opinion, this turns the whole
+thing into a game. It's
+whack‑a‑mole as a service. And I really feel stupid when I'm
+participating in whack‑a‑mole at
+all let alone something that's institutionalized and sort of
+now built into the DNA of the
+DNS industry. I just think that's stupid. So what else can
+you do? If you can't prevent it
+from being created in the first place, and you don't want to
+participate in whack‑a‑mole as a
+service, then you have an option of firewalling it. Where you can
+just say, I know these names are
+going to be used, and I can't necessarily keep them from being
+used, but I could somehow have a
+reputation system built in to my infrastructure. Whether it is
+your name server, your web
+browser, web proxy or into your border firewall, whatever that
+is going to be, where you can
+just say, look, if it's an annoying name, then I will keep
+it from working on my end.
+Right. So this is what you think of as a near‑end solution as
+opposed to the far‑end solution
+of getting it taken down. And this works. And I have ‑‑ I am
+not going to show you any demos
+today, but I've participated in create something DNS firewalling
+technology that does work. But
+some things that you have noticed about firewalls is you
+can't just configure one
+manually. I don't think the people in this room have got
+enough hours in the week to go
+in and reprogram your firewall every time somebody annoys you
+and you want to make sure that
+can't happen again. So this becomes yet another profit
+opportunity for somebody to go
+do the research that you don't have time for and sell you the
+reputation system of stuff that
+you don't want. I created the first reputation system of this
+kind called the RBL back at a
+company called MAPS. Spam spelled backwards. We thought we
+were clever. I stopped after a
+few years because I had to sell the company to pay the lawyers
+because what the spammers were
+doing was legal and what I was doing by stopping them was not.
+So that's me learning things the
+hard way. But that sort of thing does work. Where you outsource
+your research. And the other
+thing that you've noticed as a firewall maintainer is if you
+have to go around to each of
+your firewalls assuming that you have more than one web proxy
+that needs URL filtering or more
+than one firewall that needs IP address, if you want to go to
+each one manually and configure
+it the error rate is high, the cost is high, the benefit
+doesn't really change and it
+turns into a stupid idea quickly. You really are seeing
+in both the URL filtering and
+firewall configuration a published subscribe industry
+coming into existence. Where we
+now have sort of these companies that will come up with not only
+do the research for you but
+present it to you in a mechanized format that your
+equipment can directly subscribe
+to. So you are essentially inviting your vendors to program
+your filters for you. And to
+program them all in parallel rather than have to give it to
+you and go do the individual
+changes on the individual firewalls and hope you get them
+all and hope you get them right.
+So all of these trends informed my work in DNS firewalling. And
+I will have more to say about
+that in a few minutes. But the point is this is not our first
+choice. Our first choice is that
+the bad domain names are not too cheap to meter. So they don't
+get created in the first place.
+Our second choice is to take them down at the far end so we
+don't have to take individual
+action at over attack surface edge to stop something that is
+actually a point source problem.
+So economically speaking, this is stupid. But it's what we've
+been driven to. So let's talk
+about some (inaudible). I mentioned that the traditional
+DNS forensics methodology is to
+issue a query. And in DNS when you issue a query you have to
+supply the domain name and the
+type. I mentioned that that's kind of a bad idea for criminal
+forensics because the bad guys
+are running the name servers that you will be talking to so
+they will see your queries. Or
+some take down as a service company will already have wiped
+that domain off the map. So by
+the time you are look at it you can't find anything about it
+anyway. Either way, that doesn't
+work. So there is a now vibrant industry of passive DNS database
+providers. I am one. I am not
+the only one. The protocol that we use in our system is
+currently on its way to becoming
+an ITF standard. Our system is free if the person using it
+isn't getting paid to use it. If
+you are an academic research or hobbyist or whatever you can
+just come to us and we'll give
+you access to our stuff. But if you are getting paid, we'd like
+to get paid too. But here's an
+example. Which is kind of similar to the normal DNS query.
+I'm providing the name and the
+type. The difference is I'm not just getting the current value.
+In fact, this issued no queries
+that the bad guy can see. We have a database that has stored
+everything that we've seen from
+a lot of name servers for the last four years. So we have
+terabyte among terabyte of
+stored DNS traffic. It's all indexed. And I'll show you some
+of the other indexes. I want to
+remind you this is just my product there are freebie that's
+do this also. What you can see
+is I listed my domain for sale last year. By the way, it's not
+sold. If you are interested
+contact me. You can see the history. So you can imagine if I
+were a criminal DNS user, I
+might have an interesting history of changing my NS
+records every time I face take
+down somewhere. So you would be able to see the entire history
+of people getting chased from
+one provider to another using this system. So, again, the same
+thing you would in a DNS system.
+Which is I have a name. I have a type. Tell me what you know. The
+difference is what this thing
+knows is history not the current value. Here we see an
+interesting wild card capability
+where I'm saying yeah show me all of the (inaudible). DNS
+normally can only tell you a
+single answer that matches the question you have asked. The
+only wild card a normal DNS can
+do is the wild card in the zone that will match some random
+string of characters that you
+type. And it will synthesize an answer that matches the wild
+card record. Normal DNS has wild
+card on the server side. We have it in the database. So it's
+possible to now it rate
+through ‑‑ iterate through ‑‑ I had to wipe out the Comcast
+internet selections to fit it on
+a slide. But you get the idea. You would normally be able to do
+a zone transfer to see all of
+somebody's names. What we've done here is to reconstruct that
+zone, one response at a time
+over a period of years. By the way, I want to do a shout out to
+(inaudible) whose idea this was.
+He invented this passive DNA logging and it was the target of
+his master's thesis. So BFK
+which was one of his post-graduation employers does
+run a system like this that was
+based on his work. Wrote it in Ada for whatever reason because
+Ada isn't dead in Germany yet.
+Anyway, he did this. His inspiration, he told me, was
+that the German registry, the
+top level domain hold for.DE which is the top level domain
+for Germany closed off zone
+transfer. For many years they allowed anybody in the world to
+do a zone transfer then they
+tried to limit it to just German citizens then they just turned
+it off. He thought the .DE
+domain was public property. So he resolved to make this his
+thesis project so he could
+reconstruct the domain. That is what civil libertarianism looks
+like in Germany. And he has
+really launched a thousand ships with this idea. So here's an
+interesting case of right‑hand
+wild carding. This is where I wanted to know not what answers
+end in something but what
+answers begin with something. Normally wild carding does not
+work like it does when you do
+the LS command in a Linux shell window. Normal wild carding DNS
+is that the front part of the
+domain name can vary but the back half has to be known. In
+this case the front was known
+and the back was allowed to vary. I actually discovered two
+cousins by preparing this line.
+So this is an example of discovering related resources. I
+was updating my mail server
+from, you know, old whatever to new whatever. You know, as we
+do. And I had lost track of what
+I had registered. I no longer knew what domains I owned or
+what the mail server should be
+able to respond to and treat as its own stock rather than going
+into a mail loop. So I used DNS
+DB to get a list. I said show me all the domain that's use my
+mail server. And I should
+mention in passing, I am a child of the cold war. In the 1960s, I
+can remember having a job in a
+public first grade classroom of pulling down the extra set of
+shades when a certain type of
+alarm would sound then we would all hide under our desks. That's
+what we did to test for the fact
+that an incoming A bomb had just landed off the coast of
+San Francisco. So the idea of
+being able to buy property in the Soviet Union appeals to me.
+Which is why I moved VIX.com to
+VIX.SU. I subsequently learned no dot mail server will accept
+email from a dot SU. (Laughter).
+So the point is I don't think I am a criminal. So this is not
+the way that I clustered a
+criminal's assets. But a lot of criminals do use the same MX
+record for a lot of different
+domains. And if it isn't an MX record it could be a serve
+record, CMA record, maybe a name
+server. And if what you want to know is what the police use to
+refer to as the reverse
+telephone directory where you start with the number and figure
+out who has it rather than
+starting with a person and finding out what their number
+is, this is how you do it. You
+just grab all the responses in transit for a long time and
+index the hell out of them and
+you can discover exactly what is related to what. Because
+criminals are not usually going
+to be able to create a different mail server name for every
+criminal enterprise they
+undertake. And if they could you will find them that way instead
+of this way. That behavior turns
+out to be an anomaly of its own. So, finally, let's check some IP
+addresses. In this case, I
+wanted to know ‑‑ well this is the FBI. I thought they did a
+really good job of ‑‑ this is,
+like, four‑year‑old history. They've had no turn at all. All
+of these records have been there
+the whole time. And that's a pretty clean system. Those of
+you should be able to look at
+that and say there's very little de‑bugging you have to do if you
+keep it that system and that
+stable. But then I noted they had a whole bunch of other
+things in the same address
+block. Because our indexes are not just on names they're also
+on IP addresses. And this works
+just fine on the IP four, IP V six and it doesn't have to be on
+a slash 24 boundary. Any bit
+boundary it will work. If you know the certain decider block
+is owned by a certain internet
+service provider who is writing a lot of pink contracts, they
+are sheltering their customers
+from complaints and keeping people online no matter what as
+a contract term, you might want
+to know, what are all of the domain names that points into
+the address space that belongs
+to this bastard so that you can go after them one at a time and
+decide that maybe ‑‑ if you're
+willing to do business with bad people, I'm betting you are not
+doing business with very many
+good ones. So you just become my menu, inventory list of other
+people to investigate. The FBI
+is not an example of that but I did want to just demonstrate to
+them. I was talking to one of
+their sys admins and I said you got a clean set‑up but let me
+show you the information you
+have been leak by putting things under Jason's address in the
+name assess block. It was kind
+of cool. By the way I Infraguard because they have 300. Okay. So
+in examples I've shown you they
+look like DNS output. Like I've been using the command. What you
+will see here are two examples.
+One without the dash J flag on my particular command level
+tool. That is just an
+adaptation. In other words the default for this tool is
+converted to human readable
+DNS‑like notation. But the actual database is taking
+restful commands and giving you
+adjacent answers. So the real use of this is not to run my
+cheese bag little command line
+tool but to wire this into your own Analytics so that you can do
+this type of clustering and sort
+of guilt by association or whatever else you want to do
+from within your software. And,
+again, the protocol, the particular restful protocol with
+the results is the topic of ITF
+RXC. This is no way propriety. We want everybody to
+interoperate. Do not be afraid
+of, you know, the possibility of maybe having to run on OP script
+to parse the output from our
+system. It really is Jason underneath. Right so let's
+talk ‑‑ let me move away from
+DNS database use. I mentioned pool ship. I don't intend to
+focus on a single pool. There
+are several interesting ones. So people can't be bothered. I hate
+those people. What you are
+seeing here is somebody who is packing that target, at the top
+pack the guy on the left using
+the guy on the bottom as a reflecting amplifier. The reason
+this works is the guy on the top
+is able to send a continuous stream of DNS request or
+whatever it is. Can send a
+continuous stream to this request forged to have come from
+the victim on the left. And the
+guy at the bottom, because of the way the internet is wired,
+does not have any idea that that
+is a forgery. By the time it reaches him, it looks completely
+plausible and he will just
+answer it. Obviously, the ISP for the guy on the top could
+prevent this. I wish they would,
+but they don't. Because that's a lot of cost on their part. Or at
+least perceived costs. But the
+only beneficiary will be their competitor on the left. So the
+idea of spending money locally
+so you can help people that you are competing against in
+business seems a little bizarre
+to your average board of directors. Nevertheless, the
+internet requires that we all
+somehow do this. Even though it's not in our direct best
+interests. We will all boil
+together like frogs if we don't do it. That's what's happening.
+So if you are running a content
+server, DNS authority server, then you have to massively over
+provision it. You just do. You
+need a much badder internet connection, server, RAM, you
+need a lot more computational
+resources at peak than you will actually use at average. That's
+because you will be a target
+often enough that you better be able to keep your internet
+property online while you are
+being attacked. So the fact there's a natural insensitive
+for you guys to build really
+over provisioned servers means you are building perfect
+reflecting amplifiers for other
+people to use not to attack you but to use you as a way to
+attack others. So since other
+people's networks, OPMs are really the least reliable
+component of the internet, we
+know we can't somehow call everybody and say could you
+please validate the source
+address so I can be sure that a spoof source attack is not
+coming from your network? I
+mean, who you are going to call and why would they take your
+call and why would they say yes?
+So we did a thing which is demonstrated here. It's response
+late limiting. We added logic to
+the name server which is the reflecting amplifier in that
+picture, to say I think if we're
+going to send pretty much the same response to pretty much the
+same network more than, let's
+say, a dozen times per second, that could be a DDOS. So let's
+try suppressing some of that and
+just try dropping a bunch of it on the floor. The exact method
+you drop it and when you set it
+(inaudible) are not the topic of today's discussion. I've got
+some URLs at the end. But in
+this picture what you see is (inaudible) who is the dot level
+domain operator for dot info. If
+you can ‑‑ I don't know if you can squint hard enough and see
+it but there is an area below
+the line and above the line. And this is usual sleazy graphing
+trick that we use on a lot of
+DNS related servers. The part in the negative region is the query
+volume. By bit. And the part on
+the top, the positive portion of this is your response volume by
+bit. So they were being used as
+a multi‑gigabit D‑DOS amplifier and people would call and
+complain and say would you
+please stop sending me so much traffic. And they would answer
+by saying you are sending us all
+these queries. You want to be block holed? No we want to be
+able to reach real dot info
+names. We just don't want you to answer the ones not from us.
+Finally the Afilias guys
+installed my patch. Which was Vernon's patch but it's my idea.
+That's where you see on the
+right‑hand side all of a sudden they stop answering all the
+crap. And they posted this to
+whatever DNS or some mailing list and within a month every
+top level domain server had
+logic like this. And the NSD people who are the other major
+authority named server provider
+in the world other than us, I worked in INC at that time on so
+this was a BIND catch
+originally, they added it too. So if you are running an
+authority name server and not
+running rate limiting, please investigate it. It is a simple
+one line config change. I won't
+cost you very much in memory. It will not cause people to call
+you and say you are unreliable.
+It is the thing to do. So there's a much simpler problem
+solution coupling than what I've
+given so far. A little bit about DNS fire walls. I mentioned that
+I created the first reputation
+system, distributor reputation system after DL. We kind of
+wanted to do the same thing for
+named servers that we had done there for mail servers. And it
+is a published subscribed
+mechanism and we are actually using a zone file as the
+encoding of the rule set. Which
+is you should recognize as a sleazy trick. But it means that
+all the data paths that that
+server has already allowed by its firewalls to do will carry
+this information as well. So it
+turned out to be ease of insertion thing. So the way you
+actually program it ‑‑ again
+we're not going to get into details here ‑‑ but there are
+now about half a dozen providers
+and there are hundreds, maybe thousands of subscribers. A lot
+of reputation information is
+being published and subscribed in this format. I have a very
+short example I want to show
+you. Let's see here. Right. So I noticed that newly observed
+domains were crap and I decided
+to come up with an RPZ that would do a rolling picture of
+the last ten minutes of
+new domains. And ten minutes is not the only window. Some people
+want 30 minutes or 12 hours. But
+the ten‑minute window is the one I use at my house. So if you
+visit my house you will not be
+able to reach any domain name that was first seen by far
+sight, that's my day job in the
+last ten minutes. What I discovered was a fair number of
+domain names don't live to be
+11 minutes old. By holding their head under water for the first
+ten minutes you can avoid ever
+dealing with them at all. (Applause) We did some
+subsequent research because we
+have a big spam feed as part of our realtime system. And we've
+looked at spam, big spam and
+found 60 percent of it used a domain name created in the last
+24 hours. So this is kind of a
+building block approach where first we created the fire
+walling capability in one
+company then we came over here with data feed and created this
+interesting feed. There are a
+lot of other RPZs. There's an RPZ full of domain generation
+aloe rhythms. A ‑‑ algorithms.
+There are RPZs full of various known bad reputation things. I
+want to encourage you ‑‑ I am
+going to skip most of this. But I want to encourage you to look
+at the DNS RPZ.info website
+because it will have a list of the other RPZs I know of. If you
+are publishing one send an email
+and we'll put you on the list. That's the short one hour
+version of DNS problems and
+solutions. Thank you for your time. I'll take questions for
+about two minutes then they're
+going give me the hook. (Applause)

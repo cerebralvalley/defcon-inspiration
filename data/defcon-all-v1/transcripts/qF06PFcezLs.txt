@@ -1,0 +1,689 @@
+>> I'm technical director, Matt
+Hastings, one of our
+consultants, both of us has done response investigation at
+Mandiant, for myself upwards of
+five years,for matt upwards of three years. Apologize if we
+sound horse. I have been in
+Vegas since Friday of last week teaching and presenting. This is
+last of my voice that's left.
+Hopefully it will carry through the hour. Thank you for coming.
+We will talk about investigating
+power shells attacks. Not blue shell. If that's what you are
+looking for in the wrong
+presentation. The reason we did this research ‑‑ we continuously
+are seeing attackers adopt
+interestingly novel approaches to compromise and persist an
+environment. We had seen an
+increasing power shell in some targeted attacks we investigate
+starting about 18 months to two
+years ago, very sporadic, nothing consistent, nothing I
+would call a trend at the time.
+Earlier this year matt and I worked the case, targeted
+compromise of the fortunate 100
+cases, spent four months investigating in this
+environment. This victim VPN
+space have been compromised for over three years. Attacking main
+administrator during that time.
+They had free access to the majority the environment, but
+the way they have conducted the
+majority of their of command and control when we were watching
+was from their own originating
+attacker system through the VPN, targeting the victims work
+station and server using a
+combination of stuff we see often, like schedule tasks and
+stuff not seen quite so often,
+power shell remoting and copying and executing power shell
+scripts on the target systems.
+This turned out to be forensically challenging. You
+don't get to see what's on
+attacker's system. When you conduct attacks like power shell
+remoting over the network, it's
+difficult to see what was done on the host on the end point
+side if it's in memory. This
+lead down the path of doing research and that's why we're
+here today. Of. We're not going
+to go into a power shell 101, way beyond the scope of this
+talk. Suffice it to say power
+shell is powerful. A command line and scripting environment
+in Windows takes the
+functionality see in batch scripts or other scripts Windows
+supported and rachets it up
+another level. You can interact with Windows API and registry
+and you can do cool stuff access
+the entire dot net frame workload and reflectively load
+and execute DLL and memories.
+This makes it useful for system administrators and developers
+for using it legitimate
+purposes. It also means attackers can use it and do neat
+stuff witness. Developers have
+built penetration testing and attack frame that use power
+shell. PowerSploit is probably
+the best known written by a number of guys, Bell, Joseph,
+Mack who works with us at
+Mandy FRI. PowerSploit does recognizance, remote code
+execution,its got a module
+called invoke Mimikatz that will take the mimikatz code and in
+memory run it on a remote system
+without ever touching disc and do what mimikatz does and other
+modules. Other tools like
+MetaSploit which has power shell based modules for over a year
+now, veil power view, more and
+more attack framework are integrating power shells are
+integrating power shell into
+their tool kit. Targeted attackers learning how to use
+it, attack and testing tools
+using it. Mass malware use power shell. The first power shell
+mass malware was shortly after
+the creation in 2006 called power worm. A proof of concept
+didn't do much but now mass
+malware use power shell. Trend lab has reported a couple
+examples in the last 12 month. A
+classic ransom where sample that encrypted all your file and
+demanded payment. The bottom
+line attackers of all disciplines are learning how to
+use this stuff. Instead of
+coming up with an investigation methodology specific to one
+attack frame work or cool or
+malware, we took the lowest common denominator. What is the
+fundamental way to interact with
+a system and forensic impact does that have? The three
+scenario exercise executing a
+power shell local host, using power shell remoting feature
+which using a protocol WinRM,
+Windows remote management interact with a remote host and
+persistent power shell, taking
+power shell code and configuring system to automatically execute
+upon log in or boot time. Each
+scenario you run test case what impact on registry on file
+system event logs, memory and
+monitoring the memory, network traffic. A few assumptions, the
+fist that we make is that the
+attacker has local or domain administrator access to the
+target system. You may be
+thinking, isn't that cheating, what we're dealing with, when we
+look at this is post compromise
+scenarios. I don't care about the initial exploit, I concern
+has a foothold in the
+environment and achieving mission, moving host to host,
+doing recognizance, stealing
+data and whatever else brought them to that environment in the
+first place. Almost every
+Windows environment the attacker gains administrative permission
+quickly. You can find the other
+stages without getting compromised and kicked out.
+That's the context we will be
+looking at all these environments. A quick version
+reference, there's a lot of
+different versions of power shell. I think 4.0 is current,
+5.0 is in the work. in most
+Enterprise environment, you will see 2.0 because thats whats been
+installed by default in Windows
+2007 and viSta late and Server 2008R2. Windows 8 power shell 3
+by default, Windows 8.1 includes
+4, but we dont see corporate environments adopting either of
+those platforms for quite some
+time. The down side is cool things in power shell 3 that
+myself and Matt will talk about
+later, won't be available by default and therefore won't be
+installed in most environments.
+You have to apply an optional up date in the Windows management
+frame work to gain access to
+later versions of power shell and Windows version of Windows.
+Let's begin by talking about
+memory analysis. In some ways this is the worst case scenario.
+An attacker interact with
+targeted host, use power shell remoting. Worse case scenario
+because it's volatile, the
+session end, come back to system in minute, hours days, and based
+on a lot of factors we want to
+understand what would be left behind assuming the system had
+not been shut down or rebooted
+and how long could you find and recover that and how much could
+you get out of memory. To
+understand this, we need to understand the process hierarchy
+that power remote using. What
+happens myself as client initiates power shell remoting
+on target systems memory? The
+way it work lets say i use the power shell command like the
+invoke command to run evil .exe
+and presumably evil.exe is already on target system.
+svchost.exe service hosting
+process that is running the decom launch service an
+instantiates an instance of
+wsmprovhost.exe and then that instance of wsmprovhost in
+turns, executes evil.exe so
+evil.exe parent process will be wsmprovhost and svchost will be
+that wsmprovhost's parent
+process host. In contrast, If I use power shell remoting to
+execute power shell native
+command, in other words, just command or code that is solely
+resonant within power shell
+language based, what happens is wsmprovhost spins up again. You
+don't see a child process power
+shell dot exe spawned. The power shell code runs in context of
+wsmprovhost. You don't see a
+child process when you do remoting like this. So what's in
+memory? If you go to memory and
+you dump memory right when a power shell session, remoting
+session occurring on victim
+host, you can reconstruct almost complete command from the
+wsmprovhost memory space. The
+problem with that is it terminates at the end of the
+session. Meaning if I do one
+power shell remoting command, the moment the command complete,
+that wsmprovhost terminates, all
+the cool evidence is totally gone. From a practical
+standpoint as an analyst or
+investigator you will almost never get to the system in time
+to recover that process memory.
+That kind of brought us back to the drawing board to see where
+else in memory does this stuff
+hang out? What we found is that another instance of the service
+hosting process running the
+Windows remote managing service, broker power shell remoting,
+contains remnants of the soap
+objects that power shell input and output martial-led into when
+you do remoting. This may
+persist after the end of a remoting session maybe up to
+reboot. We found bits and pieces
+of the same data persist in the kernel and the page file. We
+suspect that that is probably
+artifacts of page, tools and memory and therefore not
+something you can reliably
+expect to always find. We will not read this in detail. We put
+together a table here of source
+of evidence in memory and how long you can find stuff after
+the fact on the system. Your
+best bet is the winRM instance of Svchost. If you dump memory,
+assuming that the attacker is
+the only one thats interacting the system through remoting, and
+assuming that the system hasn't
+rebooted, you can recover input and output from power shell
+sessions. It look like this. I
+apologize if the colors are hard to read. Here's an example of us
+running through remoting of
+power shell command that does echo test string PS session
+through output file. Amidst this
+giant blob of ugly xml, you can see an RSB command tag and the
+full command we submitted in the
+command line. We were able to recover that from memory many,
+many hours after that already
+had executed. A more interesting example used the power sploit
+invoke mimikatz madule again for
+remoting. We used the technique where you download through power
+shell the script over the
+Internet, and then dynamically execute it. So nothing touches
+this memory on the victim
+system. Again, we can see in the inset a complete command line of
+everything executed to pull and
+run the invoke mimikatz Power sploit module. It's possible to
+use this. Yes, this is painful.
+This is kind of like worst‑case scenario. You can recover
+evidence. Will you have to work
+for it. The biggest problem is since we're looking at fragments
+of the soap and the power shell
+remoting protocol, xml objects used when do remoting, not like
+well structured objects retained
+in memory because being actively used. It's portion of memory no
+longer actively allocated. The
+bottom line you can do string searches. You can find RSP
+command,RSP command line the
+strings and hone in on the commands. You will have to sift
+through a lot of garbage. In
+summary, timing is kind of anything, everything rather,
+that's always the case with
+memory analysis but especially with this because there is no
+proper place at which in memory
+all of power shell history is retained forever. It has to be
+constructed from what's left
+behind in the Windows R M memory space. Taken then things like
+system up time and memory
+utilization can impact how likely you are to recover these
+types of art facts. I will turn
+to Matt? >> You look at similar scenario Ryan talked about
+attacker interacting with
+system, and we also looked at logs in power shell locally.
+Each scenario try to answer
+three questions. Which event log specifically are activity? This
+will be event log that are
+directly writing power shell activity. What you will see in
+the next slide is event logs
+that power shell writes to directly. It doesn't necessarily
+cover the event logs that may
+contain data. For example in the remoting example, an attacker
+logs in, you will expect to see
+a log in. That wasn't covered in research. As looking for each
+resource, logging detail,
+ideally get full command history of everything executed on the
+system. What will we see?
+Specifically some of the distance between power shell 2
+and 3. So we identify five
+specific logs that may contain power shell commands or may
+contain some relevant
+information related to power shell execution. The next two
+slides will walk through what
+happens local versus remote scenario. Starting with the
+power shell event log itself, we
+identified two event ids for 104, three contained some bit of
+relevant information. Not ideal
+if you are looking to fully find out what was executed. but in
+the EID 400 seeing the engine
+state changes from none to say available, indicating that power
+shell started. Looking at
+generated time of event, power shell was run on the system at
+this time. then in EID 403, done
+running. You can two times and command between X and Y. The
+host name consult host indicates
+a local session versus a remote. We will show you what a remote
+session looks like in a
+following slide. A power shell operational event log and power
+shell 2.0 doesn't contain any
+information. We did find one that contained the same
+information that power shell
+starting up. You can get that from the same event he spoke
+about previously. Power shell
+3.0 and greater, it write for error messages. A script failed
+to run, we get the full path of
+the script. In a remoting session session, if looking at
+remote host, you can get the
+host name and I T address of the system attempt together be
+accessed. For power shell
+analytic logging, those not familiar, analytic logging is
+disabled by default. Debugging
+purposes and not for long‑term retention. We did enable it and
+find that power shell contain
+relevant information. You can see here in the 79, 37, the test
+dot PS 1 scrypt was run. We can
+see a power shell script run. You can run a native within the
+same event I D and finally, a
+dropper I D. Run that from the power shell console, that will
+be recorded here as well. What
+you don't get from here is any command or argument, you kind of
+get like half way there and then
+you want to know how were these configured and there's better
+ways to record this information.
+An analytical logging in this case is probably not worth it.
+Moving on to remoting section
+here back to the power shell log, EID6 the accessing system,
+we can see that the WS man
+session is starting. Looking at this, you can say from the
+system of remote session
+starting connecting to another host. And those not familiar, W
+Sman manager protocol used by
+win R M which is what power shell uses for remoting. On the
+access system, we have E I D 400
+and 403, in this case we see the serve remote host as a host
+name, which indicates that this
+is a remote session versus a local session. In the remoting
+situation you are using the
+winRN service, specifically here in EID 169 you can identify who
+the user that logged into the
+system was, if you don't have logs going back that far. The
+security protocol that was use
+Ford authentication. Similar to the power shell log, the time
+frame of remoting activity, the
+client request for the shell and the delete shell. That appears
+in multiple event logs. Now
+going back to the power shell analytic log. As far as 2.0 is
+concerned, which Brian
+mentioned, it is probably prevalent. I got to pause.
+Yesterday a mispronounced
+prevalent Back on track. In the analytic, way of capturing
+command execution and responses.
+Now to problem is, and well will get to this. The actual content
+written in hex encoded format.
+Looking at the log itself doesn't give any information.
+What you will find is that every
+piece of information, and everything that is sent back and
+forth between the two host will
+record it. The initial protocol is recorded in the log hex
+producing format. You have to
+dig through it if you want to find what was run. Here is an
+example of the event log. Here
+an object was received on company man, again, it's in a
+hexing encoding format. You
+can't tell what happened. If we decode it, you can see here that
+the lines here. You can see it.
+The command get char item in the script, no, not, you can see the
+argument pass. You can see ‑‑
+Looking at the analytic log now with a response that is sent
+back, a single response that's
+sent back to the request in the system. In power shell we run a
+built‑in command, everything
+that comes back is in the form of an object. Each object
+returned from this command is
+written as a single event in the event log. If you run this get
+trial, it will create enough in
+the event log to mass the number of items within the C directory.
+It generates a ton of events and
+you have to parse through individually decode and map back
+to what was run and what was
+responded. In 2.0, it's not practical to do this. There are
+some other options. The first
+one is some of the profiles that power shell has. Power shell has
+multiple profile options where
+you can configure code to be run at any time that power shell
+locally starts up. Here an
+example of global profile. You can start record transcript
+command input and output. You
+can write out to an event log format if you prefer. We have
+seen some companies put together
+custom codes overrides the default prompt so anything typed
+in spit out to a file. Some of
+the limitations here are like I mention, this is on for power
+shell execution. It doesn't do
+anything over remoting. Also, you can launch power shell by
+saying no profile flag, so none
+of this codes are run. Again, it's a solution not the best
+answer, but it is something that
+can help you out. Also, if you are using app blocker, it has an
+option for enforcing scripting
+rules. You can see here, okay, a script was attempted to run at
+this time. Here's the path to
+it. Even if not enforcing, it's another option if you are
+running app blocker. Moving out
+of power shell 3.0, the best option we found is module
+logging. What it allows is to
+get that clear text specific command input and output in
+clear text for anything being
+run through the shell. Both locally and remotely. We will
+show you in further slides. Here
+we ran a more complex command in the past. We said get trial item
+of C attempt directory
+recursively only filter back files with the .text extension
+and do a basically a select
+screen in power shell for the same pass word. The top item
+here, you see we captured the
+command sent to the system and have all the arguments being
+parsed out and available in a
+clear format and at the bottom you see the response or see the
+file that it hit on and the line
+where it found the file, found the hit. Now, this can be
+slightly problematic when you
+run a script. Each line and script, each command in the
+script will generate own power
+shell script. We ran the invoke mimikatz module in power shell
+and doing over 1200 events in
+the event log. A large number. We can't parse through. When we
+got to the actual response, we
+found it written in clear text mimikatz output in the event
+log. so you can see all the
+password hashes here clearly written in the event log. >> For
+this last bit were gonna focus
+on, we wanted to talk about the ways in which power shell code
+configured to automatically run
+in the system. Attackers like persistence, if you are look
+doing something like back door
+or key stroke or car data track, or track recording, anything
+continuously execute on a system
+and survive reboot and shutdown, you need to find persistence
+mechanism. This is understood.
+There's numerous techniques that Windows provide well‑documented
+from registry, auto start point,
+window services, thing like recurring schedule tasks, use of
+the start‑up folder, if you
+think about it, persisting power source, making power dot exe run
+with argument of the script. All
+of these techniques very well understood. We will not spend a
+lot of time talking about them
+because folks have done plenty of research on that in the past.
+What we will spend time on is
+per these tense via window management. One of the reasons
+nor that is the power sploit
+tool kit includes this as one of the mechanism that you can use
+to persist the code of your
+choice. We thought that made it a target. We seen a packers use
+W M I persist, not necessarily
+power shell but other things like C script or J script, the
+other built in scripting
+component in Windows that similarly running native and
+code. W M I is friendly for that
+scenario. To understand that, we need to step back and explain
+how W M I works. This is a big
+mess. I will give you a high level. It's this inventing
+infrastructure. It has this
+notion of event filter, consumers and binding between
+the two. An event filter is a
+query continuously run against the state of the system. When
+it's satisfied, it fires the
+consumers that bounds ‑‑ and the consumer runs something. All of
+these things can be set with
+power shell using set wmi instance command. And also as
+we'll show you later enumerated
+power shell. Event filter, as I said is the thing that causes
+the consumer to trigger. Written
+in Wql. Has a simple example. We have an example of wql that will
+fire when the system up time
+between 240 and 325 seconds; basically, a roundabout way of
+saying, fire upon startup. The
+next one is an example where instead of relative time, it
+says at 12:00 exactly fire. So
+that will satisfy the filter. Two different ways to basically
+achieve the same thing,
+continuously run something on an agreed upon interval. The
+consumer is what runs when the
+filter is satisfied. In this example we're going to execute
+power shell. The trick is
+execute power shell to load what? Where does the evil code
+come from? You have a few
+options here. The thing that power sploit does by default is
+it puts the code in system wide
+or user profile. As Matt mentioned earlier, load
+automatically when power shell
+executes. If I create a system runs power shell without any
+options, it loads the profile.
+By virtue, it loads the malicious code. Simple technique
+and works nicely. The other
+thing is add your malicious power shell code to argument
+supplying to power shell exe and
+build into the consumer's command line. In that case only
+limited by the command line
+length limit Windows enforces something like 8,000 characters.
+That isn't too bad of a
+constraint. The example shows you can run compressed power
+shell code and decompress and
+execute on the fly. You can fit 8,000 characters. The easy
+solution to find malicious wmi
+filter and consumers that run this is through the use of power
+shell. The get wmi company man
+lets you filter consumer and binding between the two. We do
+investigation in a lot of large
+environments. We pulled 50,000, 100,000 environments to get an
+idea of what is and what is not.
+What we have seen is that it is not common to have event
+consumers that execute power
+shell. That doesn't mean in your environment it may not be
+legitimately used for
+administrative purposes. The bottom line is base line
+environment easily and determine
+what consumers and filters and legitimate and look for
+anomalies. The other thing you
+can do is look at the file system at the host which this
+occurred. This is difficult
+because wmi is stored in the wbem repository. This directory
+C Windows system 32 wbem
+repository. The files that keep all of the wmi objects in event
+filters and consumers, mainly
+objects.data is the key file. It is this undocumented proprietary
+format no documents whatsoever.
+Some engineers looked at briefly. A big ball of hurt.
+They don't want to get into. The
+bottom line is if you had a dead disc image from a host, there's
+no good way to host it purchase.
+You can do strings against it which can kind of good. Strings
+will give you the event filter
+and consumer names. If your attacker was foolish enough to
+create my bad ass event filter,
+you would be able to find in object data. You get the command
+line. If you discover on a host
+this technique is in use, the attacker is referencing power
+shell with arguments, you can
+see that in strings in objects.data. If you are looking
+at things I'm examining a
+system, did these files get modified in the time frame
+attack activity? It will not
+work. Windows is up dated constantly. They change all the
+time. Finally, you should
+definitely review all the profile .ps1 file on a system
+that you suspect has been hit.
+In most environment, you will have an empty file. So quick and
+easy to check the profile. You
+might as well look at it. Anything in the profile will
+automatically execute unless you
+supply the no profile argument to the power shell command line.
+Why not check it for malicious
+code? Finally, the registry, this was kind of disappointing,
+like many thing in Windows
+creating a wmi filter, a consumer lead to some sort of
+change for registry forensically
+examined. That was in this case. The only exception was depending
+on the filter you used to create
+the condition to fire consumer, registry team might be created
+to a provider that satisfied
+that query. The long and short is the example power sploit uses
+run this on this exact hour and
+minute, it was like 12:00, in the example. Creating that
+filter registers this key for
+win 32 clock provider, by default this does not exist in
+Windows environment. You have to
+create a wmi filter that uses that as its provider. From all
+the enterprise scale
+investigations done, I have not seen this key except when an
+attacker is using this
+technique. Of course there's a hundred million ways you can
+create wmi filters that don't
+use that specific provider. This isn't meant to be comprehensive.
+It was an interesting part of
+the fact of default behavior of PowerSploit itself. Other
+sources of evidence, if you use
+the system internal tools, which are fantastic, auto runs was
+updated a month or two ago.
+Version 1d will enumerate and displays all wmi filters and
+consumers in an easy to read
+format. I suggest checking that out. In memory, we didn't spend
+a terrible amount of time
+examining this. That was mainly because the memory space of the
+wmi relevant processes are
+noisy. We didn't find any reliable way to recover evidence
+after the fact. Event logs do
+have some wmi, so you can enable wmi trace logging. If an
+attacking register a malicious
+wmi, it would generate an event. Windows does this stuff behind
+the scene. The one event will be
+buried amongst thousand events during system up times and roll
+off the log quickly. >> Just to
+wrap up. We didn't cover every source available. We have
+released a white paper now
+public, in a draft format. The final version out next week. It
+has more detail and some of our
+research and findings. A few other places if you look, if all
+the other ones we have gone
+through turned up nothing, looking at Windows work station
+and a power shell pretext file
+created, that can contain information on either a power
+shell scriptures line or power
+shell certain files of interest to you. Now only caveat only for
+local execution of power shell.
+No remoting here. Also, there's a single registry that I
+wouldn't say relevant, the
+execution policy setting. By default power shell doesn't let
+you execute unassigned scripts
+this is just to prevent people from double clicking bad
+scripts. Everything else in
+power shell, you can bypass command line with the execution
+bypass flag. One situation, the
+attacker modified registry key to allow unsigned scripts rather
+than bypassing on the command
+line. I don't know if tired of doing it, they did modify this
+key. Network traffic analysis,
+since power shell using the win rm service, looking at the winrm
+port so port 5985 and 5986 use
+http and https respectively. The pay load for power shell is
+encrypted regardless if its
+http. If you are using http, you can pick up header information
+power shell version. In that
+case, mentioned previously, the attacker is using a different
+version of power shell than what
+they use natively in the environment. They actually wrote
+some ‑‑ did some network
+monitoring power shell based on the version in the headers. And
+then looking for anomalies.
+Really, lessons learned and recommend upgrade module logging
+possible. Move to a power shell
+a version 3 or later and implementing module is the best
+solution. Beyond that and
+looking at high level, base line legitimate powershell usage
+usage can be key in identifying
+anonymous and malicious powershell usage. What is
+execution policy setting and
+does it change? If so, why? How do you name the power shell
+experiment and where do you put
+them and looking for other directories that may not match?
+Do you use remoting? Is remoting
+enabled by default or only on certain system and base lining
+that usage? What users use it
+and from? Is it only admin or serve admins and work from
+similar sub net and base lining
+and saying this is what good power shell looks like in my
+environment and looking for
+anomalies through the method we described earlier. >> The bottom
+line exception of module loggng,
+no perfect solution. There's a lot of attackers continue to do
+it. Taking that step in advance
+before an incident understand how being used can save a lot of
+leg work in the future when you
+may have to respond. The thing we find is during your
+investigative process, power
+shell isn't the lead. It's some other artifact activity on the
+system. As doing forensic and
+time line analysis and see these thing we presented today, you
+may get indication that attacker
+was using power shell. If you didn't node to look in these
+places and memory, you might
+completely miss that's part of their tool kit and therefore
+they might be able to
+successfully use it without being detective in post
+compromise. We want to
+acknowledge Matt, co author of powersploit, done a lot of cool
+work on attack research with
+power shell. As has Joseph, Chris Campbell, Microsoft has
+reached out. I want to thank Lee
+Holmes. The folks at Microsoft are aware of folks using it.
+It's under the context of
+attacker who is already in the administrator on system. All
+bets are off from security
+standpoint. They are working to make it more audit friendly and
+easy to monitor. There will be
+some cool stuff coming down the pike make it easier for those
+running in their environment. I
+think good thing will come out. Thank you for your time and
+attendance here. If you have any
+questions, it looks like we have a couple of minutes. Step up to
+the microphone. We will answer
+them. You want to talk to us directly, catch us after the
+talk or email us or hit us up on
+Twitter. At this point I will stop for any questions. Sure.
+Could you go up to the mic
+please so it gets caught in the recording. We will repeat it. >>
+AUDIENCE MEMBER: [Indistinct
+speech] >> The question recommended powershell 3, not up
+date to 4? Not that I know . You
+can just as well update to 4. They don't make it automatic.
+There were a couple of things
+that were deprecated between 2 and 3 ,they're exceptionally
+minor, for the small pool of
+people using power shell for exchange event management, you
+may not want to break things. I
+would check whether the thing you are using in 2.0 not broken.
+2 to 3 was the major change.
+Does that answer your question? ANNOUNCER: Yes. >> Any other
+questions? Once again, if you
+want to talk to us directly, we will be here. You can reach out
+to us via email. You guys were
+great. Appreciate you having us here. (Applause)  [End of
+session]  "This text is being
+provided in a rough draft format. Communication Access
+Realtime Translation (CART) is
+provided in order to facilitate communication accessibility and
+may not be a totally verbatim
+record of the class." PAGE PAGE 20

@@ -1,0 +1,192 @@
+>> So today, I will introduce
+you guys that how to hack video device and it seems you guys are
+tired so I make this quick, yeah. >>And, uh, yeah in the
+speaker room, somebody invited me to drink beer, so Im a
+little bit high.  Yeah. (Applause).  So I'm from the
+UNICORN team, 3 topics in this DEF CON, so.  And okay.  So,
+Unicorn Team, and focus hardware and success of security and
+research.  We contain a lot of Peruvian peoples, we focus on
+anything that uses radio, technologies and from any small
+things like tablets, something like that. GPS, use the
+research, we hack it, we let them land in the you know page,
+such as audio ware in America, the White House. We do
+our research and we make a lot of products and, [indiscernible]
+and actually -- [indiscernible] maybe you can buy it as well.
+And I have this speck.  And what is this, why this is talk
+relevant relevant to you. Maybe you guys are hackers and,
+might be able to, control these devices and without
+authorization and this talk, will teach you how to package
+it. Such as your your smoke sensor, your HIV test system,
+well if you can choose them, not yours, well you can do
+everything.  What is Zigbee? Zigbee is the only global
+wireless standard that provides the foundation of Internet of
+Things.  By, embedding a simple and smart object to work
+together, maybe you, prove the comfort and efficiency of the
+test. Maybe you guys use some IOT devices and if you dissemble
+it and you find oh, this is [indiscernible].  So its just
+a word is language I read that device used to connect one from
+another. And they connect the person will be able to work from
+you home right now. So maybe someone buy a smoker alert, well
+it if disassembles it, you might buy another one.  Blah, blah,
+blah.  [Laughter]  I was told that maybe you guys, that
+somebody don't know Zigbee design so I introduce it. Zigbee
+is already using Internet of Things, and adapted
+[indiscernible], and it requires low power computer consuming
+machine. It will flex fold and typology.  And, so this is,
+Zigbees networker. You can stray, you can mash, you can
+[indiscernible].  It's very different. [Indiscernible] to
+each letter.  So, the most important thing in Zigbee is
+this talk. What is this? Its the specification of the
+implement of Zigbee. Start from the Texas instructamentor.
+ 2530, yeah.  Point 15 and point 4 in baggage chip. Well in other
+words Zigbee standard is right -- this stack is writing code.
+ So here is chip and you can buy it on the Texas instructament.
+Well you can actually get it free online.  So, actually, a
+lot of people research security program in Zigbee have done a
+lot of things. Zigbee is [indiscernible].  Thank you,
+Zigbee security, is best on smash security, [indiscernible]
+and the recipient of [indiscernible] through a stem
+key.. a stem pool key, its changing so, if you're want to
+know more details, download the documents and do research on it.
+ So, the key distribution thing. You can pre install it,
+transport it, you can establishment.  There are 3 key
+types. The Master Key, The Linder Key, and The Literal Key.
+ So, hacking Zigbee step-by-step, here is what I
+want to say. What I want to teach you guys.  And, you know
+here is the map that how Zigbee transfer the information from
+one to one. I think they so, share with them the think
+process, the polling it background, yeah. A smart system
+that that's one of better qualities. [Indiscernible]  We
+bought it from the Internet. Here is step 3. No more
+[indiscernible] flows.  Phone connect with IOT get away. And
+the connector will flow. Or your phone will connect with the
+wireless router and the router will connect with the IOT away.
+ And connecter both.  And, phone, 4 G, 3 G or 2 G, the
+Internet, connects to server and, connects wireless router
+and connects to IOG away.  So, what do we want, is directly
+choose our own Zigbee note, Zigbee note and choose the
+phone.  That's how we hack it (losing sound).  So, the whole
+translation is encrypted.  What do we do to try to find
+encryption key from the phone. If you want to find it.  The
+first thing you do is download the firmware the key are stored
+in every node in the network. The firm is harder to assemble,
+so we chose to straggler key from the get away.  So, the I
+try to disassemble, actually, I find out -- well, so I use a
+hand to smash it, WOW, this is shit, it doesn't work, its
+broken.  Before I smash it, yeah, I tried to disassemble the
+get away.  So we dissemble the get away, and try to find, we
+try to dump the firmware. Okay. [Indiscernible] the debugging
+test is right there, so you know, [indiscernible] were
+connecting our debugger, and we use a GI smart I, a fresh
+program to do the dump of the firmware.  So if you guys want
+to dump some firmware from your device.  Well, this is
+necessary.  Okay, here is screen shot of it.  And programmer
+software.  Well, we got it from here, it's a lot of minutes to
+stand, so what should we do so, if you just trying to find
+encrypted key, what you do is just trying to find wedding ring
+from the garbage.  So, here is the way I try to find the
+inquiry key.  First, we set the keys to the distinguished
+structure [indiscernible] We can see if we discover something
+interesting. So as the keys used to encrypt the packaging.  So
+why do we not find the instruction that the key so
+lets try to reverse. So we find that the instructions
+reserve key that has relunctanctly has a fixed part.
+ And showing you the next slide, the whole concept with more
+instruction could be used as [indiscernible] or second nature
+to hold the address of the key. So here is most important
+instruction that.. I dont know if you guys can see. If you
+you can't see, maybe you can download if you can't see
+clearly.  Okay.  Yeah.  So, in this right, yeah.  You see it.
+ So, you can see the structures and values that's the flow of
+how I tried to find out the key. And actually there are 2 keys.
+ Yes. The stored and the exchange key.  So if you guys
+want to hack it, you guys need to find the 2 keys to decrypt
+the package.  So, we do this to, second enter, and in the upper
+right corner the instructions to magnify the Nano key. The OX 31,
+on the OX 80. Its the memory adjust that stores the keys. So
+in the lower left corner.  So, on upper right corner is
+instructions that magnify the nano key, so it should oh
+because it's really messy. Something going wrong with my
+laptop.  I'm sorry. thats embarrassing, yeah. Just junked
+up, yeah.  So, then use the code, [indiscernible] there are
+more instructions, corresponding motion and motion code and
+[indiscernible] For numbers, as its harder to search through
+the memory through the premiere or [indiscernible].  So you guys
+can know where the keys are used and how to find it and how to
+encrypt it.  So that's the screen shot of this.  Address of
+the keys.  So, we were verify this keys, is that what we want?
+Verify this, we title it you know, messaging integrated,
+check, contents in package, and if the desired package pass
+through MIC, yeah, so we can be sure that we find the right key.
+So let's, you can just just write simple script to verify
+it, and put all keys to where you can find, password,
+password, bingo, that's it.  So that's our snipper used to
+capture the package.  Yeah so we just, yeah we buy time so we
+change a little -- so the following screen shot shows
+process that a new code joins a network.  As the speaker, its
+quite self explanatory. The network key is extending from
+coding nature to join the device and [indiscernible].  After
+receiving the keys, the communication is immediate
+immediately encrypted. So if it is encrypted we can use the key
+that we find to decrypt it. Here is screen shot.  So, I
+want to say is that after we find the key we could do some
+data-mining, to find the habit of it because there are going
+to be a little but of factors but the foreign are some very
+particular attacks that we can perform.  We can manifest the
+starter data, we can repair and spoof, we can intercept it,
+yeah, we can just [indiscernible] attack.  So,
+what matters of data where we after we decipher the
+data, we will take control over the target device. We have the
+nemesis the applied data. And the result is following.  You
+can see, the, if you want to control this, you know how to,
+you know, the device you can turn a different color.  Here is
+the things that you can, you can know how to control it yet, this
+is a bit, so the penalty [indiscernible].  The last pace
+being SOR stand of the [indiscernible] bytes, byte one
+and byte two of the [indiscernible] of the target
+device. [Indiscernible]  Okay, so, we can control this,
+[indiscernible] While this is the device that we use, it's
+actually about our own, we just, you know, use the echo
+[indiscernible] and we to just print it out.  So, we can
+reprint this both.  If you know the piece that we use, to
+incorporate that we can just generate, the stem package to
+join the network and we can send to the exactly send instructions
+to control this device.  Yes, [indiscernible] well, you guys
+are the get away, so now you control me.  So, this is the
+text flow. This distance is really hard, so yeah. So we know
+that, the double k to send instructions to the make and
+product returns, yeah, so you can now just, you know the
+question so generate exactly same questions to control it.
+ So, how do we protect or just you know, prevent our device is
+hacked by this way.  So, you can, know, just know, if, so you
+can adjust, [indiscernible] encryption keys in your
+firmware, its not safe. So you can just store a
+[indiscernible] of the encryption key instead of the
+[indiscernible] and you know, dont joke [indiscernible]
+ And use pre install of key, look to attach instead.  Blow
+the fuse, to prevent from being dumped. Such as use some
+security water, use special protection to, basically you
+guys don't have to leave [indiscernible] on either. so
+every hacker seems to think well I can hack it.  So the employee
+of the, [ indiscernible] employee of the, some light
+weight encryption on the application type just to
+manifest the [indiscernible] its harder of the key
+comprise  Actually, I would like to say something. Actually this
+presentation is not mine, it's my colleague.  But
+unfortunately, his visa got rejected so he could not make
+it, so I just, I am familiar with his work, always says, take
+laptop and do something. Actually I dont know, what
+are you guys doing?  He says, no you can replace me, you can
+speak for me. I don't know what you do, so how do I do it for
+you, so I'm really sorry for that. >> Youre doing fine.
+ (Applause)  [Laughter] >>yeah, I did my, already done my
+presentation yesterday, so yeah. I actually, Im familiar with
+my work, not his.  So, actually, here is the, you know, here is
+the work that my colleague, former colleague help him a lot,
+and actually, this, is, you know, you guys want to know more
+details, you can contact with tweet or e-mail.  I'm sorry
+about him.  Last thing, I should ask him, you want me to do
+lunch? No.  I did a lot.  I'm really nervous.  Because this
+isn't my work.  Yeah.  I'm sorry.  So, thank you, if you
+guys have questions, I think I can't answer you, I'm sorry,
+(Laughter).  (Applause) Thank you.  I appreciate it.

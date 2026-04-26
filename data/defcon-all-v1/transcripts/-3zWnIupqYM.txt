@@ -1,0 +1,447 @@
+>> JOE GRAND: Hello, hello, hello! Hello!
+Wow! It works. Good. You guys ready to JTAGulate? We'll have a group JTAGulating system. Did
+you bring all the JTAGulating? Kleenex and stuff in I did.
+I'm Joe Grand. I'm an electrical engineer and a hardware hacker and ‑‑
+>> AUDIENCE MEMBER: We saw you on TV. >> JOE GRAND: Yes, I have been on TV.
+>> AUDIENCE MEMBER: Rich and famous. >> JOE GRAND: Not rich and famous.
+>> AUDIENCE MEMBER: Just famous. >> JOE GRAND: JTAGulate is I put together
+that will let you hook up to 24 unknown toast points on a circuit board and it will detect
+a JTAG interface which is a debug interface or a UART, root, and so I will go through
+sort of an introduction about the design, the process, JTAG, how UART works and then
+give you demos of all of this stuff. So on‑chip debug interfaces are basically
+of the Achilles heel of embedded systems and you have people hacking cars. Those are traditionally
+software guys and you have lots of other people looking at embedded systems in hardware that
+don't from this place and on‑chip debugging is one of those ways that you can totally
+own systems. If you find the interface, you can win a lot of times. So it's a well‑known
+attack vector. The problem is being able to find the interfaces.
+The one thing that we can take advantage of is engineers need to use this to design their
+product and test their product and during manufacturing they would do the final testing.
+Vendors know it is a vulnerable but they usually don't do anything about it.
+The goal for the project is just to create a tool that will get people interested in
+hacking devices, in hardware hacking, especially for non‑hardware folks that don't have the
+equipment or the time to go through everything and remove chips and all of that crap. It's
+to get it done, and get it done right and find the interface and then start hacking.
+As with anything, you are sort of building on other work and this is no exception. I
+first had seen some work about JTAG with Hunt's JTAG finder which was a proof of concept from
+2006 that it was possible to brute force or enumerate through all the different test points
+of JTAG. That was pretty cool. He did it on an at mill development board. That was as
+far as he went through that. I thought, okay, there's some work out there.
+I saw JTAGenum and this was better than the original proof of concept. He was using an
+Arduino for the platform, which limited things to either 3.3 volts or 5 volts, code left
+much to be desired. They didn't have input protection and just a bunch of stuff, I want
+to build a tool that I can recommend to people. If you don't have the protection, or certain
+things in there, you can fry your target board and that's not a good idea.
+And then cyber fast track which is a really cool program. I submitted ‑‑ I did this
+research and I wrote this proposal for cyber fast track. All of my friends are doing CFT
+and I want to get paid to do JTAGulator and it would be totally awesome.
+It didn't actually work out that way. (Laughter).
+They said, opens, too much engineering. Sorry. Not enough research. At that point I had already
+done all the work to get to that point, and the proposal and the studying of JTAG and
+I was like, forget, it I will do it anyway and get it out this anyway and not get paid
+while I do it and this is the result of that effort.
+There's a bunch of other work, Travis Goodspeed, it was some black box reverse engineering
+that Felix Domke did a few years ago. And trying to brute force up documented JTAG commands
+where we are taking advantage of existing things and he's taking advantage of other
+things and then the forensic institute, about this sort of JTAG discovery but in a different
+way. So first we have to identify interfaces before
+we even try to hook up JTAGulator to it. External interfaces are things went don't even have
+to open up the product to look for. They are accessible to the outside world and usually
+they are intended for engineers and manufacturers and not for end users. So you see them hidden
+under batteries or stickers or coverers or something on the back of did he vice or somewhere
+on the device. It's for final system test, maybe a proprietary connector. So if you look
+up there, we see a Garmin GPS. I think that's a serial interface in this example, an RSA
+secure ID token with five pins. They once told me, that's only for programming the device.
+I don't know if that's true or not. I guess it doesn't matter anymore, but it's a good
+picture. And then the other one is from the Jawbone,
+that the wrist band accelerometer. There's a button on the end that you can do something
+with and then if you take the cap off, you see the buttons in the center and there's
+four posts on the final. So if you can discover the interface, then you have to figure out
+what to do with it. Those are external interfaces. The internal interfaces. Sometimes you need
+physical access and sometimes you need to get to the circuit board tax's not a big deal.
+That's the excuse that vendors say they have to have physical access. That's just a total
+fallacy. There's lots of ways to get physical access to things. So you look for things like
+test points, unpopulated component pads, silk screen markings might give you some information
+about, here's some interesting test points or here's the name of the interface. Engineers
+like to put things on the circuit boards that make their job easier and make the assembly
+facility job's job easier. The picture on the right is a very obvious
+interface. There's four gigantic holes there, four gigantic pads or test points. And it
+says VBATI 2 clock and data. You no he that's an I2C interface. We don't need a JTAGulator,
+he can hook up a bus. The engineer was nice and made it obvious for us.
+The one on the right, that's within of the blackberry devices.
+In that case, there's kind of test points sprinkled all over the place but there's a
+very obvious grouping of test points and I would look at that and say that's some sort
+of interface, usually connections or signals that perform a similar function or all together.
+So a bus would all be there. It's a debug interface. It is it's JTAG.
+Sometimes it gets even easier. So these examples one is from the Xbox on the right and the
+one is from Barnaby Jax's talk a few years ago. You see nice silk screen markings around
+the whole thing and on the left, in the Barnaby by case that was the ATM. He showed the JTAG
+using an industry standard interface, it said JTAG. He just got his off‑the‑shelf tools,
+plugged it right in and started his pwnage. So no hardware or reverse engineering necessary
+at that point. So we can take advantage of that JTAGtest.com
+has a number of pin outs. If you have that, you don't need a tool like JTAGulator, you
+just plug in. It gets a little harder if there's no obvious
+markings. We could take advantage of grouping of tracings and so the picture on the left
+are six test points and you can see all the traces are going down together. That's probably
+some sort of interface. Right on the edge of the board and very easy to access and that
+would be a target interface for us. You can take into account the location of resister
+arrays or pull ups or pull downs on different bus lines because those are normally used
+to set the static interface. So if we see a resistor array next to a connector. Okay
+that connector is probably a bus that needs pull ups an pull downs. That's a target. Let's
+take a look. Things get a little bit harder when there
+are no obvious test points. So things like this, where we have just four unpopulated
+component pads in place of a connector or in place of test points. So this is a buffalo
+wireless access point. Trying to be sneaky. Right? So they have these unpopulated R24,
+R29, 315 and 316, and they are trying to obfuscate. As soon as you 
+discover what those ‑‑ what that pin out is, then you win. It is not going to change
+device to device. Now you know. So security through security doesn't work. We say it all
+the time and it's true. Currently you 
+have to manually determine pin function. Right, you look at a grouping like that grouping
+of Blackberry PINs, okay, grab, what will I try to do. You can use your oscilloscope
+and see what's going on. I like to see if I can trace the signal back to a microcontroller
+to some sort of device. I will use continuity test. If it's a VGA part, that's going to
+get a lot harder, right, because you condition access the balls underneath the part. So probing
+only gets you so far. You can use x‑ray, if you have access to x‑ray equipment. Which
+is becoming more common, but still, you know, you don't really have one at your house, I
+hope. Some people do. I won't ask for what.
+And then look up the data sheet and fine the pin outs and see if they trace out anywhere.
+That's sort of the standard manual process. It's fine for certain things. It's totally
+valid but for other devices like highly integrated mobile phones, you can use your scope, logic
+analyzer and see how the state changes as you pull the pins high and low, it's a total
+pain in the ass. And I will show you why the JTAGulator is
+better. But not yet. So I will go into some details of JTAG and
+of UART, of asynchronization and how all the technology works and then it will make sense
+when we brute force the connections, you will understand. It makes total sense.
+So JTAG is one of these interfaces, it's an industry standard interface and it basically
+IEEE 1149.1 standard. It has low level functionality and basically, the vendor might add extra
+functionally or extract that low level stuff. We don't care what happens at a higher level.
+We want to communicate directly with the chip to figure the pin out. That's the only goal.
+The beauty of JTAG as opposed to the more vendor specific is we can access every single
+individual pin on the device. So we can send it out. We can read data in on every single
+pin. That's what allows when you do Flash updates through JTAG on a device because we
+control the main CPU and we are basically treating it as a puppet and now we can communicate
+with everything that that thing is connected to.
+So we can program devices. We can do debug and essentially use standard development tools
+to now communicate with these parts. As opposed to some of the other interfaces
+as well which is why JTAG is so popular. You can chain connections to go and devices to
+go. You can have a single interface but then you can have two or three parts on the board
+that you can communicate with through that single interface, or even multiple dyes within
+the same part. So you might have a CPU memory and like a crypto coprocessor, or a codec.
+JTAG is varying lengths once you figure that out, and I will talk about that.
+And the vendor, again, will abstract all of the low level stuff. Once we know the pin
+out, we can load legitimate tools that the vendor makes or some of the other open source
+stuff that's out there and then start our attack process.
+JTAG is a synchronous, which means it's a serial interface with input and output and
+we need a clock to align itself to synchronize that data flow. So we have TDI which is data
+in, we have data out. Test mode select and clock. Mode select is what we use to change
+state of the system and I will show you a diagram on the next few slides. We change
+state to change function or to load and address or load an instruction. I think of JTAG as
+a tiny little CPU that you can send finite number of commands to.
+You have test reset, which is an optional pin. Sometimes you see it on boards, sometimes
+you don't. All it's used for is to reset the tap, the test access point, asynchronously,
+you can do it by holding TMS high and clocking five cycles which is what we do. You don't
+need the external test reset pin so we don't look for it because we don't care with it.
+We have the TA P. and it has different shift registers that we can take advantage. So the
+first one is the instruction register. This is where you would load in a low level JTAG
+instruction. It has to be greater than two bits wide. That's
+per the spec. Usually it's like an 8 bit instruction or 16 bit instruction and then for data registers,
+you have a bypass register that we will take advantage of. It's a one bit register where
+you shift information in and then you get data out. That's what you can use to bypass
+one chip and get to another chip in the chain. Then you have boundary scan. That will be
+the definition of what ‑‑ how you access every single pin. So you know the length of
+the register that it needs to be and that will be defined on how many pins the part
+has, but so the boundary scan you shift data into this gigantic register and then you can
+latch everything at once and then the device ID which we also take advantage of for a different
+type of scan, it's a 32‑bit register, it's not required in the spec but pretty much every
+device out there will have a device I. D. I wanted to make another way to test in case
+it didn't have a device ID, we can do it with a bypass scan.
+Here's a quick little view of the JTAG, the high level JTAG view. You have the core logic
+in the center of the chip and then the BSC cells attached to each I/0 pin. That will
+control inputs and outputs which is totally crazy to control a chip like that. It's really
+cool. And then you have your data register and instruction
+register and depending what you shift in and depending what state you are in, defines which
+register is going to be shifted out on the TDO line.
+So here's the TA P. controller. This is the state machine.
+It looks a little by confusing, sort of like spaghetti, but it's very simple. You are either
+shifting in to work with the data register or you are shifting in to work with the instruction
+register. Then you can latch it and exit it and shift data out. So it's very ‑‑ it's
+not as complicated as it seems and I had read through all of the IEEE standards and they
+make this stuff so boring and so complicated but it doesn't have to be. And I think that's
+just one of those things. It's like why? I don't know if people just write this stuff
+to look smart. And then it's our job to like distill it and make it not smart. Right? So
+this stuff is not as complicated as it looks. And, again, we don't care about anything above
+this level this low level. So these are the JTAG instructions that are available. I don't
+know how well you can see that slide. There's three required commands, and then a bunch
+of optional ones. Everything else, all the debug functionality that might be available
+on a part, anything else that vendor specific is at a higher level. At a lower level, it's
+shifting things in, calling commands and shifting stuff out of the data registers. Maybe they
+add data registers for other memory locations or debug stuff, or command to read memory
+or write memory. The things we did I advantage is the bypass command and then the ID command.
+If you do this enough, you will run into JTAG implementations that do have some sort of
+protection. But like anything else, most people don't use protection. Right?
+(Laughter). It's pretty safe to say. Especially at DEF
+CON. But you do run it once in a while. People ‑‑ vendors are aware of what's going on. But
+making changes in silicon is really hard. Even if a vendor knows about JTAG and they
+try to do some password protection, they have to update everything else that uses JTAG.
+You could see physical security fuses tar blown on the chip to prevent JTAG access from
+happening at all. Of course, once you do, that then the vendor can't use it as well.
+So it's a risky maneuver. Could you do silicon die attacks to physically repair that and
+then get to the device through JTAG. Some devices have some sort of password protection.
+So we can still use it to determine the interface. But then at that point we have to figure out
+how do we bypass that password protection? There is one case I heard of, maybe more,
+but here is one example of a device that it internal Flash memory that would erase after
+invalid attempts. It was in a volatile memory somewhere. Could you figure out what the upper
+limit is and then just do some number of pass word brute forcing, reset the device and do
+more. Once you do find the JTAG interface, you can
+use a bunch of available hard tools, HJTAG, and RIFF box. We only care about finding the
+interface and then you use tools designed to use JTAG at a higher level. There's no
+point in recreating the wheel and then you can use some of the open source software stuff
+as well. So that's JTAG. UART is similar. We used some
+serial interface. So UART is an asynchronous serial communications method. So there's no
+external clock. All of the bits are sort of determined by time. So if we have that time
+right, then the data bits will line up. So you have like, start bit, data bit. JTAGulator
+is checking a ports for UART. We would have to fiddle with the setting with terminal.
+So it is asynchronous. We are looking at two lines. We are looking at TX and RX. So then
+we will send data to the device and then we will check for information on the other pins.
+The stuff for legacy type of equipment, modems and teletypes we are not looking at those
+because we normally don't need those. Here's a little screen shot of the UART, just
+showing data communications. I have data digital, on my scope and I can see the data being transferred
+and then to determine the baud rate. So say you do discover the interface but the baud
+rate is not lining up, you can measure the smallest bit time and the bit width and do
+one over that and you have the baud rate. It's 8.7 microseconds and around 115.2kilobits
+per second. All right. So a little bit of hardware about
+JTAGulator. As with lots of stuff that I design, I want it to be open sourced and hackable
+and use it. I don't want it to be over complicated. I don't want to try to show off how smart
+I can be. Because I'm not that smart but I want something that you guys can use. That's
+the whole point. Everything is done through the USB port to a host and I will give you
+a demo of that. It has proper input protection. You can hook up to a device. We don't know
+what we are looking at. We are just looking at a board. We don't know if we are connecting
+to proper voltage levels that will work with our part. We have input protection and adjustable
+target voltage and we can match the target voltage of the device so we are not damaging
+that device. All components off the shelf and you can get them from Digikey. You can
+solder them if you want. I did four and I said, I'm done. I will let Parallax. We have
+a Parallax propeller in the center which is a great tool for hacking.
+We have a standard, USB to serial interface and that will provide power to the USB and
+provide our programming interface and our command interface. I'm using a D to A. I'm
+using an op amp to so 1.2 to 2.3 and I will go through details of each of these parts
+and then the voltage level translators to translate the voltage and some power stuff.
+Here's the board. I figured it had to be pink with a heavy medal JTAGulator logo. Someone
+is clapping. Someone likes pink. I like pink too.
+(Applause) Here's the basic setup. And so there's 24
+channels either through screw terminals or the two by five headers which are compatible
+with the Buss probes and then you plug into the headers and you have mini clips you can
+use. Depending on what your interface is, you can use either one.
+So the propeller is the core of the system. For those of you guys that aren't familiar,
+it's a ‑‑ it's a device completely built from the ground up by par Parallax meant to
+be a device that's fun to work with and kind of fun to hack on and fun to develop with.
+Chip Gracie grew up with 6502 and hacking ZAD and he's a hardware hacker to the core
+and he was just kind of tired of all the restrictions of different types of tools and NDAs and this
+crap. He built his own. He has eight independent cores called cogs and some time slicing of
+that. You can code it in spin or assembly or C. There's a bunch of new tools that are
+being developed that are cross platform tools. For now you can do PC and Mac at least with
+Spin and the open source Spin tool should be coming out soon.
+If you were here last year, DEF CON 20, right, do you have DEF CON 20 badges? Those are all
+propeller processors. So in theory, you could loot the JTAGulator code on to your badge
+and hook up to stuff but you don't have the target voltage settings but you could if you
+want to. The other cool thing about the propeller,
+like some of the other hobbyist platforms there's a luge amount of code sharing. So
+Parallax. , I want to do the debug interface through
+serial and grab that. You can put that stuff up there. It's a cool hacker developer community.
+We're running at 80 megahertz which leaves lots of possibilities for detecting interfaces
+and generating all different sorts of things to go further with devices if you want to.
+The prop lass 32k of RAM and the boot loader is in ROM and each has a 2K and, yeah, it's
+a good part. USB interface, the standard FTID part, so
+it will work ‑‑ it will just recognize virtual serial port on any machine, any machine
+that recognizes this virtual com port, you can communicate with JTAGulator. I have a
+MIC2025, you are not just supposed to plug in a device into USB and just let it go to
+up to right away. During enumeration, you are supposed to just record ‑‑ or you
+are only given 100 milli amps and you are supposed to enumerate. We are only enabling
+the FTID part. And then once it says you are enumerated, you are ready to go to the rest
+of the statement. That's the safe way to do it so we are not damaging any USB ports.
+Target voltage. From one of the pins on the prop and the duty cycle will determine what
+the output voltage is. I have a little RC filter and an op amp, very similar are of
+a D to A and I have a lookup table that actually defines the duty cycles and we can be very
+fine in our output voltage. I picked the AD8600 because it has a high output. We can get 15
+milliamps through that part for our voltage range. Make we need to use the adjustable
+target voltage. It's the VADJ line. If we want to use that to maybe power something
+on the target board or maybe do some extra circuitry with whatever we need to do, 150
+milliamps is a pretty decent amount. Level translation, I'm using the TXS01, which
+will convert our 3.3‑voltage to our VADJ level, our adjustable voltage level.
+And then it has this high impedence state if we disable the output enable line. So we
+can connect all of our test points up, while the thing is not driving the lines at all.
+So we don't cause something to happen when we are not ready to start our search.
+And then the input protection, which we feed, that's because we don't know what we are connecting
+to. So we have diode limiter clamps that will clamp to some level of negative voltage and
+some level of high voltage and also we have a current limiting resister in there. For
+each channel we have this set up. So as long as our forward voltage for these diodes that
+we are using are less than half a volt, which they are, then we are going to limit ourselves
+to the adjustable voltage plus forward voltage and minus forward voltage. That's our limit.
+So we are not going to damage any other of our pins with unknown input voltages.
+Building materials. There's quite a few parts but none of them are that expensive. Everything
+is online, around $51 from Digi‑key in single quantity if you feel like building your own.
+So that's the hardware design. Pretty straightforward and the hardware is never really going to
+need to change. Maybe we want to develop some plug‑in module to do higher voltages for
+SCADA or industrial equipment, but the core hardware doesn't change. The firmware can
+change, as people start hacking on stuff, we can add things in.
+So here's the current source tree. I have the main object files. These spin files are
+the individual modules to keep things modular. So if we do a microchip. We can link that
+in, sort of like C files or H header files, whatever, you get it.
+So main file is JTAGulator and then  the serial terminal, the Parallax and then
+the JD cog serial is something grabbed from the object exchange that's 509UR interface
+and I can just pop than into whatever cog I want. That will be doing the UART detection.
+So for actual functionality, I will go through a few of the ‑‑ I will go through the
+ways we are scanning and then give you a demo. The ID code scan. This is the first thing
+we can do. This is assuming the device actually supports I. D code this 32 bit device ID.
+If it's available, it will be in the data register. So all we have to do is enter the
+shift data register state and just send a clock and if there is a device I. D. It will
+come out on the TDO line. We are looking for three pins versus four pins for our various
+permutations. If we do get a device ID, if we get a valid
+one or one that we think might be valid, we can validate that by checking data sheets
+or BSDL files, boundary scan files, which will define the internal structure. You can
+find that with legitimate development tools and open source will list some of this stuff
+and maybe look at reference code to make sure that the device code you want is the right
+one and if you do, you have the right one. You can verify the manufacturer ID which is
+a specific code, assigned by JEDEC. You can grab the document for free. And then when
+you get the device ID from the device, you can make sure it's an analog device part or
+Qualcomm part to see if that data is actually correct.
+So the way in the scan works, it will ask for the number of channels to use, and then
+for every possible pin permutation, it will go through, try to get the device ID. If it
+reads all ones or in the final ‑‑ if bit zero is not one then we will ignore it.
+If we get something with a bit zero of ‑‑ if we get ‑‑ if bit zero does not ‑‑
+if bit zero does not equal one, we ignore it. If we it equals one, it's potentially
+a good device ID. There's still human interaction. Hopefully you don't get a lot of false positives.
+So that's ID code scan. Bypass scan, we can get TDI as well. So we need to shift data
+coming out. To bypass scan takes data. One clock cycle delayed as you can see.
+So by doing a bypass, we can figure out how many devices there are in the chain. Which
+is called blind interrogation. All we are doing is basically ‑‑ first we need to
+force all devices into bypass and on that instruction sheet, bypass mode you can enter
+in by sending a command of all ones. But we don't know the instruction register length,
+right because it's sort of a black box. So we send in a shit load of ones and flush the
+entire device. We do 1,021 ones. We send a ton of ones and then we assume we are in bypass
+mode and then we load in a bunch of ones to the data register and flush everything full
+of ones and then a single zero and cascade it through until we see it on the output.
+Once we do, then we know, oh, okay, great and we can figure out the number of devices
+as well. So bypass scan does exactly what I mentioned,
+just with every different pin permutation. So then UART scan, now we are looking at the
+UART interface. It's kind of cool, because normally you can ‑‑ so you can actually
+send any output string you want. So normally, you know, if you connect up to an interface,
+you would pit carriage return to see if you get a response, if you want to hang up on
+a modem or whatever you do, plus, plus, plus. Maybe escape key. You can tell JTAGulator
+what user string you want to send out on, what it thinks is the TX line and it will
+look on the RX line to see if it gets anything back. It will Dray all different baud rates
+and wait 20 milliseconds to see if it gets a bite back. 20 milliseconds is pretty long
+this computer time, anyway. If there is a valid response, it will display
+16 bytes of data so we can quickly go through and see if there's any human readable stuff
+or something that makes sense for what we are looking at. We are doing 8N1. These are
+the standard baud rates. Maybe you find out the pin out, but you are not seeing data that
+makes sense. Like I mentioned earlier, use your scope, and figure out the baud rate and
+load into a terminal program and see if that helps or not, if as non‑standard baud rate.
+Here's some timing. This happens pretty fast. ID code scans. It's three possible pins since
+we are ignoring TDI and it's 264 permutations a second. Bypass mode, we have the extra pin,
+the TDI pin and because we have to flush so many ones through there, it takes a little
+bit longer. So it just happens to be 13.37 permutations. Totally leap.
+And you can see, you know, most of the time, it's like 2 seconds, 5 seconds, or 13 seconds
+for ID code scan. At the max, it's 46 seconds for all 24 channels. Once you know, that usually
+I will do an ID code first to make sure there's a JTAG scan there and then I go to the bypass
+mode, the bypass scan to get that extra pin. It takes a little bit longer. Maximum time,
+24 hours. Big deal, and you take a really long lunch break and you come back and you
+are good. And then UART ends up being 24 baud rates
+per permutation. It's about one permutation a second. 10 minutes for 24 channels.
+All right. Here's some demos. Let's see, let me bring up my cool term, which is what I'm
+using on my Mac. How does that look up there? Is that nice and big? Good. Okay.
+So let's see, I'm already connected to. I have my JTAGulator plugged in through the
+mini USB and I believe I'm already connected. If I hit enter, can you see that response?
+Question mark, invalid command. I get the colon sign and that tells me that I ‑‑
+it tells me the command prompt. So here we go. Here's a list, here's a list of commands.
+We will do ‑‑ let's see what do I have hooked up first? I have UART, I wanted to
+get everything set up before the talk. I have a bunch of connections from the JTAGulator
+on to a Link us that has DDWRT on it. I have these little individual female to female leads
+connected up from the JTAGulator to that. So if we go ahead, first thing we need to
+do is set the target voltage. I think I already did this. Yes, so I will do it again just
+for fun. Set the target voltage, 3.3 volts and now target voltage is set and then let's
+go ahead and do identify UART pin out. We will do carriage return. That's just the standard.
+Number of channels, I have one, two, three, four channels. Four wires set up on to this
+port of the Linksys device. I just arbitrarily connected things. I know there's a UART there
+because I tested it. I don't know which pin is which. Four channels it will be 12 possible
+permutations. Reminder to use channels 0 through 3 and space bar to JTAGulate and hopefully
+something will come up. Okay. So a bunch of stuff came up. Let's see
+if there's anything else. Okay. UART scan complete. You can see the
+TX and the RX lines are all the same, 1 and 3, that's a good sign. That means something
+there. That means whether we send a carriage return on pin one, we are getting a response
+on channel 3. But the JTAGulator can't figure out what the data is because it doesn't know
+what the data should be. If we have some interface, maybe it is a ‑‑ some sort of debug interface,
+but maybe it's not ASCII, maybe it's some binary thing that we need to decode. We can
+go through manually and say, okay, tell me when you guys see something that might be
+like a useful character, let's see, keep going here.
+>> AUDIENCE MEMBER: (Inaudible). >> JOE GRAND: , yes, 57.6 has a 0D and then
+you have a carriage return and a line feed. We will test both of them and see what it
+is. To save time, I will do this one. Remember, it's transmit is pin 1 and receive is pin
+3. Now we can do a pass through mode where we can see TX is pin 1 and RX is pin 3 and
+baud rate 200, enter that. Now we are in UART pass through. So now we are using the JTAGulator
+as a pass through. So now we should be able to communicate directly with the ‑‑ with
+the DDWRT. (Applause)
+Yeah, thanks. So here we are and we are in the shell and stuff. So that's cool because
+it saves you the trouble of disconnecting everything and putting in your own USB to
+serial adapter and stuff. So we can hit control X and now we are back in JTAGulator's side.
+So I will disconnect ‑‑ oh, you know what I will do first? Disconnect target voltage.
+Set it back to zero so I don't fry anything as I take this off. I take off these pins
+and now we do the JTAG detection. You remember the DEF CON 17 badge. That's great. Okay,
+three people. The DEF CON 17 badge had a free scale MCF6,
+a digital signal controller that just happened to have JTAG on it. I had broken out the different
+pins as test points on the board that we were using during the badge hacking device and
+you could ‑‑ they would constantly get bricked when people would write code for them.
+I took the test points and wired it up to a connector so I can connect it up to here
+and give the demo. In real life, you wouldn't have a connector there, right, you would solder
+connectors on, right? I will plug this in. So now it's plugged into
+the JTAGulator. I have to set my target voltage. If I don't, and I try to identify JTAG. And
+so now let's do the ID code scan first. We will JTAGulate. Oh, no. Failure. Good just
+what I like. Let's see what I screwed up. I don't know. Well, let's try bypass scan.
+Screw it. Bypass scan takes longer. Not long enough
+for me to actually try to debug this thing. How much time do we have?
+Good. Enough time to plug it in a different way. Oh, you know what, can my ground pin
+fall off? Oh. Too much demo. Too much demo and not enough time.
+>> AUDIENCE MEMBER: You can have as much time as you want.
+>> JOE GRAND: As much time as I want. Nothing after me. Good. Okay.
+So we'll see. So ground goes to ground. So now I'm arbitrarily
+plugging this in. Ground goes to ground. And now I'm just plugging in. I don't care which
+pins they go to on here. So channel zero through 3.
+It will go to 3.0. That's the easy way to do it.
+A bug in the firmware when you go to UART to JTAG mode. Anyway, I will fix that. Now
+we have a response, right? We have TDI I don't know.
+So let's go ahead and try to find TDI. We will have four channels again and it takes
+rightly longer and there's our JTAG pin out. Enjoy. You 
+can clap. Okay. (Applause)
+0, 3, 2 one, oh, I messed that up. Okay. So ID code, we only need the three, we need,
+three, two, and one. 3, 2, 1, one device on the chain and there's the ID code. It corresponds
+to the free scale part. You can look it up. And then let's do the final one which testing
+bypass. And that's 0, 3, 2, 1. One device on the chain and the pattern in matches the
+pattern out. You can do it again and we get a different pattern. Now we can go and hack
+with it. So that's our demo.
+(Applause). Okay. So like everything, there is' limits
+to the tool, like having to press reset. The first thing you could cause the target
+to do, as you are fuzzing all of these test points but that's somewhat of a limitation
+but also it could be useful if you are hacking to a device and you don't know. If you cause
+it to do something unintended that might be useful. Maybe the OCD interface is not enabled,
+and maybe it's some sort of ‑‑ if it's password protection, we might not be able
+to detect it. The vendors try to go sneaky by cutting traces, leaving out jumpers on
+connections to try to prevent somebody from using it. So we have to do a little more reverse
+engineering to find that first. Maybe there's maybe no on‑chip debug interface.
+Future work, we want to add all sorts of support for other stuff, which hopefully will happen,
+you know, as needed, as somebody says I need to discover... spy by wire on TI and I will
+write a module or someone will write a module to do it. There's lots of possibilities for
+this tool. It's a general purpose, propeller, with lots of IO that you can do for stuff.
+We have a few more available at the hacker warehouse at the DEF CON vendor area. All
+the stuff is available on JTAGulator.com, and Parallax is selling assembled units and
+bare boards and in they run out of stock, they will make it.
+I have been dying to read this poem. That I went up to this guy that writes random poems
+and I said I developed tool called the JTAGulator and he wrote this poem. Maybe you can make
+some sense of it. I will just read it. Okay. Let's see.
+To take an object from made to modified, customized interfaces between past and few truths can
+maintain their veneer in the face of signal feedbacks, size of diamond screwdriver doesn't
+fit circuit, exit, enter the dragnet on all sides, caught with tools debugging as form
+of how to gain access to what you have but can't quite double blind verify, ascertain,
+make salient discoveries about electricity, keeps its secrets from anything that's not
+luckily everything electric is JTAGulator. Take apart a ball of and find particles that
+can't be broken into. (Applause)
+So there we go. The end. Thank you. (Applause).
+So I will leave this set up if you guys want to come and take a look at it until they kick
+me off the stage.

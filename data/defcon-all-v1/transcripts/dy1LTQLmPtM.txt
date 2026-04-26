@@ -1,0 +1,276 @@
+Hello. I am peter Shipley and.
+>> I'm Ryan Gooler. >> And we're here to talk about Insteon. This
+talk is a little backwards. A lot of talks at various
+conferences they talk about the research and what they're doing
+and hold the good stuff to the very end like a mystery novel.
+I'm going to go through things and give you the conclusion and
+then talk about how I got there? >> Insteon -- it's a virus
+protocol, a bunch of devices like this you plug around your
+house, turn the lights on and off, sprinkler systems. I got
+bored and started playing with it. It's made by a company
+called smart home. [indiscernible] dual band
+communication. It's an asset and a problem as we'll soon see. 	
+All the devices -- as a repeater. Any light switch in
+the house is also a beta frequency repeater. It's easy to
+pick up the signals. [indiscernible] nest and
+Microsoft. I haven't seen it yet. This is why it's relevant.
+Insteon by itself is not a true security problem but they're
+being paired up with more and more home automation. This is
+the weakest link. And I'm giving this talk to the weakest link
+doesn't become part of the chain. Things you do with it.
+Turn the lights on and off, sprinklers, alarms, lock
+systems, water pumps, all the usual things. As I mentioned
+about the weakest link, it's a protocol for a [indiscernible]
+it can do many other things and this is the problem. For
+example, putting a lock on, with this and RF [indiscernible] you
+can open the lock. And hopefully we'll do it later. Just to be
+fair, the lock is a good lock. It's not meta code but it's a
+Schlage lock. The weakness is the Insteon bridge to it. They
+published a paper on the RF protocol. Just Google it. It's
+been published for 12 or 13 years. The protocol has not
+changed. It's been in heavy detail for the last decade or
+so. This is the problem. They also have a very BIOSed --
+[indiscernible] to compare themselves to other protocols.
+(muffled) I'm a pretty good programmer. Over 20 years. My
+code didn't work. Normally my code doesn't fail that bad, just
+a little bit. This is interesting. I was getting
+nothing. So I investigated. I successfully [indiscernible] the
+protocol. The protocol is so full of shit that I wanted to
+say bull shit in my documentation. [indiscernible]
+contains less fiction. The fun part. The protocol that we're
+talking about. This is the protocol, how accurate do you
+think this is? Frequency, bull shit. It's pretty close. It's
+off by a couple K just to make your demodulation a pain in the
+ass. Bull shit. [indiscernible] Manchester. Believe it or not
+[indiscernible]. Bull shit. Bull shit. Bull shit. 83 percent bull
+shit. Insteon describes, [indiscernible] modulated using
+frequency shift key. Let me back up, the module --
+[indiscernible] they got that -- deviation is a shift in the
+center frequency to the [indiscernible]. Not the -- bull
+shit. Let's say this is a typo. Clarify (audio blipped) very,
+very clear to say, the first shift is 64K. On that point, the
+actual spec is, it's a little off. Manchester. Claiming to be
+a little over 3000, the -- not even close. Look at the standard
+package format. This is a standard package that you would
+expect to see transmitted. Who thinks it's accurate? Come on.
+[indiscernible] malarkey. Not even close. This is the --
+packet order. Let me back up, there is a preamble. Reality,
+it's actually the flag. The [indiscernible] they give it to
+you is even wrong. It gets worse. This had my head pounding
+on the wall for quite a while. How the bits are encoded here.
+[indiscernible] (muffled) wouldn't be that hard. Takes the
+mac addresses and shifts them and x-rays every possible
+combination against the packet. I was getting lots of hits. I
+went back. These things actually work. >> My laser is missing. >>
+I did not steal your laser. >> To points off for the speaker
+for not being ready. I can't even see the screens.
+Effectively this is how it's encoded. 3 bytes. Effectively 3
+bytes. Every byte is encoded with ... Is it back yet? Back up
+one. Okay. 3 bytes encoded. The first byte is 03, E5. Five,
+eight bits. Transmitted [indiscernible] first. So you
+flip the whole thing over. And Manchester encoded to make your
+life just wonderful. And the line at the top is wrong. When
+using -- if it's 3 bytes, a very, very inefficient method of
+transmitting. In the packets, this is from the documentation,
+this is correct, believe it or not. Shocking. The only
+documentation that was accurate. Insteon talks about -- you can
+see, after researching this it took me quite a while to figure
+this out and it's complete poppy cock. It's not a linear shift
+register. The actual limitation, by the way, [indiscernible] the
+CRC which is interesting. It's basically - I tried to describe
+this, I tried to work this slide out. It's easier to say this.
+This will all be published with all the documentation for this.
+Now for the fun part. Insteon claims to be secure. The
+security to quote them, is two levels of security, a link
+control system, where you create links without physical access to
+your devices. Bull shit. And [indiscernible] for your device.
+And then they talk about software programming and if you
+go to the -- address you can get to it. I'm in the going to try
+to pronounce that. My Russian friends say it's garbage. These
+are quotes from the documentation here. The firmware
+prohibits you from [indiscernible]. Firmware to
+protect your secrets. Exactly. They mask the -- of all traffic.
+Did I mention the -- protocols a few minutes ago. You have a
+problem with the security here. [indiscernible] I call it mac
+address, it's easier. Unencrypted. There is no
+security. They published an entire white paper describing
+their security versus -- protocol and saying how they're
+superior. [indiscernible] the claim of encryption. If you're a
+street person with a sharp eye you'll spot this. A lot of my
+friends that I think are very good missed this. They claim
+they support encryption. They support encryption
+[indiscernible]. A packet that is encrypted. If you read
+between the lines here, it says the extended packets can contain
+encrypted payloads. This is a quote from them. Encryption of
+AES236. I think it said that because [indiscernible]. They
+give out support encryption. Insteon doesn't encrypt
+anything. If you go over the documentation, they mention
+they're encrypted every chapter. Bull shit. I've never seen a
+company lie so much about their documentation and be so clear
+[indiscernible] in transmission. Let's get to more stuff here and
+then I picked on Insteon enough. Originally in this talk I was
+going to say how I -- the protocol and all that stuff.
+Everybody in here has been to an SDR talk. Those guys do just as
+good a job as I do. I'm not going to waste your time. I will
+talk about the [indiscernible]. It took me a while. There
+doesn't documentation on it. I needed good information on how
+to crack a CRC. It isn't that hard once you figure it out.
+Their documentation says -- linear shift register, bull
+shit. I look at this [indiscernible] here is an
+example of actual packets. If you bring the packets together
+and x-ray the packets, the [indiscernible] equates to. The
+first one, it ends in 0. That tells me that the second or the
+lower -- is a (inaudible) and the upper level is not.
+(muffled). Next one. Because there are [indiscernible]
+packets of information. What I did was since those packets vary
+by what they did, I -- together, the resulting data is changed
+bits. You see here the packets, with themselves -- the bits have
+changed.[indiscernible] doesn't effect anything. Next thing is
+vary the packet variability. I was able to derive a formula.
+This is how you crack an 8 bit CRC. In this case the algorithm
+is simple. You take the first -- [indiscernible] upper hand.
+Again, proving they lied. That's protocol. Identifying the
+signals, like I said I'm not going to waste your time with
+that one.[indiscernible] can be useful. A handful of tools that
+are useful. I based the tools off of (inaudible) hardware.
+Using [indiscernible] RF cat. A modulator for this. Here is an
+example of commands. Read and decode live streams of the data.
+With this live stream you can play and replay and attack
+systems. To transmit a packet, same thing. After this we'll do
+some question and answer. Tough crowd. Running ahead of
+schedule. >> Hopefully some of this will work. Likely none of
+it will but we'll see. No video, awesome. First thing we have
+going here is the lovely little RF cat dongle. You may notice
+this one is soldered and hot glued. Very simply we have a
+couple scripts here. One is going to receive data from the
+RF cat and out put it to the screen showing you what the
+packets look like. About this. So if you'll notice, I have the
+very same device which is a light switch attached to a power
+plug. Some of you may think this is insane but it's also a
+transmitter. If I hit up and down I start getting packets. So
+the 11, 78, 28 here is I believe one of the lights that we do not
+have hooked up because we could not find a lamp. And the other
+IDs are various things that they sync to. >> (inaudible) (too far
+from mic). >> Please take a Screenshot of this and the tools
+will be posted after the talk. >> The flags here is the only
+thing correctly documented in the protocol. You have your
+photographs. The to address. And in the documentation, they talk
+about how it's supposed to go to the -- phone address transmitted
+first. The reason that is not done is because of the pairing.
+It effectively only talks to devices that you're paired with.
+So they're more concerned with the from address than the to
+address. >> I will ask for anyone that works on encryption,
+does any of that look like RSA to you? >> You literally with
+our tools, you can basically cut and paste the transmitter and
+simple replay attack, no problem at all. It will regenerate the
+CRC for you. >> We could prove that if we had a lamp. >> We
+tried to get a lamp for this room and a lightbulb. But it's
+really hard to get a lamp in a hotel. We tried. We stopped by
+stores trying to find a lamp. We wanted the stocking lamp with
+the leg. No one sold it around here, we looked. >> I have
+attempted to sync this to the RF lock controller through the
+light switch to get to the lock and I do not believe I got it
+fully working. Incorrect. But the lock does in fact actually
+work if you push the button and remember to bring all the gate
+way parts not the ones you only think you need? >> That was my
+bad. I was backing up things from Berkeley to here and I
+forgot the Insteon programmer and I bought one on Amazon and
+it doesn't seem to talk to my lock. >> Note, if you want to
+use this, when you run the script and exit it, the RF cat
+will stop working until you unplug it and plug it in again.
+Standard debugging strategy applies. >> The RF cat is a
+wonderful device but it's finicky. RF cat likes Manchester
+data or not Manchester data. With the Insteon protocol it's
+26 bits of Manchester and two runs and 26 bits of Manchester
+so the dongle will not receive it. You can put the dongle into
+carrier mode within a sync bit and you can receive and encode
+the raw data yourself. And we transmit similar, RF transmits
+the preamble and the code. The most annoying thing, I meant to
+put it up here, because of the two runs between the Manchester,
+you see four runs in a row, three runs in a row,
+[indiscernible]. I hit my head on the wall for about a month. I
+looked at the modulator and what I did wrong. What is going on
+here. I dug into it. No. They just broke the Manchester
+encoding. The question is -- different documentation of
+vendors. They told me it's non-disclosure and can't talk to
+me about it. There is a command to turn off RF in the devices
+but they couldn't tell me that command. I plan to reverse
+engineer it. >> We have a tradition here at DEFCON for our
+first-time speakers. Many of you might be familiar with it.
+Usually my cohort comes out here with a giant bottle of Jack. I
+have a bottle of Jack. Also actually funny, this is a
+tradition for first-time speakers. Now what's funny is
+Pete is not a first-time speaker at DEFCON. He is. Which is
+hilarious to me. Because I was like, you know, Pete's been
+speaking at DEFCON since like six. And you, you, you. >> I'm
+the FMG. >> He is not a first-time speaker. >>
+Congratulations, you made it to DEFCON. >> To DEFCON. >> That
+was bad. Can I have a second one? >> Sure. >> Anybody have a
+donation of chest hair after the talk, see any of the three of us
+and we'll be glad to donate. >> Back to the slides here. Scroll
+back up a little bit. In here, [indiscernible] byte order
+problems. All my code talks to each other in ones and zeros.
+The demodulator, ones and zeros. Anybody familiar with net PBM
+(ph.). It makes the code a lot more portable. (muffled) arc10
+to demodulate stuff. I want to show you here, invert the 1s and
+0s. So in this case, we have a new packet, a new line. You have
+101010 and where are the bastards? See the three, three
+zero there is and three ones, that is another packet and
+another set of three ones there. Those are all the cases where I
+put the other ones into the code and you can't de-Manchester it.
+0s and 1s because they invert the frequency shift. I think a
+bunch of guys sat at a table with beer and said let's make
+this hard, flip it over. Let's do a couple other things to
+screw with you. >> As you can see, it worked. >> The question
+is how does this compare to the power line protocol. I have no
+idea. I am afraid to hook up my gear to a power line. >> If
+you'd like to hook up your gear to a power line, we will watch
+and put it on YouTube. >> [indiscernible] I have a key
+fob, hopefully these tools will be useful for other tools. I
+tried to write slides on how I cracked the protocol. I can't
+say how. I basically stared at it until it came to me. I wrote
+an XO program. Finally I -- why and you see the rivers and
+streams of the data and then you see a pattern and then you
+analyze the patterns. This is how I did it. I can't say how I
+did it. I stared at it and eventually I saw the patterns
+[indiscernible]. >> This is the command that would have turned
+on the lamp had we had one. >> How are we doing on time? >>
+Severely painfully early. >> Welshing I guess we have time
+for questions now. I guess it's time for Q and A and that way
+you can escape the crowds. Replay it back or if you ever
+programmed a PLM it's the same only a different order. You can
+cut and paste. Or you can construct it yourself. The
+question is how the mitigate this. There isn't any way to
+mitigate this. You can turn off RF in your house and
+unfortunately there is no way of doing it, the command exists in
+the devices but it's not [indiscernible]. There is a way
+of fixing it and hopefully after this talk we'll put out a fix on
+how to turn off the RF so your house isn't full of
+transmitters. 950 megahertz. I have good range on that. These
+devices of firmware are not upgrade able. They cannot be
+upgraded. I don't own a [indiscernible] yet. I have a
+bridge port. Z wave is encrypted. Questions? Or we head
+to the bar. The question is what costs money. I have
+[indiscernible] challenge me, that is not a security problem,
+why you have to talk about it. Well, because they lied. And as
+I pointed out, turning lightbulbs on and off is not the
+end of the world, it's not going to bring down planes. But
+Insteon has paired up with nest and others and it's a weak link.
+Let's address it before it becomes the weak link. How big
+is your antenna? Their devices themselves make it half way
+across my 1500 square foot house. I have a nice fiber 90B
+antenna. With radio, if you can see it, you can control it.
+Questions, answers, accusations? All devices repeat. So if you
+have a light switch and a control device which are on hard
+wire, all the switches will bridge also. Basically all the
+repeaters repeat everything. There can be a three hop count
+but that [indiscernible] through the network anyway? >> I think I
+can demo that. >> Yes, DEFCON will get the slides and put them
+up. And the slides will include GitHub. My GitHub is evil peach.
+Evil peach at GitHub. I will put my personal code up there. >> --
+to get this paired. But right here at the bottom, these are
+the commands from the lock controller. When I push the
+button it undid the lock. And if I push the light switch, you
+should not see those repeat. >> Basically those are the commands
+to unlock the front door. I guess we're done early. I'm not
+going to waste your time. Enjoy.

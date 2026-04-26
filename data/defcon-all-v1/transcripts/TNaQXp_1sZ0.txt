@@ -1,0 +1,266 @@
+So my name is Bogdan Alecu. And the topic
+for today will be "Business Logic Flaws in Mobile Operators Services." For those that
+don't know me, everything is about me. I work as a systems administrator as a day job. And
+during my free time, when I have it, I like to break into a lot of mobile stuff.
+I started on this particular journey a couple of years ago with GSM networks by using my
+old Nokia phone and continued with voice over IP and got to GSM and mobile phones. If you
+want to keep in touch with me, you can find me on Twitter or on my Web site.
+So the goals for today would be for you to have a really high overview regarding the
+SIM toolkit. What it is. How we will exploit it. Then a couple of business logic flaws
+I've identified on some carriers. And I think you're going to find them really interesting.
+And also in the end if there is a way to protect you from this that I'm going to show you.
+We're going to call these HTTP headers, data traffic, extra digit and a summary at the
+end. So who has heard about SIM toolkit? Okay.
+To keep it simple, think about it as a platform for the carriers in order that they use it
+in order to install applications on your SIM card. This is how SIM toolkit looks like on
+an Android device. On some other devices you might find in them like an extra menu
+with the carriers namely like Orange, Vodafone and so on. And from this SIM toolkit menu,
+you can find things like exchange rates, the weather, how is the weather like or calling
+customer support. So different activities. And if you think about it, it's a pretty good
+thing. Because you have these applications on your SIM card. And no matter what phone
+you use and you put your SIM card in, you'll still have this application. So you don't
+need to install anything else in order to have them.
+Since this application sits on your SIM card, the carrier has a way to update these applications
+or modify or delete them and so on. So for example, if the customer support number
+changes, the carrier will send an over-the-air update which is basically a text message to
+your SIM card saying that the SIM card should update the phone number for the customer support.
+This message is kind of special message, a comment message. And in order to have this
+comment message, they may use the SMS of the user data header. The same user data header
+is used in cases like when you go over the 160 characters limit and do concatenated messages.
+So you have two messages which are concatenated into one message. And this makes use of the
+user data header and of course also in cases for -- who remembers the old Nokia ringtones?
+They also used user data headers. This is how the comment packet looks like
+for such a SIM toolkit SMS. So as I -- you have the user data header, then other fields
+like comment packet, link comment, header link, security parameter indicator and so
+on. The most important one that I want you to
+keep in mind this security indicator. The number you see below represents the number
+of bytes each element has. So this -- all of these specifications can
+be found on GSM specs. In order to also have this comment, you also add other two important
+fields. Data coding scheme and protocol ID.
+By setting the protocol ID to 7F, it means that you do a SIM data download and data coding
+scheme to F6 means that this type of text message is directly addressed to your SIM
+card. So according to the GSM specification, what
+will happen when you receive such a comment message, the phone will transparently pass
+this SIM message this comment message through your SIM card and will not alert you in any
+other way so basically when your carriers sends this message saying okay I want to update
+the number for the customer support, you will have no idea that you have just got a text
+message. And I told you keep in mind security parameter
+indicator. So you are setting this comment. But you need
+some kind of acknowledgement to know that this comment message has been received. And
+this is called proof of receipt which can be set in the first two bits.
+If you set it for example to 01 it means you always want to get a proof of receipt. So
+no matter if there was an error or there wasn't any error, you will always get a proof of
+receipt. And how you get it, you set it in the bit
+number 6, and there are two ways of getting this proof of receipt back.
+By SMS submit which means by a regular text message which is sent by our SIM card or by
+SMS delivery report which is like a delivery report when you send a text message and you
+want to know if the target person has received your text message.
+So again, we have this structure. And we need to fill in the elements.
+The user data header the protocol ID, the data coding scheme I have presented you.
+And then the others. And as you would imagine in order to make this update of the customer
+support number, you need to have some proper security keys.
+But if you look at this example, you will see that ciphering keys that are KIC are set
+to zero. Because I do not care about ciphering keys at all. Why? Because of the security
+parameter indicator. If we drill down to this security parameter indicator you will see
+the first two bits are set to 01 meaning that I want to get a proof of receipt, always get
+a proof of receipt. And I want to get it by text message.
+So basically when -- if I'm going to send this text comment message to you, what will
+happen, it will get to your phone. The phone will pass it to the SIM card. The SIM card
+will try to execute it. It will see that I don't have any proper security keys. But in
+return, it will send me back a text message without you controlling it, without you even
+knowing it. And in order to make sure that how the things
+are like, here is the screen shot of a wire shark capture. And as you see the comment
+is to send short message. It has been initiated by the card application toolkit so it wasn't
+a human initiated action. So SIM card automatically replies to the sending
+number. There's nothing in your inbox, nothing in your outbox. Basically you will have no
+idea that your SIM card has just sent a text message back to me.
+Only if you look at the -- on your bill, on your call records you will see that sometimes
+your SIM card has just sent a text message to someone.
+So let's see it in action. so here I have the destination number. I have
+the user data header. The binary data, the fields that I filled in. The protocol ID and
+the data coding scheme. And I have the target's phone.
+On this phone, this is a prepaid phone. And there is -- it's balance is zero so I have
+no credit on it. So it will try to send a text message. But
+since it has no balance, I will get a text message from the carrier saying: Hey, you
+don't have any credit. You need to refill. Now, once I submit this, it says sending.
+And there is no way to stop this. I can't push any button. The SIM card just sends -- tries
+to send a text message. You cannot control it. It keeps trying to send if I had a look
+at it I would have -- if I hadn't looked at it I would have no idea I just did this so
+if it's in your pocket you will have no idea your SIM card is trying to send a text message.
+And I also got some text messages from my carrier saying you do not have enough credit
+for sending SMS to this number. Please recharge your account. But I didn't send any text message
+by myself. The SIM card tried to do so. So maybe you will think that okay maybe this
+is not something -- I don't know -- important let's say. I can make your SIM card send the
+text message back to me. Well, maybe that's not a big deal.
+But let's think on some other way. Let's say there are services that allows you
+to send a text message from any number. So you can send someone a text message coming
+from whatever number you want. Now, let's say you also have a premium rate number. International
+premium rate number and you send a comment message coming from the premium rate number
+to some target phone number. What will happen, the target phone number will send back a text
+message to the premium rate number you have. So you're paying like a couple of cents for
+sending a text message. And in return you get 20 times more. So it's a pretty good conversion
+rate, right? And the target phone as I told you, some phones
+don't even though that there is a text message sending in progress. Even if you keep your
+eyes on them. So until you will get your monthly bill, you
+have no idea you have just sent text messages to premium rate numbers. Now let's talk a
+little bit about HTTP headers. The easiest way you can think about them is by identifying
+the browser you are using. So if you're browsing from Firefox let's say, that browser will
+have HTTP headers if you're browsing from Safari it will have other headers and so on.
+Now, with this in mind, there are some -- most of the carriers have a mobile page where you
+can find your balance, you can change your services, you can download ringtones, videos
+and whatever. This page addresses using am.carrier.com so
+the carrier name. If you try to access that page from your computer
+you will most probably get something like this.
+So they will detect that you're not connected to their network. And they will tell you:
+Okay, you have to connect to our network in order for us to show you the page. But in
+some cases, if you pretend to be browsing from a mobile device, they will display this
+page. So what I did was to use Firefox extension called user agents feature. And I identify
+myself as a Nokia 871 phone once I did that I got the display page the mobile page of
+the carrier. But it was just a general page because I was
+not authenticated so I could not see any balance. I could not download any ringtones. I couldn't
+do anything. Well, this is how -- the things where they
+start to get interesting. The operators, the carriers know how to charge
+based also on HTTP headers. So the idea was to well sniff all the traffic my phone does
+and see if there are any HTTP headers specifically in my phone number.
+But I failed that. Because there weren't any HTTP headers. Then after some monitoring I
+found a research paper called privacy leaks in mobile phone Internet access where he noticed
+that when someone from a mobile device was accessing his Web site, that carrier was also
+sending the phone number. So he did a list with all of the HTTP headers
+that the carrier was sending. And published it. And the carriers no longer -- are no longer
+sending these HTTP headers. Okay. So they are not sending the headers.
+But what if I will inject the headers in the traffic?
+So I chose a couple of HTTP headers which identified the phone number. And as their
+value, it is the phone number in international format so with the country code.
+So now I can access that mobile page of the carrier from my computer by identifying myself
+as a mobile device and I can also authenticate myself by injecting these HTTP headers. And
+what happens now? I can see anyone else's balance. I can change their subscription plan.
+I can reveal any other account. And stuff like this.
+Whatever carrier allows me to do so. And some carriers are even tieing up the phone number
+with the bank account so you can even see the bank details of that specific customer.
+But I didn't stop here. Remember when there was a time we had to call
+the Internet with our phones? Well, I was surprised to see that there are still carriers
+who still have CSD. So think about it just like a dialup connection from your phone.
+So the carrier has the dial-in number. You set up a dialup connection from your phone
+to that number. And you're browsing the Internet with 9.6 kilobits per second around 1 kilobyte
+per second pretty good speed right? But since it's just a phone call it also has the vulnerabilities
+of a phone call, which is are caller ID spoofing. Now, guess what was my reaction when I first
+set up that connection to a Voice over IP provider which was spoofing my caller ID and
+then forwarding the call back to the dial-in number and I was authenticated.
+So this is just the target phone. The screen of the target phone. And also I have connected
+mobile phone via Bluetooth because I want to have a GSM modem attached to my computer.
+So first I'm calling myself on my own number. With my own number. So this is what it means
+own number. So this works then I'm making up the connection
+as you see I'm using a pretty old Nokia phone and I'm connected to the carrier's network.
+What is the goal of this? Is, well, if I do the caller ID spoofing will I be authenticated
+like any other user and incur charges to that target account?
+So once I'm registering to the network, I'm going to check for my balance in order to
+see the initial balance and the after attack balance.
+So the current balance is 6.05 euros. Next I'm going to choose something to download.
+And I'm choosing some image. It goes pretty slow because remember, I'm
+browsing with 1 kilobyte per second. So and also the call goes internationally. Okay.
+I am choosing some image which cost 1.99 euros. And once I click buy now, I will get a text
+message on the target phone. So the thing worked apparently and it says thank you for
+your purchase and so on. So now I'm going to check again for the balance
+so previously I had 6.05 and this one cost 1.99. So now I should have 4.06 euros.
+And indeed I have 4.06 euros so I was successful just by spoofing the caller ID I was authenticated
+just like any other customer. Let's talk a little bit about data traffic.
+Let's say you have a prepaid account. And you have some data included in your subscription.
+You have no more money on your account. And you have finished all your data in your subscription,
+what will happen? Will you still be able to have data connection?
+Well, you will still be able to have data connection. But the only page you will be
+able to browse would be the carriers web page because maybe you want to do a refill and
+browse again the Internet. While I had no more money in my account, then
+I thought well what would happen if I performed a DNS query. So I tried to find the IP address
+of Google.com and I got a reply from the DNS that my carrier was using.
+Okay. That works. But what happens if I use open DNS servers. And I also got a reply from
+open DNS servers although I could not browse any web page but the DNS replies worked.
+So then I thought of this: What if I set up a VPN server on my cable connection at home.
+And make that server run on port 53 UDP which is the DNS port and then set up the VPN connection
+from my phone to my server. So think about it just like a regular VPN
+connection. But this VPN server is listening on port 53 UDP. Guess what happens? You have
+free Internet. (Applause)
+>> BOGDAN ALECU: It and even though I had the spend limit now with this, the spend limit
+is gone. But I didn't stop here.
+Since I'm living near the border at home I thought, okay, what happens if I force my
+phone to connect to our network across the border and try the same.
+And it also works in roaming. (Applause).
+>> BOGDAN ALECU: So right now instead of paying $12 per megabyte I'll let you guess how much
+I'm paying. (Chuckles).
+>> BOGDAN ALECU: Next the extra digit. I'm pretty sure you have here a flat rate plan
+with unlimited minutes inside your operator's network. So if you're from Verizon you'll
+have unlimited minutes in Verizon. But if you call to AT & T, for example, you will
+not have unlimited minutes. And you also have mobile number portability.
+So you can transfer your current number to a different operator.
+Well, let's think of this scenario: You have two mobile numbers, two phone numbers, a operator.
+And you decide to transfer the second number to the B operator. If you're calling now from
+the first number to the second number, you will be charged like calling across the network
+from A to B. But in some cases, if you dial the same second
+number but add some extra digits at the end of it, the carrier will have no idea that
+the number has been transferred. So you will be billed like calling inside the same A operator.
+And also it also works the other way around. So if you have two different numbers in two
+different networks and you decide to transfer the second number to the A network, if you're
+going to call with the extra digit you will pay more because it will not know it's in
+the same network as yours. So this on this side, it's not so good. But if you have them
+on different networks, then it will be even good. So let's see how that worked.
+So here I have 2077 minutes inside my whole network and 58 minutes national minutes and
+international minutes. So what I'm going to do, I'm going to call
+a regular ten-digit number, which has been transferred in the same network as mine.
+So it's the second case scenario where I am paying more than I should.
+Now I'm going to check again for my balance now I have 2076 minutes so one minute has
+gone from the national minute plan. Now I'm going to dial the same number again but add
+two extra digits at the end of it. I'm going to add 1-5 at the end.
+I'm going to hang up. Check again for the balance.
+And now I should have 2075 national minutes but the national minutes have the same. And
+you see it has been deducted from the 57 minutes even though the number is in the same network.
+So I wasn't -- it wasn't deducted from these minutes but from the minutes to other networks.
+And what's even funnier is that on some carriers, this first when I dial the number, you see
+it has a P at the end which means it has been transferred and it has been deducted my call
+from the 150 national minutes. The second time I added two extra digits and this one
+means unknown so I've been deducted from the unknown plan. Which means I get to talk free
+for this ported number. Even though I do not have unlimited calls. If that doesn't work,
+try with all of the digits, one carrier was working -- worked with this attack only if
+I had used one digit and that digit had to be No. 2. I have no idea why. But if I put
+2, then it worked. Well, after reporting this, be the carriers,
+most of them have fixed it. So now when I'm calling with the extra digit,
+I get a voice prompt back saying you have dialed the wrong number. So I can no longer
+dial myself the wrong number. But how can I make the carrier dial the number instead
+of me? Well, it's pretty simple. My code for wording
+for all calls and to the -- I put the wrong number and once the call reaches to that forwarded
+number your carrier will successfully dial the wrong number for you.
+So it will still work. As a summary I would like to start with some
+reply I got from customer support. Our technology does not allow unauthorized access. Occurrence
+of errors in billing regarding data traffic or voice is excluded because of their technology.
+Okay. Alien technology? Test yourself all of this and maybe report
+into your carrier. Check if your carrier allows you to disable prememory numbers access. This
+way you will at least be protected from the SIM comment attack.
+The carriers can filter all of these SIM toolkit messages but until now I haven't found any
+of them that will do this. Because they could say only allow SIM toolkit messages that are
+coming from specific numbers and the other ones, just drop them.
+Also, do not rely on the caller ID. There are still a lot of services that rely on caller
+ID. And they consider this as a good authentication. This is really not proper authentication.
+Do a proper authentication. And an example of some really good authentication.
+I don't know why sound is not working. (Beep).
+>> BOGDAN ALECU: Okay. I don't know if you're going to hear it.
+(Ringing). >> Starting with the area code please enter
+the number you're calling about. If you're not a customer --
+(Beep). >> BOGDAN ALECU: So basically what I'm doing
+now, I'm calling the customer support of some carrier in the U.S. And I'm using Skype because
+it's free to call 1-800 numbers. And if you're calling the customer support from a different
+network, it will ask you to authenticate by inputting -- by entering your number. Your
+number. Right? >> Main menu for your minutes or usage or
+your account balance, press 1. Payments, 2. Technical -- all right. Payments. Please enter
+your billing account password. >> BOGDAN ALECU: Oh, so it has some kind of
+protection. It has the password I need to enter. Well, what do I have to lose. Let's
+enter some passwords, random passwords. >> Your entry does not match our records.
+>> BOGDAN ALECU: Maybe better luck next time. >> Please press the corresponding keypad number.
+Your entry does not match our records. >> BOGDAN ALECU: Maybe a third time.
+>> Your current balance is (speaker off mic). (Applause).
+>> BOGDAN ALECU: So I don't know if we implemented this. But I love this guy. Because usually
+on the third failure attempt you get kicked out but in this case on the third failure
+attempt, they let you in. (Chuckles).
+>> BOGDAN ALECU: How cool is that? If I knew that previously, I would have tried it on
+some many systems. Really. Just enter three wrong passwords and you are in. Okay.
+Okay. To summarize, this is the good authentication. So thank you very much for your attention.
+I hope you enjoyed all of the things I showed you. If you have any questions, you can follow
+me on Twitter, send me an e-mail address or on my Web site. Thank you once again.
+(Applause)

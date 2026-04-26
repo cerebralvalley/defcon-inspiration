@@ -1,0 +1,885 @@
+>>Omer is now gonna present
+Exploiting Windows Exploit
+Mitigation for ROP Exploits. I knew exactly what I was doing
+there. Alright, go ahead Omer.
+Have a good time, dude. >>K. Hello everyone. Thank you for
+coming. Let me get sorted and we
+can start. Okay, for first things first. Uh, and work.
+Okay. So, I better your parents
+taught you well and taught you, told you don’t listen to
+strangers so I will, I will
+introduce myself. I am Omer Yair. I manage the endpoint team
+at Javelin Networks. We are a
+small start-up that uh, decided to protect your endpoint on the
+enterprise front, to protect
+your active directory from the endpoint and Symantec uh,
+believed in us, and acquired us
+a few like, 9 months ago. Uh, and though I’m still not sure
+how I am supposed to pronounce
+the new title. I am also a photographer and you can follow
+me on twitter. So, I want to
+start with the guise of this talk. It’s uh, quote by Gilles
+Deleuze, a French philosopher
+and he said the concept is a brick. It can be used to build a
+courthouse of reason or it can
+be thrown through the window. And throughout this talk, we, we
+will identify all those bricks
+that make up ROP exploits, Windows mitigations, Windows
+exploit mitigation and we will
+see how we can use those to break windows. So, what’s on the
+agenda? We’ll start talking
+about ROP uh, 101, I will dumb down the things as much as
+possible, make it simple so
+everyone can understand, then we will talk about Windows exploit
+mitigations and we see how we
+can abuse them. Next, about ROP mitigations and we’ll see how we
+can bypass them, and lastly,
+there will be a demo where you will clap hands and if you will,
+we will all behave yourself
+there will be a little surprise too. So, let’s start. We can’t
+start talking about ROP exploit
+without mentioning the, the smashing the stack for fun and
+profit. And, is there anyone in
+the audience that ever heard the term for fun and profit, and
+profit? Please raise your hand.
+Yeah, it’s quite common and I hope you all know what the
+source of this uh, term came
+from and it’s an article by Aleph One that we wrote in 96
+about the mechanics of uh, stack
+overflow and we can’t talk about stack overflow without expanding
+how stack semantics works. So,
+if you call uh, a function in a 32 bit processor, uh, you first
+need to push the parameters on
+the stack and the stack on my slides will go upwards and then
+with the call out code is
+issued, the return address is pushed in the stack and the
+extraction point jumps to the
+function that you called. Now that function will allocate
+space for itself on the stack,
+do its stuff, and eventually it will de-allocate the space and
+the read opcode will pop the
+return address from the stack. So, how stack overflow works?
+Well let’s take hypothetical
+example. Completely hypothet, hypothetical. Let’s say you have
+a program that uh, gets an input
+and looks for part, for details about the user. So, it first
+allocates its, its, uh, space
+for the stack, then it uses get ask to steal a buffer from the
+user. Now, a normal user will
+just fill up the few bytes of the buffer, but a hacker will
+start overwriting the buffer
+until eventually the hacker overrides the return address. So
+now, if you are an elite hacker,
+you won’t just write random bytes, you will write your shell
+code instead and on the place
+that you write the return address, let’s say a
+hypothetical again, you know the
+address of the stack, you can just write the address of the
+stack where your shell code
+starts. So now, when a return code will be issued, the
+instruction pointer will jump to
+the shell code on your stack and now you can run a shell. Now,
+this is not a hypothetical at
+all. That was the exact source code and the exact buffer
+overflow, exact shell code that
+was used on the Morris Worm and that was 1988. Almost a decade
+before Aleph One published his
+article on uh, stack overflow. So, the security eye industry
+actually knew about stack
+overflow and the potential hazardous disasters that it can
+make, but still didn’t do
+anything and was so bad that it prompted the formation of the
+Shell Code CERT Coordination
+Center. So, again, you would think that after Aleph One
+published his article, the
+security industry will wake up and start protecting everyone,
+but no, on 2003, all you had to
+do to exploit a buffer overflow was to write this simple html
+page and that’s a CVE by Matt
+Miller, and what happened behind the scene is that internet
+explorer had just replaced every
+slash character with an underline slash underline, which
+caused it to miscalculate the
+amount of bytes that it needed to write and then caused it to
+write like, the first buffer to
+the stack and you had the ability to override the return
+address and then you could write
+the shell code. But now this is not the uh, uh, an OS where we
+can guess the address of the,
+the stack. This is Windows. It’s a modern OS. Well, then Matt
+Miller used a different trick.
+He knew that the system dll’s was always loaded to the same
+address. So, he looked on those
+dll’s and found an opcode which is jump esp, which is, was
+always on the same address. So
+instead of writing the address of the stack, he wrote the
+address of that command. So now
+when the returning, the return opcode is issued, the
+instruction pointer jumps to the
+jmp esp, and after it uh, executes jmp esp, now the
+instruction pointer points to
+the stack and you can pop calc, if you want. Now you might ask
+yourselves, well, how is it even
+possible to run code from the stack? Shouldn’t it just be read
+write memory? Well, that was,
+uh, possible a long, long time ago. Until DEP came in, came in
+on Windows XP Service Pack 2.
+And DEP, Data Execution Prevention, actually enforces
+the read write or more precisely
+the non-execute code, uh, memory. Because Windows
+throughout time, always marked
+that memory is only read write, but the CPU ignored that, eh,
+the CPU ignored that, and eh,
+Windows had to write another bit which is called Annex Bit, which
+forces the CPU to actually not
+execute code in that, uh, area. And DEP was actually the
+cornerstone for ROP. It actually
+made ROP what it is today. And the reason why is now that, now
+is because now we need a bridge
+between actually uh, exploiting a software and writing out shell
+code to that uh, memory, and
+running it. So, ROP fills the bridge between those, uh, two
+things. Now another thing you
+might ask yourself, what do you mean that all dlls are loaded to
+the same address? Well, again,
+that was the reality back then. Until ASLR, auto space layout
+randomization came. And, with
+ASLR, every time you boot your machine, Windows randomized the
+base address feature of each dll
+so now you can’t guess the address, you need to find it.
+Now, it is effective mostly on
+remote, uh, exploits because if you can run code on your, on the
+same machine, let’s say you’re
+trying to exploit the privilege escalation uh, bug, well, you
+can just run a benign a program
+that loads, loads those dll, and you know the address of those
+dll’s. So, I want to take a
+little sep, step back to help people that want to write
+exploits today to see some
+spets, steps that we overlooked when we saw the, the stack
+overflow. Because stack overflow
+looks very simple, you just write byte and you control the
+machine. So, let’s see what
+those are if you want write exploits today. First, you need
+to have vulnerable software. You
+need to have access to that software so you can run your
+code again, and again, and again
+until you perfect your exploit to make it running well. Next,
+we had a way to uh, to get that
+information so on th Morris case, we knew the address of the
+stack, on the Matt Miller CV, we
+knew the system function analysis. Today, you will need
+an arbitrary read vulnerability
+that will allow you to leak those addresses when you, on
+your exploit. Next, you need a
+way to manipulate memory. So, stack overflow, obviously you
+write the stack so you have an
+way to uh, to write into the memory. Ah, you have other ways
+to write into memory, like heap
+overflow or use after free, which sometimes allows you to do
+that. And if you want to write
+exploit today, this kind of vulnerability is called
+arbitrary right. So, if you
+arbitrary read and arbitrary write, you’ve probably have a
+way to exploit the software. And
+the last step, with, which I think is the most important to
+understand, is that you don’t
+actually write code to the target, uh, process you are
+trying to exploit. When you
+hijack the code execution, it’s actually uh, a by-product of
+both writing memory into that
+process and the normal execution. So, if you think
+about thread ROP code simply
+jumps into the shell code from the Morris Worm is the normal
+flow of execution of the program
+and we abuse that normal flow of execution to run our shell code.
+So, now, we’re ready to play.
+So, let’s talk about Return-Orient, Oriented
+Programming or ROP and the term
+was coined by Hovav Shacham in his article The Geometry of
+Innocent Flesh of, on the Bone,
+which I think it’s one, one of the most amazing titles someone
+can give, and the main idea
+behind it is to reuse existing code in memory ah, by leveraging
+the stacks semantics. So, let’s
+understand how it works. In normal flow of execution, when
+your program runs, you, the
+instruction pointer and ending instructions control the, the
+flow of the [stuttering], the
+flow of execution. So anytime instruction is issued, the
+instruction pointer
+automatically advances to the next instruction. So, now you
+have the instruct, instructions
+running one after the other. In ROP, this, the register that
+controls the execution is the
+stack pointer, or the stack. So, you are looking for a set of
+instructions that end with a
+ret. So, now, the instructions running, are running and when
+the ret opcode is issued, the
+next set of instructions will be fetched from the stack, cause
+that’s the return address that,
+over there. So, now, you are running another set of
+instructions that are followed
+by that, which fetches the next set of instructions. So now the
+stack pointer is controlling the
+execution, or the stack, and luckily for us, the stack is
+read-write uh, memory, which we
+can control if we have the point of uh, vulnerability. Okay, so
+one of the most important terms
+on, on the ROP is gadgets. And a gadget is a sequence of
+instruction that usually ends
+with a ret that allows you to perform logic, logical
+operations. Let’s say, you can
+copy a value into memory, you can change the memory permission
+of uh, memory area into
+executable, oh, load uh, val, uh, values in specific registers
+and many more. Let’s see an
+example. If you want to write an, an assembly code that uh,
+write value into memory, you
+will probably read write this uh, this code. You will load a
+value into eax, load a
+destination into ecx and then use the move opcode to move the
+data from eax into the
+destination of ecx. So, we are working with a stack, so we can
+replace the first two moves with
+pops. Let’s see how it will work in, in a ROP. So, you have the
+stack on the middle and the
+memory and code on the right and the registers on the left. So,
+we’ll start with the first set
+of instructions which is pop eax. Now you pop that beef into
+eax and the ret opcode will take
+us to the nest, next uh, set of instructions which is pop ecx.
+So, now we pop the others we
+want to write to, the six, one, two, three, zero, and now the
+ret opcode will take you to the
+next, uh, set of instructions which is the move eax into ecx.
+So, now we are writing the dead
+beef into the address we wanted. Ok, so, most of the talks on ROP
+only mention 32 bits, but we are
+in 2019 and it’s about time we start talking about 64 bit
+ROP’s. So, the main difference
+between 32 and 64 bits ROP’s is that when you pass the
+parameters for a function, you
+need to load the first four parameters on rcx, rdx, r8 or
+r9. Next you alloc, you need to
+allocate 32 bits uh, in the stack, you don’t need to fill it
+with anything, and lastly, all
+the other parameters are passed uh, similarly to 32 bits. How
+would we, how does it look like?
+Well, if you want to call a 64 bit function that will receive
+five parameters, again, to
+execute the code, you first push the first parameter to the
+stack. Now we load the first
+parameter into rcx, the second into rdx, the third into r8, and
+the fourth into r9. Next you
+need to allocate the 32 byte, uh, bit, bytes, and the call
+instruction works similar to uh,
+32 bit, and pushes the return address on the stack. So, very
+similar to 32 bit. And the
+example, the example which we will see today will be 64 bit.
+So, what do we do with a ROP?
+Usually you would want, you want to call either virtual protector
+or virtual alloc. Virtual
+protect allows you to change the, uh, protection of a memory
+address to into executables so
+if you have the shell code already in memory, you just need
+to change it in the executable
+and jump to that address. Or we can also allocate using virtual
+allocate, virtual alloc in
+executable memory and copy all, uh shell code into that address
+and run it. Now because those
+two functions are the main, uh, targets of ROP, the endpoint
+protection will actually monitor
+those functions and we will see later how they do it. So, a lot
+of the time when you write ROP,
+most of the time will be wasted looking for gadgets. And I want
+to suggest you, just look at
+ntdll and there are a few reasons to do that. First, ntdll
+is loaded into every process on
+the systems. So, you don’t need to uh, hope that the dll you,
+you exploited before will be on
+that, uh, process, because ntdll is always there. So, if you find
+the gadgets on ntdll, you might
+be able to uh, use those gadgets on every other exploit you will
+use, and another thing that
+contributes to that is because ntdll is so close to the kernel,
+then a lot of the code on ntdll
+is handled at written assembly and if you ever wrote assembly,
+you know that you write it once
+and you don’t touch it. It just works. So, now, if you find a
+gadgets that its handled an
+assembly, most of the chances that it works from the very
+early version of Windows,
+sometimes even Windows Vista and uh, gadgets I will show you
+works from at least Windows 7,
+and that’s a lot, uh, that’s a lot of power if you can write
+your ROP once and use it on
+every other exploit you will ever need. So, let’s see some
+gadgets on the ntdll. So, the
+first is the function RtlCopyLuid and that function
+even look if you are copying
+luid, it just copies 64 bytes from a destination you give
+into, from the source into the
+destination and how it looks like in, uh, assembly, well, it
+simply loads the value from the
+source, which is in rdx, it’s the second parameter in rax and
+copies that value into rcx,
+which is the destination that it gave you. But, because we are
+writing uh, the stack we don’t
+need to write, to write a return address to the beginning of that
+function. We can skip three
+bytes directing to the second opcode and now we can, we have
+the gadget that can move rax
+into the destination rcx. Now there is a similar that exists
+throughout all versions of
+Windows, the move rcx into the address in rax. It’s in the
+function
+rtlSetExtendedFeaturesMask and you can use it everywhere, but
+now you’ll need uh, a way to
+load values into rax and rcx. So, how you do it? Well, modern
+compilers are aware of ROP and
+will not emit pop rax or pop rcx in the code. But what they do
+emit is like add rsp 58 hex
+bytes, which is just deallocate in the stack for 58 hex bytes,
+but apparently the byte 58 is
+pop rax, so if you skip three bytes into the middle of the ROP
+code, you get pop rax thread and
+that ROP code exists in a lot of time in ntdll. And very
+similarly, if you are looking
+for pop rcx, you have the multiplier xmm0 with xmm3, which
+allows you to skip two bytes and
+now you have pop rcx thread, so now we have a way to copy, uh,
+any value we want in memory.
+Next, I want to show you another cool gadget uh, which is on
+ntdll chkstk. Again, handle it
+in assembly, and I will soon explain to you why, because it
+first load the top of the stack
+into r, uh 10, then the next value into r11, then it simply
+deallocates the step that stack
+and returns. And it’s simply like writing pop r10, pop r11,
+ret. And how do I know that this
+is handled at assembly, because only if you read the internal
+manual back then when Windows
+wrote the code, you know that this was a more efficient way to
+write it. So, I didn’t want to
+show you pop r10, but if you skip just one byte, you have pop
+r, uh, edx, so now you can load
+both rcx and edx, so you have two parameters you can test two
+function, so that’s a thing we
+can start working with. Another very important gadget, well
+obviously not pop r12, it’s the
+pop rsp, and this gadget is called the stack pointer – the
+stack pivot. Because sometimes
+when you have exploits, you can only write uh, a limited amount
+of bytes into the stack when you
+hijack the stack. And this gadget allows you to write the
+whole ROP into the heap or a
+place we can, we can, where you can write a lot of code and
+simply pivot the stack into that
+address, so now you just need to write a return address into the
+uh, the stack pivot and you can
+have ROP as long as you want. Now one of the most powerful
+gadgets on ntd, on ntdll is
+actually a function. It’s called NtContinue, which gets two
+parameters, and I can tell you
+that you can completely ignore the second parameter as it
+doesn’t do anything, and context
+is a, uh, contains the processor specifically used for data,
+which means you can actually
+replace all the values in all the registers of the currently
+running thread, so now you can
+control not only rcx, rdx, r8 or r10, - r9, you can also control
+the stack pointer and the
+instruction pointer. So, that’s very powerful gadget that you
+can use. Now, the last gadget
+that I want to show is RtlMoveMemory, when you want to
+copy a large amount of data
+between memory. Now, I like to make analogies because it better
+explains things and I want to
+compare gadgets to the art technique called Readymade.
+Okay, so the Readymade Technique
+was invented by a French artist called Marcel Duchamp, and if
+you think the French people only
+contributed to the world by, uh, inventing, uh, I don’t know,
+like croissant, baguette,
+democracy, and Mimikatz, then they do, they did some other
+stuff as well. So, this is a,
+this art piece called Fountain which is just urinal turned on
+its side and signed with his
+pseudo name of R. Mutt, which Marcel Duchamp did, and what he
+write about it explains exactly
+I think what gadgets are all about. Whether Mr. Mutt with his
+own hands made this, the
+fountain or not has no importance. He chose it. He took
+an ordinary article of life, and
+placed it so that its useful significance disappeared under,
+under the new title and point of
+view – created a new thought for that object. And if you think
+about it, that’s exactly what we
+are doing with gadgets. And if you follow this train of
+thought, well, like the Fountain
+is an art piece, our little gadgets are little pieces of
+virtual art. So, oui. So, if you
+follow this train of thought, and our gadgets are little
+pieces of art, it actually makes
+ntdll the public bathroom of Windows. [audience laughing]
+Okay, so with that thought in
+mind, let’s move on to Windows Exploit Mitigations. We’ll stack
+with, we’ll start with stack
+canaries and stack canaries protect you against buffer
+overflow. It works by first
+generating a random base canary value whenever a process is
+started and then writes a cookie
+into the stack using a calculation and that base value.
+Now, when the return opcode is
+issued before the return opcode is actually executed, it
+performs the reverse, uh,
+calculation and checks that the value you got is the base canary
+value. So, now we can actually
+see if someone actually override, overridden the, the
+stack. And let’s see the code,
+how it works. Uh, so it first loads the base canary value into
+ecx then it sorts the value with
+a stack pointer so now it’s not only uh, as an attacker, you
+don’t only need to guess the
+base canary value, you should also guess the current stack
+pointer, which is very hard, and
+then you push the value into the stack. Now before the return
+opcode, uh, let’s say an
+attacker actually managed to override the stack, the, uh,
+opcode will pop the, the canary
+stack, the canary value from the stack, will sort it again, and
+will call a function that
+verifies if the value was changed, and because it did, it
+will actually crash that
+process. Next uh, mitigation I want talk about is the Windows 8
+ROP Mitigation which is a very
+big name, but it actually just detects, uh, stack pivot. So,
+whenever are calling, uh, memory
+functions on Windows, starting from Windows 8, it will actually
+check that the stack pointer
+points to a valid location on the stack. So, if you used uh,
+stack pivot on your ROP, well
+Windows will detect it and will crash the software. And now,
+it’s very easy to guess how we
+can bypass it. You simply need to make sure that the stack
+pointer points to a valid
+location on the stack when you are calling, uh, Windows 32 API.
+So, how can you, uh, fetch the
+stack pointer value? Well, you can abuse canary stack canaries.
+So, for the first, I think
+technical I show you, I call it “A Little Bird Told Me” and we
+will see how we can abuse by
+using your ROP uh, stack canary to fetch the value of RSP. And
+uh, the main steps we will take
+is we will first prepare the registers, then we will call a
+benign function that uses stack
+canary, we will fetch the value, that cookie from the stack. You
+can treat it like a use or read
+after free vulnerability, and then we Xor that value with a
+base canary value, and if you
+remember before, I told you that need to have a memory read
+vulnerability, and if you have
+that memory read vulnerability, you can actually fetch that base
+value from the dll you are
+calling. So, we will assume that value on the ROP already. So,
+you have the code on the left.
+On the top right, you have the registers and, on the bottom
+right, you have the stack. So,
+the stack is also split between the address on the left and the
+values on the right. So, we will
+start with a pop gadget which will pop the values that we
+want. We want to prepare the
+registers, the important registers we’re preparing now
+are r6 and r9. R6 is a parameter
+for the function we are calling, and r9 you will see later what
+it is used for. And now direct
+will take us to the next, uh, function, which is
+RtIsValidProcessTrustLabelSid.
+What it does I don’t even care. The only thing I care about is
+that it uses stack canaries and
+it doesn’t mess up with uh, the registers or the stack, or the
+stack itself. So, first this
+function allocates place on the stack, next it fetches the base
+canary value into rax, you can
+see it over there, now, it will store the value with a stack
+pointer, so this is the uh, the
+stack uh, cookie we’re using and later it saves that value into
+the stack, so you can see the
+same value on rax, we can find it now on the stack. Now,
+because we passed the parameter
+to the function, we passed the bad parameter and the function
+will start, uh, start going to
+the exit, uh, into the exit uh, sequence. So, now right before
+the ret opcode, it fetches the
+value of the stack uh, cookie from the stack into rcx, now it
+will store it with the, the
+stack pointer, so now we have the base canary value and it
+called the functions that checks
+the cookie, and because we are innocent, we didn’t do anything
+wrong here, we’re just calling a
+function, well that function will pass correctly, and now
+before I execute this, I need to
+remind you the canary cookie is still on the stack, so we are
+deallocating the stack, but
+actually the stack memory is like a memory in any other place
+on the computer, so if anyone,
+if no one written or overwritten that value, that value is still
+there. So, now we will jump to a
+special uh, gadget that will allow us to fetch that value,
+and that gadget is in
+RtlpExecuteHandlerForException. Again, all the gadgets you are
+seeing here are from ntdll and
+this is handled in assembly and you can guess it’s used for
+exception handling, but this
+gadget actually allocates place on the stack and now it calls,
+you can see that now we have the
+cookie on the stack, uh, on our stack value, and now it will
+call a pointer that is
+controlled by r9. So, if you remember the first gadget we
+used, we popped r9 to control
+the value. So, can you guess where we are going with this uh,
+now? What gadget we will use?
+Well, we’re going to the same uh, pop gadget that we used
+before. So, now we are not only
+popping values from the stack and the important thing is that
+now r9 will receive the canary
+uh, cookie. So, now we have the cookie on r9, all we need to do
+is to fetch the base canary
+value and solve it. So, now the ret opcode, you can see we take
+to the next gadget, the pop rax,
+you know that one. This will fetch the base canary value into
+rax and the ret opcode will take
+us to the last uh, gadget, which is solve r9 with rax and this is
+part of our RtlpSytemCode
+pointer, another function on ntdll, and now we have the stack
+pointer and we can pivot from
+here and continue our ROP. Okay, so now for the next mitigation,
+we will talk about a control,
+controlled flow guard (or CFG) and the idea behind it is to
+mitigate uh, controlled flow
+hijacking of indirect calls. What are indirect calls? Let’s
+say you are writing CPP code and
+the compiler needs to fetch the address of the function from the
+virtual table. So, it will
+write, will emit code which looks like this. It fetches the
+address uh, of the func, of the
+function into rax, then loads the parameter rcx, rdx, and r9,
+uh 8 for like, three parameters
+for this function, and will recall rax. So CFG actually
+replaces rax. Wait, I’ll take a
+step back. If you are an attacker, you can actually
+hijack the value that will be
+saving to rax, and then you can call any function you want or
+any place in memory you want.
+So, control flow guard actually replaces the control rax with a
+call to guard dispatc, icall
+fptr. Uh, sometimes, it’s just a check and there is another call
+rax later. It depends on its
+limitation, but actually this function will check that rax is
+valid. Function and no one
+overridden it. How it does it? It uses a huge, uh, bit field,
+where every bit marks, uh, if a
+function starts at the specific address in memory. So, it’s
+coarse grain. It uh, doesn’t
+know if those are the functions you actually wanted to call, but
+uh, if there is a function
+starting there and it doesn’t matter what, what the dll it is,
+it will say that it’s valid.
+What it gives us is that uh, you won’t be able to call in the
+middle of function and then uh,
+mess with the stack uh, the stack itself. So, now comes the
+questions, how can we abuse CFG?
+Well, well I did. You remember uh, I told you that the uh, cfg
+replaces the call with a call
+guard dispatch icall fptr? Well, actually that function
+translates into ntdll functions
+called Ld, Lt, LdrpValidateUserCallTarget and
+that function checks the bit
+field, you can see it and uh, down below, you can see that if
+it finds that there is no
+function overwrote, it jumps into
+LdrpHandleInvalidUserCallTarget.
+And if this name sounds familiar, because that’s the pop
+gadget we just used. So, thank
+you Microsoft for introducing one of the best gadgets for
+ROP’s out there and making it
+available in every, in every god damn process on the system. Now,
+I need to ask, sorry for all the
+people exploiting this because if Microsoft is watching this,
+they probably take it away from
+us. [audience laughing]. But wait, [laughing] there is more.
+If you will look at then, at the
+nsdn, you will see there is a uh, a function called
+SetProcessValidCallTargets and
+this function actually allows you to tell CFG what addresses
+are valid. So, let’s say if you
+can potentially exploit uh, a CF, uh an indirect uh, call
+twice, you can first call
+SetProcessValidCallTarget, set the target you want as a valid
+target, and then call it again.
+So, what do you think? Do you think Microsoft actually protect
+the valid uh, uh function that
+is published on nsdn? Well, apparently, they do. So, nice
+one Microsoft, but not that
+nice, because if you look at SetProcessValidCallTargets, it’s
+actually a wrapper around an
+ntdll function called NtSetInformationVirtualMemory,
+and do you not what?
+NtSetInformationVirtualMemory is actually valid code indirect
+call target so we can call this
+function, tell Windows that it’s a valid target and then abuse
+the same exploit again to run
+whatever function you want or whatever address you want. It’s
+actually like telling Windows
+those are not the exploits you’re looking for [audience
+laughing] and you know the force
+is powerful on the weak minded. Okay, so let’s talk about ROP
+mitigations. And we will talk
+about first about ROPGuard which is the mitigation that is
+implemented by most endpoint
+security today, or at least a variation of it. And it uses
+strategic hooks on um, memory
+functions. Like I told you before, in the virtualprotect,
+virtualalloc, all the matching
+ntdll functions, and all the functions that allow you to
+create processes. And what it
+does, it fetches the return address from the stack and look
+at the opcode preceding it to
+see if there is a call uh, to that uh, function and if there
+is no call opcode before the
+return address, then how did this return address go through
+the stack? Now, it doesn’t only
+check that there is a call, it also checks that the call opcode
+actually uh, calls the function
+that we’re hooking, so that’s the ROPGuard in general. It does
+have, uh, some more tricks, uh,
+to do, but most of them simply checks that there is a call
+opcode. Now kBouncer is like a
+ROPGuard on steroids, if you would like. It actually utilizes
+a feature on CPU called Last
+Branch Records, which saves the last indirect uh, jumps or calls
+you had. So, you have uh, the
+source and the target address and you can actually perform
+singular checks to ROPGuard on
+those address too. So, if you can think about it, ROPGuard
+actually checks that the return
+address, which is the future of execution. kBouncer also checks
+the past of execution that was,
+that already happened. Now I know that there are a few, very
+few, uh, vendors that
+implemented kBouncer, but most of them only implemented
+ROPGuard. Now, another
+mitigation is ROPecker, which I haven’t seen implemented
+anywhere and the idea behind it
+is to use the same mechan, mechanism as uh, DEP, the dot
+execution prevente, prevention,
+to mark all the memory as non-executable except, except
+for the current uh, executing
+page and the next one. So, now whenever the execution jumps
+outside of that, uh, area, there
+will be uh, exception found, and ROPecker will catch this
+exception, and will perform
+similar checks to uh, kBouncer, but uh, because it happens a
+lot, the heuristic that it use
+are a lot weaker than uh, kBouncer. Now, the last
+mitigation I want to mention is
+Shadow Stack, which is uh, a collaboration between Microsoft
+and Intel. It was first proposed
+on 2016, but it was never implemented. Uh, they suggest to
+use two different stacks, one
+the regular stack that you have and we all know about, and
+another matching kernel stack
+that only saves the return address so whenever there is a
+call opcode, the return address
+is pushed both to the user mode stack and the kernel stack and
+when there is a ret, it will pop
+both addresses. And if the addresses are uh, incorrect,
+well, then you know that uh,
+someone overwritten the stack. Uh, but as I said before, it was
+proposed in 2016, there is no
+implementation of it, anywhere that I know of, and let’s see
+how we can bypass it. So, before
+I tell you my effort, I want to suggest you a paper to read or a
+BlackHat talk to, to watch,
+which is called The Beast Is In Your Memory, by Daniel Lehmann
+and Ahmad-Reza Sadeghi. And they
+explain how you can bypass uh, ROPecker and kBouncer uh, by
+abusing their heuristics. And,
+if you think about it, when they say they are abusing their
+heuristic, they are actually uh,
+have an intention of being caught. And I don’t like being
+caught, so this is why I
+invented uh, a new technique called Rite of Passage, which
+allows you to bypass uh, the ROP
+mitigations without even being caught or without going through
+of the endpoint securities uh,
+hooks. So, we collected a lot of bricks so far and there is still
+one more brick we need to
+collect to understand how we can completely break windows and
+this one is the system call. So,
+syscall is the way uh, you transition from user mode to
+kernel mode and whenever you
+call uh, virtualprotect, or virtualalloc, or any other Win32
+function, it’s usually translate
+into a system call function inside ntdll. Again, handle it
+in assembly. So, all of those
+functions will look very similar to NtAllocateVirtualMemory. It
+first moves the first parameter
+from rcx and saves it into r10. Next, it loads the system code
+parameter into eax and on the
+case of NtAllocateVirtualMemory, I think it’s Windows 10, the
+value will be 18 hex. Let’s say
+for NTVirtual, NtProtectVirtualMemory, that
+will be 50 hex. So, every
+function has a different uh, number. Next, it issues the
+syscall uh, command, and the
+syscall actually, is actually the opcode that transitions into
+kernel mode, but it always go to
+the same function in kernel. So, how does this function know
+which function you want to run?
+Well, it looks at eax. So now it knows that because eax is loaded
+with 18, 18 hex, you want to run
+NtAllocateVirtualMemory. Now when the function finishes in
+the kernel, it will return to
+user mode and the function will continue. So, as I said before,
+all the endpoint protection
+usually hook those functions. So, now you have a hook on that
+function and if your ROP goes
+through that uh, function, it will go through the endpoint
+hook. Some vendors did even go
+as far as override the whole function so you will not even
+know that it’s there. Don’t why
+they should do it, but you know what? The jump hook end
+function, let’s say
+NtYieldExecution, which is actually a function uh, that
+does nothing, it’s like the
+insecure function of a program, if you want. It just tells
+Windows, well I don’t know if I
+have anything important to do right now, maybe you decide if I
+need to continue execution or if
+someone else do the execution. It’s a function that is no, has
+no interest to anyone. Maybe for
+us. But, uh, another thing that you can see. How do I know that
+this is handled it in assembly
+or a marker that just copies the same values everywhere? It’s
+because NtYieldExecution doesn’t
+get any parameter. So, why do you need to pass r6 and r10 if
+r6 holds no valuable data? Well,
+that’s handwritten in assembly. But we can actually abuse
+NtYieldExecution of any other
+function on ntdll which is not hooked for our cause. And how do
+we do it? Well, we will start
+with a pop rax uh, ret gadget that loads the system call into
+rax. Next, we’ll use another
+gadget that you’ve seen before that allows us to load r10. So,
+now we can also prepare the
+first step parameter. And next, we will not call
+NtYieldExecution, we will jump
+18 bytes directly into the system call. And now, if you
+look at it, we actually have a
+way to issue any system call we want using a ROP and because we
+don’t pass through any of the
+endpoint protection hooks, no one will even know that our ROP
+was there and no one will ever
+catch us. So, I wrote a little tool, which I will publish on my
+GIT later. Uh, it’s called
+ROPInjector, injector, which uh, first allocates read write
+memory into the target process,
+uh, it writes the shell code into that process. Then it will
+create a new thread on that
+process and injects the ROP into that process using uh, uh, get
+process, uh, get process context
+and separate get thread context and set thread context and
+lastly, the ROP will modify that
+exec, uh, area into read write execute using either, either a
+regular call to virtual protect
+or a rite of passage call to NtProtectVirtualMemory and
+lastly, it will run the
+shellcode. So, let’s see how it works. Uh, okay [typing]. Okay,
+so, so I want to change things a
+bit, so I will not pop uh, calculator with my demo. I will
+actually inject a ROP into calc
+with my, in my demo. So, you need to pass the process id to
+the ROPInjector so now we will
+pass the process id of the calculator and we’re injecting a
+regular way of ROP and you can
+see that our shellcode injected uh, the created a new text
+called PAWN3D, so obviously, it
+worked. Now, I will tell you a little secret. Endpoint
+protection won’t protect all
+process on your system. They usually protect only the
+vulnerable like FireFox. So now
+when you try to inject, you can see that the endpoint protection
+caught the ROP. So, now we’ll
+try to run FireFox again and we will use the Rite of Passage ROP
+uh, instead of the regular ROP.
+Okay, and, then, then endpoint protection didn’t even see it
+coming or see that it even
+happened. Okay. So. Okay, so thank you. You all behaved very
+[audience applause], you behaved
+very nicely so I have a little surprise for you. I have a
+mini-talk. Okay, so welcome to
+the mini-talk, Exploiting a Windows Exploit for Mitigating
+Rite of Passage Exploits.
+[audience laughing] [ speaker laughing] So, at the beginning I
+thought maybe I will show you
+the bloop reel and how to write a hypervisor to protect against,
+uh, Rite of Passage, but last
+month, there was research by Nick Peterson, he called it
+InfinityHook, which exploits,
+uh, the Windows Event Tracing mechanism to hook system calls
+on the kernel. So, what Nick
+found out is that there is a struct in the kernel that uh,
+every uh, event log on saves,
+which has a function pointer that needs to save the timing of
+the event that occurred, and he
+found out that you can actually replace that function pointer
+with your function pointer uh,
+to your function and now you have way to get notification
+every time a system call was
+issued. So now we can hijack system calls. So, obviously
+Microsoft responded that this is
+not a security boundary so I thought why not make it a
+security boundary. Yeah. So, now
+every time there is a system call, we can actually check what
+is the return address and check
+that the system call matches the same function that this, uh,
+function came from and if it
+doesn’t match that, well, then we actually caught to Rite of
+Passage uh, bypass and it
+actually catches a lot of more kind of uh, exploitations, not
+only that. So, we can find, uh,
+Nick’s work on github. And, okay, so takeaways. First, have
+fun. I mean, even though
+Microsoft tries to make our life harder, we can still enjoy it
+and do fun stuff with it. And we
+need to remember that ROP remains a viable threat, even 30
+years after its first, uh, its
+first incarnation. And, as a security industry, we need to
+respond faster to those uh,
+threats and I want to suggest we can utilize the brains in
+academy uh, to do that. A lot of
+the research on ROP came from the academy and also the
+research about how, how to
+bypass the ROP mitigations and there are a lot of great minds
+there that we can use, so let’s
+do that. And lastly, break it to make it better. Okay, thank you
+very much. [Audience applause]
+So, I think we have about 10 minutes for uh, Q an A. Five
+minutes. Okay, I can’t see
+anyone. Yes. >>Uh, how much of the mitigations are transferable
+to [inaudible] >>Okay, so the
+question was how much of the mitigation are transferrable to
+the Linux wall? So, first I
+would say I am not a Linux guy, I’m a Windows guy, uh, but I
+think ROPGuard uh, is
+transferable. kBouncer is also transferable. ROPecker, I don’t
+how Linux manages the memory of
+the processors, but I think it’s also will be pronounced
+transferable, and I think also
+Shadow Stack can be, uh, transferable too, so maybe all
+of them. It might need a little
+tweaks from the uh, Linux side. Okay, any more questions? I
+can’t see. Okay. So, thank you
+very much. [audience applause]

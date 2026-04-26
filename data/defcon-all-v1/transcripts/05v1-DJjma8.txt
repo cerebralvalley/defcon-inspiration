@@ -1,0 +1,1110 @@
+>> So I would like to introduce,
+uh, Dan, uh, Petro, uh, his tag
+is altf4, um, he is here to talk about creating a Super Smash
+Bros. Melee AI that abuses frame
+perfect inputs, and, uh, which makes things really really
+difficult for humans. Um, and,
+I... he's going to talk to you about how he created it, and
+it's going to be pretty awesome,
+so enjoy. >> Cool, thanks a lot. [applause] >> Sup defcon. We're
+going to talk about Melee today,
+we're going to have some fun. So I am Dan, uh, I am a penetration
+tester at a company called
+Bishop Fox, um, I do things there like hacking web
+applications, we do security
+evaluations for like, the fortune 1000 high tech start
+ups, that sort of thing. Um, I
+also have talked at defcon a couple times, uh, last year we,
+uh, I gave this great talk
+about, um, hacking smart safes, before that I was known for
+something of a Rickroller, I
+came up with a little device that, um, uh, hijacks the Google
+Chromecast, uh, and can play
+arbitrary video to that which has to this day not been fixed,
+um, not because their Google is
+silly, it's just a low level design problem. But that's not
+really why I'm here. If you're
+like me, and if you're in this room I suspect you are, it's
+'cause you're into video games,
+right, before we got into the information security field,
+before I got into hacking, if
+you talked to middle school me, I was super into video games,
+right? That was the thing that
+got me into technology. And so, that's always been a side thing
+that, uh, I've been interested
+in. Particular, this game. Super Smash Bros. Melee. Um, Smash
+Bros. Melee is not, like, just a
+video game in that sense, it is also an e-sport. Uh, by that it
+means that there are competitive
+players, in fact there are professional players. Um, you
+can see in the bottom left hand
+screen here, uh, those are some, uh, competitive e-sports teams
+that have professional players
+that do nothing but play this game, Smash Bros. Melee, for a
+living, right, um... uh, there's
+even more popular games, and it's also known as one of the
+most technically demanding
+games, so it's very very fast. You see in the bottom right hand
+corner, even though that's not
+Melee, that's, uh, Street Fighter, um, it gives you good
+example of what they call APM,
+the actions per minute, just how fast and technical the game can
+be, right. So in addition to
+like, the high-level strategy of what it is that you're our
+opponent, you also have to worry
+about the low level intricacies of the game in terms of like,
+how to actually button mash fast
+enough. So it's not just that you're pressing buttons very
+quickly, but also with very
+precise timings. So, um, it's known as a very demanding game.
+And has a lot of respect, it's
+also a very very old game, um, Melee has been out for just
+short of 15 years now, um,
+the... I think it came out in November, so it would be 15
+years in just a couple months
+here. Um, and I am a player. So this is me, um, I asked my wife
+to get me, uh, some of the most
+embarrassing and socially compromising photos that she
+possibly could of me playing,
+uh, Smash way back in the day, eh, I think I turned out all
+right. Um, so uh, yeah I've
+beeen playing the game basically since it came out, uh,
+competitively more or less since
+that has been a thing, uh, and, um, uh, those have been sort of
+my two loves, right, information
+security, this is like what I wound up doing for career, and
+was also a big passion of mine
+as well as playing video games, so hey, why not combine them,
+right? So, the story is, I was
+playing... I was playing, um, some Melee, uh, something like
+last year with a friend of mine,
+uh, back in the Arizona Smash scenes, because I'm from
+Phoenix, and, uh, I talked to
+him afterward and said 'hey, so like, what do think a computer
+could be like if you could play
+the game frame by frame, like perfectly. Um, how good do you
+think a computer could be?' and
+he responded to that 'uh, the game requires too much
+high-level strategy, too much,
+like, mind games, there'd be no way that a computer could be
+really good', so of course I
+thought, 'fucking challenge accepted.' So I then begun on a
+month's long journey of binary
+reverse engineering and AI research and programming, until
+I eventually created, um, what
+is now SmashBot. So, uh, before we get into, uh, some live demo
+stuff, I just want to give you a
+really brief high-level architecture, um, description of
+like what SmashBot is and how it
+works. Um, so, uh, there are 4 major components here that we're
+going to discuss. Um, first is
+the Dolphin Dmulator, right now at least, um, it works on the
+Dolphin Emulator which is, uh,
+runs, uh, GameCube and, uh, Wii games. Uh, the, uh... game then,
+uh, will export all of the
+relevant game state information, so all the like information
+about how the, like, universe,
+like, where characters currently are and things like that, out to
+a separate process, so we're not
+running, we're not modifying the in-game AI in any way, SmashBot
+is its, um, own AI written from
+the ground up running a separate machine, uh... which then does
+some AI magic for now, um, that
+we'll get into later... decides what buttons to press and then
+crushes them on a virtual
+controller. So importantly, SmashBot doesn't cheat, it
+doesn't just like make itself
+invincible, and it doesn't do anything that you in principle
+couldn't do. So it's just
+pressing buttons on a virtual controller, and looking at the
+screen in much the way that you
+would look at it. Alright, so before we get too far, we're
+going to do a live demo. So this
+is the time for you to come right up on stage, right here,
+and give SmashBot a try. So go
+ahead and line up, we're going to do this, we're uh... you can
+take like a... we're going to
+get some... [audience murmuring] There we go. [applause]
+[inaudible] Emulator... I'll
+just set up the game... hopefully we'll get audio... Oh
+is it? Oh that's okay if we
+don't have audio for the moment, let me just kill the emulator, I
+should have done this ahead of
+time... SmashBot... run... Um, yep... Do do do, we're going to
+turn off pause... I'm not
+currently getting audio but I can twiddle with that in just a
+moment. Okay... And we will
+begin, here, so, uh, just take one stock... Um, oh here, just
+look right there. Yes. Uh, so,
+uh, yeah, it just... I just set up so that you can, uh, take...
+so SmashBot is the Fox, um, as
+you can probably tell here. [laughter] This is going to
+run... >> [inaudible] >> Okay,
+let me just try to switch the audios then. >> Yeah. Sorry
+about that. >> That's alright.
+This is going to get in your way... sorry, uh, it's on
+headphones... Just try put it to
+HDMI? [cheers] Try put it to HDMI. Yeah, yeah. Is it testing?
+>> Front, left. >> It should be
+playing. Here we'll do it afterward. There we go.
+[applause] Yeah. [laughs] When I
+take focus away from the window, SmashBot stops playing, so
+that's what you saw. Just play.
+So, there's a couple things that SmashBot is doing right here,
+I'll talk to it, um, as the game
+is going, um, so, uh, it's going to be trying to take advantage
+of primarily, uh, of like, human
+player in two main ways. So it does reactions and predictions,
+right, so reaction is the
+easiest way to describe how this works, um, because, uh, the game
+will, uh, often require that you
+commit yourself to some sort of an action before you are able to
+get an attack outright, so
+you're going to start in a forward smash attack, and the
+very moment, the very exact
+moment that you start this attack it knows how long it's
+going to take and at what point
+the hitbox is going to come out, and so from there it can predict
+exactly where to go, um, in
+order to avoid it or to shield the attack, right, and so
+strictly right from the, the...
+uh... the ability to react, like, frame perfectly to
+attacks... oh there we go...
+[cheers] Um, it's able to get quite an advantage on a human
+player, right, um, it turns out
+that quite a bit of the game, um, depends on reaction, uh, and
+so, uh, SmashBot is able to get
+himself pretty far entirely on the basis of that. However,
+that's not good enough. Um, the
+emulator sometimes has a trouble, like lagging, but it's
+basically good enough. The...
+why does it think...? Oh, okay. I'm amazed this is working at
+all, by the way, I want to give
+a huge shoutout to Dwango AC who gave the amazing task bot talk,
+who I hope you, uh, got to talk
+to earlier. [applause] This... this whole thing almost didn't
+happen. [audience member yells]
+Yeah. So, it gets you in a tech chase combo... oh, the
+emulator's having a hard time.
+Okay. So this tech chase combo you see is Fox will grab Marth
+and throw him to the ground. And
+then, uh, from there you do... there's only a handful of
+options that the human player
+has, um, at that point, uh, the... you can like fall to the
+left, fall the right, and no
+matter what you do, um, SmashBot can in reaction, uh, figure that
+out, right, he can...
+[laughs]... he can, uh... uh, cover all the options that the
+human player has. So, uh, the
+other thing that SmashBot does is, uh, prediction. So he's able
+to look forward into the future,
+um, in the game state, right, and, like, know the physics of
+the game, know all the attack
+animations of the game, and then once you've committed to some
+action, um, take advantage of
+that into the future. Um, so, um, depending on whether it
+actually comes to one neat
+example of this, um, one of them is the rolling, right, the very
+moment, the very instant that
+the, uh, opponent starts to roll, SmashBot knows precisely
+where he's going to end up
+rolling and exacly when. So he can just throw out a grab at
+that exact moment, so there's no
+way even in principle to get out of it. Um, the... it's a little
+bit more evident in edge
+guarding situations, uh, when, uh, the opponent is off the
+stage, where the, uh,
+flowcharting of the, like, options, that the opponent has,
+um, is a bit more apparent
+there. So we're just going to let this run until the, uh, the
+time out basically, and I can
+talk a little bit more about, um, the... uh... So, um, it
+should be noted that right now
+as of this moment the one match up that SmashBot knows really
+well is this one, which is, um,
+Marth against Fox on FD, and I chose that for a very specific
+reason, right, I wanted to
+tackle one problem at a time, I believe in the engineering
+principle of just solving one
+easy problem at a time, right, and then eventually try to add
+support for other characters in
+other stages, um, so one is that Marth, the green, uh, player
+that's currently getting beat
+up, uh, is the, uh, is a high tier character, so he's a very
+top tier character amongst, uh,
+human players, um, so you'll see lots of, uh, competitive, even
+professional players play that
+character, so it's not simply the case that SmashBot is like,
+beating up on some low tier
+character, right, um, and in fact, this exact match up, the
+Marth on FD match up, um, is
+considered almost unwinnable for the Fox player amongst
+high-level players. So this is
+something that, like, if two human players were to be
+playing, Marth has a massive
+advantage. So you can take that as an, uh, an example of, like,
+what, you know, is going on
+here. Let me get a drink. I'll try to get some audio after this
+is finished I guess. Um, so,
+the, um, uh, some other parts to talk about here, um, the... the
+tech chase combo, um, is
+basically unavoidable, um, it is possible to kind of, like, slide
+off the stage or something like
+that, um, but, uh, it's, uh, very strong, so... Ah, almost...
+Um, the, uh, oh he actually
+missed an up smash... So I'm not going to pretend to have created
+the world's first bug free
+program, um, there's certainly, um, some instances were SmashBot
+will just sort of derp off the
+stage or something like that, um, it's been an iterative
+process... No... It can... it
+knows about that. Um, so, um... [laughter] Yeah... Um, if ever
+you see it actually get hit, um,
+it's almost surely due to, um, what's called the shield stab.
+So you can see when Fox puts up
+his shield it's this big blue bubble, right, um, as it turns
+out, the way that Smash works,
+the... it only shields exactly where that blue bubble is, and
+so if you're able to like, hit
+his, like, foot, that's kind of sticking out of the shield, that
+will actually land. And it's
+hard to predict ahead of time when that's going to happen.
+Also Fox will only shield after
+you've done your attack, so first you have to commit to the
+attack, and then SmashBot will
+put up the shield, which means it's not really reliable for you
+to try to hit it, it's basically
+like a random thing that'll happen, something like 1 out of
+100 times, um, where, uh, like,
+SmashBot will try to shield, and then it just like won't work.
+[cheers] No... [cheers] Ah...
+yeah. You can tell when somebody actually knows how to play
+Melee, like, ah, yeah, like, you
+kind of do a recovery there. Um, actually it was funny, for the
+first maybe like 6 months or
+something of SmashBot's existence, I discovered that,
+um, the novices, uh, did
+actually better than competitive players, and partly due to the
+fact that, like, they were just
+doing weird, random things that I hasn't considered, um, whereas
+like all the competitive
+players, um, um, like.. like, were doing things that I had
+anticipated, um, or like maybe
+just, I would never consider that I would... oh... okay.
+Emulator's having a hard time
+for a moment there. The, um, uh, particularly like standing there
+and slashing, for like the first
+like 6 months of SmashBot's existence like 'I don't know how
+I'm going to deal with that...
+I'm just going to come back to it and hope that nobody does
+it.' Um, so, uh, to give you an
+idea of just how, um, competitive, um, SmashBot's
+become, um, it has... I've been
+bringing it out in secret to the local Smash tournaments in the
+Arizona scene, and, um, I don't
+want to like, name some names of people that it has beaten
+because that wouldn't entirely
+be fair, but, um, something like the last, like, 50% of it's
+matches, JV five-stocks, um,
+the, uh, the players there, which is to say that it doesn't
+take a single hit throughout the
+entire match, um, and sometimes it'll like randomly take a hit.
+Um, basically people realize,
+um, pretty quickly, that you can't just fight it, you can't
+just, like, play it like a
+normal person as if it were a human being, you basically have
+to try to pentest it right, to
+try and find some bug, some corner case that it's not
+considering, um, and if you're
+able to do that, and then execute that, like, 4 times in a
+row in order to like, take 4
+lives, then you can beat it. But that's just sort of been an
+iterative process over the last
+while, um, to try and find all those little bugs, um, and then
+fix them before, you know,
+bringing out the next thing, so um, this is really the first
+time that I've like shown off
+SmashBot in any, um, like, major way aside from kind of like in
+secret showing some of my
+friends, um, so it's definitely good enough to, uh, like, you
+know, show off at this point.
+Though it's worth saying that there's still a lot of work to
+be done. So yeah, in exactly 20
+seconds we'll get back into how this whole thing actually works,
+or how it began, the AI parts of
+it, the reverse engineering parts of it, um... See if we can
+get one hit in in 7 seconds. Oh
+no. It's still got you. Oh... cool. [applause] Those... it's,
+uh... it's frame perfect start
+pressing... Really wants to start the next match. I'll go
+and kill this. We, uh, I'll do,
+um, another, uh, round at the end, uh, during questions, so...
+Okay. So, uh, now a little bit
+about, um, the AI. About how does SmashBot think, right? How
+does it decide, like, what
+buttons to press? Um, it's not simply just a series of
+heuristics, um, so, the... the
+top level has a 4 tiered hierarchy of goals. So at the
+very top level are, uh, the,
+like, what I just called goals, right, it's the highest level of
+like, what is SmashBot trying to
+accomplish? What is the thing it's trying to do? So, these are
+things like 'kill opponent', but
+it's not always 'kill opponent', right, sometimes it just like
+navigate the menu system,
+because it wants to like select its own character, things like
+that, right. Um, so, and the way
+that this works is that the... the little bubbles on the right
+hand side that you see here are
+actual source code files, right, these are like the C++ files,
+um, then the whole point of the
+file is to determine the next lowest strategy. So the next
+level is strategies, things like
+bait or sandbag, like, if our opponent just got back, um, from
+the invincibility, then we mind
+not want to attack them, we just sandbag, um, or bait, um, try to
+like bait our opponent into a
+wrong move. And so like, kill opponent might choose bait as a,
+for example, as a strategy. And
+this basically keeps on going down and down, so then, our...
+we're trying to like bait our
+opponent into a bad move, we're going to weave in and out of
+their range, hope if they make
+an attack, and then punish them when they do. And so, like, bait
+might then choose punish, we
+say, 'aha', like we know that this person has exactly 17
+frames of lag, say, and so we
+know that we can run up and give them an up smash in that time.
+And then the very last level is
+chains, um, chains are like, uh, button combinations that
+Smashers would recognize, things
+like wave dashing, or dash dancing, up smash, things like
+that right, so these are the
+lowest possible level of abstraction in terms of the
+actual like button press
+sequences, and so then the punish would say, 'ok, I'm
+exactly in range, and I'm in the
+place where I can up smash, so let's go ahead and do the up
+smash', right. And then this is
+going to change frequently every single frame. Alright. So, uh,
+let's talk a little bit about
+reverse engineering, right. Um, this is something that, uh, was
+a lot of fun, because, you know,
+being a penetration tester, um, this is sort of up my alley, and
+so I, uh, there is an awesome,
+uh, Melee scene of hackers, um, people like, uh... uh, Dan
+Salvato actually has been a huge
+help as well as some other guys there, um, there's an entire,
+uh, Google spreadsheet that we
+eventually made about getting this sort of information. But,
+in terms of reverse engineering
+what SmashBot needs to know is it needs to be able to figure
+out a picture of the universe,
+right? It wants to be able to see the screen in the same way
+that you do. Um, there's no
+hidden information in, uh, Smash, not in a way like poker
+is, right, if I make a poker bot
+and said that it just 'plays by like reading your hand, LOL',
+like that wouldn't be
+interesting at all right, so there's no hidden information,
+uh, to Smash, it's all just
+available on the screen. Um, that said, uh, how do we
+actually know where all the
+pieces are? So, we have to make a couple assumptions here. One
+is that the game does have the
+game state represented in some way. It has to, right? It's got
+to know where the current player
+positions are, it's got to know what your damage is, and so
+rather than like parking a
+camera in front of the screen and trying to, like, visualize
+it that way, I knew right off
+the bat that would never work, right. So we want to be able to
+get information out of the game.
+The only trouble is, to the game... or to the emulator, the
+game is a black box. So it
+doens't actually have any idea of what's going on inside of it,
+it's just a virtual machine
+basically, right, the same way that VMWare or VirtualBox has no
+idea what's going on inside
+your, like, Windows VM, it's just running op codes and
+present... uh, presenting, uh,
+virtualized, uh, interfaces, uh, for hardware. So un-black boxing
+this black box is the reverse
+engineering that is behind SmashBot. In particular we don't
+actually care a whole lot about
+code, and more than that we care about data. So inside of the
+game there's going to be a
+couple of pieces of key data, right, things like your exact
+character position, XY, like,
+what, uh... what character is my opponent, what stage are we on,
+what damage do we have, I want
+to be able to take that information, figure out where
+it's stored in memory, and then,
+uh, ship that off to an external process. So it should be noted
+that like when I started this
+almost a year ago, none of this was like worked on at all, there
+was a lot of trail blazing
+involved. So, uh, there was also no a great way of doing this
+reverse engineering, um, there
+are some tools like Cheat Engine, but Cheat Engine wasn't
+exactly going to do what I
+needed it to do, um, and a lot of, uh, built in debugging
+functionality to Dolphin, and
+there is quite a bit, um, also wasn't quite going to do what I
+needed it to do. So, um, most of
+the debugging functionalities about trying to like disassemble
+code, and again that's not
+exactly what I'm looking for, I don't necessarily care about the
+code, and that's a good thing,
+because, um, the GameCube runs on PowerPC, um, and I really
+didn't want to have to learn
+PowerPC, so, um, what we... what I did was take memory snapshots.
+The GameCube is super old and
+only has about 24megs of usable RAM, there are other RAM,
+there's like specific video
+memory, there's like registers, but the main system RAM behind
+the console was only 24megs, um,
+which means I can just write it to a file and then inspect it
+manually, basically. All the
+stuff that Cheat Engine does, um, I'm just doing more or less
+by hand. So I had to make a fork
+of Dolphin, uh, that every time it would take a snapshot, um,
+would write the entire contents
+of RAM out to a file, and then I would just do vbindiffs on the,
+like, memory instances, right,
+and so I put the game into a known state, say like, I'm going
+to put may damage to 47, right,
+so I'll have 47 damage on a particular character, and then
+put the damage... uh, up to...
+take a snapshot, put the damage up to 98, and then just do a
+search to see what regions of
+memory have changed from 47 to 98, right. Um, and that works
+really really well, um, when the
+memory regions are stable, um, that tends to happen if it's
+like stack allocated, right. Um,
+however, not all the information is stack allocated, in some case
+it's dynamic, uh, so in those
+cases it gets a little more complicated. So that tends to be
+when there's like a struct, so
+all the player information, um, the stuff about like actually
+what damage you are, like what
+character position, XY character positions, um, are stored in a
+big struct that's allocated on
+the heap, and so first you have to try to find where the struct
+is, right. Um, that tends to be
+pretty easy, um,to we could just look for like damages or
+something like that. Um, and
+then you have to search for the memory, so suppose, um, that was
+found at a particular adress,
+then you just scan the entire, uh, RAM again, to find out, is
+there any regions in memory that
+contain that address? And if so, that's probably a pointer to our
+struct. And now we have a stable
+pointer to our dynamic memory region that otherwise would have
+been moving around. So this
+sounds sort of kind of easy, and in concept it is, in practice
+this one's being a total bitch,
+um, the, some... uh, data structures make no sense, it
+should be um, uh, going without
+saying that, uh, these data structures were never meant to
+be read in the way that we're
+reading them, because of course this is like 15 year old console
+game, so why would they have
+made these data structures to make any sense. So sometimes
+there's, um, floats where there
+should be integers, because it's clearly monotonically
+increasing, uh, like, value, but
+fuck it, they gave it a float, um... uh, and that took like
+forever to figure it out, or
+sometimes there's a... uh, there's no consistency to
+whether things are indexed at 0
+or 1, and just sort of like figure it out. Um, so. Before we
+go any further I want to talk a
+little bit about game programming, um, cause if you've
+done some programming before,
+this is probably very different than what you might have
+experienced. So there's the
+concept of a frame, and a frame loop, which is very important,
+so, on the left there you can
+see in real time, um, Marth doing his forward smash attack.
+So he's just taking his sword
+and throwing it down super hard, and it looks super fast and in
+fact looks really really smooth,
+um, when in reality that's not how it actually works. When you
+slow the game way down, and you
+can see on the right hand side there, you can see that it's
+basically just an animated GIF.
+And not only is it, like, um, kind of choppy, but it, um,
+uh... the animations are
+predictable. So at exactly frame 10, um, on the 10th frame of the
+forward smash, every single time
+Marth will be exactly in the same position every single time,
+right, so the game is basically
+just a finite state machine running very very quickly. Um,
+so the game runs at 60 frames
+per second which means a single frame lasts approximately 16.66
+milliseconds, and so the
+processing looks basically like this. You start at 0, it pulls
+your controller input to see,
+like, what has the player pressed, it runs the game
+engine, and produces an image on
+screen, and then keeps looping. And that's more or less how the
+game works and also basically
+every 3D game works. And so what's important here is that
+it's not just that the game is
+displaying at 60 frames per second, it's that the game
+engine fundamentally runs at 60
+frames per second. So you can use this to cause all kinds of
+really cool bugs. So if you are
+running very very slowly, right, and suppose you're someone who's
+totally not Mario, and you're
+trying to get to some treasure... that's past a locked
+door right, if you walk slowly,
+you might just kind of run into the door and not be able to get
+through it, but if you're moving
+super super fast, on one frame you might be here, on the very
+next frame you might be here,
+and then on the very next frame, you'll be there, right past the
+door, and the game will have no
+idea that you every collided with the door, right, because it
+never... you never touched the
+door. Uh, one frame you were before it and the next frame
+you're behind it. So this leads
+to some really cool, uh, bugs, uh, like this... Um, so this is,
+uh, um, actually a task from,
+uh, Super Mario 64 where you're going to see exactly that. This
+is the very beginning of the
+game, and Mario's going to go switch... go right through, uh,
+what is supposed to be a locked
+door, uh, just by going super super fast. Um, so uh, hopefully
+some audio is here, if not its
+not critical. [Super Mario game] Yeah. Yeah so basically what you
+saw is that he just did some
+tricky bug thing to go super fast and then just zips right
+through some doors, right. So
+that's important, not because we're going to be doing some,
+like, zipping through doors, but
+just to give you an idea of, uh... that the game is running
+with this internal frame loop.
+So, uh, the game looks a little more like this. We're inside the
+game, there's this looping thing
+that the, uh, emulator actually has no idea about. So, the
+emulator is just the hardware
+right, it has no idea that there's this internal frame
+loop, that's the game's
+business. Um, and whenever it receives frames it will go ahead
+and output them. Um, so, in
+order to get the game state information out, now we have
+figured out where the, uh, like,
+bits are inside of the game, right. We have to have some
+mechanism of exporting it out to
+a separate process, and so my first forward... this was really
+hilarious, so first, uh, I set
+up a segment of shared memory between the Dolphin Emulator, it
+was a modified version, another
+fork I made of the Dolphin Emulator, um, to, uh, SmashBot.
+So this is a shared segment of
+memory, there's no like input and output, it's actually just
+the same memory that's shared
+between two processes. Um, so what I had to do is write some
+code that took the game memory,
+um, and copied out the relevant data into a struct that's in
+that game. So, had to, like,
+move the data out into that struct. But of course I don't
+have, um, any concept of when
+the frame is running, because the emulator doesn't know when
+the frame is running, so, the
+natural thing to do here is just make a spin loop. So we have one
+entire CPU doing nothing but
+spinning, doing absolutely nothing but copying data into
+that, uh, shared memory region.
+So now SmashBot has this like constantly updated real time
+view of all the game, relevant
+game state information. But it doesn't know when the frame has
+processed. It has to like...
+trigger per frame and when a frame triggers is one pieces of
+game, uh, data. So of course, I
+had to write a second spin loop inside of Smash Bot that would
+regularly check that struct. Um,
+this is what computer scientists would refer to as 'suboptimal'.
+[laughter] Um, so uh...
+Eventually this, um, was, uh... integrated into the official
+Dolphin build as of Dolphin 5.0
+there's a new feature called, uh, Memory Watcher, which does
+this without the terrible spin
+loops. So, um, I would like... super big thanks to the Dolphin
+guys for that. Um, so now we
+have three parts of the whole running system. We've got the
+Dolphin Emulator, we have
+SmashBot making decisions, we're able to pipe that data out, um,
+over, uh... uh, a named pipe,
+basically. But it's still not playable at this point, because
+we still can't actually press
+buttons. And so that was another kind of funny instance where my,
+uh, initial attempt to, uh,
+press on a kind of virtual controller, um, Dolphin didn't
+have any mechanism for actually
+doing that, but what it did have is the ability to type on a
+keyboard, so you can, like, map
+the A key to press the A button or something like that, right.
+So I thought 'okay great, what
+I'm going to do is I'm going to write a, like, helper that uses,
+um, the XOR, uh, libraries to,
+like, press the button, like, on the... on the keyboard, um, and
+it actually, like, sort of
+works, it's terrible and I would not recommend it whatsoever, um,
+partly because if you like move
+your focus away it just starts pressing buttons like into the
+random window, whatever you,
+like, gave focus to, and just goes haywire and it's, like,
+hard to cancel, um, but also
+because, uh, basically all these mechanisims are going to be
+buffered input, and so there's
+going to be some indeterminate amount of latency from when it
+presses the button to when it
+actually happens. And normally you don't care about this, if
+you're just a human being like
+pressing buttons on a keyboard, it doesn't matter to you if when
+you press the A button it
+doesn't happen for the next 30 milliseconds, or maybe the last
+couple of buttons get buffered
+together, like, you just don't care, you're just incapable of
+physically noticing that. But
+SmashBot cares. It needs to be able to have exactly frame
+perfect accuracy on all the
+button presses, it needs to get there super fast. So, um,
+eventually wound up getting that
+integrated in with Dolphin as well, so now we have a mechanism
+for pressing buttons. So, about
+programming. Uh, if you're anything like me, uh,
+programming looks a little bit
+like this, where, uh, you're more or less in a constant state
+of confusion, um, because if you
+understand the problem that you're trying to, like, trying
+to, uh, program, thing is you
+can just solve it very quickly and move on to the next problem,
+and so to be a programmer is to
+be in a constant state of confusion, interrupted only
+shortly by tiny bursts of, like,
+epiphany and coding things up. So if you were to walk up to me
+at any point when I'm
+programming SmashBot, usually the Saturday morning eating
+some, like, breakfast cereal and
+drinking some tea, you say 'hey Dan, how's it going?', I'm like,
+'I have no idea what the fuck's
+going on. Nothings working...' [laughter] 'Nothing's working
+and I have no idea why.' So I
+had to give you one cool example, uh, of what this looked
+like, so for the longest time in
+SmashBot's history, um, up until maybe a couple months ago, there
+was just this nagging bug, that
+I just had no idea how it worked. It was just like the
+only logical explanation for it
+was that there was a gremlin inside of my computer pulling on
+wires, and so it looked
+something like this where like SmashBot would be totally cool,
+and then just derp right off the
+stage. [laughter] And like, what is going on here? There's no
+reason for it to do this, I
+couldn't pinpoint in code why this was happening, and it
+manifested itself in all kinds
+of ways, it wasn't just derping off the stage. So I implemented
+this entire debugging mechanism,
+where, um, I could... you give it a --debug flag, it will take
+the entire game state, per
+frame, and write it out to a big CSV file, um, that winds up
+being like megabytes large. It's
+actually the best thing I ever did in terms of debugging,
+because this lets you
+retroacively walk through what happened throughout the entire
+game, and see like, oh yeah,
+like it pressed this button when it should have pressed this
+button or whatever, right. Um,
+so I could see in here that sometimes, not all the time,
+just randomly, seemingly, um, I
+would press a button and it just wouldn't happen for a frame
+late. That was the source of the
+bug, I finally figured out, okay, so like, there's, for some
+reason it's pressing a button a
+frame late. I don't know why, and it was only ever one frame
+late, and not all the time. It
+was super weird, I was kind of chalking it up to uh, a Dolphin
+bug maybe, there was some bug in
+the emulator. And so, um, eventually I tried out this,
+this is, um, what you're going
+to see here is Fox doing frame perfect multi shines, uh, this
+is, uh, it's not just doing
+these blindly it's actually reacting, so on exactly the
+third frame of the jump
+animation, Fox is going to hit down B to start the shine, the
+little flashy animation, and
+then jump out of it, and then loop through it again. So what's
+important here is if he's even a
+single frame late on any of the inputs, he will jump accidental.
+So it looks like this. So he's
+going along happily doing frame perfect multi shines... and
+then... start jumping, he's
+screwing it up. And then... Go right back to multi shining
+again. And then you start to
+notice that this is actually cyclical, this is like not
+random, this is happening, um,
+on a, uh, exact like predictable basis. So he'll do it again in
+just a moment here. That's
+weird. I do like it when bugs are reproducible, so eventually,
+um, me, and uh... Dan Salvato,
+another awesome Melee hacker, um, figured out that this
+picture of how the game input
+thing works is not entirely accurate. And so what happens is
+that the game, um, input, and
+the game engine processing are on separate threads. And their
+not perfectly synced up, and so
+what happens is on one frame, uh, it'll look like this, and
+the very next frame the
+controller input will drift by a tiny bit... and then the next
+frame the controller will drift
+a tiny bit, until eventually they swap, the controller input
+is pulled afterwards. So in the
+very beginning you're going to press a button, right, at 0
+right, the game... the game will
+process without having read your input. Then it'll read your
+input and not process it until
+the frame afterward, until eventually it would drift
+backwards. Um, so then we put
+together a patch, well I should say Dan put together a patch,
+um, for, uh, actually, like,
+fixing this, so you move the controller input, um, routine
+onto the same thread as the game
+engine basically, so, um, and that way we patched live in
+memory a 15 year old bug in the
+game that up to this point no one has ever noticed. So that
+was pretty cool. Um, so, some of
+the bits about the future, as it were, um, the... I wish I could
+have gotten this working for
+defcon, it's like... it's like 75% working, is, uh, running on
+live unmodified console, so as
+it turns out, um, this, uh, is actually completely possible,
+um, and I was talking with, uh,
+uh... Dwango who did the task bot talk right before this about
+how... some of the parts, about
+physically, like how do you send button presses over the, uh, the
+console. But one of the more
+interesting stories is actually, um, how to get information out
+of the console, so remember, I
+want to do this on an unmodified console, so I don't want to just
+like put some like leads and
+open up the hardware, open up the GameCube or something like
+that, right. Um, and so in order
+to do that we have to use a really fun exploit, uh, through
+the memory card port. So it
+turns out that, um, uh, when in Melee you're able to give
+yourself a little name tag, like
+uh, what my name is thats 4 characters, and of course
+because its 4 characters people
+name it lots of colorful things, but, um, if you go into the
+actual save file that's on the
+memory card port and change your name manually to be longer than
+4 characters overflows the
+thing. And you can get code execution on the game. And so
+there's already people that have
+been exploiting this and using them to make modifications to
+the game, um, if you've ever
+seen the 20xx, uh, hack pack, or 20xx... actually no, 20xx
+tournament edition is the one
+that uses this name tag overflow. So it's a great way of
+getting code execution on the
+game, which we can then use to, um, grab game state information,
+and ship it off over the, uh,
+memory card port, which is then attached over USB to a laptop.
+That way we can get live, um,
+frame data out the live, like... running machine. So we then put
+SmashBot inside of the
+controller that would then like be pressing buttons, um, and,
+uh, you'd just sort of be
+looking like you're playing the game like normal, and you would
+never notice that it was a
+computer playing, unless you like look closely and notice
+that SmashBot, the controller
+was plugged into the memory card port instead of the controller
+port. Or probably both actually.
+Um, so before we start getting back to the, um, the end part
+here, I want to, uh, empart you
+a little bit of Smash philosophy, so, being a part of
+any, uh, like, competitive scene
+for sure I'd amuse you with a certain amount of the philosphy
+of that game, and so I want to
+share this with the, uh, the hacker world. [video sounds] >>
+I don't want to hit no Johns! >>
+John >> John >> John >> What's a John? >> 'It was like 2am and he
+was tired.' >> Johns, like
+Johns... >> He'll get me on a day where I'm just not playing
+too well. >> Johns. Just Johns.
+>> A lot of people don't know where the term came from, it
+just started, but I believe it
+was a guy in Texas, his name was John, and no matter what, every
+time he'd lose he'd have an
+excuse, he'd have a reason for losing. >> 'My controller wasn't
+working, the stage, there's a
+little bit of lag on the TV.' >> 'I didn't sleep last night, or I
+don't know... >> 'It's too cold'
+>> We have a... like a Swedish term, [Swedish], it's pretty
+much 'no Johns'. [inaudible] >>
+My favourite one I think was, uh, I was playing somebody and
+they were like 'someone's
+touching my shoulder', and I was like 'no Johns!' [music] >> So
+yeah, no Johns. And, thanks a
+lot. [applause] [inaudible] You got something along the lines of
+8 minutes, so, uh, go ahead and
+start the game up again, if you want to line up here, I guess
+we'll have to do two lines, one
+for playing the game and one for questions, and uh, we'll do
+that, uh, right now. Uh, if you
+want to take questions there's a microphone right there, you're
+going to have to... otherwise
+I'm not going to hear anything you're saying. Uh, here let me
+set up the game first actually.
+>> Hello. Can we see SmashBot versus SmashBot? >> Ah yeah, so
+that's a question that people
+actually ask a lot, um, is like, what would happen if SmashBot
+played itself, or like, um...
+the... right now, there's just a small logisitical problem with
+it, which is just that, um, it
+only knows, uh... its... it plays on player controller port
+2, and it assumes its opponent
+is on player controller port 1, and so there's just that, but, I
+think I can get that solved. But
+the more interesting question is, like, what would happen if
+it played itself, or what does,
+um, like, truly perfect, um play look like. Let's just give it
+several minutes. Here. Um, so,
+uh, turns out that optimal play, um, I gave quite a bit of
+thought to this, um, is, uh,
+really really complicated. And this is actually a good
+question, so in case you're
+sitting in the audience thinking, like, 'hey, I bet I
+could make a... like a better
+SmashBot that would like beat this one, right?' Well. Let me
+take you on a tour of what
+actual optimal play looks like, right. So first off, all
+projectiles can be reflected,
+there's a 2 frame window at which point you can reflect
+projectiles, and so all those
+are suboptimal. And so the only way to, uh, like, attack is to
+just basically walk forward. And
+so the fastest move in the game is shine, which is, um, Fox's
+down B attack, and uh, both...
+both, um, uh... both Foxes, both Bots, would basically walk at
+each other until they're exactly
+within range, and then both use their perfect one frame move at
+the exact same moment. They
+would clang off each other, not hit, um, and then it's a
+deadlock from there. At each
+point both the, uh, optimal play for both characters is to jump
+and then do frame perfect multi
+shines until the time limit runs out. When the time limit runs
+out, the game goes into sudden
+death. At sudden death, like, uh, the game goes for a little
+while and then bomb-ombs start
+falling from the stage, um, sort of like randomly, right, and so
+it would be possible to put your
+opponent in a position where they have to either run at you
+and attack or into the
+bomb-ombs, so it would be kind of sort of random. But they're
+not actually random, right, it
+just uses in game's random number generator, which is
+entirely predictable, so back
+up, the optimal strategy is not just simply run at your opponent
+and shine, it's to put yourself
+in a position where once you deadlock your opponent into that
+shining, you know that in
+exactly 8 minutes from now the random number generator will be
+seeded such that... the bombs
+will fall in a way such that, you can put them in a...
+disadvantageous position. So,
+before you go around thinking 'I'm going to make the perfect
+bot', know what you're getting
+yourself into. [laughter] Yes. [audience member yells
+inaudibly] Uh, no and no. Uh I'm
+sorry, take the questions with the microphone. Yeah. >> Have
+you taught him to do taunts at
+the most insulting times? >> [laughs] Yeah, was that uh... it
+does do, um, uh, taunts... that
+was like, it didn't do taunting for the longest time, it just
+sort of sat around, um, uh, but
+now it does frame perfect multi shines in between stocks, as the
+like, [inaudible] taunts,
+basically. I figured that would be a pretty cool way to do it.
+Yeah. >> So you mentioned that,
+um, the beginner players will like, confuse it, so how do you
+get around it, do you use
+machine learning, or do just keep on programming... >> Yeah,
+there is actually a separate,
+um, machine learning fork of Dolphin called Phillip, I wish I
+had more time to talk about it
+here, that uses the Google's tensorflow neural network
+library, um, at first it had a
+really hard time doing more than just kind of moving around, um,
+but its actually getting pretty
+cool now. Um, and so one of the neat parts about, uh, SmashBot's
+design, is that that was like
+the lowest level, like, chains, like maybe there's no need to
+make an AI learn how to wave
+dash all on its own, right, why don't we program that in as a
+primitive and then use, um, AI
+to kind of choose which lowest level primitive will be best.
+And so that's actually like a
+goal of mine for the project, is to do exactly that, um, this is
+about as far as I've taken like
+right now, but it's actually, um, uh... Actually I should have
+mentioned this is an active open
+source project, it's available on my GitHub, just
+github.com/altf4... um, or just
+Google for this basically and you'll find it. Yeah. >> Um, you
+mentioned that with the game in
+the future you had plans to have this run on an unmodified
+console... >> Yeah. >> Um, do
+you anticipate that you'll be able to overcome, like, was it
+strictly on the emulator side
+with, uh, the drift problem, with the controller that was
+causing the bug where... >> So,
+this is actually a bug in the game, that isn't like... So the
+game is responsible for that
+frame loop and, uh, controller pulling, so that is actually a
+bug in the game, um, that said,
+we haven't been able to empirically verify that, right,
+so in theory that bug should be
+present on console, um, but, uh, without Smash... there's really
+very difficult... there's
+basically no way to know without, um, like, verifying
+that via, uh... um, like maybe
+some task way of doing it, but SmashBot would actually be the
+best way of verifying that
+because it is reacting in real time to the frames rather than
+just like having a script
+instead of button presses, so... >> Do you anticipate that there
+will be some way to maybe
+overcome that so that you can, uh... >> Oh, exactly, so we can
+code execution on the game,
+right, so we can just modify the running game to fix the bug,
+just patch it live. >> Okay. >>
+Yeah. >> Thank you. >> Hey, uh, first question, are you coming
+to Super Smash Con? >> I'm not,
+I actually um... >> Ah that's too bad. >> ... uh, only
+discovered that Smash Con
+existed, um, after the CFP closed... >> Ah that's too bad.
+>> Um, so I really would have
+liked to have done that >> That would have been a great
+SuperSmash Con. >> Um, I'm based
+out in the Phoenix area, so if ever you want to, like, play
+SmashBot near me... Um, if you
+want to run it yourself just, you know, download the source
+code, run it yourself, otherwise
+I'll be around in the kind of Phoenix are. I'm hoping to take
+this out to a larger tournament
+sometime in the near future, but I have a, you know, busy travel
+schedule with work and stuff
+like that, so no promises. >> The other thing was, I just
+wanted to say thank you so much
+for figuring out that bug, the, uh, 3.5 to 5 frame thing,
+because I actually had an idea
+for a project a long time ago where I was like, alright, I'm
+going to take a high FPS camera,
+sauder an LED to a controller and figure out the amount of
+input lag difference... >> Yeah.
+There's so many problems that happen in the analog world, that
+like, there's... yeah, it's
+really difficult. Put it this way it doesn't matter what's
+going on on the screen,
+SmashBot's reading the live bits out of memory. So the very frame
+that something happens it knows
+about it with taking the entire analog universe of display,
+refresh rates out of the
+equation. >> Yeah, but um, it's... it's so awesome that you
+guys figured out that bug, and I
+was just wondering what went into it, 'cause like, I would
+have been, like, really freaking
+confused, and I have measured... >> Oh I was really freaking
+confused. >> I have measured the
+FPS lag and you can see it, it's like every, like quarter frame,
+like something like that, it
+just takes longer, and it makes no sense. >> Yep, that is
+absolutely correct. >> So, thank
+you. >> You bet. >> I had a couple questions, um, so can it
+be any... can it be anyone else
+other than Fox or does it have to be Fox? >> Um, Smash ot plays
+Fox and probably will for the
+indefinite future, um, it's clearly at this level, like, at
+the task level, um, the best
+character in the game. It's just faster than every other
+character. Um, one could make an
+argument for Falco, but I'm not so sure... I mean, it is kind of
+an open question about what is
+optimal play, like at the highest levels, um, I'm sure it
+was... maybe if you could play
+this fast Donkey Kong is like super broken, I don't know
+right, I doubt it, there's good
+reason to believe that the Fox is the best character, um, and
+so this is my best stab at
+making that happen. >> And what about having SmashBot play,
+like, 3 other characters at
+once? >> Simultaneously? Yeah, so right now it only
+acknowledges the existence of
+the... of player 1, because I just wanted to make that work
+first, um, I suspect that's just
+a losing battle, like once you actually have 3 v 1, and the
+theoretical level you just lose.
+'Cause even though I can frame perfect shield stuff, um,
+there's lag after the shielding,
+and so, like, you could just hit me after that happens. >> And
+one last question, is there any
+possible plans for other fighting games that you would
+use this for? >> Um, Smash is
+really the only game that I personally play competively,
+like at that level, um, so...
+not for me, but there actually are other similar projects,
+other AI's for other games,
+there are StarCraft and StarCraft II, um, AI tournaments
+that actually happen, um, so
+there's very similar, um, sort of endeavors in that world. >>
+So you said that, um, this,
+uh... uh, bot is supposed to be able to mimic human behaviour,
+uh, is supposed to be more...
+it's... you... if you look at it... my question is, I notice
+whenever you die, it goes left
+and right really really fast... >> Yeah >> Um, was that on
+purpose? Was that just... >>
+Yeah so it does... we just call it dash dance, right, it just
+moves... moving back and forth,
+for the first, um, uh, it depends on each character, I
+think its 7 frames, or maybe 10
+or 11 or something like that for Fox, um, the first... when you
+start up running you're at a
+dashing animation at which point you can dash backwards very
+quickly, um, it's a good way of
+keeping mobility basically, it's something that even like high
+level players do, but never with
+that exact amount of precision and that amount of speed, um, I
+guess to... the earlier point,
+SmashBot is not, uh, intended to, um, like, make you feel
+better, it's not meant to play
+like a human, it's meant to play like a computer in the same way
+that like an aim bot, right, for
+like a shooter, does not play like a human would. Um, and so
+we're trying to break
+fundamentally how the game is played at that level. So, um, if
+you're playing like a shooter
+game with like team based strategy, there's a lot of high
+level thoughts in terms of,
+like, getting your opponent to use... or you using cover,
+getting your opponent to move
+into the center stage, but if you're a computer, optimal
+strategy is to stand in the
+center of the stage, spin 360 as fast as you can, and then blam
+people in the forehead the very
+moment they come out, right, and so SmashBot's kind of taking
+advantage of that, right, in
+that it's not trying to play like you do, it's trying to play
+like a computer does. >> Thank
+you, and thank you for letting me try it out. >> Absolutely.
+[inaudible] >> I don't know,
+how... is that time? >> Yeah. >> Alright thanks a lot for coming
+out. [applause]

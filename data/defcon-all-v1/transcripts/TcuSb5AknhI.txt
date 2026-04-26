@@ -1,0 +1,343 @@
+This talk is the ham sandwich
+talk. It's a replacement talk. So if you look in your guide, in
+the paper guide, we're replacing a talk that was canceled. What
+we're really replacing is a talk that was in the press about two
+weeks ago. And that it was a big -- kind of a big deal that
+people thought that maybe somebody else's talk was
+canceled. We're really a replacement for that talk. So we
+are two researchers, Dave Meiner and Robert Grahan and we have
+been doing a lot of SDR things, that is software definable
+radio. But what it really is is hacking of the internet of
+things. Lots of stuff these days, your car, your phone, your
+gun, all these things connect to the internet over radio waves.
+So a big deal these days is learning how to use computers
+and software definable radio in order to hack everything that
+talks radio. So I'm Robert Graham, I do a lot of blogging
+and Twitter. I'm famous for a couple of things like black ice,
+flak Jacking and I do lots of conference talks. My partner
+here is Dave Meiner. He is also notorious for the apple hack
+from several years ago, some DA hacks and he is one of the
+awesomest pen testers in the world. And he also has done lots
+of conference talks and we've done many of our talks together.
+He'll be setting up the demo here if he can get it to work.
+We only have a 20-minute slot here so we don't have much time.
+The talk that we're replacing is this proxy ham talk where a guy
+put together two boxes in order to create a point to point link
+with the idea that one might be in some place next to a bar or a
+Starbucks with an open wifi and the other box would be up on a
+hill somewhere with your laptop. So as a hacker you could be five
+miles away from the bar and using their wifi and when they
+track back the IP address of the hacker they wouldn't be able to
+find the real hacker. This talk, that talk was canceled under
+suspicious circumstances. There was suspicion it was the FBI or
+the government tried to suppress the talk. And that was sort of
+our motivation for talking about this. There was things like NSL,
+national security letters that have quieted people and
+suppressed things. There's been lawsuits and lots of things in
+our industry that try to suppress research. So this was
+our philosophy. This really should be the philosophy of
+DEFCON. When we see a talk has been canceled and it really
+isn't in the area of our own expertise, or something we've
+been researching lately, people ought to step up and say I can
+do something similar to that. That rapid transit thing from --
+when that was canceled. There are other people that do
+research along those same lines from my fair car hacking for
+example. So when we see a talk that's been canceled, people
+ought to step up and say, hey, I can do something similar.
+However, what we found was this talk in particular though wasn't
+so dramatic. We don't know why the talk was canceled. The proxy
+ham talk was canceled. But we guess that the agency that was
+involved was probably the FCC rather than the NSA or the FBI.
+If you see here -- we'll get to that in the next picture. What
+he probably did was boosted the transmit power and the FCC is a
+very prickly agency. They have people staffed at every major
+city in the United States whose sole job it is is to hunt down
+people that transmit power, radio frequencies at too high a
+power. Or who interfere with other stuff. So we suspect what
+happened is that the FCC caught him, they came to his door and
+they probably gave him a letter and this is what the FCC does.
+The big thing they do is they don't want to prosecute people,
+they don't want to hurt people. But they do want people to stop
+causing the interference. So one thing they do have is a consent
+decree which is to say, you sign here and agree that you won't do
+this stuff anymore ever again and then we'll let you off with
+a small fine or ignore the situation. Also I'm guessing
+that the real reason this guy was quiet is because his lawyer
+said, hey, if there is a legal situation the first thing your
+lawyer is going to tell you is to shut up and stop talking
+about it. So it's probably something simple like the FCC
+coming down on him rather than the FBI trying to stop hackers
+or something like that. So this was the picture from the Wired
+article. From Wired magazine. What we see from here is he is
+using standard off the shelf equipment. This device has a
+yogi antenna for the directional antenna and you see this white
+box on the back of the antenna. Well that's just a Ubiquity
+device. Ubiquity is a company that cells point to point
+internet links. This is a picture from their website. If
+you look at it, it's essentially the same thing. It's just a
+little box plugged into the back of a Yogi antenna. So -- >> This
+is a great lesson actually for all of the kind of security
+types you see. A lot of times when people do press ahead of
+time, they give away enough details that you should be able
+to reproduce what they're doing. Like in this example, all it
+took was Googling for Yogis and 900 megahertz to find the
+Ubiquity device he was using in the photo. >> Yes. As Dave said
+from the press we can often tell what the talk is about. We went
+online and bought the same sorts of devices from Ubiquity. The
+rocket end that he was using was a little more expensive and
+required an external antenna and I'm cheap and I bought the
+cheaper units. I'm going to see if this goes here. We bought the
+units -- so you can see these units. I'm going to pull them
+out of my bag here. I probably should have brought them out
+when I was waiting? >> While Rob is doing this, the basic premise
+of our theory is is that the original researcher assumed that
+because the ubiquity would give us point to point connection
+over 900 megahertz instead of 2.4 gig hertz, it would somehow
+provide an additional layer of obfuscation that would make it
+hard finding the signal and the source. That is really what our
+talk is all about. So you can buy these Ubiquity devices on
+E-bay for $125. Not much at all. You have to get two of them,
+though. So 900 megahertz if you don't know, it's an ISM band by
+2.4 or 5.8. It can do longer distances because the wavelength
+is longer and penetrates things better. They can go through
+buildings and trees. As an interesting note because of the
+demo we're going to do, I ended up getting my amateur radio
+exam, my ham radio license just so we could do this demo.
+...(applause)... I didn't want to brag but I knocked the
+technical and general and extra out in one sitting. >> So Dave
+actually cheated. I say cheated. He had actually been studying
+for the exam for like two years. So he didn't really just go up
+there and just do the test. He's been studying for it. >> Rob, in
+reality I just learned how to use SDRs and only stuff I really
+had to study for was the procedures. So 900 megahertz
+band and these are the devices right here that Rob has. >> I
+didn't really want to set them up in the hotel because they
+really cause a lot of interference. But they're just
+two boxes and as I -- as you see in the previous picture, you
+just set them up and what the connection is, is on the
+left-hand side you see one of these bridges connected to a
+little wifi device. Almost every wifi access point can act as a
+wireless bridge or a wireless client. So you go to a bar or a
+Starbucks and find some power outlet outside or bring a
+battery pack. And you can configure a little wifi access
+point to connect and log onto the wifi at Starbucks. And then
+you connect that access point to the 900 megahertz bridge and
+point it five miles up a hill where you can see line of sight
+with the hill. Up on the hill you sit there with your laptop
+and the other bridge pointed back down towards the Starbucks
+at your other device. And then you can log on remotely from
+really, really far away. I used to live in the Bay area where
+you had the hills up between the hills and the Bay area they had
+views over almost the entire Bay area. This would really go
+really, really far. So yeah, the reason by the way that you use
+900 megahertz is it goes farther than 2.4 megahertz. >> Do we
+have time? >> We have time. By the way these boxes though,
+they're still just wifi boxes. One of the critical features of
+this proxy ham thing is whether it's an encrypted connection.
+And it is. It's just using WPA2. The configuration of the boxes
+is the same as the wifi access point. And when we pull them
+apart, we see if they're using the same or if there is tip set
+(ph.). The only thing different between these and a 2.4 gig
+hertz wifi device is they have a little converter on it that
+converts the signal, the whole block of that range from 2.4 gig
+hertz down to 900 megahertz. That's why they're more
+expensive. Ubiquity sells the identical devices that run at
+2.4 gigahertz but that's really the only difference. These boxes
+come with a flat panel antenna. So when the flat side faces you,
+that's the directional antenna. And this is the shape of the
+communications. So directional antenna means less radio
+frequencies on the side and behind and more out front. That
+is why they're directional and you point them at each other.
+You have two directional antennas pointing at each other
+that improves the signal. So at the maximum rate, and I set this
+up, I got 22 megabits per second download. And I'm not quite sure
+if that was the limitation of those devices or that little
+wifi access point that I was using. Is your demo ready? >>
+Yes. >> Okay. So this was the picture of what -- I set this up
+last night in my hotel room. And I used an SDR to go look at the
+900 megahertz spectrum and to see what it looked like. So I
+walked out of my hotel room down a ways to a bar in order to see
+how much of that signal I could see from pretty far away. So
+through many buildings, with these devices not even pointed
+at me, this was the signal that I got. And what you can see
+slightly to the right is that bump. And that bump is a very
+obvious 900 megahertz signal. Even with concrete buildings in
+the way I can still see this is very visible. That's the problem
+with the proxy ham concept. Is that I think the orangal talk
+believed that 900 megahertz that no one was watching but in fact
+we are watching. We actually can see the signal and it's very
+easy to track the signal back to its location. The FCC has banned
+in every city all the equipment that is necessary to point the
+antennas, do the directional finding, and go some place,
+stop, scan, go some place else, stop, scan. Triangulate and they
+will find you really, really quickly. You think you're nice
+and secrete and point to point and no one can see you, they see
+you very quickly. So what we've done, what Dave set up here is
+an alternative using the SDRs. They're more expensive and
+they're going to be slower. And by the way when I post this
+presentation online, here are some links to other people doing
+similar things. What our technique is, is in our case is
+to hide the -- that point to point link below what is called
+the noise floor. Another way to think of it is a negative signal
+to noise ratio. And what the noise, what the noise floor is,
+is like the radio static you hear on an FM radio. It's the
+background noise that comes from the atmosphere, from lightening
+storms, from manmade objects, bad antennas. There's a dark
+line on this picture here, that's where I unplugged my
+laptop from the power and plugged it back in. Unplugging
+it reduced the noise floor. So in theory anything below the
+noise floor you can never catch. You can never have a radio
+signal that will work. In practice it does. If you tune to
+FM radio station with an SDR you see that, you can find FM radio
+stations by hearing the music that as far as the SDR is
+concerned doesn't exist. There is nothing above that noise
+floor. So conceptually what we're doing is, our technique,
+instead of building up a strong signal that jumps above the
+noise floor as you saw that bump before in the graph, what we're
+going to do instead is do lots of little channels all below the
+noise floor, all co-opterring to amply fie our signal but still
+hide behind the waves like a little submarine thing. By the
+way I tried to draw this with PowerPoint, I just gave up and
+just hand drew it and took a picture. So the problem with
+this is that it's going to be slower speed. We have time. We
+have 7 minutes. The advantage of this is undetectability. If they
+knew exactly what we were doing they could find us. But in all
+probability they can't detect that any signal exists. So I'll
+let David continue with this and then go onto the demo. >> So as
+a young man I used to look at the moon and I would dream. What
+would it be like to touch the moon? Since I can't become an
+astronaut after getting my ham radio stuff, I learned there's a
+thing called an earth moon bounce or an EMB. It's basically
+how you bounce the radio off the moon. You use a protocol called
+the JT65A. This is designed to work with a lot of noise in
+between. It's great for our purposes. Because that's
+basically what we're doing. It was really limited to the amount
+of data it can transfer. So instead of using basically one
+carrier, we multiplex it over several different versions of
+JT65. This is our demo. Hold on a second. Any questions so far,
+comments, suggestions? >> (inaudible). >> We have done
+about 20-miles. Once again, we're going to show you
+something really interesting. >> (inaudible). >> Well one would
+be less than -- basically less than around two bod. But with
+multiple, we can get up to 56K. >> So the limitation is having
+lots of SDRs, you can increase the speed. One of the problems
+is that signal strength is logarithmic or exponential. That
+means you don't really see on the graphs very easily, that's
+the easiest way to increase the speed is massively increasing
+the power. It's really easy. But we're going length wise and
+that's linear. So the faster you want to go, you need more SDRs
+and faster SDRs. >> So this is kind of what the signal would
+look like if it was being broadcast over 900 megahertz
+using the Ubiquity gear using a 2 megahertz channel. As you can
+see if you're looking at that and you have any clue what
+you're doing, you're not hiding from anything. That's one hell
+of a spike. Right? So what we did don't look at my password.
+>> So what Dave is doing here is we're using one laptop because
+mine I couldn't get working with the video. He is going to use a
+VM to do the transmit. He is actually going to transmit his
+signal and use the other to receive on the graph like this
+to see what the signal looks like. And now he seems to have
+broken it. He had 20 minutes and he told me to hurry. >> Somebody
+in the audience is, jamming us. That is always funny. We really
+appreciate that. Who wants demos to go right the first time? You
+don't go to NASCAR races to see the completion of the race, you
+go to see the carnies right. This is what it looks like
+normally. If you look at the graph at the bottom, that is the
+signal. You can see over on the left-hand side the DB, you can
+see the peak, where the signal is rising. This is over time,
+right. So with the other one -- where did it go? >> While he
+figures this out. We just put this together with the new radio
+which is the standard tool kit for SDRs that everyone uses. >>
+This is the same spectrum. This is actually us transmitting. If
+you look you'll see there is a much wider and lower profile for
+the signal. That is because the JT65A modulators, there's
+currently 1,000 of them running when we recorded this. Basically
+multiplexing all the data across a little over 2 megahertz to get
+a 56K signal which may seem strange, but you can be easily
+located by standard direction finding gear. With that being
+said, people that have nation state assets can easily find you
+with this. But not a person with a $20 SDR. >> What's that spike
+we see to the left? >> The spy? >> The spike. >> Here. >> Yes.
+>> This is the noise floor. And this is -- we recorded what's
+under it. Without the rest, we're basically pushing down the
+rest of the noise floor. In addition to being able to hide
+the signal, the thousand or so JT65A encoders that are running
+actually collectively cause the noise floor to raise making it
+even harder to find the signal. We plan or putting on this code
+on GitHub and hopefully one day be able to integrate it into a
+simple raspberry based solution so you can do these types of
+things without having much radio knowledge. >> Any questions? So
+the thing that really made this all possible and keep in mind
+just for a recap, the proxy ham and the proxy gambit, the proxy
+gambit still uses a 900 megahertz connection. But they
+also added a cellular device. And Sammy said they did that
+because you can basically use it from anywhere in the world using
+the same techniques. Somebody could find a -- find your device
+with the cellular modem that you're using or a point to point
+link. At that point your identify is kind of blown. That
+should be the take away. And there are ways to hide yourself.
+>> So are there any questions? >> Any comments? Any
+suggestions? >> Question over there. >> (inaudible). >> The
+question is, why is this illegal? Because the guy was
+doing it over the ISM band. We don't know the exact details but
+we suspect the reason is because he boosted the signal. If you
+look in the manual for these devices or these devices, it
+says this is -- this meets these requirements for part 15 blah,
+blah, blah, blah, blah of the FCC regulations but there's an
+external antenna here and the documentation clearly says if
+you add an external antenna you must be a licensed person to do
+so. Because the regulations monitor, regulate how much power
+at a certain distance. This is directional but still spreads
+which means the power is less. The more directional you make
+it, the more you're likely to then exceed those regulations.
+That's what we suspect happened is that Yogi is just too
+powerful, it's beyond the light distance operation and you can't
+do it? >> Also if you're over the power limit, if you're not
+operating legally as a low powered device but you're over
+the regulation, you're not supposed to send any encoded or
+encrypted data. What he was doing was proxying WPA2
+encrypted wifi which is against FCC radio standards. In our demo
+we are not proxying that, we are just sending a message that says
+send it? >> Was a big question, the regulations are complex that
+way. >> We have a question over here? >> You had said you can
+still download data, et cetera, et cetera across this line. How
+much data would you be able to send? >> Up to 56K. Basically
+the same as one of the higher speed dial-up modems from the
+late 90s. >> Okay. I just wanted to confirm that. A second
+question that I have is if you were to have two of these
+devices and you're using it on your property, does that still
+make it illegal? You're still going to have the FCC showing up
+at your door? You're in the neighborhood and you're on a
+couple of acres? >> Well the FCC controls all the air waves in
+the United States, so being on your own property doesn't negate
+or doesn't stop you have having frequency plans. The FCC is very
+specific. That although these devices are technically
+unlicensed, they're only legal as long as they're operated in
+the correct capacity that does not cause interference with
+other devices. Once you start doing that, you have to stop
+your operations. >> In practice you probably can. But if
+somebody nearby complains of interference, whether or not
+you're actually the one at fault, they will probably see
+that you're transmitting at a very high power and come and
+knock on your door and tell you to stop. But you won't have to
+pay fines because you didn't damage anybody else. Probably.
+I'm not here to give legal advice so I have no idea. >> We
+are not lawyers. >> Question over there. I'm sorry I can't
+hear that. Something about ... whoever was doing it stopped.
+This is what it looks like on a GQRS. The peaks are minimal but
+we have our devices, the one that is transmitting and the one
+that is receiving very close to each other but that is what it
+looks like when you're running it. Whoever was jamming us,
+thank you for stopping. And we'll find you. >> We're worse
+than the FCCs trust me. >> Great, so the big take away here
+is we really wanted to prove that there was nothing hokey or
+hinkey about the talk being rejected. We just actually --
+not rejected or pulled -- we do believe that at some point the
+author just decided or learned that it was a bad idea and
+wasn't providing the level of anonymity that they thought
+originally. >> That's our talk. We'll be heading out. So thank
+you very much. >> If you have a moment when you're done and
+you're leaving, there is a young blond woman in the front row
+named Sophie Kotch, if you could spend a few minutes talking to
+her about IOT that would be great. Thank you.
+...(applause)...

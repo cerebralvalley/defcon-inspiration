@@ -1,0 +1,180 @@
+>> CHEMA ALONSO: Hello, everybody. Good morning, everybody. Thank you to coming to the session about attacking
+IPv4 network. I'm Chema Alonso from Spain. This is the sixth occasion that I'm speaking
+here at DEF CON. Year after year before delivering the talk,
+I have been trying to convince you to come to my country. How many of you have been to Spain in the
+last six years, please? Hands up? Very well! Did you enjoy Spain? (Cheers.) >> CHEMA ALONSO: For the rest of you I have
+been convincing you year after year, talking about the beaches, the parties, the beaches,
+the parties, the bullfighters, so on. This time I'm going to try a different approach. I try to convince you to visit my country
+by doing a history of Spain. History of Spain in only one minute. Is okay for you? (Cheers and applause.) >> CHEMA ALONSO: Well, 2000 years ago --
+(Laughter.) >> CHEMA ALONSO: Spain was a Roman country. In fact, we have some of the best Roman Emperors,
+like Vispasian and Trajan, born in Spain. And if you visit Spain you can discover in
+the middle of the city a lot of Roman monuments like this in Segovia and this in Merida. All of the country is full of these monuments. Centuries after, Spain was a medieval country. If you visit the country you find a lot of
+castles. There are hundreds and hundreds of castles. You can visit all of them. Even you can buy it if you have enough money
+because some of them are for sale. It is true; it is not a joke. After that, Spain was an Arabic country, seven
+centuries being an Arabic country. If you visit Spain you will discover that
+there are a lot of mosques around the country, with beautiful monuments in all the country. After that, Spain was an empire. Probably you know it. And like Spain was an empire, all great artists
+wanted to work for the empire. So in Spain there are a lot of museums with
+great artists' paintings like this. So are you going to visit Spain, please? (Cheers and applause.) >> CHEMA ALONSO: Well, we are not an empire
+anymore, as you know. Let's talk about FOCA. How many of you know FOCA? How many of you love FOCA? Today I'm going to talk about another FOCA. It is not the FOCA that you probably know. It is a FOCA based on hacking networks. The idea of this tool is that probably most
+of the users, any time in their life had tried a very dangerous command in their, IP config. It is very dangerous and difficult to understand
+this command. As you can see, in Spain, because Spain is
+better ... (Laughter.) >> CHEMA ALONSO: And as you can see, there
+is a special magic in the result that you can see because if you ask to any user that
+type this command what is the IP address, all users are going to say 192.106A.1, so
+on. Nobody can see the IP address on top of their
+list. Have you seen that IP address? The victim? Yeah? Most of you when realize that there is something
+on top of the IP address, do something like this. (Laughter.) >> CHEMA ALONSO: Well, the truth is that in
+all Windows operating systems, IPv6 is working by results, it is turned on. So you go to test your network configuration,
+you can realize that IPv6 is turning on and by default is configured like this. It is in Spain, you know about it? That means automatically configuration. That means that IPv6 is waiting to be configured
+to run on the machine. But it is working. And if you test the roting table you can realize
+that you have all the roll team table for IPv6 installed in your computer and even one
+of the most dangerous commands, the ping. Ping is working. So I'm going to do a demo, an easy one. I've got two machines. One of those is this blue. The blue is the server. And as you can see we have an IPv6 address
+and an IPv4. The IPv6 is FA -- whatever. And the IPv4 is 192, 168, ten, one. If we go to the client to the other machine,
+which is the red one and try to do a ping to the IP before -- to 
+the IPv4, 100 what? 192.168.10.1, it is working. We try to discover what is the name of this
+server? We got that the name is share. If we try the IPv6 address, of course it is
+working as well. If we do something like ping, the name, then
+magic occurs because by default Windows tried to connect using IPv6. But probably all of you are aware of this. This is true? Yeah. And you are taking care of IPv6 attacks for
+sure. (Laughter.) >> CHEMA ALONSO: Well, this said, the idea
+of IPv6 is that in Windows machine, both protocols are working at the same time. Depending on the configuration of your network,
+the machine is going to use IPv4 or IPv6. If you have an IPv4 network fully configure
+rated with the main controller, with the DNS and all the computers are in the DNS and all
+of them working with the IPv4, then the New York is going to work as an IPv4 network by
+default. But if you are in a local network connected
+with other computers from different parts, they are not in the same DNS. They are not in the same domain controller,
+then IPv6 will appear a lot of times. This is due because in Windows Vista, Microsoft
+added this protocol, local eManager which is a protocol that tries to discover what
+is the IP address of a computer in the network. It is working only in the local network, in
+the local segment. As you can see it is trying to discover the
+IP address of the computer for any protocol. So it is trying to query the DNS as a router
+is trying to -- the IPv6 network is trying to do a broadcasting discovery -- sorry. Whatever. In the end, when local eManager discovered
+the IP address of the destination server, it is possible to connect using IPv6, then
+it is going to connect using IPv6. Once we have the IP address, we need the physical
+address to discover the physical address in IPv4 we are using ARP, but ARP is not working
+in IPv6 anymore. If you have a security solution to detect
+attacking with ARP, it is good for IPv4 but not IPv6. We are using a different protocol, which is
+a neighbor discovery protocol based on two different, they are neighbor solicitation
+and in the end neighbor solicitation and -- are working in the same way that ARP, but it is
+not ARP. That is important. We got a table also in which we connect the
+IPv6 address with the physical address. In IPv4, it is the ARP table. In IPv6 it is the neighbor table. It is in your computer. You can query the table using that command. This said, how it works is like this. Someone is trying to discover the physical
+address of an IPv6 computer. Then send messages to FF auto, which is multicast
+address. Querying for the IPv6 address in which it
+is interested. In this case, this one. The computer with this IPv6 address and in
+this case this one, is going to answer with the physical address. It is very easy to understand. It is the same done. That means perform -- this environment is
+very easy. We only need to send two packets, like ARP,
+it is very easy. We need to send a packet to one of the computers,
+spoofing the IPv6 address of the other and then do the same with the other machine. Only two packets and we have the man in the
+middle like in ARP. Let's do a quick and easy demo, Level 1. Very easy to understand in this environment. But before doing it, you don't have to take
+into account that we are Spanish. So we are lazy. (Laughter.) >> CHEMA ALONSO: We need tools for work. So we created the Evil FOCA, okay? In this demo, we have three machines. The blue one is a server. The red one is the victim, is the client. The black one is the Evil FOCA. So we only need to do something like open
+Wireshark, open Evil FOCA, yes, then Evil FOCA discovered the network. Yes. Drag, drag, click. And that's all. Okay? (Applause.) (Cheers and applause.) >> CHEMA ALONSO: So if we go to Wireshark,
+if we go to Wireshark in this machine, we start to capture information, capture interfaces. And we do something very easy. Go to the client and from the client to server,
+connect to the server. Open a document. With my pass wore. And then we go to the FOCA, the old FOCA. We only need to do follow this BS extreme
+and that's it. We got all the information and we define,
+to search for the password and here it is. Okay? Very easy to understand. (Applause.) >> CHEMA ALONSO: Well, this is very easy. It's Level 1. I am going to stop the server. I don't need the server anymore. And now we are going to get into the Level
+2. The idea of Level 2 is, okay, we have the
+IPv6 in the network, but I want to be a man in the middle when the bit thing connects
+to the Internet which is working on IPv4. That is the challenge. This is the demo that I did it, in case it
+didn't work. The second, in the second demo, it is a slack
+attack. Yesterday there was a talk, talking about
+this. We released this tool in March. Is public this tool in March when this attack. The idea is simple. In IPv6 there are a lot of computers, there
+are big IP address and it would be impossible for a system manager to manage all the roads
+on the network. I have 3,000 routers, and computers, it would
+be a mess. The idea from the beginning, you don't have
+to worry about the default guide way because we will create a protocol to figure the computer. This is the idea is quite simple. When a computer with IPv6 needs to connect
+to the Internet, ask for a router with a package called router solicitation and if there, if
+there is a router in the network, answer with the neighbor advertisement saying hey, here
+are router, here are friend. After that the computer configures automatically
+an IPv6 network that has connectivity with the router and configured the router as the
+fall guide way. Very easy to do and understand. That protocol configures the default guide
+way. But not the DNS. Not always. You can also a rogue DHCP to configure, but
+it is not necessarily because in Windows machines there is a special protocol which is the DNS
+auto discovery. If your computer doesn't have any DNS configured
+by default, you use these three IP address. That means that if someone configures that
+IP address in your network, it will be the DNS in your network. You need to take care of this IP address. So to do the attack is very easy because all
+Web browsers are ready to work with IPv6. This is the procedure which is really for
+IPv6. In Google Chrome is activated, IPv6 is activated
+by default. If the guy is using Google Chrome, you cannot
+do this attack. You can do the next one. Don't worry. (Chuckles.) >> CHEMA ALONSO: There are several situations
+in which IPv6 attacks are not working very well because Windows have very special behavior. If you have IPv4 and IPv6 fully configured
+with the DNS and the default gateway, then Windows used the DNS configured in the IPv4
+protocol. It makes sense because in the end, DNS is
+supposed to be only one copy in the whole Internet. So it doesn't matter in connecting to the
+DNS using IPv4 or IPv6. In Windows they choose to use IPv4 protocol
+to connect to the DNS. If you don't have IPv4 fully configured, if
+the DHCP is giving you the default gateway, if we configure IPv6, the computer is going
+to use the IPv6. But in some cases by default it is searching
+for DNS record of IPv4 address. Than means that if we want to create a special
+man in the middle using IPv6 between the client and the man in the middle we need to reconstruct
+the answers to IPv6 records. And of course, if we got IPv6 than and IPv4
+only in local link, sorry -- I am sick. And if we have IPv6 and IPv4 with local link,
+the DNS is going to be using IPv6 and is going to be querying DNS of IPv6 address. But it is very easy to change the behavior
+because if the client asks for DNS query searching for an IPv4, you can respond with an IPv6
+and everything goes well. So don't worry at all. So what is Evil FOCA doing in this attack? The idea is quite simple. Evil FOCA is going to be this guy. Using network installation 624 and DNS624. The idea is we are going to configure -- Ooooo! We are going to configure this, configure
+the slack attack to configure the default gateway. It automatically is going to configure the
+DNS how to discover to connect to the Internet and DNS how to discover is IPv6. So we are in the middle. We are going to capture all DNS queries. So when he asks for an IPv4 URL, for example,
+www.DEFCON.org which is only working IPv4, then that query is going to be sent to the
+default gateway. We are going to intercept the query. We are going to ask for the real IPv4 on the
+Internet. Then we are going to compare the IPv4 to an
+IPv6 address and give the IPv6 address to the client and then the client is going to
+send the IPv6 query to the default gateway and we are going to translate the IPv6 to
+IPv4 and send to the server and get the answer and then it is very easy to understand. (Cheers and laughter.) >> CHEMA ALONSO: But you know, we are Spanish. So let's do the demo. The idea in the first demo, we only need to
+send two packets to make one follow the other. In this example we need to send the packet
+to configure the slack attack. Then we need to do all the translation. And in Evil FOCA, we need to do this. First of all, I am going to spend a lot of
+money using my Spanish mobile phone, but I need Internet connection. So connect. Okay. Let's see if I have Internet connection. Please, please, please. Okay, I got Internet connection. Then I got the Evil FOCA. I got the Evil FOCA and the victim. And I am going to do something like open Evil
+FOCA. I am going to the big thing. I'm going -- I'm going to the victim. I'm going to -- the network adapter in case
+something was to start from the previous demo. That's all. And all that we need to do is something like
+go to Evil FOCA. (Chuckles.) >> CHEMA ALONSO: And then select slack. Just click here and start. That's ...
+That's all. (Applause.) >> CHEMA ALONSO: If we try to do something
+like, this is in the host machine. This is the host machine. If I try to connect to the DNS and search
+for an IPv6 address for DEFCON.org, as you can see there is not an IPv6 address for DEFCON.org
+and if we go to the victim and we open the Web browser, and we search for www.google.com
+or DEFCON.org, everything is working. Google and DEF CON. And if we search for the IP address that we
+are using to connect, ping www.DEFCON.org. It is an IPv6 because we are changing the
+IPv4 to IPv6 and as you can see we are browsing the Internet. (Applause.) >> CHEMA ALONSO: Well, this is the demo, just
+in case. Level three. Well, this is Level 3. We are not published this version of Evil
+FOCA yet. But next week you will have this version available. And the idea is to use the Web browser how
+to discover protocol in IPv6. The idea is quite simple. Automatic by default all Web browsers, Google
+Chrome, Internet Explorer, Mozilla 5.4 are searching for Web browsing, to discover what
+is the Web browser they are searching for in a special record in the DNS, which is Web
+browser discovery with WPAD and then connect to that IP address and that IP address is
+supposed to have a server and the server gives a special final and that special file gives
+the IP address of the Web server. In this case, the proxy server. In this case we are going to use an IPv6 proxy
+with Evil FOCA. The idea is that Evil FOCA is going to do
+everything for you. Evil FOCA configures the D sensor to WPAD
+and listens in the IPv6 network and routes all traffic between IPv4 and IPv6. Let's do a demo. And then we only need to -- I am going to
+... disable and enable the network interface. And I am going to, everything from the beginning. Disable. And enable. And then go to Evil FOCA. Open Evil FOCA and then we select Web proxy,
+discovery, and click and that's it. And right now we have here that we are working
+the man in the middle attack for Web browser discovery and then we need to wait until Web
+browser auto discovery appeared. Let's open Internet Explorer. Let's close Internet Explorer. And let's open it again. And let's see, okay. Now the proxy is up and the client has requested
+the file. So everything is okay. We can do something like Google.com. Let's see if the Internet is working very
+well. Google, Google. Internet, please? Be a good guy. Here it is. Okay. We are doing the man in the middle again using
+different protocol, but we need, we wanted more. So this was the demo. The demo was that the client sent, the victim
+sent for WPAD record. Then we answer saying no, no, it is not an
+IPv4. It's IPv6. Then the victim asks again about the WPAD
+record, but in this case searching for IPv6 address. We confirm yes, this is the IPv6 of the Web
+proxy of the discovery server. Then victim connects to the Web server requesting
+the pack file with the information about the proxy. We sent that information with the IPv6 and
+the port in which Evil FOCA is listening and the rest is just capturing the data. So bonus level. What happened with https connection? Well, there are several options. First one is to do an SSL strip. The idea is that we analyze all HTML pages
+and remove the S of the links. The second one is to use a fake certificate
+and try to cheat the user to click on, okay, I accept this certificate. And the third one is to do a bridging https. That means that FOCA is connecting to the
+server using https. And the client is connecting to Evil FOCA
+using http. And if FOCA is doing SSL strip and bridging
+https so far, we have a special feature that is to remove the https links in Google results
+and also the Redit. Here are the results. We have Google and as you see, we try to open
+Gmail we have an http link. If we search for Facebook, we have the Facebook
+-- Facebook in Spanish, you know? Facebook in Spanish. And the link is an http. We only need to click on it and then go to
+Evil FOCA. And open Wireshark. Here it is. Open Wireshark. Capture interface. Start and we got all traffic here and we only
+need to go here and test. Oh. Come on. This is still loading. Open -- what is my password? (Laughter.) >> CHEMA ALONSO: Evil FOCA. Where is the enter? No! I don't remember. (Laughter.) >> CHEMA ALONSO: And if we go to the other
+part and we search for http request meth-op, request equal post, we got ... user and password
+of Facebook. Oh, here it is. (Applause.) >> CHEMA ALONSO: Well, it is man in the middle
+attacking -- in IPv4 network using IPv6 in the Spanish way. And this was the demo. In this tool we also added other different
+attacks just in case. Like denial of services in IPv6. Man in the middle attacks in IPv4. Denial of service in IPv6. DNS hijacking. We are going to add also to inject Javascript
+to create Javascript bond net. Remember last year's talk. And that's the conclusion. IPv6 is in your network. Configure it or kill it. It is not easy to kill it. IPv6, if you have security tools for IPv4,
+probably they are not working for IPv6. And right now there are a lot of security
+tools using IPv6, like Topella, which is scanning using IPv6, slow Lotus is immigrate to IPv6. We got several vulnerabilities in IPv6 products
+and so on. And I would like to give big thanks to the
+people behind the hacker choice because they did a very, very, very good job with IPv6
+tools. If you got backtrack or colleague, use it
+because they have a lot of good tools. And even Scapy, it's wonderful to test all
+solutions. The last word is for Strip Fighter. Who in the hell designed the Spanish fighter,
+half bullfighter, half wolverine with hockey mask. It doesn't make sense at all. See you next year. (Cheers and applause.)

@@ -1,0 +1,174 @@
+- Hi, my name is Yamila. I'm a security researcher
+at Dreamlab Technologies, and also 3D printing enthusiast. And today, we're gonna talk about, bypassing biometric systems,
+with or without the help of 3D printing technologies. Humans have used features
+such as face, voice and gait for thousand of years,
+to recognize each other. But only recently, humans have started using
+biometric-based systems to authenticate individuals. Biometrics is the science of establishing or determining an identity,
+based on the physical or behavioral traits of an individual, such as the one as we can
+see here in the slide. Fingerprint, DNA, signature,
+iris, face, voice, gait, vein pattern, ear shape,
+keystroke dynamics, and more. Biometric systems are essentially, pattern recognition systems that read as input biometric data, extract the feature set from such data, and finally, compare
+it with a template set as stored in a database. If the selected feature set
+from the given input is closed to a template set a store in the database, then the user is granted access. But biometric systems are
+prone to different attacks. Direct attacks presentation
+or spoofing attacks are performed at the sensor level. The sensor is fooled and and
+not replaced nor tampered. And direct attacks are performed inside the biometric system. For example, by passing or
+overriding the capture device, the signal processor, the comparator, or the decision engine, manipulating the data in their
+biometric reference database or exploiting possibly weak points in the communication channels between the different components. But during this talk, we are going to focus on this, on presentation attacks, this part of the system. Now, we are going to see
+presentation attacks in reality. These are real cases of
+criminals using silicon masks to fool security cameras, airport security and
+facial recognition systems. The first one is a suspect in the robbery of a North Carolina bank. This one robbed four
+banks and a CVS Pharmacy with the silicon mask from online site. I think the model of the
+mask name is the player from SPFX Mask is a site
+that's now is closed, but it used to sell these
+type of realistics masks. The third one is a
+suspect accused of robbery and several other crimes, committed using a generic mask
+made by another online site. The name of this model, of this mask model is the neighbor. And the last one is a passenger who boarded the plane in Hong Kong as an old man in flat cap, but arrived in Canada as a young man. Regarding fingerprint biometric systems, this first case is a Brazilian doctor, who faced charges of fraud after being caught on camera
+using silicone fingers to signing for work for absent colleagues. The second case, is a gang involved in the illegal preparation, this is the image. (chuckling loudly) The legal preparation and
+selling of clone fingerprints, to fool biometric attendance systems of several educational institutions. The last case was in
+my country, Argentina. Six employees of the
+local airline were fired. After discovering that they falsify their entry to work with silicone fingers, taking turns to attend, but on weekends when the payment is double,
+all six attended to work. But how 3D printing could
+help bypass biometric systems. In this first case, researchers from Forbes, full Android facial recognition systems with a 3D printed head. In the second case, the MSU, Michigan State University team, created a fake finger by
+printing by 3D printing a mold. In this last case, a group of researchers from Bkav, demonstrated that it was possible to bypass the face
+recognition logging mechanism of the iPhone X using a
+cheap 3D printed mask made from a stone powder. I love 3D printing. I have two 3D printers at home. Why not make my own experiments for bypassing biometric systems? But first, I wanted to try the traditional methods for
+attacking biometric systems to better understand how
+3D printing technology will help make these
+attacks faster and better. But first, we need to know how is the fingerprint
+recognition process. Most fingerprint scanners
+compare distinctive features of the fingerprint,
+generally known as minutiae. Typically, investigators
+concentrate on points where ridge lines end, or where one ridge splits
+into two call bifurcations. Collectively, these another
+distinctive features such as you can see here, delta, a short ridge, a spur, the bifurcation, ridge enclosure, a crossover or ridge, an island. All these features
+together are called typica. The scanner use complex algorithms to recognize and analyze
+these distinctive features. The basic idea is to measure
+the relative positions of the features in the same sort of way, you might recognize a part of the sky by the relative position of the stars. But to gather much, the scanner doesn't have
+to find the entire pattern of distinctive features, both in the sample and in the print from
+the biometric database. It simply has to find a
+sufficient number of features and patterns that the two
+prints have in common. There are many fingerprint
+sensors on the market. These are optical sensors, you can recognize them for the light in general, they use light. These are capacitive sensors, and the last one is an ultrasonic sensors. Optical fingerprint sensors are the oldest method of capturing and comparing fingerprints. This technique relies on
+capturing an optical image and using algorithms to detect unique patterns on the surface by analyzing the lightest and
+darkest areas of the image. Capacitive fingerprint scanners, instead of creating a traditional
+image of a fingerprint, they use the body natural capacitance to read the fingerprints. Because the charge stored in the capacitor will be changed slightly
+when a finger ridge, here, is placed over the conductive plate, while an air gap or a finger valley will leave the charge of the
+capacitor relatively unchanged. These changes can then
+be recorded and analyzed to look for distinctive and
+unique fingerprint attributes. The latest fingerprint scanning technology is the ultrasonic sensor. To capture the details of a fingerprint, the hardware consists on both
+an ultrasonic transmitter and a receiver. An ultrasonic pulse is
+transmitted against the finger that displays over the scanner. Some of this pulse is absorbed, and some of it is bounced
+back to the sensor, depending upon the unique
+details of each fingerprint. The sensor then calculates the intensity of the returning ultrasonic
+pulse at different points, resulting in a very detailed reproduction of the scanned fingerprint. Now for our test, the device
+to be tested are four, two biometric attendance
+systems with optical sensors and to mobile phones, one
+with a capacitive sensor and the other one with
+an ultrasonic sensor. This is the first photo of the materials, both for experiments and
+includes a lot of materials. Alginate, a hot glue gun,
+gelatin powder, gummy bears, candle wax, transparent
+tape, playdoh, instant glue, epoxy putty, UV Resin, silicon fingertips, fingerprint ink, and more. But during the test, I realized that I missed
+important materials, like for example, silicone, liquid latex, wood glue, and so much more, and the list grew and grew a lot. The first attack to this
+was the grease attack. For grease attacks, you need
+to have a clear grease stain left on the surface of
+the fingerprint scanner. But this stain must have most
+of the important features of the fingerprint left on pad, so that the scanner can
+reliably read the same line ends and curves that is detected
+on the previous user. The idea of the attack is to gently press different materials such as gummy bears, playdoh
+the silicone fingertips, and latex gloves against
+the fingerprint scanner. But with care, with careful
+without ruining the stain. Here are the results
+of the grease attacks. With gummy bears, playdoh, latex gloves and silicone fingers, the scanner detected the finger, but the fingerprint was not
+clear enough to fool the sensor. So, this attack was unsuccessful
+on all the tested devices. But for me this test was not a failure because the gummy bears were really yummy, and kept me fed during the
+rest of the experiments, so no failure for me. The problem with grease
+attacks is that in most cases, a regular grease stain
+on the scanner surface is not enough to fool the sensor. We need to enhance it
+with other substances to obtain better results,
+impersonating legitimate users, but these substances must be transparent, so that the user does not notice them. And also with ointment consistency to better enhance the fingerprint stain. This substance could be spread in the legitimate user fingerprint or in the fingerprint sensor, using petrolatum ointment, paraffin or cocoa butter lip balm, we successfully fooled the sensors, and we're able to authenticate ourselves as the last user of the device in optical and in capacitive scanners. Now, we are going to see a demo. In this case, we are using
+cocoa butter lip balm. We are spreading the lip balm in the legitimate user fingerprint. We can see that uncanceled grease stain in the fingerprint scanner. And then another user
+wearing a latex glove, can be authenticated as
+the last legitimate user of the device. Now for consensual attacks, that term consensual suggest that the user we are taking the fingerprint
+from, is aware of the process and participates by
+pressing his or her finger into some kind of a mold. For molds, we use these materials, alginate, epoxy putty, playdoh,
+hot glue and candle wax. And for casting, we use silicone, homemade ballistic gelatin, liquid latex, synthetic resin and wood glue. You can see here, here, you can see here that the
+hot glue mold, of course, is the researcher's
+fingerprint are blurred. But in this part, you can
+see that the hot glue mold is really, it's very detail, so it's really a good mold. For the molds, we obtain the best results with alginate and hot glue. And for casting, we
+obtain the best results, using liquid latex,
+wood glue and silicone. With the combination of a hot glue mold, and liquid latex or wood glue casting, we were able to fool all the sensors. The same with the
+combination of alginate mold and liquid latex casting. You can see here that the
+ballistic gelatin test, didn't work. That's because ballistic gelatin is not so easy to make at home. We try several combinations
+of gelatin powder, water and glycerin, but the results were not
+enough to fool the scanners. Also, note that the working
+fingerprints are very thin. And please be careful if you
+plan to make hot glue molds. Let the glue cool down a bit, and test the temperature under the foil, and dip your finger in
+water because before, sorry, before pressing
+heat against the hot glue. Trust me the heated glue
+can reach over 200 degrees. I've been there and it
+burns, and it burns a lot. For unconsensual attacks, in this attacks, the user does not participate actively, and latent fingerprints are obtained in non-cooperative way. Assuming we have identified
+the correct latent fingerprint, we need to follow the following procedure. This procedures here. So, we are going to need to enhance the latent
+fingerprint with glue fumes, or fingerprint powder. Lift the latent fingerprint
+with a digital camera or transparent tape, digitally enhance the
+fingerprints with software, create the mold and cast
+artificial fingers with silicone, liquid latex or wood glue. The first option to enhance
+the latent fingerprint is dusting with fingerprint
+powder and a brush. The second option is
+encapsulating the latent print, inside a container with instant glue. Fumes from the glue will
+be attached to the ridge of the latent fingerprint,
+make it impossible to lift it. In this case, we obtained
+the best results, lifting the latent fingerprints
+with a digital camera, using a fingerprint
+enhancement software in Python, to digitally enhance the fingerprint image offset printing a transparency, using the transparency as a mold, and casting it with liquid latex. With this procedure, we were able to fool the optical sensors. The fingerprint ink on a
+latex glove techniques, also worked on capacitive
+and ultrasonic sensors. You can see here that the offset plate
+technique didn't work. But it did not work because
+it, the offset plate, was covered with some kind of rubber that is generally used
+in this type of plate, and the rubber interfere with
+the creation of the mold, but without the rubber, I think it's a technique that could work. For unconsensual attacks
+which 3D printing, we need an UV Resin
+SLA 3D printer software to digitally enhanced
+the latent fingerprint. A 3D CAD designed to like
+for example Tinkercad, and a latent fingerprint in glass, or a fingerprint ink in paper. In this case, we can use
+FDM or filament 3D printers for these attacks, because we need the precision
+of an UV Resin printer. To obtain a working fingerprint
+through 3D printing, we need to follow these steps. First, we need to lift
+the latent fingerprint with a digital camera,
+with macro functionality. Then, we need to use fingerprint
+enhancement software. In this case, I use a software in Python but you can use any kind of
+graphics software for this task. Then we need to import the enhanced image of the fingerprint into Tinkercad. and configure the dimensions and add the ridge height
+to create the 3D model. One negative or hollow for casting and one positive for direct tests. Then we need to print the
+models on the 3D printer in this case is the
+Anycubic Photon 3D printer with UV Resin, and then we
+need to use isopropyl alcohol and UV-post curing lamp or direct sunlight to complete the final curing process. At the end, we need to cast the molds with wood glue or liquid latex. It took us 10 retries to achieve the optimal printer
+settings and ridge height. But the most important
+step of this procedure is this one, is the step four, if the step four is okay,
+they fake fingerprints will work in the different
+sensors and scanners. So it's really important to configure the fingerprint length, height and the ridge
+height in a correct way. The results. The fingerprint obtained from
+the 3D mold with liquid latex or wood glue casting,
+worked on all sensors, and the positive
+fingerprint, print directly on UV Resin, worked on
+the ultrasonic sensor and in one of the optical sensors. In the optical sensor, we had to spray the fingerprint
+with cocoa butter lip balm or petrolatum for the sensor
+to recognize it as a finger. And here you can see a
+summary of all the process. Here is the fingerprint enhancement, the models in Tinkercad, the printed models and
+the casting with wood glue and liquid latex and then again, we are using the fake fingerprints to authenticate in an optical scanner. Now we are going to see
+the demo of this attack. Here, we have the fake fingerprint and we are using it to
+authenticate ourselves in a Samsung S10 phone
+with an ultrasonic sensor. In this case, we use as a mold, the 3D printing mold that
+we were talking before. And for casting we use liquid latex. In this case we use liquid
+latex with a skin color, but it's not necessary you
+can use any color of latex and it will work. For biometric face recognition. Biometric face recognition is the process and ability to identify the face of an individual either to grant access to a system or to find out the details of a person by matching the face with the data in the biometric database. What a biometric face reader does is map and extract the
+distinctive features, for example, these points
+and these points here, features of a person face that
+can be used for recognition and it stores the data in
+the biometric database, along with the identity of the individual. Our next step in this research is to perform presentation attacks in face recognition systems
+by using 3D printed masks and head to fool the different scanners. Now, we are working on
+that and it's really fun. We published a paper of this research that you can download for more details. Another interesting research was made by Paul Rascagneres from Talos. We met in Switzerland when we walked, we're researching about using 3D printers to create fake fingerprints. He used the same 3D printer for the test, but different software. Also he tested different devices. So if you're interested in this subject, it is worth to check it out too. It's the first link of
+the reference materials. Also, I have other reference materials, in case some of the topics
+discussed in this talk are of interest and you want
+to know them a little more. Thank you. It was an honor to present
+this talk at DEF CON. And I also thanks to my
+coworkers and friends that helped me with this research, especially (murmur) at the Infosec. That are, they are always there for me. So stay safe, everyone.

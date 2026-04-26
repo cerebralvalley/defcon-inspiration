@@ -1,0 +1,847 @@
+>> : So this is abusing software
+defined networks, so, yeah, here
+we go. [Applause]. >> : Thank you. I'll try to get this right.
+It's very loud this year. You
+used to have to pretty much hold your face right in the mic.
+Okay. Thank you first of all for
+coming out to the talk today. As he said, this is abusing
+software defined networks. My
+name is Gregory Pickett with Hellfire Security. You don't
+have to applaud. A brief
+overview of today's talk--what is it? What is software defined
+networking? And some weaknesses
+in software defined networking and how to exploit them. Okay.
+And no matter how much fun it is
+in breaking things, we are here also to help. So also I'll tell
+you how to fix it. [Applause].
+>> : Moving forward obviously we need to protect, protect it now
+as well as for the future. It is
+going to be a bit part of what we do with the network. And then
+wrapping up, I will be
+introducing a toolkit today to explore SDN, these particular
+controllers, as well as in your
+own environment. So I will show you where to find that, as well
+as provide some links to learn
+more about software defined networking. We will start with
+-- well, networks as they stand
+today. They are very vendor dependent. You learn a unique
+set of skills. You learn the
+commands for a particular piece of hardware that a vendor sells.
+There are unique features to
+those pieces of equipment we buy--the switches, the routers,
+that we all become dependent
+upon. Now these networks are difficult to scale. We're adding
+one box after the other. Right?
+Each with its own configuration; therefore, the network becomes
+rather complex rather fast and
+prone to break. The configuration is distributed and
+is often an inconsistency each
+box has its own unique view of that network. We make mistakes,
+all sorts of things happen, and
+they use protocols that, well, we're not responsible for these
+protocols. They were developed,
+turned into a standard, and we have to use them as they are
+regardless of how well they work
+for us. And the network is also unable to consider other
+factors. Like application needs,
+business needs. Can't see anything outside the bits and
+bytes of the flows. Right? And
+good luck. Once you have all this set up, it's rather
+brittle. Good luck if you
+actually want to actually try to change it. Enter software
+defined networking. The idea is
+to separate the control and the data point. Before any decisions
+are made by the controller, you
+take the logic off of those switches and routers. You put it
+into a central controller, and
+then the switches and routers just forward packets. Add the
+controller with the logic. It's
+programmed with the intelligence. It has full
+visibility of the network and
+can consider the totality of the network before making any
+decisions to enforce a very
+granular and consistent policy across that entire network. This
+leaves the switches as bare
+metal only. Any vendor, hardware, software, it really
+doesn't matter. They are truly a
+commodity. It solves lots of problems with commodity
+switches. Right? The harbor,
+then, is very inexpensive, less expensive, right? So it reduces
+the cost of operating a network.
+It solves a lot of problems that we have with VGP and aspects of
+VGP that are lacking. Right? A
+lot of neat things you can do. You could do a maintenance
+tryout. You don't have to take a
+router out of service, wait for the registry to calculate and
+propagate. You can just steer
+the traffic around that router ahead of time before you do your
+maintenance. You can give your
+customers the opportunity to choose where on the network
+their packets egress. You get
+better security at the right level, the VGP, because you can
+consider other factors such as
+reputation before selecting. Faster Convergence. You don't
+have to wait for events to
+occur, nodes to detect it, propagation of routes. You can
+just go ahead and tell everyone,
+this is now your next hop. And it also allows for granular
+hearing at the internet exchange
+points. You don't have to -- we don't have to be in a situation
+of all or nothing. You can
+decide what sorts of protocols you're going to peer over, what
+protocols you're going to use to
+communicate with your neighbors. Okay? And it expands our
+capability. We can do real world
+network slicing of the flow space. You can take that VLAN
+idea and expand that network
+wide. We also are able to expand--can expand from server
+load balancing to network load
+balancing, gaining a significant amount of efficiency in the
+network. And security--there's
+so many things you can do with security under SDM. Access
+control. You can apply your
+access control that includes a lot more than just this host can
+talk to this host over these
+protocols over these ports. You can then begin to say, okay,
+times a day. You can add a lot
+more dimension to it. Adapter traffic monitoring. You no
+longer have to have fixed points
+on the network that you are looking at. You can move your
+traffic monitoring around as the
+needs -- as needs change. And it also allows you to program the
+network with a bit of
+intelligence so that the network can begin detecting attacks and
+engaging in mitigation
+automatically. So a lot of really neat things you can do
+with SDN. Now there are some
+emerging standards that they have come up with. Well, not
+really come up with. When they
+realize after a certain point that the network gets a little
+unwieldy, a little out of
+control, and we've kind of known this for a while, they attempted
+to adapt existing protocols to
+kind of gain the breadth of control as well as the
+consistency that SDN provides
+before I think even SDN was an idea. So they had SNMP,
+extensions of DGP, Netcom list.
+But there was always something lacking. So they went ahead and
+designed the protocol from the
+ground up and opened flow with a sister protocol VSDB to
+implement SDN from the ground up
+considering all the different factors that might be involved
+in it to start over. And that's
+what we'll be talking about today. Open flow. It established
+the elements. It establishes
+that paradigm with the controller making all the
+decisions, a secure channel for
+the controller to talk to the different forwarding elements
+over and defines a forwarding
+process at those forwarding elements and messaging format to
+be able to communicate
+information back from the forwarding elements to the
+controllers. The forwarding
+process. The forwarding element will check the flow table. If a
+match is found, it will carry
+out the action. This is very much like a firewall. If no
+match is found, then it sends
+the package to the controller. The controller makes his
+decision, referencing policy and
+then updates the flow table on that forwarding element. The
+forwarding element has a flow
+table. It's basically a set of match action entries. There are
+12 fields available for
+matching, and there's wild card matching available too. So you
+can pretty much kill more than
+one bird with a single stone. You don't have to have a single
+entry for each type of packet
+that you might end up running across. Graphical representation
+of that relationship. Controller
+communicating with the, in this case, an open flow switch with
+its flow table over the secure
+channel using the open flow protocol. So this is the
+paradigm we will be looking at
+today. What these people have tried to make happen in their
+products. All right. So we have
+some proprietary controllers. There are lots of controllers
+out there, but these are some of
+the leading platforms. Cisco has some, HP, IBM and of course Open
+Source, Nocs, Pocs, RIU, and the
+ones we will look at today--Floodlight and Open
+Daylight, specifically because,
+well, they're production capable. They are promoted as
+something you want to put in
+your network to run your operations. So we need to know
+what we're in for. Okay?
+Floodlight is an open source Java controller. It's primarily
+an open flow base controller
+supporting version 1.0. It's a fork from the beacon Java open
+flow controller maintained by
+big switch networks. So one outfit is behind this. Open
+Daylight is an open source Java
+controller with many southbound actions, including open flow.
+And there's a lot of backward
+compatibility there with the other protocols supporting 1.0
+and 1.3, and it's also a fork
+from the beacon Java open flow controller, Linux Foundation
+collaborative project though by
+a lot of companies with their hands in it--Citrix, Red Had,
+Ericsson, Hewlett-Packard, the
+rest there, a lot of industry heavyweights. So we have some
+problems. Open flow. We've had
+this idea for SDN open flow is going to do it for us. It's
+going to solve those problems,
+and it's going to be nothing but puppy dogs and rainbows. Right?
+That's what they always tell us
+when they're trying to sell it to you. Not exactly. That's why
+we're here. So there are some
+protocol weaknesses. And we'll start with the protocol, less
+serious to the more serious
+things. Encryption and authentication is specified.
+It's implemented using TLS, but
+it's more of a suggestion than a requirement. It started out very
+good. 1.0 was saying, okay, yes,
+TLS. Got to do TLS. 1.4 said, no, we don't have to do TLS. You
+don't have to do TLS. You can do
+TCP if you want. And as you know when give someone the
+opportunity to be less secure,
+to slack, if you will, they will do so. And we'll see some
+slackers here. So Floodlight
+said, ah, we're not going to do it then. You don't require it?
+We're not going to do it. So no
+support. Open Daylight is a tad better than Floodlight. It
+separates it, but it's not
+required. And the switches. Switch vendors are kind of a
+mixed bag. But you're really in
+the same boat. Arista, no. Dell, no. Stream, yes. There's a
+couple yeses in here but a lot
+are no. So along with some more noes here. So you really have a
+situation where even if you want
+to do TLS based on the makeup of your controller and your
+switches, you may not be able
+to. So a large portion of people wanting to even try to do this
+won't be able to do. And what
+we've found with these imitations is that it kind of
+left a few things out.
+Encryption, yes, of course. It's TLS. But going through all the
+configuration options, you
+really don't see anything in there for certificates. Without
+certificates, you can't have
+authentication. That means pretty much anyone and their dog
+to use an overused phrase can
+talk to this and manipulate it and attack it, kind of like what
+I've done. So, you know, it's a
+mixed bag here. So a large portion of people don't even
+have an option because you don't
+have a matching of controllers and switches. And even if you do
+get it, you know, really you're
+kind of half covered here. You're really still exposed
+there. Now what this can lead
+to. For a mass majority or a vast majority of people using
+these products and using the
+protocol, information disclosure through interception and
+modifications through man in the
+middle. That's a large portion of the people trying to do open
+flow, trying to do SDN, because
+they don't have the right match of equipment. Now everyone
+though is going to have an issue
+with the service because even if you are one of the lucky ones
+that happens to have a
+controller using TLS and a switch that uses TLS, you can't
+change. Once you have your
+switches in place, it's not easy to change over. You're stuck
+with it. But let's say you are
+lucky and have a switch that supports it, and you have a
+controller that supports it. It
+really doesn't matter. No authentication, so pretty much
+everyone across the board is
+going to have issues with denial of service. So speaking of
+denial of service nastiness,
+open flow. It's about centralization. Centralization,
+well it's dependency. Dependency
+can be exploited. So we have to look at how the vendors are
+handling it. Well, Selman looked
+at it, looked up Floodlight. And it's an experiment. They set up
+a Floodlight controller. They
+brought up some instances of CBench, and what they found was
+that Floodlight handles it
+poorly. It even -- well, there's actually some options and when
+you compile it to put in some
+rate limiting and they found when you turn on the rate
+limiting, it was actually worse.
+Okay? Now their presentation on this is on the slide share. I
+recommend you look at it to see
+what they came up with, how much -- how many instances of CBench
+it took to actually take this
+thing down. It wasn't hard at all. So now there's also Open
+Daylight. It is unknown. I
+didn't take a stab at this, but it's worth investigating because
+it is Java for God's sake.
+Memory issues. Right? Now you too can recreate Salma Natal's
+work or play with your own
+controller, poke at it. All right. Start off looking at SDN
+in particular, Open Flow, and I
+built kind of an emulator here or a switch. This is the
+beginning of the toolkit. It
+impersonates an open flow switch utilizing 1.0. It exchanges the
+hellos. It will receive a
+feature request. It will return the features. It will receive a
+set configuration. It will
+respond to that. It will receive a get configuration. It does the
+whole thing. Send a bogus
+configuration back and then do echo or request echo or apply
+over open flow with that
+controller. So you can observe that yourself and see how these
+things interrelate. Well, Flood
+takes that a little bit further. It establishes that relationship
+and then just pounds on it.
+Pound, pound, pound. There are 12 fields available for
+matching. You just do the math,
+the number of possible combinations. One instance of
+flood hitting that controller
+with all those millions of packets. You throw up a couple
+more, and let's see how many it
+takes to knock over the controller of your choice. Okay?
+So a little fun you can have
+there. Now it's important to note -- so we have the TLS
+issue. Right? TLS issue not
+really implementing it really well. Those who are as part of
+the standard. As they move along
+and get to that and they begin to completely get through the
+standard and become more
+compliant, D bug force will be a problem. There's no encryption,
+no authentication, just full
+control of the switches. This is a switch side issue. You can use
+it very easily with an
+obtainable tool--DPCTL. As I said, they are still working out
+getting TLS in there. So it's
+not a problem yet, but once they get past that and get more
+compliant to get to the D bug
+port and start looking for those in your environment, are the D
+bug ports showing up on our
+switches? So it's not a problem yet but soon will be. Now this
+is where we get to the fun
+stuff. Controller weaknesses. It gets bad here. Floodlight. No
+encryption, no authentication on
+the northbound API. You can just connect to it, take control of
+it, and have your way with it.
+Not a problem. It's a very easy controller. Open Daylight. There
+is encryption for the northbound
+API, but they were kind enough to have it turned off by
+default. Thank you very much.
+Well, I work a lot in defensive security, so for me it's a
+blessing. I like those things.
+And there is some authentication for that northbound API, but
+it's HTTP basic authentication.
+Not much of a challenge. Default with passing and strong
+passwords turned off. Another
+thank you. Now, you may say to yourself, with Open Daylight we
+have a little coverage. Not
+really. There are weak protections there, but we can
+actually get around those. I
+have an exploit for you today. It's brand new. I have a zero
+day that's going to allow you to
+bypass all that. So while they're there, they won't be a
+problem for you. Now what this
+means is both controllers, either directly with Floodlight
+or indirectly with Open Daylight
+we're using an exploit. They're going to have problems with
+information disclosure through
+interception, topology, credentials. If they don't turn
+on the encryption on the Open
+Daylight, you can get the credentials. Information
+disclosure through unauthorized
+access, topology and targets directly with Floodlight and
+indirectly with Open Daylight
+using the exploit and then turn around and do the same thing,
+and there's problems here with
+topology flow and message modification through
+unauthorized access. While
+you're there, you might as well add access, remove access, hide
+traffic, put blind spots in
+those sensors, and you can change traffic. Flow rules are
+rather flexible. You can change
+things to add the VLANs, taking [indiscernible] away. So
+directly with Floodlight or
+indirectly with Open Daylight, still both of these have these
+problems. Now, first off you
+have to identify controllers and switches. You can't have fun
+with them if you don't know
+where they're at. Now, they're currently listening on TCP port
+6633, but there's now an
+official port of 6653. All the tools allow you to change the
+port, so if you run across a
+next gen or version 2 of any of these things and they change the
+port or they're trying to be
+secret and they hide the port by moving it to something else, you
+can go ahead and adapt, add a
+port as a commandlet and still use the tools. Now to identify
+these guys, you try to exchange
+hellos with the service to see if you're working with an open
+flow based service, and if you
+get a feature request back, then you know you're dealing with a
+controller. So as we do here
+with the next tools. These two are about discovery. So you're
+going to give them lists of
+targets, and they're going to narrow things down for you. You
+start with your bigger list to
+OFcheck. It identifies open flow services and reports on
+diversions. Say you have 100.
+You give two or more. They're going to class C. So you give
+that big list to -- I don't
+recommend necessary internet, but they're out there. I'll just
+say that. All right. So you have
+a list of let's say 100, and you go ahead and you go through that
+with OFcheck. You'll take that
+smaller list, and you're going to hand it off to enum, and then
+you'll enumerate the end points
+there. It will tell you whether or not you're working with a
+controller or a switch because,
+of course, you want the controllers because they're the
+fun ones. Okay? All right. Now
+for those who don't play around with Python too much there is
+also in Metscript to add that
+capability, same functionality as OFenum. [Indiscernible] End
+points. [Indiscernible]. Whether
+it's a controller or a switch. So let's go ahead and identify
+some right now. Is that big
+enough? Okay. So we have a target list, open flow service
+version 1 found at 192.168.2.67.
+I kind of knew it was there. So we have that there, and then you
+would go ahead and take that
+smaller list and pass it off to--. Bigger. I think the next
+size is way too big. So we have
+open flow controller found at 192.168.2.67, so very easy to
+identify these guys. So once
+you've identified it-[indiscernible]. So once
+you've identified it, you can go
+about some naughtiness. We have a small local area network
+there. I've instantiated in main
+net. It's a great experimentation tool. One admin
+host, two user hosts, one
+server, and a censor, which I will call an IDS. So there's
+hacker me. That's the fun stuff,
+so I'm going to do it here. Identify targets, enumerate
+ACLs, and, of course, look
+around to see if anyone is listening/looking at what may be
+going on. We'll do that with
+OFmap. It downloads slow from an open flow controller and then
+uses those slows to identify
+targets and target services, identify ACLs, and to identify
+censors. It works with
+Floodlight and Open Daylight and JSON. It auto detects the
+controller you're working with.
+Now, I did mention that the work credentials are Open Daylight.
+The exploit actually allows you
+to get the credentials for Open Daylight. It will start off with
+an Open Daylight controller. It
+will use the default for you. That's very nice of it. If you
+must go get the credentials with
+the exploit, you can then plug them in. OFMap and the next one
+OFaccess will allow you to add
+credentials. Should they change it, you have to go get it and
+put them in there and then go
+ahead and hit D Open Daylight control anywhere. And we'll
+demonstrate. Here we go. I have
+to learn how to spell. And we know that Controller and then
+2168, 2067. There we go. So the
+first thing we want to do is map that network. It's going to
+report on that. There. Map the
+network and then, of course, the connection. It would normally
+tell you the switch you're
+attached to. That's a bonus actually, because you want to
+know if you're going to make
+some modifications, you kind of want to know where you're at.
+For some reason, these networks
+here, I'm not seeing them. I have to figure out why. Next
+thing you might want to do is
+look at the flows. But in the production network, I don't
+necessarily recommend you do
+that, at least not live on the screen. You can if you want.
+Number 2 lists all the flows.
+The option in the production network is to do number 7, which
+is dump the flows to a file. We
+can go ahead and take a look real quick. I don't know if it
+will fit here. All right. So
+we'll go ahead and jump to the good stuff here, which is missed
+targets. 225, 215, 227, 228.
+This happens to be me 215. Server 225, admin 228. Next
+thing I want to look at here is
+the ACLs. I want to know what I'm being kept out of because
+that's actually exactly where I
+want to go. Found one. It's just very big. Okay. So 215 is me.
+I'm being kept out of 225. As I
+said, that's where I'm not allowed to go. That's the first
+place I want to go. So here we
+go. Isn't that where all the fun stuff is at, right? Behind
+locked doors? So we have the
+salesmen. I want to check to see if there are any censors. This
+does it by dissecting or looking
+through the flow tables to see if there is any mirroring. So
+number 6 identify censors. All
+right. So there's some mirroring going on to port 5. And I'm
+going select this because I need
+this later on. So very easy to dump the flows, identify
+targets, and then find anything
+that might be looking at you, watching what's going on. All
+right. Well we're not going to
+stop there, right? You always start off an attack with
+reconnaissance, but the next
+thing is our vulnerable identification, exploitation,
+that sort of thing. So as an
+attacker, I'm going to open the way for myself and take that
+same network. I'm going to grant
+myself access to that server, and them I'm going to isolate
+the administrator. Turnabout is
+fair play. Right? I don't want him interfering, and then I'm
+going to put a blind spot in
+that censor, and I'm going to remove that mirroring for myself
+and my target. And that leaves
+me free to then attack the server. The tool we'll be using
+is OFaccess, or I'll be using.
+Modifies flows on the network through the open flow
+controller, adds and removes
+access for the host, applies transformation. You can actually
+write your own flow roll and put
+it in right from the tool. It also removes mirroring for any
+particular IP of interest,
+yourself-I'm going to do that, of course, and the target. It
+works for Floodlight and Open
+Daylight as well via JSON, audit the text, everything, put
+credentials in if you need to by
+the Open Daylight controller and demonstration. So we're going
+over here and run this,
+OFaccess. Now the first thing I want to go after is that server,
+but then I have to grant myself
+access. So let's show how I can talk to the server now. Nothing
+up my sleeves. So I currently
+can't talk to that server. Request timed out. Now I'm going
+to go ahead and through the
+magic of SDN and, in this case, Floodlight-it's easiest to go
+after--I will grant myself
+access. And that is why I need that switch. I need to know what
+switch to put the flow roll on,
+and priority. Priority is a little tricky. Right now, the
+tools only overwrite entries, so
+it's important to have a high priority. With Floodlight,
+overwriting requires the highest
+priority, so I'm going to accept the default here. Next version,
+yes, I know, it's always that
+way. Next version I will be adding a feature to remove flow
+rules. Hooks up that and then
+confirm. It's very polite. And then ping that server. OK? There
+we go. [Applause]. >> : We're
+not finished yet. We have to go after that administrator. All
+right. So we have H4 as an
+administrator and H1 as the server. Internally contain the
+server. We'll let that go. And
+then I'm going to take that away. I'll drop traffic,
+192.168.2.228 is the
+administrator. And 225 is the server, same switch, same
+priority, yes and now, denied.
+There we go. [Applause]. >> : We'll break that off there.
+We're seeing lots of drops
+there. 42% [indiscernible]. But there's still some mirroring
+going on there. I want to take
+care of that. So I'm going to move that up there. Let's go
+ahead and hide from sensor. I'm
+going to go ahead and hide anything heading toward me.
+Don't mirror that. And that same
+switch. And we know it's on port 5. Not quite yet. I want to show
+you something here. I'm going to
+do TCP dump. We'll see how it does currently see me. No tricks
+here. Some pings. So we're
+seeing both sides of that conversation currently being
+mirrored to the sensor. Now
+let's put the blind spot in. And I need to go over. So anything
+heading toward me will not be
+mirrored, and then let's do the other side of the server. I
+actually did the wrong one here.
+All right. There we go. So that's 225. Yes, yes. On that
+same switch. Stopping mirroring
+to port 5 or anything heading toward that server. You have to
+excuse my Windows 8. Get out of
+here. >> : [Off mic] >> : And back to this way. Right here.
+This was a last-minute
+replacement. I haven't yanked all that stuff off. So that was
+hidden. Now, let's go ahead and
+start this up again. There we go. Pinging of course, going
+through, and let's go zero
+packets captured. [Applause]. >> : Thank you. Nice little blind
+spot, which is what I like. So
+now you can do whatever you want. Have your way with that
+server if you will. And now, not
+only will nothing see you, but no one can stop you. OK. So we
+talked about Open Daylight, a
+little indirect. Right? So there's a small problem with
+Open Daylight. A little bit of a
+problem. So I found that, and we're going to go ahead and
+exploit that weakness, exploit
+Open Daylight. So sorry, no puppy dogs and rainbows for you.
+All right. So this is awfully
+detailed, probably more detailed than it should be. So Open
+Daylight, very backwards
+compatible, and there's other southbound APIs besides Open
+Flow. No encryption. No
+authentication on this. It's a TCP version of Netcom. Just
+connect and exchange messages.
+Can you see where I'm going with this here? What's hot today?
+XXE, external entity injection.
+A little Java. If you're familiar with XXE, Java has a
+big problem. You've got all
+sorts of space out there dedicated to that. OS pretty
+much paints a door right on this
+and just go in. Java has big problems with XXE. So boom goes
+Open Daylight. And this is a
+bonus here. Yes, that's what I said. Demonstration. So, let's
+go ahead and exit out of here.
+Let's just do this. I tweaked out a little bit, added
+features. Got one at 60. All
+right. There you go. Now, it starts out with default of a
+password file, but I'm greedy.
+So I'm going to go after the shadow file. You got the access,
+you might as well use it. It's
+very friendly. Says hello. Everything is okay. Here we go.
+We're feeling all right. That's
+the latest one. So there we go. [Applause]. >> : Thank you. And
+that's the good stuff. Right? So
+then you can mount an offline password attack, gain a sense of
+credentials. You're going to get
+a lot more in that box than northbound API credentials, but
+after you're done with that box,
+you might as well go after everything else. So you get
+those credentials and you plug
+them into the tool, and then I'll show you in just a second
+here. All right. It's important
+to note before I go through the whole thing, the whole cycle
+again with Open Daylight or show
+you what you can do there, if the service is not available,
+all right, say you don't have
+the opportunity to use the exploit because the service is
+not available or, low and
+behold, they fix it, not to worry. You can password guess
+it. Okay? Default pass or tweak.
+Strong passwords turned off by default. No account lockout. And
+no sys lock output. So you can
+just pound on it and pound on it and pound on it, and it gets
+credentials that way. So either
+way, you just repeat. All right. Go through the whole cycle again
+and then own that network too.
+So Open Daylight. Put those extra protections in place, and
+it didn't turn out to be much.
+Other exploits are waiting to be found. This is where you guys
+come in. The only way to get
+these people to secure this stuff is just keep poking at it.
+Northbound APIs, Floodlight,
+southbound APIs for Floodlight as well. Open Daylight has
+northbound APIs. Open flow has
+southbound APIs. The Netcoms, there's also an SSH1 D bug port
+for Netcomp. And this is the
+other servers also running the box. Okay? Lots of these are XML
+based being run by Java. I see
+some duplication here. Some duplication. So we'll go out
+there, poke at this sucker.
+You're going to find stuff. You are. Available solutions. Yes,
+this is the less exciting part.
+For now and for the future, of course. For right now, transport
+security. We're talking about
+it, but it's not really finished. They're not really
+done with it. For those not
+supporting it, put it in. And when you put it in, add
+authentication, please. Do
+certificates. Those who currently have it, throw that
+extra piece on. We need to close
+the loop on this. I'm not sure how good TLS is in this
+situation unless you're using
+certificates. Now as we move to commodity switches, it then also
+becomes realistic. There are
+some cycles for TLS. That's probably a lot of the reason why
+vendors aren't implementing it.
+It takes extra cycles to do TLS. Going to commodity switches, you
+have the cycles. So it's very
+feasible and very realistic to make it happen. Hardening, of
+course. These are some of the
+basic things we should be doing anyway. And then, of course,
+VLAN, too many flat networks out
+there. I'm a network guy. All right? But even I know you need
+to do a code review. Right? As I
+said, OS pretty much paints the door on the outside of this box
+and says, here, this is how you
+get in. I can't imagine that did a code review. Please go back
+and do a code review. Those
+vendors out there, if you haven't done a code review, we
+haven't looked at it yet. Do one
+before we get there. Please. Now for the future. This is a little
+more the details of that scan to
+protect against denial of service. You have to consider
+your architecture, partition
+that network. Don't put one controller or a group of
+controllers in charge of the
+whole network. Not a great idea, especially as the network gets
+larger, performance also comes
+into consideration because not just denial of service but also
+in the performance of the daily
+operations of network. And then controller clustering. Spread
+the burden out a bit. Share the
+load. And then when you can, put in site flow entries. A lot of
+this is going to occur because
+you've got reactive mode where the switch is going to go ahead
+for every single packet it sees,
+it's going to send up. It doesn't have anything to go with
+at the beginning. It's going to
+send every single packet. That's a lot of combinations-there are
+millions--up to the controller.
+If you have some flip site floor entries that you can use, use
+them so it doesn't necessarily
+have to depend on the controller as much. It doesn't need to
+depend on it as much as
+possible, so minimize that. And then, of course, to protect
+against modification. This is
+about DSDN applications. Traffic counters are available. You
+don't have to infer the network.
+You can actually measure that out. You can see it as it's
+currently operating. The
+application space within the controller is really supposed to
+be about putting in these code
+sets, modules to put on these boxes that are supposed to do a
+lot of that work. The APIs are
+kind of secondary to external integration. So as you go on
+here, you can throw on secondary
+applications that are all about security. Right? Reading in the
+traffic counters, measuring
+them, looking for [indiscernible], and then
+responding. So have those
+applications in there to kind of check what's going on. Now,
+that's kind of after things are
+in operation. You can do things on the front side too with
+verification with header space
+analysis where you turn the switches and the routers into a
+mathematical model, and then you
+basically punch all your packets through that, and you can
+actually see how the network is
+going to operate beforehand. So the verification is the front
+side where we can verify how a
+policy will function, and then you have something on the back
+side with the secondary
+applications to monitor things and respond. So can get coverage
+there and protect against people
+like me poking around. Now how prevalent is this going to be?
+We see issues. We see these
+weaknesses, weaknesses that are easily exploitable. But if
+they're just a couple people,
+you know, well we have a couple people that may have it, but
+what about the rest of us? Well,
+Garter says, the academics say this is going to be one of the
+10 critical IT trends for the
+next five years. So they are looking into their crystal ball
+and seeing this having a really
+big impact on the enterprises out there. Major networking
+vendors have products planned
+for SDN, and they're betting money on this, and people are
+already moving on it. 60 percent
+felt that SDN would be part of their network within five years.
+43 percent already have plans to
+put it in production. It's actually here now. Data centers
+and cloud space, investments,
+VMware. This is considered the killer [indiscernible]. And the
+expectation is actually higher,
+80 percent. And of course we're seeing it in the LAN with
+Caltech and [indiscernible] and
+[indiscernible] as well, already here. Google has it on one of
+their major backbones, and NTT
+and AT&T, everyone is rushing forward into this. So this is
+something that we're all going
+to have to keep an eye on. This is something we're all going to
+have to worry about it. It's not
+just isolated to these controllers and these unique
+situations. It's all of us.
+We're going to have to address this. Now so mainly we move
+forward on this. We are going to
+move forward on this. How could it go right? What are the things
+we expect to see out of this
+besides the problems that it solves? Vendor independence,
+ultimately our costs. A lot of
+the limitations are currently experienced in network space
+will go away. Network is the
+mask to the application and the business needs and not the other
+way around. We don't have to
+make our network fit the equipment. We can make the
+equipment fit what we want to do
+on our network and the faster evolution of that network. We
+can actually run production
+scale simulations side by side, and we do lots of
+experimentation. It allows us to
+do things like exchange network aspects, instantiate network
+function virtualization, where
+we actually have middle boxes. We have load bouncers. We have
+firewalls, and we can actually
+move those things around wherever they need to be as
+traffic conditions change and
+the situation changes. And you get dynamic and truly active
+defenses. You can program that
+network and detect abnormalities, respond to those
+abnormalities, and start
+defending itself. A lot of amazing things. But a lot of bad
+things can also happen too.
+Denial of service. It's like a dog pile. All the nodes on the
+network gang up on one other
+network. You think bots are bad? Wait until you harness an entire
+network and you can slam
+somebody else. So that's bad. The flip side of that,
+selectively dropping traffic. A
+message disappears, an important message. A transaction never
+arrives. Man in the middle.
+Let's say you want to be a little more creative, a little
+more ninja, man in the middle an
+entire network. Local subnet host. Change a transaction
+route. Change maybe an email a
+little bit, piss some people off, start manipulating events.
+It gets bad. Networks within
+networks. You get uber admins moving chess pieces behind the
+scenes. This could go bad if
+we're not keeping our eye on the ball. So we need to make a
+difference. This is what this is
+about. Traditional means of securing controllers still
+applies. Now, security has been
+part of the discussion. I said it needs to be, but it needs to
+be done in a different way.
+Until now, it's been about you're all very excited about
+how it can help security, but
+people aren't really looking at how secure SDN is. And all this
+is being done typically by
+outsiders. People are doing it and are doing it in a
+traditional approach, a very 2D
+approach, very Isolated. The code guys, the application guys
+are looking at it separately
+from the network guys. They need to converge there because
+controllers, really, they need a
+security reference. They need a security reference and an audit
+capability. They talk about
+these as network operating systems, so start treating it
+like one. Make sure that
+operations are authorized. Make that once authorized operations
+occur that someone can figure
+out who did it, what they did, and when. All right. Now, some
+final thoughts. We're wrapping
+up here. SDN has the potential to turn the entire internet into
+a cloud. The benefit would be
+orders of magnitude above what we see now, but there's a hole
+in the middle that could be
+filled by the likes of the NSA, nation-states like China. We
+pick on China, but they're all
+doing it--United States, Russia, the Euro block, governments are
+getting in the middle. We don't
+want them there. All right. Let's not let that happen, and
+that starts here by telling you
+guys about this. So we start poking holes. We start holding
+vendors to account, these
+developers. The toolkit as we wrap up here. It's available at
+SDN-toolkit@sourceforge.net. I'm
+a little old school, the hash there. Make sure it's genuine.
+Available here. And some links,
+let me get that mouse back. To provide some context to today's
+talk, get more information, I
+highly recommend these, a course taught here by Nick Finster,
+Professor Finster, SDN nuts and
+bolts from beginning to end, learning about SDN. So that's
+it. Thanks for coming.
+[Applause].

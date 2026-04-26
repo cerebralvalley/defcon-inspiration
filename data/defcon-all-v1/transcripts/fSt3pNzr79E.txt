@@ -1,0 +1,702 @@
+>> Morning, Alex Chapman, this
+is Paul Stone and this is our talk: Toxic Proxies [cough] -
+Bypassing HTTPS and VPNs to Pwn Your Online Identity. [cough] So
+first off, thank for you coming here on a Sunday afternoon. Uh,
+really good to see so many people turning out for this,
+so... uh, [thump] thank you very much and we'll get started. [mic
+contact] So, okay, first we're gonna start with a demo, in the
+video streaming this works. [cough] So, this is what we're,
+uh, this is an example of this thing we're gonna be talking to,
+about today. And this is actually being, about being able
+to extract information from HTTPS streams on a local
+network, uhm, you'll see some of the information there so,
+instead of just a boring slide it's really just a quick demo of
+the sort of thing that we're gonna be showing you.
+[background noise] So as I said my name's Alex and my colleague
+Paul Stone. We both work for Context Information Security in
+the UK, uh, I'm on.. Ooops! On twitter and [vibration noise]
+PPJ Stone standing next to me. Uhm, I'll explain that demo in a
+little bit more detail as we go through. [thumping] >> So, this
+is our talk, the exciting introduction which you just saw,
+I hope everyone else found it as exciting as I did. [laughter]
+Uhm, we're gonna start with some history. This is the 1 0 1
+track, [cough] we're gonna talk a little bit about the problems
+faced, what's been going on, uh, how we got to where we are
+today. [laughter] And, how are, the attack that we're gonna
+describe kinda fits into all of that. We're going to explain the
+attack, we're gonna show how you can, uh, sniff data from a HTTPS
+streams, we're gonna steal that data, we're gonna actually do
+something with it and then we're gonna show [cough] how it can
+ultimately be used to kindof steal your, your online
+accounts. Uh, we're then gonna talk a little bit about VPNs and
+how we're against this or not against this. Uh, and then put
+in place some real mitigations about what we should be doing
+on, uh, on these systems [background noise] to, to help
+make them more secure. And then we'll talk, uh, a little bit
+about the, the fixes that have been put in place by various
+fenders around these issues. [pause] So... [sigh] Where are
+we starting? This is a, uhm, this is a kind of attack that
+we're looking at from a rogue access point perspective. So
+rogue access points [cough] have reasonably, uh, privileged
+access to a network anyway. You, you control the DNS, DHCP and
+all the rest of it so you can, you already in a system where
+you can kinda monitor and insert data. Uh, it's... so, good? h,
+so, back in the 1993, no, no encryption, right? So, we're,
+we're here on a Mosaic browser, browsing away, everyone can see
+everything that's going on. And then somebody came and thought
+"Well, what if I want to do something sensitive over this?"
+[cough] So... [typing] we headed off to encryption. We're talking
+SSL here, so Netscape, uhm, to shift with SSL in 1995,
+[background noise] so again, a good 20 years ago. Uhm, users
+were somewhat safe from passive sniffing attacks, we obviously
+know nowadays that the SSL back then was awful [laughter] and
+terribly terribly broken, but, at the time it was what we
+needed it to be. [coughing] But, SSL wasn't perfect so a lot of
+websites can't seem to, over both HTTPS and, uh, sorry and
+HTTP and HTTPS and, uhm, people connect of HTTP first - cause
+who, who writes in the "S" when putting their URLs? Who even
+puts in the screener? [laughter] Uh, and evil, uh, men and
+invented such to prevent users from reaching HTS, HTTPS sites
+and having to fall back to the unencrypted sites. [thump]
+[cough] So, it wasn't great and Moxie Marlinspike, uh,
+demonstrated this in 2009 [microphone noise] with SSL
+strip, great, for, for the time... For man meddling, uhm,
+these connections damn better than the multiple HTTP and these
+was the sort of padlock in the corner of the screen wasn't
+there.[laughing] Uh, and again a lot of users wouldn't be
+checking that anyway. [thump] Uhm, script sample of... that's
+the shell script for those, uh, who haven't seen it before -
+browse to an HTTP site, uh, what it's supposed to do is redirect
+to the HTTPS through to the redirect, uhm, that's shell
+script in the middle of that. We'll actually stop the redirect
+from happening. [thump] So, if shell script broke HT, uh, HTTPS
+connections by simply ignoring them and straighten them out
+with the string. Uh, and browse members obviously had to do
+something about this to make those connections, and, uh, uh
+to match various websites with more secure. So this is where we
+introduced, uh, introduced HTTP strip transport security. Uhm
+and this is somewhere around 2010, so again, a good 6 years
+ago. That, that picks up by a lot of major websites, uh, big
+news article came out; Google dot com going full, going HTTPS,
+uhm, so it's taking a while but it, but it is getting there.
+Uhm, and, HTTPS essentially prevents browsers from
+requesting the plain text HTTP resource in the first place. So,
+we don't have the option of doing the SSL strip. That's
+[thump]... kind of where we are in the present day. HTTPS is
+doing a pretty good job. So nearly all traffic to sites we
+use on a daily basis, uhm, is encrypted with HT, HTTPS and
+HSTS protected so theoretically we're now, we're in a coffee
+shop, in the pub, on our laptops we should be fine. Right?
+[laughter] We need a new style of attacks and this is something
+we came across about 6 months ago now and show the attack
+too... show you how it can be used and, uh, the work that
+we've been able to do with it. So hand over to Paul to, uh,
+share some information. >> Okay! Uh, hello. So, uhm, Alex has
+given you a bit of history, uhm, and I'm gonna give you a little,
+a little bit more history. So bear with us until we get to the
+fun, new stuff. Uhm, so just to introduce PAC files [coughing]
+for people who haven't heard about them before. Uhm, so, a,
+uh, PAC files exist because, uh, large companies have very
+complex internal networks; lots of different proxies, and they
+need some way to be able to figure out which proxy to
+connect to depending on the site you, you want to visit. Uhm, so
+a PAC file is simply a small bit of Javascript, uhm, that the
+browser ask the javascript "Look, I wanna visit this URL"
+and the javascript figures out which proxy to visit, uh, which
+proxy to use and then returns a proxy as a string. [sniff]
+[background noise] Uhm, and this was invented in 1996, uh, by, by
+Netscape so it's, it's their fault. [laughter] Uhm, so, the,
+the, the other piece of the puzzle, uh, that kinda
+compliments PAC is WPAD, so WPAD is, uhm, essentially, uhm, if
+your browser doesn't have a PAC file, uh, then WPAD tells it
+which PAC file to use or where to go and get the PAC file. Uh,
+so, uh, so, yea, WPAD was, uh, invented in 1999 and Microsoft's
+name is on this, uhm, uh, IOT, IOTWF draft so it's kinda their
+fault... [laughter] Uhm, so there's a few way to do WPAD,
+you've had, you can do it via HTTP, uhm, you can kind of, uh,
+uh, the gateway can push is to the or the browser, uh, [cough]
+after it fetches and IP. Uhm, and they're various other things
+as well so , uh, DNS, uhm, lookups with, uh, will lose the,
+uh, uh, DN suffix and look the like WPAD dot internal dot
+company or whatever. Uh, and there's also, uhm, NETBIOS,
+LLMNR and all of that as well. So there are lots of way that
+WPAD can work. [cough] So the WPAD attacks are very well
+known, uhm, they're, uh, a whole bunch of tools that will make it
+very simple to inject, [cough] uh, or spoof WPAD responses,
+[cough] uhm, and if you can do that you can then target, uh,
+one machine or a whole bunch of machines and hijack all that
+traffic and root, root their traffic, uh, their web traffic
+through their malicious proxy. So that means that all
+plaintext, uh, non-HTTPS traffic can be modified or viewed by the
+attacker. Uhm, so, this is a bit, a bit, we quite enjoy
+reading the WPADs it can be set minimally, it can be set at the
+WPAD protocol does not create any new executing weaknesses -
+kind of famous last words there. [sniff] Uhm, did you want to...?
+>> Oh, yea, yes. [background noise] >> So, yea, just really
+quick, uhm, overview of how this thing get, uh, pushed out, so, a
+laptop or network ask router for, uh, HTTPS options through
+to the, can correspond to the option 2 5 2, uhm, which is the
+URL to, uh, a PAC file which the system then go download and use
+as it's PAC file chooses the proxies to get to the internet.
+Alternatively the, uh, if , if it doesn't receive, a, a PAC
+file through that it'll do a DNS lookup for WPAD dot search
+domain - so the search domain that was, uhm, either
+preconfigured or was pushed out of the HSTS. If the router, uh,
+responds to that it can then respond with the IP of the mal,
+[cough] of the host which can serve, uhm, a PAC file and in
+this case will also be serving malicious PAC files. Uhm, the
+last method is from uh a network with a malicious activist on the
+network not actually on the router. So if the system still
+haven't got a, uhm, a PAC file it'll send out a Link Local
+Multicast Name Resolution request for WPAD. So if you ever
+washed up [cough] on a Windows network you'll see loads of
+request for things like WPAD, uhm, just being broadcast to
+other systems on network. If any other system on that network
+responds that system, sorry, the the user's system will use that
+response, uhm, uh, to go and grab the, uh, PAC file from from
+the IP address given there. I think that got to... [mumbling]
+So, uhm, Windows has had WPAD turned on by default, uhm, and
+this is even in Home edition so this is a very, kind of,
+corporate thing. There's no reason to have this on your home
+network but it's still in Windows 10 enabled by default.
+[coughing] Uhm, local network attackers can, can exploit this
+and there are tools that Paul shared a link to earlier. But,
+fortunately again, with these HTTP, HTTPS and HSTS traffic
+there's theoretically at this point nothing the attacker could
+be able to do our connections to, uh, kind of [cough] get our
+data. And that's what we're gonna, gonna show you next. So,
+throughout this research, uhm, [cough] we also follow the trend
+of naming our vulnerabilities and we, we've got a few, kind of
+projected titles and this was one of my favourites: "breaking
+WPAD". Uhm, Paul actually did the, uhm, did the posters and I
+think probably spent more time on that than his actual talk...
+[laughter] But, uhm.. [laughter] Hang back... [background noise]
+>> Okay, uh, a little bit theory before we get to the really fun
+stuff. Uhm, so what does a PAC attack look like? So a typical
+PAC script might look like this... So the idea is that
+there's three different proxies and depending on, uhm, uh, what
+your, the host name ends in or routes, uh, the browser to one
+of the proxies. So every PAC script has to define this
+function, this exact name called "find proxy for URL" and it
+takes two parameters, uh, the full URL and the host name. So
+most, uh, most PAC scripts will look at a host and make a
+decision based on, on a suffix and say use this, use this proxy
+or this proxy. Very simple. [pause] So, like I said, there's
+this one function called "find proxy for URL" and, and
+according to the spec it takes full URL and the host name as
+parameters and returns the string. And in this case it
+returns direct which means don't use any proxy. [cough] Uhm,
+so... [pause] It's the full URL that gets passed into this, uh,
+PAC scripts which is potentially a malicious PAC script. Can
+anyone see the problem yet? So the full HTTPS URL is now known
+by this attack- uh attacker’s piece of code and it’s
+potentially malic- malicious. h So what can we do with that and
+why is that kind of bad? So java scripts in the PAC file isn’t
+like java script in the website you don’t have the full range of
+functions to uh put stuff on the screen and talk to the dom and
+all that kind of stuff. These are the functions uh this is
+essentially the API uh that PAC scripts have access to and the
+two that really stand out to us is DNSresolve and isresolvable
+so DNS resolve as you might expect takes the host name and
+returns an API address and isresolvable takes a host name
+and returns true or false so these are interesting because
+they let the PAC scripts talk to the outside world so we have
+sensitive data going in and we now have a way to communicate
+with the outside world. So putting it altogether here is
+our very simple malicious PAC script uh and what it does is it
+takes the uh takes the URL checks if it’s uh HTTPS and
+therefor potentially sensitive um it then uh uh appends dot
+leak onto the end so in this case dot leak is uh a domain
+that’s controlled by the attacker and then it replaces
+all the special characters with this uh dot. Uh so uh for
+example we have a sensitive URL there with a with a nice
+authtoken in and this the scripts will uh convert it into
+the string and then um uh do a DNS look up and the attacker
+receives this uh sensitive token but to the um back to their DNS
+server so that’s the attack. Uh and of course um if you can’t
+fit it in a tweet then it’s not a real vulnerability and it fits
+uh very nicely into a tweet there. Uh so going back to the
+uh variable attack the malicious gateway so um as we said before
+uh malicious gateway can uh can incept any plain text HTTP
+traffic easy but if we’re talking HTTPs then uh this
+hacker can’t incept that HTTPS traffic. But if we now are
+leaking every single HTTPS url uh so the uh malicious gateway
+uh tells your laptop to use a malicious PAC script and now
+it’s leaking at all the HTTPS URLs um and then the https
+traffic is going to the server so you can sniff HTTPs URLs and
+modify the plain sec- plain text HTTPs traffic. So just to kind
+of uh sum this up in a nutshell. Um PAC files allow attacker
+controlled java script to see every single HTTPS URL before it
+gets requested by the browser the PAC file can then leak that
+data to an attacker by DNS so the whole point of HTTPS is to
+protect uh sensitive data on untrusted networks but with a
+WPAD and Pac uh an attacker essentially can do an end-run
+around HTTPs. Uh this is the second title we have but this is
+my favorite one APACalypse now uh I’m quite pleased with that
+one. Okay so demo time. >>Right you might have to bare with us
+on this we uh we didn’t realize we wouldn’t have any ethernet
+connection up here so we’re acutally trying to do these
+demos live through uh the wifi on my phone, we’ll see if it
+works >>If it works there will be a miracle okay so the set up
+we have is on the right we have a a VM which is the the victim
+and on the left we have our, uh, attacker with a, a fancy, uh,
+control panel. So I'm gonna open up Chrome. So at this point the
+malicious gateway has already sent the message PAC file and
+you can see at the bottom here we're already getting tons of
+URLs being leaked, uh, by, by Chrome. So, uh, I am now going
+to search for something. So, uh, everything you do on Google goes
+to direct GPS as you can see, as I was, as I was type, as I was
+searching, as I was typing it's being leaked to the attacker and
+appearing on their side. Uhm, and now I can browse to
+Wikipedia which is HTTPS, uhm, I can just browse around
+Wikipedia. [coughing] And, uh,the, tire's load, you get so
+much, so much traffic here at the bottom with all the URLs
+being leaked, uh, and at the top they're kind of pulling out the
+interesting stuff. Not the pages that you are actually visiting.
+[coughing] That's that... I can search for something else.
+[typing noise] So again, DefCon site is HTTPS, uhm, yea. So...
+there we go, yea. So that's what we can do, literally just be
+leaking, a, leaking everything. [applause] And... Thank you!
+[applause] Uhm, so, yeah, most websites these days are HTTPS
+and, uh, we can see that stuff now with this attack which is
+quite nice. Right, I'mmm now gonna hand over toooo, uh, no!
+Not yet. >> You can keep going. [chuckle] >> Okay, so,
+passively, uh, seeing this data as the user browses is quite
+nice, but, were impatient. As an attacker they may be connected
+to our malicious hotspot only for a short amount of time. So,
+the challenge we set ourselves was to actively steal as much
+data as possible. Using only URLs. Now remember, this attack
+doesn't let us completely vacate the GPS, we can't see
+everything, uhm, [coughing] we can only see the URLs including
+the path networking string. We don't get any, uh, post data, we
+don't get any cookies, any headers, we don't get the
+responses, uh, uh, response bodies. Uhm, so we have this,
+uh, kind of superpower but it's a really limited super power.
+Uhm, but, yea... limitation is good, let's just be creative.
+Uh, and, one of the key things is that because there is not a
+100 percent HTTPS yet, uh, the malicious gateway can still
+inject stuff into, into the HTTP pages. So we can, we can get the
+user to visit our malicious web page and then start messing with
+our browser. Uh, for example, captive portal pages which I'm
+sure everyone has encountered, uhm, since they've been in
+Vegas. [audience noise] Okay, so, we came up with a few basic
+techniques, uhm, that let use do pretty much everything that
+you've seen in the demo so far and in the demos that we're
+gonna show you. So one of the simplest ones that works really
+really well is taking advantages through to vdirect. So, uhm, the
+idea is that we make the user's browser visit a known URL, uhm,
+that's not sensitive and that URL redirects to sensitive URL
+with sensitive information that we can then steal. So, for
+example, if you are logged into Google and you go to this URL,
+uh, so plus dot Google dot com slash mesos posts. If you're
+logged in it redirects to a u, a, a URL with your user ID in
+it. So, now we know who you are on Google, uh, the same goes for
+Reddit - we can get your Reddit username if you're logged in
+there.. And, uh, very simple way to do this, uhm, is Literally
+just to, uh, put let's say, an image tag, uh, on a page, and
+uh, won't be visible and it's not even an image but the
+browser doesn't care or go and request that URL and then we can
+leak that via, uh, via DNS. So, for example, uhm, that would be
+sent to the attacker would get the username for Facebook. [deep
+breath] So that's the first technique. The second technique,
+uh, we're gonna use, uhm, which you'll see in a demo is, uh,
+soon. is dealing with kind of, one time auth tokens, so perhaps
+we, you know, do this, uh, redirect, [background noise] uh,
+so the user's browser redirects to a URL we can leak the token
+but the problem is the attacker wants to use that token
+[coughing] and if the user's browser get that first then that
+token's no good to us anymore, if it's a one time token. So the
+attacker wants to use it, they want to stop the us, the victim
+browser from requesting it. So the PAC scripts, [cough] uhm, as
+well as just leaking the data we can say actually if the URL
+matches this, uh, uh, exact pattern, uhm, then return a
+proxy that doesn't exist the user's browser won't be able to,
+uhm, resolve the proxy that URL won't get fetched but we can
+still leak it to the attacker to use that data. [pause] Now the
+third trick we came up with, uhm, which was, was which quite
+fun, is um essentially what we want to do is get, uh, load a
+page that the user is logged into and that page will have
+loads of, uh, stuff on it we want to get. And it will be
+loading lots of URLs that we want to, we want to leak. But we
+don't want the user to know that this is happening, uhm, so...
+Uh, in the past things like iframe should be really good for
+this we could quote a, a tiny invisible iframe, load the URL
+in there and we'd get all this, this stuff loaded. Uhm, but
+iframes tend not to work these days because most sites use the
+X-frame-options which says "Don't allow this site to be
+framed" so we came across, uh, something called "pre-render".
+So pre-render is something that Chrome, uh, uhm, invented first,
+uh, and is now Edge as well. Uhm and essentially what it does,
+uh, assist HTML type here and what it says is "Uh, completely
+load this page in a kinda hidden, in a hidden window, uhm,
+offscreen. Uhm, load it so it's ready so when the user actually
+clicks that link it'll all be pre-rendered and ready to go and
+it'll appear really quickly." So, uhm, like Google uses this,
+uses this, so the first often the first hit on a Google search
+results will be pre-rendered so when you click it it looks like
+it just magically appears really quickly. Uhm, so what this, what
+this lets us do is, uh, load a known URL, uhm, that fetches
+other sensitive stuff. So for example, if I load, uhm, your
+Facebook photo album or your Google photos page, uhm, it'll
+go and request, uhm, all the thumbnails of all your photos,
+uhm... Now these, uh, these URLs, uhm, are always on CDMs so
+they're over HTTPS but they're not authenticated at all so they
+have these long, random-looking URLs which are impossible to
+guess. Uhm, but if we tear that URL and, uhm, load it in another
+browser, uhm, you don't even need cookies, you don't need to
+be logged in... you can see, you can, you can get that data. Uhm,
+so pre-render's good for that and you will see, uh, some demos
+of that in a sec. Right, over to you... >> Good, so let's see if
+we can, uh, we can, uh, see this in practice. So, find RDM again,
+so in this case we have the, uhm, same as before - the user's
+there but, we've, uh, we've managed to force them to a, a
+webpage we control and are able to inject content into. We've
+chosen a [coughing] particularly complicated, secure, uh, captive
+portal so we'll be on there for a little while. On the
+attacker's side we can, uhm, we can start the attack so
+hopefully if I click this button here we'll start to see, uh,
+information coming back from that user's browser session so
+we've already been able to grab their, uhm, Google ID, Facebook
+ID and name from Google. >> Hope it's working... >> This is where
+we cross our fingers and hope the next bit works. [coughing]
+>> Yup. Yea... come'on. You can do it! >> Fine! So it looks
+like, uhm, pulling the google images hasn't worked this time.
+>> Show the video... >> Uhm, I might rerun it. [chuckle] But we
+can also, you can also get their Twitter ID, uh, LinkedIn ID and
+their, uh, employment from LinkedIn, GitHub ID. This, I
+mean this, I mean this is just a really small subset of, of
+services we were querying here. Uhm, but, there's a lot lot more
+we can do with that. I'll just try rerunning it - see if we,
+see if we can get anything else or not. But essentially that
+allows any [cough] captive portal to completely denom,
+deanonymize the user. Here we go! The images as well...
+Deanonymize the user that's connected, connected to their
+gateway and get all sorts of what we would call, I guess,
+public but sensitive information about that user. Uh, and you can
+see we can also get onto these images. Uh... [background noise]
+[pause] Oops, we can achieve a full-sized image just cause,
+cause it's served on a, from a CVN, they're all there. And we
+can, we just grab those files, and, and, kind of get all that
+offline data from them. So... number two! [applause] We, we've
+done well so far! [applause] So, just, just to summarise that...
+so, uhm, if you force the user to, uh, request a webpage or URL
+we can get identifying information from it, we can then
+use that, uh, those IDs and usernames to kind of get further
+information. So, further public information but information that
+we wouldn't otherwise [thump] have. So in order to do this we
+need to create a bit of a C2 infrastructure between the
+user's browser, the PAC javascript that's running on
+their system, uhm, the DNS server we're using for leaking
+information and the, uh, malicious... and the [cough] web
+server that we're using to kind of control all of this. So the
+first thing you have to consider is DNS, so leaking data over
+DNS. Uhm, DNS searching has a kind of limited character search
+so we can't just throw in any, any data we want. [cough] It's
+gotta be within the, kind of, ASIK, 0 to 9, underscore and
+hyphen range, I believe, I don't see periods. Uhm, you can have a
+maximum of 63 characters per sub-domain and on a DNS lookup,
+and a max, a total maximum of 253 characters. And, that's
+just, that's just through the way the DNS is, uhm, has been,
+has been setup. So, what we end up doing was base 36 encoding
+all the data, not the most, the most efficient but very easy to
+do. Uh, split long data into multiple host names, so
+multiple, multiple subdomains and host names. And then forming
+those lookups or more than one lookup, uhm, for each leaked URL
+if the, uhm, resulting DNS query was more the 253 characters. Uh,
+and then this is decoded, and uhm, reassembled on the
+attacker's DNS server. [coughing] Uhm, so that's,
+that's how we get the information out, uhm, we,
+implemented an API interface between the attack, sorry,
+between the victim's web browser and the PAC script running on
+their system. So,uh, the PAC script, uh, decodes and
+javascript evals any domains that end in the "dot etld". Uhm,
+it will encode the eval results of "dot r" tld host names and
+send that back to the server and leak all URLs by default. We
+added a small number of functions just, [cough] just to
+help out what we were doing here. So, adblock URL so tell
+the PAC script to block all requests of a specific rejects
+URL as a leak URL. So, if it the URL, if the URL matches the
+rechecks there it will leak it to our server and the clear
+everything just incase we need to clear everything down and
+return, the, the PAC to a known good state. And this is kinda
+how all of that looks, so the top two, uhm, portions on the
+user's system so the injected javascript running in their
+browser is communication to the PAC script running on their
+system by DNS lookups, uh, the, the PAC file leaks encoded data
+to our DNS server and the DNS server passes that data back.
+So, our controlled web server and we can serve, uhm, commands
+to the, to the browser from our controlled web server. So it's a
+bit of a, bit of a cycle going on there but that's kinda the
+overview of, of how everything works. [thump] So kind of
+getting the information about who somebody is is good and we,
+we were chuffed with that. We thought "Right, we're really on
+to something!" But we can do better. [laughing] And so we
+kinda... doing this research over a period of months and
+kinda just, these things, ideas are coming up so as, as we're
+going through. And one of the things we were quite interested
+to look at is, is OAuth. So, uhm, OAuth for those who don't
+know, is a, a way of allowing a third party to authenticate
+users to your website. So there's some, some really OAth
+writers, Facebook seems to be one of the biggest, uh, Twitter,
+LinkedIn, Google, Yahoo, Microsoft, and these services
+allow websites to hand off the authentication to these
+essential authorities. So, you, you would all have seen it
+"Sign-in to this site... Sign-in with Facebook, sign-in with
+Google". Uh, you just click those buttons, if you're logged
+into Facebook or Google automatically you're logged into
+that site without having to type in your username and password.
+This is, this is great from a, from a usability perspective you
+don't need to remember another set of credentials - it just all
+works. Theoretically anyway... Uhm, OAuth has a number of ways
+of passing tickets and, and tokens between the, the, I guess
+the client application and the central OAuth server. Uh, but
+one of the more, uhm, common implementations i, uh, using URL
+parameters via, through 3 0 2 redirect over HTTPS. So, we
+thought can we force this, uh, users to attempt to OAuth
+authenticator, large range of services intercept the, uhm,
+[cough] the final authentication token and replay that ourselves.
+And that's something we're also gonna attempt to demonstrate.
+So, again, users still here, trying to fill out their, uhm,
+[coughing] Uhm, their form password overtake. They're gonna
+be there awhile, uhm, so we, we kicked off the next attack and
+you can see this one's particularly quick. It's a
+roamer using 3 0 2 redirect, we're not trying to do the
+pre-render pages which we have to do in serial, so, only one at
+a time. This, this is going quick - lighting fast! [cough]
+Uhm, from the, from the attacker's console we have now
+got all of these potential, uhm, OAuth sessions, so if I for
+example open coded and then an incognito window,
+theoretically... good, that bit worked. Yip! Brilliant! I'm now,
+now logged into, to codepen as a user with that, uhm, bin, bin on
+there... [applause] Keep going, we've got loads of other
+services, so for example developed on Mozilla, got that
+account, someone's interested, dunno if anyone's used ForShared
+before but, it's a, uhm, cloud storage platform so we can grab
+that and then start grabbing their files from, from that
+platform. And we've got full control of these accounts at
+this point. So, uhm, we're just logged in as if we were those
+users. Those are going well now... >> Yea. >> Alright! S...
+So back to the slides. So this is, this could be done
+passively, we could wait for the user to log in but, as Paul
+mentioned, [cough] we're kind of impatient. So we can force this
+and you. if you're using the 3 0 2 lookups you can actually
+force, uhm, a large number of, uh, authentication attempts
+against a large number of services very, very quickly.
+[background noise] Uhm, the user won't say anything necessarily
+when they, uhm, go to log back into that service. Uh, they, in
+our experience they haven't, they won't see "Failed login
+attempt" to this or anything else. So, it, it's pretty blind
+from the user's side of things. And it does allow attackers to
+gain full control over the victim's account. [pause] >>
+Okay, so, uh, we've shown you a few demos, which we were quite
+pleased with but we wanna go even further, so, uhm, we wanna,
+so we've to learn some of the, uh, kind of, uh, accounts the
+Facebooks doesn't care about, I mean, they tend to use OAuth for
+things that you just can't be bothered to create an account.
+[cough] But we wanna go after the, uh, the good stuff. So when
+they attempt to get into your Google account now. So, uh, the
+way that, uhm, Google works is quite interesting and they've
+got lots of different domains. And, you can't share cookies
+between top-level domains. So, what happens is when you log
+into Google, uh, most of your cookies, uh, go up to the main
+Google dot com domain and, uh, when you go to another website,
+like YouTube or Blogger or one of the regional Google search
+sites, uh, then, uh, there will be a kind of first party SSO,
+so, uh, we use, uh, the say Google dot co UK will ask the
+main site, uh, for an auth token and it will use a 3 0 2, 3 0 2
+redirect so we can steal that. So, like this, uhm, so we'd go
+"accounts dot Google dot com; please log me into Google dot co
+dot UK" and it'll say [cough] "Okay, you, you're logged in,
+that's fine; here's a redirect, here's auth token". And it will
+go and set the redirect on the, the local site. [typing noise]
+[cough] So, uhm, and then you're logged into Google dot, Google
+co UK. [typing] Kay, and... uh, ah gee! Uh, the second thing,
+the second demo we're gonna see, uh, is, uh, stealing stuff from
+Google Drive. So, again, when you download stuff from Google
+Drive there's a few different ways it worked depending on how
+you got the file, uhm, so we're looking in this case at files
+which have been emailed to you and that you, uhm, saved to your
+Google Drive. Uh, so, uh.... What happens when you, uh,
+clicked download the document? Uh, as you start off from "Drive
+dot Google dot com" uhm, and then it redirects to a redirect
+to "Google user content dot com" which is, uhm, uh,
+unauthenticated but uses uses and auth token. Uhm, and it
+kinda does this, uh, kind of redirect back and forth between
+the two different sites. Uh, eventually we can get the
+[cough] auth token essentially, uhm, and download the documents.
+So, I'm gonna show you, uh, that domain... [pause] Uhm, I should
+point out that none of these are vulnerabilities in, like, google
+or any of those. So of all sites, this is just, this is
+just because, uh, we can, uh, steal the HTTPS URLs. [deep
+breath] Okay, so we will click this button and we'll see...
+there we go! So, uhm, we can see the URL here has got the
+[cough], uh, uh, the auth token in it and all I'm gonna do is
+literally just open that URL in a private browsing window... So,
+there we go, I'm now logged in to Google dot co dot UK. So,
+like I said, this isn't your main Google account, uhm, we
+haven't got, like, the crown jewels but we can still do quite
+a lot of stuff. So if I search for, like, uhm, my email... I
+can't type... Uhm, so we get a summary of what's in your gmail
+inbox, I can't click on those but, you know, I can still see,
+yea I see a summary, I can view my photos... uh, I can do my
+home address, there we go. [laughter] Uh, I can do my
+location... Uhm, my location isn't working... Okay! Uh, but,
+another thing we can do, if you, if you happen to have, uhm.
+Location history turned on on your phone, uhm, then Google is
+basically tracking you everywhere you go. And...
+because, uhm, google maps is, kind of, again, regional - it's
+not the main Google dot com site, you can get your timeline.
+Come on! Please start working. So you can see everywhere we've
+been in Vegas. All the best places we've been... Uhm, and
+so, uh, where did we go today, ah, it's being a bit slow but
+anyway. Uh, we thought that was quite nice. [applause] Thank
+you. [applause] Yea, right, we've gotta get on. Okay, so
+I'll hand it back to ... >> You want to do the Google drive demo
+quickly? >> Oh, Google drive, yes! Thank you, right. Uh...
+okay [mumbling] So Google drive, click the last button, and
+hopefully we some stuff popup. Here we go, so you can see all
+the URLs going through the bottom, uh, now the attacker's
+server is going to download those, uh, to the server and
+then we can load some of these things. [laughter] Did? How did
+you get... [chatter] Alright, uh, so yea, so you know, if
+you've added some passwords to your account, some pdf. Uh,
+that's someone else... [laughter] Uhm, that's some
+passwords there. Right... >> Great! [applause] So that last
+demo, that's, that was all Paul's work. Uh, he spent ages
+doing that and I thought well I can't let him have the best demo
+this talk. So, I spent a little while looking around and thought
+I'll try Facebook. There's got to be a way to get into
+somebody's Facebook account, right? And... there was! And up
+until about three days ago this worked. [laughter] It was only
+when I went to record a video of showing stealing somebody's
+Facebook account using, uh, OAuth that it all stopped
+working and Facebook broke it. So, I don't have a demo of that
+I'm afraid, uhm, Facebook didn't break it in the sense that they
+fixed it they just broke it. [laughter] So, the attack was
+through the forgotten password functionality, there's an
+implicit authorization between Facebook and Microsoft's OAuth.
+So if you've signed up to Facebook with a Microsoft
+account you can hit, uhm, forgotten my password, type in
+your email address and as an option to just... reset it via
+the OAuth authentication to Microsoft. Uhm, but that now
+asks you to log back into your Facebook account so it's a reset
+your password, you have to log into your facebook account.
+Anyway, uhm, so I'll move on from that. So one of the kind of
+key points we thought we were gonna get from this is people
+turning around and saying "So what I use a VPN?". VPNs allow
+us to kind of travel safely over hostile networks and, uh, kind
+of should protect us in this and this area. Right? So, just to go
+back to our previous examples, so, let's just, uhm, gateway,
+uhm, with the user's connection over a VPN user channels through
+to that VPN ser, server and then all traffic gets out to the, to
+the, uh, intercept from that VPN server. So the attacker can't
+sniff HTTPS URLs or they can't intercept traffic. Using the PAC
+break, similar sort of thing, we tell, we tell where the pack
+file is, they've got their secure tunnel set up but the PAC
+is situated on the local network. There's no route from
+the VPN server to, uh, to where we're hosting the PAC file and
+then the user, because the user browser can't find the PAC file
+it'll just ignore it and disconnect directly off of the
+internet. [typing] So what if we moved the, uh, web server
+hosting the PAC file to the internet? [typing] So we, so we,
+tell the, uh, the client that the PAC file is on an internet
+accessible, uhm, server, they connect to that VPN server, they
+can now access that PAC file and connect to the internet. [thump]
+So, at this point we are sniffing the URLs as we were
+before but we can go one better than this. What are PAC files
+supposed to do? They're supposed to specify a proxy, so if we
+stick our proxy server on the internet as well... we've now
+got the user's traffic coming out of that VPN endpoint leaking
+the, uh, HTTPS URLs to our, to our DNS server proxying all of
+their HTTP traffic before it's even hit the intended, uhm, the
+intended target. This kinda blew my mind, this is really quite
+cool! [typing] [laughter] Yea... shouldn't work like that, should
+it? So, many VPN clients do not actually clear the proxy
+settings obtained via their WPAD. Uhm, we tried a few and
+I'll run through this, uhm, shortly. Uh, the, the traffic's
+travelled all the way from the VPN end-point through our proxy
+on the internet before it hits the, uhm, the intended
+destination. [thump] So, the effect itself on this...over VPN
+is effected. They are working on a fix but to this point it has
+not been released... Uhm, and this, so there's no way of
+mitigating this through an open VPN server configuration.
+"Private internet access" I dunno who uses private internet
+access in this room for, uh, for VPN configuration... Uh, we
+reported these issues to them as well as open VPN they have fixed
+it... so they are based, uh, uh, their client's based on open VPN
+but they've been implemented [cough] client's site fix to
+disable the really bad, to kinda, to kinda fix this. Uh,
+and, uh, kinda more corporate, uh, VPN solutions for example
+Sysco only connects, actually have an option to say push your
+own proxy or kind of completely wipe all proxies settings
+before, before coming this way. Uhm, the windows built in VPN
+clients aren't vulnerable to this, they actually looks like
+they've thought about this issue and have disabled the WPAD by
+default on these. L2TP and PPTP, uh, connections. Yea, oh, yea...
+[laughter] This picture is, uh, Paul's third work of art there,
+the rejected vulnerability title for, for this issue. Uh, so the
+next response "So what, I don't use Windows?". Uh, yea, actually
+other operating systems do use pattern PAC [cough] so... OSX
+does, iOS does, Android does. Okay, not by default, so it's
+not quite as bad as on Windows but you do need to be aware of
+it. [pause] [cough] Uhm, I think that's pretty much everything I
+covered. [thump] Yea... So, to mitigate this first thing you do
+on a Windows system is you turn off the WPAD. Seriously, turn
+off WPAD... [laughter] Because, there's no, there's no good
+reason to have it on. So if you still need to use PAC, which a
+lot of organizations will, will need to do. Turn off WPAD...
+[laughter] And configure an explicit URL for your PAS script
+so you can do this securely over HTTPS, uh, to an internal server
+or you can actually save it from a local file in Windows if you
+specify another registry key. So we'll just put it from the, the,
+uh, from the disk. And those are really the only two secure ways
+of, of doing, or distributing PAC files. Uh... to mitigate the
+VPN turn of WPAD! Only so many times you can say that...
+[laughter] Uhm, VPN is safe if WPAD is enabled, uh, if the VPN
+environment requires a proxy server to get out to the
+internet then it effectively mitigates this issue. We can't
+chain proxies using, using PAC as far as we're aware. Uhm, or
+if the VPN server pushes in explicit proxy configuration the
+this, this won't be an issue and that's certainly an option on
+enterprise-level VPN solutions. So, the good news! We reported
+this issue to, uh, vendors back in March, and, uhm, and a lot of
+them have fixed it so Apple came out pretty quick, uh, releasing
+fixes, uh, for OSX and iOS, uh, and Apple TV. Didn't know they
+still did that but... Uhm, Google Chrome patched, just a
+few weeks ago. In fact I was setting up these demos and I
+couldn't work out why they weren't working the other day,
+it's cause my, uh, my Chrome had automatically updated and I just
+had to downgrade it again. [laughter] Uhm, Android patched,
+patched in July, uh, FireFox - waiting on a patch for this
+issue but it's also not the default configuration if, in
+Firefox. So, it has to be explicitly enabled, uh, and
+Microsoft, uh, kind of a patch pending, again slightly
+different on Microsoft, certainly on, uhm, on Edge on
+Windows 10 it does some really funky caching stuff so, it's
+really not quite as big as, as big as it deal with that. How
+long we got? We'll run through it - two minutes. So we were
+actually not the first people to, to spot, to spot this issue,
+but we were the first to report it. So, there was a talk at
+Black Hat this year, literally last week on this exact same
+issue. Uh, the guys didn't report it to any vendors, for
+some reason. Uhm, the, then this, hope I'm pronouncing this
+right: Bas Venis, uhm, reported this issue to, to Google and
+FireFox literally two weeks after we did, uhm, so plenty of
+people looking in the same place. Uhm, there was a master's
+thesis, uhm, from may this year which outlined this issue, uh,
+there was a Russian blog post from June last year outlining
+this issue, and there was a StackOverflow question from May
+last year outlining this issue. Lots of people have found this,
+nobody reported it to the vendors... interesting.
+[background noise] Uhm, not sure if we got time for that slide...
+So, to summarize network based attackers can inject PAC scripts
+into browsers. [cough] PAC scripts can leak all HTTPS URLs
+via DNS to an attacker, at least on unpatched systems. We showed
+how to deanonymize users; steal OAuth tokens; access photos,
+personal data and documents. VPN wouldn't necessarily prevent you
+from a malicious proxy... No go turn of WPAD! [applause] >> Uhm,
+very quickly I just wanna say we're gonna be releasing all the
+code for all the demos, uhm, like, as soon as we get back
+home and have had some sleep, uhm, so, it'll be on GitHUb.
+Just watch our Twitter feeds and we'll let you know when we've
+released it. If you're interested.

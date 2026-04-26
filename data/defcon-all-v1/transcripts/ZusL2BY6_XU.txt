@@ -1,0 +1,393 @@
+Thanks everybody for coming out.
+Are you having a good time? [ APPLAUSE ] Awesome. I appreciate
+you coming out tonight. My name is Scott Erven and I focus on
+medical security. I have ran IT working directly for health care
+o organizations and some of you have that background, as well. I
+spent a couple years researching medical devices. We are going to
+recap it. >> I'm Mark Collao. Senior consultant and I do
+anything security and I have a pretty good interest in all kind
+of power shell stuff. I like botnets and I have been in
+botnets for the past five years and this is my first talk ever.
+>> Interesting. Come to DEF CON for the first time. Do it right!
+Yeah! Really quick, this is what we are going to cover. First
+off, why are we looking at medical devices and why does it
+matter and why are we passionate about it? And the hygiene
+vulnerability issues that we are seeing and then to recap on the
+health care organizations that are vulnerable to cyber-attack
+and the medical devices and second, how to get access to
+these devices. Mark is going to talk about the research that we
+have done and how the honeypot are vulnerable and how to
+mitigate the attack if you work in the medical industry. Who in
+here is relying on a medical device every day? Yeah, if you
+are a diabetic and that's a very personal impact for folks and
+many of you probably know a family member that is reliant on
+them and you have been to the hospital every day of your life
+and because of my background in health care, that's when I kind
+of got a passion about this. I started to see medical devices
+becoming connected and not from a patient privacy aspect, but
+looking at it from a patient safety aspect. I'm going to
+touch on some patient privacy stuff that I will call out
+independently. To set the stage, I often get challenged or asked
+the question of what type of person is going to attack these
+devices? I think that it is important to address that up
+front and a good story and Shawn, who is in the audience
+and he found the story. Two individuals were treated in
+Austria for gunshot wounds and they were hooked up to the
+self-controlled clicker. They didn't feel their pain
+management was under control. The nursing staff thought
+otherwise and they got online and found the credentials and
+suffered a heart attack. We are going to show that when we get
+into the honeypot aspect too. The public defenders and it is
+important for us to give you the information that is meaningful,
+so you can go and protect your organizations and secondly,
+alert affected parties. We have been working with the FDA.
+Anyone on B sites? We did an update on the security of
+medical devices. They have been great and last Friday, the FDA
+put an advisory out on some research that Billy on pumps and
+they alerted the organizations and pulled it off. This is
+precedent setting and the FDA usually doesn't do that until a
+fatality occurs. Big round of applause. The FDA has been
+really great to work with. What do we see high-level? Was it all
+of these crazy attacks? Absolutely not. Here's what we
+are looking at the big three that we like to call them. Those
+folks that are working on this security and issue. Knowing
+software vulnerabilities and the ability to update devices an
+linked-in systems and heavily used in health care and the S
+2000 boxes and those types of things that are not patched and
+then, data encryption and you may say this is one of these
+patient privacy things. As they become connected, we are using
+what is called medical device encryption and we are pushing
+the data for the critical systems down into the medical
+record. A lot of times, it doesn't use encryption. You can
+see the HTML file and alter it and replay it and ultimately
+alter what happens in the medical record. It ultimately
+becomes a safety issue and individuals that are presenting
+on you, for example. And the high probability of misdiagnosis
+and mistreatment and prescribing the wrong drugs and this is what
+Shawn and I presented and covered last year. And if you
+are not familiar, Joe runs this and it is an awesome tool to
+find things. I was sitting on the phone with Shawn and said,
+check this out, I did a search for anesthesia and got all of
+these returns and it is not a medical device, I know that. The
+only indication that it was a medical device is that it was
+running XP. We found that it has a misconfiguration on the system
+and leaking the intelligence on all of the hosts and gave us
+stuff that the a treasure-trove for an attacker. We saw this
+huge health care organization and it was not just medical
+devices, it was their entire network. Shawn and I said we
+want to look at medical devices, so we scraped that out. But it
+was everything. And services such as laboratory services and
+imaging services. Did we just find that one organization? No,
+we found hundreds. Once you start to change that to specific
+stuff like podiatry, pediatrics, hematology and you found all of
+these organizations. It ended up being XP 2 and Windows 7 and all
+of the doctor's names that are associated with them and the
+floor and this is associated with an anesthesia card. Very
+specific information. This is a recap (Indiscernible) that you
+can direct pivot from this direct system into it. This
+particular system had a cardiology institute. MRI and we
+are going to talk about this a little bit later. This is a good
+one that a lot of attackers are actually going into these
+systems that have pretty poor security on the backend to the
+application and you always get prompted for a user name and a
+password and on the backend, very rarely do they have system
+passwords set-up. This is how a lot of the PHI is getting leaked
+out of the organizations. >> Awesome. How can someone for
+example, take advantage of this? The first attack would be
+physical. Through the example before with SMB and we can start
+pulling information on users and their roles in the organization
+and all of that fun stuff, computers, where they sit, and
+most importantly, blackout policy. You get a badge and you
+are pretty much free to roam anywhere. Pretty trivial for an
+attacker. You know what floor it is on, the doctor's name and you
+know there is no lockout policy and hack away. Next thing you
+know, you are in the doctor's console and have loads of
+information. The second attack is Phishing and Excel attacks
+and go from there. The next thing is pivots and let's go for
+the easy one. Nine times out of 10, it is going to crash. You
+have to put a hole in the organization or whatever
+research facility it may be and you can start pivoting from
+there and take over the organization that way. >> All
+right, let's get into the super awesome credentials that are
+super crack that you want to see. Stage 3. Now, we know the
+vulnerabilities in the system. You can reach them from the
+Internet. What would it take for the hacker to get access on the
+medical devices? I want to go over the disclosure time line
+and all of this information is publicly available on the
+website. I choose to be responsible about it. We
+contacted SERT and GE. You can see back in September last year,
+this was disclosed. In August, disclosure of 100 sets of
+credentials and administrative access and September 16th had
+more time on my hands and decided to send in another 30.
+This is when we got conformation that GE had closed their assert
+and the investigation. I want you to know they are doing a
+good job and very mature and they have put a lot of resources
+in currently. If anyone knows Mike Murray, he is putting
+together a team over there. This is across the board and we can
+grab any medical device manufacturer and this is not
+just a GE issue and they have been very proactive about it. GE
+after the investigation, their response is that all of these
+decodes are not hard credited around there are contradictions
+through their documentation. Sit back and enjoy the show. It is
+going to take a while. A really good idea to drop 30 CB's in one
+talk and I realized that we have to go Through 40 slides real
+quick, so stay with me. I'm going to point out the
+highlights. Up top, you are going to see a CBE. Since 2006?
+Scott, you have been sitting on these things for nine years? No,
+how it works, they are publicly available. Some of these are
+legacy; I started at 2000 and newer. Some are newer. The next
+one is 2014 and it is updated documentation a month prior to
+me coming across this information. [ NO AUDIO ]
+Credentials and access. >> All right, now nuclear imaging
+system and you get into some pretty interesting stuff. They
+are pretty super passwords. [ LAUGHTER ] Yeah. So, wow. >>
+Look at the passwords and like pound big guy one and see how
+they are cross implemented on different platforms and the
+imaging system and service logons and the service admin
+accounts. >> The bottom one is really awesome. From a clinical
+perspective, these systems are heavily supported and because
+the hospital staff don't certainly know every single
+product, it is out scoured to the vendor for support and they
+have to be able to know how to get into them. (Indiscernible).
+Here's some more stuff. More link imaging systems. CT
+scanners and we are getting the SU logons on these types of
+systems. And same thing, repeats on passwords. More x-ray
+systems. More x-ray systems. Centricity. This is where it
+starts to get interesting. Never mind this. I was talking about
+packs before and this is a system that does patient
+monitoring and pack storage and that's what we are getting into.
+The system imaging vault and a super awesome password of
+nothing. Admin logins and license server if you don't want
+to pay for it. Archive audit trail. This is really good. SSL.
+Hey, encryption. Made a good decision, oh, wait the key
+manager server have really bad passwords. Logins for the
+analytic servers and that's where all of the data is dumping
+and taking all of the data out from the data warehouse. More
+packs. And here is what I was talking about on the backend and
+not through the application, but able to get into the actual
+storage server and if you want, read only, put in RO. If you
+want read/write, please end with RW. And more packs and some IAS.
+Gamma cameras. CT scanners. Emergency logins and obviously,
+there is a reason for that. Even if we don't solve the problem,
+we should be trying something that is not known failure.
+That's a big message going forward; we cannot continue to
+use failed systems. If you want user accounts, just run the
+script. The tech dot badge is going to create the user
+accounts in the hundreds. What do you do when you have all
+kinds of credentials? You create a word cloud. Yeah. [ LAUGHTER ]
+[ APPLAUSE ] So, there's a bit of a -- I don't know if it is
+funny. You guys will probably think it is funny. When I went
+to these word cloud sites and putting all of the information
+in the word cloud site and they all came out and said big guy.
+If you look at it, it is pound big guy one, so apparently, word
+cloud sites sanitize input much better than medical software.
+Again, this initial response is these are default. I want to
+make the case, are there still issues? We are going to go
+through a couple examples of that. Some of them do not change
+the credentials and do not allow resets on the accounts. Do not
+change the password to that account or we cannot support
+that application. Many of them don't have instructions on how
+to change the accounts. The segmented secure documentation
+is severely lacking. The organization that is
+implementing it itself are going off of this documentation. It is
+heavily utilized in the industry. And massive success
+rates using default and hard-coded credentials. Password
+never expires. Make sure you check it. Big, important flag
+for the person using, you will be disabled for support if this
+password is changed. If you are saying it is default, it is a
+little contradictory in my opinion. If you are an
+organization doing this, in big, bold letters go not change this
+password. They would never click, yes, remember this
+password forever. This is a clinical perspective and remote
+support, what we would call a back door. Call the operator up
+and they are going to go ahead and reset that password too.
+This last one, I want to be very clear. What I want to show you.
+This is theoretical. I have not done anything on this device. I
+have done stuff on other devices, obviously. I want to
+give you the mindset of an attacker or researcher and
+looking at the documentation if there are potential issues and
+getting this system to do something unintentional. You
+see, to follow this support, you must know radiation. There are
+probably good controls in that system that under intended use,
+it is at a low level. If you can get access and you are following
+this and they are not using encryption and have these
+services and can you potentially, as an attacker, sit
+in on there and change the volume dozing levels? As an
+attacker, can you potentially, change that parameter and replay
+that. That's how the researchers or attackers dig through this
+documentation and look at different attackers. A little
+bit, it gets into the liability space and in the documentation
+it says, adhere strictly to the procedures in this manual, but
+warning the producers claim no responsibility for its accuracy.
+>> Of course, there is not a liability case to set precedence
+yet. But these are the type of contradictions that you see
+happening. This is systemic in the industry and across vendors.
+I'm going to turn it over to Mark. We have this info and we
+know they are accessible and what we wanted to do in the past
+couple of months is set-up honeypot and see if there is
+random noise. Mark is going to talk high-level about the data
+that we are seeing and give you an idea. >> We have all of this
+data and the passwords and we know all of this information
+about the data and all of that stuff. Let's figure out if it is
+actually (Indiscernible). What we wanted to get out of this
+research and if someone is using this data and any other default
+website is looking for these devices on the net log in and if
+they are, looking for other S & B attacks and try and exploit
+those? Are they developing malware and if they got access
+is there malicious attempt or an attack on certain vendors and it
+could be political or whatever to attack vendors for certain
+reasons. I know there are a bunch of popular ones out there
+that have high/low interaction and we used some of them. To
+include, we got a bunch of information on the vendor
+devices and that's the HP streams and the different
+protocols they use. If an attacker hits it, it gives the
+right error message back in case someone was doing any type of
+fingerprinting. OS 6 or 7 and any of those application levels
+and also the fall credits and the services and the script and
+we had to emulate the whole stack on the honeypot to make
+sure that when they are communicating with each other on
+the operating system and if there is a pretty sophisticated
+factor, this is not looking at the honeypot they found, but it
+is potentially juicy information. Internet presence
+and obviously, Google is your go-to. We are setting it up six
+months ago and we wanted quicker results. We were organizing the
+talks and the vendor credits and they are all there. We did a
+bunch of fake Twitter and Facebook dumps and we set-up a
+bunch of credential that are unique for these systems and let
+it reign and someone who hates vendors and it made no sense,
+but someone is like, yeah, I want to hit that. [ LAUGHTER ] I
+would. The data. We set-up ten different honeypots from the MRI
+machines and spread them over the whole world and there were
+55 successful logins and a lot of it includes your typical
+admin, even though those credits are probably valid somewhere.
+The default password, as you saw, are pretty terrible. You
+might get a bunch of root traffic in there. And how to
+exploit? There were 229 unique malware drops and some of them
+are specific malware script and established some sort of
+persistence and had a call back to an RC somewhere. And out of
+the fake Twitter and Facebook drops that we did and eight of
+them came back to us and they are successful logins. We had an
+alert set-up and it is like 4:00 a.m. and I got out of bed and
+who are those people? They are obviously trying to attack and
+there for a reason. >> The source countries and who would
+have thought who is the top country and the ISP they are
+hopping to? >> Yeah, we have the sources in Korea. The latter two
+and if anyone owns honeypots and the traffic is coming from those
+countries and then, one web host provider. Why that is in there?
+I don't know. Probably definitely going to follow-up on
+that. >> We were going to follow the attribution dye, but the
+Netherlands are not on the attribution dye yet, so we have
+to get them added. >> What are they doing once they log in?
+Absolutely nothing. One ran a ping to 999.999. I was like you
+suck. >> How did your logs fill up? >> Logs, yeah, I had to get
+more space. Really saddening and when we were doing honeypot
+research unrelated to this, this is what we saw. Any device that
+is copied to a typical Linux box and they are similar type
+attacks. Did the attacker know they had a MRI machine? No,
+because they didn't do their homework and know this is an MRI
+machine, what can I do? These honeypots were actively talking
+back-and-forth to the C 2 server. Are there medical
+devices that are owned that are talking back to the C 2? Yeah.
+If you log in, you can see a defibrillator late or. That's
+interesting. Once they figure it out, what can they do with it?
+Obviously, there is an intentional attack. What happens
+when the news hits that someone's defibrillator starts
+going crazy? Oh, this MRI is owned. Once it gets in the news,
+it is high-profile and once it is high-profile, people are
+going to look. This is a typical Linux box and now, interact with
+it. If you are a bad guy. Can I sell that? Can I do malicious
+things with that? That's what we are trying to conclude. Our next
+step is to go on the hunt and figure out which bots are
+talking to what? >> A quick wrap up. We know there are vulnerable
+systems out there and we are not going to reduce it to zero.
+That's not our goal. Massive attack surface, but very simple
+things and you don't need to drop ODEC's to get into their
+devices. That exposed vulnerable system that we are looking at.
+Health care organizations overall are heavily focused on
+patient privacy and those type of things. Problem awareness and
+increasingly accessible. Once the activity increases and the
+susceptibility to that interaction and it does not
+focus on safety. We need to change our mindset and focus on
+real safety. The FDA has been working with us over the last
+year and having some of these landmark things happen. They do
+not validate cyber controls or safety controls at all. And just
+to recap, malicious intent is not a prerequisite quit. In the
+honeypot, it gets malware and that malware is designed to
+corrupt forensic data. If you work for a health care
+organization, I highly recommend you get your credentials and run
+them in your environment and see if they are being utilized and
+contact the manufacturer and ask how they are going to get fixed.
+Secondly, working in health care, many organizations want to
+solely put it on sometimes (Indiscernible) on the
+manufacturer and they will ask the manufacturer and saying that
+we have these credentials and the manufacturer says that we
+cannot do that and they don't press them. This is not a
+spectator sport. You need to get involved. If you work for a
+health care organization, I can guarantee you that patient
+health care is in your organization's values. If it
+isn't, you shouldn't work for that health care organization.
+Engaging consultants and if you are on the software side or in
+the industry, you need to reach out to the legal contracting and
+prior to cutting that check, to put requirements in place for
+certain security controls and penalties in the contract and
+come up with service level contracts for vulnerability and
+the coordinated disclosure. We had that formal statement from
+Phillips health care. That's the first medical device
+manufacturer that released formal statement disclosure and
+it is a very good one. Round of applause for them. [ APPLAUSE ]
+And Medtronic is another one. They now have a dedicated way if
+you go to their website how to contact the person to get ahold
+of us. Besides Las Vegas, two days ago, when we did the update
+and a very big medical device manufacturer in Germany and they
+came on, he got on a phone call with us, and they have committed
+to come out with a formulated disclosure policy. It is not a
+spectator sport. You have to reach out and collaborate with
+the allies to solve this problem. If we continue down
+this road that we are in, right now, it is interesting; the FDA
+receives tens of thousands of related disclosure events. It
+could be just an adverse event. Right now, we can't do forensic
+information's very easily. When there is an event, it is
+adjudicated clinically. Oh, no, he died from pneumonia. So,
+clinical cause of death instead of medical device malfunction.
+When it goes into the clinical cause of death, it goes into a
+bucket and goes nowhere. We need to get better at that. Going
+forward and we have to treat this. Patient safety has to be
+the overriding objective and if not, it has to be addressed. I
+think that we have to look at patient safety more than patient
+privacy. We need to avoid failed practices. We continue to see
+it. We know they are failed practices and continue to use
+it. We need to integrate the safety consents into existing
+security practices and government structures. If we do
+that, we are going to have more reliable medical devices coming
+to market. We shouldn't have undue or delayed cost. We are
+going to have better coordination and they are going
+to be more resilient and lastly, how do you get involved? If you
+are a researcher or work at a health care organization, or you
+want to test the device and test them? My wife hasn't let me buy
+a medical device and put it in the basement yet; you can go on
+eBay and buy one. If you are in the industry, get involved in
+the industry-coordinated groups. There is a handful of them. The
+FDA for the first time ever this year brought in security
+developers and released guidance and an IEEE for the medical
+device software and it was held in New Orleans and another
+followed in December. If you do this stuff, speak at industry
+conferences and not just security conferences like DEF
+CON. I spend a large majority of my time going to health care
+conferences and speaking to the C level and the security and
+privacy events and I did a talk at the health procurement guides
+and this is what you can do during procurement to reduce
+this risk in your organization and if you have not heard eye on
+the Calvary and this is a grass roots organization that is
+focused on safety and focuses on human life. Get in involved if
+you are not involved. Guys, it is really good. If anything
+else, the collaboration and meet new people who are interested in
+doing what you are doing and being part of the solution and
+not just coming up here at DEF CON and dropping a lot of
+research and walking away from the problem, but getting
+involved to solve the problem. The people in this room, the
+ones that are uniquely qualified can fix what they can find. Do
+your best. Thank you for coming out. I know that we had a
+miscommunication about time. Twenty-minute talk. We said, no,
+we are going 45. We are getting kicked out of here. But we will
+be outside if anyone wants to talk. Thank you so much. Have a
+good DEF CON.

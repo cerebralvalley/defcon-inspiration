@@ -1,0 +1,557 @@
+We're going to get started.
+Welcome everybody. This is RFIdiggity. I'm Fran Brown, a
+partner at Bishop Fox. I have fun stuff for you today. I was
+mixing it up at the end there and adding some of the newer
+slides to the beginning to front load it. I realized in looking
+at the abstract, I took on a lot of things. In case we don't get
+to everything, we'll go over ..(audio blipped).. So I got
+some bad news and good news. The good news trumps the bad news.
+It's okay. For those of you who noticed in the abstract that it
+said I would be giving out 100 circuit boards for the new back
+door version, I didn't get it in in time to get it printed for
+this. I don't know how many of you guys were here when we did
+it two years ago, but it was like a mad house. I think three
+people got stabbed crawling over each other. It was pandemonium.
+The good news, that trumps that, if you stick around to the end,
+at the very end and remind me, I'm going to throw up an email
+address and the first 100 people that email me with their
+physical address, I will mail the circuit boards once they
+come in and then I'll send you random letters and love letters
+and things like that. Risk versus reward. But you have to
+stick around until the end. The first 100 items in my inbox will
+get one mailed out to them pretty soon. I'm going to go
+over to a little bit of logical order some of these. In the
+beginning here to kick things off I want to highlight a few of
+the newer tools. With this talk what I want to do is in doing
+research for this do practical penetration tests. I had the
+issue of you have to read, you know, like 100 things before you
+get the answer that you want. This is to be the best of tools
+and techniques and what you need to know ..(audio blipped).. for
+doing RFID hacking, UHF and HF. And there are new tools as well.
+I mentioned that I was creating the -- popular right now -- I
+saw at BlackHat the guys released the BLE key. Are you
+here? The guys that did that? Something similar to that. But
+basically weaponizing the -- circuit board to be a man in the
+middle device. Instead of weaponizing -- how many people
+have seen my last talk? I'm assuming a lot. Basically I
+created this circuit board to weaponize the reader and it
+reads the -- input and I realized afterwards, that you
+can make it a back door device as well and put in your own
+reader. Trying to break into ..(audio blipped).. and plant it
+in there instead and it can capture -- values as it hits
+them. By tapping into the wires. So I was like, okay, I have
+basically what I need already. This goes into a reader and
+reads it and passes it to the circuit board. If only I could
+make it smaller and hook up bluetooth to it or something. I
+was like, oh, how many are familiar with [indiscernible].
+Reshrunk the -- bluetooth. That is exactly what I'm looking for.
+That made it easier. I'm releasing a stripped down
+version using the RFreno without the SD card to make it smaller
+and plant it in any reader. Other things that are new. I'll
+get into more detail. I posted a blog post on this. Traditional
+RFID hacking techniques, trying to walk by somebody and steal
+their badge information, make a fake copy of a badge and break
+into a building. Some of the newer technologies for RFID
+physical security any way, with iCLASS, ..(audio blipped)..
+eventually we have to imagine people are going to get their
+act together. Eventually it will be no longer a bottle target to
+go into Starbucks and walk by somebody and steal their badge.
+We're going to attack the readers and the controllers
+directly. Basically we're coming up with a few queries. I put in
+three queries and found a few hundred controllers exposed to
+the internet. And basically if you're familiar with these
+controllers at all. If you have network connection -- it's game
+over. There is basically -- default credentials they can't
+change of root and pass. If they change it, it breaks the
+product. If you have network connectivity at all to any of
+these controllers, you need the physical security system. Not
+supposed to be hooked up to the internet but quite a few people.
+Especially universities. You can open the doors and things like
+that over the internet. How many of you have seen any of my
+Google hacking, Google diggity research before? The origins of
+the Diggity name. This allows you to hook up to the API and
+quickly do queries. We see a few here. One other thing I should
+mention is basically my slide decks are like the note sections
+are like white papers. So if you want to follow up on any of
+these things, if you download the slides the notes section
+have links to resources. I cite most people in the slides but if
+you're looking to follow up on this, the notes of the slides
+are a great resource for that. Using that, just ran it. And
+basically these guys have Tele net and FTP and a web interface
+open for I believe this was for a college. Basically, I mean
+this is two seconds that it took to put this together. And
+quickly found [indiscernible] browsing them. And if you mouse
+over any of the doors, it gives you a pop up of the last valid
+badge. You can see there, that login, it's not going anyway,
+because you can ..(audio blipped).. interface. It's one
+of those things where it still amazes me what people hook up to
+the internet and we can get access to. I came up with a few
+scripts that were based on Brad, I believe his last name -- is
+Brad in here from McCaferty? I butcher his last name. But Brad
+..(audio blipped).. you'll see links to his research with
+attacking readers and controllers. You can query and
+get the exact version of the controllers one at a time and
+I'll release them in the GitHub in a few random hacking scripts
+and things like that. Feeding a couple hundred IPs to a script
+and it can go out and query it and find out what kind of
+controller it is and the version. These are the stats
+after messing around for like an hour. So that's a quick preview
+on the reader and controller. Getting back to the traditional
+type of attacks that we covered in the last talk with the low
+frequency RFID hacking. You get to the -- technology which is
+extremely effective. If you want to break into a building, you're
+looking at physical security systems. There are three simple
+steps. You steal somebody's badge information, you create a
+copy of it, and third you go and break in. And to minimize the
+amount of time you're a trespasser you want to plan a
+back door so you can get out as quickly as possible. And we've
+seen before the low frequency, the hit Prox stuff. This is I
+class I90 long range reader. Without any modification at all.
+If you have an RFID thief circuit board you can hook it up
+to this long range reader and accomplish that type of attack
+for most people out there. And cloning, I'll get into more
+details but there are a number of cloners that have come out
+based on the vulnerabilities in iCLASS. And the quickest and
+easiest is the one that you buy from China. This is like by far
+the easiest, just point and click and making clone copies of
+high frequency high class cards. You have to do a bank transfer
+to China and it had all these requirements which would turn
+someone off to wanting to do it. I was getting weird looks in the
+office when I was like, how do I transfer to China, this amount.
+And people's ears were perking up. I sent the money to the guy
+via paypal and he sent me the something. If that was what was
+stopping you, just set up a paypal and he'll hook you up
+with it. Yes, so we have step one, steal the badge information
+for a high frequency system, step two make a clone copy. And
+step three, how many of you are familiar with the
+[indiscernible] plug. I would imagine most people. The power
+pone version? The power pone version is like a power strip.
+It's just a plug. And it costs a couple grand. And I think it's
+discontinued now. It was awesome. Even when you could get
+it it was 2 grand. I finished the designs and my printer broke
+after printing the bottom half. It's two halfs. I created the 3D
+print, top and bottom to create a custom case for the raspberry
+buy that is like the power pone. You can get a raspberry pie and
+print out the 3D halfs of this file and it's a Bishop fox
+thing. And you can go to Home Depot and have a $2,000 power
+pone for like 40 bucks. So that should be up. Most of this stuff
+will be up later today on the various sites or by the end of
+tomorrow at the latest. Either our domain website, all this
+stuff is always free. All of our tools are free. The website is
+the best and that will link you to GitHub or the 3D universe for
+the prints and tutorial videos and stuff like that. You have
+step, one, two, and three for a high frequency system. How many
+of you have been watching Mr. Robot? It's awesome. How many of
+you saw the episode where he used the RFID thief. If you look
+at the -- evil cord, it was three steps they basically had.
+I figured I could show you guys a couple videos here. First is
+the quick -- see what it looks like stealing. Just an iCLASS
+card and with one circuit board, it goes and grabs it and stores
+it and gives you everything you need. You can see it there, I
+will blow it up later. It's basically a card number.
+[indiscernible] (muffled). Not as impressive as Christian
+Slater doing it. Like my mom and dad get it now. That's what you
+were talking about. They never watched the BlackHat talks but
+Christian Slater gets them (muffled) weaponized version of
+the iCLASS. (muffled audio) and then step 3. (muffled audio).
+Basically the plan for taking down [indiscernible] was the
+step one, two, three was is awesome. It's simple but it's
+effective. In case you don't -- they're not too slick, I think
+he got caught a couple times doing stuff. If you don't want
+to sit there and pull out of the wall somebody's thermostat and
+mess with it, this is just your easy way of -- easy way to go
+ahead and drop something instead of poking the wall apart. The
+end result is the same. Planting a research berry pie as a
+permanent resident on the internal network. This is a
+brief over some of the newer things that we're releasing.
+What am I talking about here. In the talk I gave in 2013, that
+focused on low frequency RFID hacking. It's great when an
+article comes out and it's getting long distance on the low
+frequency is hard to do. You can only get a couple feet. And most
+people want to post links to -- it's not a big deal at all. Here
+is an antenna and it's like for UHF or something completely
+different. There is a lot of misunderstanding and myths and
+room for confusion when it comes to RFID hacking. In fact, I mean
+I was pretty dedicated and it took me a while to get the most
+basic answers that I wanted for myself for most of these. I
+understand most people's confusion. There are three major
+branches of RFID. The low frequency. The grossly insecure
+stuff that most people today use. If you have an RFID card on
+you, it probably is. With this talk I wanted to extend into the
+high frequency and Ultra-High frequency aspects of it. The
+newer physical security systems that use high frequency and
+various other things that are blowing up all over the place.
+Just some examples. It's used for everything. It's all over
+the place now. The internet and everything is connected.
+Everybody is talking to everybody. From your credit
+cards to your Disney fast passes to green cards, to passports,
+some people use their hand to open doors like they're Darth
+Vader or something. It looks cool. To hospitals which is
+scary. To I noticed in the airport on the way here, just
+the vending machines are all Wi-Fi based. Maintenance
+systems, NFC, that is the same frequency as high frequency.
+I've seen weird things. Somebody in my company found a secure
+hard drive, what you see there in the top row, second from the
+left, that basically to utilize the external hard drive you need
+an RFID badge near it to unlock it. All kinds of weird things.
+Enhanced driver's licenses. How many knew the hotel room keys
+here were RFID. More and more have them, especially in Vegas.
+These types of attacks are only becomes more and more useful.
+This is a basic physical security set up in terms of how
+things flow. Whether it's credit cards or somebody's physical
+security system, or your coke rewards. How many people have
+coke rewards? MyCoke rewards? No. Everybody? Nobody. Pepsi
+crowd, huh? Basically what we're looking at is somebody is
+carrying around something with them, whether it's their phone
+or tab or Obi-Wan Kenobi tab. The attacks are going to be
+similar. Just different approaches. We walk by somebody
+and skim it off them without them knowing like Christian
+Slater did with his backpack and make a copy. Do things like
+directly attack the readers or controllers and ..(audio
+blipped).. badge at all. Go right to the source. We want to
+do things like make copies of badges and have devices that can
+emulate badges. They don't have to be a fake copy. You have some
+interesting things like relay attacks. Which we see in which
+case as things start to escalate and more FID systems. You have
+two guys, one guy is at the door with a payment system with the
+device and another guy is following behind you. It starts
+passing the information back and forth and relaying it. Power
+pone version we're seeing more and more of these. As people are
+locking down the badges, whether they have -- fly gear, RFID
+blocking skinny jeans. Who has RFID blocking skinny jeans?
+They're coming. Your kids are going to love it. But as people
+start to do stuff like that and the badge gets harder to copy
+and clone and steal, people are going to start moving along to
+these different types of attacks. Maybe we can't steal
+the badge, can we brute force badges. If we know one badge
+number can we guess the next. If I bought one Disney ticket, can
+I predict what the next three sold are. Can you predict
+values. The uses are getting diverse and crazy but the types
+of thought processes and how you attack them are the same across
+the board. So as we get into a few attack types I'll show other
+gear. I like to give you the gist of free -- technology. What
+are the main attacks you want to perform and the main tools you
+want to use. There is a lot of noise out there. And I bet -- in
+my last talk, for years, during kind of the hay day of RFID
+hacking you could read -- certain tools and this tool did
+this and all these things and you found 100 articles about
+something that doesn't exist. Never got released. Just a photo
+of it on the internet. And you're trying to do a
+penetration test and find a tool that can help you now. And the
+first 500 Google hits are referring to a tool that was
+never publicly released. These I covered before: You have the
+custom long range readers. Taking a circuit board and
+plugging into a long range reader for hit prox or iCLASS as
+you saw there. Programmable cards. These are some of the
+things I covered in the last talk so I don't want to go over
+them too much. The RFID stuff. The RFID stuff in the middle
+there, those are great. Most people aren't aware of those.
+They're not a security tool, they're a troubleshooting tool
+for engineers in the field for RFID stuff. B sticks, one high
+frequency and one low frequency. If you have a card that doesn't
+have any physical indications as to what type of technology it
+is, you don't know the type of card, you can use these things
+to find out what type of card something is. Which is extremely
+useful. I'm getting into the high frequency stuff. The
+must-have tools. That's a little blurry? Anybody? A little
+blurry? ..(audio blipped).. one, how many people have the prox
+mark three. It's one of the main tools you get. They make sure
+you have the high frequency antenna. You can use that for
+some of the other tools. The one on the bottom left, this is
+basically your Swiss army knife of high frequency hacking. For
+using that iCLASS cloner that I referenced there, that works
+with this reader. You can use this reader to read credit cards
+and for all sorts of things. People working with kali and
+Linux, it's the No. 1 tool to interact with. The top right,
+you have [indiscernible] do NFC hacking. There is not a lot of
+hardware that works with it. If you want to use some NFC tools
+that is a good one. In the last year or two there has been an
+explosion of mobile platform penetration testing. How many
+people here have done a wireless pen test where you carry around
+the big ..(audio blipped).. and walking around like this. That
+was like the toy three years ago. It was the standard and
+people are like, what are you looking for. It's a nerd
+detector. It's been great. And in the last couple years you've
+seen the pony express done the pone plug release. The Pone pad
+which is an android -- [indiscernible] pentesting
+tools. RFID hacking tools and bluetooth tools. More recent,
+how many of you have heard of kali's net hunter? A decent
+amount. Ten percent of the crowd. It's relatively new. Less
+than a year old. Kali released images for android tablets that
+you can load on the nexus 7 or 10 there and it has a kali
+android phone. RFID hacking, you're physically trying to
+break into a site. Physically at Starbucks like Christian Slater
+to have small portable devices that are highly functional. This
+is -- it's a good step in the right direction. The prox mark
+that I mentioned. These slides have a number of references to
+blog posts. How to run the prox mark from the android phone or
+something. If you use that to make fake copies you use the
+phone and it's more convenient than carrying around the big
+laptop. I mentioned before the prox mark. This is some of the
+commands in terms of high frequency to give an overview.
+It's like a Swiss army knife. It can read cards, clone cards,
+emulate cards. High frequency and low frequency. It can
+basically do anything. The one limitation is distance which is
+why we came up with the RFID to steal somebody's badge from
+further away. That is pretty much one of the only limitation.
+It can pretty much do everything else. The high frequency
+commands. ..(audio blipped).. always updated. Library of
+python scripts for doing various hacking things and it's loaded
+with kali Linux. If you want to up and run quickly, you can
+download the kali Linux image and be up and running quickly.
+The readers which I mentioned. The RFID tools which you can use
+to scan to figure out this is my card for work or this is my card
+for my parking lot in my apartment or something. It
+doesn't have anything on it that lets me know the technology. You
+can use this software to figure out what the technology is. You
+can scan it and make a fake copy and get free parking. Whatever
+you want to do to the thing. That's what it's good for. This
+is getting into some of the stuff that we covered.
+Especially with the high frequency stuff it's harder --
+the iCLASS there was a reader that I showed. It's coming back
+to one of the biggest limitations is distance. As
+people come up with ways of breaking some of these
+technologies what we've always seen is this is so broken and it
+makes head lines and it ends up being you have to get within a
+centimeter or two to steal somebody's badge. And it was
+glossed over. There was a talk before, it was referred to as
+the ass grabbing method of RFID hacking. This is through a lot
+of slides and videos and presentations. This technology
+is broken, look how easy it is to steal somebody's information.
+Okay, you can read it and clone it and all but distance is
+always a problem. It makes it really a risk. What is really
+practical that you need to worry about. If Jonathan west used it
+in the corner and he is walking around the campus grab-assing
+you, you're going to catch him. It's not that big of a risk.
+These the circuit boards that we saw before that weaponized
+existing RFID readers. Some of the early problems that the
+tools that got talked about, there's a million things for it.
+Some of the main reasons they never got released were due to
+being threatened with patent disputes. Like, oh, you created
+a reader that reads these cards, we have a patent on the device
+that reads these cards. You can't create one of your own.
+That stifled a lot of the release of tools from 2007 to a
+couple years ago. With this circuit board you're not
+creating, you're weaponizing an existing reader. That is how we
+got around that and can build tools that are practical for
+penetration tests. What we see here is basically you can put --
+that's my sketch of Christian Slater with his backpack.
+Basically I designed this to easily plug into any reader to
+weaponize it and it -- the output of the reader any badge
+that it reads what the badge value is. I created it for only
+one reason to begin with. It plugs into the high frequency
+[indiscernible] and I changed it to a back door device that you
+can plug in and interpret the results of readers as well. And
+basically the circuit board is still pretty effective. It takes
+some power, takes in the output of the reader and outputs to SD
+card and into the screen. It outputs it over bluetooth into
+your phone. And what we're looking at here is what it's
+tapping into. This main output of -- any reader that reads a
+badge for the most part when it comes to physical security,
+sends it to a controller like we saw over the internet and it's
+data one and data 0. Green and white wires for sending ones and
+zeros for badge value. I mentioned here, in thinking
+about this. [indiscernible] global is the No. 1 when it
+comes to RFID. They have four major product families of RFID
+they have. Two low frequency and two high frequency. There is
+more than this but mostly it's these four major families. We
+have HIPprox and my class for the high frequency. They
+released long range readers for three out of four of the product
+families there. We weaponized three out of four and have long
+range readers and can do the Mr. Robot attack for three out of
+the major four product families of RFID were covered. That long
+range problem is solved for those three. Unfortunately they
+don't have a long range commercial MIFARE reader to
+weaponize. So that's -- you know, we have to wait for them
+to come out with something like that to weaponize to avoid the
+patent. I showed you guys the RFDUO which is awesome. In terms
+of extending the functionality, there are [indiscernible]. Have
+you seen the smallest cell phone add on that I've seen yet. They
+are normally bulky. They send you the cards that it finds in a
+text message with every card that it finds. These devices are
+getting smaller and easier to use. The RFDUENO, let's make a
+smaller version with bluetooth on it. Every week it's getting
+easier to get these. This is the R90 long range reader. You can
+buy these on E-bay for a couple hundred bucks. And just plug and
+play with the circuit board. So basically getting into high
+frequency hacking for physical access and control of systems.
+You have the MIFARE and iCLASS two product [indiscernible]
+physical security systems for the most part. There is a lot of
+research on this. Basically for iCLASS, the big problem they had
+was the security was based on people not knowing what a
+certain key value was. Keeping a secret value. Somebody was able
+to dump the firmware of a reader, extract the secret key
+from it and it was game over. And then it just made it
+possible to do all the same types of attacks for the step
+one, step two, and step three because of that. Again, for $200
+you can get an order from XFPGA .com, this iCLASS cloner. Send
+the money over paypal. It's the easiest by far to point and
+click and make a copy of an iCLASS card. This guy did a lot
+of reverse engineering of his tool. He put a lot of
+restrictions on it. You can't fashion a debuger to it.
+[indiscernible] which sucks. It has a physical USB dongle for
+licensing. He is hard core with protecting his product. If you
+want to share it with people -- physically pass around a laptop
+with these cloner on it or ship it out to somebody if you're
+doing a pen test. It's a problem. But I have in there a
+couple -- one VMware setting that you can set to get around
+being able to do it. The thing that killed me is it has to
+..(audio blipped).. older version of the software and it's
+32 bit and won't run on 64 bit or VMware. So I had to get a
+different laptop to use the tool because I needed to use a 32 bit
+system. If you guys buy this, just you can check it out, it's
+in the notes. It's funny, because all it is, is basically
+an older version of -- demo application that came with
+30API, an older version of it. He copied that. Just demo code
+from hit global and then altered it. If you looked at the
+executable it said contact list demo [indiscernible] executable.
+He copied it off somebody else. So I don't feel bad about
+breaking his thing. You're not in the crowd, are you? Good.
+Fingerprint reader. There is newer stuff now that just came
+out but for the most part it's ridiculous. If you -- so the
+threat is, okay, Christian Slater is walking by you at star
+bucks and picks up your card value. He has everything he
+needs to break into evil Corp. By adding biometrics and
+fingerprinting, at least I can't ..(audio blipped).. and get
+everything I need. He didn't know what his pin is. He doesn't
+have his fingerprint. So it's harder. Except this came from
+[indiscernible]. Not supposed to do this but you can piece it
+together from this white paper. Basically by defaulted these bio
+class, the iCLASS biometric stuff, it basically when you put
+your finger down, it validates that your fingerprint that is on
+there now is the same one on the card. Say Christian Slater took
+that guys thing and it came up and had that. Christian would
+make a copy with Christian's fingerprint and pin number and
+it validates it as the same on the card. So it's useless. So if
+you get one of these readers you can create your own pin and take
+your own fingerprint and have those values and use some
+cloning tools like the PGA when making a fake copy to write your
+own values for your fingerprint when doing it as well. And this
+white paper is listed there with the exact values and where you
+would do that. Biometrics in general, Dan Petro in here? He
+has a lot of -- [indiscernible] shouldn't be used in general
+when it comes to physical security. A password that you
+can never change and you leave behind on everything you touch.
+You can't revoke it. It's the worst ever. You can't hash the
+values because fingerprints aren't exact so there has to be
+a fudge factor. You can't hash them to somebody. They're
+terrible when trying to physically secure something.
+Fortunately there's ..(audio blipped).. attacks against the
+cards is extremely viable. I gave you a preview, that brad
+antenna that I mentioned, he is coming up with pretty cool tools
+as well. If once your kids all start rocking the RFID blocking
+skinny jeans there is nothing you can do anymore from that
+attack vector. You have to go after the readers and pop the
+lids off them. People mention this all the time. The Gecko.
+Unless you're friends and he lets you borrow it's, it's of no
+use to you. It was one of the first back door devices to
+implant. Not only recording the values that it sees, but you can
+walk up with the phone and say hey, you send one of the badge
+values that you know about to the badge directly and it opens
+the door for you. It's like a smart home lock. You're not
+supposed to have access to open the doors without the badge.
+These guys came up with the BLE key which is basically similar
+functionality as well. Extremely small. [indiscernible] at a
+target facility. You can come up with bluetooth and have your
+phone and dump the list of values that it's seen and open
+the door by replaying the values. The BLE guys in here?
+That's cool. This just came out a couple days ago. You can see
+how small it is there. So that's attacking the reader basically.
+In the middle of the night, you pop the lid off the reader and
+putting something in there to tamper with it. The reader talks
+to the controller that makes the access decisions. Basically
+Brad's talks he released this on GitHub, basically a number of
+Artunio tools to do brute forcing. Instead of doing it
+over the air, going up to the reader and physically blocking
+it and brute forcing it is five times faster. As well as a back
+door device of his own. Here is a few of them. Basically being
+able to brute force. Emulator. The key and things that we
+mentioned. A number of scripts. If you have access, open up the
+doors or dump out the cache to the controller. If you have
+network access to the controller at all, this is game over. Other
+tools. Releasing tools for scanning to identify these
+things on the network. How many people here have run -- are
+physical security? Two? Three? It's all pentesters. So I mean
+when you look at these things, most physical security people I
+know are ex-cops. They didn't come from an IT background.
+They're ex-cops. Typically products that are purchased
+outside of the traditional IT purchasing infrastructure. IT
+buys and gets licenses for everything except for the
+physical security guys that pick out these technologies and run
+with them. These networks aren't supposed to be hooked up to
+corporate networks you shouldn't be able to sit in a cube and
+ping the badge reader at the front door. These guys are
+watching the cameras and want to check out their fantasy football
+stats and browse the web. They're on the network that is
+the physical network every time they end up getting bridged in
+some way because of that. All I can look at is the camera and
+the badges. I'm going to check what my team is doing.
+Eventually they end up on the internet. You find a few hundred
+buildings open on the internet, nah is how they happens and
+they're easier to find because you have these tools, this
+discovery tool that goes out. They have their own language and
+-- global was nice enough to register their Mac address. If
+you scan a bunch of devices you can ..(audio blipped).. that
+begins with 00, 06, 80. As people do these mass scanning
+projects of the internet, and huge data repositories of every
+device on the internet, it makes it a lot easier to sort through
+them to find physical security devices that you're looking for.
+If you have access to a Tele net web, it's going to be root pass.
+They can't change it. Open all the doors, close all the doors.
+Badge values. This is just -- (muffled) this is the
+PowerPoint, the slides are old. You can download the kali Linux
+image as well as pony express. There is links to a number of
+things. You get a raspberry pie and download the SD card and --
+plug type images and preprint the files that we'll have on our
+site and for 40 bucks you're good to go with your own
+realistic looking back door. So you don't have to be like Mr.
+Robot and pull down the wall, stuff. [indiscernible] the
+Nintendo one. This is the longest thing I've ever printed.
+I had to put disks on them to keep them from curling up. They
+just snap off. But the pressure loads. It's all taken care of.
+You download and print it. How are we doing on time? It's
+getting close to time here. I pushed these to the end. Credit
+cards. Quite frankly the first question a reporter asks is tell
+me about mobile payment systems and credit cards and RFID. It's
+the first question. They're pretty locked down. It's the
+least sexy RFID hacking there is. There is really not a lot
+you can do to get over on the credit card companies. And I'm
+on Google earth and there's a news article with a critical
+vulnerability found in Apple pay and you're reading through it
+and five paragraphs in, and I'm reading this one, basically
+people set up access point and redirected browser traffic and
+said enter your credit card number and it was for an iPhone.
+That was the head line. Apple pay vulnerability and it had
+nothing to do with it whatsoever. And people are
+stretching for that. The credit card companies, there is
+basically not a lot you can do. There is a good blog there. It's
+highlighted, the URL from Brad and analyze what is on your
+card. The two best resources are those two there and Christian
+Pagent's talk. If you read the blog post and saw that talk,
+that gives you the best overall view of credit card hacking.
+Dynamic CDV. If you're going to order a pizza and you put in the
+credit card number and name and expiration date. When you do
+RFID the security code is different every time. And the
+credit card knows they're not going to be in order. If I scan
+your badge, every transaction I have to walk by you four times.
+I have to get the next four security codes. If you bought
+pizza with RFID before I did that you present a newer version
+and I present an older version. There is not a lot you can do,
+it's not really sexy. Passports and travel documents in general.
+There [indiscernible] scary is the Ultra-High frequency. You
+have passport books and passport cards. The books are high
+frequency and the cards are Ultra-High frequency. Green
+cards are Ultra-High frequency. And they serve no practical
+purpose except for human behavior pattern establishment.
+Pattern of life establishment. Tracking what isle in Walgreens
+you went up and down, where you went in the city. Enhanced
+driver's license, it's the federal ID. Something you have
+on your person at all times. They can track where you're
+going. That is the only real purpose it serves. It's
+ridiculous. This is a tool you can use -- ski passes. Put it on
+your helmet and go to the ski lodge. If you can read it at all
+from several miles away you can read it and copy. I have a copy
+of my buddy's green card if anyone is looking for that. Got
+it. Defenses, you can read these slides later. The skinny jeans.
+And blazers now, RFID blocking blazers for the business person
+on the go. Check out this and thanks everybody.

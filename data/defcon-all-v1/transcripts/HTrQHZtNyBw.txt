@@ -1,0 +1,828 @@
+>>Right, hello everyone. Uh-
+Thank you for, for coming to our
+talk on uh remote physical access attacks via USB. Uh Just
+in case, you're in the wrong
+room, that's the bottom line up front. We're going to be talking
+about an end to end attack
+implementation of a USB implant, that's the teddy thing to call
+it these days, uh, that provides
+remote access to even devices that- that are airgapped, so, it
+doesn't use the host network.
+And so then the important things there are: no network interface
+is required, uh, it's gonna be
+very difficult for forensic tools to pick the stuff we're
+doing up, and we're gonna
+release the tool set and some open hardware so that you guys
+can- can play with it too.
+Alright, anyone want to walk out after that? [Whispers] Yeah! K.
+So, we're from a company called
+SensePost. Uh, we've got an office in South Africa and
+London. We came all the way from
+South Africa. It's a long flight. Uh, we're predominately
+a penetration testing... Thank
+you. Sorry We're predominantly a penetration testing company, so
+that's the angle we're coming
+from in this talk. And we do some other things. Started
+nearly 17 years ago in a bedroom
+in Pretoria, South Africa. It's a picture of said bedroom. Um,
+and Rogan is the primary
+researcher on this. He did a lot of the uh- most of the heavy
+lifting. Uh, will that show...?
+Yeah, it's all on there. So if you want to shout at anyone,
+please shout at him. But if he's
+not listening then you can shout at me. Uh, I'm @singe on twitter
+and Rogan is @rogandawes on
+twitter. Alright, so, one of the really difficult things in
+security, particularly on the
+defensive side, is coming u with a realistic threat model. So
+this is Jeremy Meeks, he was uh,
+a felon whose mug shot ended up going viral and he got a
+modeling contract afterwards. So
+you get it? Threat model? eh...? No, okay. I'm a dad now, I get
+to make dad jokes. So, I think
+what happens a lot of the time when you're on the defensive
+side, is there's all sorts of
+things you need to prioritize your spend, there's lots of
+vendor marketing, uh there's
+branded bugs, there's people who come give talks at DefCon, um,
+and you've got to try to figure
+out where you're going to spend your, your time. And I think a
+lot of the time in information
+security, uh people are walking down a dark alley worried about
+pianos falling on their head
+rather than somebody coming to mug them. And so, what I think a
+pen testers job is, is to
+realistically emulate actual bad guy attacks. So things real bad
+guys are doing that'll affect an
+organization. I mean it's really cool when we come up with super
+interesting, creative attacks,
+but if we're not also coming up with attacks that real bad guys
+are using, that's going to be a
+problem. And so that's- that's one of the reasons we wanted to
+do this work and so, given I'm
+talking about real bad guys, let's start talking about some
+real bad guys. So, if the NSA is
+targeting you,then they're, for all intents and purposes, one of
+your bad guys, probably
+difficult bad guys to deal with, but in 2000- in 2008, that's not
+when this was released, this is
+part of the Snowden docs and it was pointed out that the NSA had
+this capability which was a
+miniaturized USB device, it had its own RF protocol, uh that
+could have coms off the host
+and- and you could get remote control of hosts with this
+hardware implants. And so this
+is what the NSA was doing circa 2008. If we consider those guys
+the apex predators, you know,
+probably 2008, they were leading the pack with this stuff. But
+then about three years ago, we,
+uh, were called in to help with a crime that was ongoing at a
+series of financial institutions
+back in South Africa. And this same sort of attack repeated
+itself in the UK as well. And
+what this attack was, was they were using simple physical
+hardware to bypass the software
+controls in place. Um, So the first thing were hardware key
+loggers in the bottom left hand
+corner. Uh, they would pay people to put these down that
+get a password for somebody that
+could make a transaction, and they'd get a password for
+someone who could approve a
+transaction. The thing in the top right is a- is a hard- hard
+drive imaging tool that would
+pay somebody to go image hard drives and these guys were so
+technically unsophisticated,
+they would buy computers that were the same color as the
+computer that had been imaged,
+because they thought that was the relevant hardware
+characteristic. And then they
+would pay someone to put that, that box in the middle down,
+called a- a pocket port, and
+that basically provides a VPN into the internal network. So
+now they've got creds, they've
+got the bank software, and they've got remote access. And
+none of it was particularly
+elite hacks. These were criminals paying people. It's
+kind of the way crimes worked
+for- for a long time. And they were wildly successful. We're
+talking about hundreds of
+millions of Rands, which is about two dollars. [laughter]
+You guys laugh, it hurts us.
+That were taken from all of these financial institutions.
+And so, we were left wondering,
+if you've got the apex predator over here using hardware
+bypasses of software controls,
+and you've got criminals who are like, color matching their
+computers, and being wildly
+successful at actually stealing money doing it. We can
+hypothesize is probably a swath
+of things in between where people are using a similar kind
+of attack, hardware bypasses of
+software security, but, um, in different ways. And so that
+tells us real criminals are
+doing this. Maybe this is something we should look at in
+more detail and stop writing it
+off as, well if you've got physical access the game is
+lost. And so when you look at
+the way your average, like your average client, corporate
+defense against USB threats,
+it's mostly worries about malware, mostly dropped from
+mass storage devices, or
+unauthorized networking. Something like a 3g device or a
+wifi card by passing the
+firewall. And so this is the sorts of restrictions you see in
+place. But the USB standard
+allows for vastly more sorts of devices, and um, as hardware is
+getting smaller and smaller,
+there's vastly more things you can do with those devices, um
+and, we think that there's ways
+that you can uh- the attacks we're going to show today,
+theres ways that you can get
+remote compromises of machines via USB that doesn't hit any of
+those protections. So
+specifically they objectives of our work were 6 fold. The first
+is we wanted to have a usable
+end to end attack, so something we could use in our engagements
+to demonstrate this risk to our
+customers, but then also something that you guys can use
+to demonstrate this risk. And so
+we didn't want to demonstrate one or two concepts, we wanted
+the whole thing to work from
+plug in to remote shell. We wanted to be able to remotely be
+able to trigger this stuff at
+times of our chasing. We didn't want to have to deal with
+finicky random delays from when
+you plug it in to when it fires and make sure the screen saver
+is not getting in the way. We
+wanted to avoid obvious USB vectors. So we didn't wanted to
+have USB mass storage dropping
+malware. We didn't want to have uh- malware that was really easy
+to spot by AV. We wanted to be
+as automated as possible. Now we're talking USB so obviously
+at some point, somebody needs to
+plug something into a computer. Um, but beyond that, we didn't
+want to have to be fiddling with
+things. It must be automated. Then this was quite an important
+design goal for us. We wanted to
+use a covert backchannel. And thats fancy words for, it musn't
+be a network card. Uh so we'll
+get into it in more detail but we use innocuous looking USB
+devices. Text printers, sound
+cards, and then this particular thing, generic HID device to do
+a bunch of our coms. And Rogan
+is gonna get into that in more detail. And then we wanted to
+limit the forensic impact of
+this. So, because we're using hardware devices, we could put a
+bunch of the heavy lifting on
+there, rather then having to stick it in malware that's
+executing on the host. And so
+naturally, because we're using our own RF backchannel, it's not
+going through the network of the
+target device or the target organization so things like
+Fireeyes and IBSs, um, that
+would normally monitor network coms looking for C2 coms, things
+like that, they're not going to
+come into play. We also then have to deal with the vagaries
+of proxy access that might be in
+play at various organizations. And- and then the second thing
+is most of the- the payloads
+that we're running are really small simple stub things that
+don't look particularly
+dangerous. Now of course AV could always take the stuff we
+release today and develop
+signatures for that as is they want. But we can very quickly
+change the simple payloads to
+avoid that and they'd kind of be stuck in a game of false
+positive matching on very simple
+USB devices that have all sorts of other uses. So that was a
+big- these were the main 6
+objectives we were going for with this work. >>So, like
+everybody, we've built um- on
+the shoulders of giants. Um, We're obviously not the first
+people to come up with a lot of
+these ideas. Uh- A lot of prior art exists, in particular,
+Adrian Crenshaw's plug & pray
+from 2010 or 2009. Um- his malicious USB devices. He did
+uh- some really good work there.
+Um- Hak5's Rubber Ducky's also been around for a long time, so
+the- the concept of a malicious
+hit device is not new. What we'd like to show is that we can take
+it a step further, um- then
+other people have done so far and hopefully show something
+novel that uh- that you guys
+will appreciate. Um- other prior art, uh- the facedancer, um-
+devices from Travis Godspeed and
+Sergey Bratus. Um- I've shown that a lot of um- capability in
+the USB um- classes, um- the NSA
+playset TURNIPSHCOOL was a really good introduction to um-
+some embedded USB devices that
+was uh- a start at emulating the uh- the cottonmouth devices. The
+NSA things. Um- Samy Kamkar has
+done uh- the USB driveby, which is a keyboard and mouse device
+that will execute keyboard-
+keystrokes and mouse movements on a script, um- and then
+recently released at uh Hack in
+the Box in Amsterdam, um Seunghun Han's Iron-HID did some
+very similar things to what we
+are going to show you today. Um- But that was released after our
+DefCon submission so. So the
+hardware that we're using, or that we used to prototype this
+is a device from a company in
+China called April Brother, um- it's called the Cactus Micro
+Rev2, and it has an ESP8266 WiFi
+micro controller on it, as well as an ATmega- um Atmel
+ATmega32U4 AVR processor on it.
+And the reason this was important for us, the Wifi gives
+us a coms channel, and the uh-
+AVR processor gives us the USB capabilities. So the combination
+of the two was critical to- to
+pulling this off. Um- it has some problems obviously. The
+device itself is really really
+small, so which is obviously a good thing, but it has a micro
+USB connector on it, which is
+not particularly good when you're trying to make it look
+like a flash drive. So for those
+in the back, this is what it looks like. [inaudible] Um- so,
+it's compact enough to be a
+flash drive. You could put it into uh- into a casing but it
+needed the USB-A connector. Some
+advantages though, it's cheap. Um- they were going for around
+11 dollars when I bought- when I
+bought mine. Um- and it's got the basic capabilities that we
+need. The wifi and the USB
+capabilities. So we had some custom boards made up to address
+those shortcomings we
+identified. Most importantly the USB-A connector, but also, um-
+we added some storage
+capability, a micro SD slot. So we can put some storage on it.
+If we want to make it show up as
+a- a flash storage we can, or store data on it, for
+exfiltration. Um- but we also
+connected a few of the other uh- lines between the two
+microprocessors so that we can
+use some of the other capabilities that exist. So
+there's the- the finished
+device, both sides. Um, and in a case. So, it's pretty innocuous,
+it looks exactly like a flash
+drive. There is nothing really that distinguishes it otherwise.
+Ok, so let me run you through
+the flow of how the device actually works. On one side
+we've got the attacker, and on
+the other side we've got our target. The attacker connects to
+the esp device, the esp
+processor, which is running esp-link firmware with some
+modifications. And that
+connection happens over WiFi which means that the attacker
+can use a lot of standardized
+tools. That's an interface that everybody has capability to
+interact with. The esp-link then
+interacts with the AVR processor, and I just want to
+point out that these are both on
+the same board. It's shown separately because I had two
+separate controllers, two
+separate micro controllers, but they're actually on that same
+board. Just connected via a
+serial link, a uart. The AVR processor is using the LUFR
+framework, which is a- um- a
+software package for the AVR processor which allows it to
+show up or to emulate uh- a
+variety of different USB devices. And that is how the AVR
+process then appears to our
+victim once it's plugged in. So the first problem that we ran
+into was well, we need to get
+keystrokes to come at the USB interface and be seen by the
+victim. So I started off by
+looking at what the actual bytes are, that are needed to send
+those characters, and you need
+to send 7 bytes and character A is byte 3 et cetera et cetera,
+and I wrote a program on my PC
+that would connect to the esp over wifi and send those bytes
+that needed to come out the
+other side. But that ran into a problem, and, you know things
+like dealing with alt-tabs and
+control-alt-deletes, et cetera et cetera, made life pretty
+difficult for me. And then I
+realize that, well hold on a second this is actually a solved
+problem. What I'm really talking
+about is VNC. VNC has been doing network keystrokes and mouse
+movements for years and years.
+So, in order to take advantage of that, I then implemented a
+VNC server in the esp micro
+controller. Turns out that the VNC protocol is pretty simple if
+you can ignore all the graphical
+compression and uh- that side of things. So the esp then passes
+those keystrokes down to the
+AVR, the AVR emits those keystrokes as USB keystones
+events and mouse movements as
+required. the other aspect of the uh- of the AVR, is that is
+can provide multiple uh-
+interfaces simultaneously, and using what's known as a
+composite device. So while it's
+being a keyboard and a mouse, it can also provide additional
+channels. We looked at using
+some, you know, pure keyboard and mouse coms, um- thinking
+that we could extract data using
+the keyboard LEDs, the scroll lock and the- the num lock and
+the caps lock LEDs, because
+that's a reverse channel that's available to a keyboard. And
+then we discovered, that's not
+novel, somebody's already done that in 2012 and they managed to
+get a whopping 1.25 bytes per
+second. So we reckoned that wasn't good enough and uh-
+explored some other
+alternatives. Um, other alternatives that we- that we
+considered were devices such as
+text only printers, um- things like sound cards, MIDI devices,
+which all have default class
+drivers in most operating systems that you're interested
+in. They'll automatically be
+recognized. And it'll be really really easy for an attacker to
+connect a device and not have to
+worry about loading driver software or anything like that.
+No prompts show up on the
+victim. You simply plug it in, Windows recognizes it, and
+you're good to go. Another
+aspect of um- what we implemented, we realized that as
+a- as a keyboard and a mouse, it
+doesn't actually give you any particular elevated access, it's
+just a keyboard. So one thing
+that we realized is that we can only launch our attack, when the
+screen is unlocked. One thought
+that we came up with was then to implement an automated mouse
+jiggler. So all it does is it
+moves the mouse periodically, every couple of seconds, one
+pixel to the left, one pixel to
+the right. So your mouse doesn't move around, but it stops the
+screen saver from kicking in.
+And it works pretty well, if you only do one pixel, it doesn't
+actually disturb the screen
+saver if it's already kicked in. So if the machine has gone to
+sleep and you plug this in, the
+device will stay asleep, and the screen saver will stay active.
+As soon as somebody unlocks the
+screensaver though, the mouse jiggler will stop it from
+reactivating. It turned out
+pretty well. Ok, so, having implemented the keystroke
+channel, we then realized that
+we needed to have a um- this additional pipe. So we've
+launched our basic exploit, and
+now we need to have this backchannel communications, and
+in order to do that we used, for
+this particular exploit, or demonstration, we used a generic
+HID class. What's great about
+that, is that you plug it in, Windows recognizes it, and
+you've got permission to access
+it. There's no administrative privileges required in order to
+access the generic HID device.
+So the process goes um- like this: We use a scripted VNC tool
+to type out our stage zero
+attack. Our stage zero attack then, is as minimal as possible,
+the bare minimum code that we
+could um- arrive at that would open up that generic HID
+interface and then read more
+data from that. A secondary stage or a stage one. Some of
+the problems we ran into, well
+obviously we want this to be as stealthy as possible, so you
+don't want somebody sitting
+there, to suddenly see code being typed into their machine.
+So the first thing we did was we
+configured it, well the code we ran set the foreground text to
+be the same color as the
+background and then clear the screen. So you get a clear- a
+blank screen just showing up on
+your PC. Well, it's not great, but it only happens for a few
+seconds. Shortly after that, we
+move the screen- sorry, we move the window off the screen. So,
+in order to still receive
+keystrokes, we can't minimize the window, but we can move it
+off screen to position
+2000x2000, that's off most peoples' screens, um- and it can
+continue to receive keystrokes
+even when it's no longer visible. It does still remain in
+the task bar however. Because it
+was to in order to receive those keystrokes. The last thing we do
+once we've finished executing
+our payload is to make that window disappear from the task
+bar. From start to finish, the
+process takes about 3 seconds before the um- the text becomes
+invisible, about 5 seconds
+before it disappears off the window, and about 13 seconds in
+total, for it to disappear from
+the task bar. So that's pretty quick. It's averaging between 60
+and 90 characters per second for
+our typing. Once our stage 0 payload is running, we then send
+a stage one. It's a very simple
+payload but it can be as complex as you want it to be, the stage
+zero simply reads a two byte
+length and then that many bytes of powershell to execute. So
+some examples of a stage one we
+have, um- one that spawns a command shell, which we'll show
+you. Um- we've got another one
+that takes a screenshot of the victim's desktop and then sends
+it back as a jpeg. Um, and we've
+got some other payloads that we're still playing with that
+uh- we'd love to show you if
+you're interested after the talk, because I think we're
+going to run out of time. >>So,
+like Rogan was saying, one of the- the big problems with this
+is you need to make sure that
+that initial typed payload is as stealthy as possible. Um- and I
+think we've come up with some
+fairly decent optimizations that- that mean we can type an
+incredibly small payload so our-
+our sneakiest payload is about just less than 1000 characters,
+which can be typed pretty
+quickly. Uh- and we can do a bunch of optimizations before
+hand to hide it, plus I think
+it's pretty cool that it reads from the HID device. You don't
+have to rely on sort of fragile
+typing to- to get the thing across. Uh- we tried some other
+things so we ran into some
+issues with alternative keyboard layouts. Uh- so were using a UK
+keyboard layout versus uh- a USA
+keyboard layout. And different characters come through
+differently, particularly when
+you're typing sort of semi-advanced powershell code.
+One of the easy solutions would
+be to base64 encode that, but those of you who have played
+with things like empire or
+powershells, base64 encoding, that ends up like over doubling
+the size of the characters
+required because of the way it does the base64 encoding. So we
+had to keep it as small and as
+sneaky as possible. We also tried some other interesting
+things which we thought were
+quite clever but they didn't work out so well. Because we're
+typing, we could technically use
+tab completion from powershell, so we were able to implement a
+payload that uses tab completion
+as much as possible, which saved us, I think a total of 12
+characters. Um- it wasn't really
+worth the effort. But with the code we're going to release,
+we're going to release a simple
+little powershell mini-fyer so those of you who are trying to
+get smaller powershell exploits
+into smaller buffers, that might be- be helpful for some of you.
+>>So some of the other prob-
+yeah- Some of the other problems we ran into were uh- float
+control issues. So, the process
+of developing this was, one of, pretty much pulling my hair out,
+um- to be quite honest. You
+start off with the attacker's machine which is a multi
+gigahertz desktop, you're
+talking to an 80 megahertz 32 bit processor dealing with the
+Wifi stuff, talking down to an 8
+megahertz, 8 bit processor, with a few bytes of rams and so on,
+um- and then ultimately talking
+to another multiple gigahertz processor. So it became quite a
+problem of making sure that
+while you're sending the data at full speed from the attackers
+machine to the esp, the esp then
+has the ability to say, woah slow down, I can only send data
+so fast to the AVR. Again, only
+send it so fast to the victims PC, and then, again in the same-
+in the reverse direction, from
+the victim, back across all of these different disparate
+capabilities. Some of the
+problems um- that we ran into, the esp has a 128 bit fiffer- uh
+buffer. So you fill the buffer,
+and then the AVR goes, okay enough, but, it's filled it
+again by the time the AVR has
+read of that- that data, and you end up running over the edge of
+the buffer and jumping off into
+no man's land. Some of the problems though, you're
+debugging so you've go no um-
+you know no screens or anything like that to see what's actually
+happening. You're trying to
+infer behavior based on- like a light flashing or something
+along those lines. So it became,
+kind of an exercise in whack a mole trying to figure out
+exactly where all this was going
+wrong. And especially when it came to debugging the esp. Its
+behavior if you got anything
+wrong is to reboot. The watchdog timer kicks in, and everything
+goes away. While it's got uh-
+debug capabilities, um- the esp-link firmware in particular
+gives you a nice debug window
+that you can access using an http server. once it reboots
+that data is gone. So, in order
+to successfully debug it, what I ended up doing was putting two
+USB to Serial adapters,
+monitoring the lines between the esp and AVR so that any
+debugging output are to send
+from one processor to the other, monitor it with the um- with the
+two USB Serial adapters, and
+then I could finally sought to figure out where I was going
+wrong. And then, a final problem
+that I needed to be able to solve, was the orchestration of
+all the components. You've got
+your VNC script sending keystrokes, um- you've got your
+stage one being sent over
+Telnet, uh- and you need to make sure that stage zero is
+completed before stage one
+starts pro- trying to be processed, and then any
+subsequent stages. So it became,
+um- a little bit of a- a dance, if you like. Making sure that
+all the moving pieces were
+moving in the right time, and in the right direction. >>And so
+the bits Rogan doesn't tell you
+about, he says he lost a bunch of hair. But- include things
+like 3 o'clock yesterday night
+as he's trying to develop one more thing, dancing around the
+room thinking something's won,
+only to have it fall over, and to return to his chair in
+disappointment. Um- and so the
+thing that this made clear to us in developing it is that in the-
+the world of PCs and mobile
+phones, as attackers, or even just normal users, we're used to
+the idea that there's these
+really robust, well tested frameworks, stacks, libraries.
+But the second you move to
+little pieces of shitty hardware that are this big, um- you end
+up in a dark world of pain, fear
+and loathing. Um- and so the- the move from the theoretical to
+the actual implementation with
+this is quite a long path, particularly as you move across
+all of these different layers,
+I'm sure there are embedded hardware programmers who would
+look at the code and laugh, and
+laugh, and laugh. Um- but, it's not like you can have just one
+area of specialization in this.
+You're moving from USB to Wifi to Telnet to VNC to Powershell
+and really is a cross functional
+thing. And so, we weren't able to find any live chickens in Las
+Vegas, um- and we haven't
+sacrificed anything to the demo god, um- and we're going to try
+and show you a video demo. We're
+going to try and show a live demo later on, but we thought,
+let's have at least one thing
+which works before we march off in shame. So, this is a video of
+said demo, and on the- It's not
+showing up, is it? >>Yep, We're good >>Alright so, that's your
+right hand side is the attacker,
+and the left hand side is the victim. So the victim machine is
+bog standard Windows 8 uh-
+default configuration other than having installed antivirus.
+There's no network connection
+available. So, the thing is air gapped for all intents and
+purposes. And then, probably the
+longest part of setting up this machine was downloading the
+bloatware that is McAfee, um-
+for it to give us a little green icon saying we're secure and we
+updated it last night. So we've
+got the latest and greatest protections there. Now, we
+mentioned that it's got a mouse
+jiggler to stop the screen saver, and so you can see the
+screen saver is set to timeout
+after one minute. Um- and the really cool thing about this
+implementation, the mouse
+jiggler that we've found, is that most operating systems
+smooth the output, so you don't
+see the mouse moving at all. So even though it's moving the
+mouse one pixel right and left,
+you just don't see anything. So, if everyone could brace
+themselves, we're now going to
+spend a minute watching time tick on that clock. No not
+really. Uh- if we fast forward a
+minute, uh- Rogan and I set this staring at the screen, waiting
+for that clock to tick. It's
+really just to show that after a minute, the screen saver doesn't
+engage. So the user's gotten up,
+they went to get some coffee, trusting that their screensaver
+would kick in, it doesn't, and
+we're now free to launch our payload. Alright, so, we then
+move to the attacker's machine.
+Obviously we're displaying these side by side. They're not going
+to be physically next to each
+other, there would be a wifi connection between the attacker
+and the little device. And so we
+ran our attack, which just pipes everything to that were- that
+we're trying to do. And so here
+you can see it running- the- it popped up- start, run, typed in
+powershell, brought up a
+powershell window, and you can see in a couple of seconds, it's
+hidden the text. So that's the
+first attempt at sneakiness, so user doesn't see a bunch of
+strange hieroglyphs flying
+across their screen. Um- and then after a couple of more
+seconds, we move that window off
+of the screen. But keyboard input is still going into that
+window. If we'd hidden the
+window, the keyboard input wouldn't go there. But you can
+see it's still on the task bar.
+Eventually after it's put in enough to start reading from the
+HID device, we don't need the
+keyboard input anymore, and we can hide that window and put it
+into a proper background
+process. You'll see then on the right it says sending 2568
+bytes, that's the second stage
+that Rogan was talking about. And this one, we're just sending
+the simple command shell that
+can speak the HID protocol that we developed. And it gives us a
+DOS shell back over wifi. Um-
+and so we can run the l33test thing we could thing of,
+calc.exe. [applause] Uh- If only
+my mother got this applause overtime she ran calc. And then
+of course, our trusty,
+multiyear, multiuser McAfee license has done its job. It
+told us the computer is secure.
+And, don't really blame antivirus, we developed this so
+that it's inherently not
+something that's going to be picked up by- by those sorts of
+things. Alright, let's see if we
+can go back here. So that was the- the basic demo. I think
+we're doing kind of alright on
+time, we'll see. So, defenses are kinda hard for this. Um- now
+if we're completely honest about
+this, if you calculate the CVSS score, this comes to like a 5 at
+a max. Because it requires
+physical access. Um- but, the problem with this is it's- it's
+a very difficult problem to fix.
+So the immediate and obvious solution is going proxy or USB
+ports, but that's not a
+particularly practical solution. Uh- we've seen organizations
+that have GPOs in place that
+will prevent changes to their- the USB devices. So practically
+the way it manifests is you
+unplug your keyboard and you can't plug it back in again. I
+mean you can physically plug it
+in again but it doesn't show up. An IT guy needs to come out and
+type in an admin password. Uh-
+so those of you who run organizations who have service
+desks will know that that's
+probably so impractical, that you'll have a large part of the
+user base just skipping it.
+Mostly executives, right? They'll get so mad about it,
+they'll shout at IT and then
+they'll get bypassed. Um- so that's the one set of defenses.
+They're kind of uncomfortable.
+This stuff that you often see proposed in response- for
+example USB HID attacks in
+general, is that we need some sort of USB authorization
+framework. But it's actually a
+really difficult problem to do. So what that would look like, is
+you could imagine there's some
+kind of crypto chip in your USB devices, your mouse, your
+keyboard, that has got some kind
+of signed key, that means it's allowed to run on- on the
+device. But, I mean that- if you
+look at the response to Microsoft's changes to driver
+side signing recently, um- the
+barriers to entry then for your average hardware manufacturer
+gets much higher, and it's gonna
+push up the cost. And even if you do all that, there's nothing
+really stopping us from just
+hooking into a legitimate keyboard signed thing to do some
+of these things. And so now
+you've got to start having like- tamper proof hardware, and TPM
+chips and an entire PKI um- all
+to try and make it much harder to plug a keyboard or a mouse
+in. This is an inherently
+difficult problem to solve. And so we're in the uncomfortable
+position of what are we going to
+write in pen test reports if we use these things. Um- and that's
+kind of the point, is, we see
+real bad guys doing it, from the NSA to garden variety criminals.
+Why don't we have the ability to
+detect hardware key loggers in software. Um- this has got to be
+a problem that- that we need to
+solve now. I mean, hardware key loggers are used in real attacks
+all the time. Um- and so, yeah,
+unfortunately the defenses are really uncomfortable, and
+hopefully we'll- people will
+apply some smart thought here and those will get a bit better.
+Alright, so, that's kinda the
+end, but um- Rogan has a polo neck and he thought he would try
+a Jobsian- Jobsian one more
+thing. So we're going to try a live demo, which is definitely
+not going to work. I'm just
+managing expectations here. Alright so lets move all the
+windows around. So what Rogan
+spent time doing last night instead of working on- on
+slides, well let me leave it to
+you. [pause] >>So what I was working on last night was trying
+to get some integration with
+metaspolit framework and I was successful in getting a shell,
+uh, staged shell. So Shigoku
+Chennai and I stage shell sent over the HID interface to- to
+the victim machine and running
+there, talking back again, across the HID interface to an
+MSF console running on the
+attacker's machine. And in order to do that, uh- I implemented a
+TCP proxy that would accept a
+TCP connection on port 655 through 5 to local host, and
+then relay any connection- or
+any data across the HID interface. Nice thing about
+using local host, is that your
+loc- your Windows firewalls et cetera, don't pop up any alerts
+for listening sockets. If you're
+listening on a public IP address or a public interface, a
+publicly accessible interface,
+whatever. Should we say externally accessible interface.
+Your firewall popup and say do
+you want to allow this um- application to listen, but if
+it's on local host only, the
+assumption by the firewall is that, this is legit. It's an
+interprocess communication and
+nothing to worry about. So, yep. On the left we have out victim.
+Make sure our USB device is
+connected. >>So, what Rogan did, which I think is pretty cool, is
+he built a little TCP proxy that
+will then bind to local host. Uh- so the powershell would
+invoke this thing on the- the
+host. So that means, is uh- payloads, which talk TCP or HTTP
+can now talk the HID protocol
+without needing to be rewritten to use the HID protocol. Um- and
+so- whats- that's one of the
+ways you can then use something like- like Meterpreter, um- and
+the disadvantage is it's
+slightly less stealthy. You're gonna have a socket on local
+host, 65535 running as a proxy,
+but the plus side is you can more rapidly integrate other
+payloads, you know, your
+favorite um- favorite malware to use this local stealthy coms.
+>>So one of the things uh- we
+are looking at is doing a proper integration uh- into
+Meterpreter, uh- build a proper
+HID payload r HID um- transport and get that to work natively
+without the TCP proxy as the TCP
+proxy does have its advantages in terms of easy implementation
+of additional payloads. So,
+sacrifice is done, let's see. So this is real time, this is live.
+Gives you a real indication of
+how long it really takes. [chuckle] >>Um- and so, if you
+look on the bottom right, maybe
+I should zoom in on that. You'll notice that the L Host is
+127.0.0.1 so this isn't going
+over- over some local- local network. >>Nope, it died. >>Oh
+no >>Unfortunately. Sacrifice
+not accepted. I did have it working, but yeah. >>Yep,
+alright, well that was the least
+exciting demo of the day. [applause] >>Alright, does
+anyone have any questions? Um-
+we're going to release the code shortly after this. You can get
+it on github.com/sensepost.
+Thanks for your time. >>Is there any way to detect uh- that the
+mouse track has mo- moved- uh
+moved um- remotely. >>So the question is, is there a way to
+detect whether the mouse is
+moving remotely? So like the mouse Jiggler specifically.
+>>Uh- so not really, to answer
+the question. Not really, there's no feedback mechanism
+from us. Keyboard's got a
+feedback mechanism with the USB- sorry, with the toggle LEDs.
+Mouse has got no feedback
+mechanism so you won't get anything over the USB connection
+unless you've already got some
+code running on the device itself. [inaudible] You'd have
+to be in front of the victims
+machine in order to see that the- you're not going to see the
+mouse moving. This was part of
+it. It's moving one pixel which is actually indistinguishable.
+The operating system doesn't
+actually move the cursor at all. Um- so even if you were there,
+you wouldn't actually see the
+mouse moving. All you would see is that the screen saver doesn't
+activate. [inaudible] >>From the
+mouse itself you cannot query for the current x,y position on
+it? >>No, >>ok >>you- you- you-
+well >>In partial? >>In partial you can, the operating system
+knows what the mouse point is
+x,y is. A mouse simply emits, I moved left, I moved right. So
+the mouse itself has no idea.
+>>Uh- how quickly could you re-characterize the keyboard
+you're impersonating. For
+example, from a corporate client point of view, you might have
+the domain white listing a short
+list of USB devices so their classic design for the keyboard,
+or the classic design for the
+mouse that goes into an entire fleet purchase set of laptops or
+desktops and you don't start out
+with the same keyboard identification, like you're not
+an HP for example. >>Right, Ok.
+So, we're emulating- emulating a standard keyboard. Uh- obviously
+different keyboards have got
+different uh- USB descriptors so given a particular keyboard that
+we want to copy, copy the
+descriptor, and then make sure you behave the same way, not
+particularly difficult. Uh- it's
+probably under a day's worth of effort. Under a day. >>Awesome
+talk ahem- awesome talk guys,
+well done, looking forward to seeing the code when it's
+released. Uh- could you say a
+few words about what individual people could do to prevent this
+on their machines, not GPO
+solutions for enterprises, but private people running, I don't
+know, Windows versions that
+might have some hardening features that you can use to
+prevent this. >>Um- so, this is
+what you're saying is a really difficult thing to do. If you-
+if you implement the GPOs, it
+makes it really difficult to use your machine. You know, you want
+plug in a flash drive, denied.
+You want to plug in a keyboard, denied. Uh- you know, IT has to
+connect over the network and
+authorize it. And that leads to all sorts of, you know,
+impediments to actually getting
+your work done. Okay, we're done. We can talk outside.
+>>Thanks very much. [Applause]

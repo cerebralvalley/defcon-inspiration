@@ -1,0 +1,770 @@
+>> Hi DefCon. So, you’re at the
+last talk of the evening. Please welcome Chris Eagle. [Audience
+Applause] >>All right, thanks very much. Can everybody hear
+me? [Inaudible audience reply] Can’t hear you. Can you hear me?
+Good. [Inaudible] Um, I’m Chris Eagle, thanks uh, thanks for
+coming. Got the Mr Robot [Inaudible] on next door. Maybe
+you’re all just here to stare at the sexy machines back here, I
+don’t know. I’m about tired of them [Laughs] [Audience laughs]
+Oh, where did my sheep go? [Grunts] She wandered off. Um,
+okay, um [Chuckles] Wrong angle... [Chuckles] Not her best
+side.... Okay, I’m here to talk about uh, a project that I’ve
+been working on uh, for a lack of a better name, called ‘School
+De-bug’. And, uh, it’s about uh, emulating various processors
+using uh, the Unicorn framework for emulation that was released
+at BlackHat last year, and uh, because it’s kind of what I do,
+it’s all baked into IDA, and we’ll uh, we’ll see if it’s
+interesting and go through a couple of example and watch
+things crash, uh, and hopefully have some fun. Uh, got to say
+this – everything I say today is my uh my own opinion, not uh not
+that of my employer and certainly not that of DARPA. Uh,
+they don’t let me talk on their behalf. Uh, little bit about me
+if you don’t know these folks down here in the front row are
+filling seats to make the room look full. I’m a senior lecturer
+of computer science at uh, out at a place called The Naval Post
+Graduate School in Monterey, California. Doing security
+related stuff, uh, for a long time now. Do a lot of reverse
+engineering of various sorts. I play a lot of capture the flag;
+I’ll be racing back over there right after this talk is over.
+And, uh, a performer of really stupid IDA tricks, proofing that
+just it can be done, doesn’t mean it should be done, but
+that’s worth your watch I guess. Uh, so this is really about CPU
+emulators, okay and uh, they’re useful in a lot of cases where
+you may not have a hardware to run a uh, particular set of code
+on; whether it’s a well-structured binary, or just
+a small snippet of say something like say Shell Code, and you
+don’t happen to have an ARMS devices or a MIPS device or
+SPARK device sitting around and you want to know how this thing
+behaves. So, you’re either going to become the world's best human
+mips engine and you can interpret this stuff in your
+head and process it and uh, figure out what’s going on or
+you might want some help. And that’s uh, what I was looking
+for when I started thinking about baking emulators into
+things like IDA, because in my particular use case, IDA is
+virtually my desktop - I’m in it all the time, and I often have a
+desire to step out and execute something because perhaps my
+comprehension of the instructions set is not
+sufficient enough for me to understand what I’m reading, or
+I just want to verify my suspicions about the behavior of
+a section of code, like to run through it – perhaps not en
+entire executable, maybe I don’t want uh, to have to load up ELF
+and deal with you know the colonel loader, and operating
+system, etcetera. And uh, libraries, it’s just a full
+blown execution environment of our just to run through 5 to ten
+lines of code. Okay, so – I thought about this and decided
+that if you know I could just run these line of codes every
+time I wanted, in some very striped down environment,
+wouldn’t that be nice? We’ll talk about how I got to that –
+how I got there. from, uh, from here. You’ll might also want to
+run some code on obsolete platforms, because you don’t
+have real hardware to do it on. There's plenty of software
+emulators out there these days that do these kinds of things.
+But, uh, another use case for uh, emulation and uh, there’s
+another one I missed but I’m not going to go back. Uh, so
+emulators run the gamit from the the, simplest emulators that
+there are – unicorn is in fact a very simple emulator. In fact,
+its not itself an emulator, its not stand alone thing, it is an
+API that lets you point at instructions and execute
+instructions one or more at a time. Okay, receiving some
+signals along the way – you can, you can hook into it and get
+call-backs, and so on. And I’m really not going to talk about
+the inner workings of Unicorn, but I would encourage you to go
+out and try to find some of the slide decks that they posted
+following BlackHat last year and there’s some other presentations
+they’ve given at a variety of conferences, uh, and uh dig into
+the projects if uh you think you, you have a use for baking
+an emulator into anything. It is sort of to execution of
+instructions that’s what capstone was to disassembly of
+instruction sets. So a fairly general-purpose framework across
+many architectures that lets you uh script up things very
+quickly, uh and in this case uh we’re going to execute things
+uh, in just a few lines of code. Uh, that’s the basics of
+unicorns and all [Inaudible] get into But, there is a few fairly
+sophisticated emulators out there I will refer to those
+later on, but Unicorn is literally pointing at an
+instruction and update the internal state of Unicorn and
+that is it. And that instruction manipulates hardware you’re not
+going to get anything like that, okay so the notion of a full
+blown emulator on like a QEMU isn’t what you’re going to get
+out of Unicorn. So, the idea with this project was to build a
+lightweight CPU emulator, available in a static reverse
+engineering context, right. I didn’t want to have to go
+full-on dynamic analysis, uh, with debuggers and processes and
+maybe a hardware operating system, any of that stuff – I
+just wanted a very lightweight emulator that would let me step
+through code. We can expand on it from there, and I’ll go into
+uh, a little bit about the history and what lead me here,
+in uh, in a couple slides. The idea is – you’re looking at some
+code – we step out of that static context we go execute
+through some instructions in this emulated manor, and then we
+take the knowledge that we gained by observing the
+execution state, either to enhance our understanding of the
+binary, or maybe incorporate some of that information back
+into our static picture, to perhaps improve a disassembly
+and make some annotations uh, what have you. You know you view
+something as simple as utilising a simple loop that you see in
+some code, to decrypt, decode, de-obfuscate, whatever it might
+be, whether that itself is code, self modifying code or whether
+it's some data uh, some strings, anything like that and then
+bring that data, that information back into our static
+analysis, uh, without having any code to execution. Uh, okay – so
+the end result is what I’m going to talk about today, just like
+the [ia] emulator that I baked into IDA, because if it’s not in
+IDA I’m probably not going to use it and that provides my
+static uh, analysis side - my disassembly side and then the
+emulator, as I’ve mentioned previously, is going to be based
+on this Unicorn framework. I’m blowing through these slides;
+I’ll be done in no time. [Mumbling] Uh, I imagine if
+you’re sitting in this room today, you’re probably familiar
+with IDA? So, uh, if you’re not, okay… It’s a commercial
+disassembler, there’s some other disassemblers out there, we’re
+seeing new ones every day. Binary ninjas’ a new one that
+was just released, and uh, maybe we can take this project and
+integrate it with that someday. Uh, but for now, uh, I’m
+primarily working in IDA. It supports a lot of different
+processor families, uh, and so that - to me - made it
+attractive uh, to marry up with Unicorn – which also supports a
+lot of different processor families, not as many processor
+families as IDA does, but okay, more than one, more than two,
+more than three, I don’t know six or so. I’ll list them out
+here in a minute. Uh, but, it meant that IDA could understand
+all of the code that I would ever want to emulate in Unicorn.
+Okay, because the processors that IDA supports are a superset
+of the processor architectures that are supported by Unicorn,
+okay. It’s got uh, IDA itself has integrated debugging
+support, so actual dynamic analysis - let’s fire up the
+processor attached to it and pulling state. Uh, for x86 and
+armed targets and it can do some remote debugging on some other
+targets. Uh, it also has uh, decompiler for 32 and 64 bit
+X86, so, 32 and 64 bit arm. And that’s not entirely relevant to
+our talk today. Unicorn, as I mentioned, was introduced at
+BlackHat last year, comes again out of the same group that did
+the Capstone the disassembly framework and now that have uh,
+a tool called Keystone that in fact they may have talked about
+it at BlackHat. Anybody at BlackHat? Did they do Keystone
+this year? Yeah. So they talked about their new project –
+Keystone – I hope these guys keep coming back. That’s like
+three years in a row – Capstone, Unicorn, Keystone and they’re
+all pretty useful projects. And Keystone is their assembly
+framework. So now we have a disassembly framework, an
+assembly framework and an emulation framework. And you
+start to roll in these things together and you get uh, pretty
+powerful reverse engineering capabilities. The link out there
+to their site is up there on the slide uh, it, as an emulation
+framework is actually based on QEMU, so if you’ve ever used
+QEMU you know that it also supports a large number of
+architectures. And you might say, well why do we have Unicorn
+if QEMU supports a large number of architectures, and in fact
+Unicorn is based on QEMU. Right, isn’t this just the same thing
+all over again? The answer is “not quite”. QEMU has a lot of
+support uh, all the way down into hardware shims that lets
+you do full blown system emulation, we can, we can boot
+Linux, we can boot Windows in the QEMU environments because it
+has that support for hardware interfaces, virtual devices and
+so on. The Unicorn folks were not interested in any of that.
+All they wanted to do was be able to emulate processor
+instructions. Okay, they don’t want the hardware interface;
+they’re not trying to provide you network and video drivers or
+any of that stuff. They just wanted to help you uh, emulate
+instructions. What does it do? Let's see, right we run it in
+the emulator. What they did, was they tore into QEMU, they ripped
+out all that hardware extraction layer and we’re left only with,
+effectively the processors, right, the software CPUs that
+they then layered on top of right, we instantiate a
+processor give it some state it can manipulate and they give you
+access to that processor’s state and nothing more. They expose
+some of that, up to a couple of different types of APIs, and
+there you have it right. A scriptable emulator. Supports
+the family, the processor families you’ve seen here X86
+both 32 and 64 bit, same ARMS, SPARK, MIPS and Motorola 68 000.
+That’s not all of the processor families that are supported by
+QEMU, but it’s a start. It does take a fair amount of work to
+provide the interface to a given processor architecture, uh but I
+don’t think it would be a stretch to add in some of the
+other processor families that are supported by QEMU, if you
+wanted to enhance the capabilities of Unicorn. Okay, a
+number of projects, this is just one of them, have come along
+which make use of Unicorn – some of them are uh, pretty amazing,
+and uh, baked into a lot of very interesting analysis frameworks.
+I posted a link at the bottom, because you may be more
+interested in those uh, than Unicorn itself because they
+provide a somewhat more finished products. Right, these are
+things that you’d make use of right out of the box, right – if
+you did not intend to bake you know – if you didn’t have a need
+to script an emulator of your own. So, you can go find those
+out there, play around so on, okay. So, I picked IDA and I
+picked Unicorn – there are some other emulators as I’ve
+mentioned, I talked about QEMU already. I talked about, I
+haven’t talked about Box – Box is another one, okay. It is a
+pure x86 emulator. These are blups off of each of their
+project pages. Box is a highly portable open source 32 bit uh,
+x86 emulator. While QEMU is more general, a generic more
+processors open source machine, emulator and virtualizer. It’s a
+little bit more sophisticated than Box, but it's also, there’s
+a lot more to it than Box. So, could have gone with either of
+these I suppose, but they really weren’t geared to script around,
+Okay, and just, just access just the processor bits. So this is
+sort of where I’ve been with this project, okay. It’s uh,
+it’s been kind of a long road. Unicorn came along and filled a
+need that I had and actually fulfilled a, a vision that I had
+back in 2003, when I built a tool called IDA x86 emu. Okay,
+where I wanted to do exactly what I’d described. I wanted to
+sit in IDA and I just wanted to emulate things. Okay. And use
+that to either transform my, my static analysis picture or
+enhance my understanding of the behaviour of something. Okay.
+So, I did that and at the time that I did that I looked at
+those emulators, primarily Box and QEMU back then, and though
+“Can I rip into this, strip out the bits I don’t need and take
+just the emulator?” and I looked at it and I’m lazy and I said
+“Hell no” because they’re way too big. Right, so 13 years
+later, 12 years later somebody did it for me. Okay, and so then
+I revisited this project and retools and that’s again why I’m
+here talking today. So of you did all the heavy lifting, by
+stripping out all the, all the unnecessary stuff out of QEMU
+and dropping it in my lap. Along the way, the Hexrays folks, did
+an integration between Hexrays and Box. They did it in a
+slightly different way, and I’ll do two quick demos later on, on
+what these things look like and the different approaches you
+might take, as you think about doing emulation combination with
+a static analysis. So they released a Box debugger module,
+that IDA could communicate with. Right. If you’re familiar with
+IDA, you’ll understand what the debugging uh, views look like,
+uh, in contrast to the, the pure static analysis view, and we’ll
+uh see that here in a few minutes. Uh, did a similar thing
+for uh, the MSP430 processor, uh which uh, was the uh, processor
+that got used for the micro corruption challenges. If any
+folks have seen that, they’re a lot of fun. Uh, and they were,
+that was a pure MSP430 implementation and I didn’t want
+to deal with their clunky use interface through uh, through a
+browser, uh so did this emulator uh, it was in a style very
+similar to IDA X86 emu. And the along came Unicorn, and it took
+me a while, but I finally decided to integrate it into IDA
+to see if I liked it better or provided- proved more useful,
+uh, than some of these other combinations of tools. [Clears
+Throat] As I mentioned, I looked at QEMU and Box briefly, but
+that was going to be a lot of work. Uh, I didn’t have the time
+to uh, do it all and then again somebody else came along and did
+it, uh and their approach because we finally got QEMU
+involved in this whole thing, uh it gives us a lot more
+processors uh, than uh, uh, my particular approach, which was
+specifically an M86 emulator and so I got that one narrow
+architecture and I’ve never had another architecture and I’ve
+never wanted to do another architecture, because doing an
+architecture from scratch uh, was just more work than I wanted
+to get involved with. So, this was a nice marriage for me.
+[Clears Throat] Now, to the implementation. In implementing
+this, I had to make a couple of choices. Okay, again uh
+hopefully people are somewhat familiar with IDA and what it
+looks like, okay. With IDA you get your standard disassembly
+view okay, and then there’s this debugging view. Okay, but you
+have to do a little bit of work to integrate what you’ve learned
+from the debugger back into the disassembly view and often times
+it involves overwriting a lot of information in your disassembly
+view. Okay, so you might going into the debugger and learn
+something but it’s it’s fairly transient in nature because
+you’re starting a process and eventually that process is going
+to terminate, and the information that you learn, uh
+vanishes with that process. Okay, there are ways to migrate
+some of that information back into IDA; overwriting the
+initia- the original data in IDA uh, but you’d have to automate
+some of that and uh, it’s it’s not necessarily a very clean
+approach. Okay, so the alternative approach is you
+don’t jump out to a debugger, and you find some way to
+incorporate emulation right there alongside your static
+analysis view. Okay, in order to do that your emulation has to be
+able to maintain state, so you’re either maintaining state
+entirely separately from what you’re looking at in IDA, right?
+In IDA you get to see an entire disassembly right, through the
+various portions of a program; your code, your data, etcetera.
+What you don’t have are things like a stack or a heap, right,
+any of your uh, virtually allocated memory. Uh, and, but
+you need that in the emulation. So, you either start modifying
+your database and adding all of that, those bits and pieces in
+there, right so you expose them and make them available to view
+and navigate through. Or, all that information remains buried
+in the emulation and you have to come up with some way to, to
+propagate just what you want up into the static analysis view,
+when you’re ready to consume it right, when you’ve decided that
+you’ve learned want you wanted to learn and you’re ready to
+annotate that static analysis. When I did X86 emu, I took the
+first approach. Okay, and you’re literally emulating on top of an
+existing IDA database, so as you do the emulation, you’re
+database get modified. There are some advantages and
+disadvantages to that approach, right. The disadvantages is
+obviously that is destructive, okay, so once you’ve modified
+something in you know, if you’re and IDA user you know there’s no
+‘undo’ in IDA. Right, so once you’ve modified it, right,
+there’s no going back, right. So, if you want to see what it
+used to look like, you either maintain a separate database, a
+lot of snapshots uh, and it becomes – it becomes a headache.
+But there – I have found it to be useful in many cases. The
+alternative approach is to take debugging sort of approach, and
+generally speaking in IDA that means you’re launching a process
+and you’re attaching to is in a way that a standard debugger
+would attach to the process; controlling the process, viewing
+the state of the process using IDA as a viewer, okay so you see
+what the running process state is, gives you access to all the
+things you have in a typical debugger. And in this case
+you’re not manipulating your static view at all, that IDA
+database doesn’t get changed at all, unless you absolutely want
+it to. Okay, you’re view is strictly into that transient
+process. Okay, again when it’s done, it’s done, okay. Perhaps
+you learn something, perhaps you use it to update your state -
+the way you use that is entirely up to you. This is the approach
+that the Hexrays folks took when they integrated Box into IDA.
+IDA shells out the Box, they create some IPC links between
+IDA and Box, IDA pushes the state into Box, okay, including
+right the code, the data that are being represented in that
+IDA database, and then tells Box to go, right, gives an initial
+recognition register state and then single step, or allows it
+to run freely, okay, as you see fit. Okay, pulls the data back
+out of Box and shows it to you in IDA’s debugger view. But then
+again, once you’re done, you’re done and none of that updates or
+static analysis state. I did mention there are some ways to
+pull state back into IDA, but you know it’s entirely up to you
+how you’re going to do it. I’ll show you some demonstrations,
+I’ll show you two approaches, and uh, you can use that to
+understand what I do with Unicorn. [Clears Throat] In the
+case of Unicorn, the approach I ended up taking was the
+debugging approach. Because, it just felt a little bit cleaner,
+I didn’t want to get into updating databases uh, I wanted
+to leave things flexible for the future, uh, might come along and
+implemented it differently. But, in order to implement it outside
+of a debugger, right, IDA doesn’t provide you any tools
+uh, to display something like registers, for example. Any of
+that execution state while you’re in a static analysis
+state registers have no value so you have to invent that user
+interface yourself. So, that’s one of the hard parts about
+doing it, uh, outside of the debugger state. My wife’s
+probably – she’s sitting up here and she’s not liking the slide –
+I don’t know, or agreeing with it. Right, in any case, uh took
+on this task trying to integrate IDA with uh, Unicorn, uh, a lot
+of unhappy development time, uh, a supportive wife, okay, a lot
+of time dealing with a mostly undocumented IDA interface, Uh,
+dealing with a particular style of plugin, known as a debugger
+plugin. And again, for those of you that know IDA, you know the
+state of its documentation. Uh, so I spent a lot of time reverse
+engineering IDA to try to learn how their debuggers actually
+work, because there isn’t much to go on in there. Uh, at the
+same time I was trying to integrate a piece of software
+that was really I say beta, that’s kind of generous, at the
+time I was doing this it was more like pre Alpha, So, uh, you
+never know where the problems lie – is it Unicorn? Is it IDA?
+Is it me? Uh, and uh, that’s what lead to bullet number one.
+But in the end I was able to subclass IDA’s debugger type, to
+provide debuggers for all of the supported Unicorn processor
+families, and end up with a debugger style interface for any
+one of these architectures, that you could use to emulate code
+wherever you are. So, if you’re using IDA on windows, and you’re
+running Unicorn, and you open up a MIPS binary – you don’t have
+to go find a MIPS platform anywhere, right you can just pop
+out into the debugger and emulate through you’re MIPS code
+and if you want to, you can utilise IDAs features from
+pulling some of that information back. Same is true for Spark, or
+Arm – what’d I say? 68K? x86, 64 Bit x86 on the 32 bit platform,
+or visa versa. Uh, so uh, I got exactly what I wanted 12 years
+ago with a lot more flexibility. Okay [c t]. As it’s doing this,
+you can go anywhere from basic “I got 5 lines of code I want to
+emulate” okay, to “trying to emulate through and actual
+process” right, if the code is formatted in a form of an
+executable … like an ELF or a PE, okay. The debugger plugin
+tries to load that up and map that into and address space that
+is roughly what you get if you were to run it on the actual
+architecture the binary was intended for. Okay, there’s a
+lot of challenge with doing that, okay. We don’t get to op-
+we don’t get to emulate through the colonel, right we don’t have
+a system called interface, although we’ll talk about later
+one of my goals is to add a capability of a hooking system
+calles, so you can sub out some of the more common ones perhaps,
+and provide some fake results back up into your emulation. So,
+the uh, the debugger includes very basic loader for PE’s and
+ELFs, right they load those two file formats into Unicorn’s uh,
+state into, into the Unicorn emulation before you start up
+you’re emulation, give you stacks, and so on. Okay, if you
+don’t have a format that Unicorn recognises, okay or the “School
+Debug” recognises, then all it does is takes the entire content
+of your IDA database and then copies it out into Map sections,
+right, in the Unicorn emulator. So, however it’s mapped in IDA,
+right, that’s what you get out in Unicorn. It usually throws in
+a stack okay, because that’s something you’re going to need,
+that you don’t ever see in IDA, okay, but stacks are pretty
+useful and uh, and awful lot of instructions make use of them.
+Some of the issues, with uh, doing all this- If anybody’s
+used Unicorn, right, you might have some familiarity with
+building that Uh, IDA is a 32 bit executable, Okay. Even
+though you may see ‘well there’s this 64 bit uh, version of IDA
+out there. All that means is that it can understand Uh 64 bit
+binaries. Okay, it is still a 32 bit native executable when you
+go to run it. That means that if you want to integrate with it,
+you’ve got to build 32bit libraries. Okay, so when you
+build Unicorn, you’ve got to build it in the 32 bit library
+of Unicorn, for the platform you’re running IDA on, okay,
+whether that’s Windows, Linux or Mac. Unicorn unfortunately does
+have very good support for building 32bit libraries, they
+sort of assume that everybody’s doing 64bit stuff these days.
+Why would you want to build 32bit binary anymore? So we had
+to fix that up a little bit, and they’re getting better at uh,
+being able to build 32bit binaries. Uh, doesn’t also have-
+also doesn’t have very good support available for building
+on Windows, that’s primarily related to QEMU’s dependence on
+g-lim. Which is not found on Windows platforms, right unless
+you reach out and find something like sig-win right, or ming,
+right and install the requisite libraries out of those uh
+particular utilities. So, this complicates uh, windows builds –
+in fact they don’t have windows built into their continuous
+integration uh, when you uh, go observe how the project is uh –
+the state of the project out there on github site. So it
+makes building on Windows a little bit tough, but it can be
+overcome and in the end you’re able to integrate uh, Unicorn
+into IDA on all the platforms for which IDA is available. All
+right. [Clears throat] It’s about all I’m going to talk
+about on a high level – it’s pretty straight forward: Here’s
+a – here’s a disassembler; here’s an emulator; and uh it
+either works or it doesn’t. So we’ll see. I’m going to go
+through some demos, and show you what it looks like. Uh, I’m
+going to start off with uh, some simple de-obfuscation stuff. I’m
+going to show it to you in a couple of different ways. I’m
+going to go through it fairly quickly, okay I’m not going to
+try – I’m going to try not to get bogged down into the details
+of IDAisms or how to use IDA, or things like that. I’m just going
+to show you what each of these things do, what they look like
+uh, and uh, let you form your own opinions as to the utility
+of each, and perhaps whether you prefer one approach to another.
+So, if this all works out I’m going to use this old-style
+emulator. Lets see. I have to pick the right version of IDA.
+Okay, we’ll do this one. Right, so you might recognise this
+section name, this is just a UPX pack binary. Okay, if all goes
+well here okay I’m going to bring up this old emulator –
+please work. Okay, it’s coming, my machine is slow. This is an
+example of uh, the original x86 emulator that I did in IDA
+[Chuckles] Good jokes, front row? Okay, and what you’re going
+to see here, assuming this works, is a, a crude like
+debugger uh, console, that’s going to come up. We’re not
+going to leave IDA’s static user interface. I’m not happy with
+this. Uh, and we’re going to be able to emulate through IDA with
+uh, without leaving it’s common interface here, unless it never
+comes up. Awesome. Okay, while that’s going on we may as well
+start the other one. Okay. Behind this door, we going to
+try do this with Box, okay IDA’s Box plugin. So, in order to do
+that, we’ve got to switch our debugger over and you see IDA
+offers a number of debuggers. It’s context aware; what
+platform you’re running IDA on and the nature of the binary uh,
+that you’re loading up. So you can see one of these is a local
+Box debugger, right. And assuming I haven’t messed this
+up either, and still have Box installed properly, right if I
+choose Box as a debugger. Oh, that doesn’t do anything; we’ve
+got to actually run it right? So, I’ll set a breakpoint at the
+beginning of the code here, I’ll set a breakpoint down towards
+the end over here. Okay, we’re not going to jump out and
+execute any of these functions call, because they jump out into
+Windows libraries. We’ll just set a breakpoint down here at
+the end, maybe bring up a strings view - try to convince
+you that it’s actually doing work. Right, all these strings,
+I don’t know if that shows up at all, uh, but these are the
+obfuscated strings that are part of the binary. You can see bits
+and pieces of strings, but it’s not fully de-obfuscated. And if
+Box lets me do this… ah… then, we can start debugging, and this
+is going to toggle into… maybe… a Segway back to the other demo.
+There’s Box- there’s Box starting up. I’ve got too much
+going on, on this machine. And so, IDA started up Box. It’s got
+this IPC channel between the two, okay. So now IDA gives us a
+debugger view – we’re not really running the process. Okay, all
+the – all the emulation data has been stuffed into Box, and Box
+is going to do its thing. But this is just a standard IDA
+debugger view, if you’re running a process and actually attached
+to it, this is what you’d see. It’s not the best user interface
+in the world, it's probably the- the number one knock against
+using IDA as a debugger, right, is it’s user interface. It’s not
+great, but we can step through it. Right, and the register
+state updates up here and so on. Right, and we can let it run,
+and we should hit our second break point at some point down
+there, and we can go back and look at the strings on the
+binary. And, maybe if I did this right… right, you’re just going
+to have to trust me. I need one of those things. [Audience
+laughs] >> [Inaudible response] >> [Speaker laughs] Yeah. Wow,
+I’ve just got to pull these strings out of Box’s memory. Al
+right, lets see how our other thing is doing. Look at that.
+It’s like a cooking show; you’ve got a couple of things in the
+oven at one time, right. So this is ... the emulated view, right.
+IDA x86 emu, totally different view – we never leave uh, the
+uh, normal IDA interface, and you’ve got this tiny little
+panel that pops up, right. It’s very specific to x86, so taking
+this approach with other architecture you’d have to come
+up with our own interface, right, and replace all the x86
+registers with whatever registers you have for that
+particular architecture. It lets you do some things like
+manipulate memory. Memory is really just the database;
+everything you’re manipulating is just a change to the
+database. Right and you’re just – that’s your memory story; you
+fetch bites out of the database, you emulate them, you modify the
+database if that’s what it says to do, Uh, but again, it’s
+destructive, right. So, we can sit here, and I can click on you
+know step, step and it’s hard to see but, if you watch the blue
+here… it doesn’t really highlight… that blue is stepping
+through various instructions and will jump down and follow
+through and so on. And I can reach down into the same binary…
+okay which is down here before these function calls, set a
+breakpoint and say ‘run’. And this is much slower than Box,
+because actually it’s… all the interactions with the IDA
+database are pretty slow, but we hit our breakpoint and we can go
+back to our strings window, and set this thing back up again.
+Oh, and we should have lots of interesting strings, right. Like
+this. And this is just an old IRC bot, but we got all these
+strings out of it because it’s mostly de-obfuscated. And then
+you say you’re done. Right, we close this up and you go back
+here and in fact what was formally empty space is now a
+code that we can go and disassemble. We didn’t hop into
+our debugger, we’ve destroyed our database, right, it doesn’t
+look like it use to look, okay, but we’ve got de-obfuscated
+code, and we just continue with this point doing a static
+analysis. Okay, so it’s a quick in and out and I considered that
+approach, but for the user interface aspect of it, okay, I
+might have gone that way. Now let's see if Box is behaving for
+us. Over on the Box side, we’ve got- hopefully got the same
+strings… somewhere. Yeah, look at all this library code. I have
+no idea why that’s even coming. No, oh yeah here we go. Right,
+and so here are it again, it’s an IRC bot and you can see
+registry keys in there that it’s going to reference, and so on.
+So we get the same result, but we have a modified IDA database
+[Inaudible]. Okay, so it’s like a running process, okay and I
+would have to then extract this from Box back into IDA, right if
+I wanted to make this data permanent. So, this is again the
+approach that I took, and now we’ll go do this a different
+way. And this is where you thought those demos were bad.
+Let’s see how we do here. Set a breakpoint up here, try to set a
+breakpoint same place down here. Okay. And this time I’m going to
+switch my debugger over, and if it’s installed appropriately,
+it’ll show up as School Debug. So we do this… okay. We go back
+up here to the beginning and we try to kick this off. Hopefully
+I hit my first breakpoint. Okay, and then the plugin looks a lot
+like Box, right. So, but this is Unicorn handling this particular
+emulation. Okay, so you get register state over here, right
+just like you do in Box, and any other debugger and so on. And at
+this point we can just step through, and it tracks along and
+I can let it run. And we’ll do the whole strings trick… see if
+we get anything interesting. Okay, right now there’s not much
+but name of a couple of libraries that get imported.
+Then we go back over here and we let it run, just hit ‘go’ here.
+Hit our breakpoint. Come back, rerun strings... okay, and like
+the other two emulators, now we’ve got all of these right,
+strings extracted from memory and if we go down to the bottom
+of the uh, self decoding loop we can jump up, and very much like
+Box, right this is the extracted code which we can then turn into
+code right up here in our emulator, or in the debugging
+session. But, again I don’t have that back in my database, and
+when I go to quit this, I’m right back where I started from,
+okay. And I don’t have any strings, and if I follow the
+jump right, up here you can see it’s empty. Right, because this
+is the region in the binary that it unpacks itself into. Right,
+so it’s it’s very much like a debugger and not a static
+over-write or whatever you might like to call it, okay. So that’s
+it emulating on 32 bit x86 code on 64 bit Windows. Let’s see
+what else I think I’m going to do, okay. Local arm emulation,
+so Windows platform; no network connections, no arm hardware,
+okay. Somewhere I’ve got an arm binary open, okay. Let’s see
+where this one comes from. Let me find the right binary… there
+we go. Okay, it’s an arm binary from an old DefCon ‘capture the
+flag’, shout out to legit BS, right, okay, uh, one of their
+first CTF’s. But uh, arm- arm binary on Windows, okay, and…
+actually it’s not going to offer me any debugger, because IDA has
+no clue what to do with this, right. ELF binary, Arm, Windows,
+right – don’t do ELF, don’t do ARM, okay, but the debugger
+recognises the architecture at least, so it says ‘I’m
+available” And it’s the only debugger that says it's
+available, so IDA has already selected it up there. And we can
+kick this off. And, now we’re debugging arm, more or less
+emulation. Don’t worry about that [Chuckles] Awesome, um, see
+where it goes on. So there’s some memory mapping problems
+there, let’s see if… yeah, not going to work. Clapping for my
+crash, it’s all … look at that… We’ll just pass all these
+exceptions on, it looks like it's just advancing, maybe it’s
+even updating registers. Okay. Uh, r2 is actually equal to one
+at this point. [Mumbling] look at that, yeah, okay. Uh, I left
+this open and it had some stale state and I think it's not happy
+with me, okay. But that’s the idea right – we’re in a
+debugging session uh, and we can jump in and out of this without
+having to fire up an arm environment, okay, do any remote
+communications… so a remote arm, a device, and then when we’re
+done we step out and we’re back in our IDA disassembly session,
+okay. What else? Oh! Now, MIPS, lets see. MIPS I don’t even have
+any idea how to read, okay. So, somebody out there probably says
+that’s MIPS, so I don’t know, right. IDA thinks it’s MIPS.
+Again, no MIPS debugger on IDA, I can’t switch my debuggers,
+right there’s no other debugger option so you can see that… No,
+don’t do that… Right, School Debug is, is selected, okay. So
+we try to hip ‘GO’ here, and, hopefully we hit our breakpoint
+from which maybe we can step, although I don’t have a stack,
+so this is probably a bad choice, let’s see. Step. Step.
+Step. Step. Right, and we’re emulating our way through MIPS
+code. Okay. Yes, 5 minutes, great, because I am tired. Okay,
+so we hop out of that and we’re again back to our disassembly
+view. Okay, and I’m not going to go into the ways you integrate,
+you know, what you have available in your disassembly
+view and what you have available in your static view. But,
+suffice to say, there’s ways to pull information back across, if
+you decide that it’s useful for augmenting what you have on the
+static side. Last thing I’m going to do is take a look at
+uh, one of the challenges from DefCon qualifier this year.
+Okay, and what this was, was a binary that [Clears Throat] they
+gave you a thousand of them. Okay, and when you went to
+interact with the competition, right, they as- you had one
+minute, right, to craft an exploit for one of these
+thousand binaries that they gave you the file name for. So, you
+downloaded a thousand binaries, and you had a minute to craft
+the exploit. So, it’s going to take a long time to do all those
+by hand, okay, so you want to automate this and you want to
+have an answer in your hip pocket when they say “Give me
+your exploit for binary number one.” Okay, so how do you
+automate? Well it turns out that all of these binaries have
+roughly the same pattern, and I’ll describe it, not by looking
+at the code, but by looking at the stack and there’s two
+buffers in here, okay. And all of the binaries differ in the
+location of that user input buffer in the stack relative to
+the same return address; the size of that user input buffer
+in the stack; and then the contents that gets placed into
+what I call a canary string, right there. So they gave you a
+free overwrite out of that user input buffer, but you have to
+figure out ‘how much do I have to overwrite to clobber EIP’
+okay, and after you’ve done that, which is not a problem,
+there’s nothing hindering the overwrite, but they come back
+and verify that the canary string matches the original
+canary that they’ve placed in there. So as you do your
+overwrite, you’ve got to rewrite the canary in there and it
+better match the original string. But all thousand
+binaries have a different canary and it’s not always obvious
+exactly the way they set it, right, they copy it, they copy
+it one bite at a time, they do a string copy, they do it a lot of
+different ways, okay. But they always end up doing a string
+compare at the end. So, if you can put a breakpoint at the
+sting compare, right, and hit it, it doesn’t matter what you
+fill the buffer with, you can do some other computations to
+figure out the distance from the start of your buffer, say EIP,
+set a breakpoint on the string compare, look at the required
+article sitting on the stack, and pick that out and these
+become your parameters. What’s my canary got to be; right how
+long is it from EIP all the way down to the uh, buffer? And
+there’s a couple other constancies’ you needed to pick
+out, but I didn’t want to do this a thousand times by hand –
+nobody did. And there’s some good write-ups about using some
+other automated systems to solve this, but what I did was I
+scripted up this emulator, and the emulator… lets see…
+somewhere the script exists, down here these things because
+this is implemented as an IDA emulator, right, you get all of
+IDA’s debugger scripting – I’m sorry – IDA debugger, all of
+IDA’s debugger scripting can be used to drive this thing, right.
+So we write the script, we load the debugger, we set some
+debugger option to break on start, we run through the start
+address, right, we do some things, okay, we get the value
+of EIP, and I’m picking out all of the arguments, all of the
+bits-and-pieces from a dynamic environment, although I’m not
+actually running a process, I’m just emulating through it. And
+by the time I get done to down by the bottom, I’ve picked out a
+bunch of parameters that I’m going to need. And, what I did
+was I just took those parameters and wrote them out as a python
+dictionary entry, and so I had a dictionary of parameters – when
+they told me what binary to exploit, I said “Ah, I made my
+key into my dictionary is the name of the binary I pick out
+the parameters, right, and I craft my buffer and fire it
+out”. Okay, and what that looks like is this. Okay, we run IDA
+in batch mode, okay and then I’ll be done, I promise. You’ve
+got this one, and then we’ve got which one…? This one. Okay, so
+I’ve got two windows right here, I tailing an output file on the
+bottom, okay, I’m going to use IDA in batch mode – you can see
+the long command line there. And, what I’m going to do is I’m
+going to run that script that I wrote, and I’m going to run it
+against one of these thousand binaries – well in this
+directory there’s 300 of them, and they all scroll up like
+that. We’ll see if this will work. [Inauble] Make sure I
+clean out some stale files – wait a minute I’ve got it. Kill
+that IDA session because… It’s going to get in the way of… the
+batch run, and we'll try this out. You’ll see IDA files you
+have to look in the background, if everything works. So, IDA’s
+coming in batch mode, we’re in debugger mode, it’s done you can
+see the output down at the bottom. Right, that quickly… It
+got into and emulation on that ELF binary, okay, ran through
+main, picked out the parameters it needed and dumped them out to
+me – now I wrap that in a little loop, do it for every file in
+the current directory, and I’ve got my thousand exploit
+parameters, and I’m ready to connect to the remote site.
+[Audience applause] Okay, so for the future and very quickly:
+Better user interface on launching the emulator it would
+be nice to be able to specify some register state – right now
+I just take a guess. Right, where do you want to start your
+emulation? Do you want your- any register to have particular
+value? So, I’d like to have that done up. Uh, some options for
+mapping into particular memory regions; loading other regions.
+Uh, if you’re familiar with IDA and debuggers there’s a very
+useful interface called ‘AppCall’ that just- that
+actually lets you incorporate uh, functions or call them
+almost natively from IDA python, right call out and have your
+function run and then spit the value back to you in your
+scripts. Uh, I’d like to have a hooking library, to be able to
+hook various functions and to things maybe other than what the
+emulator is doing, or provide shims for library calls or
+system calls, things like that. And, uh also perhaps add the
+option to go ahead and pull in all of the shared libraries uh,
+that a dynamic [Inaudible] library might link to, so you
+can follow the library calls down into a shared library
+function and emulate your way through those if you wanted to
+do so, rather than writing all the shims for them. Uh, it’s out
+there on GitHub, it’s out there today. Uh, I will push all the
+latest changes shortly after the Con. Uh, but if you’re
+interested, uh, I’m always interested in feedback. If you
+want to collaborate, I’d love to hear from you. If you have ideas
+on features that might make it more useful, and you don’t want
+to implement them, at least share them with me and maybe
+I’ll get around to them or find somebody uh, who might like to
+implement any of your ideas. And that’s it. And I’m happy to take
+any questions, or if not- if no question, please enjoy the rest
+of your conference. [Audience applause] Thank you. Uh, do we
+have microphones somewhere for questions? Yeah [mumbles] I’m
+supposed to direct you to a microphone, so it gets picked
+up. You can come by. You want to come up here? >> [Inaudible] >>
+Microphone is… oh, it’s right here. It’s right over here.
+Drink - don’t forget your drink. That’s right. >> [Clears throat]
+Hello. Uh, a couple of slides back, you mentioned uh, two
+console apple windows… >> That’s the wrong way. >> How do you
+recognize what magic 4 bytes overwrite EIP and how do you
+deal with bad characters? >> Uh, when I was doing the scripted
+demo? So, what I did was in the scripted demo, what I had to do
+is I had to study a couple of the binaries manually, right.
+Not a thousand of them, but I looked at two or three of them –
+looked at the first one and said “Well this is clearly an easy
+stack overflow” I understand that if it was just this one
+exactly how I would exploit it. Then I looked at another one and
+I said: Oh this one is subtly different. What’s different
+about it, and can I develop an analysis that walks through the
+program and at certain key points in the program picks off
+certain things for me. Okay, so what are the parameters? What is
+that buffer getting copied? Really uh, the string copy- or
+the string compare give it all always, it tells me the start of
+the user buffer and the start of the canary buffer, and from
+there what I can do is do some math to figure out where say EIP
+was. Okay, third binary, right – all of these things again
+looking similar, and so I took what I learned from looking at
+three binaries, developed an automated process that I would
+apply to the three binaries and then it extended nice and neatly
+through the thousand binaries, which was roughly what the
+intended. Okay, and what they wanted to do was force you to do
+it quickly. Right, so you weren’t going to be able to try
+reverse engineer all thousand to develop these answers, you
+wouldn’t have finished in the weekend. So I don’t- does that
+answer your question? >> Yeah, yeah. No, I’m assuming that
+that’s the logic you have to hardcode into the program, or
+does it auto detect that? >>Uh, that the logic that you have to
+bake into the script that you write. So, through here, right,
+are some various things that I was looking for, [Inaudible]
+extracting some register values, I’m stepping one instruction at
+a time, I’m asking you know “Am I at certain types of
+instructions”, I’m counting the number of calls, okay, that I’ve
+encountered, because the third call down the chain was going to
+be the stir copy, and when I got to the stir copy - right or the
+string compare you can- you can see what I’m doing is I’m
+picking some arguments off the stack, right that have been
+placed there [Inaudible] passing through the string compare and
+then I- I’m using that to derive all the information I need to
+craft the exploit parameters. >> Okay, awesome. Thank you. >>
+Sure, any other questions? You’re trying to get me out of
+here? I think we’re done. Thanks very much. I’d- I’d be happy to
+talk to you at the side of the stage. Thank you. [Audience
+Applause]

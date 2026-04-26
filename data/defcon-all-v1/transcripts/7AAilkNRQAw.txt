@@ -1,0 +1,693 @@
+>> Thanks. Hi everyone. May name
+is Elie and today we are going
+to talk to you about new game hearthstone. This is a
+(inaudible) work and does not
+present our way point of view. If you are looking for a new job
+we are hiring so if you are
+interested come talk to me after the talk. With that out of the
+way, let's get started.
+Hearthstone is a digital collectible card game developed
+earlier this year. It is based
+on War of Warcraft and (inaudible). Everything is too
+interesting sometimes and
+consequences that happens. For us, at some point during the
+last few months we started to be
+more and more interested in how the game is structured, how we
+can understand better
+(inaudible) rather than playing it (inaudible). I remember June
+I think I played only up to
+Level 5 and probably like 100 (inaudible). Which is a huge
+down from I use to play. If you
+haven't tried it you should. It is available on your computer,
+Mac and PS and on Mobile
+edition. Looking at this it's also was a very good excuse for
+me because I finally talked my
+wife to come on stage with me. That's something I want for a
+long time. So please be nice to
+her. (Applause) So what are we talking about today? We're going
+to talk about game complexity.
+How to have about 500 cards now and (inaudible). The question
+is, can we use (inaudible) can
+we find things which makes us given an edge. That's what this
+talk is about. We wrote about
+our research in Blizzard. I know some of them are in this room
+but we didn't get any response
+so I think they're fine with it. So while we wanted to talk to
+you. First thing we want to tell
+you about how to find undervalued cards. So each card
+has a value and the question is,
+are they better bang for the buck than others. The second
+thing we wanted to tell you and
+the thing we really keep under wraps and the surprise is Def
+Con is can you predict what
+you're going to play? Yes it's possible. We're going show you
+how. We also wanted to tell you
+about how to predict the game outcome. It's interesting.
+Except we don't have time.
+45 minutes is too short. So we'll write about it. Of course
+we wanted to tell you about the
+alien invasion. No, wait. Not this one. How many of you play
+can you please raise your hands.
+How many of you reach legend? No one. Sorry. Legend for those
+(inaudible) what a normal game
+looks like. It is a board game. Turn by turn. Two player. Each
+person is represented as a hero
+which is inspired by world of Warcraft characters. You are at
+the bottom. Here I'm playing the
+(inaudible) hero and (inaudible) which is a solo player only
+hero. The game ends when one of
+the two heroes reach zero. (Inaudible) it is on the right
+side of it. You use decks. And
+cards for each limit is a limit. You can use only 30. Not 29 or
+31. Just 30. Each card has to
+show (inaudible). So every turn you draw a card and the card
+goes into your hand. This is my
+hand. And you can see one of the cards highlighted in green. It
+means I have to ask mana to
+play. The mana is the resource we use to play cards. You also
+have a ‑‑ your friend also has a
+hand. You only see the back of it. Those who are curious know
+they do not know the card ahead
+of time. So (inaudible) on the right side you go from one of
+the first turn as to turn ten.
+After turn ten it should replenish but do not increase.
+So the maximum amount of mana
+you can have at the given time is ten. So card can be a weapon
+(inaudible) which you play
+immediately. It can also be minions or creatures. You can
+have up to seven on the Board
+for each player. You open it at the top. Here you can see for
+instance I am playing
+(inaudible) and my opponent has three minion. So you see what
+hearthstone looks like when you
+play it. It's obviously designed to play on a tablet. Because we
+designed like this. And they
+simplify the law compared to magic because you don't have to
+deal with land. It's very simple
+and very easy for people to get in and get their first card
+which is how they make money.
+(Inaudible). Here is a quick video of me playing hearthstone
+just to show you the game. You
+can see this is my turn. Bring a new card into game. I draw a
+game which goes to my hand. I
+play another card and I take another turn. Then my opponent
+has a secret (inaudible) turn.
+This is what a turn looks like. On the video it is awesome
+because the guy plays me fast.
+You have up to 90 seconds so sometimes you have to wait and
+drink coffee. So some people
+play two games at once. What makes the game so interesting?
+Everything is a card. If you
+look at all the game structure the hero is a card. Everything
+is a card. The card is the thing
+we're going to look at in depth. So a card has a minion.
+(Inaudible). The first one is a
+mana. You play the card from zero to ten. And then you have
+basic attributes in this card
+which is (inaudible). Four here. So that's a card and this is a
+very boring card. Nothing
+special about this card. What makes the game fun is there a
+lot of card which have a lot of
+interesting effects. Three of my favorite cards. (Inaudible).
+What's very interesting is you
+can play as intended or very special combo and that's
+basically how you win the game.
+So one of the fun aspects of the game. Now that we know cards the
+question is, is there a better
+card or card which are better bang for the bucks than others?
+How do we find those? I know
+it's early in the morning and the head hurts but bar with me
+please. We're going to start
+with the basic assumption of how we're going to (inaudible) them.
+The first thing is the mana card
+is professional to the (inaudible). Which mean if you
+play one card it's less powerful
+than a three mana card. If you had them everyone would play the
+most powerful and overrun
+people. It is a bit unbalanced but not so much. Two is the
+power of the card roughly
+increase which means a two mana card is twice as (inaudible) as
+one. (Inaudible). It was means
+the highest card was (inaudible) and would have no chance of
+success. (Indiscernible). Card
+effects have a constant. It means given (inaudible) or any
+effect have the same price
+regardless of the card. There is no secret. All of this is a
+card. Which brings us to the
+fourth one which is having a card has value. Remember you
+only get one card each turn. So
+even holding a card has some value which, of course, is
+interesting value of the card.
+Finally, we believe there is no secret. We believe it has no
+hidden factor and what you have
+in the card is exactly what the value of the card should be. So
+if we were (inaudible) you would
+get the value of the card. The question is how you sum them is
+another question we're going to
+explore but there is nothing secret bit and you can actually
+look at it. That's where we
+start. As I said the mana is a price and price is equal to the
+(inaudible) and the value. There
+is nothing else on the card so we the exact price of mana is
+exactly the sum of those
+attributes. You put it into a (inaudible) function. You say
+for attack which is A is the
+attack position which is the base point. How much mana cards
+have one attack. Plus five
+(inaudible) where etch is the question. Which is the base
+point. How much one count in
+mana plus I which is interesting value of the card which is how
+much mana does it cost to even
+hold the card. With that you can without looking at it you can
+compare it to (inaudible). Very
+common card is the (inaudible). We can also put in a question.
+Interesting value. We want to
+convert it to our (inaudible). So same thing. We're going to be
+very, very high‑tech. We're
+going to go back and forth and we're going to just divide by
+six. Yes that's really hard I
+know. (Laughter) Then give you one mana point. So for one mana
+point you get one attack. One to
+16 counts and interesting value of the card. On the other hand,
+we're going to divide by four.
+By doing this you say one point what you get is one attack and
+1.25 (inaudible) for interesting
+value. Here you can image as we see one of them gets better bang
+for the bucks. Gets more points
+than the (inaudible). And that's the kind of imbalance we're
+going to look for. Let me give
+you a more interesting example. Fire ball. My most hated card.
+It's very simple thing. For
+those who don't know what a fire ball is it is a big ball of fire
+that can pulverize you and you
+die. So, basically, this one is very simple. You pay four mana
+and you blast the guy. So very
+simple. One mana is 1.5. All right. We already know fire ball
+is great. How about we make a
+giant fire ball. It's called a (inaudible). Bigger. Stronger.
+Meaner. The fire blast is
+basically ten mana. For ten mana you get ten damage. Well okay.
+But then might be bigger but the
+bang for ‑‑ the value is not that great. You get one mana,
+one damage. If you have ten mana
+you can play two fire ball‑and‑a‑half for the price of
+one. So the value of the fire
+blast is less interesting than the fireball. What's interesting
+is this is a new version of the
+fire ball. Earlier in the year, we had a premier version which
+use to cost eight mana. Where at
+that time the mana cost was even lower than the fireball. Where
+basically for the adjusted value
+we get 1.25 damage for one mana. So something is not right here,
+right. Let's compare the two. If
+you take ten damage you think the fireball should do four
+damage not six. And you're,
+like, well okay but the fireball is properly priced. You should
+do six damage for four. Well in
+this case a power blast should be (inaudible) damage not ten.
+Give me back my fire blast. Even
+if you look at the (inaudible) you can see there are some
+decisions which are ‑‑ of course
+we don't have all the (inaudible) and this is based on
+tactical secret analysis.
+Complexity is the basic whole idea of finding the value card.
+How do we count that to hundreds
+of cards. We're able to do 130 cards because attribute is a bit
+complicated so you have to cross
+deck. A bunch of decks you have to process. We did 130. How we
+do that. We model the card as we
+did before. Then we use those cards and reverse (inaudible)
+using linear algebra. Don't
+worry it's not as bad as it sounds. And use (inaudible) for
+the real value. The last step is
+where you say here is my real value. Here is my face value:
+You get a negative and you find
+another value card. That's as simple as this. Not that bad. So
+let me show you on a very simple
+card how it looks like. Then when we that I will show you.
+Let's take three cards which
+have charge. Charge is you put the card and the cards can
+attack as soon as it come into
+play. We have four. We have the (inaudible) and the commander.
+We're going to show two more
+cards which have different shares. The reason why they the
+commander is the middle is
+because it has both attributes. One of the ideas of having
+linear algebra you can commute
+coefficient. That's why we can convert cards because it is very
+complicated. So we do as we did
+today. We put them into an equation. So we have four
+attacks. We have a charge
+partition which is ‑‑ partition plus the intrinsic value of the
+card. Then we're going to
+reverse the attribute partition. To do that we put them into a
+matrix which is basically a
+table. And we put them like this. You say well performer
+gets four attacks, three counts,
+one charge, zero shield and one (inaudible). Then I do the same
+for the rocket EER. Here you can
+see it has one and one. Then you add the two other cards which
+has (inaudible). Then you have
+one line of (inaudible) which is the lead square and boom you get
+partition. And the partition are
+one attack, the A, minus one for (inaudible), two for charge, and
+one for (inaudible). Dude that
+doesn't make any sense. Yes you are right. It is because you
+only have five cards. Five cards
+is not a good partition because there is too much instability.
+So now how do you find the real
+price? Well now we're going to be back to kindergarten where
+you learn how to add stuff.
+Basically what you do is you say it's four times one plus two
+times minus one plus one plus
+one. And the price is six. So the real value according to our
+computation is six. The card is
+fair. There's nothing different between the face value and the
+real value so you are, like, not
+interested. Let's try again. It's game. A lot of people said
+the formula isn't the value. Let
+me ‑‑ let's try again. So it's one attack, one count, one
+(inaudible), one shield plus the
+value of the card. So it's one times one, plus one times one
+minus one plus one. Now it's
+two. Wait. Two? No. The card is one right? You are right. That
+is why it is an undervalued card
+and should cost twice. Even with our partitions you can always
+see this card is clearly
+undervalued. That's basically the idea we have is it always
+works. So I did post that online
+and we got a lot of good feedback about it. A lot of good
+comments. Thank you anyone who
+pointed out. The most important one was, hey dude you should
+take into card dependency.
+That's actually true. Thanks to you. The charge would be
+basically a factor of the
+attack. And mode of the attack. So now we now use attack time
+and charge. Same thing for wind
+free. Now we know it's to the attack of the card. One where we
+have a large feedback. The
+question is about shield should be. It is a coefficient and
+related to half. Related to
+attack. Difficult. If you have idea, let me know. The thing is
+up. So that's a comment from
+someone on the blog which actually wrote me a long post.
+Actually cards have a budget.
+And the budget is two times the mana plus one. I have no idea
+how we come up with the idea. It
+is absolutely reasonable and when you do it the partitions
+look way better, it is true. I
+just didn't know how this guy get it. But thanks. So after
+writing code and de‑bugging and
+de‑bugging and de‑bugging you have something and voila. You
+get your coefficients. So these
+are the coefficients. You can see the most valued coefficient
+is ‑‑ I'm sorry. I must mention
+because we use a budget idea that I've been proposed now two
+partition points is roughly one
+mana point. Basically you are trying a minion got you five to
+add to the card. The damage cost
+you 1.5 mana per point. Joint card ‑‑ a single card cost you
+roughly 1.5 mana. Then the
+shield is pretty expensive one mana. We also have negative
+coefficient which is basically
+decrease the price of the card as you expect. Having your joint
+card is the highest one followed
+by these cards discard. And then we have overload which is
+(inaudible) you pay another
+price. All this is perfectly fine. We're really happy. We
+have this guy. We did something
+which was very clever which was the single target and multiple
+target the coefficient is
+different. I am going to show you why. Keep in mind that we
+tried. So one way to neutralize
+what looked like as a result is you have a ‑‑ can put on the
+graph where X is how much these
+are the face value and the Y is how much the card is worth. So
+on the left triangle, the
+unvalued the cards are in green and the overpriced cards on the
+right. Of course because the
+averaged priced, card is under value and over value you know
+that is interacted to the ones
+which are closer to the lines of fair price. What's interesting
+is the people who are out here
+outlier. And there is quite a few. The reason why we have a
+lot of low value cards is
+because when we model cards our card which have a shared ability
+are mainly lower value. Not
+because they the algorithm favors one over the other just
+because when we did model, you
+can see on the side, model them on the left side of the graph.
+Highest cards usually have
+special ability which is not captured by this model. Which
+another one for a special
+ability. So no more blah, blah. What is the result? Well one of
+the most under value card is
+Soulfire. We do believe it actually should be at least one
+mana. Light's Justice is also
+undervalued. This one a lot of people pointed out that they did
+use fro attacks for one mana
+which is somewhat of a kill if you think about it. Not
+surprising the Mortal Coil or
+shield are not perfectly and Argent Squire and there is
+also Explosive Trap and somehow
+it actually gives you something which seems reasonable to most
+people. The one which is a
+bizarre is Sacrificial Pact, probably a bug in the code. We
+also have high valued cards. The
+one which is most powerful is fire which I believe it's
+probably seven mana or six. So
+somehow the algorithm gives you reasonable results so we believe
+we're on the right track. If you
+want to look at it full detail, all the partitions, all the card
+ranks they're on my website. You
+can just go there and we keep updating it. And show how to
+make it better and we say let us
+know. How do you take it to the next level? So far we have only
+used cards the question is how
+to make it better. It's really difficult. At least without
+extra data. And this extra data
+is how people play the game. Most of all the cards depend on
+the state of the game. We don't
+have insight about it unless you have a lot of replay. Of course
+Hearthstone being very, very
+new we don't have that. So for us we get our hand on the
+hundred games played between May
+and June. We'd like to thank our friends for that. Thank you very
+much. We really hope that it
+will give Blizzard will give to us and allow us to do our own
+analysis. I don't want to do too
+much but I think we're going to look at things ‑‑ there is no
+reason to hide anything.
+(inaudible). With this data you can do interesting stuff. The
+first one is you can price a
+card which has unique effect. To get started. The Twilight Drake
+is a card which is a 41 for four
+mana and has special effects when it comes into play it give
+a battle cry, it will give one
+half one additional half for each card you have in your hand.
+Obviously the value of the card
+depends on how many cards you have when you played it. So you
+can build a model, say if I have
+one card in my hand then you have one extra hand and then
+it's one ‑‑ the real value is
+1.3 mana. If I have two it's 1.9 up to nine. You have a maximum
+of ten cards. The maximum is
+nine so it's 5.9. The question is now you are at this table you
+need to use replay data to be
+able to know how people played it. Are many playing it with
+eight cards in their hands,
+four, two cards? You do it and this thing is ‑‑ it draws a
+exact graph. What you see is the
+following. In the red on the left side you see when people
+play it with less than up to
+four cards and the card becomes undervalued. Basically if you
+play with four cards you get
+three mana values on your card. If you play with five cards you
+have a 2.6 value. With six you
+have a 2.2 value. This is a first one where if you play it
+with seven or eight you get the
+value of your cards. The average real value of the card you take
+the averaged, is 3.7 which is
+right next to what is the face value. So based on that we do
+think the price is fair.
+Basically exactly what it is. It's also interesting to show
+that looking at this we get the
+same conclusion a blizzard so we think we have something which is
+very similar to what they have.
+They have way better data and better insight. Let's look at
+another card which is one of my
+favorite cards, Edwin VanCleef. What it does is it will gain two
+for each time you play a card
+before it during the game. All you have to do is look at the
+replay and how many cards were
+played during the turn before it to get its value. And for
+reasonable number of cards
+played before I know you can go way (inaudible) for reasonable
+number if you have two it's
+1.09. If you have 6‑six you begin to get value out of it.
+And when you play five or six
+cards the value is just outrageous. If you play very,
+very different points. As you
+can see it is not at the time undervalued. It is. Two cards
+before it ‑‑ I'm sorry three
+cards. No two cards before it then you get five mana worth of
+your cards. And for four cards
+before you get to seven worth the cards and so forth. So the
+average is 8.1. So the average
+value VanCleef is 8.1. So as you claim this VanCleef is
+undervalued and I believe the
+value is between five and seven. I believe it should not be
+eight, should not be nine. But
+three in my opinion is way too. It is not according to the
+(inaudible). People play four
+for Chris but otherwise would give you a 6‑six or 8‑eight. So
+this is one of the cards which
+is the most undervalued. Last one. We go to a question about
+how you deal with (inaudible).
+So card which has (inaudible) affect is one of the simplest
+ones. What it actually do is it
+does damage of the minion. So easy right. All you have to do
+is count how many minion you
+have on the Board then multiply by number of damage and voila
+right. I look at these numbers
+and there's something completely wrong here right. Two minion on
+your cards is already worth
+13 points of mana. Well something is going wrong
+somewhere. It doesn't make any
+sense. What's wrong? It turns out because we use the broad
+damage. Remember I told you we
+tried to be clever and single targets versus multiple targets.
+This is what happens when you
+try to be too clever. Okay let's try again. Go back to single
+card. Way better. Now it makes
+more sense. That's how we used we should not use multi‑target
+versus single target. You should
+only use one board, not two. And it makes sense. Now the card
+becomes a good deal when you
+have three minions. Same thing you can see visually sometimes
+it's undervalued. Sometime it's
+overvalued. Most of the time it's between the two so the card
+is perfectly balanced. The
+lesson is don't try to be too smart. We also like this idea
+because actually looking at it
+helps us value it because we do make sense. And when something
+is strange we look at it helps
+us validate and we're going to tell you about how you can
+predict and will let you tell a
+little about that. >> Hello everybody. My name is Celine and
+I'm going to show you in game
+two. The tool is a web application written Titan. It
+runs on a small web server,
+called Flask. So you can just get a web page. Just to your
+game as you can see on the
+screen. Or you can use any devices with web browser such as
+a tablet. For this tool
+implements all the algorithms. So the main screen in our tool
+is a realtime dashboard. Use it
+to track again metrics, play cards, and predict the cards
+when you open and join your
+game. So the first box on top of the game metrics. So mana
+advantage is difference between
+how much mana you spend and how much mana you open and spend, At
+the page it is the difference
+between how many cards you drew and how many cards you open and
+drew. And the other advantage is
+the difference between how many cards you have in hand and how
+many cards you're opponent has
+in hand. So this metrics appears in green. If you have the
+advantage. And in orange if the
+advantage is for your opponent. In our study we found that those
+metrics are the most predictive
+of the game outcome. So we won't go into details today due to
+lack of time, but we will do a
+blog post later about it. Metrics you can see your deck.
+So you can see how many card of
+each type you have in your deck in the two columns. Two for
+total. Which one of them are on
+the Board in green. And P for played in red in the G Column.
+So below your deck there is a
+box that shows what cards your opponent played. Every time your
+opponent plays a card, it will
+appear in this box. Same with total card in your deck, T for
+Total in Column and played card
+in the P Column for played and how many are dead in the two
+columns, D for dead. So below
+your deck there is a third box that shows what cards your
+opponent played, overtime your
+opponent plays a card it will appear in this box. Same with
+the total card in the T column
+and the dead card in the P column and dead card in the T
+column. The last is the final
+box which will show you prediction of which card your
+opponent is going to play based
+on the previous cards he's played. So how did we manage to
+get the game data? We could use
+packet sniffing meeting to get the game data. It gives you the
+best data which is a violation
+of bus ops of service so we didn't use it. We could use OCR
+for good recognitions so it
+gives you a good data. But it costs a lot of CPUs and is not
+very reliable. So we ruled it
+out. So we ended up using the Debug log. So you can put your
+game in debit mode. It is a
+simple method to get awesome data. But it has some
+limitations. Like game data you
+can see your opponent, play and rank or which card attack which
+card and there's updates. So
+(inaudible) system as good as the one in (inaudible). So now
+you will see it in action in a
+short video. So this is the left side of the game. I am playing
+against him. So I show my card
+and you will see he starts with an extra card in his hand
+because he has to draw and that
+advantage. I am picking up a card. So we have the same number
+of cards as you can see on the
+dashboard. There's no more advantage for Elie. Now I'm
+playing Argent Squire. So you
+can see the card will appear in green in my deck. And I have
+spent one mana point. Now as the
+game evolves, the changes and the prediction appears at the
+bottom. You can collect your
+data to get more room for your (inaudible). And now I'm going
+to play advisory. And let's get
+a closer look. In the prediction. So yes it's work.
+(Applause) He tries to kill me
+with (inaudible). (Laughter) It saves me. In addition to the
+(inaudible) you can also see the
+(inaudible) in the screen. It allows you to see what happened
+turn by turn during the game. So
+our tool will be available next week on github. So we currently
+need help with how to improve
+points using OCR, currently using text file. Need someone to
+display the game history,
+macquest, the Windows packaging and (inaudible). If you want
+more info don't be afraid to
+talk to us after the presentation. Thanks. Back to
+you now. (Applause) >> All
+right. Before you get all your hopes too high, and tell you
+about how black magic is done.
+Just a word of disclaimer. Because Naxramas has been
+released (inaudible) so some
+shifting, the prediction are not accurate. As I said we don't
+have access to a lot of games.
+So it takes us awhile to build a model, so expect it to not to
+perform well for the next few
+weeks. That being said, it will catch up as soon as the number
+of cards has been released and
+tabulated. Probably next season. Which is August. End of August.
+It's very simple. We model card
+affinity which is which card plays with each other then we
+have an evaluation function
+which will return one of the most affinity to be played based
+on previous cards played by your
+opponent. Then we have a tool. The tool goes through a bunch of
+replay. Then learn from those
+played (inaudible). Then we have this tool in the game which has
+the algorithm and shows the card
+that has been played and tells me the most likely card to be
+played. That's basically what it
+looks like. We're going to see each and that will be the last
+part of the talk. As I said,
+Hearthstone have about 500 yards. If we were to look at
+all the card combinations it
+would be almost impossible. We would have an impossible number
+of combinations. So we expose
+the fact that in practice cards really work well together and
+some cards do not work well
+together. You have the combo and the combo is (inaudible) plus
+force of nature which is one.
+It's likely you have the other. On the other hand, you do not
+have force of nature. Does it
+make any sense this is not what you need to model? We model
+after things like this. We use
+simple system, you can see which is called end run. Here is the
+simple versions which is called
+bigrams which is modeling pair cards. What we look at is we
+look at the replay as the
+sequence of cards which has been played by all opponents
+regardless of the turn and say
+the (inaudible) has been played then the day played the task
+master. That's one bigram. We
+recall the infinity between the two. We say if you played the
+armor with me then you are
+likely to play the task master. We look at second part of the
+stream, well the task master is
+followed by accolades of pain so we call there is an affinity
+between those two cards. That
+being said we know the cards are random. Right. You get one card
+random so to model that we use
+what we call unordered engram. Where we say (inaudible). If you
+play sometimes armor (inaudible)
+later you are likely to play task master. You are likely to
+play (inaudible). We also try
+(inaudible). Turns out the best model is in this one which is
+(inaudible). How do we value the
+cards? Very simple again. Daily poison and shift which are two
+cards. Then we say what is the
+affinity of those cards? For daily poison we know that that
+Fan of Knight and then blade 250
+times. So we look at those. For sure we know that Fairy has been
+400 times and you played
+(inaudible). So we combine them and again very simple
+(inaudible). We say how many
+times those appear you get the ranking. The ranking is on top
+because it's 250 plus 400 one
+followed by the 500. And then you put the card wherever you
+want and say this is my
+separation because I only want two. That's how it works. It
+turns out more complicated it
+won't work. This one works really well. How did we do? We
+took 50,000 replays and we did
+by class because each card has some unique cards and we did one
+track. And we run the code,
+first we write the code then we run the code. Then we ran.
+Actually the algorithm basically
+(inaudible) was in less than three minutes. Then victory. I
+was actually shocked at how good
+the thing was. By turn three, the highest prediction had a
+97 percent chance to be played.
+Which mean that's out of 100 games, the first prediction
+returned after three will be
+played. Sometime in the future we don't know if it is the next
+card but it will be played. If
+you want to look at it deeper, this is a curve of the average
+prediction of the algorithm for
+ten predictions, turn by turn. You can see actually why.
+Because you get more and more
+information. The more cards that have been played the more we can
+look at the affinity so the
+accuracy increased and then it starts to decrease after turn
+eight because there's less cards
+in the deck of your opponent. So the balance is somewhat between
+times four and times eight. If
+you look at the ranking functions. The ranking functions
+do work. The green represents
+our best prediction. The orange represents our lowest prediction
+which is number ten. You can
+clearly see that the best one actually extremely good up in
+the high 90s starting in at
+three whereas the lowest one is barely above 20. And they are
+converging because the algorithm
+makes less and less mistakes but there is also less and less room
+for error. So the last I wanted
+to tell you guys hindsight we should have two hours and
+45 minutes. We didn't know where
+we were going when we applied for the talk. So we wanted to
+tell you about predicting the
+outcome. We also are looking into optimizing that deck for
+mana. Because we know mana is
+the key factor to win. And by popular request we're looking at
+proper requests and comparing
+deck of time. Why is winning versus control, how it's work.
+What are the parameters and
+stuff. I think we are looking forward to do is share ideas of
+things you would like us to do.
+We'd like to finish by giving a shout out to a lot of people who
+gave us feedback. We love to do
+it! We read comment that's people post to us. It's really
+important to help us get better.
+But that being said, big thank you to you people. I would like
+to thank Neal and Zac which
+spent a lot of time helping us prepare and gave us inside with
+feedback. And our anonymous
+friend who gives us replays. Thanks a lot. (Applause)

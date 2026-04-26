@@ -1,0 +1,869 @@
+>>So, I am Mickey, that's Jesse.
+Uhm.. That's our twitter
+handles, if you wanna ask us questions, uh, about anything we
+give at this talk, please free
+to, please feel free to reach out and ask us. Even next week
+or whatever, we're happy to
+help. About the agenda of this talk, well, we're going to start
+with a little bit of a
+high-level introduction into what is a driver in Windows.
+We're gonna keep it high-level
+and then we're gonna get more and more technical as we go
+along. One of the things we're
+going to discuss is what the problem is, uh, I'll give you
+some funny examples of it. The
+tools you need to exploit for yourselves and, uh, a couple of
+funny stories about disclosures.
+This topic is not new, so, bad drivers have been known to be
+found in, uhm, the past decade.
+They pop up - 1 here, 1 there, 3 here and you get a little log
+post and descriptions and...
+Excuse me. How to use them and it just goes away after a while
+- the vendor patches it or fixes
+it or not and it stays there and then continues on. So, here are
+some of the examples, we use
+them in our talk and based our, uh, our, uh some of our code on.
+So, I thought it was best to
+give credit. Uh, more information can be found in
+these links, we'll have the
+slides available on GitHub, uh, soon after the talk or next, uh,
+early next week, and we'll
+explain that later. Let's start with the biggest, the, the, the
+smallest, uh, uhg, simplest
+explanation - I'm sorry, English is not my first language. Uhm,
+why are we talking about Windows
+and Linux drivers or, uh, or Apple? Uh, Linux drivers are
+basically - so, except for
+specific examples that are proprietary code, most of the
+Linus drivers are available in
+GitHub and you can find them and look at them. Apple is a closed
+garden - so, whatever Apple
+does, Apple knows and Apple sees but we don't really care. There
+is a caveat, uh, Apple does
+have, uh, Windows drivers for their hardware. We did skim
+those but we didn't find
+substantial there. What is a driver and how it's used? So,
+basically, in, in, in the
+computer operating system you have a user space, you have
+kernel space and then you have
+the hardware. For application and user space to communicate
+with hardware, you're gonna need
+some sort of way to do this securely - otherwise you violate
+every known concept of a
+security boundary, ever. And you don;t want a ring through your
+user space application to be
+through to be able to read and write flash. It's just wrong,
+so, we this concept called
+drivers. These drivers are running within kernel space;
+they communicate with the
+kernel; the kernel gets requests from the application - passes it
+on to the driver, the driver
+does it's magic and communicates with the hardware and goes back
+and forth. It's pretty straight
+forward. These drivers in Windows are signed. Now, uhm,
+for a driver to run and execute,
+be executing kernel space these days. It needs to be signed and
+it needs to be certified by
+Microsoft. We're not going to go into the entire process of how
+drivers are certified by Windows
+- it's not, it's not easy to explain. There's a back and
+forth. Some, some of your are
+smirking right now, yeah, cause you probably tried to assign
+drivers with Windows. There is a
+reason for that process - uhm, but it's, it's not quite
+straightforward to get out from
+reading blog posts on the internet. Uhm, the point, the
+key point in this slide is
+"Windows 10 sign-in process", right? So, uh, uh, Microsoft
+introduced this new process
+called EV - EV stands for "Extended Validation". Uhm, if
+you want to EV sign a
+certificate, uh, so, uh, driver, you need to have this EV
+certificate which, uhm, allows
+basically, Microsoft to co-sign the driver with you and give
+that with gold certification
+side-by-side, so you have a driver certified by Microsoft
+and operates and everything's
+great. Uhm, EV, these are slides we found for our Microsoft
+presentation, given in Shanghai
+2015, uh, when they introduced this. Uh, funny st, uh, funny
+thing about this is that, the
+bad guys, the bad guys reference here and that EV certificates
+are better because it means less
+malware - but not for legacy! So, if you have an old driver
+that's already signed - do
+whatever you want with it. However, if Microsoft is a good
+guy, they will let you load the
+driver even if, even if the certificate's expired. Uhm, we
+do have one of these drivers
+that, for some reason, loaded and we kept double-checking the
+properties and it just expired,
+the certificate. What the h***'s going on? So we ran sign tool -
+sign tool said it's not, uh,
+it's not within the required period of verifying. No idea why
+it loaded - it still loaded - I
+don't complain. So, at this point we were like maybe we'll
+get our own EV certificate!
+We'll try to make our own example driver and, you know,
+have some fun with it. We saw
+this list of things to do - of getting it, and, you know, you
+have to have the legal
+agreements signed on behalf the organisation - I don't think so.
+It's just too much of a hassle,
+we work for a company, that company has their own driver
+they developed - they, they
+signed it with Microsoft. I don't want to risk anything
+potentially with Microsoft, so.
+[fart noise] Highest of notes So, uh, let's take a look at
+some of the, uh, the issues that
+we've seen in the past with some drivers - and, uh, one example
+that we, uh, that a lot of
+people know about is "Read Write Everything", and uh, there is
+also, uh, "LoJax" is also one of
+the, uh, uh, malware that we saw that was using signed drivers.
+"Slingshot" was another APT that
+was using, uh, this class of driver specifically to bypass
+Windows protections. Uh, we've
+also seen this type of driver being used by a game-cheating
+engines, or uh, anti-cheat
+software. Uh, there was an interesting case, CapCon driver
+where, uh, where this driver was
+signed by CapCom for a video game that it would turn off, uh,
+SMEP protection, execute code
+you bashed in from userspace and then... [coughing] Uh, continue
+on and that was found pretty
+quickly and people were able to, uh, know to block that, but
+these, these issues keep popping
+up individually so we wanted to try, to look at, across the
+spectrum a lot more. There's
+some, uh, nice examples right up. So, there's a vulnerability
+in an MSI driver and how to use
+it escalate from, uh, user space not elevated to, uh,
+anti-authority system. By using
+one of these signed drivers. So, to take a, a little bit of a
+closer look - read write
+everything was, uh, essentially designed to give you the ability
+to look at these hardware
+interfaces in your system. Basically, explore the system,
+see what the state of the
+machine is, and it basically has a, a user space app and then an
+signed driver which is intended
+for this purpose. But, uh, the problem is that it, it allows
+access to components that have
+really important security properties and they need
+confidentiality and some of
+these, uh, resources and, uh, integrity in other resources.
+So, you're basically given free
+reign to arbitrarily read, write, modify, some of the
+devices, some of the interfaces
+that Windows depends on, Windows security depends on these not
+being tampered with. So, this,
+this was an interesting app. Uhm, but then, uh, LoJax was a,
+uh, malware that was found in
+the wild - it was an APT that they actually brought a copy of
+that along with them as part of
+their infection. Uh, their implant tool use Read Write
+everything to gain direct access
+to the spy controller and then they were able to use that in
+order to write their own
+malicious module into the, into the system flash and, uh,
+persist in that UFI firmware
+that would, uh, survive, reboots,, operating system
+reinstalls. Because they have
+the ability to directly talk to the hardware through this
+mechanism. And, even if you're
+system did not have this Read Write everything driver on it,
+they just brought it with them.
+They were able to load it and use that capability in a really
+interesting attack. Uh, there
+was another APT, uh, campaign that also, basically, also
+brought their own driver. Their
+driver was not signed but they exploited, uh, 4 different
+drivers that had, uh, read write
+MSR capability in order to get arbitrary code execution in the
+kernel and bypass driver signing
+enforcement - so they could install their own, uh, kernel
+rootkit. So, this, this is out
+there, actually being used, in the wild, by real attackers. So,
+there's a few different reasons
+why you might want to use 1 of these drivers. Basic one is just
+privilege escalation from user
+space. Get either`, uh, escalate a user from a normal unelevated
+user to admin user. There's also
+just getting code execution running within, uh, within the
+kernel itself. Uh, another, uh,
+possibility is you can use some of these, uh, drivers to
+disable, bypass, uh, Windows
+security mechanisms, and sometimes that could be used in
+order to, uh, escalate privilege
+within the kernel or just get access to resources you
+shouldn't get access to. Uh,
+there's another write, uh, motivation where, essentially,
+getting access to the hardware
+itself is, is really useful. You could modify system firmware,
+you could modify device
+firmware. There are a lot of devices that still have unsigned
+firmware and you can go -
+basically, write your malicious modification either to the
+system firmware, get code
+execution before the operating system loads. Or, modify a
+device and, uh, have a, uh,
+persistent implant in a particular device. And there's
+some other things you can do
+with direct hardware access but those are some key ones that
+we'll want to specifically call
+out. So there's, there's a few different, uh, attack scenarios,
+uh, if the driver is already on
+the system and loaded, the driver itself controls the
+policy for who can talk to this
+device. So, many drivers, you don't have to be admin - you can
+be a normal, non-elevated user
+to talk to this particular device. There's another scenario
+where the, the driver is on the
+system but it's not loaded yet. And, in that case, you do need
+admin privileges to load the
+driver, uh, we have found signed applications that you could use
+to load drivers. Uh, that are
+signed by well-known, trusted vendors that you could
+potentially use one of these
+applications - there will be a little UAC pop-up that says
+"Would you like some trusted
+vendor to modify your computer" and that might be means to uh,
+load the driver if you do not
+have admin privileges but, you can also just wait, so... If
+you, if it's already loaded, you
+don't need to be admin. If it's not, not yet loaded, you do need
+admin, essentially. And there's
+also the scenario where the driver isn't on the system; all
+of your drivers are, are fully
+up to date. Uh, malware can bring a driver with it and load
+that. In this case they do, you
+do need escalated to, uh, an admin in order to load the
+driver. But, there have been a
+lot of privilege escalations. So, uh, even if the newest
+version has been fixed, in many
+cases the old vulnerable driver will still be loaded into
+Windows, or loadable into
+Windows. And you could just bring the old version and load
+that. And, use this kind of
+capability. And LoJax did this in the wild for their PDP
+campaign where they brought an
+older driver. They were able to load it and get, get direct
+access to the hardware and
+implant the UEFI firmware. So, we've, we've seen this pop-up
+every now and then, just one at
+a time, there's not really an industry wide fix for this
+problem, or uh, industry-wide
+effort to go fix this. So, we wanted to, uh, take a look and
+see, see how hard it is to find
+these drivers how widespread it is. So, uh, we, uh, focussed on,
+because we're interested in
+signed drivers so we're loaded into WIndows, we, we threw out
+any that we found that weren't
+signed. Because we're looking for drivers that talk to
+hardware interfaces or how that
+kind of capability we look for drivers specifically from, uh,
+firmware and hardware vendors.
+And then, just to make it a little easier, we, uh, just went
+with the smaller drivers that
+will probably be more simple. So, also, looking for things
+like read-write, MS, opcode,
+move to control register, in-and-out opcodes. Those are
+specific x86 instructions that
+are, uh, talking to drivers, or, uh, talking to devices in a way
+that we're interested in. Uh,
+one other thing to keep in mind is that, uh, there's two
+different, uh, drivers, there's
+two different mechanisms or frameworks that you could write
+your driver, the, uh, older
+windows driver model and, uh, the, the newer Windows driver
+framework, uh, with the, uh, the
+older version - you basically, your driver would just call IO
+create device and then write an
+address of the handler for, uh, all of the requests that, uh,
+that user space is going to make
+to your driver to a specific address within a, a structure
+that passes to this IO create
+device, uh, function. Uh, the Windows driver framework has
+changed a little bit but it's a
+similar type of concept where you, uh, you have a couple of
+functions that are set up and
+eventually you do have a, a main dispatch, or, a opcode handling
+function that will handle all of
+the requests for user space. Uh, uh, and I, I dunno if we
+mentioned it but IOCTL is
+basically iO control. So, there's, there's a specific
+number I want IOCTL 1, 2, 3, 4,
+and, uh, the, uh, the dispatch will call your, your kernel
+handler and say "Here is your iO
+request packet with requests 1, 2, 3, 4 and the data was passed
+between each user space." Uhm,
+so, there is a little bit of a difference where an iO create
+device vs, uh, this creates
+device secure function. If you, if the driver is calling, uh,
+create device, secure, it can
+actually specify a, uh, a security descriptor. Which is, a
+policy which can talk to this
+driver and what type of access they have. Uh, this is, this is
+an example of one of these SDDL
+strings, in this case it's a "discretionary access control
+list" that, uh, allows, generic
+all to local system and generic all to built-n administrators.
+Most of the drivers that we've
+looked at don't bother to send any kind of policies. So, a
+normal, non-elevated user can
+talk to these drivers. So, we ess, essentially spent two weeks
+looking for drivers. We, uh,
+skimmed through hundreds of driver files, just doing, uh,
+manual disassembly analysis -
+looking for this type of, uh, behaviour. Uh, we found 42, uh,
+different vulnerable signed
+drivers. Uh, we found 42 vulnerable signed x86-64
+drivers. Uh, we did find a lot
+that had a, a 32-bit version. So, uh, it was around
+80-something total files. We
+did, we did find 1 I, Itanium driver that, I dunno if anyone
+still has a machine out there,
+but uh, we've, we've also found more drivers since. But, there
+were, uh, 42 drivers, 42 x86-64
+drivers that we were looking at. But, uh, the types of things
+that we follow. Basically, you
+could ask from userspace for the kernel to go read and write
+virtual memory in the kernel. Or
+do read and write to the physical memory addresses. Uh,
+you could go talk to MIO
+devices, uh, model specific register, read, write, control
+register access, talking to psi
+devices. Just basic, uh, in and out. So, uh, here's an example
+of, uh, mem copy that we found
+in the kernel where they literally are taking the, the
+source destinations and size for
+this copy operation from user space. There's no checks of any,
+on any point. Yea, pointers - no
+pointer checks, no one writes checks, you can just ask the
+driver to copy by bringing it
+around.. Uh, this can, this can be used to modify, uh, kernel
+code and data structures, uhm,
+patch guard will detect some modifications - it doesn't
+detect them all though, so...
+It's, if you have, a primitive that's flexible, you could do a
+lot of interesting things with
+it. How you can copy form users base into kernel memory, other
+way around. It's, it's really
+useful. Uh, another thing we found is just basic, arbitrary
+physical memory write. Uh, read
+and write. Uh, in, in this it's intended so that you can use it
+to go talk to device drivers and
+do MMIO access, uh, in this case, there's also no sanity
+checks, you can basically have
+any, any address, any size, and go try to call this function and
+m, map iOS space. Uhm, there has
+been a change in how Windows deals with this function as of,
+uh, uh, 18-03 where they've
+tried to limit the scope of what you can do with this physical
+memory write only to those, uh,
+MMIO addresses. So, uh, older systems before 18-03, you could,
+you could just map, map any
+kernel address and you read and write there also. Uhm, but even
+after 18-03 you can still go,
+uh, get direct access to the hardware and do some pretty
+interesting things there. Uh,
+uh, there's also drivers that just expose the, the physical to
+virtual mapping so you can look
+up addresses in virtual space and find their corresponding
+page and, uh, the physical
+address layout which is, it, it's useful for, for dealing
+with IOCTLs that give that kind
+of, uh, physical address but it's also useful for, uh, things
+like rogue hammer where knowing
+where things are mapped physically into, into the
+address space, this type of
+functionality could be really useful. So, another thing that
+we, uh, looked at was arbitrary
+model-specific register. Uh, read and write, uh, here's an
+example where they're taking the
+address of the model specific register to read - no filtering,
+directly give you the data back.
+So, if you're not familiar with model specific registers, uh,
+these are, uh, internal
+registers within the CPU, that's.. You have your general
+purpose registers for normal
+executing code but these special purpose model specific registers
+are, uh, in addition to that and
+they were originally used for experimental features that they
+have wanted to try out and some
+of those, uh, experimental features, they decided "These
+are really useful, so we're
+going to turn them into architecture, uh, model-specific
+registers, or "MSRs" such that
+from a certain point going forward they're, they're
+committing to support this
+particular usage model for the, the value that you, you put into
+the MSR will be used in an
+architecturally defined way. And, uh, they do have a special
+OP code - specialized x86
+OPcodes, uh, read MSR and write MSR in order to, uh, access
+these, uh, registers. Uh, 1
+interesting point is that you can only access them from ring 0
+- so, ring 3, if you try to read
+a, uh, an MSR, uh, you'll get a, uh, false. And, it, it won't
+allow you to, uh, get that data.
+But, we, we have a primitive here where you can read MSRs and
+there's some pretty useful
+things you can get just by reading the MSR. Uh, we also
+found, uh, the model specific
+write primitives and there's some really, really critical
+model-specific, uh, registers
+that, uh, are,are especially interesting like, uh, star,
+CSTAR, LSTAR, and CSTAR where,
+in order to even transition from user space into kernel space -
+or ring 3 into ring 0, when you
+call a, when you execute a syscall instruction, it will, as
+part of that transition, going
+from use, going frm ring 3 into ring 0, it will take the address
+that's stored in this LSTAR
+register and use that as the address that it starts, uh,
+executing in ring 0. If, if you
+have the ability to write to this register, from user space,
+that's pretty dangerous. So, uh,
+there's also a control registers and there's a lot less control
+registers but they store some
+key, uh, control bits for the processor. Uhm, CR3 is the base
+of the virtual memory uh paging
+tables so, knowing where that is, could potentially be useful.
+Uh, CR4 has, uh, uh, some other
+security controls. CR0 has some security controls. So, in this
+case we have an arbitrary
+ability to read any of these control registers, uh, including
+the base of the page table
+structure in kernel space - not the user space copy of the page
+tables. And there's also, uh, a
+control register write, uh, functions where you can take an
+arbitrary value, an arbitrary
+control register, that's taken directly from your user space,
+uh, as a buffer, and write the
+value to the control register. and some pretty key ones that,
+that some of the security, uh,
+controls in Windows, depend on is supervised execution
+protection - that basically is,
+uh, one of the features that helps protects against a number
+of different attacks that have
+been very successful against Windows in the past. Uh, there's
+also this write protect bit in
+CR0 where if, if the write protect bit is not set in CR0,
+and, uh, the, the kernel or
+ring-0 code tries to write to page that is marked "read only"
+they will completely ignore the
+permissions in the page table and let you do the write anyway.
+So, it's a, it's an interesting
+control, so, it's kind of security hardening but it's
+useful to know about it, if we
+can write to that, that can help us. Other things are just
+arbitrary, uh, IO-port write.
+You can write arbitrary values; arbitrary iO ports. Its, uh,
+what you can do with that is
+platform-dependent, you can use that to modify system and device
+firmware. Uh, we, we saw a
+really cool, uh, vulnerability last year involving ASPEED BMC
+configuration where there were
+debug features that were accessible through the host,
+through IO-reads and -writes,
+arbitrarily read and write into the BMC address space. Uh,
+laptops have likely an embedded
+control you can talk to over IO access. And there's also legacy
+PCI access over iO-port CF8,
+CFC, there's also just functions to literally do that like legacy
+PCI write. So, there have been
+issues with, uh, security at PSI devices and that comes up a lot.
+So, kind of look at the MSR-case
+a little bit more. Essentially LS, LSTAR MSR is pointing to an
+address in the kernel memory
+where we don't know exactly where the kernel has been
+loaded. There's address
+randomizations happening, so, when, when this transition
+happens, when you go from user
+space to kernel space, it starts executing at the, at the address
+that LSTAR points to. So, if you
+could write to LSTAR, we can basically allocate a buffer in
+user memory and then when that
+transition happens, the next syscall that happens, it'll
+start executing from your
+pointer instead but there's some complications to that. So, one
+of the features that I've
+mentioned, uh, supervisor mode execution prevention is intended
+to, uh, stop this feature. There
+have been a lot of bugs where they would get the kernel to
+jump to your, your pointer and
+they added this feature to the CPU, I think in, uh, Sandy
+Bridge where, maybe IV bridge,
+but it's essentially a feature where if the CPU is executing
+and, uh, and, uh, ring-0 kind of
+does a code fetch to a page that's in user mapping, it'll
+cause a false. And this is
+controlled by a bit in the CR4 register, so, if we have a
+read-write primitive for, uh,
+control registers, we can just read this bit, uh, or we can
+read the CR4 value, clear the
+bit and write it back to CR4 and in order to get around
+supervisor mode execution
+prevention. Uhm, there's another, uh, complication that,
+uh, uh, there needs to be a
+little bit of state change when you're transitioning into the
+kernel space, so, although it
+starts executing in ring-0, it hasn't fully switched into
+kernel space, so, you need to do
+a little bit of extra work entering and exiting your, your
+payload there. And then there's
+also a, a kernel page isolation. So, as part of the meltdown
+mitigation for, uh, for one of
+the Intel CPU issues, uh, they basically isolated the kernel
+pages - so they have two
+different sets of pages - one for user space and one for
+kernel space. So, uh, we do need
+to know the address for those kernel page tables in order to
+fully be able to switch the
+kernel space. Uh, but, if we have an IOCTL that we can
+arbitrarily CR3 then, then we
+can get the address of that kernel, uh, page table base so
+that when we build that payload
+we can swap in the kernel page table pointer and do what we
+want to do. So, we have a couple
+little demos of, uh, switching of, uh, some of these features.
+>> Uh, a quick note...all these
+demos are in Powershell. [laughter] >> So we, we have a
+basic, uh, uh... [indistinct
+talking] This one is not Powershell but this, this is
+just a simple... [indistinct
+talking] Yea, so, in order, in order to, to do our research we
+basically made a, a simple tool
+to, uh, load any arbitrary driver for us. So, in, instead
+of needing to, needing to, uh,
+write a helper to load it and deal with it, it's just a simple
+tool to load a driver and create
+the service, start the service for us so we can try things out.
+So, in order to do this, we were
+running it's administrator. Uhm, the other demo that I'm about to
+show, uh, is not running its
+administrator. [indistinct talking] Yea... So, in this case
+we basically are reading some,
+uh, state from basically a, the kernel's being loaded at random
+address - so, from user space
+not elevated at all we can, uh, read, read the address of that,
+uh, entry point into the kernel.
+And, uh, understand where the kernel is loaded with a, with
+further attacks that depend on
+where, where the kernel loaded into, uh, into the address
+space. We also know that the
+base of the, the page tables is this, uh, second value, so,
+while we're building a payload
+we can, we can use this value to, uh, make that easier. Yeah,
+so, there's also, uh, the SMEP
+bit and, uh, NCR 4 where we can also, like, in this case we, we
+read CR4 we saw that it was
+enabled, we cleared the value, we wrote it back, we see that
+it's still. It's, it's disabled
+now, uh, and, and there is a, uh, a feature in Windows called,
+uh, patchguard that will go and
+look for, uh, configuration of the system, look for dangerous
+things and, uh, we found a
+write-up that meant, that said that they were able to measure
+that they're reading these MSRs
+every 30 minutes, so, that's a lot of time to, uh, get your
+malicious code to, uh, run. And,
+and we were testing, it didn't crash, even after like 45
+seconds. We did see some cases
+where it would crash after the MSR but it's, uh, it seems like
+plenty of time in order to, uh,
+to get your payload working if you wanna use this for...
+[indistinct talking] What's
+that? [indistinct talking] And, and this was in a 19-03 system,
+so it's latest, has the latest
+version of, uh, of, uh, patchguard. So, some, some of
+the problems - we, we took all
+of these drivers. We uploaded them to Virustotal none of the
+drivers came back as malicious,
+they came back via Windows, but AV, AV isn't really helping us
+with this issue because, because
+you can use a lot of these drivers to attack AV and bypass
+some of those. Some of the, some
+of those protections. So, we are, we are hoping that we could
+actually fix this so, Microsoft
+does have a, a virtualisation-based security
+and hypervisor enforced code
+integrity. Uhm, those are only present from 7th generation CPU
+and newer, also, there are
+compatibility issues that prevent you from turning this on
+and each VCI will help against
+some of these issues but, uh, not all. And, I have a, Kaby
+Lake laptop that is pretty new
+and soul support it but I have compatibility issues and I
+haven't been able to actually
+turn on this feature, uh, enterprise device guard policy
+that you could configure to
+block known drivers once they're known to be vulnerable but there
+hasn't been any really
+industry-wide fix for this yet. So, so we're hoping to, uh, fix
+that. So, all of these are, all
+of these drivers that we found originally were just through
+manual analysis. So, we were
+looking how could we actually automate this? And started
+looking at the angr, angr
+framework for, uh, symbolic execution. And, uh, if you're
+not familiar with anger or
+symbolic execution, uh, it essentially allows you to allow
+you to dynamically execute the
+parts of a program and every time you get to a conditional
+branch it will try to execute
+both paths and see what happens, so it's really useful but it's
+easy to, uh, run into issues,
+but, so, I got an initial script just to try out the idea of
+working in about a day and it
+works really well in some cases. In other cases, the code is
+complex enough that you run out
+of memory and you have a, a state explosion because there
+are so many conditional branches
+that it had issues. For, for what that actually looked like
+for trying, trying it out, we,
+we had a specific driver that we know is vulnerable and we know
+the, the address of the handler
+that, does that mean IOCTL dispatch, is it a particular
+address? And we know the address
+of the right MSR opcode that we want to, uh, search for and see
+if this is actually taking data
+that's passed from, from user space, so essentially you just
+need to load the driver and in
+this case we don't care about, uh, libraries, so. We'll not
+load libraries and then create
+a, uh, an angry execution state object that, uh, starts
+execution at the IOCTL handler,
+the dispatch function. And, we can take that, uh, IO request
+packet, that structure and, uh,
+basically create symbolic regions for those parts and set
+pointers so that when we're
+starting execution for, uh, the IOCTL handler, it will have
+these, uh, these, uh, symbolic
+regions regions as, as the input data that we're passing into
+this function. Then you can, uh,
+create sim, simulation manager and just let it start executing
+code from the, uh, from the
+IOCTL entry point, give it a target address of the, uh, write
+MSR address. So, we're trying to
+reach that address. If it's found, we just print that we,
+we've print that a path was
+found and whether the uh, input data to this write MSR is taken
+from the input buffer if, if
+it's symbolic data. And, it, it worked, it completed in less
+than 5 seconds and we proved
+that when we reach this, uh, MSR, write MSR opcode, uh, that
+the address and, uh, data will
+be written to the CPU register, is, uh, included in the input
+buffer. It even tells you the
+specific D-word offset into the input buffer for where you need
+to structure your, your data to,
+to talk to this driver. And it, it completed in, uh, 5 seconds -
+literally, the last 3 slides
+that I showed you - that's the entire script to, uh, to do this
+and prove that, that this is
+actually taking input from the user. Uh, another issue is that
+we want to automatically find
+that IOCTL handler ourselves. So, we don't have to manually
+open every driver; do some
+disassembly, find that prime, that initial dispatch function,
+so... WDM, uh, Windows Driver
+Model, uh, drivers, it's a lot easier, we can easily just set
+a, a, uh, memory write
+breakpoint on that struction, uh, structure element in the
+driver object. And, uh, this,
+this script right here, that's all you need to find the IOCTL
+handler for these, uh, WDM
+drivers. We can also, uh, automatically find the IOCTL
+number, so, you have a driver,
+you have a write MSR - it'll tell you that there's a write
+contr, control register or an
+MSR. It'll tell you the number you need to pass for the IOCTL,
+it can tell you what values you
+also need to put into, into the input buffer. So, in this case,
+uh, this list of constraints
+down at the bottom, were automatically detected and, uh,
+angry can actually simplify
+those for you. So, these 3 constraints at the bottom
+basically are simplified to the
+value of the first D-word in, uh, the input buffer, needs to
+before. And then the second, uh,
+there, the third and fourth keywords are the value that's
+written to this, uh, CR4
+register. So, we can actually find a lot of information
+automatically. Uh, there are
+some problems with this. Uh, angr is based on VEX which was
+part of Velgrined, so, it was
+all user space applications. And, as far as we could tell, it
+was never used to analyse
+privilege code. So, it really has decode errors for when it
+runs into some of these
+privilege opcodes. So, the decompiler and the instruction
+lifter, it lifts into, into an
+intermediate representation and that part of the code it runs
+into a decode error and doesn't
+know what to do. So, there is some functionality that was
+added in the Python framework on
+top of that where you can write a Python module to kind of
+emulate or implement what this
+opcode should have done. So, we, we were able to take advantage
+of that and make it work more
+reliably on, on more, uh, drivers. So, one other problem
+is that it currently only
+supports, at least the tool that we wrote, only supports, uh,
+WDDM drivers, we do detective
+WDDM driver and have some ideas on how to make it work with WDF
+drivers also - it's just a
+little bit more indirection than hooking but it should be fairly
+straightforward. Uhm, and then
+there's the issue that some drivers are a little bit more
+complex and cause it to run out
+of memory. I've had it run out of 64 gigs or RAM, so, we, uh,
+we, we need to fix a few things.
+I'll, uh, I'll let Mickey go here. So, uhm, now for a little
+bit of naming, shaming and
+faming. Uh, we talked about 20 total vendors, these are the
+ones we can, uh... Disclose
+right now. Some are not, uhm, ready to release updates, some
+did not respond, some said
+"acknowledged" but we haven't heard back from. Uhm, and some
+are really working on a fix but
+because they're in regulated environments they require more
+time to go through
+certifications. So, we're not gonna disclose them. We're gonna
+go through, uhm, everything
+we've been through - talking to these people, to these guys and,
+and these companies, since, uh,
+late April, early May. Uh, we're gonna go start from the best
+example from the worst. Uhm, the
+best example we had is with Phoenix, Phoenix is one of the
+big 3 IPVs. I have never heard
+or experienced a better response than Phoenix - we, we started
+with the first disclosure batch
+to send out to vendors, uhm, I think Monday that week, and we
+said yea "We'll finish it up,
+we'll send it on Tuesday". Obviously it ended up Friday 5pm
+and we're sending out the emails
+and we went home. Saturday morning, we got an email back
+saying "We acknowledge the
+issue. We're walking on a fix". Within 6 weeks they already had
+a fix ready to deploy to
+customers. This is textbook - like I've never ever experienced
+anything like this - especially
+with a driver. Uh, we also sent an email to, uh, Cert and CertCC
+- we, for some reason, it got
+lost in communication with US Cert. Uh, ended up calling them
+a couple of days ago and they
+did receive it, so, I dunno what's going on from that
+perspective - we did get a
+receipt, but, uhm, no actions were, uh, were described to us
+from, uh, from certs. Microsoft,
+uh, now that's a story - so, Microsoft's model of, of the
+operating system is basically
+"Give 3rd parties the option to write their driver", right? It's
+like "I have a company, I have a
+product - here- write code to interface with my product.".
+Uhm, the problem with this class
+of issues is, a lot of drivers fall into that caveat where
+some, someone might write bad
+code. So, what can Microsoft do about it? They can just say,
+"Hey, people, write some code
+but don't make it bad". It's a bit problematic, so, we had a,
+am initial discussion with them
+and, and sent them a note saying "Hey, what's your, what's your
+view about this?" and we got a
+response from MSR CTR1 that said "Not a problem, uh, talk to you
+later". We sent another email
+later on, it, asking if they're really sure - it was a back and
+forth. And the end of the day,
+after, uh, quite a few rants on Twitter, we ended up getting to
+communicate and, and ended up
+doing a couple of face-to-faces here in Vegas. Uh, it changes
+the, changes the entire
+conversation. Uh, I'd like to say thank you to Chris Anderson
+and Nate Warfield for being very
+good at communicating and forthcoming an trying to help.
+Also to Kimberly, Merissa, Mary,
+Eustice and Gouraf, I hope I'm not bothering that name for
+helping from MSRC side for
+helping clean everything up and, uhm, help sort things out. Now,
+the worst driver award goes to
+ASRock, uhm, because this is 1 of 4, I think. 1 of 4 signed
+drivers that does all of this,
+so, it's quite impressive. The, ugh, the "You Tried!" award goes
+to Nvidia, for telling us the
+driver that we found is internal, so it doesn't narrate
+a CVE because it, it requires a
+security "hardening", uh, effort, internally. Although it
+is distributed by MSI on their
+website as a tool for updates for their graphics cards. So,
+it's internal tool but it's
+distributed by an OEM on the internet. Okay. The worst ones
+are these 4 that did not
+respond. So, our of these 4, there is 1, uhm, that completely
+doesn't respond. So, at least
+some of them sometimes respond - but Realtech, I have had, uhm,
+researchers during this time in
+Vegas, we talked to each other and we'd are notes and we
+discuss, you know, experiences
+like "Oh, this vendor sucks, this vendor's great". And, no
+one in Realtech is answering any
+emails, so, if anyone from Realteach sees this, please
+check your inbox, inbox and
+reply with something. [laughter] Uhm, a few deliveries are coming
+out, so, Phoenix did June 21st
+within amazingly quickly. Uh, already sent to Williams, so the
+fixes that Phoenix, Insyde and
+AMI will release - the 3 big BIOS vendors are gonna get
+distributed to OEMs. And, uhm,
+OEMs will then distribute it to customers. Uh, Intel had a fix
+on July 9th, Huawei in July
+10th, uh, it's the Insyde is today, that's the next slide.
+And a couple more are coming out
+next week, we can't talk about it. And, ugh, a few more during
+the, until the end of the year.
+Uhm, Insyde was kind enough to send us this, uh, statement -
+I'm not gonna go through it but
+the gist is they're fixing it. Microsoft send us this
+statement, I'm not gonna go
+through this because we've been through enough. Uh, and now
+we're onto the conclusions. So,
+basically, bad drivers are bad, uhm, people that write ring-0
+code and write it badly are a
+danger to society. [laughter] Uhm, these, some of these
+drivers. Like the easiest way to
+fix this is "Okay, I'm a vendor, I wrote a driver, I own up to
+it, I revoke the certificate."
+Done! Can't load it anymore in Windows 10, at least. Uhm, so
+getting vendors to, to, to
+revoke the certificates is, is not as easy as sometimes. Like,
+what we had with Phoenix, but,
+uhm, it will be a great help to do this, like, the biggest
+majority of the, the majority of
+drivers that we've seen are old - they're not brand new 2018,
+2019, 2017 - some of these go
+back to 20, 2008. So, just revoke the certificates. This is
+like a big problem, it's not
+just specifically, it's just a class, again, uhm, multiple
+researchers have disclosed these
+drivers separately at a time but the problem is systemic and we
+wanna, we wanna hope that, we're
+hoping that at some point it can be fixed on a larger scale.
+Windows 10 is, is moving towards
+this, there's mitigations in place, there's HVCI, uhm,
+Virtual Based Security, but, you
+know, you have to have 7th gen CPU or above for HVCI to work,
+and even then not always does it
+work. We are gonna release all, all our code. C-sharp, C++ and
+Powershell examples on GitHub
+with the latest slides and the videos and our tracking for all
+the drivers and where you can
+find them. Please check this GitHub on August 13th, uh, we
+did have this internal debate of
+whether to release it today or in 3 days. But, because it was
+so close, we just decided to
+sort everything out, get through Vegas and upload it on the 13th.
+And I think we're done.
+[applause]

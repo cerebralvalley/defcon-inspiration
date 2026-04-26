@@ -1,0 +1,889 @@
+>>	The talk that you're in right
+now is the instrumenting point
+of sale malware talk. This talk has a little bit of a dual
+purpose to it. Half of it's
+about how we're gunna, how we intend to propose to communicate
+malware analysis more
+effectively. So how can we publish our information that we
+found about malware in such a
+way that another analyst can pick it up and run with it and
+not waste their time doing the
+same old shit that we did. And so, that's kind of boring and
+it's preaching to the choir type
+of thing. Well of course I want malware analysis to have more
+detail and things like that. So
+to make it a little bit more fun, we have a case study in
+here. And it's the Jack POS,
+point of sale malware. And on your DEF CON DVD, there's a, not
+a sample for it because I didn't
+want to have something triggering antivirus on the DVD,
+but available on virus share
+right now, there is a sample and the hash is on there and
+everything on the white paper
+and all. So you'll be able to get a hold of that. What I do
+have on the DVD is a copy of the
+actual commanding control server for that piece of malware. Not a
+recreated one like I have my
+students do or anything. It's on that the bad guy actually uses
+and sells. So you got a real
+value with it. It probably worth about as much as you paid for
+the badge and I'll show you how
+to set it up. So I'm Wesley Mcgrew I'm an assistant research
+professor at Mississippi State
+University and the newly formed distributed analytics security
+institute. For me, for my
+research, I'm sort of the pragmatic and unapologetic
+offensive security guy. People
+talk about how you know, you should be well balanced on
+offense and defense. I think
+there is enough stuff out there to break and enough unique ways
+to do it and it is hard enough
+to do, that you can spend all of your time breaking things, being
+productive of that and hand it
+off to whoever likes defense to actually fix that. So my
+research largely centers around
+breaking things, reverse engineering things. I teach at
+Mississippi State University, I
+teach cyber security class and a reverse engineering course so
+that part of our center of
+academic excellence designation from the NSA in cyber
+operations. This is my fourth
+year speaking at DEF CON. I freaking love speaking here. So
+I always try to come up with
+something special. For my first year I talked about -- I talk
+about a wide variety of things.
+I pulled the title slides down here. I have got
+post-exploitation, forensics of
+metasploit. I've got SCADA HMI vulnerabilities compared to the
+vulnerabilities of the Microsoft
+BOB in the early nineties. And then last year, I gave a talk on
+analyzing and counter-attacking
+attacker implanted devices, essentially attacking
+penetration testers, penetrating
+testing software and penetrating testing devices. The case study
+at last year was the pwn-plug
+from pwnie express. And I dropped a little zero down at
+there and I gave a little bit of
+a warning last year, there's lots of these devices. There's
+like these wifi pineapples
+around here you might have heard about getting hacked here at
+this conference Having given
+that talk last year, I've had people come up to me and ask are
+you in any way involved with
+these hacks? These compromises of these devices? And I find
+these accusations to be
+outrageous. (Laughing) I find these accusations to be
+fantastic. (Laughing) and to
+tell you to truth. (Plays Iron Man by Black Sabbath.) I hunt
+pineapples! (Laughing) So if I
+manage to pop yours over the past day or two, that's the SSH
+password. (Laughing) I would
+actually just recommend a refresh. I do some really dirty
+things to it. I didn't have one
+of them while I was developing the exploits so the payloads
+kind of like YOLO let's just get
+rid of this stuff. (Laughing) So yeah my bad Now back to the
+first slide, back to what I'm
+really talking about the point of sale malware. The purpose of
+this talk is to promote better
+communication in malware analysis so that we're not
+wasting time. So that we're
+sharing information, we don't have analysts reinventing the
+wheel every time, the idea is to
+adopt better practices in describing and demonstrating
+malware capabilities. We want to
+show how these things actually work. We want to, you know a
+list of indicators and
+compromises is nice if you're on the defense side solely and you
+just want to see if this on my
+system, if so don't let it on my system, if so get it off. But if
+you're investigating, you know,
+what's the scheme, what's the plan for the attacker or what
+are they going after or how are
+they doing it? What's the operation like? You need a
+little bit more in depth
+analysis for this stuff. So the idea is to supplement written
+analysis, like we've seen now
+with illustration that uses it is malware itself. So if we
+have, you know, this piece of
+code, you know, we can say, oh well it has this particular name
+domain generation algorithm in
+right now. It has this particular memory scraper in it
+and everything. But it's nicer
+if we can, as the malware isrunning, show what it's doing.
+These things don't have user
+interfaces when they are running they don't wanna pop anything up
+on the screen. But what we're
+going to show you today is how you're, as you're developing
+your malware analysis, sort of
+build a harness to illustrate what you found so far. And we're
+going to show this off. So the
+idea here is this is part of the scientific method. We want to
+release the important bits of
+it. The most important bit of it is so people can reproduce your
+work and verify your work.
+There's a lot of analysis of the big name, high profile malware
+that companies are putting out
+there whit papers on it. And for many different reasons, there's
+some of them are hard to
+replicate. Sometimes they're in-information. Sometimes they
+neglect to mention important
+aspects of it. Like how the hell did they unpacked it in first
+place. Things like that. So the
+idea is we want to have a situation where people can
+verify results. Start new
+analysis where old analysis left off. And for me, the big thing
+is educating new reversing
+engineering specialists. I teach a course on this. And so, being
+able to pick up where somebody
+left off on some advanced persistent threat malware, it's
+like -- being able to pick up
+where someone left off on that, it's huge for them. Because it
+gets them deep in to the malware
+and looking at important stuff and they're not just starting
+from scratch every time. And so,
+the issue here though, is most malware analysis that is
+published, its targeting
+indicator of compromise consumers. People who are
+building, you know, end point
+protection systems, or you know managing those system,
+firewalls, gateways and things
+like that that are scanning things, looking for these
+indicators. That's the bad I
+thing, don't let it on the system. But those of us who are
+interested in interworkings of
+it, this is really important. So what's missing in a lot of
+malware analysis out there? And
+I'm not going to start going down the list of, you know,
+Mandi and Norman and all these
+folks and everything publishing white papers on malware. And
+pointing out exactly what is
+missing in these cases, I'm going to talk a little bit about
+why they don't have some of that
+information. But this is what's often missing, in key aspects of
+the analysis that keep us from
+being able to use it at a very deep reverse engineering level.
+The biggest one is just
+information on the hashes or information on the sample.
+Sometimes you don't even get a
+hash of the malware. If you do then you go off searching for it
+in public domain and open source
+sources and you can't find it. It's something they pulled off a
+client system and they haven't
+submitted the virus total obviously. They haven't given it
+to the virus share folks. And
+it's just not out there. And so, you know, I've run into this
+before, a sample I want to take
+a look at, you know, that has published an analysis out there.
+Just can't get my hands on it. I
+wind up finding some shady back channel connection to somebody
+who is on a mailing list of
+somebody else. And don't tell anybody I gave you this sort of
+thing. And that's silly to have
+to do that for code that an attacker wrote. It's not, it's
+not like we're protecting
+intellectual property here right? So the availability of
+malware is often missing. Again
+there's reasons why that happens. We'll talk about those.
+As far as procedure is
+concerned, sometimes stats are skipped. Obviously sometimes
+steps are going to get skipped.
+Especially considering target audience for many of these
+things. These um, you know
+things like how do we unpack it and how do we find its
+functionality? You know, thing
+that it might have in common with other malware that we just
+didn't bother looking at because
+we weren't interested in that part of it. So sometimes part of
+the process that somebody uses
+to do this isn't documented well, you know as computer geeks
+we're not very good about
+keeping lab notebook about what we're doing. So we just kind of
+hack at it for a while and
+documents it later, it's a problem. There's often content
+missing. You know, especially if
+there's no sample available, there's also the ability to
+redact things like what hosts
+are being contacted? Where are command and control host? Even
+what industry was this malware
+found in? Cuz that's important and in at the very lowest level,
+sort of the internal points of
+reference. Things like just addresses of where, like what
+functions or what. If you went
+through all the trouble of reverse engineering, this huge
+chunk of functionality and
+malware, and what's the harm in giving me in the function names
+at least and arguments you
+figured out. The devil's advocate viewpoint of this is
+that it's missing because you
+know, number one, it's, you know, the target audience are
+the white paper itself. For
+people who are working at a higher level than we want to.
+I'm assuming everybody in here
+wants to get down and dirty with mall ware x86 assembly really
+mess it up at that low level and
+you know, if you're down there, you're going to be pretty
+disappointed with a lot of this
+stuff. So we're kind of left to pick through technically useful
+information. I'm always like,
+different algorithms for unbluring things and unpixlating
+things and anything to try to
+figure out that IP address behind the redaction and
+anything. That's me. That's what
+I'm always trying to do. There's a lot of added effort in
+documenting things. Well, it
+takes more time to reverse engineer something if you're
+keeping a lab notebook and
+documenting what you are doing, because usually we're flying
+through datapro, naming this,
+naming that, and cross references. Five minutes later,
+we're in another part of the
+code and we couldn't tell you how we got there, but if you
+take a little bit more
+methodical approach, then it's easier to keep track of all
+that. And you end up with a
+really good paper at the end, but it talks a lot more work.
+Again with the targeted audience
+of these papers, there's a concern for analysis consumer
+safety. The consumers of
+analysis, you don't want to get too much information so that
+they grab a sample and start
+playing with it and infect themselves, it's a little bit
+silly. If have to put some
+boilerplate disclaimer in there, go for it whatever. The most
+compelling argument for this for
+me though, the devil's advocate argument I like the most that I
+can get on board with is client
+confidentiality. Sometimes you pull this malware from a system
+that a client of yours, you
+don't know yet if that malware is specifically targeted against
+your client. Perhaps it's hard
+coded with internal information that they previously found out
+about your client. You don't
+want to up load that to virus share. You don't want to up load
+it to virus total yet, but a lot
+of y'all do. (Laughing) You know, so I can understand that.
+But once you sort of kind of get
+into reverse engineering and you find out hey this really isn't
+that hard, it doesn't have
+specific information about my client, then it's start to think
+about, let's push this out to
+where other people can take a look at it. The biggest reason,
+so all those other reasons is
+the reasons that if you had approached somebody with this
+they would try to claim. The
+last reason is, the real reason in many cases, it is competitive
+advantage. There's so many
+people doing these analyses. There's so much you know benefit
+to them for being the first out
+there, To being the best out there, to being the most
+accurate out there, maybe not
+most accurate, to have that public image of being the ones
+the reverse engineered the net
+Stuxnet or something like that. The so it's not in their best
+interest to share that with
+anybody. They don't want to, if you have all these big companies
+splitting up the work, you know,
+you'd have the reverse engineer in a snap. But, umm, that's not
+how they work. That's not, and
+it's a competitive advantage. And I get it, you know, I hold
+the contents of my talks and
+anything, very close to my chest, and anything that is in
+em, that gives me an advantage.
+That's the real reason, rather than any kind of you know,
+altruism. So let's what's being
+done elsewhere? Elsewhere in science? So reproducibility and
+verifiability are big in
+academia, in any scientific endeavor. Peer review is
+supposed to enforce this, if you
+get published, you're supposed to have been peer reviewed and
+able for anybody to take that
+work and replicate it and verify those results. That means that,
+we may not be as rigorous of
+that as you ought to do as we should be in computer science
+and computer engineering, but
+it's something we shoot for at least, something we strive for.
+You know, you want to have a
+software environment data, all that documented to the point
+where somebody would recreate
+the experiment. That's the gold standard for any kind of
+science, computer or not. And
+recently there's a push for having research papers that
+embody the algorithms,
+especially computer science and any kind of algorithm type of
+numeric computation type
+situation. There's a push for having papers that embody the
+algorithms and data in papers so
+you can manipulate them interactively. There's been
+challenges out there, to
+implemented systems for this. So you have a paper with embedded
+algorithms, for somebody who
+attacks things like me, attack services just went crazy on this
+thing. But assuming we can do
+this and we run PDF renderers any way. So they're kind of
+nasty any way. So why not do
+this? It sounds scary regarding malware, we're all professionals
+and we're all taking on this
+challenge of reverse engineering malware, maybe we, you know, put
+on our big boy pants and deal
+with it. So the recommendation here is to go beyond just normal
+sand box output for malware
+analysis. So that's one way of sharing malware analysis. But
+that's all automated. It's all
+one size fits all. It drops it onto a clean window system. it
+runs. It may click a few times
+and triggers or whatever. And it logs all the interaction system.
+The problem with that is, that's
+very surface level. It may not be giving the target, the
+mallware exactly what it's
+looking for in order to do its thing. For the point-of-sale
+malware, it maybe that it's not,
+you know, giving it process that have credit cards in memory, so
+it doesn't exercise a large part
+of its functionality. We want to document these host environments
+in such a way that people can
+reproduce them or host them in a cloud environment where they can
+access the same environment or a
+copy of that environment. We want to give target data,
+something to exhilarate. We
+start giving this thing what it wants and that's target data,
+network environment, and all
+this sort of thing. Give it what it wantsto talk to. In this case
+study, I have the point of sale
+malwares command and control server. But that's not very
+common. We don't always get
+command and control server for the malware. You know, why not
+write a bare bones one. One of
+the exercises in the class I teach in reverse engineering,
+they take some of the MANDI and
+APT One malware, they give it to them as a binary blog they find
+out how that thing talks to a
+command and control server and implement a working command and
+control server for ti that lets
+them control it and so, it's a very great exercise for them.
+And if they can do it, you know,
+four, five weeks into reverse engineering training, and in a
+university environment, why
+can't anybody else? So give it that sort of, that other thing
+to talk to and the other thing,
+besides just a giving it what the presidents, instrumenting
+this thing so we can watch it
+run. So it's not just running in the background unseen. And so,
+the big, the coolest tool for
+this I know is write your own debugger for it. It's easier
+than you think. Winapi Debug is
+a great library for doing this again I use it in the class for
+the main thing. I don't, I think
+it's cheating for my students to use dynamic analysis too much. I
+like to affirm that they are
+just sitting there staring at assembly for a good chunk of
+their time. But if you're going
+to do some debu,ing, I like to write them to write their own
+debugger. That's a great library
+for kinda boot strapping yourself up into it. It allows
+you isolate functionality of the
+malware, but it lets you run live. But when it hits something
+that's interesting, show us
+what's going on and you could have a good visualization of
+this or you could do a crappy
+one like I did. (Laughing) So the case study here, so that's
+all preaching to the choir type
+stuff. I don't think we'd get any argument, like we need to
+communicate better. Of course,
+but the case study, this is the fun part huh? So before, I'm
+having an acknowledgment slides
+right here in the middle of my talk because I want to make sure
+we get in before we get out on
+the demo. The original malware samples for this are sourced
+from Xylitol, I guess that's how
+I'd pronounce that. Great guy, runs cybercrimetracker.net and
+basically it's a live feed of
+kind of shady-ass sites that have things like this. So you
+can grab some fun things off of
+there and play around with them. Umm, I actually, he got turned
+onto this particular sample
+through a tweet that I've long since forgot he tweeted it. He
+has a screen shot of the
+commanding controller server's web interface up and had
+redacted out the IP address
+poorly. They left the top couple rows of pixels on there and well
+here we go, about five or six
+possibilities. Let's do this. (Laughing) So that's how, that's
+kind of how I got turned on, but
+an official source cybercrimetracker.net There has
+been a couple other analyses of
+this same malware that I want to acknowledge. These were
+published of after I published I
+had done analysis, but I didn't want to publish my analysis
+until I got here so I could drop
+some cool stuff on ya'll. Of course the Spider Labs guys had
+a great analysis, Jack POS the
+House Always Wins. A couple things different from mine, I'm
+not sure if it's a different
+sample or they didn't look at it the same way I did. And the
+Maleware Must Die folks had a
+look at it from the viewpoint of tracking down the author and it
+that had a foreign post they
+found where the guy was selling this thing. Now it's free on the
+DEF CON DVD, cool. (Laughing) So
+I've got more citations in the white paper for tools,
+executable paper prior work, I
+believe in giving a white paper out with these talks and highly
+encourage everybody to do the
+same. Nothing angers me more than knowing there's one good
+source or one good talk for a
+particular subject and go there, and you're downloading slides
+and no white paper. So I'm left
+at what to kind of guess what they're talking about in there
+and kind of fill in the details.
+So why Jack POS? It's the one that fell into my lap whenever
+it was time for DEF CON CSP to
+roll around to a certain extent. It also fell into my lap around
+the time, I got a five month old
+twins right now. So I was analyzing this just around the
+time they were born and
+everything. So when I was unable to sleep and wasn't holding one
+of them, or if I was just
+holding one and I could work with the other arm, this is what
+I was tinkering with. But it's
+kind of cool one to look at for this, because there's a lot of
+-- POS malware huge topic.
+Probably what ya'll lined up out there for, you didn't know what
+you were going to come to the I
+hunt pineapples talk. It's a big thing this year. So yeah chase
+that buzz. The C2, the command
+and control server was available. I've had the ability
+here to demonstrate the complete
+environment for you. I managed to take that from the server
+that was listed. So I can show
+it to you from card swipe to command and control. It's weird
+at a low level because it looks
+like it is using C++ strings and everthing. It basically dynamic
+allocates all of the memory for
+strings at the beginning of the program and only uses those
+offsets, those memory locations
+for the strings later on. It's like a cross reference datapro
+are all broken, but at run time,
+doing it dynamic, it works out pretty good with these
+harnesses. And the harnesses
+that I have, I have a separate harness for the memory search
+functionality. It actually hooks
+into the functions that ,does the sort of regular expression
+search for the credit card
+number. It sets up the stack call and just call that is
+function. So there's a harness
+that just run that is part of the malware. That's a cool way
+of, a cool use for this is I
+just want to look at the domain name generation algorithm. I
+just want to look at scraper. I
+just want to look at this part of it and anything. Let's rig up
+an environment where we could
+continuously run it and reset the stack back around and call
+it again. So the harnesses,
+Winapi debug, Python script debugging. It's a really fun
+library and it's very well
+documented there are lots of examples. If my students can do
+it, anybody can do it right?
+Just set a bunch of break points, I set them all in a
+dictionary and I have a loop
+that just goes through and sets them all up. You get call backs
+for your Python code whenever
+they trigger and then it's just like the old school Commodore 64
+program, Just peek and poke in
+memory. It's great, you know, you can get the current state of
+the thread, current state of the
+process. You can read and write memory, mess around with the
+stack and then keep going. So
+it's pretty cool like that. So I can, I can do some pretty
+interesting stuff that I'll show
+you on that. That's the trial run for the sample I looked at,
+there were several on that same
+server. It was apparently the server for the person who
+actually wrote the malware, not
+a customer of it because some of the samples were hard coded to
+192.168 IP addresses for command
+and control. It's basically the samples he was using to test it
+locally. And so, I think I've
+going to a list of the other shot ones for like the internal
+testing samples and things like
+that in the white paper, if you need that contact me.
+Virusshare.com. If you're not
+familiar with it, go on there or either get an invite from me or
+just request access to it. If
+you're an anti-virus researcher, any sort, even amateur, they're
+pretty cool. You know, you can
+get on there and download, lots of samples. Everybody's
+uploading that now and I'll also
+put this sample up on the mcgrewsecurity.com. If it
+becomes a problem to get a hold
+of it, that's the only part that's not on the DVD of course.
+The commanding control server is
+on the DVD. It's as PHP web application. It's using this
+weird model viewing controller
+framework called Yii. I'm a Django person Python anything so
+this was a very big change for
+me. I was trying to understand what this guy was doing. It's
+tricky to set up. I'm not going
+to go through the steps of setting up a Ubunto server to
+get it up and running. But all
+those steps are in the white paper. This is a view of the
+panel. We're going to go through
+this interactively. But there is a data module, a model view
+controller type interface for
+this thing. And so, you have objects in there. Tables of
+them., So bot, cards, commands,
+track dumps, there's ranges of IP addresses for the
+geo-location. that I didn't
+manage to get because I didn't grab the SQL tables at that
+time. Track data, users for the
+system. It's actually in a state of development it looks like. If
+you start digging in the source
+of this thing, the way it stands right now, you log in to it and
+you're basically the only user.
+There's not any kind of speeration for different users.
+You might as well have only one
+user on the system. But it looked like there's a lot of
+underlying code there that
+indicates instead of selling, you know, selling generated
+samples and the code for command
+and control server, he would migrate to having this as a
+service. Where he would set it
+up and have client logins for people who want dumps of credit
+cards and things like that and
+allow them to get small subsets of the data set. And it looks
+like that's what he's working
+towards. But it', there's indications of it that's not
+completely implemented. It's all
+pretty much, you know, one user gets everything type of thing.
+Back to the sample itself. The
+UPX packed sample, so thank god I'm not going to go into a weird
+unpacking talk or tutorial here.
+I'm just happy when it's done with. So the nice thing is you
+could UPX extract the thing and
+you're good to go. But, the unpacked version for whatever
+reason, maybe I'm using the
+wrong version of UPX or something, it crashes at check
+for stack cookie in one of the
+earliest functions and I think,- I know that it's just not
+rebuilding the relocation tables
+correctly. The fix for this would be to figure out exactly
+what UPX to extract it back out
+with or what alternate packer the implementing UPX was. But
+the easiest way to do this is to
+disable ASLR for that particular binary in your your PE headers,
+you can do with to Image NT
+headers, optional header characteristics, DLL
+characteristics, dynamic base,
+unset that bit and now all of a sudden, your malware doesn't hop
+addresses every time you run it.
+And I like doing this, if I know that a samples not going to
+freak out if I do this. I like
+doing this anyways, because that means I don't have to keep
+rebasing in my static analysts
+in datapro. To keep all my addresses consistent, it also
+makes the harnesses on a little
+bit easier. This is the nasty main loop of the program. Up
+towards the top it calls a
+function that sets up all the strings that are going to be
+used in the program for the rest
+of its execution and that's the command and control server. The
+file names of the executables
+that it tries to install itself to. And also, process names that
+the it wants to avoid whenever
+it's doing its graphing through memory for credit cards. Towards
+the bottom down that red channel
+there, in datapro you got the, when you have a jump, if it's
+true, you get take the green if
+it's false you take the red path. The red path is after a
+check for am I installed or not.
+Then it dumps down to some code down there at the bottom. That
+installs itself. It copies
+itself and does some very standard registry persistence
+and sets itself up with runkeys
+and things like that. The harness that I designed, it
+patches the command and control
+string as it is sets up so it points to one of my VMs. That's
+something you want to change for
+your environment. It patches the installation check so you can
+just run it from a directory and
+you don't have to dig it back out of the one of the app data
+folders in the middle of it, and
+also it prevents this watchdog process from executing. It
+spawns off another process that
+watches this process. And if it dies, it starts up another one
+and that is really obnoxious
+when you are trying to keep this thing under control, you want it
+to stop when you tell it to
+stop. The other stuff that it does is it prevents anything
+from shell executing there's
+some functionality to install other malware through this
+malware. And I just, let me know
+what you were going to run, but don't quite do it yet.
+Communication wise, there's a
+loop up there where it looks for the command and control server.
+It hits a post-echo address on
+the command and control server. If that server responds with
+simply no HDP, no HTML tags or
+anything, if you just says, it's like okay I'm talking to the
+right command and control, I'm
+going to keep going on, this is where your sand box would be
+like I don't know. So that keeps
+it normal, simple sand boxes from really getting much from
+this. Once it figures out
+there's an actual command and control server, it checks its
+own state to see if it's has
+already snagged any track data from memory. It does it later in
+the loop but it does come back
+to here. If it got earlier track data it's going to base 64
+encode that out and send it out.
+So we can set up a harness to play that and not basic 64 so we
+could actually read it. It
+checks a queue. Actually clever, they have a queue on the command
+and control server with commands
+execute on the target system that are being distributed out
+to the different bots. The hosts
+uniquely identify themselves via MAC address and there's probably
+some weird cross-site scripting
+cross-site request forgery sruff you can do with that. Commands
+wise, you've got, so there's
+very limited set of commands in this malware. Some of them back
+doors and general purpose lets
+mess around on the system and set up things and look for files
+and stuff like that. There's not
+much of that on here because it's scrapping track data and
+just that. You don't have to
+tell it to do that it's always doing that. So the remainder of
+the command data is very simple.
+Kill just knocks the bot out. I think it even uninstalls it.
+There's an update that replaces
+the current malware with the latest version of it that's in a
+directory on the command and
+control server by hitting the post download function on the
+server. And then, aside from
+that, there's an exec that's basically, it looks like on the
+server that I pulled it from,
+was being used to install other malware. When you got a Botnet,
+if got a bot net, you could make
+some good money installing other pieces of malware for other
+folks. So that's a way of doing
+that. There's a memory scraper in here. This is the memory
+scraper function that you're
+seeing here. In the advertisements for this
+particular piece of malware,
+he's like, does not use regular expressions. Well this code
+essentially does the same thing
+as the regular expression, it's embodiment and code of a regular
+expression search for valid
+credit card numbers. The reason why he's bragging about not
+using regular expressions is,
+otherwise, some, any idiot can just run strings on a binary
+that is using a regular
+expression library and see, hey this thing is including some GNU
+regular expression library and
+here's the regular expression string it's compiling down to
+use for it. So it's a little
+less subtle. They're having fun over there what's going on. And
+so it does some interesting
+things. It gets a list of processes, I say functions there
+but processes. It avoids 64 bit
+processes because for whatever reason. I guess it just doesn't
+figure there is going to be
+anything there. And then it has an internal table of processes
+that it knows is not going to
+have track data. Windows system process, basically if you did a
+PS list on a stock window system
+not running anything, it's avoiding all those because
+that's not point-of-sale
+software. It iterates and searches through two regular
+expression- esque functions that
+implement the ISOIAC standard for card data. It's more or less
+adhering to the standard, sort
+of evolved to the little quirks for getting Visas and
+Mastercards and things like
+that. And so, it was an iterative process harnessing
+this particular function and
+just throwing what I thought were valid cards at it. So I was
+getting traction and getting
+through and getting more code coverage through this. The
+harness basically identifies
+this search process in both harnesses that I demonstrate.
+And then one of the harnesses
+will, basically let point this function at an arbitrary process
+ID to the system for testing. So
+I don't have to is it there scanning the entirety of memory
+everytime All right so the demo
+we're going to show here, again, this again, the samples of Indy
+five of it. The other ones, that
+doesn't look familiar. I'm looking at two different
+samples. No it's the same
+samples. The two harnesses one instrument all operation of the
+thing. The other one, I will
+just show the code for, just skips to the proc harness. I can
+demonstrate that. We got a lot
+of time. I've got a track generator, basically It's just a
+python script. It generates a
+bunch of valid looking tracks and just sits there on them in
+variables and memory. This thing
+will come around and find them. And then the PHP source for the
+actual command and control
+server. Again, due to the issues of getting this command and
+control server, I did not get
+the database schema, and unlike Django, in Yii you can't just
+generate a schema from the
+model. I don't know and so I recreated it and it works.
+There's some stuff that is
+probably not right. But it works well enough for us. It'll bump
+out and go intoVM land here. So
+we've got, Ubunto server here configured up with this
+particular point of sale
+malware. I have forgotten the log in password for this thing
+twice already, once a week when
+I went to look at this and once again earlier today like around
+lunch when I was testing these
+out. I can't remember the password for this thing. So I
+wound up resetting the password
+for the Ubonto there and for the actual web interface, I just
+went in and knocked out the
+hashing algorithm. So basically, to log into this thing you know
+badguy@localhost then password
+do do da du du who knows! And then my own dang system has a
+captcha. It's the worse captcha
+ever. It's the same font every time. What? (Laughing) What? Is
+that an I? All right. Cool. Oh
+yeah. that was a successful demo. (Laughing) So we've got,
+and you know, in the low
+revolution, we're kind of looking at this kind of nasty.
+Zoom out a little bit. That's
+way you normally see it. You get some statistics for things that
+you've seen. This is reverted VM
+so we're not seeing anything yet. A list where the dumps will
+go and where the bots will check
+into and the only settings right now are account and passwords.
+This is where you have a user
+with admin rights and he'd be able to add users and stuff but
+that is not implemented in this
+one. Maybe I need to steal another C2 from them. On the
+other side of this coin, we've
+got the client for it over here. Let's pull up, we have in here.
+So we've got three pythons. We
+have the malware itself currently named something such
+that it's happy with. It tries
+to pretend it's a java update scheduler. That's its default.
+It has a whole list of them, if
+it can't pull one, it does another one. We've got the main
+harness, the search process
+harness. What I am going to do first is I'm going to show you
+the code to generate the track
+data and just kind of implementing the basic algorithm
+for it. Just John Doe and the
+various elements of that particular ISS standard and some
+probably pretty terrible things,
+I never did ACM program contests or anything like that, So we're
+going to run that and one window
+here. That is going to generate -- oop. I can mute that now that
+Iron Man's over. Alright gen
+track data, so that generates a bunch of track data. It's in the
+python dictionary, or python
+list and just sitting there in memory. So we can just leave
+that there. We can run,
+hopefully process mods on here, process explorer rather. Do I
+not have process explorer on
+here? Cuz then we can actually watch this a little bit nicer.
+There we are. You're hiding over
+here. So right now, this is PID 1480 is the one for the, for
+that particular track data.
+We'll show off the search process harness first since
+we've going to that PID fresh in
+our memory. So our search process harness, it's actually
+our simplest one. Basically I've
+got some neat stuff up here for polarizing my log output and
+everything. But the gist of it
+here is I setup a list of break points here and call backs for
+them. I have some stuff that
+actually goes and sets those. And basically anytime one of
+these hits one of these
+functions up here gets called, and so it's reading memory from
+that. We'll watch it run. It's a
+little bit nicer like that. You can read the code later if you
+really like. But you will.
+You'll like. Search process harness. And I think I need to
+provide the PID 1480. Wasn't?
+It? 1480. So there goes searching through that. And the
+fact that some of these data
+structures return not 0 admit that it worked and found things.
+That was my indication that I
+got enough code coverage in there with my data that I
+actually got some results out of
+it. Now still with that data in memory, I can run the main Jack
+POS harness. We'll look at that.
+So that's got a lot more of these break points here. I've
+got break points for patching
+command and control and install checks, blocking the shell and
+open it in a URL. So I can see
+what URL is pulling and that sort of stuff. And so basically
+we're launching the process. We
+are setting all our break points. We modified the command
+and control from that I that I
+am not in any way redacting to my local VM here. It tests to
+see if command and control is
+up. It's up. It responds correctly it's checking in.
+While that's searching, I can go
+back over to Jack POS here and now I've got a bot checking in.
+And it's in this IP address
+range. It thinks that in Zaire I don't know how to build that
+country code up. I can bring
+that -- the country code database in there it's got some
+geo-location capability. That's
+South Africa you're right. This is just like a default here
+because I didn't build that
+table out. IP address. Mac address for that VM not for my
+host and by now, we should have
+some dumps in there. Nope not yet. It's still searching, it
+hasn't hit 1480 yet. This is the
+exciting part y'all. (Laughing) The part where we wait. Should
+have killed some stuff. Alright,
+process explorer, still over here. Showing us that we've got
+this python. This is our python
+running the malware right over here. We've hit 1480, so now,
+over here, we should have dumps.
+Oh no. What happened? It broke. Oh but it hadn't checked in yet.
+That's what it is. See there,
+that's where it sends it. So now it loops back around to the
+check in, tests to see if it's
+up, it's up. And it base 64 encodes everything and sends it
+along. So now, dumps. So there,
+you can play around with this and you can have some fun with
+it. If you were really evil, you
+could actually just patch this malware and start using it
+yourself. Don't do that, naughty
+naughty don't hack things. (Laughing) So wrapping up on
+this, the idea is we're
+addressing reproducibility and verifiability in malware. That's
+the preaching to the choir part.
+We all want to have better information about what we're
+analyzing. I encourage you to
+slow down for a moment and just document what you're doing and
+share that. Giving the malware
+what the wants, the data the it wants, the network services it
+wants to connect to, that's a
+big deal. And that's better than just the generic sand box. It's
+not what you want to roll out
+for everything. You want this generic sand box as triage, but
+if you're going to go deep dive
+and try to be fire eye to that great new analysis, and you're
+going to be the cool one, you're
+going to do this. And there's a potential for publishing this.
+Would be neat to have a cloud
+based service where you could log in and be able to interact
+with these sorts of things in a
+relatively safe environment. There's my contact information.
+wesley@mcgrewsecurity.com. I
+check that e-mail whenever. Then I have a work e-mail, but I only
+check that at work. There's my
+primary twitter account. McGrewSecurity. And the
+secondary one, which is not
+listed right now, IHuntPineapples (Laughing) So,
+I'll be hanging around the con
+and talking to people and answering questions and drinking
+and things like that. So get up
+with me. Thank you so much for coming. (Applause.)

@@ -1,0 +1,487 @@
+>> BRANDON WILEY: Hey, everybody.
+(applause) >> BRANDON WILEY: Thanks for coming out. Okay.
+Well, I got a lot of slides, so I'm going to try to just burn through them. We will
+just power through. Try to pay attention to the first five minutes of slides so that,
+you know, you'll be there with me when we're hitting through this stuff.
+Okay, I'm Brandon Wiley. I have done some stuff. I wrote a thing called Freenet in 2000.
+DEF CON 2000 ‑‑ oh, thank you. Raise your hand if you have ever run a Freenet node.
+Yeah, my people! Thank you. National heros, every one of you.
+Yeah, my first talk ever, I was 18 years old. It was at DEF CON in 2000. I presented
+about Freenet. The entire description of my talk was this is about Freenet. I drew the
+slides with Crayons. And it was a packed room of people that came to go see a talk based
+on that information. And at Blackhat 2000 I presented Curious Yellow
+which was my superworm design that was designed to destroy the Internet. Purely theoretical
+as you can tell because the Internet is still here. You can hear that ‑‑ Charles Stross
+has a book call "Glass House" which Curious Yellow is the thing that destroys humanity.
+That was a great moment when he put that in there.
+I used to work at BitTorrent. I was there when BitTorrent bought uTorrent. So I apologize
+for that. But I did a lot of stuff at BitTorrent. And then since then ‑‑ when I was at
+BitTorrent is when I first saw deep packet inspection being used to block BitTorrent.
+In fact, when BitTorrent was ‑‑ when we noticed that Comcast was blocking BitTorrent,
+before any of the press heard about it, I was the guy that they sent to Comcast to try
+to reason with them. Well, you know, how that worked out.
+So I started doing ‑‑ I have been working on kind of anonymity stuff and mainly kind
+in the censorship‑resistance side of things for a long time. So I know the folks from
+Tor from back in the day and I have been helping them out more recently with their new obfuscated
+protocols because Tor is being blocked in a lot of places so they need a new protocol
+that's not blocked. And then, finally, I have ‑‑ I wrote
+part of a book called "Peer to Peer" for O'Reilly a long time ago. So, anyway, those are my
+credentials. Who cares, whatever. I'm just putting this up so that I can establish my
+credibility with you guys so when I start showing you pictures of cats, you don't just
+be like, what is this? I'm out of here because there is a lot of pictures of cats in my talk.
+Thank you much (applause). Cool, cool. All right. So let's get into it.
+So my slides are taken from two different sources. One is my children's book on Internet
+free done called "Free As in Kitties." The other slides are from my Ph.D. dissertation
+so I meshed them together. We will see how it goes, right? So we'll start out with the
+Internet, what is it? Let's define some terms. Hopefully you guys have checked it out. If
+not, it's pretty cool. Should get on there. There is a lot of stuff on a lot of cats and
+stuff. And then how do we Internet with this Internet
+once we know what an Internet is? And then we get straight up into binary classifiers
+using (inaudible) inference. And that's fooling classifiers with polymorphic protocols and
+then Dust which is what the talk is about which is the polymorphic protocol engine and
+then I have info graphics. If we have time ‑‑ I forgot to start my timer. There we go. Then
+we will talk a little bit ‑‑ I want to talk a little bit about realistic fair models
+versus the fair models that everybody else uses.
+So, yeah. First of all, the Internet. It is the greatest technological marvel of our time
+and the pinnacle of civilization. It is an unprecedented way to deliver pictures of cats.
+(laughter). So I know what you're thinking. You can't
+take a real cat and transmit it over the Internet. Believe me, I've tried. It doesn't work. That's
+and that log cat. First step is we have to turn it into pixels with what they call pixitization.
+And then we get it into pixels and that's a digital form that we can transmit over the
+Internet. If we take this exact cat, we make it into pixels. We have this, it is a pixel
+cat. (laughter). Fun fact, if you go on Google images and you
+are ‑‑ or just on Google looks for things like 8 pixel cat you will find girls who live
+in Oakland. True story. Okay. Great. We got this cat.
+Now we need to turn it into numbers because as we know, like computers they use numbers
+and stuff. That's pretty easy. We have all these various color spaces and things. So
+we get a number mapping for each color and then we run it through there and then we get,
+you know, a map of numbers, okay? So now we're good. Now we have something computers can
+understand and we can transmit it. So first we got to do in the Internet, for
+some reason when they designed the Internet, they didn't think it would be handling, like,
+you know, big chunks of data like cat pictures it can only handle very tiny chunks of data.
+So we split all of the data into all these kind of just randomly sized different things.
+And then we call them packets. And then we transmit them over an unreliable, possibly
+unreliable medium, right? (laughter). And then they all arrive, maybe. Maybe they
+arrive. Maybe they don't arrive. At some point, we try to cut and paste and stitch them back
+together to get the packet. And on the other end of the pipe, we get a pixel‑perfect
+exact replicate sent through the Internet of the cat we started with. There you go.
+Yeah, Internet. Internet's great. (applause).
+So what's the problem? I mean, the Internet's great. We can look at cat pictures. It brings
+us all a lot of love and joy. Like, who would ever want to try to stop this? Well, robots.
+(laughter). Since the beginning of time, there's been
+a war between cats and robots. No one knows why. All we know is that robots have been
+programmed to hate cats. Okay? So here's out binary classifiers work, okay?
+Robot looks at something. It looks at the packets and it says: Is that a cat? Yes or
+no. Those are all the options we have. That's why it is called a binary classifier. That's
+the decision it is trying to make, cat, not a cat. Now, because they hate cats, if it
+is a cat, they replace it with a sad Panda. All cats are replaced by sad Pandas.
+Now, if it is not a cat, don't care. Don't care. Just pass it through, just exactly as
+it was. Bananas, whatever. Doesn't even know what bananas are. It just knows what are cats
+because of binary classifiers. Pass it on. Okay.
+The question is how do we fool a robot so we can transmit pictures of cats over the
+Internet without having them replaced by sad Pandas. That's the yes. How do we fool robots?
+If you have been paying attention ‑‑ I said pay attention the first five minutes
+you already know the answer, right? Right? (laughter).
+You got to make cats look like bananas and then robots don't care, all right? So here's
+the secret code to my talk. Don't take a picture of this slide. This slide is not on the Internet
+version of the talk. This talk is only about cats and bananas. Kittens are free speech.
+Sad Pandas are censorship of free speech. Robots are filtering hardware made in America
+and sold to companies all over the world to make it so that people can't access the Internet
+and find out things about news, what's going on in their own country during elections and
+other critical times like that. Bananas are just messages that filtering don't care about.
+Cats are bananas reencoded to get past the filtering hardware.
+(applause). We are talking about deep stuff here. This
+is really important sort of stuff because the Internet needs to be free. But, you know,
+I just wanted to segue into this. I hope we are all at the same level, we all
+are on the same page and understand the code, right? You know the code. I can tell you about
+my project. Dust makes cats into bananas in order to fool robots so we don't have any
+more sad Pandas. (laughter).
+That's the intro. Now let's go into some details. Robots can't see cats the way you and I see
+cats. Hey, it is a cat. They only see the packets. They see the grid of ‑‑ excuse
+me. They see the grid of numbers and then they have to use some kind of statistical
+or rule‑based ‑‑ because they're robots, they only know logic. So here's one mechanism,
+right, which is you look at the lengths of the packets. It is grouped into these randomly
+sized packets. You kind of count the first one is 38 numbers in it and you say, you know,
+if things are in this kind of configuration, then it must be a cat.
+Now, this probably sounds really dumb. You think, that's not going to work. That has
+nothing to do with whether or not it is a cat. We are going to do a little audience
+participation test to see if you guys can classify traffic based on packet lengths,
+okay? Are you ready? Here we go. This is a graph of 8TCP packet lengths. That's
+not a border. That's a giant spike in the graph. If you know about TCP that's because
+of the algorithm that takes little packets and then just hopefully for you it bundles
+them into big packets. Since that's not turned off in HTTP, you have kind of this spike in
+the largest possible size packets. Okay. Now this is HTTPS. HTTPS disables the
+algorithm by setting the delay option and, therefore, it has the totally different statistical ‑‑
+like it still has a lot of fairly big packets. It doesn't have that spike on the end. And
+it has this other spike kind of around 400 or so. I don't really know why. I just look
+at the graphs. Okay. So I have just showed you two different
+graphs. Now I will show you a chart. I will ask you if you can guess which one it is.
+Okay. So raise your hand if you think this is a chart of HTTP? Okay. Raise your hand
+if you think this is a chart of HTTPS? Okay. Congratulations, you are all robots. (laughter).
+It was neither. It was Dust, my project, pretending to be HTTPS. So ‑‑ yeah. Did a pretty
+good job, right? (applause).
+I kind of tricked you, though, because I didn't have that option is this something pretending
+to be HTTPS. You might have picked that because that's the obvious choice since that's what
+we are talking about. So, yeah, so packet lengths work as a way
+to determine if something is one protocol or another protocol. And the reason we care
+about this is because these days the way they block the Internet is they don't say, hey,
+you are looking at this thing that we don't want you to look at so we are going to block
+it. They say, hey, you are using BitTorrent, blocked. Hey, you are using Tor, blocked.
+You are using SSL. Blocked. You are using a VPN, blocked. That's crazy because you could
+be doing all kinds of things. If they can't look at what you are doing to
+determine if they don't like it, they will block it by default. For instance, there are
+circumstances where SSL has been blocked and you can use unencrypted HTTPS. That's okay
+if you can make your protocol look like. Dust removes packet length information. It doesn't
+just randomize it. It randomizes it according to a target distribution of whatever you want.
+You pick a protocol and Dust will make your packet lengths look like that protocol, any
+protocol, doesn't matter, just give me some sample traffic. I will sample it and make
+a profile and then I will make it look like that.
+These are one of the tools I have made looking at deep packet hardware and trying to figure
+out how it is doing classification so we can, you know, circumvent that classification.
+I made this tool called Shaper. You give it a model of a protocol, statistical model.
+For instance, like a model of what packet lengths. It then does the trick before and
+makes traffic that looks like that, infinite traffic that looks like whatever you want
+it to look like. We pass it through and we say, hey, is this such and such or not? And
+then we get the answers back and then we can tell well the different hardware is at classifying
+protocols. And then once we can do that, we can get better at making encodings that hide
+sufficient from classifiers. If you have some hardware, you can throw traffic at it and
+test it and see how it's doing classification. Okay. Second type is ‑‑ just looks and
+says, hey, there is some statistical properties of this traffic. Like, for instance, I see
+a whole bunch of 6s. If there is a bunch of 6s, it means it must be whatever, some particular
+type of traffic. So here's some examples of that. This is an English dictionary and I
+looked at the probability of different bytes to occur in that dictionary. The one on the
+far left is just Nulam because it is a list of words. Don't pay attention to that. I didn't
+clean the data because real data is dirty. So I'm showing you the dirty data.
+So this is the main thing. This is lowercase letters of the alphabet, right? So you can
+see there is definitely a spike. To the left is a little spike that's uppercase letters.
+There is a lot of uppercase letters in the dictionary, a lot more than you would think
+but less than lowercase letters. Clearly there is statistical sort of stuff. If you look
+at an U.K. English dictionary, it is a slightly different sort of thing.
+This is HTTP. Oh, my gosh, it is the same spike. Why is that? Because HTTP traffic actually
+has a lot of ASCII letters in it, HTML is lowercase letters, a little bit of a spike
+in uppercase letters. You can see this bleeds three. We know that this was English HTTP
+traffic or at least HTML HTTP traffic. I feel like a lot of people think if you wrap your
+traffic in something it hides it but a lot of stuff actually bleeds three.
+Here is HTTPS. Oh, my gosh, it has the same spike. Why does HTTPS which is encrypted with
+the same spike in those letters? It is because SSL is encrypted but the header is not encrypted
+and the header has a bunch of information that uses normal English letters, like the
+name of the Web site and sufficient like that, the SSL common name as they call it.
+And that's how they ‑‑ they how they get you with the SSL, that's how they get
+you with the encrypted traffic. They look at the unencrypted header and it is easy to
+tell you which protocol you are using. So I think people say, just encrypt everything
+with SSL. That doesn't work because you can tell it is SSL and people block SSL.
+So Dust fixes that, too. Dust removes the statistical content information. I use this
+thing called reverse Hoffman encoding where I encrypt everything to make it random and
+then I reverse encode it to make it not random. If you say the only bytes you can use are
+F and A, I will give you a stream of just Fs and As that encodes your traffic, whatever
+you want. Whatever hardware distribution you want, I will make it look like that.
+And then final ‑‑ I know you will be like that's stupid. No one does that. But,
+yeah, this is the most popular way of classifying traffic. You look for a sequence of bytes
+at a particular offset in the file and then that's it. You see this, for instance, HTTP
+traffic, you know, it starts with HTTP get, HTTP post. They just look at the first four
+bytes. If it is HTTP, they classify it as HTTP traffic. That's it.
+And that is like 90% of all DPI classification that's, like, actually deployed and used for
+censorship is just doing that. Yeah, so we remove that, right, because that's not going
+to work. So along those lines, I have this other tool
+that I made that is part of the Dust suite of tools, which is for looking to figure out
+what these byte sequences are because these signatures ‑‑ they call them signatures ‑‑
+are not public. Like, they don't want to tell you what bytes they're looking for because
+it would make it easy to obfuscate your traffic. I have a tool that will take sample traffic
+and replay it with all different variations where it blanks out certain bytes and you
+can find the exact string they're looking for. Again, you can do that for any protocol.
+Okay. So to break it down for you, what Dust does is if you were to find a set of properties
+that deep packet inspection hardware is looking at to filter and you define, you know, which
+things go in which category based on those rules, then for whatever property that is,
+Dust will randomize that property to remove all information and it randomizes it according
+to a probability distribution to force a classification into whatever category. So you tell me what
+categories your hardware has and I can make arbitrary traffic get put into any of those
+categories. The reason you want to do this is because
+you want to get into the category that's not being blocked, whatever that is, right? Like,
+there was a recent instance of an adversary blocking everything except for HTTP and HTTP
+connections could only be 60 seconds long and then they were automatically closed. A
+lot of protocols had trouble with that. Dust says, fine, 60‑second HTTP connections,
+let's do it. It encodes all the traffic you have over that protocol. Basically, if you
+left any messages through then you have to let all messages through because we will encode
+to all the messages it allows. The point of all of this, I had this message
+server that you give it arbitrary messages, it encodes them to look like bananas. They
+are passed through and then people are reunited with the cats that they love. And that's really
+what it's all about is just letting people get to the content they want to get to, post
+what they want to post, read what they want to read and just have free speech on the Internet.
+Cool. That's the end of my linear part of my talk. And now I have several bonus slides
+depending on how much time we have. And I think ‑‑ yeah, I think I ran through
+this pretty quick. So I'm going to go ‑‑ yeah, let's go through them and then we will
+do Q&A, maybe some of the questions will be related to these slides.
+Okay. So sometimes people ask me about various other projects and how Dust is different from
+these other projects. I don't really think of them as competitors. Like, I mean, people
+are going to choose they will use one kind of encoding or another for their traffic to
+get it past this filtering hardware. Just use whatever works.
+I mean, all you want to do is get past the filtering hardware. If something works, do
+it. If it stops working, then switch to something else. I worked with Tor on their pyobfsproxy.
+That's an example of a protocol where it just obfuscates. It makes everything look totally
+random. That's pretty good. That will get you past a lot of things. Some of the hardware
+will now flag stuff as random looking at which point you can make a custom rule that says,
+hey, if it is random looking, block it. If you can't classify it, that's okay. Just block
+everything that has high entropy. If you have heard about the entropy attacks, those are
+awesome attacks that work really well. They are not widely deployed but you can custom
+configure them into some of the hardware. That's the issue with just obfuscating stuff.
+You need the second layer where you shape it to look like stuff that's whitelisted.
+A lot of people are doing a lot of research on mimicking specific protocols, especially
+HTTP. People are just trying to make stuff that hides information in HTTP. So the problem
+with that approach is that people always choose the most common protocols, the ones that they
+think like no one will ever block this protocol because it is too important. People used to
+say that about SSL and now it has totally been blocked. People are really focusing on
+HTTP. The problem with that is that the DPI hardware
+has the most visibility into HTTP of any protocol. There are actually whole boxes that just do
+HTTP interception and do, like, semantic parsing of all of the headers and all of that kind
+of stuff. So you have to do a lot of work to look like HTTP. In fact, there was this
+paper recently called "The Parrot Is Dead" in which they talk about that they're pretty
+sure given any kind of traffic that mimics some other kind of traffic they can make a
+test exist where they can differentiate two because there will be a difference between
+your HTTP implementation a real HTTP implementation. People are trying to do this crazy stuff and
+get an actual browser. They are trying to make FireFox load pages and then they encode
+information in the way, like, which pages you choose and the timing and stuff.
+That's fine. It is just like a very slow protocol. You don't need to do any of that because like
+I said before the DPI hardware is just most of the time saying are the first four bytes
+HTTP? And then that's all you need to do. A lot of the hardware only looks at the first
+packet because they're trying to scale and so they're basically cheating in their design,
+right? Instead of looking at all the packets because they want to be able to push more
+thruput and tell people buying it, we can handle your whole country's traffic, you don't
+need any boxes, they look at the first packet and classify it and they say, forget it, they
+stick with that classification. I was talking to a DPI vendor and said they
+have to look at 20 packets, oh, no, 20 packets before they can classify it. It is just a
+lot easier than trying to be exactly like this protocol. And then there is a really
+cooled project called Format Transforming Encryption that you give it a grammar for
+a protocol, if you say HTTP or FTP or SMTP and then it will generate random messages
+that conform to that grammar. That's a pretty cool project, so I would check that one out.
+So the differences in what I'm doing, I'm not writing a protocol. Like, obfs3 is the
+BitTorrent protocol for obfuscation. Most people are just thinking let's make one protocol
+that can never be blocked. And I got to tell you, that doesn't exist. There is no one protocol
+that cannot ever be blocked by anybody. It just depends on your settings. Like, your
+attacker, your adversary is going to have some configuration on their hardware for block
+this, don't block this, and it is going to be different for everybody. There is no one
+protocol. So instead, I wrote a protocol engine where
+instead of updating it with each revision when it gets blocked, you just change the
+settings. Like, you say, okay, before we were making traffic look at HTTP. Now let's make
+it look ‑‑ let's do some UDP‑based crazy. Let's make it look like Skype, whatever.
+And then if they block that, then again just switch it up. Switch it up every day. In fact,
+don't even just mimic protocols. I have this thing that I can't really convince anyone
+is a good idea that I think is awesome which I call kymeric (phonetic) protocols where
+you take, I don't know, like SMTP and, like, NTP and then you just kind of smoosh them
+together and you get this protocol that people are like, I don't know what that is. Right?
+And just keep them busy. They got guys ‑‑ (laughter).
+They got to configure this hardware. They first have to notice your anomalous traffic.
+Then they have to figure out what your doing and it splits out your traffic from the legit
+traffic. So, you know, just keep it rolling. In fact, you could even with Dust just use
+a ‑‑ as a private institution, you could make up random distributions. In this protocol,
+everybody will be five bytes long or 1400 bytes long. I don't think there is any protocols
+like that., You know? So yeah. My thing is purely statistical because that's
+how ‑‑ they look at per packet is how the classifiers work. So my stuff is per packet.
+In the "Parrot Is Dead" paper, they use my work. They say stuff like Dust will never
+work. And it is like, right, it is not going to work against a bunch of CS professors and
+all of their grad students in a lab, sure. But against the actual deployed hardware,
+it works awesome. I know because I have the hardware and I pass it through and it works
+awesome. I think that's kind of one of the differences there.
+(applause). Thank you. Thank you. Another difference is
+with FTE, Format Transforming Encryption, it is a great project. You need a protocol
+specification so that you can follow that grammar. With Dust, you just give me some
+sample traffic and I will just build a model from that. In fact, the best thing is you
+give me some sample traffic of traffic that was blocked and traffic that wasn't blocked
+and I can from that make you a protocol that will be guaranteed to not be blocked ‑‑
+not guaranteed, but it won't be blocked without even ‑‑ I don't even need to know what
+protocol. You give me the PCAP files and I process them and we're done.
+So a lot of people that are doing these specific protocols like HTTP modeling, they model the
+protocol and they say, what does a protocol look like? Let's look exactly like this. What
+I do is I model the filtering hardware and I say: What does the filter think that HTTP
+looks like? Let's look like that and not do any more work necessary and get maximum efficiency
+while definitely getting past that hardware. You give me different hardware, I might come
+up with a different protocol. I think this all come downs to I'm aiming
+for a realistic threat model. I want to base my threat model on what's deployed and what's
+being used to censor countries. One more thing I just added right before the talk is that
+there is no shared secrets. Everything is totally public. The source code is out there.
+You can get it. Even the protocol doesn't have any kind of shared secrets or anything.
+So you can know that people are running Dust. It doesn't help you figure out who is running
+Dust because the traffic by definition looks like the traffic that you don't care about,
+right? So even if you downloaded ‑‑ you run
+your own experiments, unless you know what settings people are using, it won't help.
+If you know what settings, the battle is you have to make a better rule for your filter
+that can tell between the mimic traffic and the real traffic. It is no longer like a war
+of technology, it is a war of who has the better information, the better models.
+So talking about threat models, so in the academic world, the threat model hierarchy
+of threats is if someone just published a paper and it won a best paper award, that's
+the adversary that you need to attack was the adversary in that paper. And then otherwise,
+if there is a recently published attack, you should defend against that. Otherwise, if
+there was an attack published before 2003, no one cares. No one is working on that in
+academic research at all. Cool.
+So that's kind of my issue with academic stuff, is they are really cool at classifying traffic
+in the lab. But, I mean, who cares because until it makes it to hardware and deployed
+and being used for censorship, it doesn't really matter. I have a slowed about open
+source threat. And I just want to say I don't mean to offend anybody. This is my experience
+working on Freenet is the number one threat is the number one threat you can think of.
+Oh, that's what I have to defend against and I thought about it so it is probably a serious
+attack. Secondly, if someone on the mailing list comes up with it, then it is pretty bad.
+If somebody attacks your system in a Reddit threat, I know because your system stucks
+because I broke it, then that's what people defend against.
+And then they add plausibility. I have been there. We did it at Freenet. Everybody thinks
+you have to add plausible deniability. This is a bad road to go down. My fair model is
+based on is this attack actually being done in the wild to censor traffic. A lot. That
+would be an example of the static packet, the byte sequence trafficking, that's the
+number one thing. If you don't defend against that, then we don't even need to talk about ‑‑
+there is obfuscating protocols that begin with magic number in the handshake. So if
+you just put that magic number to the filter, then the protocol is gone.
+If you see it occasionally, that's good, too. We'll do that.
+Finally, if the capability is in hardware but just hasn't been used, that's lowest priority
+but I will still do that. There are some really awesome hardware. I met a lot of people actually
+this weekend that were dealing me about some DPI hardware that sounded totally sweet. No
+one is using it. But if anybody ever buys it ‑‑ so one of the things about DPI
+hardware, it is old. Really old, no one ever upgrades. A lot of these countries that are
+filtering, they are using 10‑year‑old hardware. That's the first thing. 10‑year‑old
+hardware is the first thing to defend against. You would be surprised at the protocols that
+fall instantly when thrown against 10‑year‑old hardware because they are reading the papers
+or going on the mailing lists rather than looking at the actual hardware.
+Let me see if I have more slides here. Let's see.
+>> (speaker off microphone.) >> BRANDON WILEY: Yeah, okay. That's a good
+question. So, yeah, so you have to have a client and you have to have a server. And
+they both need to be speaking to protocol. You need the public key of the server. You
+need that because I need to have ‑‑ to be able to do a handshake where we don't have
+to communicate anything that's not purely random.
+Let me see. I won't really get into the key exchange. I don't have time. But the key exchange
+and everything is all purely random. You need to have the public key ahead of time. When
+you find out the address of the server, you need to find out its I.P., its port, its public
+key and then also the configuration for what specific protocol you are going to be speaking.
+That all needs to be out of band in the invitation, right?
+And so I know that's kind of not the way that people usually do it. People like to do these
+you connect and handshake everything right there. That's kind of like a more popular
+way to do it. I just feel like that way doesn't work. You need to have a little bit of information
+transmitted out of band beforehand in order to have all of the properties that we want
+to have. Let's see. Yeah, okay. Let's do questions.
+And if slides ‑‑ there are slides that are referenced by questions, that's fine.
+Anybody got any questions? We got a mic. That's good because this is
+a big room. >> I'm Jimmy. I don't have a long cord. And
+shockingly no wireless here. >> What, at DEF CON?
+>> So how do we run a Dust server to help out? Is there a community setup or such? Or
+EC2 instances or anything like that? How can we make those end points that people can connect
+to? >> BRANDON WILEY: Right. That's a good point.
+So Dust right now is not actually a service. It's a protocol and it is like an implementation
+of that protocol which is designed for other people to use. So, like, for instance, with
+Tor, I worked with them on obfs3 proxy which is part of their transport system where anybody
+can make a new transport for Tor. That's kind of one of the targets, like a Tor wrapper
+that uses this. And then also I'm trying to make it into a
+library where you can use it in your own kind of protocol. There is currently no system
+for just doing open proxies that are based on Dust. I think that's not really the model
+that I want to go with just because I know from knowing the Tor guys from way back when
+how much work it is to run a community of volunteer nodes. Freenet we had that issue
+as well, although Freenet was low maintenance. There wasn't a lot of coordination.
+Yeah, right now this is ‑‑ let me go to the slide on whether or not you should
+put real traffic on it which is no, don't put real traffic on it, because this is a
+purely, purely experimental sort of thing. Yeah. So, yeah, I don't have a good answer
+for that yet. But that's a good question. I'm going to work on that.
+>> Okay. >> I guess this is more of a general question
+for all obfuscating protocols. But couldn't the attacker just notice that you're own communicating
+with one machine all the time and it's always HTTP and you never get anything blocked? And
+then just block all access that way to that machine?
+>> BRANDON WILEY: I see what you are saying. You are talking about your connection patterns
+being anomalous you are making long‑lived connections to a single machine. That's one
+of the things I'm going in the next version I'm working on is being able to split your
+traffic over multiple connections to multiple machines, one conversation. I have already
+got it where ‑‑ like, some protocols actually use different ports. VPN uses 443
+and 1194. 80% use 443. A 20% use 1194. You can take that to host, too. You can say split
+your traffic among this set of hosts with this probability distribution. Use these ports
+with this probability distribution. So, yeah, I'm totally working on that.
+Also, I'm working on a thing where you can split your traffic over simultaneous TCP and
+UDP conversations using different profiles, different protocols with different hosts.
+And it all just kind of gets funneled back together into one stream on the other hand.
+That's a lot of work, though, so it hasn't come together yet. It is just a lot of bookkeeping
+and stuff. >> Next step though.
+>> BRANDON WILEY: Yeah, next step. >> It seems like the obviously escalation
+for the hardware manufacturers is to just move up the chain and start classifying distributions
+of trigrams, bigrams and hashes of tokens in HTTP. Have you seen any evidence they are
+moving that way? Or are you sort of banking on the fact that's a lab CS world theoretical
+attack and not likely to be deployed in practice? >> BRANDON WILEY: To come back to the basic
+principle of Dust, if you define a property of connections, I will randomize over that
+property. So if you move from a first order probability model for content where you are
+just looking at individual bytes to looking at bigrams or trigrams and that's deployed
+and I see that, I will simply randomize on the bigram and trigram level and I can do
+that a lot faster than the hardware people who need to test it and get people to buy
+it and roll it out. I can could do that today. The only reason I haven't done it is because
+it's not deployed and also today specifically I'm really busy doing some of the DEF CON
+contests. (laughter).
+(applause). >> We're not done yet. Stop clapping.
+>> So how do you specify what's allowed through? Do you have the client email out of band some
+PCAP data for things they were able to do and what they weren't able to do? What's the
+actual details of how that gets specified? >> BRANDON WILEY: There is two parts there.
+There is how do I make a model of a protocol? And then how do we communicate that model
+to the client so they can connect to the server? In terms of modeling the protocol, I have
+some tools that take PCAP files and boil then down into a statistical ‑‑ like, it takes
+out all of the individual packets and gives you the statistical model and takes into a
+tiny little file that you can email to somebody. And they bundle that up into an invite packet
+which has the I.P. and the port and the protocol configuration information all in one thing.
+All you need to do is tell Dust here's my invitation and then it will connect to the
+server and do everything right. So in terms of how you make those, what I
+do is I have deep packet inspection hardware, and I look at what gets through and what doesn't
+get through. Now, obviously it depends on how you configure it, like what kind of traffic
+you, like, are against. So what I do is I look at instances of filtering, find out what
+they are using, get the hardware and configure it to reproduce the property's behavior and
+that's how I try to make a realistic model which brings me to something I want to say
+about contribution. Here is a bunch of ways you can contribute. My Haskell sucks. So if
+anyone knows Haskell to C, I could really use some help. If anybody has any DPI hardware,
+that would be cool because I have some but I don't have it all. In particular, I need
+some Huawei gear. If you want to send some packets through, you can help save the Internet
+from being censored. It is on the DL. >> You are saying Huawei may be a security
+problem there? >> BRANDON WILEY: For my project?
+>> No, in general. >> BRANDON WILEY: In general, I wouldn't say
+in general. They have good stuff. They have good stuff. They are really good at filtering
+stuff. I don't know if my stuff works against Huawei because I don't have a Huawei box.
+Yeah, anyway, more questions? >> Do you think it's possible to put all deobfuscated
+in the cloud so the message be decrypted automatically? Yeah, we can use a key exchange there but
+the protocol, I mean, it is more recalcitrant than that. So if we reverse engineer the protocol,
+I mean ‑‑ >> BRANDON WILEY: Reverse engineer my protocol?
+>> Uh‑huh. >> BRANDON WILEY: Oh, you don't need to reverse
+engineer it so you can download the source code. It is right there.
+>> I was thinking just to put trying a defense mechanism in the filter. It will be automatically
+decrypted ‑‑ yeah, just put a (inaudible) in the filter so you can put clients in the
+filter so we can (inaudible) meaning of what has been passed through.
+>> BRANDON WILEY: I don't totally understand your question so let's talk after and then
+I will get it. >> You mentioned some academic core which
+sort of questioned whether in the long, long run your protocol can fundamentally work because
+eventually they can adapt to your protocol. Can you please give more details about it?
+>> BRANDON WILEY: Yeah. So that was the "Parrot Is Dead" paper in which they say packet‑based
+protocols to obfuscation won't work because they have stuff where they look at the whole
+connection and then they're able to classify stuff a lot better which makes sense, right?
+If you are not looking at one packet, if you are looking at all of the packets, you have
+a lot more information that you can use to classify.
+So, yeah, sure, that's true. Here's the thing, though, if you are looking at the whole sequence
+of all of the packets, unless you delay ‑‑ well, not even then. That means you pass them,
+that means you pass the packets onto the server and you got responses and you record the whole
+conversation and then you classified it. I won in that case, right? The message got through.
+Maybe you had to burn that I.P., that I.P. is blocked now and you have to go to a new
+I.P. because they said you are doing crazy stuff so we will block it. That's already
+a problem. That's already a problem that Tor deals with all the time, you have to churn
+through new I.P.s all the time. I consider victory any time I get the message
+through. I don't care about anything else. I don't care about people reading the messages.
+I don't care about them decrypting the messages if it is afterwards and they couldn't use
+that information to block the packets. We just have different, I think, goals. Blackhat
+people are like can we classify traffic, yes or no. And my question is can they block the
+traffic which they do through classification. >> This will be the last question. If anybody
+else wants to talk to our man, we will take him over to the Chillout Cafe.
+>> Only one more so I will make it count. Can you multiplex traffic across multiple
+protocols and multiple end points? Is the first part. And the second part is are you
+IPv6 ready? >> BRANDON WILEY: So good questions. The first
+part, that is in the next version I'm working on is multiplexing over multiple protocols,
+multiple I.P.s, multiple ports and also between TCP and UDP. Nobody is doing that. I think
+that's cool. Most people don't like UDP. I don't know why. It is rad.
+And IPv6 ready? It is funny you say that. The first version of Dust was IPv6‑only
+and people had to talk me down from that. They had to be like, look, you guys ‑‑
+look, Brandon, like, people don't have IPv6. I'm like, well they better get it. (laughter).
+So the new version ‑‑ thank you, yes. IPv6 is cool.
+So the new version I actually have just done IPv4, but I am going to add the IPv6 obviously
+because one of the best ways to avoid deep packet inspection is use IPv6 because they
+haven't gotten around to implementing most of the stuff for IPv6. Yeah, another great
+thing you can do is there is a thing called Torito (phonetic) which is IPv6 over IPv4
+UDP with built‑in hole punching and stuff. It is really sweet. It is actually built into
+Windows 7. If you are Windows 7, you already have it. You can go to IPv6 addresses. That's
+another thing where they don't know what that traffic is. So you just use that and then
+everything is fine. There is a lot of cool little shortcuts to getting your traffic past
+the filters by using a weird protocol. Stuff like that.
+All right. Thank you. So, yeah, I will be happy to talk to everybody. See you guys at
+the Q&A room or just see me around. Let's hang out. Let's get a beer. Invite me to some
+parties. Cool. Thank you. (applause).

@@ -1,0 +1,417 @@
+>> CHRIS SOGHOIAN: Good morning or good afternoon.
+My name is Chris Soghoian. I  started last September, I'm the first technologist
+that the ACLU has had who has focused specifically on surveillance and privacy. I finished the
+Ph.D. last year specifically focused on the role the internet and phone companies play
+in spying on the customers for the government. It's an extremely timely topic. I started
+last September. The ACLU has been very busy in the last year on surveillance issues.
+Shortly after the revelations, we were the first organizations to file suit against the
+National Security Agency, although we were ‑‑ thank you very much for the applause although
+we are not the last. Several other great organizations have sued the NSA and hopefully those will
+keep coming. Today I will be talking, I will be telling
+a story. I will be telling a story of how law enforcement and the government have responded
+to technical change. This will be a story, and I guess three acts, and really delves
+into the relationship between the companies and the governments and the different relationships
+because not all of the companies are the same, some are friendlier than others  to  the government.
+(Technical Difficulties) It wasn't even good at protecting people from
+anyone other than the NSA ultimately the crypto wave ‑‑ ultimately, companies like PGP
+were allowed to export technology around the world. Web browser vendors were able to export
+full 128 bit crypto to anyone except to people in Cuba and Iran and other countries. The
+F.B.I.'s initial attempts and the F.B.I. and the NSA ‑‑ the 
+previous strategy was let's stop everyone other than Americans from getting this stuff.
+If we make it difficult for them to get the technology, they won't use it and we will
+easily be able to monitor their communications and get their data.
+But even after the crypto export control rules were weakened, and you could download PGP
+no matter in which company you were, it didn't actually lead to the widespread use of PGP.
+Hands up, everyone who uses PGP on a daily basis? For this audience that's not really
+that good. I will confess, I only use it with a handful
+of colleagues and journalists. Most people who contact me don't know how to use it. And
+the reason is PGP is really difficult to use. There is a major important study by Alma Whitton
+who is at Google ten years ago pointing out the usability failure at PGP. When a tool
+is difficult to understand how to use, people don't use it or they use it wrong. They think
+they are encrypting when not encrypting which is worse because then they will say things
+they may not have said if they thought emails were going through.
+And so the widespread availability of encryption really didn't frustrate the F.B.I. in the
+way that they thought it would. Terrorists and pedophiles and drug dealers didn't rush
+out and start using PGP because it turns out terrorists and pedophiles and drug dealers
+are like the rest of us. They are lazy and they are not experts at difficult to use technology.
+So PGP wasn't the threat they thought it would be. HTTPS, the icon we see in the browsers,
+is easier to use because it doesn't really involve anything from the user side, but even
+that wasn't widely deployed. Where SSL was widely used was in eCommerce, online banking.
+If you were sending your credit card over the web, your communications would be encrypted,
+but if you were sending emails, social networking messages, private photos, backing up files,
+very few of these things would be protected with SSL.
+And so, again, the government had, they had a good time. They didn't have to worry too
+hard although the technologies existed, no one was using them or they weren't using them
+for the things the F.B.I. cared about. This is a slide that the Guardian published this
+week. It's from the latest deck that Snowden provided them. This is a deck from X‑Key
+Score, which is the program they have or the intelligence platform that allows them to
+monitor vast amounts of communications and search for it later.
+Now, this deck is from 2008, 2007, so it's a few years old, but what you can see clearly,
+also those of you in law enforcement and in the intelligence space, these folks appreciated
+the communications were going over the network in the clear. Whether it was Yahoo or Facebook
+or Twitter or your eMails, they are easily available for the government to grab with
+the assistance of their friends at the background internet providers.
+And so things were good for a while. It didn't really matter that your browser could do strong
+crypto. It doesn't matter that you could download tools from a website and configure them and
+have a key signing party because nobody was doing that. But that didn't stop the F.B.I.
+from worrying because down the road they saw that things were going to get bad.
+And it wasn't going to be because people could download tools. It was going to be because
+companies were going to start building crypto into their products by default. This is Valerie
+Caproni, she was until about a year ago the general counsel for F.B.I., the top F.B.I.
+lawyer. She has testified before Congress on various occasions and in 2011 she warned
+Congress about what the F.B.I. was calling the going dark problem. Going dark is the
+F.B.I.'s term for what happens when everyone uses encrypted communications.
+The F.B.I. has coined this term and spent lots of money researching this issue because
+they are worried about a day in which all of the communications that users are sending
+are going to be off limits to the F.B.I. This is in 2001 ‑‑ or 2011, quote, "The
+F.B.I. and other government agencies are facing a potentially widening gap between our legal
+authority to intercept communications pursuant to a court order and our practical ability
+to actually intercept communications. The F.B.I. says they can get a court order, but
+when they actually try and get the communications, either the company doesn't have the capability
+because they haven't built wiretapping systems into their networks, or the company cannot
+provide data." She added, "Encryption is a problem. It is
+a problem we see for certain providers." So what she was describing there was the fact
+that over a couple of years, starting in 2010, companies in Silicon Valley started rolling
+out SSL encryption by default. In a "Washington Post" story last year, a former F.B.I. official
+described in the post, Officials say that the challenge was exacerbated in 2010 when
+Google began end to end encryption. That made it more difficult for the F.B.I. to intercept
+email by serving a court order on the ISP whose pipes would carry the encrypted traffic.
+In 2010 Google was the first, first of the big free web mail providers to turn on SSL
+by default. Google had offered SSL as an option, but it was an option deep in several layers
+of configuration screens. I think it was the last of 13 options after the vacation auto
+away message, after unicode. There was nothing less important in the Google configuration
+screen than SSL. And so, of course, no one used it. When the option was hidden, and disabled
+by default, no one was having, no one's emails were secure between the user and Google.
+But in January 2010, Google flipped the switch and enabled SSL by default, and in the years
+that followed, several other Silicon Valley companies did the same. It was Twitter, then
+Microsoft with their renamed or they renamed Hot Mail to Outlook and they turned on SSL
+at the same time. Facebook started doing it last year, started rolling it out, and I think
+just this week announced that all Facebook communications will be SSL encrypted from
+the user to Facebook servers. In addition to that companies have started
+rolling out an improved algorithm that makes it much more difficult for government agencies
+to go to companies and demand private keys. They are upping their key sizes. These Silicon
+Valley companies are making passive interception much more difficult.
+(Applause). Now, of course, that doesn't mean the government
+can't get things from Google. Your communications between you and Google servers are encrypted,
+but once the files arrive at Google, whether it's your emails or your private photographs
+or instant messages, they are sitting there in plain text. This is Vince Cerf. He is the
+chief internet evangelist. I was on a panel with him in 2011 in Nairobi, and we started
+talking about Google's lack of stored encryption. He said, quote, "We couldn't run our system
+if everything in it were encrypted because then we wouldn't know which ads to show you.
+This is a system designed around a particular business model."
+So this is a very honest statement from a Google executive, and I don't begrudge Google,
+right. They offer a fantastic easy to use service, and they don't charge people for
+it, and neither does Twitter, neither did Facebook. These companies all offer one and
+only one product. There is no way to pay for Facebook. There is no way to pay for Twitter.
+There is no way to upgrade your G Mail account to a corporate account, a Google apps account.
+They have the accounts for users and then the accounts for businesses.
+And when the only accounts they offer are free ones that are supported by ads, then
+it makes sense why they are not encrypting the data in the Cloud with a key only you
+have because it would be difficult to monetize that. Now, the companies could and maybe will
+at some point switch to a business model where you give them money and they give you a secure
+service, but that isn't the business they are in right now.
+So what this means then is that the companies can and do receive requests from law enforcement
+agencies and intelligence agencies, even before the prism revelations, we have known that
+Google gets thousands of requests a year from law enforcement and intelligence agencies.
+This isn't a surprise. But what we have seen in the last few years
+is a transition. We have seen a migration away from telecommunications companies to
+Silicon Valley companies. In years past your private messages, your meta data would be
+accessible through a backbone provider, through a telephone company, through one of the Ma
+Bells, and like it or not, the telephone companies have been providing wiretapping assistance
+to the U.S. government for more than 100 years. The first wire taps were around 1895 in New
+York City. For a hundred years these companies have been providing interception assistance
+to the U.S. government. And it's a relationship that everyone is sort
+of comfortable with, everyone, and by that I mean the companies and the government. And
+so these companies don't just provide targeted access. They don't just provide access to
+an individual user's data. They provide, when the government asks, access to all users'
+data. The assistance of the phone companies is what enables dragnet surveillance.
+When the government wants to search through every email or search through every phone
+record, that is only possible because the phone companies provided access to everything.
+If you take the internet companies at their word, the Silicon Valley companies, they only
+provide targeted access. If they have a court order with my name on it, Google will hand
+over my data. But they will not provide access to everyone's information.
+So what's happened over the last few years is that consumers have started to migrate
+their data from the old telecommunications carriers to Silicon Valley companies. I mean,
+in many ways the telcos haven't had people's email for a while. No one is using Verizon
+or Comcast email really, but when the email messages were going over the network in the
+clear, it meant the government could go to the backbone providers, the AT&Ts or Verizons
+of the world even if you were using Google or Hot Mail. As these Silicon Valley companies
+have enabled encryption, you can no longer spy on someone's emails. You can no longer
+capture bulk information with the assistance of Verizon or AT&T.
+And a great example is what Apple did with AIS Version 5. In one day they flipped a switch
+and suddenly a new version of iMessage was rolled out to users and if you were an IOS
+user and you were sending a text messages to IOA user your message would go through
+Apple servers instead of the phone companies. Overnight, millions and then billions of messages
+started flowing through Apple servers. And those were messages that the government cannot
+get with the assistance of Verizon or AT&T and Sprint.
+Now, again, this was a leap ‑‑ this was a document that was leaked suggesting that
+the government can never get messages sent through IMS. I don't think that's actually
+the case. I think that Apple provides access on a targeted basis, but I don't think they
+are providing wholesale access in the way that the phone companies do.
+And I think what's happened here is that there is a difference in culture between the companies.
+It's not that Google is trying to make the government go dark. It's that Google has 350
+people doing nothing ‑‑ doing security and only security. It's that Apple has a dedicated
+security team. It's that Facebook has a dedicated security team. And before you can launch a
+product at one of these Silicon Valley firms, particularly if it's storing sensitive user
+data, you have to have crypto. There is no way to secure your users' data against hackers
+without crypto. So these companies have, you know, it's a corporate policy to encrypt data
+not because they want the government to go dark, but because that's what the security
+teams of the companies demand of them, and realistically the phone companies don't have
+a tradition of security. Your voice mail isn't secure. You are not
+getting OS updates to your Smart Phone if you are using Android, which is, by the way,
+something we filed a complaint with the Federal Trade Commission about earlier this year.
+(Applause). The phone companies just aren't interested
+in security. And so what's happening is consumers are giving their data to companies that finally
+invest some resources in security, and that's making it tougher for the government. So what
+is the solution? How does the government respond to a world in which they can only, they can
+only get selective data from companies and in some cases they cannot get data at all
+if the companies are using end to end crypto? The answer is back doors. The answer is compelled
+access, forcing companies to modify their products and provide the government with a
+way of getting data. Starting in sort of 2010, we started seeing leaks to the press suggesting
+that the F.B.I. and others in the law enforcement community were floating these ideas, they
+were floating legislative proposals, expanding a CALEA, which is a law mandating back doors,
+and expanding that to internet companies to websites and apps and other providers.
+We saw these trial balloons floated in 2010, and ultimately there was congressional hearing
+in the Spring of 2011 where our friend Valerie Caproni, said, quote, "No one should be promising
+their customers that they will thumb their nose at a U.S. court order. They can promise
+strong encryption. They just have to figure out how to provide us plain text too."
+This is what the F.B.I. wants. They want the power to go to a company secretly and force
+the company to quietly insert a back door in their own product. As recent as this year,
+as recent as April of this year, it looked like proposals were coming. It looked like
+there was a multi‑agency working group in Washington and they were getting ready to
+drop a bill that would empower the Department of Justice to fine Silicon Valley companies
+that refused to provide the assistance demanded of them, and then something happened.
+(Applause). CALEA, which is the DC nickname for this back
+door proposal that now is dead. It is dead in the water. No politician wants to touch
+that kind of surveillance for now. So thank you very much Edward Snowden.
+(Applause). So if they can't force Google to put a back
+door in Android OS, and if they can't force Apple to put a back door in their software,
+what are they going to do? How is the government going to get your communications? What about
+when they want to listen in to a conversation you are having in your living room where you
+are not even using your device? Are they supposed to break in in the middle of the night and
+install a Microphone like they did in the 1970s? No. They want other ways to access
+data, particularly as consumers have started using services like Skype, and we will talk
+about Skype later, but services like Skype that have some form of encryption governments
+have been having problems. And, remember, the government isn't one big
+beast. The F.B.I. or NSA may have tools to access certain applications, but that doesn't
+mean they share those toys with local law enforcement agencies. NSA doesn't share their
+secret back doors with the likes of local cops in Arizona or Nevada. Those folks have
+to do things the hard way. It's also important to note that not all governments
+are the same. So Google has an office, in fact its main office in California and Microsoft's
+headquarters is in Seattle. Google and Microsoft have to take orders from the U.S. government.
+When there is a valid court order, the companies have to provide access to the U.S. government.
+But Google doesn't have an office in Iran. Microsoft doesn't have an office in Libya.
+So if those governments want to get their citizens' communications, now that Google
+and Microsoft and others are starting to use SSL, those other governments are really going
+dark. In the countries where Google and Facebook
+and Microsoft don't have offices and don't respond to requests, those governments are
+having a really tough time because of the use of services like Skype, like Twitter,
+like Facebook. They used to be able to get access through their local in many cases nationalized
+telephone company, and now they are going dark. So those governments are turning to
+hacking tools. What we are seeing is an emergence of the
+private sector helping companies, helping governments. The ones that have gotten the
+most press, the first is a company called Gama. They make a software suite called FinFisher.
+FinFisher has gotten a lot of press in the last couple of years starting with a dump
+documented like WikiLeaks and the excellent work of the Citizen Lab in Canada has exposed
+the software. They have a cheesy sales video online I recommend you look at. And then the
+police officer sitting at the remote operating center can spy on the calls and text messages
+and emails of the user. This is the president or I think CEO of Gama.
+His name is Martin Munch. You may not know Martin's name, but you probably know Martin's
+work. Before he was in the government surveillance business, Martin created a Linux distribution
+with BackTrack which was popular with this community, so Martin pivoted from providing
+open source security tools to providing closed source government and reception tools.
+This is my favorite photo of Martin. So he is a German guy who without any shame sells
+this software to governments around the world, and one of the things his software can do
+is to remotely activate webcams without the target's knowledge. And you can see that he
+is concerned about this capability, because if you zoom in on his laptop, he has a Post‑It
+note over his webcam. He clearly knows what his own software can do.
+So because of the work of the folks at Citizen Lab, we know that Gama's software has been
+exported to Mexico, Ethiopia. It's been used by seriously oppressive regimes in the Middle
+East, and in Southeast Asia. Now, the company says that it's used for lawful interception
+and targeting of terrorists and pedophiles and criminals, but from what we know it's
+been frequently used to target journalists, human rights activists and dissidents. So
+Gama is one of these companies providing these off the shelf tools to governments.
+The police don't have the resources to develop this stuff in house, so they just buy this
+off the shelf spyware from companies like Gama. Through the last couple of years the
+newspapers have covered this. The "Times" and Bloomberg have described this stuff. The
+sale of this technology is unregulated. Basically any government except for the ones on international
+black lists can buy it. The other big company is a company called
+Hacking Team. They are an Italian company. They make something called the remote control
+system otherwise known as DaVinci. They have a sales video too that appears to be targeted
+to 13‑year‑old boys. Their marketing stuff says, Defeat encryption, total control over
+your targets. Log everything you need, thousands of encrypted communications a day. Get them
+here. And this software really is sold to law enforcement agencies who are trying to
+deal with things like Skype. If you are the government of Turkmenistan and there are journalists
+using Skype to communicate, how do you get the contents of their calls when you need
+them? The phone company in town can't help you. You go to Gama or Hacking Team and they
+provide you these tools. This is, again, from Hacking Team's literature,
+they say they can get into voice, location, audio and video spying, web browsing activities,
+relationships. They get anything that is on a computer without the knowledge of the target.
+Hacking Team in recent years has expanded into the U.S. market, I believe.
+In the spring of this year, they hired this man. His name is Eric. He used to be a spokesperson
+for Verizon, and now he is the U.S. counsel for Hacking Team. They have an office in Annapolis,
+Maryland, an hour outside of D.C. We don't know whether Hacking Team has successfully
+sold any products to the domestic U.S. law enforcement market, but they are showing up
+at conferences that are only open to law enforcement and intelligence agencies in Washington, D.C.
+They also went to a conference in Chicago this April, the Law Enforcement Intelligence
+Units Association. Not only did Hacking Team give a talk at this conference, this is a
+conference targeting local cops around the country, not only did they give a talk at
+the conference, but they also sponsored the coffee break in the afternoon. And so if Hacking
+Team hasn't sold a product to a local law enforcement agency yet, it's not because they
+haven't been trying. They have been showing up at these conferences
+for several years. They are actively targeting the law enforcement market, and I think if
+they haven't succeeded already, they will succeed soon and get a sale in a small town.
+Now, Hacking Team and Gama software is the kind of stuff that local cops and governments
+without too much money use. This is a couple hundred thousand dollars or maybe a million
+dollars. It's the kind of thing you buy with a DHS rack.
+This is not what you use if you are a sophisticated law enforcement agency with big bucks. And
+the feds have the big bucks. Federal law enforcement agencies in the United States have enough
+money to use the specific custom malware. They don't need to use the same stuff that
+the Egyptians and the Turkmenistan governments are using. They can use their own custom spyware
+and they can spy zero days if they need them. Again, our friend Valerie Caproni, there will
+always be very sophisticated criminals that are virtually impossible to intercept through
+targeted means. The government understands that it must develop individually tailored
+solutions for those sorts of targets. And what Valerie says individually tailored solutions.
+Which what she means is hacking. She didn't use the word hacking when she spoke to Congress,
+but what she means is hacking and malware. In 2009 or so, I think EFF filed one of their
+Freedom of Information Act requests to look into the F.B.I.'s claims that they were going
+dark. And after a couple of years later, they got hundreds of pages of documents, most of
+them heavily redacted. This is one that I found, so I read a lot of the documents that
+groups like EFF produce, and documents that the ACLU obtains, and this was one in several
+hundred pages that the EFF obtained. And most of it was redacted, as you can see,
+but there was one line that stuck out to me, this, the remote operations unit. So that
+sounded really interesting. I didn't really know what the remote operations unit was,
+but it was in a document about going dark. It was a document that was sort of describing
+each unit checking in and checking what their progress was, so I thought let me see what
+else I can find about the remote operations unit.
+So I spent the last six months researching this unit, mainly using open source intelligence,
+basically Googling and using linked in, and what I found was that the F.B.I. is in the
+hacking business too. So I found a conference, the materials for a law enforcement conference
+that happened in April of this year. This was a training seminar for prosecutors around
+the country. And in the list of attendees and speakers
+at this conference, I found information for this guy, Eric Chung, who is the unit chief
+of the remote operations unit. So I searched a bit more and I found the zoom info page.
+This is a data mining company that collects information from elsewhere in the world. Eric
+Chung's zoom info page mentioned he was the chief of the operations unit and the unit
+provides lawful collection capabilities in support of F.B.I. investigations.
+Well, that sounded interesting, so then I turned to Linked in and I started researching
+the remote operations unit. What I found is that there are a couple of contracting companies,
+a couple of contractors who supply people to the ROU, and contractors like everyone
+else, you know, they want to keep their resume up to date in case they get a new job. So
+they list things in their resume, maybe things they shouldn't be listing revealing what they
+did at their old job. So I have not included the names of the line
+item or the low level contractors, but I will be quoting from the Linked In pages of several
+of these contractors, because I think what they describe is fascinating. So this is a
+deployment operations analyst at a company called James Bimen Associates. They are a
+small boutique contracting company in Northern Virginia.
+So this person performed testing on software used as a critical function for counter terrorism
+and counter intelligence cases. He worked with F.B.I. case agents with surveillance
+imagery software that is currently installed on criminal machines in the field.
+That's even more interesting. They test case specific implants against various OSs and
+platforms. Good to know. So if you are using Windows or Mac or whatever, they have a tool
+for you. And then they create documentation for the various technologies and methods that
+were used to gain access to subject machines. So it's clear, it's clear from this profile
+what the remote operations unit is doing. I also found another person, this is a remote
+operations deployment analyst, also at James Bimen and Associates. Her profile was fascinating.
+I thought it was good. She created policies, guidance and training materials to protect
+the deployment operations tools from being discovered by adversaries. Those are us. We
+are the adversaries. So Bimen Associates is one of two companies
+that provides hackers to the F.B.I. And it's my belief and understanding that the companies,
+the contracting companies actually supply the people who sit at the keyboard and are
+launching the tools. There hasn't been a debate in Congress about the F.B.I. getting into
+the hacking business. There hasn't been any legislation giving them this power. This just
+sort of happened out of nowhere, and had it not been for the sloppy actions of a few contractors
+eagerly updating their Linked In profiles, we would have never known about this.
+So the president of James Bimen Associates is a guy named Joey Minshaw, he used to work
+at (inaudible) Hamilton which is the same place Edward Snowden used to work. This is
+the President of the company and his Linked In profile was bare, though it did describe
+one of his interests. He is a member of the Metasploit Framework Users Group. I thought
+you would get a chuckle out of that. So I gave Joey a phone call a few weeks ago and
+asked him some questions. I, of course, told him who I was, and I told
+him I work for ACLU, and he wasn't very nice. He didn't want to answer any of my questions.
+So I gave some of the information to "The Wall Street Journal" and last night they published
+a story on this unit. The nice part of giving these documents to a newspaper is once they
+have a bit of information, then they can go and report it and get other stuff too.
+So "The Wall Street Journal" reporter was able to find former law enforcement officials
+who would be willing to stop on background about this practice. One former law enforcement
+official she spoke to said that, quote, "The bureau can remotely activate the Microphones
+in phones, Android phones and laptops without the user knowing."
+She also added, "The F.B.I. is loath to use these tools when investigating hackers out
+of fear that the suspect will discover and publicize the technique."
+(Applause). So I guess that means you are all safe from
+F.B.I. malware. So the F.B.I. has this team of agents who are doing nothing but delivering
+malware to the computers of surveillance targets. We only have a couple of cases where these
+tools have come to light. There was a case in Texas this summer where the F.B.I. sought
+a search warrant allowing them to target a computer and remotely enable the webcam, collect
+location data, collect emails. In this case, they went to what you could probably say is
+the most pro privacy Judge in the country in Texas, and he said no.
+Sort of on a technicality, he said they should get a wiretap and they only wanted to get
+a warrant. What is clear is if you have this capability, if you build this team that does
+nothing but developing malware, the first time you attempt to use the team, you don't
+go to the most pro privacy Judge in the country. So presumably they have had this team for
+a while and they regularly use it to deploy malware.
+So on one hand we have the F.B.I. basically being in the hacking business, and then yesterday
+I noticed that the F.B.I.'s official Twitter account issued a warning saying pirated software
+may contain malware, be aware. And so I guess we only have to worry about the malware made
+by other people, not the F.B.I.'s malware. So the government is using hacking tools.
+The government is trying to penetrate people's computers. They have tried and up until now
+been unsuccessful in their attempts to obtain legislation allowing them to force tech companies
+to put back doors in their products. What are they going to do in the future? Because
+hacking doesn't scale. You can break into one person's computer, you can break into
+a thousand people's computers, but you cannot break into a billion computers without getting
+caught. You can do it temporarily, but you will get caught, and the government doesn't
+want their tools to get out. So what are they going to do in the future?
+What are they going to do when Silicon Valley companies actually start delivering end to
+end crypto, not Google, not Facebook, but companies who actually sell services to users?
+Well, Microsoft, you know, owned one of those companies for some time. Skype was advertising
+itself as a service that didn't have back doors. They were advertising it as a service
+that couldn't provide access to law enforcement agencies, but we learned last month that the
+government was able to go to Skype before Microsoft bought them and convince them to
+modify their products and provide access to the government.
+Quote, from the Guardian story," Skype was served with a directive to comply by the attorney
+general." We don't know what kind of directive this
+was. We don't know if they went to court, if Skype said no and they fought it or if
+they did this because they could negotiate some better deal. We know very little about
+the ins and outs of how companies can be compelled under existing law. But even so, Skype stopped
+bragging about their security several years ago.
+And by the time Microsoft bought them, all of their claims of being wiretap proof disappeared.
+Skype was no longer a service, even if it ever was, it was never, it was no longer a
+service that advertised itself as the way to securely talk to your friends and family.
+Instead, Skype was a service that you used to talk to your friends and family for free.
+Skype is not the only company offering VOIP services or video.
+There are now companies that are selling services to users. So one of them is a company called
+sound circle, co‑founded by Phil Zimmerman, the guy behind PGP and they charge $10 or
+$20 a month for encrypted VOIP and text messages and video. Now, I'm not telling you to go
+out and use this company's services, but they have clearly said in their marketing materials,
+we have no government mandated back doors. And I have spoken to the CEO of the company
+and he said if the government comes to us and tries to force us to put a back door in
+the product, we will close up and move to a different country.
+This is a company the only reason you use their product is for the security. You are
+not using Silent Circle because it's crystal clear audio or because it's cheap and easy
+to use. You are using them because they are secure. Likewise Spider Oak which is a competitor
+to Drop Box, you only use Spider Oak and you may for the service because they provide encrypted
+backups with a key only known to the user. And this, again, Spider Oak makes clear statements
+to users, we have created a system that makes it impossible to reveal, impossible for us
+to reveal your data to anyone. That's it. The only reason you use these companies is
+to protect your data. This is the only reason they are in business. And so the question
+right now is, and I don't have the answer to this. The question is, can the government
+force these companies to modify their products? Because if Spider Oak were forced to have
+a back door and it became unknown, they would go bankrupt. The only reason you are using
+them is for the security. So there is this law, I mentioned it before
+in passing called CALEA, and it it's normally thought of it's called the Communications
+Assistance for Law Enforcement Act. It's the law that forces telecommunications companies
+to put law enforcement interfaces in the networks. The reason that AT&T has very easy to use
+fast wiretapping capabilities is CALEA forces them to buy equipment. It has a provision
+most folks don't know about. A telecommunications carrier shall not be
+responsible for the crypting or insuring a government's ability to decrypt any communication
+encrypted by a subscriber if the encryption was provided by the carrier and the carrier
+carries the information necessary to encrypt the communications. This feature in CALEA,
+I think, and I'm not a lawyer, is the thing standing between these companies and the government.
+This section of CALEA, protects the right of companies that want to offer encrypted
+end to end services with a key only known to the user to the general public.
+It is my belief that when the next crypto wars come, if they do come, and when they
+come, that this section of the law will be the thing that the government targets. I think
+that down the road, we are going to see consumers using services that offer end to end crypto.
+I think we will see people paying for these services and I do think the government is
+going to target these because without it they cannot engage in dragnet surveillance. Thank
+you very much. (Applause).

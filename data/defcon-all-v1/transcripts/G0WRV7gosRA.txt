@@ -1,0 +1,742 @@
+>>So, without anymore waiting,
+I’m just going to give chance-
+give ahh give Bruce a chance to get started so umm, please
+welcome Bruce Schneier.
+[applause] >>Good Morning, thanks for waking up for me, I
+appreciate it. I always worry
+about starting at the early hour of 10. And also I would have
+done the hand wa- raise as who
+has two or more seats next to them and has taken a shower this
+morning? [laughing]. Because
+there might be a reason. I wanna talk about the uhh the “going
+dark” debate for a second. And
+this is a 25-year-old issue. Government has wanted access to
+encrypted communications.
+Mid-90’s clipper chip, that was uhh the first example of that.
+You remember access to iPhones
+uhh a few years ago. Very recently Attorney General Barr
+remade demands that companies
+make communications systems available for law enforcement. A
+lot of politics here, Five eyes,
+the law enforcement arms released a statement a couple of
+weeks ago. So there’s actually
+some real technology to talk about in this problem. Alright
+we can talk about key escrow
+technologies; Ways to make keys available to a third party under
+cryptographic rules. We can talk
+about obfuscation technologies. How to write code that can be
+reverse engineered.
+Vulnerability finding is relevant here and we can
+actually do research in building
+better or worse backdoors. Different kinds of backdoors,
+what’s the mechanism? How does
+it work? There’s more stuff in this debate. How the
+underpinnings of surveillance
+capitalism, right, how companies are already spying on us. Gmail
+is already backdoored for a
+reason, right, we want the cloud provider to do work on our email
+therefore they must have the
+plain text. We have other systems backdoored because of
+uhh of surveillance. Companies
+want to spy on us to sell us stuff. Underlying security needs
+a society matter here. The
+systems that are being backdoored are increasingly
+being used for very sensitive,
+personal Government Military, National Security applications.
+There’s some real policy
+decisions to make. There is a security benefit to making data
+available to the FBI to solve
+crimes, even though, that necessarily makes that data
+available to others. And there’s
+a security benefit to making sure our data is secure from
+everybody- Even if that makes
+that also secure from law enforcement. Which is more
+important? To what degree it’s
+more important. I also have questions about consumer
+acceptance, International
+taratives, how this count- this technology would be exported to
+other countries who would use
+the same systems for different reasons. And so here’s the
+issue: Almost no policy makers
+discussing this issue have the technological chops to
+understand the tech part. “Going
+dark” is a scare term. It’s an effective one. So 60 years ago,
+there was a British scientist
+named C.P. Snow, and he wrote an essay called the ‘Two Cultures.’
+And in that essay, he lamented
+on the lack of dialogue between what he called the scientific
+technical culture and the
+humanist culture. He kinda bemoaned that there was- that
+neither culture understood each
+other. And it was like they were in two completely different
+worlds. So today we still have
+those two separate worlds. We have the world of the
+technologists who build really
+cool tools often without regard of how they affect society, and
+then there’s the world of policy
+that can criticize technology and propose solutions without
+actually understanding how the
+technology works. So those two cultures, that split, was
+largely okay in 1959. And for
+the most part, tech and policy didn’t interact with each other
+very much. There are exceptions:
+large government programs like nuclear weapons and the space
+program, but you could see the
+two as separate. Today it’s really different, tech and
+policy are deeply intertwined.
+Tech makes defacto policy. Laws forever catching up with what
+tech does. And it’s no longer
+sustainable for tech and policy to be in different worlds. So
+specifically what I’m calling
+for, what I write about, is the case for public interest
+technologists. Important in all
+aspects of technology, especially in security. Alright,
+so start by saying how we got
+here. Most people know this story, the internet was never
+designed with security in mind.
+Absolutely crazy when I say it. Today, go back to the early
+80’s, two things true about the
+internet, one it wasn’t used for anything important, ever. And
+two, you had to be a member of a
+research institution to get access to it in the first place.
+Those constraints were
+sufficient, and the designers decided to ignore security, push
+it to the end points. Internet
+develops, and you had a very specific ethos. Very American
+centric, male dominated, profit
+motivated IT industry that didn’t spend a lot of time
+thinking about the social
+effects of what they were building. So, of course,
+deliberately excluded it from
+normal liability laws. Policy makers didn’t want to touch it,
+because there was very much an
+engine of economic growth, couple that with a libertarian
+ethos in Silicon Valley, and you
+have an internet which is not really touched by regulation, by
+societal concerns. And Internet
+tech is different to 1960’s tech. More democratic, more
+distributed, more diffused, more
+commercial, moves a lot faster. The internet became critical,
+kind of in all levels of our
+society really by accident, without any planning, without
+any forethought. Today it’s
+embedded in every aspect of our lives. Pretty much every form of
+communication uses the internet,
+including communications between like really important people.
+Add the internet of things, add
+a critical infrastructure. Add in the coming years automation,
+autonomy, physical agency, and
+suddenly these systems are affecting life and property. And
+tech has become defacto policy.
+There are companies that have effective control on free
+speech, on censorship,
+regardless of the laws. Companies can set limits on
+personal freedoms, regardless of
+the laws. A lot of it’s because there’s still a belief that
+these things are personal choice
+to use, as if you could be a fully functioning member of
+society in our century without a
+cell phone, without an email address. So now we hear terms
+like algorithmic discrimination,
+digital-ivide, information attacks on democracies,
+surveillance capitalisms. The
+internet is no longer a separate thing, it’s part of everything.
+It’s part of consumer policy. Go
+to the villages, it’s part of automobile policy, airplane
+policy, medical device policy,
+etc., etc. It effects discrimination, equal
+protection, fairness, liberty,
+power, democracy. It’s part of national security, it’s part of
+everything. So now you think of
+going dark, it’s suddenly a bigger question, as internet
+security becomes everything
+security. Internet security technology becomes more
+important to overall security
+policy. And you’ll never get the policy right, if policy makers
+get the tech wrong; And this is
+why we need public interest technologists. Actually fixing
+this has two parts. The first is
+policy makers need to understand tech. We want is all policy
+discussions to be informed by
+the relevant technologies. Reality is more that policy
+makers ignore the tech if it
+doesn’t conform to their politics. Maybe they don’t know
+enough to uhh to do anything
+useful. I think that stifling innovation is still a big fear.
+Lobbyists will easily provide
+whatever information matches the political beliefs. I saw this I
+think in full display in the
+facebook hearings. The question, “how do you make money?” We
+laugh, but the fact that a
+sitting senator doesn’t think it would be a idiotic question to
+ask? Means we have some serious
+problems. And I don’t need policy makers to be
+technologists. We have
+Government that- where things are governed that the people
+governing don’t understand them,
+they have staffers that do. They have staffers that know to ask
+the right questions, that have
+good bull s**t detectors, that believe in the truths of
+technology. This is, like, no
+different from any other area of society. So that’s the first
+part. The second part, is that
+we need technologists to get involved in public policy. We
+need more public interest
+technologists. So let me define that term. Bunch of different
+definitions, gunna read the Ford
+Foundations definition: Technical practitioners who
+focus on social justice, the
+common good and or the public interest. Ehh, a little bit
+issue focused. Tim Berners Lee
+has a great term: Philosophical engineers. Another definition I
+read is, people who study the
+application of technology expertise to advance the public
+interest, generate public
+benefits, or, promote the public good. Alright, so it’s not one
+thing, it’s a lot of things. I
+think of public interest technologists as people who’ve
+combined their tech expertise
+with a public interest focus. By working on tech policy. By
+working on a tech project with a
+public benefit. By working for a more traditional organization in
+an IT role with has a public
+benefit. Or working on a technology inside government.
+Still kind of a developing term,
+not everyone likes it, but I think it’s a decent umbrella
+term for what we all do.
+Alright, large tent, lot of job descriptions. Do we need these
+people who can weigh in on
+public interest- on public policy debates. So, a second
+example, where policy
+desperately needs some tech focus: Supply chain security. In
+the news a lot- This year last
+year, China, Huawei. Should we trust networking equipment built
+by a company who resides in a
+country that we don’t trust? Reasonable question to ask?
+Couple years ago, same question
+is about Kaspersky. And sure, yes, companies are subject to
+the pressures by the governments
+of their own country, alright, U.S. companies included. But
+supply chain securitys’ a lot
+more complicated than that, this is not made in the United
+States. It’s chips are not
+fabbed in the United States. It’s programmers carry 100
+different passports. And we all
+know that the security of this device can be subverted at any
+of those points. We all know
+that you have to trust the distribution mechanism. We have
+fake apps in the Google Play
+store. We have to trust the update mechanism. Remember not
+pet yet distributed through a
+malicious update of a Ukranian accounting package? We know you
+have to trust the shipping
+mechanism, because we all remember that photograph of NSA
+employees opening up a Cisco box
+that was intended for the Syrian telephone company. Supply chain
+security is a lot harder
+problem, you have to trust everyone, yet you can’t trust
+anyone. And the solutions are
+equally problematic. We could build the U.S. only version of
+an IPhone. It’ll cost, what, ten
+times as much and no one will buy it. And the policy
+discussions would take this all
+into account. And I think there actually is a major research
+effort we should undergo. Just
+like the internet was built around the question, “Can we
+create a reliable network with
+unreliable parts? Can we create a secure system with insecure
+parts?.” That’s another one,
+there are more policy debates. Insecurity that technologists
+need to get involved in.
+Vulnerabilities equity debate talked about a lot here. Offense
+vs. defense, how bug bounties
+work, the international aspects of it, The cyber weapons arms
+manufacturers. The debates on
+election security. Blocked shame; what it does, what it
+doesn’t do, how to regulate it.
+Internet of things, safety and security, I’m kind of listing
+the villages we have here. I
+mean 5g security vs. 5g surveillance, critical
+infrastructure. Data privacy in
+big data, algorithmic security, algorithmic fairness, AI
+robotics; These are all going to
+be major policy issues that need to be informed by technology.
+And there are a lot more once
+you broaden the definition of internet security. I wrote in a
+series of papers on influence
+operations against democracies looking at a democracy as an
+information system. And what can
+we learn by bringing in our way of thinking about security to
+this very much nontraditional
+question? So we need this and we need it now. There’s one report
+written about this, that called
+this the “Pivotal Moment”. I wanna read this from the report,
+read a sentence. “While we site
+individual instances of visionary leadership but
+successful deployment of
+technology skill for the public interest, there was consensus
+that the stubborn cycle of
+inadequate supply, misarticulated demand and an
+inefficient marker place stymies
+progress.” Alright, so that quote speaks to how we can
+intervene to try fixing this
+problem. Okay three things. First was the supply side, and I
+think in the end this is our
+biggest problem. There isn’t enough raw talent to tack for
+the public interest. Especially
+acute in cyber security cause it’s actually enough raw talent
+to tap into the regular
+corporate needs. It’s cyber security’s cap is a big deal.
+And when you look at the public
+interest technologists today, it’s a very diverse group of
+people, it’s a very
+multidisciplinary group of people. Backgrounds come from
+tech, from policy, from law. A
+lot of people without a computer science degree doing this work.
+We need to make a list- we need
+a lot of different ways for people to engage in this sphere.
+It’s not just taking it as your
+job. How can we do it on the side? How can people take a
+couple of years between regular
+jobs and do this? Or sabbatical years and work for a company
+that has those? So we need
+clinics at Universities, which people can get a taste for this
+kind of public interest tech
+work. And we need to really force in diversity. What we’ve
+learned I think very graphically
+in the past decade or so, is that if a population’s using
+tech are not represented in the
+groups that shape the tech, you get really lousy tech. Second is
+the demand side, and right now
+at this moment, as bad as supply is, demand is worse. I get more
+people asking me after talks
+like this, “I want to do this, where do I go?” And there are
+few places to go. So we need
+jobs funded at a variety of NGO’s inside government at all
+levels. More organizations doing
+this kind of work. And the third intervention is the marketplace.
+And here we just need things
+that reduce the friction. Where people who want to do this will
+find people who need this done.
+And right now, it’s a little haphazard. Here maybe rights
+come more in a freedom festival,
+and those are places where public interest tech happens. If
+somebody called a non-profit
+technology conference, anyone heard of it? I sure didn’t, but
+places like that. There are
+organizations doing this. We can list Electronic Frontier
+Foundation, Electronic Privacy
+Information Center, Acces Now, lots more. There are now
+academic programs. I teach at
+Harvard, but, Carnegie Mellon, Georgetown, Stanford,
+everywhere. New America last
+year formed the public interest technology University Network.
+21 Universities going to be
+starting up different programs. There are technologists inside
+government. Some of our
+colleagues have taken senior positions inside the federal
+trade commission, for a year,
+for two years. There’s an organization called tech
+congress that put technologists
+like us on congressional staffs’ for a year. Aspen Institute has
+a tech policy hub- has fellows.
+And there are even programs as initiatives inside corporations.
+The big one you’ve probably
+heard of is Jigsaw, inside google alphabet. Something more
+near and dear to our community
+are public interest technologists building
+technology to benefit the public
+interest. So you know, Tour, Signal and all the others.
+Tails, cubes, etc., etc. Or apps
+that track public policy issues. So something I don’t think we
+give enough credit to, are the
+people who are doing IT security work inside public interest
+organizations. Like Ames
+International, Human Rights Watch, Greenpeace. It’s a hard
+job. You’d make like half what
+you’d make elsewhere, and honestly the government of China
+vs. Human Rights Watch is not a
+fair fight. And our colleagues are fighting that fight. Lastly
+there are public interest
+technologists doing training. They have tactical tech or
+digital security exchange, you
+know, matching expertise with people that need it. And there
+are foundations funding in this
+space. Fort, Mcarthur, Hewitt, Maticula, there are others. And
+this all might seem like a lot,
+but it’s really not. These are examples, but they’re still
+largely exceptions, still
+largely on the edges. We have to scale this. We know about these
+examples cause we’re paying
+attention. Right now there aren’t enough people doing it,
+and there aren’t enough people
+who know it needs to be done. So I want to create a world where
+all this is normal, all this is
+common. There’s a viable career path for a public interest
+technologist. And to do that we
+need a cultural shift. We need all the pieces working together,
+and I think we also need to
+recognize that what’s in the best interest of corporations,
+is not necessarily the best
+interest for society, and that that’s okay. That’s not a
+failure of the market, that’s
+normal. And it needs to start from the top. A lot of public
+interest talents came from the 8
+years of the Obama administration, embracing tech
+change and building tech
+organizations inside government. There’s an interesting parallel
+here to public interest law.
+I’ll tell a story of public interest law, in the 1970’s
+there was no such thing, it
+didn’t exist. The field was created deliberately by an
+organizations like The Fort, and
+they would fund law clinics, Universities, so law students
+get a taste of housing law,
+discriminiation law, immigration law. They funded fellowships at
+places like the ACLU, the NAACP.
+So the places for these new attorneys to go and do this
+work. They created a world where
+public interest law is a valued career. If you tell your parents
+you’re doing that, they’re
+impressed. Evey partner at a major law firm is expected to
+have done pro bono work.
+Expected to continue to do pro bono work throughout their
+career. And today, ACLU
+advertised a position for a staff attorney. It pays between
+one-third and one-tenth of what
+an attorney would make out in the corporate world, and they
+get hundreds of applications.
+Today, 20 percent of harvard law school graduates don’t go to
+work for a major law firm for a
+major law firm or a major corporation, they go to work for
+the public interest. And a
+couple of years ago, that University had a soul searching
+seminar, because that percentage
+was so low. Number of computer science grads from Harvard that
+go into public interest?
+Probably zero. Not their fault, but the ecosystem doesn’t exist.
+So more generally, we
+technologists need to understand the policy ramifications of our
+work. This pervasive myth in
+Silicon Valley that tech is politically neutral- it’s not, I
+think we all here know that, but
+it is a widely held truth. Our work is deeply imbedded in
+policy. The things we do affect
+the world we live in, and we all need to decide what tools we’re
+willing to build. Do we build
+technologies of surveillance and control? Do we build
+technologies of liberty and
+autonomy? This matters when we work on spyware, on censorship,
+control tools. Historically we
+have created a world where programmers had an inherent
+right to code the world as they
+saw fit. We did that because historically it didn’t matter.
+Alright, Tech was tools. Now it
+does matter. In a lot of ways the special privilege needs to
+end. Everything we build is a
+complex, socio-technical system. It is not just a tool. So a
+third example: 5g, IOT, big
+data. The next disruption in technology is going to be about
+things and not about people. 5g
+is not being built so you can watch Netflix faster, it is
+being built so things can talk
+to other things behind your back. The number of things, the
+number of the people on the
+internet- These will be semi-autonomous things, and
+they’ll be generating data about
+us, and they’ll be using data about us. And right now we’re
+building that world. And when we
+build these systems, we can prioritize different aspects of
+society. We can prioritize
+corporate profits, we can prioritize individual autonomy,
+we can prioritize privacy, we
+can prioritize group benefit of information. Government control,
+we can prioritize human rights;
+All of these are possible. The question is which future will we
+collectively build? And I like
+some of the talk I’m hearing the past couple years about the
+decentralized internet- the
+decentralized web. Movements that try to pull back from the
+centralized control we’ve seen
+sort of since the mid-90’s. And as much as deride Blockchain
+pretty much every chance I get,
+right, the politics of that is heartening, cause it’s the
+politics of reducing centralized
+control. It’s not just that- everything we do has a moral
+dimension, and we need to engage
+in that. And a lot of times it’s really hard in security because
+so much of what we do is dual
+use. The same tool has positive and negative effects depending
+on who is using it and how it’s
+being used, that makes it hard. And of course we are not
+responsible for every different
+use of something we build, but we are responsible for the world
+we create with the technologies
+we build. And we have a surprising amount of power. Kind
+of as consumers we don’t- a lot
+of these things are monopolies, a lot of these things are solved
+with deep psychological
+manipulation. And consumer choice doesn’t really work the
+way it’s supposed to in an
+effective market, but as employees we do. Because even if
+the big companies don’t have to
+compete with each other on products, they all have to
+compete for our talent. And
+we’ve seen this in the past couple of years as employees
+taking a stand against what
+their companies are doing, and I assure you this terrifies
+companies. Google has already
+has problems recruiting enough people. Ten percent walk out,
+it’s a fricken disaster.
+Employees demand that they don’t work on something- they don’t
+work on it. And law and policy
+have to work together. Either they work together or they don’t
+work at all. And I think
+actually this is the fundamental lesson of Edward Snowden. We all
+knew that we could build tech to
+subvert policy. He showed us you can build policy to subvert
+tech. And if they’re not working
+together, they’re failing. Again this is bigger than computer
+security. Nearly all the major
+policy debates of this century, will have a strong tech
+component. Robotics, climate
+change, food safety, drones, AI, bio-engineering. These have deep
+tech components, and there are
+places that we as hackers can get involved. And I actually
+think this is where the core
+issues of society lie. So the 20th century, the question that
+organized society was basically
+this: How much of our lives should be governed by the state
+and how much of our lives should
+be governed by the market? That’s the Cold War in a sense.
+That’s most countries politics
+in a sense. The defining question of this century, at
+least the first half of this
+century, I think will look like this: How much of our lives
+should be governed by technology
+and under what terms? Now the 20th century, the question was
+really an economic one, and
+that’s why economists basically were the ones who made public
+policy. This century’s question
+is technological, and we are the people who need to make policy.
+So this future is coming. I
+think it’s coming faster than we think. I think it’s coming
+faster than our policy tools-
+today’s politics can deal with. I think the only way to fix this
+is to develop a new set of
+policy tools that work for the environment we live in. And we
+need technologists in all
+aspects of public policy, all aspects of public interest work.
+Informing policy, creating tools
+and building the future. And you know this field. We do not need
+permission to do this. Our ethos
+is that we can do this without permission. When you hack a
+public system and make that
+information available, that is public interest work. When you
+build tools of security and
+tools to counter surveillance, that is public interest work.
+When you decide the world you
+want to live in is not the world you’re living in and you move to
+create that world, that’s public
+interest work. We need it, we need more of it and need your
+help. Thank you. [audience
+clapping] Alright, so I left a bunch of time for questions. I
+see people are escaping through
+the correct door. You all listen the uhh, listened to the
+announcement. There’s no
+microphone, so you either have to walk to the front or be loud.
+Yes [points to member of
+audience] >>Umm I was wondering if [incoherent] borders internet
+os >>Uhh- The uhh open borders
+internet? Yes so the question’s about internet uh uh- not
+bifurcation- balkanization. I
+don’t know- I see three- split three different ways, we’ll see
+how it lasts. Uhh sort of U.S.
+centric, Europe centric and China centric. And right now
+that’s a split on the way policy
+works, and it’s- I don’t know if it’ll turn into hard splits-
+China is doing a hard split
+within its own country, but we’ll see. It really depends on
+how incompantible the laws are
+and how much the different spheres don’t want each other
+in. I do worry about it, I think
+it is not a big worry right now, but easily can turn into a big
+worry because it’s based on
+perception of policy. You can imagine Europe saying, Facebook
+you’re no longer welcome. You’re
+not following our laws, we’re just done with you. And that
+would be a big deal, but it
+certainly could happen. Is there a question further up? Yes
+[points to member of audience]
+>>So what do you think about government involvement in
+election security? >>Question
+about Government involvement election security- I mean U.S.
+is very unique in that we don’t
+have a professional election organization that many other
+countries do. Uhh it is because
+of the way the U.S. is organized, we don’t have one
+election, we have 52 separate
+elections that are autonomous. Uhh that was great in the mid
+1800’s, great idea, I think it’s
+like less good today because, again right, Russia vs. North
+Carolina is not a fair fight
+[audience laughs] but there’s a lot of politics in the way of
+free and fair elections in the
+United States right. This isn’t a debate you can have purely
+technically, although it would
+be nice if we could. And that is- that is the problem. Other
+countries I think we are doing
+better because they can nationalize it. Because they can
+bring nation level defenses in a
+way, I mean, that you can’t in the United States. So, I think
+our uniqueness makes that
+harder, and this is very much a political issue. Alright because
+after an election the winning
+side wants the results to stand no matter what happens. So you
+need a professional class that
+have been charged with fairness and not outcome, and we don’t
+have that, not sure we’ll get
+that. I saw a hand there, and then I’ll go this way. >>Um with
+the rise of totalitarianism and
+[incoherent] politics globally time has come for us to build
+the tools to do the right thing
+basically. What are some of the suggestions that we can do in
+order to build that tools in
+order to >>So I think abuse is hard because a lot of tools can
+be abused. A lot of it’s having
+the right people in the room when you’re building them. We’ve
+built them as tools where
+they’re techy, and us techy’s just create them. You need the
+people using them- you need the
+different groups understanding how uhh an affected disempowered
+group is using a tool makes a
+huge difference. And I think you know even big things, the right
+people aren’t in the room early
+enough to understand it. I don’t know the answers, but I think we
+have to learn how to ask the
+questions at a point where we can make the design trade-offs
+and not when it’s too late. So
+that’s really what I want right now. That these- think of these
+as complex social-integral
+systems from the beginning, and getting the sociologists in the
+room, getting the activists in
+the room, getting the users in the room, getting the soft
+science people with the
+programmers at the beginning. Uhh Google invented a job
+classification a few years ago
+called staff attorney. The idea was- a really good idea, that
+what they build is going to have
+legal implications down the road, wouldn’t it be great to
+have an attorney on staff at the
+beginning of the design? Now they do that. Let’s do that for
+uhh public interest as well.
+Right, get- and I think some companies are doing that, we
+just need it to be part of our
+ethos. Saw a hand down there- yes. >>Um two lame questions
+>>You only get one. [laughter]
+>>Okay, Um I protect against the activists who actually become
+these um [inaudible]
+technologists [inaudible] >>You know, I think the problem of
+activists getting so powerful
+and pushing their agendas is far from reality, I’m totally not
+worried about it [audience
+laughs]. I’m way more worried about the money pushing their
+agenda. I mean, if the
+disempowered get a little more powerful, I think we’ll do good.
+I’m not really worried about
+that, we’ve got a long way to go before marginal agendas are at
+the top. Alright I’m gonna go
+down there. >>As someone who works in public policy I really
+want to encourage people to
+[inaudible] freaking regulation >>Comment on fricken regulations
+is a huge issue. And by comment
+we don’t mean, “write a bot that sends a million other comments”
+[audience laughs]. Cause we’re
+kind of on to you for that and that like messes up the whole
+process, but yes more tech
+comments on regulatory matters is really useful. That did a lot
+of good in the uhh- in the uhh
+open-open internet debate. Why am I blanking on the term of it?
+Not SOPA PIPA but after that the
+uhh oh the- the uhh FCC wanting to-to allow companies to
+throttle. Net neutrality,
+alright it’s early, yes. I mean the public comment made a huge
+effect in that, we think they
+don’t matter, they do. Uhh I see a hand over there. >>the arms
+race is [inaudible] the
+government wants a uh p escrow [inaudible] secure it but I’m
+guessing [inaudible] >>Questions
+about arms racing and cash go and where they end and the
+answer is we don’t know. I mean
+a lot of our debate on insecurity of backdoors is
+undercut by the fact that
+corporations backdoor their stuff all the time for corporate
+reasons. I mean, it’s hard to
+argue that look, you must make iMessage secure, or, bad things
+will happen, when your email is
+all escroed by whatever service provider you have. Now my belief
+is sort of in the long game,
+these systems become so critical for society that there’s no
+choice but to make them secure.
+That defense wins, offense loses, because defense becomes
+much more important. Now there’s
+a lot of short term between here and there, but I think once the
+internet starts killing people,
+all these debates change. And this was the subject of -
+actually I’ll hold up my latest
+book which you might be able to see in the front row - which has
+the wonderful title of “Click
+Here to Kill Everybody” [audience laughs] where I talk
+about the world of physically
+capable computers and how that changes the debate. I think that
+changes the key-escrow debate at
+an enormous degree. But short term, mean we just recently
+heard that the FBI can’t get
+into the phone of one of the two mass shooters a couple of weeks
+ago. That’s going to become a
+talking point. Now why do we need to get into his phone? The
+question of digital forensics is
+a much bigger question, and one that I think we also could help.
+The reason the FBI wants into
+your phone is cause they don’t know how to do anything else,
+and getting them better at
+actual forensics- cause we know it’s the golden ages of
+surveillance, we know a lot of
+datas’ out there, we know that you can do an enormous amount if
+you can’t get into the phone or
+get into WhatsApp. But that data, that information is not
+being transmitted to the FBI.
+Part of public interest tech is going to work for the justice
+department and making them
+smarter on fighting digital crime. Right, take one more
+question. Oh way in the side.
+>>Uhh the micro [inaudible audience question] >>You know,
+so there’s a lot of danger for
+us like parachuting in and helping other industries. That
+almost never works out well,
+even if we do it like for corporate ways or for public
+interest ways. Uhh If you want
+to help, there’s an issue you care about, find an organization
+that is doing that and ask them
+what they need. Ask them how you help. And it might be our
+computers aren’t, you know our
+neck keeps coming down. And it might be we need this tool that
+we can use or, it might be we
+need data analysis expertise. The people doing the work know
+what they need. If you want to
+help whatever the issue is, find those people, ask them. Alright
+I’mma get off stage. I have one
+more thing to say, I do uhh I keep uhh a webpage with public
+interest tech public interest
+tech with the hyphens dot com. It has a whole list of
+resources: organizations,
+documents, talks, people doing this. Uhh I will be around to
+uhh say hi to people afterwards,
+I have to get off stage, I can’t stay here. So I’m going to go
+out that door which is totally
+illegal don’t you do it. I’ll go around and I’ll meet you all at
+the back there, and then we can
+chat later. Thank you for coming, enjoy your DefCon. I’ve
+been coming since I think Defcon
+4 [audience claps] and it’s really always neat to be here
+and thank you again. [applause]

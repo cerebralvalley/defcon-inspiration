@@ -1,0 +1,813 @@
+>> ZAC FRANKEN: Good afternoon, Everyone.
+I'm Zac Franken. This is Major Malfunction. >> ADAM 'MAJOR MALFUNCTION' LAURIE: I will
+be sitting quietly a bit, because I have no fucking idea what he does. He does this hardware
+stuff and terrible smells come out of the room and as he gets the chemicals out as he
+works, so this is going to be interesting. >> ZAC FRANKEN: What can I say, I'm a farter.
+We are going to take you guys through a bit of hardware reverse engineering, and I think
+you are going to have fun with it. We certainly did. So we are Aperture Labs. We are not aperture
+laboratories. We do get occasional misrouted mail though. So here is a piece of mail we
+got, dear aperture laboratories, do you make portal guns? Do they work? Well, I have an
+idea for a portal gun. Here is the picture, the portal colors are yellow and rainbow.
+From Joshua. >> Brilliant.
+>> ZAC FRANKEN: So apart from the dreadful photo shopping on this picture.
+>> ADAM 'MAJOR MALFUNCTION' LAURIE: It's really me crying.
+>> ZAC FRANKEN: You notice that the thumbs aren't pointing the right way around. So I
+think I'm reasonably smart guy, and I was just completely not thinking when I went onto
+Google images and searched for the word fist. I swear to God! Holy shit! It's like ‑‑
+there was one, I thought he was trying to pick her nose from the inside. It was mind
+bleach. Okay. So just to recap, (Laughter). So we are going
+to talk or I'm going to talk about simple decapping that you can do, and the kind of
+benefits you will get from it. We will call it the plink, plink, fizz method.
+(Music). So we need some ingredients, some nitric acid.
+So normally between 70 and 90%, you can get it up to 99%. 70% is probably good enough.
+And it's ‑‑ there are issues with chemicals like these, so, you know, just like you might
+think you really want the 99% stuff, you probably really don't. Acetone which is organic solvent,
+hot plate because the hotter the nitric acid is, the faster the reaction, so you can have
+a chip, you can drop in room temperature night trick acid, nothing will happen. Actually
+that's not true. The legs will miraculously disappear and disappear right into the package.
+It's like oh, very small holes on this side. But as soon as you start to get it a bit warmer,
+amazing things happen. These are Pyrex speakers, so they can with
+stand a bit of heat without shattering. A pellet for moving liquids and an acid wash,
+just an easy way to apply acetone, and petri dishes which are useful for sorting out results.
+So --(Laughter). Do you see that? What can I say? And the other one, the other great
+place to get some of the stuff from, Amazon. Who would have thought? I bought some ‑‑
+I'm trying to think, potassium nitrate from Amazon, and I'm like, okay, and at the bottom
+and I have seen it on a couple of occasions, the other people bought sulfur and charcoal.
+It's like okay (Laughter). My favorite was I was looking for aluminum powder and other
+people bought iron oxide and magnesium ribbon. I'll sling them into one of these slides actually.
+So eBay is your friend. The shit we bought from eBay is astounding. So as you can probably
+gather, this stuff can get quite nasty. Nitric acid, particularly bad. So it does what we
+want, particularly to dissolve organics, so the epoxy packaging on the chip is the thing
+we want to get rid of, but it will also take out metals as well, dissolves copper and does
+all of the other lovely things acid does. It will burn you.
+It has choking fumes so as soon as you take the cap off the bottle it will start fuming
+away. You get fumes from the acid, you get fumes from the stuff the acid reacts with,
+and that's typically nitrogen dioxide, toxic, of course. And, yes, if you get a lung full
+of nitric acid vapor, there is about an eight hour delay before it has a nice catastrophic
+effect. It will be really unpleasant initially, and then eight hours later, bad stuff will
+happen. Oh, yes, and it causes spontaneous combustion
+of organics. This is probably an important point to note. Kitchen table, yes, this one
+is not for the kitchen table. Definitely outside and better with a cabinet. So people wear
+latex gloves and in general in labs people started moving to nitro gloves because nitro
+is great, it's resistant to most chemicals, doesn't react with them. This is what happens
+when you take a bit of Nitro glove and you add a little bit of nitric acid.
+My, my ‑‑ (Laughter). >> ADAM 'MAJOR MALFUNCTION' LAURIE: 16 seconds
+before is catches fire. >> ZAC FRANKEN: You definitely want to be
+a bit careful with it. Okay, acetone is only a little evil. It will dissolve plastics in
+particular. It can be really handy for getting inside smart cards and things like that. It
+has choking fumes, and it's a little bit carcinogenic as well. Oh, yes, the fumes are heavier than
+air, so if I'm working with it up here, the fumes are going to cascade off the table and
+on to the floor and spread out. So the guy back there is going to have a nice little
+pool of acetone fumes around him. If it rolls down into the basement, yes, it's
+interesting stuff. And, again, you won't realize, you won't really smell anything, but there
+is a nice layer of it on the ground, and, yes, bang! So safety. We use a fume cabinet.
+You have just got to also think about how you are dealing with this stuff, especially
+the nitric acid and where you are storing it. Handling it, think about where it is,
+where you are moving it to, is it, is the container open? If you have got prepared and
+you are moving across to your sample, if the pipette drips, what is it going to drip on?
+If it spills, where is it going to run and what is it going to hit as it runs?
+So just be aware in your head what's going on. Also you can neutralize it with baking
+soda because it's an acid. We use an industrial neutralizer which costs ‑‑ you buy it
+in cases of six. It costs about $200. It's amazing stuff. You sprinkle it on, and it
+color changes when it's safe. It's like perfect. Neutralization for dummies.
+So here is our fume cabinet. Any ideas where the fume cabinet was acquired? Ebay. Ten pounds
+this fume cabinet cost. It cost 35 pounds to have a cab go pick it up. Now, it sounds
+like a great deal, but it's safety equipment, and this is called a recirculating fume cabinet.
+So some fume cabinets just suck things up and vent them straight outside. This is designed
+to vent back into the room so everything goes through a filter, therefore, there is no way
+I'm trusting the filters from a 10‑pound Ebay fuel cabinet so a new set of filters
+cost around 500 but you can use direct vent, outside, or, you know ‑‑
+>> ADAM 'MAJOR MALFUNCTION' LAURIE: Don't like the neighbors, do you?
+>> ZAC FRANKEN: A lot smaller fume cabinets. Oh, and, again, you can do this stuff outside.
+That's how I started doing it. The other thing, just be aware of the wind, because if the
+wind changes, your big plume of nitric acid fumes that was going over there all of a sudden
+heads towards you. And even a tiny little bit, very unpleasant. So, yes, this is, like,
+yes, I don't want to be near that shit ever again.
+So here is the nitric acid. You never guess where I got it, of course. You use a beaker
+and pipette and the great thing about this is you don't need to use a lot. 12, 15 ml's
+of nitric acid at a time is plenty to decap a chip. Which is great, it means you don't
+have to have tons hanging around, and you are not moving large quantities of it. This
+is acetone wash bottle, so handy. You just fill it up with acetone. The straw, when you
+are not using it, you just pull up above the level of the acetone, and the acetone will
+stay as it's heavier, it will stay in the bottle.
+So here is a simple example. This is a PIC chip, PIC 32, and.
+>> As you know, we have a tradition at Def Con that all first time speakers have to do
+a shot. And we figured you were a first time speaker at Def Con 21.
+>> ZAC FRANKEN: Okay. (Applause).
+>> ZAC FRANKEN: A shot it is. A shot of Jack, how surprising! So you realize when I fuck
+the rest of my talk up, I'm just going to blame you.
+>> Wait a minute, back up. >> ADAM 'MAJOR MALFUNCTION' LAURIE: How come
+I have to drink one because he doesn't? That's not fair.
+>> Let's hear it for the first time speakers at Def Con 21.
+(Applause). >> ADAM 'MAJOR MALFUNCTION' LAURIE: Thank
+you, sir, please may I have another? >> ZAC FRANKEN: Thanks proctor.
+>> You are welcome. You are cut off, buddy. As you were.
+>> ZAC FRANKEN: Thank you. >> The empty one. Oh, yes, we better take
+it. >> ZAC FRANKEN: Okay.
+>> ADAM 'MAJOR MALFUNCTION' LAURIE: Where was I? Who was I?
+>> ZAC FRANKEN: So this is microchip PIC 32 chip which I'm knocking around, and I have
+more than one of them so I'm like, okay, we will use this guy. It's a very modern chip
+so it's very highly integrated so the level of detail on it is very small, but slightly
+older chips are fun because you can actually really start to understand how they are built
+up and how the gating is done and things like that.
+So as soon as I pop this in here, one of the things I want you guys to look for is on the
+kind of bottom side here, as soon as it's dropped in the beaker, it will react instantly.
+This acid is about 90‑degrees Celsius. It will boil at 120, and so as soon as the chip
+goes in, it will start reacting immediately, and what you will see is around the kind of
+bottom here you will see a spot coming off of the epoxy.
+So yes, and ‑‑ >> ADAM 'MAJOR MALFUNCTION' LAURIE: It's great!
+Wow! Look at that! >> ZAC FRANKEN: Evil, evil, evil, Microsoft.
+Okay. So look for the spall around the bottom of the beaker, instant reaction, boom! The
+Petri dish on top is just to contain the fumes a little bit so the brown fumes are nitrogen
+dioxide, and you can see here this dark cloud is the epoxy coming off the chip. Okay. So
+once it's finished reacting, take the acid into second beaker, your disposable beaker,
+and take the beaker, rinse it with the acetone and decant it into the Petri dish.
+What you will end up with is a dye with all of the wires intact because the acid will
+eat not just the epoxy but the entire frame as well both externally and internally from
+the chip. So get the dye, rinse it in more acetone and this is what you will end up with.
+It looks a bit yucky. There is still a little bit of epoxy on there, but, again, another
+fantastic Ebay purchase. These are like 30 quid, and they are amazing. They will just
+remove all of the shit from anything including chips. No, they are really cool. So we have
+used them with water, we have used them with water in them, and then a beaker of acetone
+with the chip sitting in it. And absolutely fantastic. And if you have
+watches or jewelry or glasses and you pop them in this, the first thing you are going
+to go is holy shit am I a filthy person. You will see it just coming off. It's like oh,
+my God! But they are amazing. They are super cheap these days, little ones, and if you
+get one don't forget to do your wife's and girlfriend's jewelry. She will love it. Okay.
+So after it's had a trip through the cleaner, this is what we have ended up with. Now, this
+is not particularly great microscope picture because a really cool microscope doesn't have
+a lens big enough to take the whole chip. So this was done with a small crappy USB microscope,
+but you can see it's cleaned up a lot. One of the other things you will notice is missing
+are the bond wires or a lot of the bond wires. That's because the chip was vibrating around
+in the ultrasonic bath and they simply got knocked off. They are pretty fragile.
+So let's take a bit of a closer look. So this is it under a microscope, and this is one
+of the kind of identification areas of the chip. These numbers here represent the layers.
+So the dye is built up in layer upon layer upon layer. So as the chip is manufactured,
+you take your puck of silicon, you have your wafer, and it's constant, so basically you
+expose or you ‑‑ okay. Start from the beginning. You have your wafer, you lay down
+a mask, which is chemical that is etched away by typically ultraviolet light.
+Once that's coated, that resist is coated on the dye, you have a large image of the
+portion of the chip. You focus it down onto the dye, onto the Wafer, expose it with ultraviolet
+light, and then you rinse the resist chemical away, and that just leaves an exposed area,
+which you can then dot with another air of silicon and just build it up and build it
+up and build it up. So these identifiers are kind of registration marks for each layer
+as it got laid down so they can see, well, actually, you know, you did actually put down
+layer 156. The reason the colors are different is because
+of the different depths. They are reflecting the light slightly differently. Never again.
+No Jack Daniels. So let's zoom in a little bit more, a little bit more. So you can get
+really great detail. Here are the bond wires. These, as you see, there is the two on the
+left‑hand side of this picture are actually missing. They got simply vibrated off. So
+there are typically two types of bonds. This is called a bowl bond, which is the more modern
+technique. The older technique is called a wedge bond, and you can find wedge bonders
+on Ebay, of course. If you wanted to take the dye and try and put it into a new elite
+frame, but there is better techniques. The ball bonds are quite clever. The wire
+comes out, it gets hit by a little paddle. There is an electric charge between them,
+and it causes the little gold wire to fuse into a ball and then it ultrasonically pushes
+that ball down and welds it onto the pad. If you go to You Tube and search for dye bonding,
+the speed the dye bonds go at is truly unbelievable. And they are literally dropping a bond on
+the dye, taking it to the elite frame at the speed of light.
+It's unbelievable. So why the hell are we doing this? That's
+a reasonable question. You have stat there very patiently while I have rambled on. Well,
+there are some really good reasons to do this actually. So here is a really simple example.
+A friend of mine is a model maker and he was actually one of the guys that built the Hogwarts
+model. And we are having a beer one day, and he started talking about this plug. This is
+given away cheaply by one of our power companies in the U.K.
+And it's power saving device. You plug your computer into the master socket or your TV,
+and your peripherals into the slave sockets on the side, and when you turn the master
+on, it turns on the peripherals. Simple, easy. But what they wanted to use it for was dust
+collection for power tools. So basically you plug the power tool into the master. The extraction
+system will be plugged into the slave and as soon as you turn it on, extraction starts
+and they can go. The only problem with this is there is a five
+second delay between the master turning on and the slave turning on. And that, they just
+can't handle that. The alternatives, the actual, if you went to buy one of these, they charge
+150quid, so about $250 for something like this. This costs 8 quid for something doing
+pretty much exactly the same thing. So he mentioned that someone had hacked this and
+was asking me about it. So when we actually take a look at it, it's
+a pretty simple device. So on the top here you have a little power supply the most important
+thing is this resister here, resister 17 which is to measure the current. Are so here are
+the actual born bits, we have two bits here, a logic chip which is clearly marks, sear
+crus logic is CS456 and you type that into Google, get the data sheet and you are off
+and then we have the OC706 or if you look at the other plug, the OC708. Can't find anything
+about this device. Now, when you read the cirrus logic data sheet,
+this is currency frequency converter chip so it's measuring current across the resister
+and outputting frequency. And it needs a clock as well, and this, when you reverse the circuit,
+this OC706 chip is supplying the clock to the cirrus logic chip, but after the ton of
+Googling, and it's interesting because you will see other people searching, you know,
+Google suggesting, oh, did you mean OC708, people are searching for similar parts.
+Now, it makes sense that this is a small micro controller, but unless we know what it is,
+it's completely useless. So the guy that hacked it basically pretty much replaced this entire
+chip with a PIC chip, clutched it in and away he went. But we can do better than that so
+if you Plink, plink fizz this chip, this is what you get. And thank you, NEC for having
+nice big part numbers here. This is D70F9212. It's a little micro controller.
+You go onto the NEC site. Here is a compiler for it, here is all of the development tools.
+They are all free. So we are away. Major here hasn't quite had it dumped on him to write
+the code, but that's coming shortly. >> ADAM 'MAJOR MALFUNCTION' LAURIE: That's
+because some idiot destroyed the chip. >> ZAC FRANKEN: Plenty more where those came
+from. So other interesting things, this is the (inaudible) it's another chip, slightly
+older, and we are going to zoom in a little bit, and zoom in, and it starts to look quite
+interesting. So this is an area on the chip. Really close, and you can actually really
+start to see some proper texture. Okay. So one of the things we decided to do was clean
+the image up a bit. So we are going to use an acid, so the very
+top layer of the dye is what's called a passivation layer, it's a simple layer of silicon dioxide
+glass to protect the chip, the electronics underneath from any contaminants in the epoxy.
+So it's just basically to seal the top. But, again, if we remove that, we will get a nice,
+nice fresh image. So anyone get any ideas? >> Hydrochloric acid.
+>> ZAC FRANKEN: Some people have tried to polish it off, and that works to a certain
+extent, but it can be really hard getting the chip perfectly flat because these layers
+are incredibly thin, and if it's just off slightly, then you start digging in deeper
+on one end of the chip and you lose detail. It's a nightmare. Hydro‑fluoric acid and
+hydro‑fluoric acid is used in the chip manufacture process when I was talking about the resists
+they use hydro‑fluoric acid which they use to remove too.
+So nitric acid is pretty nasty. Hydro‑fluoric acid is fucking horrendous.
+Pure, pure, pure, horrendously evil stuff! Not quite this time. It is the piss of the
+devil. (Laughter). It's, you can imagine some little sinner getting
+dipped in it repeatedly. So for those of you not familiar, it's an acid, so it does all
+of the kind of usual bad stuff that the nitric acid does. It dissolves glass, so that can
+be a little bit of an issue, but that's actually what we want it to do, so we are cool with
+that. It's quite toxic somewhat. It eats calcium and magnesium. And depending on the concentration,
+if you actually get it on you, you won't notice for 24 hours.
+So bad, bad, bad, bad, bad, bad, bad shit okay. So I mentioned it dissolved calcium,
+yes, loves calcium. Yeah! You wish! It looks like this.
+So anyone notice anything about this picture, especially the one on the right? Apart from
+its extreme grossness. So the reason the finger is wrinkly at the top is because there is
+no bone in there, it's all gone. And what's more it will work its way up. Bad, bad, bad,
+bad, bad shit. So the calcium gluconate gel will. So the
+point of the gel is to feed the acid calcium. So it prefers the calcium gluconate rather
+than the calcium in your bones. So when I say hydrofluoric is bad, it gets worse. So
+if you read treatment regimens for hydrofluoric acid, it won't say slap on calcium gluconate,
+they have EpiPens with it in. The 
+treatment regimen says under no circumstances give the victim any pain relief whatsoever.
+No local anesthetics, nothing, because they know that they finally treated you when it
+stops hurting. So basically throughout the treatment, you
+are going to be in agony, and they are going to keep you in agony because they know when
+it stops hurting, you are probably okay. So I wanted to do this and it's like how the
+hell I'm going to do this. I had a course of dental treatment, my dentist is quite young
+and hip and we were chatting away, what do you do, et cetera, et cetera, and he happens
+to mention, oh, we use hydro‑Fluoric, I'm like, really? And that's really interesting and slightly scary.
+So this is the stuff. This is dental hydro‑Fluoric acid gel. A company called Henry Schein Dental
+Supply. Sorry? Ask your dentist nicely, absolutely. And he will do that too. We will get there
+in a minute. So I'm like, oh, where would you get ‑‑ oh, yes, the various dental
+suppliers and he wrote me a list and one was called a company called Henry Schein. So this
+is a dill, this shows you the level of insanity that's out there.
+When I order components from one of the big U.K. component suppliers like RS, if I'm crazy
+enough to want something like a Lithium coin cell, like two Lithium coin cells because
+I happen to need some and I threw them on another order, hazard lights start flashing
+and they say, oh, this is a hazardous material, and so basically what that means is your Lithium
+coin cells will arrive by a separate shipment three days later than you actually needed
+them, and they will be in a box like this. I'm not shitting you, for two coin cells slapped
+with big hazard diamonds. It's like holy crap this arrived in a little box, no markings
+at all. It's like, okay. So it arrives in these little
+syringes, and, yes, some interesting things ‑‑ so they actually use it inside your mouth.
+So the hydro‑hygienist will be there with the distracter sucking away while the dentist
+is putting it on your crowns to roughen them up before he applies an adhesive, but it's
+designed for dentists. It's not for chemists or for people working in fabs. It's designed
+for a dentist who is kind of quite technical, but he is not a chemist, he is not a rocket
+scientist. He is a dentist. So it comes in a gel form, which is pretty
+cool, because, again, I wanted to be as safe as possible for me. Simple as that. It's dyed
+so you can see exactly where it's going, which is quite handy, and it's a low concentration,
+it's 9.6%, which is low, but it's still effective. And the other thing, when you are doing stuff
+like this yourself, you don't want something to react necessarily super quickly. You want
+to be able to control it. So actually the fact that it takes a little bit longer to
+react, that's just perfect. But, yes, you definitely want a fume cabinet
+for this stuff. So this is a before and after. So this is the before pic, and this is the
+after, and it looks blurry and that's simply because this image is a little bit blurry.
+But it's cleaned up the image remarkably. And as I said, just removing that top passivation
+layer. So here is another shot. This is another part of the chip.
+It has a bug in it, and actually that is the bloody microscope camera. And it was reasonably
+cheap actually. Was it Ebay? I think it might have been Ebay. But, yes, we bought it, it
+was super cheap, and I think it got dropped and internally within it and had a crack on
+the lens and trying to actually clean it out, impossible. And ideally with the sort of imaging
+we do, we wanted to get the whole thing imaged and when it has got bits of crap on it, it's
+not ideal. This particular bit of crap I actually think
+was on the dye. So ‑‑ yes, it was. So you can see there is a color change between
+these two images, and that's because we have now removed a layer so as I said earlier,
+colors represent depth, and the depths won't change because there is no longer a layer.
+And it also opens this dye up for micro probing, so you can buy micro probing station, which
+is an amazing piece of kit. And it will allow you to put probes on these
+lines, and actually sniff the data going through. Ebay. I think that was our most expensive
+Ebay purchase. That was about $5,000. Ours came from San Diego, and it was the best Ebay
+deal ever. It had lots of accessories, and a great microscope. But have a look, it's
+called the micro probing station, and basically it's a microscope with a special stage, and
+you have micro positioners that allow you to move a very fine probe and we are talking
+about fine, I have probes that are .25 of a micron. So you can move them very accurately
+and just plop them on these lines and you can sniff the data on the chip buses.
+But that's for another talk. So it is, you did say be nice to your dentist and it is
+important to be nice to your dentist. I was nice to my dentist, and this is what he gave
+me. So and I was in for several sessions and I said, hey, can I bring you some stuff in
+and get you to X‑ray them for me? He was like, sure, that sounds like fun. Excellent!
+And I did. So I was just kind of one of those things it's like dental X‑ray, is it going
+to be useful and interesting for this sort of stuff? And as it turns out, yes, it is.
+So I brought a little selection of chips and plopped them down. He zapped them, and this
+is what we have ended up with. So the good thing about these is X‑rays are one to one.
+So these are scale size chips. And it means that when you pop them under a microscope,
+you can do things like blow them up. These are the bond wires in situ inside the chip.
+And this guy here 
+has three bond wires going to the same pad, and it turns out that's a power supply line,
+so that was a ground in that case. So chip needs more current, needs more bond
+wires to handle the current, so they stack three up. Any idea what this is? The texture
+at the back might give you a hint. No takers? So this texture is a very thin sheet of fiberglass,
+and it's a little bit hard to see. This is a sim chip. So you can actually see the bond
+wires coming from the dye in the center. The dye you can't really see, but you can see
+the bond wires outlining the dye going to the various pads of the sim chip.
+Now, this one is particularly interesting. We were doing some testing for a client. One
+of the things we do apart from kind of security reverse engineering is we do a little bit
+of assurance work as well. And when you ‑‑ we were kind of looking for with this chip,
+and when we X‑rayed it, it's like holy shit! We know about chips one and two, these two
+guys over here. What the fuck is this? And it turns out that that is a radio chip, which
+we weren't expecting in this particular device. And as it turns out, it's there legitimately,
+but it could be completely illegitimate, so there are issues with supply lines being compromised,
+fabs churning out dyes that have modifications, and here is a small RF device that could be
+embedded in the dye itself. I'm sorry? No, that wasn't a USB actually.
+I can't tell you what it was, unfortunately but it was like holy crap!
+>> ADAM 'MAJOR MALFUNCTION' LAURIE: The guy in the middle is a processor and the one on
+the left was an (inaudible) what we were doing is looking at the bond wires between the processor
+and the Eprom and watching the conversation between the two, and, yes, that RF chip, the
+way we actually figured out it was an RF chip, was he pulled it out of the bottom of the
+char when we plink, plink fizzed it, zoomed in and there was the manufacturer's part number,
+look it up, holy crap! >> ZAC FRANKEN: The interesting thing was
+I must have Plinked half a dozen of these chips, and I'm going to go through the debris,
+and I'm picking out, and actually in this particular case the processor on the Eprom,
+there are bond wires so they are joined together so they are easy to spot and you pick them
+out. And I kept coming across like a few weeks later after I done a whole bunch of them,
+I noticed that there was, you know, bigger chunks in the crap at the bottom, and it turned
+out to be this little dye. >> ADAM 'MAJOR MALFUNCTION' LAURIE: At that
+point we hadn't X‑rayed is so we didn't know exactly what we were dealing with and
+we were only expecting those two chips in there, so.
+>> ZAC FRANKEN: So that was very interesting. And as I said, it's like, what is this? There
+are several of these. Where the hell did these come from? And actually on every chip I plinked,
+there was one of those lurking in the grunge at the bottom. So with this particular project,
+we wanted access to sniff the data on these lines going between the MCU and this E prong
+chip. So plink, plink fizzing it isn't going to cut it because I need the chip to be operable.
+So there is a handy machine to do it. It's called a Nisene JetEtch. It's amazing. It's
+this size and you pop your chip in and it will etch a hole in it down to the dye. The
+only problem, $22,000. I have a constant E bay search for one and I haven't seen one
+yet. So it's like, okay, it's $22,000, but I reckon
+it's doable. So came up with this device, this device is called the decapenator, and
+I wrote a blog post about it, and I'm saying, okay, I have got this design, I'm going to
+send out for the bets, and I will fill you in. Well, I'm a lazy fuck and I haven't actually
+updated to say, yes, it works. So you actually get to see the results.
+So this was my plan for it, so you have a hot plate at the bottom, your flask of nitric
+acid, you have in this drawing a syringe pushing air in so that that the nitric acid comes
+up, I ended up using an aquarium pump and Teflon is resistant to hot nitric acid. So
+I got Teflon rod of two different sizes, and I wanted to try and use simple tools so this
+could all be done with a drill press, and just some simple woodworking bits.
+And the Teflon cuts like a dream if you use woodworking tools on it. So I chopped out
+these two cups, drilled a hole through the bottom, learned a little bit about pulling
+glass pipettes is simple unless you want the pipette to be absolutely straight, in which
+case it's a fucking pain in the ass, but it's doable. I also wanted to be able to control
+where the acid was going to mask into a particular area.
+So after a lot of research, I came across this rubber, this gasket material called Viton,
+ETP, 600S, and then I tried to find it. I looked in all of the usual places, Ebay, and
+Amazon, and I didn't do Craig's List, I have never done Craig's List, I don't know why.
+I will have 
+a look, actually. Well, I eventually tracked down some people that did, and on the way,
+I came across it's made by DuPont, I came across a DuPont distributor, because apparently
+it's quite new, that when I said I would like a sample of Viton ETP, he actually wet himself
+on the phone. He was laughing on the phone at me and saying this is as rare as rocking
+horse shit. No, it is. So I finally tracked someone else
+that I could order shit off, and I said, okay, I would like to order some Viton, how much
+do you need? Well, I don't need a lot, just really a six inch square would be fine. It's
+like oh, no, that won't meet the minimum order, which is 940 millimeters square, and I'm
+like, okay, yes, that will be fine. Okay. That will be 1700 pounds plus that. So $2,500.
+And I'm like I don't need the Viton that badly. And I did track down someone who sold me a
+six inch by six inch piece of it. I actually had a hole punched in it. So I
+think it was actually on a proper sample sheet, a sample, it was 200 quid, but in the meantime,
+I had gotten regular Viton on Amazon, a big sheet like this, 40quid, $60. And I realized
+that actually the cheap stuff works because I'm only exposing it for a reasonably short
+period of time. The Viton etp600 is designed for making gaskets for pipelines that are
+pumping nitric acid and shit like this. So actually, I can have something, the regular
+Viton, when you look at the specs on how they test this stuff, it's like, okay, we are going
+to immerse it in nitric acid for 24 hours and it's like, oh, yes, it expands 5%. It's
+like, okay, that's fine. It's going to be nowhere near 24 hours, and even if it did
+expand 5%, who cares? Not with the stuff that we were doing. So we ended up not using the
+wing nuts. We actually have a spring pressing down, so the nuts are still there, but under
+the nuts is a spring, and it just presses down that top plate.
+And there we go. That's slightly better. And I also realized that the ‑‑ once you
+cut the aperture in the Viton a handy thing to do is to super glue it to the chip so it
+becomes a monolithic thing and the Viton isn't going to be slipping off the chip, et cetera,
+and I ended up using little strips of Viton with a hole cut in the end so you could put
+it in and line it up with the aperture that the acid is going to jet through.
+So this was an early mask, simply cut with the scalpel, but you can use handy things
+like leather punches and things like that. And this is ‑‑ this was the first trial.
+So this is an MSP chip, a little TIMCU. And this was the first go. And actually, the results
+are not too bad. It got a little bit close to the edge because it wasn't particularly
+well aligned and my aperture is a lot larger than I actually needed for the dye.
+And actually that's one useful thing about doing X‑rays or doing the plink, plink,
+fizz, is that you can actually find out exactly how big the dye is and where the dye is in
+order to do some alignment. So if we jet back to this guy, remember, what I want to do is
+intercept these five lines going from the large central chip to the chip on the left.
+So we can sniff the data between them. So this one was close, but it went too deep.
+So you can see the bond wires connecting the two. But we actually ended up going underneath
+those chips and destroying the lead frame that was providing the interconnects to the
+outside world. So that one was a bust, however, this one is just right. Take it down just
+far enough to expose the bond wires to tap onto. Now, I'm actually going to quickly jump
+back here. So there are some issues with this initially.
+One of them was the air. So I got the aquarium pump and I put a valve in so I can adjust
+the flow. And then I quickly realized actually that's a variable, and the best thing ‑‑
+for me to do is to try and remove all of the variables. So the little valve came out and
+the pump was simply on at max all of the time. Another variable was the temperature. So although
+I thought I was getting the temperature right, I wasn't.
+So I got a hot plate, again, from Ebay. I had a thermal couple probe, which was supposed
+to be acid resistant and certainly was not. No, no, up went through two before I'm like,
+okay. So I simply made a long tube, sealed the bottom of it, you know, with a blow torch,
+and injected thermal transfer compound into the bottom of it, put my thermal couple in
+there, so when I eventually ‑‑ or eventually, I will write this up after Con you will see
+the pictures and you will see that third probe penetrating the stopper.
+So my acid is at a known concentration. My temperature is at a known setting. My pressure
+is at a known setting. So my only two other variables at that point are the permeability
+of the epoxy to the acid and time. So it becomes pretty controllable. So that was about three
+minutes. And that is a minute and a half. One minute 30 seconds, and it will always
+do this. I have done 20 chips like this. Spot on. One minute, 30 seconds, this is where
+you get to, and that was absolute perfect for us to micro probe onto the bond wires
+and actually sniff the data passing through. So I will publish the results of that, and
+the design ‑‑ we are going to open source the design for the decapenator so you guys
+can have a go at it as well, and you can start micro probing ICs that are actually running.
+And silicon is the last bastion of security. You can pull hard drives and analyze them,
+you can sniff memory, everyone now are trying to lock away their secrets in silicon. That's
+where they hide the keys. So we need to be making moves in this area.
+The kit is very expensive. Chris Charnofski is very well known, has made a fabulous business
+out of this, however, he has a lab with millions and millions of dollars' worth of equipment.
+He is not shopping on Ebay. I can tell you that. Actually, that's not true, he may well
+be, but when you buy used fab equipment, which is available on Ebay, it still costs a million
+dollars for your focus I and B device. Cable money, yes, exactly. So in a week's
+time or so, I will have written this up, and hopefully I want to get to the point where
+we have a set of plans that you can just take and build and possibly we might try and put
+together some kits that you can buy and screw together and decap. So that's it for me. Now,
+I work from Hood Monkey over here, and, remember, just to recap.
+(Applause). >> ADAM 'MAJOR MALFUNCTION' LAURIE: Okay.
+Lovely. So now I know what the smell is coming from his office anyway. Strange stuff. So
+at this point he handed it over to me, and he is like, okay, so, you know, we are doing
+the probing and we are doing, you know, we have the decapping working and so on, now
+we need to get the actual code out. We can sniff the data going between these two buses,
+but how about extracting the actual code that's running on the chip. We want to see one instruction
+what it's doing with that data. Now, the difference between mass ROM and a
+programmable chip is a mass ROM chip is hard wired into the chip so it never changes. Every
+chip is identical. It never gets programmed. It's actually manufactured. The instructions
+are manufactured into the chip. So the challenge is how do we read the mass ROM? Well, as Zac
+mentioned, we identified the image, the part of the image that is the mass ROM, which is
+this, and then we look at it, and we say, okay, well, there is an obvious pattern there,
+can we actually read it? So maybe if we look at this and say, well,
+is that a 1, 1, 0, so 1, 1, 0, 01, 01, 011. So, yes, that's binary data. If I take that
+and turn it into HEX there is my instructions. So it's like, okay, this is way too obvious.
+This must have been done before. Someone is already doing this. And in fact, there is
+some code, some very smart code that deals with even smarter images than this called
+degate. Anyone here played with or heard of degate? No. Okay. So there is an open source,
+one guy at the back. I guess not a lot of people actually play with this stuff, so.
+But the guy who polished the chips off developed this package called degate, and what it does
+is image recognition. So you look at what they were doing was trying to figure out the
+crypto algorithm so they had a bunch of gates and they were looking at all gates and end
+gates and so on, and they wanted to build a pattern of what the chip was doing, so they
+used pattern recognition. So they would take a picture of the all gate,
+kind all of the other all gate. Here is an end gate, find the other end gate as and they
+packaged it up into this software that will then spit out a graphic representation of
+what that circuit is doing. Fantastic, then I will just point that code at this, and we
+will read the mass ROM and then we have the code. In fact, when I started playing with
+it, I couldn't find anything in there for doing a simple here is a mass ROM, read the
+data, please. So I thought I was being thick, and I emailed
+the authors and they said, yes, no, we have never done that. We couldn't think of a use
+case for it. It would be easy to do, but we haven't done it. So I'm like, damn it, okay!
+Who else has done this kind of stuff? Okay, the main community. They are constantly reading
+ROMs and getting games and any of you guys actually involved in MAME here, MAME hacking?
+Not a lot. Any of you use it, have it, play it? That's
+more like it. Okay. So, again, I reached out to the MAME community and said, well, how
+do you guys do it? And they said, oh, it's really simple, what you do is you take a picture,
+you divide it up into chunks, you send it out to hundreds of people, and they sit there
+looking at it typing one nor, one nor, one, one, nor. So slave labor basically is how
+they do it. >> ZAC FRANKEN: I think the technical term
+is crowd sourcing. >> ADAM 'MAJOR MALFUNCTION' LAURIE: Crowd
+sourcing. Very cool and it works because we end up with lame games that we can play. But
+I really didn't want to sit there typing in 5K of 1s and NORs, and I couldn't crowd source
+it because this was a confidential project, in fact, you are not allowed to look at this.
+You never saw this. So what to do? So I thought, okay, well, we know how to do it, it just
+isn't in degate. I will just do it with image recognition. So I will write a little bit
+of code that does this, and I will use open CB, which is fantastic image manipulation
+code to make stuff like this and all of the hard work is done for you.
+It's in Python which rules because I love Python.
+>> ZAC FRANKEN: He is a Python Nazi. >> ADAM 'MAJOR MALFUNCTION' LAURIE: It must
+be in Python. If it doesn't work in Python, it's not worth it. That's my philosophy, but
+then I thought, well, actually, if you look at this image, there is lots of problems with
+it. So we know what the ones in NORs look like, so a bright dot is a 1 and the absence
+of a bright dot is a 0. That's pretty simple, but there is a lot of clutter as well. There
+is all of this crap. So you have got these lines. We have got what look like columns
+of data. So here we have a chunk which is obviously data and then you have got a separator,
+and then you have another chunk and another separator and so on. You have got all of this
+crap at the top. You have got these lines that go along horizontally between the data.
+So I figured I'm going to spend so much time trying to get the code to tell the difference
+between good data and bad data that I'm not actually going to be able to successfully
+automate this process so I thought is hell with it, what I will do is semi automate the
+process. I will automate a way of reading it cleanly and then automatically reading
+what's done. So I created a thing called roam per. And I will switch the screen to my laptop.
+I apologize I hate sitting down and doing this and speaking from behind a mouse top
+because I'm going to be doing a lot of mousing and fiddling. Bye.
+They promised me it would just come straight out. Okay.
+>> ZAC FRANKEN: So the laugh is when we were in the green room, it was my laptop that was
+fucking up left, right and center. And he was like, yes, mine is fine!
+>> ADAM 'MAJOR MALFUNCTION' LAURIE: Okay. We have got bags of time, just talk amongst
+yourselves. >> I have a question.
+>> ZAC FRANKEN: The question was I heard of glob tops and impact and glob tops is a chip
+on board you are talking about. Yes, so the industry term is COB, chip on board, so basically
+the dye is placed directly on to the PCB, and then is dyed onto the cross, and then
+they drop a drop of very runny epoxy to actually solidify. So we haven't tried those. I mean,
+we have tried them to the point that we have decapped using the plink, plink, fizz method,
+things like Sims, which are so heavily armored in the silicon, it's unbelievable.
+So you can see all of the chips we have seen here, they look great, you can actually see,
+you know, the pathways and areas on the chip. If you look at sim, which is intended to be
+secure silicon, the top of it is just pretty much a layer of gold armor designed to disable
+the chip if you penetrate it. Interestingly enough it may well be possible to do with
+a decapenator because the decapenator ended up being such a useful tool, I can decapenate
+the chip, so initially I was taking the chip off the PCB, putting it through the decapenator,
+putting it back on. I was able to get to the point where I could decapenate the chip Chile
+it was still on the PCB. So I was putting whole PCBs into the decapenator and petting
+that one chip, and that was pretty cool. I thought it may be possible to do, and it
+turns out it totally is. I mean, the boards were very small, so if you had a larger board,
+you are going to have some sort of support structure, but it's totally, totally doable.
+Only, so the question was sometimes they are almost spherical, does that impact the time
+to etch? And the answer is yes. Simply the greater the depth of epoxy, the more time
+it takes. So you will almost never be able to do this and get it right first time round.
+So expect to go through a few chips until you actually work out, okay, it's going to
+take X amount of time, and, well done. (Applause).
+So expect to go through a few chips before you actually work out, okay, actually in that
+case it's going to take me one 30 to actually get to where I want to be. Okay, major.
+>> ADAM 'MAJOR MALFUNCTION' LAURIE: Thank you. Demi Gods are with me hopefully so far.
+So if you remember the original image, we had columns of data, and basically what you
+have to do is look at those columns and try and figure out exactly what you are trying
+to create. So my idea was I'm going to create a grid over the image and where there is an
+intersection because it's all nice and neat rows and columns, where there is an intersection,
+that's the point of interest, and if there is a dot there, that's a 1, and if it isn't,
+it's 0, and if you are outside the grid, just ignore everything.
+So ROM per, you tell it basically, the image name, the number of bits in your horizontal
+line, and the number of rows, the number of lines. So if I say ROM per, bit map, I counted
+16 in each column and I'm going to do two rows at a time. You will seize why this is
+relevant in a ‑‑ see why this is relevant in a minute. If I go back to the original
+view, basically this is our image and I reckon there is 16 bits in each of these sections.
+So the first thing we do is apply just a color filter, and I can actually filter it to try
+and get the dots down a bit smaller, because, remember, we are trying to identify whether
+it's there or not. So now what it allows you to do is create this grid. So the first thing
+I will do is say this column here is my start column. Hopefully you can see a little blue
+line has appeared. Can you see a blue line on there? No. Can you now? Yes. So here is
+my final column, 16. Because it's nice and even, it's drawn in the rest of the shrines
+for me. So that's two mouse clicks so far. So now here is my first row and here is my
+second row. Remember, I said there is two in each row. So, again, if I get rid of the
+image, we have now got a little grid which is the two sets of intersections. And now
+if I just say, okay, here is another group, and here is another group, here is another
+group, so we are very quickly building up our grid, and I'm going to do this fully,
+so bear with me a second. That's enough. You see how quick it is to
+do. So we are down to, you know, a few dozen mouse clicks to create a grid that matches
+that entire thing. So if we now go back to the image, what I can do is say wherever there
+is an intersection, tell me if there is a bit there or not. So I will do a read, and
+it's now going, yes, I see a bit there. These guys don't quite line up. We know that this
+pattern is completely the same, you know, it's a repeating pattern, so all of these
+lines should look the same. So what I can do is click on this guy. This is me being
+slightly inaccurate when clicking the mouse. I try and center. Basically when I click on
+it, I try and automatically center the line horizontally and vertically. The problem is
+you can't really tell with a mouse where your exact click point is. What I ought to do is
+change the cursor to something more accurate, but I'm lazy, and it kind of worked and it
+was quick and easy. So if I now go into edit mode, I can move that line until it moved
+up a bit better. We have this guy or if it's out horizontally, I can move it that way and
+that way. You get the idea. So we can now mess around and try and create a grid that
+perfectly lines up. I can go back to looking at the original image
+if I think that's a bit clearer. It's kind of hard to see what's going on. So, again,
+I just thought, well, I'm trying to automate this process. I'm not trying to fully automate
+it. I'm trying to semi automate it so I will do things that make it easier for my eye.
+The human brain is very good at processing images and patterns so I will make it as easy
+as possible for my eye to process this stuff. So you can do things like switching off the
+grid and checking was underneath, switching between the original and the mask, and then
+I have this nice mode. So you get rid of everything that is not an intersection, and if we also
+get rid of the grid, you can see this guy is not lined up at all, so if I go and edit
+him, I can quickly line that up and you see when you are dead on.
+There is a nice round dot in the center of your thing, and if I reread, this is where
+it all goes horribly wrong. Oh, because I'm not displaying the grid. Put the grid back
+on. We have now got a clean read of those four bits. We also want to try and make sense
+of the data. So in this particular case, we knew that an unused piece of ROM has a HEX
+value of C1. So what looks like, if I come out of peephole mode and we look at the original
+image there are big chunks of unused data. So here is obviously program and here is nothing.
+And this repeating pattern, therefore, we would say that must be C1s. So what we should
+see here because it's 16 bits, I'm hoping is C1, C1. Now, the quick amongst you would
+have noticed I am not going to get that, but what I can do is say take these bits and show
+me a HEX value. We will get rid of the mask and the image. Reduce the font so we can read
+it. And here we have the actual values that are decoding for each of our groupings, and
+clearly that's wrong. So what the hell is going on? So if we go
+back to our image it turns out, see, these guys here, these are lead wires coming in
+to read a column of bits, and if you count them, one, two, three, four, five, six, seven,
+eight, and if we were to scroll down and look at the bottom of the image, there is another
+set of these coming up, and they are interleaved with these guys so what we have got is 8 bits
+interleaved with another 8 bits so what we will do is come out here, go back in, so actually
+it's not 16, it's 8, and we are going to start again with 8. And now you can actually see,
+so the aperture, basically the automatic aperture is based on the size of the gaps between the
+line. So I can reduce those a bit if it's over reading. We will adjust this guy. You
+can flip it as well obviously. Hire you can see how useful peephole is because if you
+are trying to manually check if you have got a 1 in the right place and you have got all
+of these other dots interleaved with these guys, sometimes it can be quite confusing.
+If I go into peephole mode, all of the extraneous imaging that my brain doesn't need to have
+to deal with is being removed and I can just look at only the dots I'm interested in. So
+that really helped. And if we go over here and show the HEX values.
+There is our C1s. Thank you, so, that was quite a satisfying
+moment, it was like oh, it actually works! So we can dump that to a file, and I have
+already done that, so I now have a HEX file which if we go and look at that, this is only
+a tiny portion of the code actually, but it's enough to show you that without my client
+having to put a hit on it, so. So here we have our C1s, a lot of little blank
+areas so at this point we have got the code. We have extracted the code from the chip.
+Now what? We need to disassemble it. Well, that's easy, it's a published device. The
+particular thing is called a mark 4.DASM download, the tool developers kit, and disassemble so
+we had to look at Ebay and we came up nil, zilch. So we widened the search and the Google,
+and the Google said, yes, we can get you those. It's a $200 product that stopped being produced
+20 years ago, so to you, I like your face, $25,000.
+So no thank you. So we did find the manuals, so we had the instructions set and we had
+how to convert it. So we said the hell with it, we will write our own. So our friend Python
+comes in again, so mark 4DASM was born and if you point mark 4.DASM at a file it does
+something like this. So basically this will be slightly nonsensical because it's only
+a small chunk of the code so what it will give you is a summary of ROM addresses and
+labels, things that have jumped to that address. If it's obviously a sub routine with an exit
+but nothing calls it, it's an orphan, but if it's a known address like a bit of interrupt
+code, it will give it the correct label. The other really handy thing which meant we could
+tell when we found the beginning of the program, is there are these two guys that always have
+to be there. There is a routine called auto sleep, and it sits in a little tight loop
+just waiting for an interrupt. And there is a routine called reset. And reset is actually
+what C1 is doing. C1 is a jump to the address where reset lives.
+So if your code goes mental and your program starts running off into oblivion, eventually
+it will hit C1 and C1 will reset the chip. So all of the blank space in the code was
+a jump to reset, which I thought was a really smart thing to do, instead of just being a
+null. You get a summary of what's found. You get some of the variables, and then you get
+the actual disassembled code, which is wrapping horribly because my screen is too small. So
+my disassembler gives you the instruction in the form that the original compiler would
+have done it so you could run this through the compiler if you had one and here is auto
+sleep. It does a sleep, sets branch and carry, and then it just jumps back on itself and
+it sits there waiting to be interrupted. Here is our reset. Sets up the stack, sets
+up the return pointer, and then jumps to zero, and then off you go. So we knew we have correctly
+identified the beginning of the code, awesome! How do we know we have actually read all of
+the code properly? Well, they hopefully put a check on the end. Now, it's wrong in this
+case because this is only a partial chunk, but here is the checksum embedded in the ROM
+and here is the calculated checksum that this assembler gave us and if they match, then
+we got it right, everything is lovely. One of the other things we really wanted was
+to be able to run the code and see what the hell this thing is doing. We have read the
+Eprom so we know the data that's gone in, but we don't know what it's doing with it,
+so we could sit and manually walk to this or we could write an I probe or something
+cool like that. The development kit would have had an emulator in it. $25,000 E. we
+are not going to buy that. >> ZAC FRANKEN: Actually, I did find a copy
+of the software for the dev kit. It was in German and it was on a Russian ware site,
+so we decided to give that one a miss. >> ADAM 'MAJOR MALFUNCTION' LAURIE: Python
+is your friend. A whole chunk of this is being cut off.
+>> ZAC FRANKEN: I have to say I was absolutely blown away when he showed me this. This is
+cool shit! >> ADAM 'MAJOR MALFUNCTION' LAURIE: So we
+can single step the code, we can set break points on read or writes on the output. Over
+here ‑‑ you can't see, you have got all of the registers, the stack. It's got two
+whole variables, X and Y. So really powerful chip. We can set breaks on things like branches
+and so on. And we can just go off you go, and it will just run until the breakoff. It's
+now sitting in its little loop. And you can see the branch. You remember the
+instruction that set branch and carry and then jump to zero. That's what we are doing.
+And I will probably crash it if I now generate an interrupt point. So, it's jumped off into
+code that doesn't actually exist because this is a partial fragment of the code. But this
+gives us now the ability to run whatever we want. We can feed the data in via a pseudo
+A prompt which is plunked into this so we completely own that chip and all of the code
+that was in it and all of the data it was chewing on. So that's it.
+(Applause). >> ZAC FRANKEN: Just before we go to questions,
+one of the cool things about this was the manufacturer was so super secure in their
+belief that no one was ever going to get the data off this chip. No one can read mass ROM,
+once we, once it gets its fuse blown, there is a diagnostic routine that allows them once
+the chip is assembled to verify the code and then they blow a fuse and it's gone.
+So couldn't possibly do it, no way to read it out because with flash you have the ability
+to read it out, but here it's massive you don't need that facility. So it just checks
+the checks, yes, okay, okay, now that written thing gets turned off. The interconnect between
+the MCU and the Eprom, again, all inside the package. No one is ever going to get the code
+off this Eprom, and it just shows you what you can actually achieve and how really some
+of their thinking is. So let's take some questions. >> ADAM 'MAJOR MALFUNCTION' LAURIE: Just a
+tiny addition to that. So sometimes we send stuff off to pet to do things like this for
+things that we couldn't handle before we did this and we asked them we have a mass ROM
+chip, how much would that be? Oh, mass ROM, that's tricky, $10,000 per chip to give you
+the code. And it will take three months. >> ZAC FRANKEN: Yes, and the chip, the chip
+we asked about had 512 bytes of mass ROM, this had 5K. And I think it was $25,000. It
+was horrendously expensive. >> ADAM 'MAJOR MALFUNCTION' LAURIE: While
+we have got your attention, this is unrelated but our next project which we will be launching
+on kick starter so get your camera and take a picture of that QR code. That's my blog
+entry which I posted about an hour before we came in to give this talk. That describes
+exactly what it is. It's a software defined, which is the trendy "Buzz" word at the moment,
+but for RFID, so this does the same thing for RFID as stuff like hacker IF does for
+RF. So you get access to the low level raw data. You do whatever the hell you want with
+it. Within a day of building it we were cloning and emulating pretty much anything we could
+put in front of it. >> ZAC FRANKEN: Oh, and it's cheap.
+>> ADAM 'MAJOR MALFUNCTION' LAURIE: Yes, 30 pounds maximum.
+>> Sell it on Ebay. >> ADAM 'MAJOR MALFUNCTION' LAURIE: Anyway,
+questions? >> So what happens when chip manufacturers
+start putting bytes on (inaudible). >> ADAM 'MAJOR MALFUNCTION' LAURIE: So depending
+on the complexity of the chip, the chip manufacturers actually do put a lot of security features
+in place. So they will bury things in layers so it won't be on the top layer. It will be,
+you know, eight layers down, and they will put a security layer over the top, a security
+mesh, which is designed to destroy keys if the chip is damaged in any way. So there is
+actually, and when we first got into it, we were kind of pleasantly surprised that the
+chip manufacturers actually take security seriously. Of course, what they are trying
+to secure is their customer's IP. So we tend to find that we do a lot of embedded
+systems reverse engineering. Normally a lot of the security is crap. So they are taking
+the crown jewels, the super-secret key. >> ADAM 'MAJOR MALFUNCTION' LAURIE: That's
+the polite word for it. >> ZAC FRANKEN: Their super-secret master
+keys and they are storing them in chips that aren't really designed to secure, you know,
+keys and things like that. So we looked at an RFID vendor, and their latest and greatest
+product, and they had stored their keys in the PIC chip and we sent it off to slightly
+dodgy company, and they said, oh, that will be $900, sir. And they sent us back an entire
+dump of the code, including all of their super-secret keys.
+And we have had chips reversed that have cost as little as $90. So if you have a cheap PIC
+chip, $90 will get you the code. So they are tending to, with the higher end chips,
+actually put some effort into trying to prevent this from happen, proper security.
+>> Let me start by saying is I'm deeply impressed with the ‑‑ of this basic problem, not
+just ‑‑ oh, hi. Hot mic. Not just the physical expertise for pulling apart the chips
+but the software because it's an amazing combination. >> ADAM 'MAJOR MALFUNCTION' LAURIE: Thank
+you, that's a misspent youth. >> For those of us ‑‑ with that said,
+I'm curious as to the amount of time you have poured into this project end to end? Surely
+there was, from the depth of safety lecture, you took your time and did your research and
+the Python code is spitting by, maybe what's an afternoon for you is a month for the rest
+of us, what's your time? >> ADAM 'MAJOR MALFUNCTION' LAURIE: We have
+been doing this stuff between us for 20 years, so it's a bit here and a bit there. I don't
+know, if you actually sat down and tried to do it in one chunk, I don't know, but the
+whole point of stuff like this and decapenator is we are trying to solve those problems and
+then step everyone forward. You know, we need to move into a situation where you guys can
+get up and running within a week, not a year. I mean, I guess how long did we start on ‑‑
+>> ZAC FRANKEN: So I'm going to say, sorry, guys. I would have said probably this one
+project kind of opened ‑‑ it kept diving into new areas. So I would have said probably
+to get to the point where we had the decapenator and we were extracting data and ROM per was
+in existence, maybe six months from starting from a hard cold start. And it wasn't as if
+we were working on this full time for six months.
+It was six months elapsed, and it was a background project that was kind of ticking around. So
+actually, you know, probably if you sat down and just focused on it, probably something
+like a month to end up where we were. >> It's fascinating. Thanks for chairing.
+>> ZAC FRANKEN: Thank you. >> Hi, guys, great stuff! I love it! In a
+lot of the micro controllers you mentioned there are fused bits that the manufacturers
+can set, like burn your code, burn the fused bits and nobody else can read it would it
+be possible to recapenate the probes to reconnect a fuse rather than read all of the data back
+out of it? >> ZAC FRANKEN: Absolutely.
+>> Sweet! >> ZAC FRANKEN: And in fact, a guy called
+Bunny Wang did ‑‑ >> Go look at his blog, it was a demonstration,
+it was fantastic. He hand decapped a PIC chip and he masked out, he worked out where the
+fuses were, and realized that the fuses it money covered by a little metallic gold plate.
+And he realized that, okay, you are covering it with a plate, but there is still a passivation
+layer between the plate and your actual kind of fuse which is effectively a transistor.
+So what he realized was, right, if I mask out all of the other UV sensitive parts of
+the chip, if I put it at an angle, I can get the UV to bounce under the shield, and just
+cook it and discharge the little transistor and he could read the data right out. So there
+are companies around that will go a lot further, and will really dig for you.
+>> ADAM 'MAJOR MALFUNCTION' LAURIE: And on a relate the note, we have used the decapenator
+to drill a hole and then his very precious micro probes to selectively break wires and
+probe on and actually feed our own data in instead of what was supposed to be coming
+from the other guy. And the feeding machine, so we are all about getting this into the
+back room economy, so you can do this yourselves. So where would we have gotten the thing that
+sends the data into these probe devices do you think? Not Ebay, no. We got it from Spark
+Farm and it cost about 30 pounds and it's called a Buspar.
+>> Hi, this is amazing work! I have to say. The gentleman before me actually asked the
+question I was going to ask, so that's easy. But a quick comment about hydrogen fluoride.
+You can, an alternate source as well which is fairly safe is the stuff which you use
+for etching glass, and it's not in a gel form, it's a cream form. I don't know if that's
+also useable for the same thing. >> ZAC FRANKEN: Almost certainly. I hadn't
+come across that. I will certainly have a look at that. That may well be a better source
+of it than the dental stuff. >> And I used to work in a lab where they
+had the real stuff, and scary is an understatement. In a lab of 30 people only one person was
+allowed it. It had its own lab which was cooled to below refrigeration temperature, and not
+only did it have a fume cover, but the actual lab was a fume cupboard as well. It was insane.
+>> Is that why you have both your hands in your pockets?
+>> I don't want to talk about that. Thank you.
+>> ZAC FRANKEN: Thank you. >> Hi, you said CRC, right? As opposed to
+a more sort of secure algorithm. >> Oh, the checksum. The checksum was quite
+interesting in its document. The code is available, you can go to the aperture labs tools page,
+and the mark 4 DASM is linked off there, you can download it and if you like Python, you
+will probably puke when you read my code. But the checksum is actually two checksums.
+The left‑hand byte is a left‑hand checksum and the right‑hand byte is a right‑hand
+checksum. And they do a slightly funny wandering algorithm that would definitely go wrong.
+It's just there as an assurance to make sure that the code that was, that runs on ‑‑
+so they have a test routine that will run through and read the ROM before they blow
+the fuse, calculate the checksum and make sure it matches so it's not going to try and
+recover any lost bits, it will just say yea or nay.
+>> And the fuse is there only to disable the rest routines for the chip.
+>> So can you generate the CRC after the fact to make sure it's still good.
+>> ADAM 'MAJOR MALFUNCTION' LAURIE: Yes, in fact the disassembler, my disassembler will
+show you what was stored the last two bytes in the ROM are the checksum and it will recalculate
+and tell you what those came out as so you can see if they match.
+>> Is this, can you poke a running chip to get it to give you the checksum or is it only
+this stored in the end or stored, I mean, can you get it to calculate the checksum?
+>> ADAM 'MAJOR MALFUNCTION' LAURIE: There is a test routine built into the chip. And
+in fact the chips have, there is two chunks of code. When you look at the chip. There
+is the chip that the customer put in, and there is the ‑‑ I'm sorry, the code that
+the customer put in and the code that the manufacturer put in, and the code that the
+manufacturer puts in doesn't actually ‑‑ I'm sorry, the screen resolution is wrong
+so you couldn't really see what that was, but the code the manufacturer put in will
+check it for you, but it then gets disabled once they have done their test.
+>> Okay. >> ADAM 'MAJOR MALFUNCTION' LAURIE: Possible
+lip you could run it with the $25,000 emulation thing, but we never got that, so.
+>> I was wondering if you could use it in Oracle to glitch out parts of it as it was
+calculating, but not if you can't ‑‑ >> ADAM 'MAJOR MALFUNCTION' LAURIE: I don't
+think so, but nice idea. Yes. By the way, that screen saver, did anyone recognize what
+that was? So, again, I don't know if it's on, is it on the aperture labs page, I don't
+know, but in my blog, I have a blog about writing the Python code that went and grabbed
+the last episode of the big bang theory so I could have a screen saver as those, and
+the code is published and if you want to save time, some of the copyright infringing images.
+>> Brilliant work, gentlemen. I noticed that when you ran the romper program, you used
+the original non‑fluorinated versions of the chip. You didn't use the etching compound
+before and after. >> ADAM 'MAJOR MALFUNCTION' LAURIE: Yes, for
+that image, for that particular process, we had actually finished. By the time Zac perfected
+his technique, I was working on original images and the reason he looked at cleaning it up
+is because I was having difficulty with some of the bits. It was not actually clear whether
+it was a 1 or 0 and I couldn't determine looking at it so I couldn't correct it myself because
+I was guessing if it was the 1 or the 0. Do you know how much time we have left? So we
+are the last talk, so we can go as long as you guys can stand us. The last thing between
+you and beer is us. >> So it will work with both then?
+>> ADAM 'MAJOR MALFUNCTION' LAURIE: Say again. >> So it will work with both, whether you ‑‑
+>> ADAM 'MAJOR MALFUNCTION' LAURIE: Yes. >> ZAC FRANKEN: Absolutely. It's just how
+clean can you get your image. >> ADAM 'MAJOR MALFUNCTION' LAURIE: I think
+that was the last question anyway. So thank you.
+>> ZAC FRANKEN: Thank you. (Applause)

@@ -1,0 +1,727 @@
+>>Alright so please give a warm
+welcome to, Pedro Cabrera who is
+talking about SDR against smart TVs, URL, and channel injection
+attacks. [Applause] >>Thank you,
+thank you very much, uh yes I am Pedro Cabrera the founder of my
+own company, Elthon Shield, and
+I am in love with uh, software definitive radio as you are uh,
+going to see in this
+presentation, uh I’ve been uh working long time with, uh
+network mobile operators doing
+pen testing on uh well, doing some kind of a security
+research. And, uh, also in love
+with drones, and drone hijacking attacks, I love them. Ham radio
+and, and drones photography. I
+don’t like to talk about me, I prefer to talk about this
+presentation. I divided five
+main uh sections. I uh would like to introduce you a little
+bit uh the HbbTV, uh system. And
+how we can receive digital television in our Linux box.
+Once we learn how to receive
+television I think we were able to move forward into the channel
+injection. We will transmit our
+own channel. We will play a little bit with the different uh
+receiving stations, antennae
+facilities and so on playing with the, attacks code or impact
+and finally, we will move to a
+worse URL injection attack targeting the smart TV browser
+and of course, why not,
+conclusions. So HbbTV uh, stands for Hybrid broadband and
+broadcast television. It’s like
+kind of think we are, everyday hearing about uh customized
+hybridization. Television has
+been there from since 1940 and they are just passive boxes that
+receive signals from the
+broadcast signal and make their magic to turning to video, but
+in 2009, waahoop, thank you,
+sorry European uh, came with a project merging two existing
+projects, German and French
+project to say hey, why not to make interaction- interactivity
+television so we can offer uh,
+customize advertisement to the audience. And how they achieved
+this design, if you, uh take a
+look at the right of the screen, you will see a red by-direction
+arrow, because the smart TV
+receives from the broadcast signal, an URL, a URL sorry, and
+will send its uh get uh request
+to this web server, nothing new it’s just a webserver. But
+through this webpage it’s called
+in the standard it’s called an application, television and
+webserver will interact. So, in
+that case, the, audience who are watching TV, with their remote
+they’re able able sorry to
+interact with uh, TV- TV channel. And let me introduce
+you a very uh generic, this is
+of course our simplification of our generic TV uh, network
+diagram. I want just to share
+you the key elements, generally the contents it’s uh at the
+left, think about reporters
+traveling with these vans with uh huge satellites dish on top,
+they are transmitting uh content
+of real-time towards through uh acquisition network to the main
+head-end, they are receiving
+content from TV studios, reporters, third parties,
+whatever. They need to take all
+this content and process, let’s say, to be ready to be available
+in all the TV’s, if we are
+talking about the national TV channel, all the TV’s in the
+country uh must receive this, uh
+signal. So this is made through a distribution network, see now,
+it’s processed and then
+delivered to the whole country through this distribution
+network. Okay, and Hbbtv relies
+in the digital video broadcast standard, there are three
+different flavors, satellite,
+terrestrial and cable. We were curious in the, we are talking
+about the smart TV’s at home and
+we were curious in the terrestrial 1, DVB-T. I don’t
+know why but in Spain we like to
+rename things with a different name, so we renamed these as
+TDT. uh of course if anyone is
+going to look any specification it’s nothing about TDT, it’s DVB
+terrestrial, DVB-T. And they are
+using uh these parameters they are very low parameter. It’s
+country could uh have different
+implementations, there are different modulations, different
+brandwidth, different uh, guard
+interval and uh so on but I just want uh to make sure that uh all
+these uh parameters will be in
+account for later configurations. And if you have
+been playing around with RTL-SDR
+it is really nice that they are at somehow, they are related in
+history. When I started to play
+with RTL-SDR, uh of course I think all of us we are dealing
+with spectrum analysis and there
+is a maximum of these sample rate. We can not go in below 2
+point 4 of mega samples per
+second, it’s supposed that some people achieve higher value 3,
+but wait a- wait a minute I just
+told you that the channel bandwidth is 8 megahertz, how
+this devices are able to treat 8
+megahurtz channels bandwidth, but when I- we want to play with
+them there are only 2 mega
+samples per second or 2 megahurtz it’s the same. I
+always wonder like, what? Why
+because of that? So in order to understand that I want to show
+you this again, it’s a
+simplification of DVB-T receiver diagram there are 2 main, uh,
+elements, the tuner is the first
+element that we will take data from the analog to digital
+converter. When you do look on
+the internet for this RTL-SDR devices I’m sure you will
+realize there are different
+tuners, Rafael 820 or Elonix 8000 uh, sorry E 4000, this is
+the tuner, where we select our
+frequency and we will give this frequency to the next element,
+it’s the DeModulator. And Eric
+Fry in 2010 realized that if we change this device driver we are
+able to bypass the hardware
+deModulator. Hardware demodulator is able to treat
+this 8 megahertz single, and of
+course, demodulate generating this MPEG 2 transport a stream
+signal that finally will be the
+multiplexer into audio video metadata if what we are
+wondering is to watch TV but
+they find out that changing the drivers we are able to bypass
+this hardware deModulator and
+the Realtek RTL2832 it’s able to give us raw IQ sample, this is
+what we are using, and because
+of this uh, different engineering mode, let’s call
+this our secret mode or user
+mode the chip set is not going to give us anymore 8 megahertz
+bandwidth, this is this kind of
+limit between 2 point 4 and 3 point 2 mega samples per second
+coming from. If you confuse the
+uh demodulator this is a standard diagram of all the
+elements in charge of the signal
+in order to give us an MPEG 2 transport stream. And we’re
+going, we would like to do this
+by our own, in our computer using GNU radio. That’s what
+Bogdan Diaconescu create in
+2013, in his project GR-DVBT after 2 years, I think 2015, he
+donates this project to the GNU
+radio project under the GR-DVBT much more, it’s not just the
+DVB-T there are much more
+digital television standards we can receive and transmit. So, uh
+also there is also, sorry Ron
+Economos he create DTV- utils, with these utils we are able to
+transmit DVB-T with our blade RF
+and it is really easy to allow this script to use another kind
+of SDR generic SDR, like hackRF,
+Lime SDR and so on. So all the parameters if you remember at
+the beginning of the DVB-T or
+Spanish TDT in this case we need to configure all these
+workflows, it’s not just a
+standard plug and play that we run the GNU radio diagram and we
+will see television in our
+computer. We need to adapt these script with our implementation
+or complementation of this
+terrestrial television. We are finishing this introduction,
+it’s just to let uh these
+elements and come on what is this multi-place we are talking
+about digital television. There,
+but changed from analog, the previous one is if you realize
+in this frequency when you take
+your channel list, there are a lot of different channels and
+stations sharing the same
+frequency because they are multi plexil in the same signal, if
+you, if you use hackRF and we
+tune into this uh signal frequency, we will see just a
+bunch of 8 megahertz signal and
+inside there are the different channel station multiplexes that
+does what it mean. If you, uh,
+we use the hackR F sweep utility this very nice view of the whole
+TBS spectrum we can take the
+whole 400 megahertz and we don’t need anymore to go to this web
+pages where we have listed this,
+uh the TV stations and frequencies that this always a
+nightmare lot of the different
+uh TV manufacturers have problems with their channels,
+their lower ones or the higher
+ones frequency most of the times they don’t have problems, sorry
+to tune. It’s a different way to
+see all these channels in the same time. The same can be
+achieved using the RTL-SDR, if
+you know these utility the RTL underscore power, will generate
+a CSV file and uh using a python
+utility we can transfer into a nice image, like this one, so is
+the same, same different, sorry
+the only difference is the hackRF is real-time, and uh RTL
+needs to treat this information
+offline. But we will generate a nice view of whole TV spectrum
+and we will find out who is
+transmitting on the frequencies. And let me finish with this, eh,
+background of hijacking, we want
+to, to do a channel injection, or uh hijack television, we
+look, uh backward to the
+history, there are two uh nice, uh occasions in the past, in
+1986 and 1987 Captain Midnight
+and Max Headroom this taken from the greek paper, of course. This
+two uh real cases of TV channel
+hijacking were in the United States one is the, the first one
+was a tele-tel signal being uh
+impersonated and the 1987 was uh a two different interruptions,
+with a man with this mask, uh
+singing and doing a strange things. Also in the Lebanon in
+2006, uh anti-Hezbollah
+propaganda was being uh used to what- impersonate. And if we
+accuse with the smart TV’s, what
+went on so far. Probably you will remember weeping angels CIA
+Wikileaks, that uh you ca, we
+can turn Samsung smart TV into a microphone. But this attack
+requires local access in order
+to do this exploitation. 2015, uh theoretical attacks about
+this uh hijacking uh start to
+roll and two years ago Rafael Scheel in 2017 hacking a smart
+tv presentation so how to
+exploit two different vulnerabilities of two different
+Samsung smart TV’s. I think one
+was javascript umm flash video vulnerabilities, but here you
+see, real was not uh SDL was a
+proprietary uh transceiver to transmit his uh signal, his
+poison signal let’s call it.
+Using a windows software everything proprietary that was
+uh one of main motivations to
+create these, I’m not excuses my work, my research in
+manufacturers, specific
+manufactur - manufacturers sorry, or zero-day. This is to
+create an open source
+methodology so we can play with our SDRL devices not just any of
+them, not just one manufacturer
+hackRF letter F whatever, with open source software in order to
+research our smart TV’s
+vulnerabilities. So, let’s move forward with our first attack,
+the channel injection. What we
+would like to do now is to transmit our own TV signal, so
+we are going to impersonate with
+our uh equipment, with our laptop the whole TV network. We
+will transmit with our SDRL
+device. We can transmit using the radio or we can transmit
+using the wire. Ok. How we
+achieve this, how we accomplish this mission. We need to take
+our poison video file and we
+need to put some ingredients because the video files needs to
+add some parameters, some
+metadata in order of the television uh, demodulator to
+take this signal as a valid
+ones. Once we’ve forged this uh valid transport a stream we can
+broadcast the transport stream
+with a gr-dtv utility and of course we will be on air. In
+order to take this or generate
+this transport stream video, this poison file, we could use
+as we are just talking about uh
+video or channel injection we can use a very simple attack
+using ffmpeg. We could take any
+video file with any colleague and output it in a transport
+stream and put all the
+parameters you have uh below network ID and stream sorry,
+stream ID, service ID and so on.
+We need to take this exactly the same parameters as the valid
+channel we are, we want to
+replace or to impersonate. Or we can use openCaster, openCaster
+is much more complicated, it’s
+not a common line, it’s python script, but we have all the
+parameters later off for the URL
+injection attack, we will need openCaster. Again we need to
+modify all these 4 parameters
+and how to take these parameters when we face our face, our first
+sorry, project we didn’t know
+this parameter values, but using caffing for example and IS
+dexhub utility to watch tv on
+linux double clicking on uh the channel station we came up, this
+small window and we will show up
+not only the frequency but the network ID, the stream ID all
+the parameters we need to
+impersonate are there. If we don’t like if you don’t like
+dexhub graphical utilities we
+can use DVBv5 scan inside the DVBv5 tools it’s just common
+line and will create a text file
+where, once per uh channel and all the parameters inside, so
+it’s really easy we take all
+this parameters we forge, our own, transport a stream. And,
+that’s the original television
+antennae the white one, bladeRF you will see a small antenna.
+I’m ready, this is not uh still
+uh transmitting, it’s waiting. We saw we’re watching TV Spanish
+24 hour news channel. So we will
+start this mission, Pedro on air. Here we are injecting our
+own channel. >>[applause] >>Once
+we stop the attack the real channel came back because we are
+impersonating, impersonating
+sorry the same parameters. So we could do uh, sorry, uh
+persistent attack or just quick
+attack to do, uh, I don’t know, to do uh, to show our neighbors
+or fathers or family or whatever
+some, kidding. But what if we want not just attack, uh this is
+the most simple attack but
+thinking about how this antennas distribution uh, is not another
+word, but how antennae
+distribution works we could think, because radio, uh is
+sometimes complicated and
+expensive you want to attack some uh distant house or
+whatever, we need to add on top
+of this uh bladeRF propeller amplifiers filter directional
+antennae and this is going be a
+chaos. But sometimes it is much more easier to identify our
+antennae facility. Antennas
+facilities distribute is the signal once it has been received
+from the antennae through the
+whole, think about a huge building there’s only one or two
+antennas on the floor and they
+are distributing the same, distributing an amplifier the
+same signal through the whole
+building or residential area. So we can poison all the receiving
+area or our target. In order to
+do that we need to study how this uh, antennae facility has
+been designed, usually this is
+the most simple and easy ones. We see two wires coming from the
+top they are the terrestrial and
+satellite antenna, and there it’s been splitted into three
+outputs, one per each house.
+More complex uh, uh facilities has a huge uh amplifiers because
+in this case because this a very
+big residential area and antennae facility was really
+outside in a huge tower so they
+need amplifier signal coming from the antennae and then it’s
+been divided with this two
+splitters. This is our cascade installation, this is a splitter
+with each model of the
+residential uh, area has each own different model with again
+new amplifier and new splitter.
+If we realize attack, sorry if we design, if we inject our
+channel at the beginning we will
+poison the whole residential area. If we poison our signal uh
+in the house that we want to
+attack, we just attacking one house. I want to show you, how
+we can do that. This is a very
+small installation, there are just two televisions. What is
+really. Sorry. Here we are. Yes.
+There are two televisions. I’m removing the original wire
+coming from the roof with the
+original antennae, so signal will go out, we will lost
+signal. You will see that
+television is 3D is uh event in different from when bladeRF is
+already transmitting, oh no, no
+sorry it’s not already, I’m just going to plug our poison signal
+and now we are transmitting with
+the ur- DVB util sorry, here I am first one is receiving my
+signal, I don’t know why, first
+of all and the second but they are synchronized if you realize.
+Even if one takes more time,
+they uh doing this the demodulation process not at the
+same speed, but I will remove
+again the wire. And when the original signal came, both of
+this two televisions will again
+be synchronized I mean content. I want just to show you that
+this is not photoshopped or
+video editing, proof of concept that the signal cames in the
+same time. Proving that we can
+attack more one televisions in one attack. And of course we are
+always talking about drone
+attacks. It’s really uh easy to attack an antennae if we are
+using a drone because we can
+hover in the antennae facility and we don’t need to get inside
+the building and uh get access
+to the building or whatever, so I want to test how easy is to
+rent a drone, because I don’t
+want to use my drone for that [speaker laughs] who knows and I
+have a very huge uh problem, I
+really don’t know the amount, how much weight can carry one of
+these commercial drones, these
+drones is a phantom three phantom four. They are not
+manufactured to carry any load.
+So there is no specifications from the manufacturer about the
+amount of weight they are able
+to carry. But we have a lot of the videos on youtube of crazy
+people taking these buckets full
+of water with rope and they start to fly they are uh
+measuring uh 500 grams, one
+kilograms they are really crazy. So after seeing a lot of these
+crazy videos and finding this
+web page, I get myself a limit, 300 grams that was the weight I
+need for my payload and that
+fits perfectly with a hackRF, a power bank and Odroid C2. I was
+not uh very impossible to do
+this attack with a raspberry P3. I-I really tried believe me a
+lot of times but doesn’t have a
+computational resource enough to do our transmission constantly
+in time and we want our victim
+to really realize and see our video, so I am using a Odroid C2
+and all of this stuff is just
+300 grams. So we need to do this design to really stick and not
+to move in the drone for the
+dynamic flight if we are flying with the components moving our
+gravity center is going to be
+moving and for sure the drone is going to finish on the floor and
+crashing. So, take this 3
+elements stick them very good, adapt our scripts because Odroid
+C2 is not able to generate
+content in real-time, everything the Odroid is transmitting the
+already poisoned media generated
+in another computer. And after a few days working. I think there
+should be sound in this video.
+Thank you guys, this is my favorite one, sorry. [music]
+Here we are getting ready for
+the flight, touching everything [music] you will see now I am
+going to use a lot of cameras to
+show this demonstration we are recording from another drone,
+the mothering you will see in
+the video. And this uh bottom left screen is mobile, it’s
+going to get into the house and
+we will recording the television for you. You will see the
+attack, all the stages. As much
+as I am getting close to the antennae my poison signal is
+going to person- impersonate the
+original channel. This is from the maverick pgi maverick. Also,
+believe me it’s not so easy to
+hover this antenna. I don’t want to get it started, and here we
+are getting closer enough to
+transmit our poison video. [audience applause] Thank you
+very much [audience applause]
+That is a real drone attack so now it’s not just a theoretical
+attack it’s a practical attack.
+Now let me just uh sum up, because these 3 videos are just
+proof of concept. I don’t have
+any [inaudible] or a private company support in order to
+demonstrate that these video’s
+or these attacks could be done much wider not just securing on
+one smart TV, because this
+television networks uh, they are decided, they are a lot of
+elements from the heading you
+will remember at the beginning. The heading once is generate
+this transport a stream it’s
+been distribute, but in a very stupid way, they trust each
+other, so if we inject this uh,
+poison video, but not in our house, if we are able to inject
+in the main head end, we will
+inject this video to the whole country. Of course they need
+insider uh, uh not uh attack,
+but we need some deep internal network knowledge or uh someone
+inside of this company that help
+us to carry on with this attack if we want to confuse the
+heading, transmitter centers
+they are more, much more easier because they are not, there is
+no one eh, national one, there
+are a lot of transmitter center primary ones. And the favorite
+ones they are the gap filler.
+Gap filler is a very stupid repeater they have 2 antennas,
+one antennae receives
+television, the receives sorry the original signal and
+amplifies this signal towards
+this shallow area. So if we take the same drone and we do realize
+the same attack and instead of
+hovering the antennae we hover over the gap filler our signal
+is going to be transmitted to
+all this area it’s a very nice attack, but of course in order
+to demonstrate we need some
+permission and some someone that help us in order to do these
+videos that I don’t have, I am
+very sorry. Ok, we’ve show, I show you how to inject uh just
+video, this is the-the the most
+funnest attacks but this we mentioned at the beginning HbbTV
+uses an URL. If we uh, do uh a
+ARP poison attack to our smart TV we will see that every 5
+seconds 5 or to 3 seconds the
+smart TV is sending this get Http get requests to the other
+servers if you will realize they
+are just web servers, I don’t know why they like to put this
+HbbTV dot s and then my name but
+anyway they are standard web servers. I think this is the way
+they are misering our audience,
+our, which channels we are watching everyone. This is not
+an attack just I want to show
+you because this is [inaudible] how this is work you realize how
+television it’s off, I’m just
+starting the ARP Poison attack. I will put on TV and show you
+how these channels are every, 2
+seconds 3 seconds with this, this audio reginal legit legit
+sorry. Http request launa this
+is the main national TV channel in Spain, and there we are with
+this uh, I don’t know what they
+call this application red button, this a HIbb HbbTV sorry
+application called red button.
+This is how it should work, and what we want to do right now, we
+are now taking care of the video
+file, but we want to take care now it’s uh metadata, a new, a
+new parameter in the URL and now
+probably we don’t want to inject video, if if you think about
+this attack I want my victim not
+to realize that he is under attack. He will continue
+watching the original TV we will
+do a video replay. He get the original video of the original
+channel because we are going to
+use another SDRL to take the original video and we will
+inject this original video it
+has not been modified but the tackle will be the attack sorry
+will be in the URL we will
+poison only the URL maintaining on the the original video. That
+can only be done using
+openCaster. We need to replicate short kind of uh reverse
+engineering because we need to
+maintain all the original parameters of our this uh tv
+channel or TV station. And only
+thing, the only thing we need to modify is this 3 parameters of
+the applications, name, root and
+path. And let me show you that inside the smart TV there are 2
+browsers the HbbTV browsers it’s
+totally transparent for the user and the user browser for sure.
+User could open uh hoot or uh
+fancy eh browser in order to read newspaper or whatever. So
+each attack or the attacks I am
+going to show you could be meh- modified if we want to attack
+the HbbTV browser or the user
+browser. We know which browser we are attacking because of the
+user agent. Once we have this
+get request in our poison or eh the web server, taking care of
+the uh, taking a look, sorry of
+the use- user agent if you realize for the Samsung TV the
+first one it’s HbbTV 1 dot 2 dot
+1 meaning that we are talking to the HbbTV browser and the black
+1, the Mozilla is the user
+browser both of them leak very important information about
+manufacturer and model, what
+does it mean? That we can scan smart TV’s remotely if we just
+are listening for this URLS URL
+sorry, with our fake transmission we are able to scan
+for smart TV public IP addresses
+model manufacturers and the channels, because we could use a
+different URL per channel. Let
+me show you because there is a lot of information, let me show
+you, I am going to use 4
+terminals. In the upper left is the dvbv zap, we will just use
+our uh RTL sdrl to tune the
+original channel. With the DVB snoop I want to take this eh
+original video and put uh into
+our uh transport the stream file. With the bottom left
+[speaker laughs] Tscbrmuxer I
+will poison only the URL. I will maintain all the parameters but
+I will just modify the URL and
+finally, with the gr-dvbtv I will transmit this poison signal
+to our victim. Yup, [video
+noise] that’s again the same white antennae this is the
+second SDR this a NooElec very
+tiny as SDR device with the original antennae. Laptop is
+ready for attack. It’s not yet
+doing anything, it’s just being ready, [Spanish Television
+Plays] and Television there is
+no URL, sorry for the, it is really complicated to record and
+to be doing all the rest of the
+stuff. I will now start to tune the small RTL SDR device I’m
+tuning the television. I will
+start to record to a file transport a stream file. A few
+seconds of uh buffer, call these
+like a buffer. And now we are modifying, I am injecting the
+URL and now I am transmitting.
+You don’t see any difference, because I am using the same
+video, but now Defcon 27 index 4
+this is my post in URL now I can scan your smart TV. I could be
+able to take your manufacturer
+model and public IP addresses, as I am attacking all of these
+TV channels multiplexes, if the
+user do something and change to another channel, we will
+continue scanning his
+preferences of channel and audience I am very bad with this
+sucking process but uh, index 2
+if you realize I will pause the video the upper request is eh
+Defcon 27 index 4 and below
+request is index 27 index sorry Defcon 27 index 2 that’s how we
+can scan or poison different
+channels. Now that we are able [audience applause] thank you
+very much. If we think all the
+options that we have, now that we are able to forge and use our
+own web server to attack our
+victims. I think that after so many years playing around with
+this uh web pages captive web
+pages, I think of course social engineering, we could create an
+advance exploit in order to take
+the wifi information from the smart TV because of course smart
+TV is connected to the wifi, but
+why not just ask our victim [inaudible] eh guy I am your
+smart TV I have just been
+upgraded I really would like to confirm with you your wifi
+network, would you be so kind
+please to let me know sorry, ehhup. Here we are, [video
+playing noise] would you be so
+kind to let me know what your wifi [inaudible] [speaker
+laughs] Ok I will use a text
+file it’s empty. I will store the wifi answer of our audience
+in the listed file. We are
+transmitting now our poison URL. television is set to render,
+dear user has been successfully
+upgraded, as we have been scanning, we can create a really
+nice captive web page with our
+manufacturer image and of course this is just a proof of concept
+and I will publish for you so I
+don’t want to give you a real uh let’s say social engineering and
+URL when he typed the wifi we
+have the user input, once he accept uh just, second try, he
+some random characters just to
+show you this proof of concept. Is in o’s. Once the user accept
+if we check this text file
+content. Has the user input. [audience applause] This
+applause is not deserved because
+this is just a stupid webserver you realize, this is the
+powerful of this methodology we
+could create very creative attacks towards the final users
+of the smart TV’s. same with the
+key logging, that doesn't make sense in the HbbTV browser,
+because HbbTV browser is uh
+passive, that makes us only with the user browser and same with
+the crypto mining attacks, think
+about if we are able to inject this crypto mining in javascript
+in I don’t know thousands or
+hundreds of thousands of the smart TV’s they will be so kind
+as to do this crypto mining for
+us, maybe we are retired in 2 days I don’t know. I really
+would like, but as you know this
+is uh Monero CoinHive for Monero and they stopped the service I
+think March this year. This is
+really a pity, let me show you [video plays] uh, the difficult
+uh side here is you have been
+playing with these uh Monero CoinHive is the alt to start
+feature. You don’t want the user
+to press the button start to start mining right? You want
+this to be a automatically
+attack. uh long time ago the alt to start feature was uh
+publically available to everyone
+to modify but of course if this was a used in a lot of web pages
+eh illegally or to do so in this
+kind of attack uh can I uh remove the alt to start feature
+and force the user to do eh this
+uh, manual start. So uh an anonymous friend lent me the
+original javascript code, so I
+don’t uh we don’t need the alt to start uh press, it will start
+automatically this uh crypto
+mining. Once we changed the channel to take this uh poison
+URL, I am using these uh small
+square we are- if you realize the second request is the
+javascript. We inject the
+javascript file lasexta slash simple UE mean dot GS this is
+the small javascript file in
+order to start mining. So I will start in the Y shark I will
+change the filter to show you
+the CoinHive IP address everything was under https so we
+don’t know we don’t have the
+Https request but we will see all the Https communications
+from the smart TV towards the
+CoinHive web servers mining. And uh, also I was wondering what
+else we could do with our smart
+TV. the browser, we would like to face the user browser. If you
+remember beef application, beef
+software to hook the browsers. I want to use a ND I-I love this
+utility ettercap from uh socket
+evil ND eh ettercap will be in charge of inject this a hook dot
+uh javascript file to hook the
+user browser, when I hook the user browser, I will use beef
+just as a very simple
+application to create an invisible frame and what for? We
+will have Metasploit running
+with own to pwn and of course in this invisible frame we’re going
+to smart TV to listen to
+Metasploit own to pwn. And in that moment Metasploit will
+be scanned for vulnerabilities
+in our smart TV browser. and, here we are, [Spanish TV plays]
+everything is ready, I want to
+show to you the ettercap javascript file everything we
+need to modify here it’s uh the
+URL of our hook dot GS uh hook let’s say uh javascript file. Of
+course it’s locally ettercap is
+ready, beef has already been started, listening to any
+browser being compromised and
+now the user will open his favorite newspaper. [Spanish TV
+continues] [Computer pings] As
+you see below new hooked browser ID blah blah blah browser are
+now hook domain el mundo dot S
+is the newspaper we have hooked the browser now move to
+Metasploit copy the URL created
+for the auto pwn here we are with the beef modules invisible
+frame [Spanish TV continues] and
+we inject. Under all this auto pwn running. You can check all
+the models are looking for
+vulnerabilities in the smart TV user browser. [audience
+applause] Thank you. So it’s eh
+real easy to conclude this first conclusion, probably you are
+aware that uh the principle of
+this attacks is the lack of authentication in the radio
+level, there is no
+authentication at all, this vulnerability or this flag of
+the sign is eh also the same for
+the GPS we could create with SDRL device our own GPS
+constellation. None of the GPS
+clients will try to authenticate our sales and same for the
+network of the mobile networks
+probably you are aware that 3g and 4g mobile fake mobile
+networks at some stage of the
+process they will do a mutual authentication, but does this
+mutual authentication take place
+after the identification we still nowadays have 3g MC
+cultures and 4g MC cultures and
+the base of this attacks is because the mobile device is
+enabled to authenticate this
+signal. They will always pick the best signal, the stronger
+one, that’s it. It’s the same
+basic of these attacks so probably it’s time in order to
+implement some kind of
+authentication in the lower levels and in the other hand
+when we always go to buy a smart
+TV I think I don’t know the percentage but probably 99
+percentage of us we are just
+concerned about size, inches the amount is the inches of our
+smart TV, bigger, lower, that’s
+everything that we care about the smart TV but probably after
+seeing these attacks probably
+it’s time to think about same as the smart phones about security
+about the operative system,
+underlying our smart TV I want to have a smart TV that uh from
+time to time patches of this
+vulnerabilities and take uh secure browser not any browser
+from I don’t know where in in
+time, in place. I want uh some operating system taking care of
+security if I want to connect my
+smart TV to the internet [speaker laugh] that I would not
+recommend to anyone. So Thank
+you very much, I want to Thank Gonzalo, Pepe, Alvaro, and N0p
+for helping me with this uh
+research. To record these videos was not been easy at all uh, of
+course, I want to thank all of
+you to be here with me today thank you very much. [Applause]

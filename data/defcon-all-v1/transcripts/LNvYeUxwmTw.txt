@@ -1,0 +1,433 @@
+Good morning, everybody. How
+are we feeling? [ applause & cheers ]. >> Nice. If you feel
+like crap now wait until tomorrow. We've heard a lot of
+problems in the hallway and we made some small changes. We made
+another kind of
+substantial change today. What we did is Defcon 101 that
+has moved to Balley's gold. Track 4 moved to 101 was and if
+we need to corral all of you fine folks, it will be where it
+used to be. Hopefully this will make con injection better today.
+Some of the big talks Tesla. Keep playing along and we will
+all have a good time. Let's talk about mac. How many people use
+mac? Nice hardware. Depending on who you ask, some people have I
+sense of I'm so safe because I have a mac. We will learn once
+again why that kind of idea is false. And we will reinforce the
+rule of and say this with me, "physical access is total
+access." no. I guess it's early still. Let's give our guys a big
+hand [ applause & cheers ]. >> Good morning. Macbook. Also some
+security. I'm Trammell Hudson and I really like to take things
+apart. I do reverse engineering. To let folks run their own
+programs on it. I really enjoy digging through old roms, the
+old mac hid in their rom back in the 1980s. My employer wanted
+point macbooks and rootkits and I was asked to use my reverse
+engineering skills if it's possible to defend against them
+because we are concern about security physical and software.
+>> I'm Xeno Kovah. Corey Kelly Berg can't be with us at the
+con. We were basically the only company focus on pc firmware
+security. Mac and all the peripherals as well. Firmware
+all that other stuff people talk about at conferences and nobody
+get around checking, that's what we do. >> This talk sort of, it
+started last year at ccc. I presented thunderstrike which is
+now called thunderstrike 1 which is the first firmware rootkit
+for macbook what protection apple had on firmware and how we
+could generate files to write into the rom. The day before my
+talk, the others presented on security and I found it
+interested. And if it's possible to import it to mac. And it is
+possible from windows system and mac system. And that's the key
+message of this talk is that most vulnerabilities are
+agnostic and vendors and everyone needs to be aware of
+that. Thunderstrike 2 is improvement of the original
+thunderstrike and now physical access is no longer require to
+initiate the infection. It's possible with remote code
+execution it can then whatever exploit to root. And once root
+it can install to write listed kernel extension which is
+possible to map flash memory. On some machines, macbooks it's
+able to immediately unlock the flash and immediately write into
+it and this is from thunderstrike 1 talk how
+firmware organized and integrity checked. And in this case we've
+appended payload into the free space and we update the crc.
+While we are scanning the memory we scan through bus looking for
+devices in the option rom and write payloads into those. And
+in this case much like thunderstrike 1, we are using
+the gigabyte ethernet adapter as a payload transmission vector.
+The option rom contains the payload and macbook has written
+payload to flash. When we reboot the machine we will see the
+thunderstrike logo come up. We are deliberately not be sith.
+This is from the first introduction that it executes.
+The viral transmission means we can put the laptop aside and
+share with another one. Now the efi firmware loads the exploits
+from the option rom and in this mac it's not able to unlock the
+flash immediately. What it can use is the darth anonymous
+attack to hook the sc boot script. So then kernel boots
+normally. And at some point later the system goes to sleep.
+Either via software or the user poses it and the vulnerability
+is when the cpu enters the low power bits all the flash
+protection bits gets reset. So when the system wakes back up
+the sc script writes thunderstrike into the
+motherboard boot rom. And this is not on the hardware so you
+reinstall os x doesn't fix it. And swap to a new computer, you
+can reinfect the peripheral you would take. So at this point we
+are not still think. When the system reboot you see the logo.
+So [ inaudible ] few years ago to really do a good job from
+hiding attempts undetected. This laptop is now infected. And the
+other apart infection that's new that it's watching or clearing
+thunderbolt after it gets plugged in and it writes
+exploits into those adapter so that they can then spread to
+other machines. Possibly crossing air gap security. What
+we've demonstrated with this proof of concept. Firmware
+starts exploits is able to write into the motherboard, and infect
+thunderbolt and other removal option rom and hook resume
+script and write themselves into the boot flash of the machine
+and continue the infection. >> so that's the black magic
+attacks and let's get into how it works. The key point is, it
+cross many systems. They would effect many pc and affects mac
+as well. Background on the transition of firmware. You will
+hear us use the term or when we say bios we mean genetically
+firmware. So intel started efi back in the late 90s. They try
+to create a non backward compatible is64 architecture.
+They want to get rid of this and things from the '80s. For new
+architecture, new modular firmware. They did that. When
+apple moved from power pc chip to intel chip back in early
+2000. This new type of firmware that intel recommends. So in
+2005 intel was trying to bring people in the adaptation. So
+they created the uefi to collect up many more players get all
+their buy in and contributions and people start using it. The
+original 1.1 and new people are talking about the efi
+development kit. So, of course, when got industry buy in they
+didn't just go ahead and rewrite everything from scratch. They
+just continue to evolve with people's input. And apple's
+implementation to generally diverge from the rest of the
+world but still there's going ob millions of lines of code that
+are similar. The way that the whole uefi system there's a
+single source implementation edk 2. Efi developer kit 2. Which is
+then modified. They add value to the system. And compete amongst
+what new features that the other guys haven't added and that's
+how they will get oem to buy them. If they have enough bios
+the oem be do further customization on this. That
+means fixes that happens open-source implementation take
+a long time to trickle down. A big point of this talk is nobody
+a unique and beautiful snowflake. Everybody looks the
+same. So we took a machine, we did analysis, we show all of
+these places, systems that are out there today. We analyze it
+and control float graph, it's bigger because it has comments
+in it. And you take macbook air, the thing is they look all the
+same. The control flow graph is the same, there has to be level
+of similarity for the systems to implement that firmware
+interface. There's a speck out there that says how that works.
+So call the same function in same order. No firmware if efi
+derived is unique and beautiful snowflake. That means there's
+shared vulnerability. Does it effect mac? Yes. This means that
+all these vulnerabilities which are out there and a lot of
+vendors pull in the code and fix and hear there's this pc effect
+and maybe it doesn't effect me. I'm a mac. Beyond this there's
+problem. Intel on protection mechanism that all vendors
+should use. Decade of legacy decisions which lead to inherent
+built in vulnerability. So we've considered a bunch of
+vulnerabilities. We took old works and ask do these apply to
+all macs. Publically disclose at conferences and yet when we say
+let's take a look at the macs are they still there? Yes they
+are. That's not cool. So the speed race vulnerability. This
+is vulnerability in intel hardware. This is not the kind
+of thing you would expect any vendor to say I'm not vulnerable
+to. The vulnerability is in intel and the fix is to use
+intel protection bit. The hardware race condition. And we
+will see why exactly that happens. If you look at the bios
+control in intel hardware this is the oldest protection
+mechanism for firmware: it says am I allow to write to the bios.
+There's a bios enable bit. That must be set before you are
+allowed to write to the bios. If a vendor wants to stop malicious
+attacker to write in that, everybody this to bio lock
+enable bit. I want to cause the system interrupt and system
+management mode, I want to catch anyone set the bios set enable
+and probably stop them from writing into the bios. So that's
+the oldest common functionality. What this disclose is there's
+hardware race condition once we have multithreaded hardware,
+back then it was single, core hardware so that protection
+mechanism worked great. Once you have multi and hyper hardware
+you can have an attacker just continuously hammers on the
+write enable bit. Set it writable and in a separate
+thread they continuously say write this valuable to the bios.
+And the core race these two threads continually write to the
+bios and we've found they will succeed. There's no penalty for
+failure and if you do long enough you are almost guarantee
+to win. Corey talked about this. This was disclosed privately to
+intel so this has been out there for quite a while. Intel
+response to this okay. Well we recognize this can be
+potentially a problem but we've added this protection bit to our
+platform controller hub. Even if it's equal to one somehow I will
+stop attacker write the bios. So this bit says you might be at
+smm before you can do that. They just race from kernel space and
+set and write to the bios. This is basically the intel say it
+should be and recommends bios vendor set their protection
+bits. So you got layers of protection each of which provide
+protection value. They get to amend attempt to write to the
+bios and that will be stopped and check. The speed racer
+bypasses that. If vendor sets smm-vwp you must be in that
+before you can write. And protective range register and
+these allow the bios maker to set in none contiguous places to
+write firmware, none writable. It will be lock down and you
+want that to be stopping attacker to write into the flash
+chip. And when we go back and let's consider this and see if
+apple is vulnerable. We check vulnerability disclosure. The
+nice thing about vulnerability disclosure, for our
+coordination, even when we have cv available to us. It tells us
+these vendor are vulnerable and set vulnerable. It's nice
+because certain handles coordination for you and asks
+different vendor, are you vulnerable. Usually they will
+say yes and there's a fix on their full disclosure and some
+will say no. And some vendor will say not say anything. If
+they don't care about disclosure, they are probably
+vulnerable. We look at apple, it says it's not effective. All the
+intel cpu have this. If vendor don't respond to these and don't
+hold them accountable, they just airport going to say anything.
+So we need to check is apple vulnerable to this problem. So
+you go in, you look at control register, the bios controller
+register set to 8. The result is bios lock enable not set. Smm
+vwp not set. So they are not using those protections. In the
+technically accurate, apple is not vulnerable to speed racer
+because you don't need to use exploit to get around protection
+that's just are not there. [ applause ] so this is what
+protection looks like on a new mac system. I went to buy the
+new mac mini. They have a single point of failure. And beyond the
+that there's gap in this region. The first gap points at efi
+variable. You can twiddle and even some variable prevent
+access by e. Rom. If an attacker knows how to write to the
+command chip, write directly to the flash chip and modify any
+variables that they want. Beyond that there's additional gap it
+within that protection and we don't know what that does as
+testing this attack, we go ahead corrupt that and write all x
+into that. The system a break. And it will never ever boot
+again. That's undesirable behavior. There's a video you
+can online. So we decided to skip that. The second thing we
+need to look at. Darth vulnerability. Darth anonymous
+vulnerability. We saw the deflection mechanism still has
+the protected ranger registers attacker would like to get
+around that modify the code and stuff. That's actually what the
+darth jedi attack because basically darth plagueis
+defeated darth venamis, killed him and continued to resurrect
+him and kill him and resurrect him. I'm not, I don't know the
+exact story and it's been said that just like maybe you didn't
+kill him. Put him in the coma. The analogy is we want to
+continuously kill and resurrect the system and find the
+vulnerability. So the darth venamis vulnerability is the
+situation when you put the system to sleep, not hibernate,
+not deep sleep, close the lid you go into scpi, low power
+mode, power off much of the motherboard as it can. Some of
+the stuff that it powers off parts of the chip says which
+allowed these protected bits become unset. Low power you lose
+all of your electricity and the bits get [ no audio ]. This can
+be manipulated by an attacker. This vulnerability was disclosed
+to cert. And the newly formed uefi response team. And
+publically disclose December of 2014 trammell said the day
+before his talk. So I recommend you go watch the actual talk. At
+the highest level the detail of darth venamis is this: a normal
+system when it's booting is going to take that top path. The
+normal boot path you are going to execute efi phases. As the
+system is booting to save information which hardware
+configuration bit is set to cheat sheet. Boot script s 3
+boot script stored in rom somewhere. It is stored to
+unprotected rom. When you go into sleep and wake back up,
+resume execution path said instead of executing all of my
+normal boot code which from resume from sleep as a normal
+boot, I just want to consult the cheat sheet and it has these
+type of option you can write to os and memory. Go down the line
+and interpret this boot script it will make the hardware
+reconfigure the same way as the full boot but much, much faster.
+Quick wake from sleep. There's a problem. The vulnerability is
+twofold. One the script stored in none protected rom and why?
+Because you look at the speck document from 2004, you can see
+they are recommending in ecpi none volatile memory. That's
+just memory like any other memory an attacker can attack
+and compromise. There's this catch all opcode. This dispatch
+opcode says it's too complicated to combination of reads and
+writes. So instead I'm going to jump off and I'm going to jump
+to some arbitrary by the dispatch opcode. So a script
+arbitrary code plus somewhere rom means an attacker can
+compromise the script, get rid of the protective range
+registers and have access to everything. Get access to the
+code, right from the very beginning the codes are
+compromise to the attacker. So the result is the darth
+venamis attack. So when we go back did apple say they were
+vulnerable or not. Look at the full disclosure in this case
+like our past our is weird is effected vendors only the
+vendors replied and effected. So at first we didn't know. But by
+running to ground that sith hadn't contacted them. It's
+coordinated uefi security response team. And since apple
+is uefi board member you would expect them to listen to the
+response team, right? So again, the big finding from this is
+that previously trammel's attack show that you can write apple
+firmware. There had been some thought that somehow apple
+firmware was protected trammel showed that that's not the case.
+And once you do that you can write do it. But thunderstrike 1
+requires physical access with the thunderbolt device. So darth
+said no more physical access is required anyone who can get
+remote access can manipulate script in memory and sleep and
+wake back up, you can compromise it. Sorry it's so small. This is
+showing just a plain jane software attack for this. Once
+you use a root privilege exploits. You are protecting the
+code. But then you find the boot script in memory. You find one
+of these dispatch opcode and you point it at some other address
+where you are going to put code. So do that insert code into that
+address. The code we did here was to set a lock early. So
+basically the bootscript is going down and interpreting
+down. The protection range register somehow low. Somewhere
+higher is dispatcher opcode. So we lock down the register and
+say no one is allow to modify and do doing they get lock into
+default zero when they clear, because you lost power. Back to
+sleep and wake back up. It can be changed until the next. After
+that we've taken out protective range register. That means go to
+in the attacker can write anything into the firmware. Here
+we show hello world, where we knew it wouldn't break the
+system. Another vulnerability similar to this is called [
+inaudible ] so we actually, in the past and other vendors and
+told cert about it. The vendor fixed before cert. And it's been
+fixed. So they post this thing. And he found the same
+vulnerability on apples so pay zero came and found
+vulnerability. Deer cert you can start coordinating this now. Pay
+zero didn't gave it a name. This poise kiss wakes you from sleep.
+He had seen the title for this talk. Thunderstrike 2 sith
+strike. Sith strike probably has something to do darth venamis.
+We were probably saying thunderstrike, sith, darth
+venamis. So he has been looking at that on mac and using proof
+of concept code that was put out there, and when he looked into
+this he found the prince harming vulnerability. And it's more
+severe than darth venamis because you didn't have to do
+anything special as attacker you just put the system to sleep and
+wake back up and everything is unprotected. They are not
+setting any protection bit on resume. So he was concerned
+about this as a mac user. It leaves something to desired when
+an attacker to put your machine to sleep and wake back up and
+write into your firmware. We had not reported this to apple.
+Because we were testing on our macbook pro 112s and turn out to
+not have vulnerability. So prince harming was fixed at some
+point. So apple basically silently fixed this at some
+point and they didn't back port it to older machine. What that
+meant was accidentally this blog post went live. He thought apple
+had already known about it. No. Apple didn't know about it.
+Apple zero day. Now anyone can break into the firmware. The
+question is why are there zero days that can be found on mac.
+Now there's a full disclosure vulnerability out there in the
+wild, apple turned around a patch relatively quickly. They
+put out uefi update. They patched 24 different models and
+the models they passed were basically from 2011 and newer.
+If you have that system, hopefully you are applying apple
+updates as you go. But how did they fix this? By improved
+locking. What does that mean? >> what is this improved locking?
+You dug into their update. They moved the protective range
+register and flash lock down register setting out of the boot
+script and in pei before they executed it. This is the right
+place to do it, because you don't have the protective range
+register ever unset. This prevents the demo that we showed
+to write directly to the boot flash. However, they are still
+not using the bios control bits. So it's still possible to break
+the system. The s3 bootscript is still unprotected. There's also
+some features that we discussed in the darth venamis attack,
+they were left unlock which can then get code execution
+in-system management mode. And the worry is [ no audio ] usbc
+is protecting the bootscript in some ways this means that there
+are now two classes of machine some are vulnerable to darth
+venamis and some are not. >> the 4th vulnerability that we take
+advantage of is really legacy feature of option rom and this
+goes back to original pc 8080 the bios in that era socketed
+rom chip and there's also empty socket on motherboard or
+optional expansion feature. Basic interpreter or hardware
+controller. The is expansion bust also allow cards to contain
+option rom. This allow card into your system bios able to play
+onto it. Unfortunately because this gives you code execution
+early in the boot process it's a great place to put that and this
+is not a new idea. John heisman present in 2007 pci card and in
+2012 snare gave an amazing talk at blackhat showing how to build
+efi rootkit out of ethernet option rom. His talk started my
+research into macbook security. Intel realized that this was a
+problem. Trustworthy booth. So part of the secure boot they
+require all expansion rom cryptographically signed
+publically stored in the motherboard. And they required
+this for secure boot uefi 2.3. Apple frozen on uefi 1.10 which
+doesn't support the boot concept and they still unconditional
+load option rom from internal and external device like
+thunderbolt. Heisman's talk in 2007 despite snare's demo in
+2012 and despite my thunderstrike demo in 2014. And
+what it really means is architectural fix. The security
+conscious user need to be able to disable option rom or white
+list option rom or signature on option rom. There are quite a
+few steps to be done there. In my talk thunderstrike I
+hypothesize that option rom use malware virally. And this is
+improvement over john heisman's talk on cpa talk on system.
+Devices can be shared between machines. At the time of my talk
+it was mostly hypothetical because to rewrite the option
+rom so far to the move to dos and adapter what we realize is
+the linux perl bar code 57 device driver had all of the
+hooks for read and write in the option rom. So we import that to
+os x, and now it's possible to install new option rom into
+these removal device just are root access. In the dxe
+environment so it's possible for thunderstrike to rewrite from
+the boot rom. So the way that this could be use maliciously is
+you can remove shell somehow. Whatever exploit. Install this
+white listed driver and you are able to flash code into the
+thunderbolt device. We use thunderbolt device because they
+are very easy and very small and cheap. But lots of other devices
+have option rom. A lot of wifi, gpu and satellite controller ssd
+have them as well. >> so again back to the main point of the
+talk. Uefi vulnerabilities shared across many systems. It's
+highly likely any vulnerability found is going to report
+everywhere. So ultimately in this work we can fix
+vulnerabilities that were all old and publically disclosed and
+privacy disclosed. Which of these effect the mac. Prince
+hamming. That's completely gone now. Darth c. Godspeed racer
+were still vulnerable. Apple doesn't use that. The queen's
+gambit we introduced before. Corey presented before because
+it affected hundreds of pc. [ inaudible ] apples is working on
+a patch for them. So although they patched the basic thing
+that allow our proof of concept thunderstrike this vulnerability
+can do exactly the same thing. >> so that's out there in open.
+So previously invisible thing if you break in smm that doesn't
+imply you can break into bios. You can break into bios from smm
+in some systems just to say that this was a possibility. Another
+thing is vulnerable common to uefi system. Configuration bit
+system which will effect secure boot. Apple doesn't have one.
+Even if they have this variable it doesn't matter. A lot of pc
+and if you corrupt the variable, you can corrupt the system. This
+vulnerability does not effect apple. They don't use this at
+all. 5/6 public old vulnerable all effected apple system.
+That's not what we wanted to find but that's what we found.
+What can vendors do. We go around and help vendors
+understand intel recommendation should thought of requirement.
+The reason why intel said you should set all these
+protections. You don't have a single point of failure when you
+are only using one of them. A vendor has to test all of these.
+Go look at the full disclosure whether you are currently
+running at and your vendor doesn't respond to
+vulnerability, they are probably vulnerable. They've been
+privately passed around in order to fix vulnerability before they
+ship and they made it public for researchers to play around with.
+You have to write it from uefi or install windows. If you run
+it chip this system is vulnerable. If apple were using
+chip sec the system is vulnerable. And things like smm
+lockbox, the chip is not just sitting around, you lock into
+system management mode. At the original darth venamis attack
+they showed that some intel system were using that to hide
+your stuff away in rom if it jumps and read unprotected
+memory. Intel boot card has stronger root of trust. Instead
+of the instruction coming from potentially manipulatable
+firmware, come from sign code cpu verify the digital signature
+on that code. It's stronger up front. Option rom. Digital
+signature are the good first step is not end step. And it
+would be nice you are setting a firmware password maybe you
+wouldn't like all of these un-trusted and unsigned code be
+sucked in and introduced in the bios. Those who are not bios
+engineers. What can you do? It's not about hard drive, ram,
+memory forensics. You have to do firmware forensics. No one ever
+seem to do anything about it and provide availability for this.
+But in order to not leave you empty handed here we but out an
+option rom checker. You plug in ethernet adapter into your
+machine and then run the script we've provided using the stuff
+that's imported from linux dump the option rom. It turns out
+everyone's option rom that we've seen is they all look the same.
+This gives you first order. If you check yours and there's an
+error either a our tools are broken, it's possible, or b you
+actually have some attacks. The false positive or true positive,
+we like to hear about it. The other thing you can do, is go
+get smart on firmware, so learn about rootkit, security
+training, free classes get smart on things and go do your own
+firmware security research. >> thank you so much for attending
+our talk this early saturday morning. [ applause ]

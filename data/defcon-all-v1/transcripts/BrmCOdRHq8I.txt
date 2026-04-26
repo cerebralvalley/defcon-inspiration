@@ -1,0 +1,361 @@
+Good after noon, thank you all
+for being in here, you are in track 3 and this is hooked
+browser network web RTC and -- without further a -- Christira
+Frichot. >> Hello everybody. Awesome someone is going to fine
+me a beer later on that will be really fantastic. My name is
+Christia -- I'm one of the co -- beef prefect or I'm also an
+Australian. Well exAustralian I just relocated with the family
+up to California so what that basically means I have no idea
+how hot it is and -- I'm like what the fuck does that mean. So
+what we are going to be talking about this afternoon. There are
+a few things we are going to be brushing across. I apologize in
+advance. Kind of social engineering testing. Frame work
+-- hands up here people who have heard of beef before? Awesome.
+Keep your hand up if you have used it before? Okay, keep your
+hand up if you were authorize to use beef as a security
+engagement. Another thing I'm going to talk about -- is into a
+browser how you maintain those and finally integrating. Into
+beef and then I'm going to have a demo of some variety. So let's
+kick this off. So I'm when wade another created brief he
+basically came up with he just wanted to not pop alert dialogue
+anymore and people still do this all the time. How many of you do
+engagement and the first thing you do is 1 (colon is the first
+thing. Like the reaction. And soon they're going this means
+absolutely Dick to everyone. Is use less for the developer? The
+business owner is not going to understand what it is. Insight
+of the browser context. We started to see people I guess
+targeting users more and more. Obviously as the internet grows
+so do the use of browser tech nomad this is a very interesting
+content. You guys will all definitely probably have a smart
+phone will have one or more web browsers. If you guys have your
+lab top here with multiple tabs and you may have more than one
+compute if you start to break that down. Is enormous thing
+that is can go wrong and you know browser development is a
+fantastic thing. When you open up chrome it has 3 bottoms. The
+bigger and back ward and refresher and it look super
+simple like my mom can and does use it but chrome is seriously
+complicated. Text surfaces -- wade calls it this really
+interesting risk -- and oh yeah and the prime resurface. And we
+can't bet whether or not is secure or not. It sounds pretty
+risky. That you have -- at the same time multiple tabs running
+in the background. I guess another one of the things that
+we are saying is happen and why we're saying more people shifted
+this job. Thick browser technology disappearing. So who
+has an uninstall flash? Whatever. And so like most of
+the thick web technology that we did have flash and silver line
+is replace almost future by future well as far as I know it
+doesn't mean anything except crazier java script. So what the
+fridge browser hacking so when I guess we talk about browser
+hacking we basically talk about -- object model and then using
+java script ma lesion ally -- or trick the user into information
+using social engineering tech nicks, whatever. The browser
+handbook and here are the two other call office. Makala
+doesn't like -- I'm so happy that you saw this slide and wade
+actual like pants. Someone has injected and controlling a piece
+of java script. Inside of a browser or not necessarily --
+but also -- exist within the browser. Plug in and so on and
+in the book we define -- when -- I think stages what where he are
+try together achieve. Trying to do to make people who did it
+sorts of assessment. Obviously there is the -- pull -- could be
+man in the middle or pushing attacks or whatever. Obviously
+executing a piece of java script unless you can maintain. So the
+next phases is obviously feature that control. And stable manner
+ask then you can move on -- most of this talk is just about the
+feature of control so I'm not going to be dropping -- that
+found in anything. Any 0 days. I a apologize. So let introduce
+beef. That's a picture that doesn't really show or help you.
+In what beef is at all but I guess the idea that the hook --
+is called hook by default you can obviously change that to be
+called whatever. And once you basically get that java script
+executing within a document it will stop pulling back to server
+so you can hook a bunch of resources -- to execute within
+the document object model and you obviously have like a
+preusers. This is the serious part of the talk because of a
+virgin DEFCON talker. Obviously the way beef maintains -- 2 2
+and half primary data channels. And these are pretty much like
+dynamic. And I guess the important comes down to why you
+would need to feature communication channels for a
+long period of time. You want to retain that home for as long as
+you can because -- time to complete and a really good
+example that I like to talk about and did some research -- a
+couple of years ago. Discontribruted blond. Using
+multiple browser -- >> I just wanted to say thank you to
+everyone staying here late to see a new speaker. How is he
+doing? Is he doing well? >> That dude sucks. >> Can you
+understand anything he is saying? >> No. >> Dude, thank
+you. >> He said he is going to make a boiling maker. Any way I
+think you know the drill to new speakers to DEFCON. Thank you
+for coming. >> As you were -- >> So obviously if are you kind of
+doing these sorts of attacks the longer you can maintain that
+communication channel, sometimes you'll need the time -- the
+second channel is obviously web sockets. Channel -- thing that
+introduce also another piece awesome software engineers and
+also DNA. I want to show you guys you probably can't read
+this are showing some of the beef -- java script -- we
+actually do is just and you can see this is -- what happens in
+polling period. The browser is -- to send request -- not too
+complicated. Basically how Gmail works. And what you see here
+right in the middle there is basically an event handle for --
+through -- the UI -- it will basically send through. And
+there a lot of different views you will see the record response
+that sort of communication channel. Web sockets are pretty
+cool. Also kind of hit and miss depending on what you are
+talking about. Quite often it is does and it pretty interesting.
+So this is a relatively new -- basically there is a couple so
+if you to send data back to beef you kind of brake it down and
+you dynamically build imagines which are put into the dome and
+those imagines are domain which are automatically generated.
+Listed as a DNS. It will start beef. As well. So you can see
+they'll be a send function by -- imagine source. Blah, blah,
+blah. Now there is a problem with each of these communication
+problems and if you look at this if I capture is obvious.
+Whatever. All your traffic goes to your server from a defender
+use -- terrible -- all cows lead to run. Now there is a couple of
+ways you can get around this. You can set up multiple beef
+service. It achieve by multiple interceptions. And that's not
+the human there. [ LAUGHTER ] >> And that's what I said. And
+American people -- maybe it knew what I us going to say before I
+was going to say it. Or you can set up proxy service. That's
+another interesting channel. Distribute them around different
+places. There is a bunch of different ways. But it -- so I
+said by default a sec now beef kind of work but is not going to
+be as useful. We also have evasion and extension within the
+platform as well which is really cool. Every time you are
+rendering a job -- before sent -- to the client. But that
+doesn't help -- can you use GFS which is not going to help. Or
+you can do something crazy. Like that. Like let's make a browser
+stop talking to beef server because they don't like beef.
+Like what? So the first time I started looking into web RTC,
+bull shit this stuff works. So this is a -- web browser with
+real-time communication. And -- they made it so you web chat to
+each other. Andon maybe something they were into or
+something. Is actually really cool and then the technology
+mature ask we're doing things like we are making thing that
+your browser -- similar technology. Hands up, has
+anybody played with web RTC -- yeah. To work this 3 primary.
+Kind of why it was used in the first place. I don't really
+touch on that. RTC connection is where it starts to get
+interesting and data channel which tells you a lot. So the
+media stream on this little java script allows sent some
+constrains in what's happening in the browser and what happens
+-- access your camera. And if you put yes that will be a blog
+stream data inside which is basically feeding from your
+camera phone. By default is not going to do anything your lock
+will be on but it has access to your media. Interface is where
+we start -- handler. Like a remote stream for example like a
+-- so you actually see the video from somewhere. I'll go into
+more detail if a bit. And then the data channel is kind of what
+it sounds like if you establish the PA connection. From --
+browser to browser. This is like there is actually -- really
+interesting uses like examples web RTC so if you go into the
+web site some guys set up PFP web transfer over RTC. So first
+person has goes to web site and generate a unique URL. You give
+it to your friend and you with grab and -- to each other and it
+doesn't go through the server. The fact that it works I fine
+surprising. This is all java script products freaking crazy.
+And so it really bugged me that you can have 2 browsers that are
+talking to each other. Go home java script you're drunk. Now
+obviously there is a lot more moving procs on how this works.
+One of the things the session constriction. You'll recognize
+this sort of stuff. SDP is needed within the web RTCP
+connection because the two browse need to talk to each
+other. Because they do talk to each other. Now web RTC doesn't
+actually how you share -- just say that you are do in fact have
+to share it. So in many instants there will be a web application.
+You'll share signaling data through there. We actually have
+use this capable within beef for a couple years. So when this
+first came out in chrome they get internal RT web -- was
+created because for web RTC -- session -- also internet IP
+addresses. So fire fox and chrome -- so in case you didn't
+know like if you using those browser and I think New York
+Time recently using this technology and organization is
+-- by default. Through the internet. This is more java
+script that's just the nit. Basically what's happening here
+down to bottom the java script is creating -- basically -- kick
+off a bunch like a request within the browser to figure out
+local STP -- out of -- so this appear stuff really great but
+obviously browser are separated by files. Contact to browser as
+a firewall. This is -- reaction that firewalls we trust. I said
+-- that's a line. Female line and some baby that's completely
+-- that's a duck. I can't see from up here. So in an idea
+world this is how kind of -- IP -- works. You have -- the first
+of which is -- session reversal utility. And basically is a set
+-- ability for a browser to get information. Google -- and I did
+and my demo so you don't need to create these, these exist. And
+are out there. Now if gnat between these two devices is not
+symmetry -- is still stuck. And this is where the second
+component. Temp service are not necessary free. There are some
+in the internet. Some of them you may be able to get on
+without paying money. Some of them maybe you have to pay
+money. How -- cunning you are. Maybe. There is also open source
+software. Spend it for yourself if you want. I didn't touch it
+in my demo. Basically these things can take the handshake --
+the browser thinks their next to each other but they're not. So
+this is all pretty complicated. We're about the use this
+technology called -- or ice. And basically helps you determine
+the best way to communicate from here to here. Kind of like the
+chrome way. Let's make an it as simply as possible as we K.
+shifted you are going to try and exploit and do some
+fingerprinting. And you know you're allowed to use a tool. So
+step one, obviously hook the browser. So exploit us -- put a
+java script -- beef server. This point with the web RTC enable to
+start to congressman. So at this point. Want to be the receiver.
+And call -- is session information and sense the
+signaling information backing out. Which is sent back down to
+the receiver. I'm going to build my own session to get my own IP
+information. Back up to and that point both browsers have enough
+information able each other they can start talking to each other
+directly. They do. And they can also do things like establish a
+data channel so that's after PA connection is establish you have
+another event handle to pull up your data channel. But the
+browser is still hook. They're still talking to your beef
+server. There still a problem. So this is where java script you
+can use commands at put into the web RTC extension inside a beef
+to tell one browser to command another to -- stop talk together
+beef server. And you can obviously use that beef server.
+Enough talking let's look at this thing. This is going to be
+fun. What? You wish man. I see you do that that did not end
+well. So we started beef but browser side by side here so the
+one on the left will be browser one and the one on the right
+will be browser 2. So I turn on both me massager to see stuff
+happen. And if you -- if it doesn't say yes it didn't work.
+I think Safari works I'm not sure. So I go on chrome on
+different computer. And on Android as well. Now the first
+time I did this research I could not get this to work now I have
+gotten pass that problem. Now it works fine. So about five
+browser hooks. That's lovely and we have some new UI options and
+then select as a receive. And then click on a browser and in
+in there you can see a list of connectivity. And once that kind
+of connective has occur you can see the connected status so they
+now have a connection between each other. So I walk through
+what's happening with the PA connection. Both messages is
+relatively useful so this browser on the left -- and then
+basically starts to try and make the call and to do that it has
+to make the session -- IP addresses and IPP ports. So is
+the beef and then it will wait for -- to answer back. So
+obviously the reserve starts receiving those messages. And
+then finally it goes awesome I'm now ready to keep off my own PI
+connection object. Sign session sends back an answer. This is
+how you can talk to me. That signal again ahead back. I'm
+surprise this stuff works. So at this point each has enough
+information about each other they can start talking to each
+other. They're actually connected. So these two browsers
+now -- have yeah. And what we are going to is like a star.
+Browser number one and you'll see slowly. Getting fire fox to
+work was a real pain in the ass. Maybe 5 months -- I got re drunk
+and I tried it when I was sober and I got to work. Whether every
+or not that's scientific proof you get more stuff done with
+alcohol. I don't know I'm only a computer sign scientist. -- Tab
+on the rest of the browser you see they're connected to just to
+number one. Now what we can do from here is we couldn't do
+previous. -- Module ID -- send commands -- out standing over
+the data channel. Executed on the PI back. Browser one, detect
+the last pause was there. Can you deal with ups away. So
+browser 2 is running that command and is going yes, I have
+last pass. And that browser has last pass. So that's basically a
+command module which is kind of cool and the last pass module is
+pretty interesting as well. But obviously after these browser
+are still online talk together beef server. So command the PA
+to go to still so what we start to see now is each of these
+browser is talk together beef server and basically drop --
+like a timing or ton period 30 secs so they take a little bit.
+You'll see me refresh the browser. And once the browser is
+still it starts to send a message -- so you'll see
+eventually they'll fall off the online folder and into the
+offline folder except for number one. But they still and we can
+communicate. Jump into the browser -- you see on the still
+browser they're not making any web request. Network browser 1
+is obviously talking to beef and browser two will no longer send
+request. Java script is pretty cool. And just to demonstrate
+there is like a -- data channel available I use the silly prom
+command. I'll send -- is not settle but is one step. After
+command module and -- because the way we built the actual
+command module inside of SKF is horrible. I'm pretty sure -- is
+terrible. Numbers you see the doll pop up and are like hay how
+are you doing. What? Sweet. Deaf con and I'll send it back.
+Results put that data back and you'll notice that the browser
+did not send any data to beef server. Your network -- that
+browser is not talking to the beef server. Like also I like to
+show one of my favorite beef servers. Searching for the term
+Rik. That's my favorite. What? That sucks. [ APPLAUSE ] >>
+Yeah. So there are a few things happening under the hook for
+beef to behave in this way. Some terrible rub by I have done. The
+first thing we have establish new data base. To able to handle
+signaling message. Specific RTC stuff to browser. This is
+another one of the data models. Then we have done like API hook.
+Actually for those who have not developed in beef what you like
+about it super extendable. I was able to interact with the hook
+-- dynamic -- if you are doing research. Java scripture. I
+definitely check out. So this RTC signal to body function and
+one beneath it runs every time the hook is generate and had it
+will add signal messages. The handle defend new beef server.
+So these are the end points that when the browser -- we have some
+rest APR so most of that you can actually do. Do it all from the
+rest IPR. When I first demonstrated this I was doing it
+in the console -- but that shit is -- threats and job and stuff.
+And obviously can you wrap it up beef extension and set
+everything else out to work. Now the last piece of the pie the --
+java script magic. And I'm like a terrible developer. I like to
+think I know what I'm doing, but if I'm doing software
+development I'm in the computer with my elbows is like 6 hundred
+lines of java script. Seriously frequent kill me. And in that
+part. Right in the middle is these events logic. So if I
+receive a data channel. I'm going to go into the still mode
+and click a bunch of time. If I receive an in still I'm going to
+come out of that state. Execute java script or whatever. Now
+there is a bunch of issues with this. This one -- so there was
+issue with chrome and fire fox. I got over that hurdle. Right at
+the beginning there is a reliability option that you
+would use. When I was first doing this they would recommend
+set -- between the browsers. Now I never had problems with it. I
+had PS connected for hours and hours without a problem. A --
+Internet explorer sucks. H does not help. Microsoft if -- from
+just so they can bring Skype to browsers. And that's it? And
+like chrome fire fox have had this for 2 or 3 years. Is kind
+of the structure. Now obviously one other thing is the signaling
+compiles communicating if a browser itself -- so if browser
+starts to move around and it start to change the code
+currently does not handle that gracefully at all. Is terrible.
+And obviously you have touched the beef once or twice. You got
+to let it lick you in the face at least once or twice. Have you
+seen how long that guys tongue is? You so not happy. And also
+if you are into -- response this stuff is pretty tricky. This is
+another one of -- incident response relates -- Carol. If
+you monitor your egress you spot your browser. Obviously in my
+response configuration you can do some things. I'm going to
+talk to beef. I'm going to run a command module. If I lose a peer
+it doesn't matter. So this stuff can be more advance. From time
+to time this might hit a one or a two. Same thing signature. --
+the cooks that were done. His like make a change and two hours
+later he makes another change. His like we're not doing this
+anymore. Because really we're just going what java script is
+meant to do. There is open source tan implementation. If
+you go behind firewall. Handle to prevent. Like that stuff I'm
+got thing. And I've actually run in a bunch corporate and I'm
+always surprise it finds it ways out. Behind maybe more active
+proxy style environment. That could be interesting. And that
+kind comes to the end of my talk I need to call some shout outs.
+Wade who's not here who is frequent lovely dude. Makell who
+is here. -- everybody who is here and say I'll buy you a beer
+I fucking love you guys. Shout out to everybody in Australia. I
+love you guys. I think I have 2 minutes for question so if
+anybody has a question. I can hear you. So the question was.
+You're really handsome how do you maintain those stunning good
+look and how do work and have a family and shit and basically is
+beer and is -- any other questions? Okay so the question
+what tool does I use about java script. That's a really
+interesting question. I did a little beef talk and I basically
+said most of the java script inside of beef is kind of --
+these java scripts -- 6 and all the -- that's coming out we are
+not using a bunch of that. Using a lot of technology that people
+use. Browser define. Like we don't. Like some of the guys --
+I D bug it. Like console dot logging. And opening up a con
+sol log. I'm getting thumbs up. I think is one of those things
+because mostly people are trying to squeeze stuff out and -- the
+use XJS is really -- there is not been love as much for
+project over the last couple of years as it probably should be.
+Amakeli has been doing a lot of -- so -- that's the biggest
+thing we over the last couple of years. But non -- I frequent
+love and hate java script. Ruby I'm the same there. And I'm like
+-- I computer really good. Fuck it, any other questions? No I'm
+out. All right guys, thank you so much [ APPLAUSE ]

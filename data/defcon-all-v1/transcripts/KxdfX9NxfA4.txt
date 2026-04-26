@@ -1,0 +1,463 @@
+>>Thanks, thanks for attending
+our talk uh today we’re share
+about how we exploit Qualcomm WLAN and the modem o the over
+the air, and finally compromise
+the linux kernel. Uh about us uh we are the security researchers
+from Tencent Blade Team. Uh,
+Tencent Blade Team uh is founded by Tencent Security Platform
+department in 2017. Uh, we focus
+on uh security research in the areas of AIoT, mobile devices,
+cloud visualization, Blockchain
+and uh etc. [clears throat] uh, this is the Agenda. Uh, firstly
+we are introduce some uh related
+works, uh we know that WLAN security is a hot topic uh
+recently to norm exploit uh
+Broadcom wifi chip is uh 2017 and uh this year on malware.
+Today our talk is about
+Qualcomm. How do we know? Uh there is no public exploit on
+Qualcomm wifi chip so how secure
+are the qualco- uh Qualcomm wifi? There’s a simple uh
+illustration about uh
+architecture of qualco- Qualcomm wifi. There are two important
+things, the first one uh is such
+uh start from Snapdragon 835 the double line for more is
+integrated into the base ban the
+substation. So, the double line and the modem are wrong in the
+same processor now. The second
+thing that you’re going to see uh in Qualcomm’s uh
+implementation most of the
+function there is implemented in the linux kernel driver named uh
+QCACLD uh there are plenty of
+vulnerabilities uh in this driver. That is well known WLAN
+host vulnerabilities. Our talk
+is not about the WLAN host issues it is about the WLAN
+firmware itself. Uh, we know
+that, uh there is no public talk on the Qualcomm WLAN firmware
+previously so, how about the
+security status? Uh, we will answer this question. Before we
+go into the details of WLAN fir-
+and modem firmware we need to reduce the debugger we use it to
+debug the firmware, this is a
+key step for us to analyze the modem and the WLAN. Uh then, uh
+modem boot authenticator and the
+modem images infrasystem you can see mba dot mbn is the mba
+image, modem dot mdt and the
+modem dot bxx um modem images this images have a specific
+format according to Qualcomm’s
+official documents. Like uh application process, modem
+process also has a secure boot
+flow. The flow is like this. Uh firstly, linux kernel we load
+MBA and um modem images from to
+physical memory. The second, uh linux kernel we are sent the
+start physical address of MBA
+and uh reset the modem processor. Modem PBL in ROM
+where it verifies the MBA image,
+if success, it will jump to the MBA code. Finally, MBA will read
+and verify modem images if-if
+success it will jump to the modem main code. Uh the pil_bot
+function, in linux kernel
+describes the boot flow of modem. Uh you know we load uh m-
+MBA and the modem images to
+physical memory and then check MBA and the modem images to be
+verified and security with the
+modem processor. Linux kernel can restart the modem processor
+at anytime and it will hit
+pil_bot function anytime you want to restart. Um, so
+vulnerability we use to bypass
+uh the modem secure boot use time of check, time of use path.
+When MBA verifying modem images
+it doesn’t lock the physical mem-memory reaching means that
+linux kernels there can modify
+the modem images. So, after MBA verify the one image, linux
+kernel can still modify which
+means that we have bypassed the secure boot check. Uh, the POC
+for the vulnerability is quite
+simple. There is the uh dif- dif file of pil_bot function. We
+just, let a pure recram mem
+function after we modified modem images. Uh, after we have
+ability to modify the modem im-
+images so we can inject debug server to modem side uh we
+injected demon thread to read 4
+commands from linux side the commands and the re- results we
+are being uh extrangulated using
+shared physical memory uh we now can issue debug command to debug
+WLAN in the modem firmware. Uh,
+now we have the uh uh debugger, we can analyze the modem and
+WLAN firmware matter either and
+uh Xiling will introduce the following details. >>oh, okay,
+I’m going to introduce the
+reverse engineering and the vulnerability and the
+exploitation of WLAN and then
+finally we’re going into the linux kernel. Ok, let’s reverse
+the architecture of Qualcomm
+WLAN. Uh, the WLAN is not the baseband subsystem and the
+hexagon architecture and not
+other architecture hexagon architecture, so, you can
+analyze firmware and if we
+controlled the WLAN, you have actually controlled the baseband
+sub- sub system. Okay, oh here
+your simple figure for the WLAN architecture. From the fig you
+can see that a Qualcomm WLAN
+you’re not a full MAC layer firmware. Most of the function
+of W-WLAN uh implemented in the
+next to driver you can see here in the QCAC driver okay. Now see
+into our smaller attack surface
+than the other windows, the work to be done here you know the
+firmware you’ll call the
+offloader that you see the offload MAC layer. The middle
+attack surface here you know
+offload handler. The offload handler is actually uh a table,
+a functioning table. And there
+are user vectors out here packager and if we are
+interested in we are parser
+[inaudible]. So, the attack hook for the handle here, uh when the
+offload handler handle the
+packager. So, you can analyze okay give an example for how the
+WIFI consist point is played on
+the WIFI list see, if you turn on the WIFI in the settings and
+you open the WIFI you’ll see a
+list of the WiF- accessible internet okay? Actually, when
+you turn turn on WIFI the
+android firmware can issue command to the driver and the
+driver the command the firmware
+to scan the nearby WIFI hotspot. Finally, the firmware we are
+move from the 200’s into the
+handler table. When the other hotspot or access point that’s
+in the packet the CPU have a um
+accessible to send out beacons, and the other path user so our
+handler received- recieved the
+data and the path user. If uh into the management of beacon,
+we are transferring in to the
+driver and finally, we will notify the user space
+application so that you can see
+the SSID and the uh all the informations okay. Okay, so now
+we have some basic sense about
+the Qualcomm WLAN uh lets start at the reverse engineering. Uh,
+this is the firmware loaded by
+modem, uh this is a WLAN firmware, it was loaded by modem
+to this position and this is the
+disassembler, and this is the wonderful SDK provided by
+Qualcomm, and instruction
+reference for the hexagon architecture. Okay, okay so the
+WLAN firmware have more than 8
+solid functions, it’s a difficult task to reverse these
+functions without any knowledge.
+Uh, luckily qualcomm have go from hint. You can see that most
+of the users we’re seeing use
+the string table uh we can find a lot of function names. And uh
+the other thing is the import
+function because the WLAN from where you load load the by the
+modem at the shield library so
+the WLAN u-use a lot of functions from the modem and
+leave the function names in the
+important function table. They’re quite useful, the string
+table and the important
+functions. Okay, the target e’re going to reverse engineer in is
+uh Offload handler. Uh, the
+middle attack surfaces use the offload handler, so, the
+question is how to find the
+handler table? The answer is that you can first find the
+string from the string table, uh
+that is this string uh non data offloader and then check the
+reference of this string to find
+the function name and uh find uh the fu-function name the long
+data handler uh you can see this
+uh this is a big function, actually it’s a-a big loop. And
+the fix the accuracy in the
+handler table, and uh then call the functions to-to the job. Ok,
+so this is uh material attack
+surface you can find the table here and the find the functions.
+Uh, this is a sample function,
+one of the functions looks like this so mostly importance is to
+find the data pointer. If you
+send the data, uh if you want to attack the WLAN you first send
+the data, the hard to find the
+data dat- data flow, this is the entry the one of the handler,
+you can see here this is the
+data pointer uh ox 5B, 5A, 5 9, 5 8 this is the data pointer so
+you find this function and find
+the data pointer and analyze the uh function and the process -ess
+of the uh um data pointer then
+you know how what is the function doing and handler
+vulnerabilities. Okay I think
+this is uh mostly important set in this talk uh you can find the
+function and find the data on
+the handle when vulnerability you want. Okay, ready, so let’s
+start with rotation. Uh, this is
+a roadmap uh we are here, we can send out a some signal using the
+WIFI signal or something er else
+we are here we can send out the signals, WIFI signals and we are
+going to combine with WLAN and
+uh then we are discovery into modem. Finally, we are into the
+linux kernel. Okay to combine
+with for the linux kernel. So, before we go, let's check the uh
+mitigation status of WLAN to
+setup an exploitation strategy. From the mitigation table, we
+can see that there are lots of
+mitigations uh for example the heap, heap will have ASLR the
+address of the heap is not a
+fixed one. And the heap will have protection heap cookie so
+uh the overflow on the heap will
+be difficult to exploit and also there are dp uh you are unable
+to uh, uh jump into the data
+segment. Uh, also you are unable to write to the code segment
+directly if you want to do so,
+how to change the memory retribution uh k. Also, there
+are frame limiter, frame limiter
+to particular SP the frame key to protect take the return
+address uh so if you want to use
+some technical like a ROP, ROP is time to wake because the
+protection here mhm but a we are
+very lucky, the code ASLR is letting enable this so the code
+AGS is fixed and the CFI is not
+enabled so, if we although we can not use IOP we can use
+something called the FOP
+function oriented programming that you uh in the calculator of
+the IOP or the calculator uses
+the function core, not a return core uh return it’s a function
+core, function oriented
+programming okay? We also, we are lucky the issue you find in
+the global data area and uh here
+there is also no ASLR. So, the address of the data is also
+fixed, okay we know the address
+of the data the wat- around the data address okay let’s see the
+details of the vulnerability uh
+CVE-2019-10540 ok this issue has already been announced in the
+android and the Qualcomm
+security breaching and they have been patched. So, if you are
+interested about the detail
+information for the vulnerability for it’s here the
+security beacon on the 29th,
+this issue has been fixed already. Uh, uh this issue even
+more of the offloader handler,
+uh y-y remember this table, the offloader table there are lots
+of functions uh called the
+offloader handler, well the handler have the problem and uh
+it’s pre auths frame handler
+[clears throat] uh handle the OT, uh OTA pre auths uh pre
+auths means you don’t have to
+connect the too space finder access pointer, you don’t have
+to connect to connect to h-house
+port. You just have to turn on the WIFI then the uh formula 1
+label okay. It’s pre auth
+vulnerability. Okay, this is uh vulnerability code, I will
+transfer it, translate it into
+the C code uh this is [inaudible] you can see this
+Global and uh this lump checker
+very latent and we are coding much of the data into the uh
+destination uh a copy of so uh
+and this is global if you have enough data. This is the
+vulnerability, ok hmm hmm okay
+so, let’s check the data around the overflow address. You can
+see the overflow from here,
+Global Buffer. In the, if you want to do a copy, Ox44 data
+into each item. From here, the
+Global Buffer into here you can see 44 bytes of data, 44, 44,
+it’s like it’s a loop, okay. You
+know, this is a Global Buffer, in the Global static area, so,
+the address we al-already know
+because there is no SAR. The mutation in the table you’ll
+remember there’s no SR so, we
+know the gist of the-the overflow data. So, it’s very
+convenient and fast to exploit.
+Okay, we can analyze the data around the overflow address we
+can analyze the data here and
+quickly you become find out uh after set C is a very useful
+data, it’s very useful func- uh
+data point, pointer to uh something we can uh mimic into
+a-a useful job. We call it the
+smart pointer, using the vulnerability we can override
+this smart pointer,
+oride-override the content of this pointer. Okay, see how we
+use the smart pointer. We can
+send out the packaging and uh goes into this uh this uh code
+flow to use the override on the
+data. You can see, this is a smart pointer, we override so we
+can, we can change it to our
+destination we are interested in and uh before we call into this
+code flow. Finally, we uh
+override these 2 bytes, uh actually sorry there’s 3 bytes,
+C, D and 14, f- we override this
+3 bytes okay. Let’s see the detail, we override the smart
+pointer using the vulnerability
+and then we uh have two tests, the first test you test the
+destination equal to 1 and the
+second test is to test the-the smart pointer plus 6 equal to
+the MacAddress of the sender,
+and uh finally, if the two tests pass we are right to the uh 3
+bytes using the data from the
+OTA packet uh this is the data we controlled and uh send. And
+the MacAddress is also we
+controlling the sender. So, the only constraint is that if we
+pass, bypass this-this-this
+check we can write a code to the destination we are interested
+in. So, we can overwrite
+something like a function point, data point or other things we
+are interested in to do the job,
+okay. So, we have a-a Global write- write perimeter so we can
+write it to anywhere we want if
+we can bypass this check. Okay, Just a quick example, uh we
+override the smart pointer to
+this address xxx and uh the know the byte is 1, so we can bypass
+the check here uh we can, we can
+bypass the check here, okay? Then we can write it to the
+offset of C uh uh 56, 78 we can
+see here, we can write the C and the D and we use the 6 uh
+5,6,7,8 we can write it to here,
+we can use we call it the perimeter Global Write with
+Constraint okay. We can write it
+to anywhere useful if you know it’s the bit 1 stood up. So, a
+meaningful address or data you
+start with 4 bytes, so how to write 4 bytes, the answer is
+quite simple. We just, using the
+right address, the first time on the lower 2 bytes you know
+there’s 5, 6, 7, 8 and uh the
+second time we move the smart pointer uh forward up by 2 and
+uh this one, this byte use the 0
+or 1 become the 1,2,3,4 then the 1,2,3,4,5,6,7,8 uh 8 [clears
+throat] uh that takes the 4
+bytes and that is still not a problem you see, you want to
+write to here mmm 5, 6 and uh
+the problem is this bit is not equal to 1, so it’s hard to
+solve this problem you can sit
+first app and you foresee this 1 you can use the Global Write to
+modify this, this bit okay? You
+can fill the that, fill that bit to 1, then you can write to the
+target, this is basically we
+use. So, for this complex fig- actually, we want to control the
+PC and R0. Uh, R0 we have a- uh
+8 bytes, the first 4 bytes is the PC and the second 4 is R0.
+Uh [clears throat], we search
+from the memory and find this place we can write table and the
+reach here our remote package
+okay? Then, you see there are a lot of 1 and the 1 we can move,
+move the smart pointer forward,
+move on, move on, move on and then we can override the target
+PC and the R0 okay. So, we have
+control of the PC and R0 uh we can hmm, we can then run some
+FOP to do some complex job such
+as to write into the uh FOP and the mapping the RWX page this is
+to map some page to uh modify
+the code physical DRAM. And remember, this is a code
+segment, b00 and uh and
+originally come from 9,3,6 uh you want it to want to write the
+code segment so we using the FOP
+to uh map this uh 4,2,4,2 uh using this FOP. So, now we can
+write to the code segment, and
+uh we can write to we have a arbitrary write. So, we can
+copy, copy our shellcode into
+the, into the code space and the trigger, you can see we copy the
+shellcode. The shellcode usa-
+usually in the data packet, so we copy the data packet of data
+into the destination the 4,2,4,4
+and then we tr-trigger this function okay? So, now we have
+running our Arbitrary code in
+the WLAN. Actually, we have now in the WLAN okay we are going to
+the modem. Uh, the WLAN in the
+different uh process in the baseband of the modem we can see
+the kernel the QURT OS and the
+WLAN and the modem in the process and they’re running the
+user space. So, how to get into
+the WLAN or uh into the modem from the WLAN. There are
+numerous actions such as modify
+the code segment and uh write the modem data for complex
+functions but uh there all
+illegal. If you call uh if you do this dangerous actions, the
+baseband stops this and you are
+crushed, okay. But, you’ll remember you can map memory, so
+how about we map the modem
+memory. directly into the WLAN okay. Just like this, we map the
+modem um memory from on the WLAN
+okay it’s a memory map just map the physical memory into the
+WLAN virtual address and then we
+can modify the memory content okay. So, we can modify the code
+of the modem so we control the
+modem. Okay, so the last step is to escape from the modem into
+the linux kernel. This leaves
+the other map we are going to do okay there are a lot of attack
+surfaces, so if you are
+interested you can read about it later for detailed information.
+Okay. Uh, this is the issue uh
+the CVE uh 20, 19 1-0-5-3-8 which has already been fixed in
+the August android security
+breach uh you can see that you check from the data pac-packet
+coming from the modem okay. Uh,
+what’s this doing? Uh, actually it’s about the memory management
+of Qualcomm multi-processor. Uh,
+so very big topic in fact about uh memory management so it’s uh
+simplified with tree figure. Uh,
+there are two things you need to know, first thing is that linux
+maps the model that means the
+whole system, uh the memory of the whole system is management
+by the linux kernel. Uh, the-
+the peripheral such as Venus, modem, WLAN or a bluetooth
+oth-other peripheral subsystem
+the mem-memory is all management by, by the linux kernel and the
+linux kernel we are are use the
+SMMU to protect the memory. For example, if the modem owns, owns
+this, this memory, uh everytime
+and the other, other peripheral check this DRAM and the SMMU you
+check uh the permission and find
+out that the venus doesn’t have this permission and then this
+whole system is down. So, this
+is the two things you’re remember linux uh linux uh
+master motor and SMMU protect
+the uh memory. So the problem you’re here in fact this is uh
+mystery lo- logic, generally
+linux we are decide the address and decide to ans uh uh assign
+to other profiles of the
+subsystem. Over here you can see the address and the size uh
+determined by the modem uh um we
+don’t know why but it is for the modem send out the address to
+linux, then linux will use this
+address directly and use the size directly. So, uh, if we uh
+send the address to the code
+address on the linux so the address we are be uh so the
+address we are be a map to into
+modem and then modem can modify the code level of the linux
+kernel, that is the issue okay.
+So, now we are actually in the linux kernel so, we’re gonna
+talk about how to send out the
+payload. Uh, actually, before we are using this copy and WIFI
+tengo but it’s not-not very
+stable. Finally, we are u-using a Pixel 2 to send out the
+pay-payload and using the Pixel
+2 to attack the Pixel 2XL. So, you can see the Pixel 2 send out
+WIFI payload and then Pixel 2XL
+we uh receive the payload and then uh confirm it ok. This is a
+whole roadmap we are using Pixel
+2 send out this and finally eh from modem into the linux kernel
+ok. Into WLAN, into modem, into
+linux kernel ok. Let’s uh use some [clicking and typing] ah
+the demo is here uh can I see?
+Okay uh [mouse clicking] uh this is on left is the Pixel- Pixel
+2. Uh it is sending sending out
+uh package send out the- the payload to attack the left is
+the Pixel 2 XL. Okay, you can
+see the information on the system okay, so the whole
+process near[inaudible] can see
+uh now we are we are in the shell and the the [clears
+throat] linux kern uh linux is
+enforcing. So, we have no permission and to- to the
+dangerous so this, they are
+sending out the payload-payload and uh that’s-that’s speed up,
+speed up, speed up so the linux
+they are enforcing you know enforcing, so the Pixel 2 they
+are sending out the payload it’s
+uh about the streaming is okay- okay exploit done. Okay, okay
+see wait for one minute [mouse
+clicking] and you can see finally we are getting into the
+linux kernel and uh disable the
+s id linux flow. Uh, now, okay we can use the d method actually
+we are running arbitrary code in
+the linux kernel from the mo- remote WLAN ok. Um [applause] uh
+thank you. Uh, so time is up and
+uh, uh we note this issues al- already been fixed uh in the
+August briefing and the patch
+and you can see the detailed information here. And today we
+talked about how to remotely
+into-into the kernel and the OTA package into WLAN and the modem
+the for- full chain and the
+vulnerability and the exploitations and the baseband
+substation, so thanks very much
+for your time, thanks very much. [applause]
