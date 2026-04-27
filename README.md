@@ -37,6 +37,8 @@ Grep raw transcripts with local context:
 npm run snippets -- --query "google homes?" --regex --sentences 2
 ```
 
+Snippet search returns the matching sentence plus two sentences before and after by default. If an auto-caption transcript has bad punctuation, it falls back to a bounded word window instead of printing a giant paragraph.
+
 ## What You Get
 
 - `ideas.html`: standalone browser UI.
