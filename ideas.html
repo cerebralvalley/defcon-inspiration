@@ -604,7 +604,7 @@
       <div class="control-divider"></div>
       <div class="control-group">
         <button class="pill pill-sort" data-sort="score">By Score</button>
-        <button class="pill pill-sort" data-sort="views">Views</button>
+        <button class="pill pill-sort active" data-sort="views">Views</button>
         <button class="pill pill-sort" data-sort="useful">Useful</button>
         <button class="pill pill-sort" data-sort="alpha">A-Z</button>
       </div>
@@ -632,7 +632,7 @@ const VIDEOS_URL = 'data/defcon-all-v1/videos.json';
 let projects = [];
 let filter = 'projects';
 let searchMode = 'fuzzy';
-let sort = null;
+let sort = 'views';
 let villageFilter = 'all';
 let openSet = new Set();
 let starred = new Set();
