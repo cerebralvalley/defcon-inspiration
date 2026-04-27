@@ -31,10 +31,17 @@ Machine-readable output for agents:
 npm run --silent search -- --query "npm malware supply chain" --json --limit 5
 ```
 
+Grep raw transcripts with local context:
+
+```bash
+npm run snippets -- --query "google homes?" --regex --words 55
+```
+
 ## What You Get
 
 - `ideas.html`: standalone browser UI.
 - `src/defcon/search.mjs`: local search CLI.
+- `scripts/grep-snippets.mjs`: raw transcript grep with surrounding context.
 - `data/defcon-all-v1/idea-index.json`: summaries, findings, and derived ideas.
 - `data/defcon-all-v1/videos.json`: YouTube metadata.
 - `data/defcon-all-v1/transcripts/*.txt`: raw transcripts by YouTube video id.
@@ -88,6 +95,9 @@ npm run search -- --id XNtS0wQIyjY --show findings
 
 # Print transcript text
 npm run search -- --id XNtS0wQIyjY --show transcript --transcript-lines 200
+
+# Grep all raw transcripts with context
+npm run snippets -- --query "google homes?" --regex --words 55
 ```
 
 Install globally from a local checkout:
@@ -96,6 +106,7 @@ Install globally from a local checkout:
 npm install -g .
 defcon-search --query "container security"
 defcon-search --id uFyk5UOyNqI --show all
+defcon-snippets --query "google homes?" --regex --words 55
 ```
 
 ## AI Agent Prompt

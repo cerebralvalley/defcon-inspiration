@@ -22,12 +22,14 @@
     "LICENSE"
   ],
   "bin": {
-    "defcon-search": "src/defcon/search.mjs"
+    "defcon-search": "src/defcon/search.mjs",
+    "defcon-snippets": "scripts/grep-snippets.mjs"
   },
   "scripts": {
     "build": "node scripts/build-static.mjs",
-    "check": "node --check api/status.js && node --check src/defcon/search.mjs",
-    "search": "node src/defcon/search.mjs"
+    "check": "node --check api/status.js && node --check src/defcon/search.mjs && node --check scripts/grep-snippets.mjs",
+    "search": "node src/defcon/search.mjs",
+    "snippets": "node scripts/grep-snippets.mjs"
   },
   "dependencies": {
     "dotenv": "^16.6.1"
