@@ -1,6 +1,6 @@
 # DEF CON Inspiration
 
-Public DEF CON research idea index with summaries, transcripts, a browser UI, and a local search CLI.
+Public DEF CON research idea index with summaries, transcripts, optional embeddings, a browser UI, and a local search CLI.
 
 This repo is meant to make the dataset easy to clone, inspect, search, and build on.
 
@@ -16,8 +16,9 @@ https://defcon-inspiration.cerebralvalley.ai
 - `api/status.js`: dataset status route.
 - `data/defcon-all-v1/idea-index.json`: project summaries and ideas.
 - `data/defcon-all-v1/videos.json`: source video metadata.
+- `data/defcon-all-v1/embeddings.json`: precomputed vectors for optional local CLI semantic search.
 - `data/defcon-all-v1/transcripts/*.txt`: raw transcript text by YouTube video id.
-- `src/defcon/search.mjs`: local CLI for exact and fuzzy search.
+- `src/defcon/search.mjs`: local CLI for fuzzy, exact, and optional semantic search.
 
 ## Dataset
 
@@ -26,6 +27,7 @@ Current corpus:
 - 2,175 projects
 - 4,350 ideas
 - 2,195 transcripts
+- 6,525 embedding records
 
 ## Local Search
 
@@ -40,6 +42,15 @@ Search modes:
 ```bash
 npm run search -- --query "npm malware" --mode exact
 npm run search -- --query "npn malwar dependncy" --mode fuzzy
+npm run search -- --query "supply chain attacks" --mode semantic
+```
+
+Semantic search is local CLI only and requires your own OpenAI API key:
+
+```bash
+cp .env.example .env
+# add your own OPENAI_API_KEY to .env
+npm run search -- --query "supply chain attacks" --mode semantic
 ```
 
 For machine-readable output, use `--json`. If calling through `npm run`, use `--silent` so npm does not print its command banner before the JSON:
@@ -68,7 +79,7 @@ defcon-search --query "onion services" --mode fuzzy
 defcon-search --id uFyk5UOyNqI --show all
 ```
 
-The package includes the dataset, so the CLI works offline for exact and fuzzy search after installation.
+The package includes the dataset, so the CLI works offline for exact and fuzzy search after installation. Semantic search uses the included embeddings plus your own `OPENAI_API_KEY` to embed the query at search time.
 
 ## Data Files
 
@@ -77,12 +88,15 @@ Useful entrypoints:
 ```text
 data/defcon-all-v1/idea-index.json
 data/defcon-all-v1/videos.json
+data/defcon-all-v1/embeddings.json
 data/defcon-all-v1/transcripts/uFyk5UOyNqI.txt
 ```
 
 Each project in `idea-index.json` includes the source YouTube id/link, talk metadata, a project summary, findings, and two derived ideas with reproducibility scores.
 
 ## Website / Vercel
+
+The website does not use semantic search and does not call OpenAI. `npm run build` strips `embeddings.json` from the static `public/` output.
 
 ```bash
 npm install

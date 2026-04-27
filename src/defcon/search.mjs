@@ -3,9 +3,14 @@ import { readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { config as loadEnv } from 'dotenv';
 
 const ROOT_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const DEFAULT_DIR = resolve(ROOT_DIR, 'data/defcon-all-v1');
+const DEFAULT_MODEL = 'text-embedding-3-large';
+const DEFAULT_DIMENSIONS = 1024;
+
+loadEnv({ path: resolve(ROOT_DIR, '.env') });
 
 function parseArgs(argv) {
   const opts = {
@@ -42,8 +47,8 @@ function parseArgs(argv) {
     else opts.query += ` ${arg}`;
   }
 
-  if (!['exact', 'fuzzy'].includes(opts.mode)) {
-    throw new Error('--mode must be exact or fuzzy');
+  if (!['semantic', 'exact', 'fuzzy'].includes(opts.mode)) {
+    throw new Error('--mode must be semantic, exact, or fuzzy');
   }
   if (!['ideas', 'summary', 'method', 'findings', 'transcript', 'all'].includes(opts.show)) {
     throw new Error('--show must be ideas, summary, method, findings, transcript, or all');
@@ -64,7 +69,7 @@ function printHelp() {
 
 Options:
   --query, -q TEXT        Search query.
-  --mode MODE            fuzzy or exact. Default: fuzzy.
+  --mode MODE            fuzzy, exact, or semantic. Default: fuzzy. Semantic requires your own OPENAI_API_KEY.
   --limit, -n N          Number of search hits. Default: 10.
   --id VIDEO_ID          Show one project by YouTube id.
   --show SECTION         ideas, summary, method, findings, transcript, or all. Default: ideas.
@@ -75,7 +80,7 @@ Options:
 `);
 }
 
-async function loadData(dir) {
+async function loadData(dir, needEmbeddings) {
   const indexPath = resolve(dir, 'idea-index.json');
   const index = JSON.parse(await readFile(indexPath, 'utf8'));
   const projects = index.projects || [];
@@ -83,7 +88,12 @@ async function loadData(dir) {
     project.searchText = searchBlob(project);
   });
 
-  return { index, projects };
+  let embeddings = null;
+  if (needEmbeddings) {
+    const embeddingsPath = resolve(dir, 'embeddings.json');
+    embeddings = JSON.parse(await readFile(embeddingsPath, 'utf8'));
+  }
+  return { index, projects, embeddings };
 }
 
 function searchBlob(project) {
@@ -172,6 +182,59 @@ function isSubsequence(shorter, longer) {
   return index === shorter.length;
 }
 
+async function semanticSearch(projects, embeddings, query) {
+  const queryVector = await embedQuery(query, embeddings);
+  const byProject = new Map(projects.map((project) => [project.id, project]));
+  const scores = new Map();
+
+  for (const record of embeddings.records || []) {
+    const score = dot(queryVector, record.vector);
+    const previous = scores.get(record.projectId);
+    if (!previous || score > previous.score) {
+      scores.set(record.projectId, { project: byProject.get(record.projectId), score, match: record });
+    }
+  }
+
+  return [...scores.values()]
+    .filter((hit) => hit.project)
+    .sort((a, b) => b.score - a.score);
+}
+
+async function embedQuery(query, embeddings) {
+  if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY is required for semantic search');
+  const response = await fetch('https://api.openai.com/v1/embeddings', {
+    method: 'POST',
+    headers: {
+      authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: embeddings.model || DEFAULT_MODEL,
+      input: query,
+      dimensions: embeddings.dimensions || DEFAULT_DIMENSIONS,
+    }),
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`OpenAI embeddings failed: ${response.status} ${response.statusText}: ${text.slice(0, 500)}`);
+  }
+
+  const payload = await response.json();
+  return normalize(payload.data[0].embedding);
+}
+
+function normalize(vector) {
+  const norm = Math.sqrt(vector.reduce((sum, value) => sum + value * value, 0)) || 1;
+  return vector.map((value) => Number((value / norm).toFixed(6)));
+}
+
+function dot(a, b) {
+  let sum = 0;
+  for (let index = 0; index < a.length; index += 1) sum += a[index] * b[index];
+  return sum;
+}
+
 function formatSearchResults(hits, opts) {
   const lines = [];
   hits.slice(0, opts.limit).forEach((hit, index) => {
@@ -246,10 +309,12 @@ async function main() {
     return;
   }
 
-  const loaded = await loadData(opts.dir);
+  const needEmbeddings = opts.mode === 'semantic' && !opts.id;
+  const loaded = await loadData(opts.dir, needEmbeddings);
   const projects = opts.includeArchive
     ? loaded.projects
     : loaded.projects.filter((project) => project.project_kind !== 'archive');
+  const embeddings = loaded.embeddings;
 
   if (opts.id) {
     const project = projects.find((item) => item.id === opts.id);
@@ -260,7 +325,9 @@ async function main() {
 
   if (!opts.query) throw new Error('--query is required unless --id is provided');
 
-  const hits = opts.mode === 'fuzzy'
+  const hits = opts.mode === 'semantic'
+    ? await semanticSearch(projects, embeddings, opts.query)
+    : opts.mode === 'fuzzy'
       ? fuzzySearch(projects, opts.query)
       : exactSearch(projects, opts.query);
 

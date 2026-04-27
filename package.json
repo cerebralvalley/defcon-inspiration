@@ -28,5 +28,8 @@
     "build": "node scripts/build-static.mjs",
     "check": "node --check api/status.js && node --check src/defcon/search.mjs",
     "search": "node src/defcon/search.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1"
   }
 }
