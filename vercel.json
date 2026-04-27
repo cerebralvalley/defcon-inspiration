@@ -2,12 +2,6 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "outputDirectory": "public",
-  "functions": {
-    "api/*.js": {
-      "maxDuration": 10,
-      "includeFiles": "data/defcon-all-v1/embeddings.json"
-    }
-  },
   "rewrites": [
     {
       "source": "/",

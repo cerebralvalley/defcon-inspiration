@@ -26,10 +26,7 @@
   },
   "scripts": {
     "build": "node scripts/build-static.mjs",
-    "check": "node --check api/embed.js && node --check api/search.js && node --check api/status.js && node --check src/defcon/search.mjs",
+    "check": "node --check api/status.js && node --check src/defcon/search.mjs",
     "search": "node src/defcon/search.mjs"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.7"
   }
 }

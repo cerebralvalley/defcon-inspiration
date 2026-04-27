@@ -1,6 +1,6 @@
 # DEF CON Inspiration
 
-Public DEF CON research idea index with summaries, transcripts, precomputed embeddings, a browser UI, and a local search CLI.
+Public DEF CON research idea index with summaries, transcripts, a browser UI, and a local search CLI.
 
 This repo is meant to make the dataset easy to clone, inspect, search, and build on.
 
@@ -13,14 +13,11 @@ https://defcon-inspiration.cerebralvalley.ai
 ## What Is Included
 
 - `ideas.html`: standalone dashboard UI.
-- `api/search.js`: Vercel serverless route for semantic search. It embeds the query and scores against precomputed vectors server-side.
-- `api/embed.js`: older query-embedding route kept for compatibility with previous local builds.
 - `api/status.js`: dataset status route.
 - `data/defcon-all-v1/idea-index.json`: project summaries and ideas.
 - `data/defcon-all-v1/videos.json`: source video metadata.
-- `data/defcon-all-v1/embeddings.json`: precomputed embedding vectors for projects and ideas.
 - `data/defcon-all-v1/transcripts/*.txt`: raw transcript text by YouTube video id.
-- `src/defcon/search.mjs`: local CLI for exact, fuzzy, and semantic search.
+- `src/defcon/search.mjs`: local CLI for exact and fuzzy search.
 
 ## Dataset
 
@@ -29,7 +26,6 @@ Current corpus:
 - 2,175 projects
 - 4,350 ideas
 - 2,195 transcripts
-- 6,525 embedding records
 
 ## Local Search
 
@@ -44,15 +40,6 @@ Search modes:
 ```bash
 npm run search -- --query "npm malware" --mode exact
 npm run search -- --query "npn malwar dependncy" --mode fuzzy
-npm run search -- --query "supply chain attacks" --mode semantic
-```
-
-Semantic search requires an OpenAI API key:
-
-```bash
-cp .env.example .env
-# add OPENAI_API_KEY to .env
-npm run search -- --query "supply chain attacks" --mode semantic
 ```
 
 For machine-readable output, use `--json`. If calling through `npm run`, use `--silent` so npm does not print its command banner before the JSON:
@@ -81,7 +68,7 @@ defcon-search --query "onion services" --mode fuzzy
 defcon-search --id uFyk5UOyNqI --show all
 ```
 
-The package includes the dataset, so the CLI works offline for exact/fuzzy search after installation. Semantic search still needs `OPENAI_API_KEY` because it embeds the query at search time.
+The package includes the dataset, so the CLI works offline for exact and fuzzy search after installation.
 
 ## Data Files
 
@@ -90,15 +77,12 @@ Useful entrypoints:
 ```text
 data/defcon-all-v1/idea-index.json
 data/defcon-all-v1/videos.json
-data/defcon-all-v1/embeddings.json
 data/defcon-all-v1/transcripts/uFyk5UOyNqI.txt
 ```
 
 Each project in `idea-index.json` includes the source YouTube id/link, talk metadata, a project summary, findings, and two derived ideas with reproducibility scores.
 
 ## Website / Vercel
-
-The browser does not download `embeddings.json`. Vercel bundles `data/defcon-all-v1/embeddings.json` into `/api/search`, so semantic search only sends the user's query to the server when Enter is pressed.
 
 ```bash
 npm install
@@ -110,7 +94,6 @@ Recommended Vercel settings:
 - Framework preset: `Other`
 - Build command: `npm run build`
 - Output directory: `public`
-- Environment variable for semantic web search: `OPENAI_API_KEY`
 
 Production target:
 

@@ -11,6 +11,5 @@ await mkdir(out, { recursive: true });
 await cp(join(root, "ideas.html"), join(out, "ideas.html"));
 await cp(join(root, "ideas.html"), join(out, "index.html"));
 await cp(join(root, "data"), join(out, "data"), { recursive: true });
-await rm(join(out, "data", "defcon-all-v1", "embeddings.json"), { force: true });
 
 console.log("built static assets into public/");

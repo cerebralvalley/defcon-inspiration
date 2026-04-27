@@ -582,7 +582,7 @@
     <div class="search-container">
       <span class="search-prefix">/</span>
       <input type="text" id="search" placeholder="Search projects, techniques, findings..." autofocus spellcheck="false">
-      <span class="search-mode" id="searchMode">checking search</span>
+      <span class="search-mode" id="searchMode">fuzzy</span>
     </div>
 
     <div class="controls" id="controls">
@@ -598,8 +598,7 @@
       </div>
       <div class="control-divider"></div>
       <div class="control-group">
-        <button class="pill pill-mode active" data-mode="semantic">Semantic</button>
-        <button class="pill pill-mode" data-mode="fuzzy">Fuzzy</button>
+        <button class="pill pill-mode active" data-mode="fuzzy">Fuzzy</button>
         <button class="pill pill-mode" data-mode="exact">Exact</button>
       </div>
       <div class="control-divider"></div>
@@ -631,12 +630,8 @@ const DATA_URL = 'data/defcon-all-v1/idea-index.json';
 const VIDEOS_URL = 'data/defcon-all-v1/videos.json';
 
 let projects = [];
-let semanticResults = new Map();
-let semanticQuery = '';
-let semanticReady = true;
-let semanticError = '';
 let filter = 'projects';
-let searchMode = 'semantic';
+let searchMode = 'fuzzy';
 let sort = null;
 let villageFilter = 'all';
 let openSet = new Set();
@@ -674,7 +669,6 @@ async function boot() {
   }
   render();
   listen();
-  checkSemanticSearch();
 }
 
 function loadStars() {
@@ -687,20 +681,6 @@ function loadStars() {
 
 function saveStars() {
   localStorage.setItem('defconProjectStars', JSON.stringify([...starred]));
-}
-
-async function checkSemanticSearch() {
-  semanticError = 'checking search';
-  updateSearchMode(document.getElementById('search').value.trim());
-  try {
-    const data = await fetch('/api/status').then(r => r.ok ? r.json() : null);
-    semanticReady = Boolean(data?.hasOpenAIKey);
-    semanticError = semanticReady ? '' : 'semantic unavailable';
-  } catch {
-    semanticReady = true;
-    semanticError = '';
-  }
-  updateSearchMode(document.getElementById('search').value.trim());
 }
 
 function searchBlob(p) {
@@ -919,16 +899,7 @@ function formatViews(value) {
 function filtered() {
   const q = document.getElementById('search').value.trim();
   let r;
-  const semantic = searchMode === 'semantic' && q && q === semanticQuery && semanticResults.size;
-  if (semantic) {
-    r = projects
-      .filter(filterPass)
-      .map(p => ({ ...p, semanticScore: semanticResults.get(p.id)?.score || 0, semanticMatch: semanticResults.get(p.id)?.match }))
-      .sort((a, b) => b.semanticScore - a.semanticScore)
-      .filter(p => p.semanticScore > 0);
-  } else if (searchMode === 'semantic') {
-    r = projects.filter(filterPass);
-  } else if (searchMode === 'fuzzy' && q) {
+  if (searchMode === 'fuzzy' && q) {
     r = projects
       .filter(filterPass)
       .map(p => ({ ...p, fuzzyScore: fuzzyScore(p, q) }))
@@ -1089,7 +1060,6 @@ function render() {
           <span class="meta-badge">${usefulnessLabel(p)} ${usefulnessScore(p)}</span>
           <span class="meta-badge">${esc(p.village)}</span>
           <span class="meta-badge">${formatViews(p.viewCount)}</span>
-          ${p.semanticScore ? `<span class="meta-badge">${p.semanticScore.toFixed(2)}</span>` : ''}
           ${p.fuzzyScore ? `<span class="meta-badge">${p.fuzzyScore.toFixed(2)}</span>` : ''}
           <span class="expand-arrow">▶</span>
         </div>
@@ -1143,52 +1113,7 @@ function updateSearchMode(q) {
     el.textContent = 'exact';
     return;
   }
-  if (searchMode === 'fuzzy') {
-    el.textContent = 'fuzzy';
-    return;
-  }
-  if (!semanticReady) {
-    el.textContent = semanticError || 'semantic off';
-    return;
-  }
-  if (!q) {
-    el.textContent = 'server semantic';
-    return;
-  }
-  if (semanticQuery === q && semanticResults.size) {
-    el.textContent = 'semantic';
-    return;
-  }
-  el.textContent = 'enter to search';
-}
-
-async function refreshSemanticQuery(q) {
-  if (searchMode !== 'semantic' || !semanticReady || q.length < 2) {
-    semanticResults = new Map();
-    semanticQuery = '';
-    render();
-    return;
-  }
-  try {
-    semanticError = 'searching';
-    updateSearchMode(q);
-    const response = await fetch('/api/search', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ query: q, limit: 220 }),
-    });
-    if (!response.ok) throw new Error('semantic search unavailable');
-    const result = await response.json();
-    semanticResults = new Map((result.hits || []).map(hit => [hit.projectId, hit]));
-    semanticQuery = q;
-    semanticError = '';
-    render();
-  } catch (error) {
-    semanticError = 'keyword fallback';
-    semanticResults = new Map();
-    semanticQuery = '';
-    render();
-  }
+  el.textContent = 'fuzzy';
 }
 
 function toggle(id) {
@@ -1206,16 +1131,8 @@ function toggleStar(event, id) {
 
 function listen() {
   document.getElementById('search').addEventListener('input', () => {
-    const q = document.getElementById('search').value.trim();
-    semanticResults = new Map();
-    semanticQuery = '';
     visibleLimit = 80;
-    if (searchMode === 'semantic') {
-      updateSearchMode(q);
-      if (!q) render();
-      return;
-    }
-    scheduleRender(searchMode === 'semantic' ? 0 : 120);
+    scheduleRender(120);
   });
 
   document.getElementById('controls').addEventListener('click', e => {
@@ -1225,8 +1142,6 @@ function listen() {
 
     if (modePill) {
       searchMode = modePill.dataset.mode;
-      semanticResults = new Map();
-      semanticQuery = '';
       visibleLimit = 80;
       document.querySelectorAll('.pill-mode').forEach(p => p.classList.remove('active'));
       modePill.classList.add('active');
@@ -1278,11 +1193,6 @@ function listen() {
 
     if (e.key === '/' && !inSearch) { e.preventDefault(); search.focus(); return; }
     if (e.key === 'Escape') { search.value = ''; search.blur(); render(); return; }
-    if (e.key === 'Enter' && inSearch && searchMode === 'semantic') {
-      e.preventDefault();
-      refreshSemanticQuery(search.value.trim());
-      return;
-    }
     if (inSearch) return;
 
     const cards = document.querySelectorAll('.card');
