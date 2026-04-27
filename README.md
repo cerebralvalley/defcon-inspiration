@@ -34,7 +34,7 @@ npm run --silent search -- --query "npm malware supply chain" --json --limit 5
 Grep raw transcripts with local context:
 
 ```bash
-npm run snippets -- --query "google homes?" --regex --words 55
+npm run snippets -- --query "google homes?" --regex --sentences 2
 ```
 
 ## What You Get
@@ -97,7 +97,7 @@ npm run search -- --id XNtS0wQIyjY --show findings
 npm run search -- --id XNtS0wQIyjY --show transcript --transcript-lines 200
 
 # Grep all raw transcripts with context
-npm run snippets -- --query "google homes?" --regex --words 55
+npm run snippets -- --query "google homes?" --regex --sentences 2
 ```
 
 Install globally from a local checkout:
@@ -106,7 +106,7 @@ Install globally from a local checkout:
 npm install -g .
 defcon-search --query "container security"
 defcon-search --id uFyk5UOyNqI --show all
-defcon-snippets --query "google homes?" --regex --words 55
+defcon-snippets --query "google homes?" --regex --sentences 2
 ```
 
 ## AI Agent Prompt

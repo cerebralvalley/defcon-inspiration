@@ -9,7 +9,9 @@ function parseArgs(argv) {
   const opts = {
     dir: DEFAULT_DIR,
     query: '',
-    words: 45,
+    mode: 'sentences',
+    sentences: 2,
+    words: 70,
     limit: 40,
     perVideo: 3,
     regex: false,
@@ -26,6 +28,8 @@ function parseArgs(argv) {
 
     if (arg === '--dir') opts.dir = next();
     else if (arg === '--query' || arg === '-q') opts.query = next();
+    else if (arg === '--mode') opts.mode = next();
+    else if (arg === '--sentences') opts.sentences = Number(next());
     else if (arg === '--words') opts.words = Number(next());
     else if (arg === '--limit' || arg === '-n') opts.limit = Number(next());
     else if (arg === '--per-video') opts.perVideo = Number(next());
@@ -37,7 +41,8 @@ function parseArgs(argv) {
   }
 
   if (!opts.query && !opts.help) throw new Error('Missing query');
-  for (const key of ['words', 'limit', 'perVideo']) {
+  if (!['sentences', 'words'].includes(opts.mode)) throw new Error('--mode must be sentences or words');
+  for (const key of ['sentences', 'words', 'limit', 'perVideo']) {
     if (!Number.isInteger(opts[key]) || opts[key] < 1) throw new Error(`--${key} must be a positive integer`);
   }
   return opts;
@@ -46,13 +51,15 @@ function parseArgs(argv) {
 function printHelp() {
   console.log(`Usage:
   npm run snippets -- "google home"
-  npm run snippets -- --query "google home|google homes" --regex --words 60
+  npm run snippets -- --query "google home|google homes" --regex --sentences 2
   npm run snippets -- --query "smart speaker" --limit 20 --per-video 2
 
 Options:
   --query, -q TEXT      Text or regex pattern to search across transcripts.
   --regex              Treat query as a JavaScript regular expression.
-  --words N            Context words before and after each hit. Default: 45.
+  --mode MODE          sentences or words. Default: sentences.
+  --sentences N        Sentences before and after each hit. Default: 2.
+  --words N            Context words before and after each hit in word mode, and fallback size for long sentence chunks. Default: 70.
   --limit, -n N        Maximum snippets. Default: 40.
   --per-video N        Maximum snippets per video. Default: 3.
   --dir PATH           Data directory. Default: ${DEFAULT_DIR}
@@ -75,6 +82,54 @@ function wordWindow(text, start, end, wordCount) {
   const prefix = before.slice(-wordCount).join(' ');
   const suffix = after.slice(0, wordCount).join(' ');
   return normalize(`${prefix} [[${match}]] ${suffix}`);
+}
+
+function sentenceSpans(text) {
+  const spans = [];
+  const boundary = /[.!?]+(?:["')\]]+)?(?=\s+|$)/g;
+  let start = 0;
+
+  for (let match = boundary.exec(text); match; match = boundary.exec(text)) {
+    const end = match.index + match[0].length;
+    pushSpan(spans, text, start, end);
+    start = end;
+    while (start < text.length && /\s/.test(text[start])) start += 1;
+  }
+
+  pushSpan(spans, text, start, text.length);
+  return spans;
+}
+
+function pushSpan(spans, text, start, end) {
+  while (start < end && /\s/.test(text[start])) start += 1;
+  while (end > start && /\s/.test(text[end - 1])) end -= 1;
+  if (end > start) spans.push({ start, end });
+}
+
+function sentenceWindow(text, start, end, sentenceCount, fallbackWords) {
+  const spans = sentenceSpans(text);
+  const hitIndex = spans.findIndex((span) => start >= span.start && start < span.end);
+  if (hitIndex === -1) return wordWindow(text, start, end, fallbackWords);
+
+  const first = Math.max(0, hitIndex - sentenceCount);
+  const last = Math.min(spans.length - 1, hitIndex + sentenceCount);
+  const snippetStart = spans[first].start;
+  const snippetEnd = spans[last].end;
+
+  // Auto-captions often miss punctuation, creating huge fake sentences.
+  if (snippetEnd - snippetStart > 1800) return wordWindow(text, start, end, fallbackWords);
+
+  return highlight(text, snippetStart, snippetEnd, start, end);
+}
+
+function highlight(text, snippetStart, snippetEnd, matchStart, matchEnd) {
+  return normalize([
+    text.slice(snippetStart, matchStart),
+    '[[',
+    text.slice(matchStart, matchEnd),
+    ']]',
+    text.slice(matchEnd, snippetEnd),
+  ].join(''));
 }
 
 function makeRegex(query, isRegex) {
@@ -110,7 +165,9 @@ async function main() {
         playlistTitle: video.playlistTitle || '',
         viewCount: video.viewCount || 0,
         match: match[0],
-        snippet: wordWindow(text, match.index, match.index + match[0].length, opts.words),
+        snippet: opts.mode === 'words'
+          ? wordWindow(text, match.index, match.index + match[0].length, opts.words)
+          : sentenceWindow(text, match.index, match.index + match[0].length, opts.sentences, opts.words),
       });
       perVideo += 1;
       if (perVideo >= opts.perVideo || hits.length >= opts.limit) break;
