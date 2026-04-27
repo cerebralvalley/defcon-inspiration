@@ -21,6 +21,7 @@ function parseArgs(argv) {
     limit: 10,
     show: 'ideas',
     transcriptLines: 80,
+    includeArchive: false,
     json: false,
   };
 
@@ -39,6 +40,7 @@ function parseArgs(argv) {
     else if (arg === '--limit' || arg === '-n') opts.limit = Number(next());
     else if (arg === '--show') opts.show = next();
     else if (arg === '--transcript-lines') opts.transcriptLines = Number(next());
+    else if (arg === '--include-archive' || arg === '--all-uploads') opts.includeArchive = true;
     else if (arg === '--json') opts.json = true;
     else if (arg === '--help' || arg === '-h') opts.help = true;
     else if (!opts.query) opts.query = arg;
@@ -72,6 +74,7 @@ Options:
   --id VIDEO_ID          Show one project by YouTube id.
   --show SECTION         ideas, summary, method, findings, transcript, or all. Default: ideas.
   --transcript-lines N   Lines to print for transcript views. Default: 80.
+  --include-archive      Include interviews, previews, ceremonies, contest updates, and other non-project uploads.
   --dir PATH             Data directory. Default: ${DEFAULT_DIR}
   --json                 Print JSON instead of formatted text.
 `);
@@ -110,7 +113,10 @@ function searchBlob(project) {
 function exactSearch(projects, query) {
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
   return projects
-    .filter((project) => terms.every((term) => project.searchText.includes(term)))
+    .filter((project) => {
+      const tokens = project.exactTokens || (project.exactTokens = new Set(project.searchText.match(/[a-z0-9_./:-]+/g) || []));
+      return terms.every((term) => tokens.has(term));
+    })
     .map((project) => ({ project, score: 1 }));
 }
 
@@ -304,7 +310,11 @@ async function main() {
   }
 
   const needEmbeddings = opts.mode === 'semantic' && !opts.id;
-  const { projects, embeddings } = await loadData(opts.dir, needEmbeddings);
+  const loaded = await loadData(opts.dir, needEmbeddings);
+  const projects = opts.includeArchive
+    ? loaded.projects
+    : loaded.projects.filter((project) => project.project_kind !== 'archive');
+  const embeddings = loaded.embeddings;
 
   if (opts.id) {
     const project = projects.find((item) => item.id === opts.id);

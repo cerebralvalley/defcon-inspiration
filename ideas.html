@@ -251,9 +251,9 @@
 
   .card-header {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(320px, 1fr) auto;
     align-items: start;
-    gap: 10px;
+    gap: 16px;
     padding: 12px 14px;
     cursor: pointer;
     user-select: none;
@@ -280,11 +280,14 @@
 
   .card-title {
     font-family: var(--font-display);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
-    line-height: 1.35;
+    line-height: 1.25;
     color: var(--white);
-    letter-spacing: -.01em;
+    letter-spacing: 0;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
   }
 
   .card-video {
@@ -300,7 +303,10 @@
     display: flex;
     gap: 8px;
     align-items: center;
+    justify-content: flex-end;
     flex-shrink: 0;
+    flex-wrap: wrap;
+    max-width: 420px;
     padding-top: 1px;
   }
 
@@ -348,6 +354,7 @@
     background: rgba(0,0,0,.05);
     padding: 3px 8px;
     border-radius: 5px;
+    white-space: nowrap;
   }
 
   .expand-arrow {
@@ -557,6 +564,9 @@
     main { padding: 14px 16px 80px; }
     .expand-all { display: none; }
     .kbd-overlay { display: none; }
+    .card-header { grid-template-columns: 1fr; gap: 10px; }
+    .card-meta { justify-content: flex-start; max-width: none; }
+    .card-title { font-size: 15px; }
   }
 </style>
 </head>
@@ -572,16 +582,19 @@
     <div class="search-container">
       <span class="search-prefix">/</span>
       <input type="text" id="search" placeholder="Search projects, techniques, findings..." autofocus spellcheck="false">
-      <span class="search-mode" id="searchMode">loading vectors</span>
+      <span class="search-mode" id="searchMode">checking search</span>
     </div>
 
     <div class="controls" id="controls">
       <div class="control-group">
-        <button class="pill active" data-filter="all">All</button>
+        <button class="pill active" data-filter="projects">Projects</button>
+        <button class="pill" data-filter="all">All uploads</button>
+        <button class="pill" data-filter="archive">Archive</button>
         <button class="pill" data-filter="starred">Starred</button>
         <button class="pill" data-filter="direct_copy">Direct Copy</button>
         <button class="pill" data-filter="scale_workflow">Scale</button>
         <button class="pill" data-filter="high">Score 8+</button>
+        <button class="pill" data-filter="useful">Useful</button>
       </div>
       <div class="control-divider"></div>
       <div class="control-group">
@@ -593,6 +606,7 @@
       <div class="control-group">
         <button class="pill pill-sort" data-sort="score">By Score</button>
         <button class="pill pill-sort" data-sort="views">Views</button>
+        <button class="pill pill-sort" data-sort="useful">Useful</button>
         <button class="pill pill-sort" data-sort="alpha">A-Z</button>
       </div>
       <select class="village-select" id="villageSelect" aria-label="Filter by village">
@@ -614,16 +628,14 @@
 
 <script>
 const DATA_URL = 'data/defcon-all-v1/idea-index.json';
-const EMBEDDINGS_URL = 'data/defcon-all-v1/embeddings.json';
 const VIDEOS_URL = 'data/defcon-all-v1/videos.json';
 
 let projects = [];
-let embeddingRecords = [];
-let queryVector = null;
+let semanticResults = new Map();
 let semanticQuery = '';
-let semanticReady = false;
+let semanticReady = true;
 let semanticError = '';
-let filter = 'all';
+let filter = 'projects';
 let searchMode = 'semantic';
 let sort = null;
 let villageFilter = 'all';
@@ -662,7 +674,7 @@ async function boot() {
   }
   render();
   listen();
-  loadEmbeddings();
+  checkSemanticSearch();
 }
 
 function loadStars() {
@@ -677,26 +689,22 @@ function saveStars() {
   localStorage.setItem('defconProjectStars', JSON.stringify([...starred]));
 }
 
-async function loadEmbeddings() {
-  semanticError = 'loading vectors';
+async function checkSemanticSearch() {
+  semanticError = 'checking search';
   updateSearchMode(document.getElementById('search').value.trim());
   try {
-    const data = await fetch(EMBEDDINGS_URL).then(r => r.ok ? r.json() : null);
-    if (data?.records) {
-      embeddingRecords = data.records;
-      semanticReady = true;
-      semanticError = '';
-    } else {
-      semanticError = 'vectors missing';
-    }
+    const data = await fetch('/api/status').then(r => r.ok ? r.json() : null);
+    semanticReady = Boolean(data?.hasOpenAIKey);
+    semanticError = semanticReady ? '' : 'semantic unavailable';
   } catch {
-    semanticError = 'semantic off';
+    semanticReady = true;
+    semanticError = '';
   }
   updateSearchMode(document.getElementById('search').value.trim());
 }
 
 function searchBlob(p) {
-  return [p.title, p.videoTitle, p.playlistTitle, p.village, p.summary, p.presenter_project, p.how_they_did_it, p.what_they_found, p.why_it_was_good,
+  return [p.title, p.videoTitle, p.playlistTitle, p.village, p.hacker_usefulness_label, p.hacker_usefulness_reason, p.summary, p.presenter_project, p.how_they_did_it, p.what_they_found, p.why_it_was_good,
     ...p.ideas.map(i => `${i.title} ${i.idea} ${i.why}`)].join(' ').toLowerCase();
 }
 
@@ -793,7 +801,8 @@ function normalizeVillage(name) {
 function exactMatch(p, q) {
   if (!q) return true;
   const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
-  return terms.every(t => p.searchText.includes(t));
+  const tokens = p.exactTokens || (p.exactTokens = new Set(p.searchText.match(/[a-z0-9_./:-]+/g) || []));
+  return terms.every(t => tokens.has(t));
 }
 
 function fuzzyScore(p, q) {
@@ -854,11 +863,14 @@ function isSubsequence(shorter, longer) {
 
 function filterPass(p) {
   if (villageFilter !== 'all' && p.village !== villageFilter) return false;
+  if (filter === 'projects') return projectKind(p) !== 'archive';
   if (filter === 'all') return true;
+  if (filter === 'archive') return projectKind(p) === 'archive';
   if (filter === 'starred') return starred.has(p.id);
   if (filter === 'direct_copy') return p.ideas.some(i => i.idea_type === 'direct_copy');
   if (filter === 'scale_workflow') return p.ideas.some(i => i.idea_type === 'scale_workflow');
   if (filter === 'high') return p.ideas.some(i => i.reproducibility_score >= 8);
+  if (filter === 'useful') return usefulnessScore(p) >= 7;
   return true;
 }
 
@@ -868,6 +880,33 @@ function avg(p) {
 
 function numericViews(p) {
   return Number.isFinite(p.viewCount) ? p.viewCount : -1;
+}
+
+function usefulnessScore(p) {
+  if (Number.isFinite(p.hacker_usefulness_score)) return p.hacker_usefulness_score;
+  const fullText = [p.videoTitle, p.playlistTitle, p.title, p.summary, p.presenter_project, p.how_they_did_it, p.what_they_found].join(' ').toLowerCase();
+  if (/\b(exploit|pentest|red team|recon|reverse|malware|fuzz|vulnerability|scanner|osint|forensic|botnet|ransomware|phishing|wireless|ics|iot|car hacking|cloud|active directory)\b/.test(fullText)) return 8;
+  if (/\b(mapped|audited|built|tested|found|tracked|reverse engineered|documented|modeled|measured|analyzed)\b/.test(fullText)
+    && /\b(dataset|logs?|messages?|devices?|apps?|networks?|infrastructure|supply chain|criminal|fraud|malware|firmware|protocol|identity|credentials?|traffic|telemetry|leaked|internal documents?|spreadsheets?)\b/.test(fullText)) return 8;
+  return 6;
+}
+
+function usefulnessLabel(p) {
+  if (p.hacker_usefulness_label) return p.hacker_usefulness_label;
+  const score = usefulnessScore(p);
+  if (score >= 8) return 'high';
+  if (score >= 5) return 'medium';
+  return 'low';
+}
+
+function projectKind(p) {
+  if (p.project_kind) return p.project_kind;
+  return 'project';
+}
+
+function projectLikelihood(p) {
+  if (Number.isFinite(p.project_likelihood_score)) return p.project_likelihood_score;
+  return projectKind(p) === 'archive' ? 3 : 7;
 }
 
 function formatViews(value) {
@@ -880,14 +919,13 @@ function formatViews(value) {
 function filtered() {
   const q = document.getElementById('search').value.trim();
   let r;
-  const semantic = searchMode === 'semantic' && semanticReady && queryVector && q && q === semanticQuery;
+  const semantic = searchMode === 'semantic' && q && q === semanticQuery && semanticResults.size;
   if (semantic) {
-    const scores = semanticScores(queryVector);
     r = projects
       .filter(filterPass)
-      .map(p => ({ ...p, semanticScore: scores.get(p.id) || 0 }))
+      .map(p => ({ ...p, semanticScore: semanticResults.get(p.id)?.score || 0, semanticMatch: semanticResults.get(p.id)?.match }))
       .sort((a, b) => b.semanticScore - a.semanticScore)
-      .filter((p, index) => index < 160 || p.semanticScore >= 0.2);
+      .filter(p => p.semanticScore > 0);
   } else if (searchMode === 'semantic') {
     r = projects.filter(filterPass);
   } else if (searchMode === 'fuzzy' && q) {
@@ -902,6 +940,7 @@ function filtered() {
   }
   if (sort === 'score') r.sort((a, b) => avg(b) - avg(a));
   else if (sort === 'views') r.sort((a, b) => numericViews(b) - numericViews(a) || a.title.localeCompare(b.title));
+  else if (sort === 'useful') r.sort((a, b) => usefulnessScore(b) - usefulnessScore(a) || avg(b) - avg(a));
   else if (sort === 'alpha') r.sort((a, b) => a.title.localeCompare(b.title));
   return r;
 }
@@ -929,21 +968,6 @@ function populateVillageSelect() {
     option.textContent = `${name} (${count})`;
     select.appendChild(option);
   }
-}
-
-function dot(a, b) {
-  let sum = 0;
-  for (let i = 0; i < a.length; i += 1) sum += a[i] * b[i];
-  return sum;
-}
-
-function semanticScores(vector) {
-  const scores = new Map();
-  for (const record of embeddingRecords) {
-    const score = dot(vector, record.vector);
-    if (score > (scores.get(record.projectId) || -Infinity)) scores.set(record.projectId, score);
-  }
-  return scores;
 }
 
 function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
@@ -994,6 +1018,16 @@ function detailBody(p, q) {
             <div class="section-text">${hi(p.why_it_was_good, q)}</div>
           </div>
 
+          <div class="section">
+            <div class="section-label">Hacker Usefulness</div>
+            <div class="section-text">${usefulnessLabel(p)} ${usefulnessScore(p)}/10${p.hacker_usefulness_reason ? ` - ${hi(p.hacker_usefulness_reason, q)}` : ''}</div>
+          </div>
+
+          <div class="section">
+            <div class="section-label">Project Filter</div>
+            <div class="section-text">${projectKind(p)} ${projectLikelihood(p)}/10${p.project_filter_reason ? ` - ${hi(p.project_filter_reason, q)}` : ''}</div>
+          </div>
+
           <div class="action-row">
             <a class="video-pill" href="${p.url}" target="_blank" rel="noopener">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.45.029 5.804 0 12c.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0C23.512 20.55 23.971 18.196 24 12c-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z"/></svg>
@@ -1040,8 +1074,8 @@ function render() {
     <div class="card${open ? ' open' : ''}" data-id="${p.id}" data-idx="${idx}">
       <div class="card-header" onclick="toggle('${p.id}')">
         <div class="card-title-area">
-          <div class="card-title">${hi(p.title, q)}</div>
-          <div class="card-video">${hi(p.videoTitle, q)}</div>
+          <div class="card-title">${hi(p.videoTitle, q)}</div>
+          <div class="card-video">${hi(p.title, q)}</div>
         </div>
         <div class="card-meta">
           <button class="star-btn${starred.has(p.id) ? ' active' : ''}" onclick="toggleStar(event, '${p.id}')" title="${starred.has(p.id) ? 'Unstar project' : 'Star project'}" aria-label="${starred.has(p.id) ? 'Unstar project' : 'Star project'}">
@@ -1051,6 +1085,8 @@ function render() {
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.45.029 5.804 0 12c.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0C23.512 20.55 23.971 18.196 24 12c-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z"/></svg>
           </a>
           <span class="meta-badge">${a.toFixed(1)}</span>
+          <span class="meta-badge">${projectKind(p)} ${projectLikelihood(p)}</span>
+          <span class="meta-badge">${usefulnessLabel(p)} ${usefulnessScore(p)}</span>
           <span class="meta-badge">${esc(p.village)}</span>
           <span class="meta-badge">${formatViews(p.viewCount)}</span>
           ${p.semanticScore ? `<span class="meta-badge">${p.semanticScore.toFixed(2)}</span>` : ''}
@@ -1084,7 +1120,7 @@ function scheduleRender(delay = 0) {
 }
 
 function shouldProgressivelyRender(q, data) {
-  return !q && !sort && villageFilter === 'all' && !allExpanded && data.length > visibleLimit;
+  return !q && !sort && villageFilter === 'all' && filter === 'projects' && !allExpanded && data.length > visibleLimit;
 }
 
 function scheduleProgressiveRender(data, progressive) {
@@ -1116,10 +1152,10 @@ function updateSearchMode(q) {
     return;
   }
   if (!q) {
-    el.textContent = `${embeddingRecords.length} vectors`;
+    el.textContent = 'server semantic';
     return;
   }
-  if (queryVector && semanticQuery === q) {
+  if (semanticQuery === q && semanticResults.size) {
     el.textContent = 'semantic';
     return;
   }
@@ -1128,25 +1164,28 @@ function updateSearchMode(q) {
 
 async function refreshSemanticQuery(q) {
   if (searchMode !== 'semantic' || !semanticReady || q.length < 2) {
-    queryVector = null;
+    semanticResults = new Map();
     semanticQuery = '';
     render();
     return;
   }
   try {
-    const response = await fetch('/api/embed', {
+    semanticError = 'searching';
+    updateSearchMode(q);
+    const response = await fetch('/api/search', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ query: q }),
+      body: JSON.stringify({ query: q, limit: 220 }),
     });
-    if (!response.ok) throw new Error('semantic endpoint unavailable');
+    if (!response.ok) throw new Error('semantic search unavailable');
     const result = await response.json();
-    queryVector = result.vector;
+    semanticResults = new Map((result.hits || []).map(hit => [hit.projectId, hit]));
     semanticQuery = q;
+    semanticError = '';
     render();
   } catch (error) {
     semanticError = 'keyword fallback';
-    queryVector = null;
+    semanticResults = new Map();
     semanticQuery = '';
     render();
   }
@@ -1168,7 +1207,7 @@ function toggleStar(event, id) {
 function listen() {
   document.getElementById('search').addEventListener('input', () => {
     const q = document.getElementById('search').value.trim();
-    queryVector = null;
+    semanticResults = new Map();
     semanticQuery = '';
     visibleLimit = 80;
     if (searchMode === 'semantic') {
@@ -1186,7 +1225,7 @@ function listen() {
 
     if (modePill) {
       searchMode = modePill.dataset.mode;
-      queryVector = null;
+      semanticResults = new Map();
       semanticQuery = '';
       visibleLimit = 80;
       document.querySelectorAll('.pill-mode').forEach(p => p.classList.remove('active'));

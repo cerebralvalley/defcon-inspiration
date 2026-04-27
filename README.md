@@ -13,7 +13,8 @@ https://defcon-inspiration.cerebralvalley.ai
 ## What Is Included
 
 - `ideas.html`: standalone dashboard UI.
-- `api/embed.js`: optional Vercel serverless route for semantic query embeddings.
+- `api/search.js`: Vercel serverless route for semantic search. It embeds the query and scores against precomputed vectors server-side.
+- `api/embed.js`: older query-embedding route kept for compatibility with previous local builds.
 - `api/status.js`: dataset status route.
 - `data/defcon-all-v1/idea-index.json`: project summaries and ideas.
 - `data/defcon-all-v1/videos.json`: source video metadata.
@@ -25,10 +26,10 @@ https://defcon-inspiration.cerebralvalley.ai
 
 Current corpus:
 
-- 1,481 projects
-- 2,962 ideas
-- 1,481 transcripts
-- 4,443 embedding records
+- 2,175 projects
+- 4,350 ideas
+- 2,195 transcripts
+- 6,525 embedding records
 
 ## Local Search
 
@@ -96,6 +97,8 @@ data/defcon-all-v1/transcripts/uFyk5UOyNqI.txt
 Each project in `idea-index.json` includes the source YouTube id/link, talk metadata, a project summary, findings, and two derived ideas with reproducibility scores.
 
 ## Website / Vercel
+
+The browser does not download `embeddings.json`. Vercel bundles `data/defcon-all-v1/embeddings.json` into `/api/search`, so semantic search only sends the user's query to the server when Enter is pressed.
 
 ```bash
 npm install

@@ -4,7 +4,8 @@
   "outputDirectory": "public",
   "functions": {
     "api/*.js": {
-      "maxDuration": 10
+      "maxDuration": 10,
+      "includeFiles": "data/defcon-all-v1/embeddings.json"
     }
   },
   "rewrites": [
@@ -20,15 +21,6 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=3600, stale-while-revalidate=86400"
-        }
-      ]
-    },
-    {
-      "source": "/data/defcon-all-v1/embeddings.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=86400, immutable"
         }
       ]
     }

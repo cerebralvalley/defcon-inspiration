@@ -1,8 +1,10 @@
 import { readFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const model = process.env.OPENAI_EMBEDDING_MODEL || 'text-embedding-3-large';
 const dimensions = Number(process.env.OPENAI_EMBEDDING_DIMENSIONS || 1024);
+const root = dirname(dirname(fileURLToPath(import.meta.url)));
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -12,7 +14,7 @@ export default async function handler(req, res) {
 
   let embeddings = null;
   try {
-    embeddings = JSON.parse(await readFile(resolve(process.cwd(), 'data/defcon-all-v1/embeddings.json'), 'utf8')).counts;
+    embeddings = JSON.parse(await readFile(resolve(root, 'data/defcon-all-v1/embeddings.json'), 'utf8')).counts;
   } catch {}
 
   return res.status(200).json({
