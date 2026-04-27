@@ -62,10 +62,10 @@ function parseArgs(argv) {
 
 function printHelp() {
   console.log(`Usage:
-  npm run defcon:search -- --query "npm malware dependency"
-  npm run defcon:search -- --mode fuzzy --query "npn malwar dependncy"
-  npm run defcon:search -- --id emhocCFs9N4 --show all
-  npm run defcon:search -- --id emhocCFs9N4 --show transcript --transcript-lines 120
+  npm run search -- --query "npm malware dependency"
+  npm run search -- --mode fuzzy --query "npn malwar dependncy"
+  npm run search -- --id emhocCFs9N4 --show all
+  npm run search -- --id emhocCFs9N4 --show transcript --transcript-lines 120
 
 Options:
   --query, -q TEXT        Search query.

@@ -1,8 +1,6 @@
 # DEF CON Inspiration
 
-Public DEF CON research idea index with summaries, transcripts, optional embeddings, a browser UI, and a local search CLI.
-
-This repo is meant to make the dataset easy to clone, inspect, search, and build on.
+Searchable DEF CON project ideas, summaries, source videos, transcripts, and a small local CLI.
 
 Website:
 
@@ -10,17 +8,37 @@ Website:
 https://defcon-inspiration.cerebralvalley.ai
 ```
 
-## What Is Included
+This is meant to be easy to hand to a hacker or an AI coding agent. Clone it, search the dataset, open transcripts, and use the results as inspiration for new security projects.
 
-- `ideas.html`: standalone dashboard UI.
-- `api/status.js`: dataset status route.
-- `data/defcon-all-v1/idea-index.json`: project summaries and ideas.
-- `data/defcon-all-v1/videos.json`: source video metadata.
-- `data/defcon-all-v1/embeddings.json`: precomputed vectors for optional local CLI semantic search.
-- `data/defcon-all-v1/transcripts/*.txt`: raw transcript text by YouTube video id.
-- `src/defcon/search.mjs`: local CLI for fuzzy, exact, and optional semantic search.
+## Quick Start
 
-## Dataset
+```bash
+git clone https://github.com/cerebralvalley/defcon-inspiration.git
+cd defcon-inspiration
+npm install
+npm run search -- --query "onion services agents" --limit 5
+```
+
+Show one project with transcript:
+
+```bash
+npm run search -- --id uFyk5UOyNqI --show all --transcript-lines 120
+```
+
+Machine-readable output for agents:
+
+```bash
+npm run --silent search -- --query "npm malware supply chain" --json --limit 5
+```
+
+## What You Get
+
+- `ideas.html`: standalone browser UI.
+- `src/defcon/search.mjs`: local search CLI.
+- `data/defcon-all-v1/idea-index.json`: summaries, findings, and derived ideas.
+- `data/defcon-all-v1/videos.json`: YouTube metadata.
+- `data/defcon-all-v1/transcripts/*.txt`: raw transcripts by YouTube video id.
+- `data/defcon-all-v1/embeddings.json`: optional vectors for local semantic CLI search.
 
 Current corpus:
 
@@ -29,92 +47,93 @@ Current corpus:
 - 2,195 transcripts
 - 6,525 embedding records
 
-## Local Search
+## Search Modes
+
+Default fuzzy search works offline:
 
 ```bash
-npm install
-npm run search -- --query "dark web autonomous agents" --mode fuzzy --limit 5
-npm run search -- --id uFyk5UOyNqI --show transcript --transcript-lines 120
+npm run search -- --query "npn malwar dependncy"
 ```
 
-Search modes:
+Exact token search:
 
 ```bash
 npm run search -- --query "npm malware" --mode exact
-npm run search -- --query "npn malwar dependncy" --mode fuzzy
-npm run search -- --query "supply chain attacks" --mode semantic
 ```
 
-Semantic search is local CLI only and requires your own OpenAI API key:
+Optional semantic search:
 
 ```bash
 cp .env.example .env
-# add your own OPENAI_API_KEY to .env
+# Add your own OPENAI_API_KEY to .env
 npm run search -- --query "supply chain attacks" --mode semantic
 ```
 
-For machine-readable output, use `--json`. If calling through `npm run`, use `--silent` so npm does not print its command banner before the JSON:
+Semantic search is CLI-only. The website does not call OpenAI and does not ship the embeddings file in the static build.
+
+## Useful CLI Commands
 
 ```bash
-npm run --silent search -- --query "npm malware" --mode fuzzy --limit 3 --json
-node src/defcon/search.mjs --id uFyk5UOyNqI --show all --json
+# Search project ideas
+npm run search -- --query "AIS spoofing" --limit 10
+
+# Include archived/non-project uploads too
+npm run search -- --query "policy cyber war" --include-archive
+
+# Print only methodology
+npm run search -- --id XNtS0wQIyjY --show method
+
+# Print only findings
+npm run search -- --id XNtS0wQIyjY --show findings
+
+# Print transcript text
+npm run search -- --id XNtS0wQIyjY --show transcript --transcript-lines 200
 ```
 
-## CLI From GitHub
-
-You can run the CLI directly from the repo after cloning:
-
-```bash
-git clone https://github.com/cerebralvalley/defcon-inspiration.git
-cd defcon-inspiration
-npm install
-npm run search -- --query "onion services" --mode fuzzy
-```
-
-You can also install it from a local checkout:
+Install globally from a local checkout:
 
 ```bash
 npm install -g .
-defcon-search --query "onion services" --mode fuzzy
+defcon-search --query "container security"
 defcon-search --id uFyk5UOyNqI --show all
 ```
 
-The package includes the dataset, so the CLI works offline for exact and fuzzy search after installation. Semantic search uses the included embeddings plus your own `OPENAI_API_KEY` to embed the query at search time.
+## AI Agent Prompt
 
-## Data Files
-
-Useful entrypoints:
+Use this with Cursor, Codex, Claude, or another coding agent:
 
 ```text
-data/defcon-all-v1/idea-index.json
-data/defcon-all-v1/videos.json
-data/defcon-all-v1/embeddings.json
-data/defcon-all-v1/transcripts/uFyk5UOyNqI.txt
+Use the DEF CON Inspiration CLI in this repo.
+Search for projects related to: <your topic>.
+Run fuzzy search first, inspect the top results, then open the most relevant transcripts.
+Return 5 buildable hackathon ideas with source video ids, what the presenter actually built, what they found, and how we could adapt it.
+Use --json when parsing results programmatically.
 ```
 
-Each project in `idea-index.json` includes the source YouTube id/link, talk metadata, a project summary, findings, and two derived ideas with reproducibility scores.
+Good agent commands:
+
+```bash
+npm run --silent search -- --query "sensor fusion RF drone" --json --limit 8
+npm run --silent search -- --id <VIDEO_ID> --show all --json
+```
 
 ## Website / Vercel
 
-The website does not use semantic search and does not call OpenAI. `npm run build` strips `embeddings.json` from the static `public/` output.
+Build the static site:
 
 ```bash
-npm install
 npm run build
 ```
+
+The build writes `public/` and removes `public/data/defcon-all-v1/embeddings.json` so the deployed website has no OpenAI dependency.
 
 Recommended Vercel settings:
 
 - Framework preset: `Other`
 - Build command: `npm run build`
 - Output directory: `public`
-
-Production target:
-
-```text
-defcon-inspiration.cerebralvalley.ai
-```
+- No `OPENAI_API_KEY` is needed for the website.
 
 ## Notes
 
-The data is derived from public DEF CON YouTube talk transcripts and metadata. The summaries and ideas are generated analysis, so treat them as a research index and verify important claims against the source transcript/video.
+The data is derived from public DEF CON YouTube talks. The summaries and ideas are generated analysis, so verify important claims against the linked video or transcript before relying on them.
